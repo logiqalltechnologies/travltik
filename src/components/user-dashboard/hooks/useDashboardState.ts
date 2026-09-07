@@ -41,7 +41,7 @@ export function useDashboardState() {
         return tab;
       }
     }
-    return "dashboard";
+    return "cases";
   });
 
   const [selectedPassport, setSelectedPassport] = useState('India');
@@ -117,7 +117,7 @@ export function useDashboardState() {
   const fetchAiRequirements = async (dest: string, pass: string, purp: string) => {
     auditHook.setIsLoadingAi(true);
     try {
-      const res = await fetch('/api/visa-requirements', {
+      const res = await fetch('/api/visa/ai-requirements', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ destination: dest, passport_country: pass, purpose: purp })
@@ -352,9 +352,8 @@ export function useDashboardState() {
 
   const navSections = [
     {
-      title: "GENERAL",
+      title: "DASHBOARD",
       items: [
-        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
         { id: "cases", label: "Visa Applications", icon: Briefcase, count: appHook.visasProcessingState.length > 0 ? appHook.visasProcessingState.length : undefined },
         { 
           id: "visa-readiness", 

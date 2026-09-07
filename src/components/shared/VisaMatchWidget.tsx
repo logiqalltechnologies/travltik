@@ -54,6 +54,7 @@ const COUNTRY_CODES = [
 ];
 
 export function VisaMatchWidget() {
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [targetCountry, setTargetCountry] = useState("");
@@ -101,6 +102,7 @@ export function VisaMatchWidget() {
   }, [otpCountdown]);
 
   useEffect(() => {
+    setMounted(true);
     if (typeof window === "undefined") return;
 
     // Listen for custom trigger to open modal from anywhere on site
@@ -332,6 +334,8 @@ export function VisaMatchWidget() {
     setAuthError("");
     setAuthSuccess("");
   };
+
+  if (!mounted) return null;
 
   return (
     <>

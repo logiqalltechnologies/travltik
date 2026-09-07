@@ -9,7 +9,8 @@ export function SidebarNavigation({
   activeTab,
   setActiveTab,
   navSections,
-  allNavItems,
+  visasProcessingState,
+  selectedApplicationId,
   setSelectedApplicationId,
   handleLogout
 }: {
@@ -39,6 +40,8 @@ export function SidebarNavigation({
     badgeColor?: string;
   }>;
   applicationsCount?: number;
+  visasProcessingState?: any[];
+  selectedApplicationId?: string | null;
   luggagePercent?: number;
   readinessScore?: number;
   setSelectedApplicationId?: (id: string | null) => void;
@@ -80,37 +83,87 @@ export function SidebarNavigation({
                     const isActive = activeTab === item.id;
                     const IconComp = item.icon;
                     return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          setActiveTab(item.id);
-                          if (item.id === "cases") {
-                            setSelectedApplicationId?.(null);
-                          }
-                        }}
-                        title={item.label}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                          isActive
-                            ? "bg-slate-100 text-slate-950 font-bold shadow-2xs"
-                            : "text-slate-600 hover:text-slate-950 hover:bg-slate-50"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-slate-950 stroke-[2.2]" : "text-slate-500 stroke-[1.8]"}`} />
-                          {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
-                        </div>
-                        {!isSidebarCollapsed && (
-                          item.count !== undefined ? (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 min-w-[20px] text-center">
-                              {item.count}
-                            </span>
-                          ) : item.badge ? (
-                            <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${item.badgeColor || 'bg-slate-100 text-slate-700'}`}>
-                              {item.badge}
-                            </span>
-                          ) : null
+                      <div key={item.id} className="space-y-1">
+                        <button
+                          onClick={() => {
+                            setActiveTab(item.id);
+                            if (item.id === "cases") {
+                              setSelectedApplicationId?.(null);
+                            }
+                          }}
+                          title={item.label}
+                          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                            isActive && !selectedApplicationId
+                              ? "bg-slate-100 text-slate-950 font-bold shadow-2xs"
+                              : isActive
+                              ? "bg-slate-50 text-slate-900 font-bold"
+                              : "text-slate-600 hover:text-slate-950 hover:bg-slate-50"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-slate-950 stroke-[2.2]" : "text-slate-500 stroke-[1.8]"}`} />
+                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                          </div>
+                          {!isSidebarCollapsed && (
+                            item.count !== undefined ? (
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 min-w-[20px] text-center">
+                                {item.count}
+                              </span>
+                            ) : item.badge ? (
+                              <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${item.badgeColor || 'bg-slate-100 text-slate-700'}`}>
+                                {item.badge}
+                              </span>
+                            ) : null
+                          )}
+                        </button>
+
+                        {/* Nested Active Applications List */}
+                        {item.id === "cases" && !isSidebarCollapsed && (
+                          <div className="ml-5 pl-2.5 my-1 space-y-1 border-l-2 border-slate-200">
+                            {visasProcessingState && visasProcessingState.length > 0 ? (
+                              visasProcessingState.map((app: any) => {
+                                const isAppSelected = activeTab === "cases" && selectedApplicationId === app.id;
+                                const appTitle = app.customName || `${app.destination || 'Visa'} ${app.visaType || 'Application'}`;
+                                const appStatus = app.status || "In Review";
+                                const isApproved = appStatus.toLowerCase().includes("approved");
+                                const isRejected = appStatus.toLowerCase().includes("reject");
+
+                                return (
+                                  <button
+                                    key={app.id}
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveTab("cases");
+                                      setSelectedApplicationId?.(app.id);
+                                    }}
+                                    title={appTitle}
+                                    className={`w-full text-left px-2 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-between group cursor-pointer ${
+                                      isAppSelected
+                                        ? "bg-teal-50 text-[#00a896] font-bold shadow-2xs border border-teal-200/60"
+                                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                                        isApproved ? "bg-emerald-500" : isRejected ? "bg-rose-500" : "bg-amber-500"
+                                      }`} />
+                                      <span className="truncate">{appTitle}</span>
+                                    </div>
+                                    <span className="text-[9px] font-bold text-slate-400 group-hover:text-slate-600 shrink-0 ml-1">
+                                      {appStatus}
+                                    </span>
+                                  </button>
+                                );
+                              })
+                            ) : (
+                              <div className="px-2 py-1 text-[10px] text-slate-400 italic">
+                                No active applications
+                              </div>
+                            )}
+                          </div>
                         )}
-                      </button>
+                      </div>
                     );
                   })}
                 </div>
@@ -146,24 +199,80 @@ export function SidebarNavigation({
                 const isActive = activeTab === item.id;
                 const IconComp = item.icon;
                 return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      setActiveTab(item.id);
-                      if (item.id === "cases") {
-                        setSelectedApplicationId?.(null);
-                      }
-                      setIsMobileSidebarOpen(false);
-                    }}
-                    className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer ${
-                      isActive
-                        ? "bg-slate-900 text-white shadow-md"
-                        : "text-slate-600 hover:bg-slate-100"
-                    }`}
-                  >
-                    <IconComp className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </button>
+                  <div key={item.id} className="space-y-1">
+                    <button
+                      onClick={() => {
+                        setActiveTab(item.id);
+                        if (item.id === "cases") {
+                          setSelectedApplicationId?.(null);
+                        }
+                        setIsMobileSidebarOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer ${
+                        isActive && !selectedApplicationId
+                          ? "bg-slate-900 text-white shadow-md"
+                          : isActive
+                          ? "bg-slate-100 text-slate-900"
+                          : "text-slate-600 hover:bg-slate-100"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <IconComp className="w-4 h-4 shrink-0" />
+                        <span className="truncate">{item.label}</span>
+                      </div>
+                      {item.count !== undefined && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-700">
+                          {item.count}
+                        </span>
+                      )}
+                    </button>
+
+                    {item.id === "cases" && (
+                      <div className="ml-6 pl-2.5 my-1 space-y-1 border-l-2 border-slate-200">
+                        {visasProcessingState && visasProcessingState.length > 0 ? (
+                          visasProcessingState.map((app: any) => {
+                            const isAppSelected = activeTab === "cases" && selectedApplicationId === app.id;
+                            const appTitle = app.customName || `${app.destination || 'Visa'} ${app.visaType || 'Application'}`;
+                            const appStatus = app.status || "In Review";
+                            const isApproved = appStatus.toLowerCase().includes("approved");
+                            const isRejected = appStatus.toLowerCase().includes("reject");
+
+                            return (
+                              <button
+                                key={app.id}
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveTab("cases");
+                                  setSelectedApplicationId?.(app.id);
+                                  setIsMobileSidebarOpen(false);
+                                }}
+                                className={`w-full text-left px-2.5 py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
+                                  isAppSelected
+                                    ? "bg-teal-50 text-[#00a896] font-bold border border-teal-200/60"
+                                    : "text-slate-600 hover:bg-slate-50"
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 min-w-0 flex-1">
+                                  <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                                    isApproved ? "bg-emerald-500" : isRejected ? "bg-rose-500" : "bg-amber-500"
+                                  }`} />
+                                  <span className="truncate">{appTitle}</span>
+                                </div>
+                                <span className="text-[10px] font-bold text-slate-400 shrink-0 ml-1">
+                                  {appStatus}
+                                </span>
+                              </button>
+                            );
+                          })
+                        ) : (
+                          <div className="px-2.5 py-1 text-xs text-slate-400 italic">
+                            No active applications
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </nav>
