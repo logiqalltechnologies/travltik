@@ -512,6 +512,9 @@ export async function runMigrations() {
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_user_journey_email ON user_journey_checklists (user_email);`);
   await p.query(`ALTER TABLE user_journey_checklists ADD COLUMN IF NOT EXISTS uploaded_documents TEXT;`);
   await p.query(`ALTER TABLE user_journey_checklists ADD COLUMN IF NOT EXISTS active_applications TEXT;`);
+  await p.query(`ALTER TABLE user_journey_checklists ADD COLUMN IF NOT EXISTS readiness_assessment TEXT;`);
+  await p.query(`ALTER TABLE user_journey_checklists ADD COLUMN IF NOT EXISTS audit_data TEXT;`);
+  await p.query(`ALTER TABLE user_journey_checklists ADD COLUMN IF NOT EXISTS luggage_checklist TEXT;`);
 
   // 19. AI Features Rate Limiting Table (Max 3 / Hour)
   await p.query(`

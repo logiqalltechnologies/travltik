@@ -62,7 +62,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     // 2. Fetch from user_journey_checklists (for journey data, active_applications, and uploaded_documents)
     const journeyQuery = await pool.query(
       `SELECT id, user_email, destination, passport_country, purpose, visa_type, 
-              uploaded_documents, active_applications, updated_at
+              uploaded_documents, active_applications, readiness_assessment, audit_data, luggage_checklist, updated_at
        FROM user_journey_checklists 
        WHERE LOWER(user_email) = $1 LIMIT 1`,
       [email]
@@ -189,12 +189,49 @@ export const GET: APIRoute = async ({ request, url }) => {
       }
     });
 
+    let readinessAssessment = null;
+    let auditData = null;
+    let luggageChecklist = null;
+    let journeyDestination = null;
+    let journeyPassport = null;
+    let journeyPurpose = null;
+
+    if (journeyQuery.rows.length > 0) {
+      const row = journeyQuery.rows[0];
+      journeyDestination = row.destination || null;
+      journeyPassport = row.passport_country || null;
+      journeyPurpose = row.purpose || null;
+      try {
+        if (row.readiness_assessment) {
+          readinessAssessment = typeof row.readiness_assessment === 'string' ? JSON.parse(row.readiness_assessment) : row.readiness_assessment;
+        }
+      } catch(e) {}
+      try {
+        if (row.audit_data) {
+          auditData = typeof row.audit_data === 'string' ? JSON.parse(row.audit_data) : row.audit_data;
+        }
+      } catch(e) {}
+      try {
+        if (row.luggage_checklist) {
+          luggageChecklist = typeof row.luggage_checklist === 'string' ? JSON.parse(row.luggage_checklist) : row.luggage_checklist;
+        }
+      } catch(e) {}
+    }
+
     return new Response(JSON.stringify({
       success: true,
       email,
       userId: user.userId,
       documents: documentsList,
-      applications: applicationsList
+      applications: applicationsList,
+      readiness_assessment: readinessAssessment,
+      audit_data: auditData,
+      luggage_checklist: luggageChecklist,
+      journey: {
+        destination: journeyDestination,
+        passport: journeyPassport,
+        purpose: journeyPurpose
+      }
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -376,6 +413,69 @@ export const POST: APIRoute = async ({ request, url }) => {
       }
 
       return new Response(JSON.stringify({ success: true, message: 'Document removed from account.' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // ── 4. SAVE READINESS / AUDIT DATA ──
+    if (action === 'save_readiness') {
+      const readiness_assessment = body.readiness_assessment || body.assessment;
+      const audit_data = body.audit_data || body.audit;
+      
+      await pool.query(
+        `INSERT INTO user_journey_checklists (user_email, readiness_assessment, audit_data, updated_at)
+         VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
+         ON CONFLICT (user_email) DO UPDATE SET
+           readiness_assessment = COALESCE(EXCLUDED.readiness_assessment, user_journey_checklists.readiness_assessment),
+           audit_data = COALESCE(EXCLUDED.audit_data, user_journey_checklists.audit_data),
+           updated_at = CURRENT_TIMESTAMP`,
+        [
+          email,
+          readiness_assessment ? JSON.stringify(readiness_assessment) : null,
+          audit_data ? JSON.stringify(audit_data) : null
+        ]
+      );
+
+      return new Response(JSON.stringify({ success: true, message: 'Visa readiness saved to account.' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // ── 5. SAVE LUGGAGE CHECKLIST ──
+    if (action === 'save_luggage') {
+      const luggage_checklist = body.luggage_checklist || body.items;
+      await pool.query(
+        `INSERT INTO user_journey_checklists (user_email, luggage_checklist, updated_at)
+         VALUES ($1, $2, CURRENT_TIMESTAMP)
+         ON CONFLICT (user_email) DO UPDATE SET
+           luggage_checklist = EXCLUDED.luggage_checklist,
+           updated_at = CURRENT_TIMESTAMP`,
+        [email, JSON.stringify(luggage_checklist || [])]
+      );
+
+      return new Response(JSON.stringify({ success: true, message: 'Luggage checklist saved to account.' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // ── 6. SAVE JOURNEY / ROUTE ──
+    if (action === 'save_journey') {
+      const { destination, passport, purpose } = body;
+      await pool.query(
+        `INSERT INTO user_journey_checklists (user_email, destination, passport_country, purpose, updated_at)
+         VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)
+         ON CONFLICT (user_email) DO UPDATE SET
+           destination = COALESCE(EXCLUDED.destination, user_journey_checklists.destination),
+           passport_country = COALESCE(EXCLUDED.passport_country, user_journey_checklists.passport_country),
+           purpose = COALESCE(EXCLUDED.purpose, user_journey_checklists.purpose),
+           updated_at = CURRENT_TIMESTAMP`,
+        [email, destination || null, passport || null, purpose || null]
+      );
+
+      return new Response(JSON.stringify({ success: true, message: 'Journey route saved to account.' }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });

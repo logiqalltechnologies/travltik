@@ -100,21 +100,6 @@ export function VisaReadinessScore({
   if (!selectedApplicationId && visasProcessingState && visasProcessingState.length > 0) {
     return (
       <div className="space-y-6 animate-fade-up text-left">
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-700/60 relative overflow-hidden">
-          <div className="relative z-10 max-w-2xl space-y-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold border border-teal-500/30">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Visa Readiness Engine
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
-              Select an Active Application
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-              Every country and visa category has different consular requirements, financial benchmarks, and checklists. Click any of your active applications below to review its personalized readiness audit.
-            </p>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {visasProcessingState.map((app: any) => {
             const displayTitle = getAppDisplayTitle(app);

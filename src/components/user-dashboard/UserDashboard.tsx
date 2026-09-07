@@ -118,6 +118,8 @@ export const UserDashboard: React.FC = () => {
                         <PreDepartureLuggage
                             selectedDestination={state.selectedDestination}
                             selectedPurpose={state.selectedPurpose}
+                            fullName={state.fullName}
+                            email={state.email}
                             isFetchingPreDepartureAi={state.luggage.isFetchingPreDepartureAi}
                             fetchPreDepartureAi={state.luggage.fetchPreDepartureAi}
                             luggageProgress={state.luggage.luggageProgress}
