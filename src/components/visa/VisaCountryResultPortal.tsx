@@ -7685,8 +7685,9 @@ export function VisaCountryResultPortal({
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
-                          <th className="py-3.5 px-4 text-left w-[30%]">Document Name</th>
-                          <th className="py-3.5 px-4 text-left w-[70%]">Tick when Valid</th>
+                          <th className="py-3.5 px-4 text-left w-[28%]">Document Name</th>
+                          <th className="py-3.5 px-4 text-left">Conditions and Validity</th>
+                          <th className="py-3.5 px-4 text-center w-36 sm:w-40 whitespace-nowrap">Tick when Valid</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -7705,7 +7706,7 @@ export function VisaCountryResultPortal({
                             <tr key={doc.key} className="hover:bg-slate-50/70 transition-colors">
                               
                               {/* Document Name */}
-                              <td className="py-4 px-4 align-top">
+                              <td className="py-4 px-4 align-top w-[28%]">
                                 <div className="flex items-start gap-3">
                                   <div className={`w-8 h-8 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
                                     {doc.icon}
@@ -7721,17 +7722,17 @@ export function VisaCountryResultPortal({
                                 </div>
                               </td>
 
-                              {/* Tick when Valid - Numbered Condition with Serial No. on Left, Condition Text in Middle, Tick Icon on Right */}
-                              <td className="py-4 px-4 align-top">
+                              {/* Conditions and Validity with Tick Checkbox under Tick when Valid header */}
+                              <td colSpan={2} className="py-4 px-4 align-top">
                                 <ol className="space-y-2.5 list-none">
                                   {doc.conditions.map((cond: string, cIdx: number) => {
                                     const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isYes;
                                     return (
                                       <li
                                         key={cIdx}
-                                        className="flex items-start justify-between gap-4 p-2 rounded-xl hover:bg-slate-50/80 transition-colors group"
+                                        className="flex items-start justify-between gap-4 p-1.5 rounded-xl hover:bg-slate-50/80 transition-colors group"
                                       >
-                                        {/* 1. Serial Number and Condition Text on the Left */}
+                                        {/* 1. Serial Number and Condition Text (under Conditions and Validity header) */}
                                         <div className="flex items-start gap-2.5 flex-1 min-w-0">
                                           <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5 min-w-[18px]">
                                             {cIdx + 1}.
@@ -7746,25 +7747,27 @@ export function VisaCountryResultPortal({
                                           </span>
                                         </div>
 
-                                        {/* 2. Tick Checkbox on the Right */}
-                                        <button
-                                          type="button"
-                                          role="checkbox"
-                                          aria-checked={isCondChecked}
-                                          onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                          className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
-                                            isCondChecked
-                                              ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
-                                              : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
-                                          }`}
-                                          title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Tick when valid'}
-                                        >
-                                          {isCondChecked ? (
-                                            <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
-                                          ) : (
-                                            <span className="w-2 h-2 rounded-[2px] bg-transparent" />
-                                          )}
-                                        </button>
+                                        {/* 2. Tick Checkbox (directly centered under Tick when Valid header) */}
+                                        <div className="w-36 sm:w-40 shrink-0 flex items-center justify-center">
+                                          <button
+                                            type="button"
+                                            role="checkbox"
+                                            aria-checked={isCondChecked}
+                                            onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                            className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none ${
+                                              isCondChecked
+                                                ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                                : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                            }`}
+                                            title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Tick when valid'}
+                                          >
+                                            {isCondChecked ? (
+                                              <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                                            ) : (
+                                              <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                            )}
+                                          </button>
+                                        </div>
                                       </li>
                                     );
                                   })}
