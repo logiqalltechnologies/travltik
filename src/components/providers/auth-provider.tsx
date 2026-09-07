@@ -256,33 +256,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsGooglePopupActive(true);
 
         try {
-            const { loginWithGooglePopup, loginWithGoogleRedirect } = await import("../../lib/firebase");
-
-            // Race popup with 3.5s timeout. If Brave Shields or COOP blocks the popup or if popup hangs, fallback seamlessly to redirect!
-            const popupPromise = loginWithGooglePopup();
-            const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('POPUP_TIMEOUT_FALLBACK')), 3500)
+            const { loginWithGooglePopupWithFallback } = await import("../../lib/firebase");
+            const result = await loginWithGooglePopupWithFallback(
+                role === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard'
             );
-
-            let result: any;
-            try {
-                result = await Promise.race([popupPromise, timeoutPromise]);
-            } catch (raceErr: any) {
-                if (
-                    raceErr?.message === 'POPUP_TIMEOUT_FALLBACK' ||
-                    raceErr?.code === 'auth/popup-blocked' ||
-                    raceErr?.code === 'auth/cancelled-popup-request' ||
-                    raceErr?.message?.includes('popup') ||
-                    raceErr?.message?.includes('Cross-Origin')
-                ) {
-                    console.info("[GoogleAuth] Browser blocked or timed out popup, switching seamlessly to Google redirect...");
-                    await loginWithGoogleRedirect(role === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard');
-                    return { status: 'redirecting' };
-                }
-                throw raceErr;
+            if ((result as any)?.status === 'redirecting') {
+                return { status: 'redirecting' };
             }
 
-            fbUser = result?.user;
+            fbUser = (result as any)?.user;
             if (fbUser) {
                 idToken = await fbUser.getIdToken();
                 googleEmail = (fbUser.email || '').toLowerCase().trim();

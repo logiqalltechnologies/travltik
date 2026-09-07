@@ -3,7 +3,7 @@ import { getPool, runMigrations } from '../../../backend/db';
 import { createSession } from '../../../backend/auth';
 import bcrypt from 'bcryptjs';
 import { sendWelcomeEmail } from '../../../lib/email';
-import { deleteOtpRecord } from '../../../lib/otp';
+import { deleteOtpRecord, isEmailVerified } from '../../../lib/otp';
 import { verifyTurnstileToken } from '../../../lib/verify-turnstile';
 
 export const prerender = false;
@@ -33,9 +33,12 @@ export const POST: APIRoute = async ({ request }) => {
     const pool = getPool();
 
     // Verify email verification has succeeded
-    const verCheck = await pool.query('SELECT verified FROM email_verifications WHERE LOWER(email) = LOWER($1)', [email]);
-    if (verCheck.rows.length === 0 || !verCheck.rows[0].verified) {
-      return new Response(JSON.stringify({ status: 'error', message: 'Email address has not been verified.' }), {
+    const isVerified = await isEmailVerified(email);
+    if (!isVerified) {
+      return new Response(JSON.stringify({ 
+        status: 'error', 
+        message: 'Email address has not been verified. Please verify your email first.' 
+      }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });

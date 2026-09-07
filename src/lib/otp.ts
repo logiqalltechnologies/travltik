@@ -1,177 +1,158 @@
-// ============================================================
 // src/lib/otp.ts
-// OTP generation, hashing, storage and verification — PostgreSQL backed
-// ============================================================
+// OTP Generation, Storage & Verification
 
 import crypto from 'crypto';
 import { getPool, runMigrations } from '../backend/db';
 
-const OTP_LENGTH = parseInt(process.env.OTP_LENGTH || '6', 10);
-const OTP_EXPIRY_MINUTES = parseInt(process.env.OTP_EXPIRY_MINUTES || '10', 10);
-const MAX_ATTEMPTS = 5;
-const MAX_RESENDS = 10;
-const RESEND_COOLDOWN_SECONDS = 5;
-
-// ─── Generation ────────────────────────────────────────────
-
-/** Generate a cryptographically secure numeric OTP */
 export function generateOtp(): string {
-  const min = Math.pow(10, OTP_LENGTH - 1);
-  const max = Math.pow(10, OTP_LENGTH) - 1;
-  // crypto.randomInt is secure and available in Node >=14.10
-  return crypto.randomInt(min, max + 1).toString();
+  return String(Math.floor(100000 + Math.random() * 900000));
 }
 
-/** Hash an OTP using SHA-256 — never store plaintext */
 export function hashOtp(otp: string): string {
   return crypto.createHash('sha256').update(otp).digest('hex');
 }
 
-// ─── Storage ───────────────────────────────────────────────
-
-let _migrationsRan = false;
-async function ensureMigrations() {
-  if (_migrationsRan) return;
-  try {
-    await runMigrations();
-    _migrationsRan = true;
-  } catch (e) {
-    console.warn('[otp] Migrations check warning:', e);
-  }
-}
-
-/**
- * Save or refresh OTP record in `email_verifications` table.
- * Respects resend limits and cooldown.
- */
 export async function saveOtp(email: string, otp: string): Promise<{
   success: boolean;
-  error?: 'MAX_RESENDS_EXCEEDED' | 'COOLDOWN_ACTIVE';
+  error?: string;
   cooldownSecondsLeft?: number;
 }> {
-  await ensureMigrations();
-  const pool = getPool();
-  const normalizedEmail = email.toLowerCase();
-  const otpHash = hashOtp(otp);
-  const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
+  try {
+    await runMigrations();
+    const pool = getPool();
+    const normalizedEmail = email.toLowerCase().trim();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-  // Check existing record
-  const existing = await pool.query(
-    'SELECT expires_at, resend_count, last_resend_at FROM email_verifications WHERE email = $1',
-    [normalizedEmail]
-  );
-
-  if (existing.rows.length > 0) {
-    const record = existing.rows[0];
-
-    // If existing record has expired or last_resend_at is > 10 minutes ago, reset resend_count to 0
-    const isExpired = new Date() > new Date(record.expires_at);
-    const isStale = record.last_resend_at && (Date.now() - new Date(record.last_resend_at).getTime()) > 10 * 60 * 1000;
-
-    if (isExpired || isStale) {
-      await pool.query('UPDATE email_verifications SET resend_count = 0 WHERE email = $1', [normalizedEmail]);
-    } else {
-      // Check resend limit within current active window
-      if ((record.resend_count || 0) >= MAX_RESENDS) {
-        return { success: false, error: 'MAX_RESENDS_EXCEEDED' };
-      }
-
-      // Check cooldown (60 seconds)
-      if (record.last_resend_at) {
-        const secondsSinceLast = (Date.now() - new Date(record.last_resend_at).getTime()) / 1000;
-        if (secondsSinceLast < RESEND_COOLDOWN_SECONDS) {
-          return {
-            success: false,
-            error: 'COOLDOWN_ACTIVE',
-            cooldownSecondsLeft: Math.ceil(RESEND_COOLDOWN_SECONDS - secondsSinceLast),
-          };
-        }
-      }
-    }
-  }
-
-  // Upsert the OTP record
-  await pool.query(
-    `INSERT INTO email_verifications
-       (email, otp_hash, expires_at, attempts, resend_count, last_resend_at, verified, created_at)
-     VALUES ($1, $2, $3, 0, 1, NOW(), false, NOW())
-     ON CONFLICT (email) DO UPDATE SET
-       otp_hash       = EXCLUDED.otp_hash,
-       expires_at     = EXCLUDED.expires_at,
-       attempts       = 0,
-       resend_count   = email_verifications.resend_count + 1,
-       last_resend_at = NOW(),
-       verified       = false,
-       created_at     = NOW()`,
-    [normalizedEmail, otpHash, expiresAt]
-  );
-
-  return { success: true };
-}
-
-// ─── Verification ──────────────────────────────────────────
-
-export type VerifyOtpResult =
-  | { success: true }
-  | { success: false; error: 'NOT_FOUND' | 'EXPIRED' | 'TOO_MANY_ATTEMPTS' | 'INVALID' };
-
-/**
- * Verify an OTP against the database.
- * Increments attempts on failure, marks verified on success.
- */
-export async function verifyOtp(email: string, otp: string): Promise<VerifyOtpResult> {
-  const pool = getPool();
-  const normalizedEmail = email.toLowerCase();
-
-  const result = await pool.query(
-    'SELECT * FROM email_verifications WHERE email = $1',
-    [normalizedEmail]
-  );
-
-  if (result.rows.length === 0) {
-    return { success: false, error: 'NOT_FOUND' };
-  }
-
-  const record = result.rows[0];
-
-  if ((record.attempts || 0) >= MAX_ATTEMPTS) {
-    return { success: false, error: 'TOO_MANY_ATTEMPTS' };
-  }
-
-  if (new Date() > new Date(record.expires_at)) {
-    return { success: false, error: 'EXPIRED' };
-  }
-
-  const computedHash = hashOtp(otp);
-  if (computedHash !== record.otp_hash) {
-    await pool.query(
-      'UPDATE email_verifications SET attempts = attempts + 1 WHERE email = $1',
+    // Check for existing OTP with cooldown
+    const existing = await pool.query(
+      'SELECT created_at, last_resend_at, resend_count FROM email_verifications WHERE LOWER(email) = LOWER($1) ORDER BY created_at DESC LIMIT 1',
       [normalizedEmail]
     );
-    return { success: false, error: 'INVALID' };
+
+    if (existing.rows.length > 0) {
+      const row = existing.rows[0];
+      const lastTime = row.last_resend_at || row.created_at;
+      const lastAttempt = new Date(lastTime);
+      const secondsSince = (Date.now() - lastAttempt.getTime()) / 1000;
+      if (secondsSince < 30) {
+        return {
+          success: false,
+          error: 'COOLDOWN_ACTIVE',
+          cooldownSecondsLeft: Math.ceil(30 - secondsSince),
+        };
+      }
+    }
+
+    // Hash OTP for secure storage
+    const hashedOtp = hashOtp(otp);
+
+    await pool.query(
+      `INSERT INTO email_verifications (email, otp_hash, expires_at, verified, attempts, created_at, resend_count, last_resend_at)
+       VALUES ($1, $2, $3, $4, $5, NOW(), 1, NOW())
+       ON CONFLICT (email) DO UPDATE 
+       SET otp_hash = $2,
+           expires_at = $3,
+           verified = $4,
+           attempts = $5,
+           resend_count = email_verifications.resend_count + 1,
+           last_resend_at = NOW()`,
+      [normalizedEmail, hashedOtp, expiresAt, false, 0]
+    );
+
+    return { success: true };
+  } catch (error) {
+    console.error('[OTP] Save error:', error);
+    return { success: false, error: 'Database error' };
   }
-
-  // Mark verified and clear hash for security
-  await pool.query(
-    "UPDATE email_verifications SET verified = true, otp_hash = '' WHERE email = $1",
-    [normalizedEmail]
-  );
-
-  return { success: true };
 }
 
-/** Check if an email has been OTP-verified */
-export async function isEmailVerified(email: string): Promise<boolean> {
-  const pool = getPool();
-  const result = await pool.query(
-    'SELECT verified FROM email_verifications WHERE LOWER(email) = $1',
-    [email.toLowerCase()]
-  );
-  return result.rows.length > 0 && result.rows[0].verified === true;
+export async function verifyOtp(email: string, otp: string): Promise<{
+  success: boolean;
+  error?: 'NOT_FOUND' | 'EXPIRED' | 'TOO_MANY_ATTEMPTS' | 'INVALID' | 'ALREADY_VERIFIED' | 'SERVER_ERROR';
+  attemptsRemaining?: number;
+}> {
+  try {
+    await runMigrations();
+    const pool = getPool();
+    const normalizedEmail = email.toLowerCase().trim();
+    const hashedOtp = hashOtp(otp);
+
+    const result = await pool.query(
+      `SELECT otp_hash, expires_at, verified, attempts 
+       FROM email_verifications 
+       WHERE LOWER(email) = LOWER($1) 
+       ORDER BY created_at DESC LIMIT 1`,
+      [normalizedEmail]
+    );
+
+    if (result.rows.length === 0) {
+      return { success: false, error: 'NOT_FOUND' };
+    }
+
+    const record = result.rows[0];
+
+    // Check if already verified
+    if (record.verified) {
+      return { success: true, error: 'ALREADY_VERIFIED' };
+    }
+
+    // Check expiry
+    if (new Date(record.expires_at) < new Date()) {
+      return { success: false, error: 'EXPIRED' };
+    }
+
+    // Check attempts
+    if (record.attempts >= 5) {
+      return { success: false, error: 'TOO_MANY_ATTEMPTS', attemptsRemaining: 0 };
+    }
+
+    // Verify OTP
+    if (record.otp_hash !== hashedOtp) {
+      const newAttempts = (record.attempts || 0) + 1;
+      await pool.query(
+        'UPDATE email_verifications SET attempts = $1 WHERE LOWER(email) = LOWER($2)',
+        [newAttempts, normalizedEmail]
+      );
+      return {
+        success: false,
+        error: newAttempts >= 5 ? 'TOO_MANY_ATTEMPTS' : 'INVALID',
+        attemptsRemaining: Math.max(0, 5 - newAttempts),
+      };
+    }
+
+    // Mark as verified
+    await pool.query(
+      'UPDATE email_verifications SET verified = true WHERE LOWER(email) = LOWER($1)',
+      [normalizedEmail]
+    );
+
+    return { success: true };
+  } catch (error) {
+    console.error('[OTP] Verify error:', error);
+    return { success: false, error: 'SERVER_ERROR' };
+  }
 }
 
-/** Delete an OTP record (called after successful registration) */
 export async function deleteOtpRecord(email: string): Promise<void> {
-  const pool = getPool();
-  await pool.query('DELETE FROM email_verifications WHERE email = $1', [email.toLowerCase()]);
+  try {
+    const pool = getPool();
+    await pool.query('DELETE FROM email_verifications WHERE LOWER(email) = LOWER($1)', [email.toLowerCase().trim()]);
+  } catch (error) {
+    console.warn('[OTP] Delete error:', error);
+  }
+}
+
+export async function isEmailVerified(email: string): Promise<boolean> {
+  try {
+    await runMigrations();
+    const pool = getPool();
+    const result = await pool.query(
+      'SELECT verified FROM email_verifications WHERE LOWER(email) = LOWER($1) ORDER BY created_at DESC LIMIT 1',
+      [email.toLowerCase().trim()]
+    );
+    return result.rows.length > 0 && result.rows[0].verified === true;
+  } catch (error) {
+    console.warn('[OTP] Check verification error:', error);
+    return false;
+  }
 }

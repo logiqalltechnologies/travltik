@@ -1,106 +1,124 @@
-// firebase.ts — BROWSER-ONLY, dynamic imports only
-// Static top-level firebase imports are FORBIDDEN here (Astro SSR will crash)
+// src/lib/firebase.ts
+// Firebase Client SDK — Dynamic import to prevent SSR issues
 
-let _initialized = false;
-let _auth: any = null;
-let _googleProvider: any = null;
-let _signInWithPopupFn: any = null;
-let _signInWithRedirectFn: any = null;
-let _getRedirectResultFn: any = null;
-let _initPromise: Promise<{ auth: any; googleProvider: any }> | null = null;
+let firebaseApp: any = null;
+let auth: any = null;
+let googleProvider: any = null;
 
-export async function initFirebase() {
-    if (_initialized && _auth && _googleProvider) {
-        return { auth: _auth, googleProvider: _googleProvider };
-    }
-    if (_initPromise) return _initPromise;
+let preloadPromise: Promise<void> | null = null;
 
-    _initPromise = (async () => {
-        const { initializeApp, getApps, getApp } = await import("firebase/app");
-        const { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } = await import("firebase/auth");
-
-        _signInWithPopupFn = signInWithPopup;
-        _signInWithRedirectFn = signInWithRedirect;
-        _getRedirectResultFn = getRedirectResult;
-
-        const firebaseConfig = {
-            apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-            authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-            projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-            storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-            appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-        };
-
-        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-        _auth = getAuth(app);
-        _googleProvider = new GoogleAuthProvider();
-        _googleProvider.setCustomParameters({ prompt: "select_account" });
-        _googleProvider.addScope("email");
-        _googleProvider.addScope("profile");
-        _initialized = true;
-
-        return { auth: _auth, googleProvider: _googleProvider };
-    })();
-
-    return _initPromise;
-}
-
-let _currentAuthPopup: Window | null = null;
-
-// Function to bring the Google sign-in window to the front if requested
-export function focusAuthPopup(): boolean {
-    if (_currentAuthPopup) {
-        try {
-            if (!_currentAuthPopup.closed) {
-                _currentAuthPopup.focus();
-                return true;
-            }
-        } catch (_) {
-            try {
-                _currentAuthPopup.focus();
-                return true;
-            } catch (e) {}
-        }
-    }
-    return false;
-}
-
-// Popup-based sign in with direct native Firebase call
-export async function loginWithGooglePopup() {
-    const { auth, googleProvider } = await initFirebase();
-    const signInFn = _signInWithPopupFn || (await import("firebase/auth")).signInWithPopup;
-    return await signInFn(auth, googleProvider);
-}
-
-// Redirect-based sign in fallback
-export async function loginWithGoogleRedirect(returnPath?: string) {
-    const { auth, googleProvider } = await initFirebase();
-    const redirectFn = _signInWithRedirectFn || (await import("firebase/auth")).signInWithRedirect;
-    if (returnPath && typeof sessionStorage !== "undefined") {
-        sessionStorage.setItem("google_auth_return", returnPath);
-    }
-    await redirectFn(auth, googleProvider);
-}
-
-// Call this on page load to get the result after a redirect sign-in
-export async function getGoogleRedirectResult() {
-    const { auth } = await initFirebase();
-    const getResultFn = _getRedirectResultFn || (await import("firebase/auth")).getRedirectResult;
-    return await getResultFn(auth);
-}
-
-// Pre-initialize Firebase in background so popup opens instantly with 0ms latency
 export async function preloadFirebase() {
+  if (preloadPromise) return preloadPromise;
+  preloadPromise = (async () => {
     try {
-        await initFirebase();
-    } catch (_) {}
+      const { initializeApp, getApps, getApp } = await import('firebase/app');
+      const { getAuth, GoogleAuthProvider } = await import('firebase/auth');
+      
+      const firebaseConfig = {
+        apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+        authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN || import.meta.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+        projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET || import.meta.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+        appId: import.meta.env.PUBLIC_FIREBASE_APP_ID || import.meta.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+      };
+      
+      firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+      auth = getAuth(firebaseApp);
+      googleProvider = new GoogleAuthProvider();
+      googleProvider.addScope('email');
+      googleProvider.addScope('profile');
+      googleProvider.setCustomParameters({ prompt: 'select_account' });
+    } catch (e) {
+      console.warn('[Firebase] Preload failed:', e);
+    }
+  })();
+  return preloadPromise;
 }
 
-// Automatically warm up Firebase on browser load
+export async function getFirebaseAuth() {
+  await preloadFirebase();
+  return { auth, googleProvider };
+}
+
+export async function loginWithGooglePopup() {
+  await preloadFirebase();
+  const { signInWithPopup } = await import('firebase/auth');
+  if (!auth || !googleProvider) throw new Error('Firebase not initialized');
+  const result = await signInWithPopup(auth, googleProvider);
+  return result;
+}
+
+let redirectInProgress = false;
+
+export async function loginWithGoogleRedirect(returnPath: string = '/traveller/dashboard') {
+  if (redirectInProgress) return;
+  redirectInProgress = true;
+  try {
+    await preloadFirebase();
+    const { signInWithRedirect } = await import('firebase/auth');
+    if (!auth || !googleProvider) throw new Error('Firebase not initialized');
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('google_auth_return', returnPath);
+      sessionStorage.setItem('google_auth_role', returnPath.includes('service-provider') ? 'expert' : 'seeker');
+    }
+    await signInWithRedirect(auth, googleProvider);
+  } catch (e) {
+    console.warn('[Firebase] Redirect error:', e);
+    redirectInProgress = false;
+  }
+}
+
+export async function getGoogleRedirectResult() {
+  try {
+    await preloadFirebase();
+    const { getRedirectResult } = await import('firebase/auth');
+    if (!auth) return null;
+    const result = await getRedirectResult(auth);
+    return result;
+  } catch (e) {
+    console.warn('[Firebase] Redirect result error:', e);
+    return null;
+  }
+}
+
+let popupWindow: Window | null = null;
+
+export function focusAuthPopup() {
+  if (popupWindow && !popupWindow.closed) {
+    popupWindow.focus();
+  }
+}
+
+export async function loginWithGooglePopupWithFallback(returnPath: string = '/traveller/dashboard'): Promise<any> {
+  await preloadFirebase();
+  const { signInWithPopup } = await import('firebase/auth');
+  if (!auth || !googleProvider) throw new Error('Firebase not initialized');
+  
+  try {
+    const result = await Promise.race([
+      signInWithPopup(auth, googleProvider),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('POPUP_TIMEOUT')), 5000))
+    ]);
+    return result;
+  } catch (error: any) {
+    if (
+      error?.message === 'POPUP_TIMEOUT' || 
+      error?.code === 'auth/popup-blocked' ||
+      error?.code === 'auth/cancelled-popup-request' ||
+      error?.message?.includes('popup') ||
+      error?.message?.includes('Cross-Origin')
+    ) {
+      console.warn('[Firebase] Popup blocked, falling back to redirect...');
+      await loginWithGoogleRedirect(returnPath);
+      return { status: 'redirecting' };
+    }
+    throw error;
+  }
+}
+
 if (typeof window !== "undefined") {
-    setTimeout(() => {
-        preloadFirebase();
-    }, 0);
+  setTimeout(() => {
+    preloadFirebase();
+  }, 0);
 }
-
