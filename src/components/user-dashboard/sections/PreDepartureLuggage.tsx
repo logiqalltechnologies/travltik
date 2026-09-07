@@ -157,36 +157,41 @@ const SECTIONS_META = [
     id: 1,
     title: "Trip & Travel Details",
     subtitle: "Confirm your trip details and itinerary.",
-    badgeBg: "bg-teal-600",
-    icon: <CreditCard className="w-4 h-4 text-teal-600" />
+    circleBg: "bg-[#00705a]",
+    iconBg: "bg-[#E6F4F1] text-[#00705a] border border-[#CDEAE4]",
+    icon: <CreditCard className="w-3.5 h-3.5 text-[#00705a]" />
   },
   {
     id: 2,
     title: "Flights & Transportation",
     subtitle: "Book and confirm your travel arrangements.",
-    badgeBg: "bg-indigo-600",
-    icon: <Calendar className="w-4 h-4 text-indigo-600" />
+    circleBg: "bg-[#6b46c1]",
+    iconBg: "bg-[#F3E8FF] text-[#6b46c1] border border-[#E9D5FF]",
+    icon: <Calendar className="w-3.5 h-3.5 text-[#6b46c1]" />
   },
   {
     id: 3,
     title: "Accommodation",
     subtitle: "Make sure your stay is confirmed and ready.",
-    badgeBg: "bg-blue-600",
-    icon: <Compass className="w-4 h-4 text-blue-600" />
+    circleBg: "bg-[#2563eb]",
+    iconBg: "bg-[#EFF6FF] text-[#2563eb] border border-[#DBEAFE]",
+    icon: <User className="w-3.5 h-3.5 text-[#2563eb]" />
   },
   {
     id: 4,
     title: "Documents",
     subtitle: "Carry all essential documents for a hassle-free trip.",
-    badgeBg: "bg-amber-500",
-    icon: <FileText className="w-4 h-4 text-amber-600" />
+    circleBg: "bg-[#f59e0b]",
+    iconBg: "bg-[#FEF3C7] text-[#d97706] border border-[#FDE68A]",
+    icon: <FileText className="w-3.5 h-3.5 text-[#d97706]" />
   },
   {
     id: 5,
     title: "Packing & Luggage",
     subtitle: "Pack smart and check customs guidelines (for international trips).",
-    badgeBg: "bg-purple-600",
-    icon: <Luggage className="w-4 h-4 text-purple-600" />
+    circleBg: "bg-[#9333ea]",
+    iconBg: "bg-[#FCE7F3] text-[#be185d] border border-[#FBCFE8]",
+    icon: <Luggage className="w-3.5 h-3.5 text-[#be185d]" />
   }
 ];
 
@@ -792,26 +797,28 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   const itemsInSec = DEFAULT_CHECKLIST_ITEMS.filter((it) => it.sectionId === sec.id);
 
                   return (
-                    <div key={sec.id} className="p-4 sm:p-5 space-y-3">
+                    <div key={sec.id} className="p-4 sm:p-6 space-y-3">
                       {/* Section Title */}
                       <div className="flex items-start gap-3">
                         <div
-                          className={`w-6 h-6 rounded-full ${sec.badgeBg} text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs`}
+                          className={`w-6 h-6 rounded-full ${sec.circleBg} text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs`}
                         >
                           {sec.id}
                         </div>
 
-                        <div>
-                          <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-2.5">
+                          <div className={`p-1.5 rounded-lg ${sec.iconBg} shrink-0`}>
                             {sec.icon}
-                            <h4 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight">{sec.title}</h4>
                           </div>
-                          <p className="text-[11px] text-slate-400 font-medium mt-0.5">{sec.subtitle}</p>
+                          <div>
+                            <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight">{sec.title}</h4>
+                            <p className="text-[11px] text-slate-400 font-normal mt-0.5">{sec.subtitle}</p>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Items List */}
-                      <div className="space-y-2 pl-9">
+                      {/* Items List (Flat rows matching reference) */}
+                      <div className="pl-9 sm:pl-11 space-y-1">
                         {itemsInSec.map((item) => {
                           const isDone = Boolean(checkedItems[item.id]);
 
@@ -819,17 +826,15 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                             <div
                               key={item.id}
                               onClick={() => handleToggleItem(item.id)}
-                              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                                isDone
-                                  ? "bg-emerald-50/50 border-emerald-200/80"
-                                  : "bg-white border-slate-100 hover:border-slate-200 hover:bg-slate-50/40"
-                              }`}
+                              className="py-2 sm:py-2.5 px-2 -mx-2 rounded-lg hover:bg-slate-50/70 transition-colors cursor-pointer flex items-center justify-between gap-4 select-none group"
                             >
-                              <div className="grid grid-cols-1 md:grid-cols-12 gap-1 md:gap-3 flex-1 items-center">
-                                <div className="md:col-span-7 flex items-center gap-2">
-                                  <span className="text-xs font-bold text-slate-400 shrink-0">{item.id}.</span>
+                              <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 flex-1 items-center min-w-0">
+                                <div className="md:col-span-7 flex items-baseline gap-2 min-w-0">
+                                  <span className="text-xs font-semibold text-slate-400 shrink-0 w-4 text-right">
+                                    {item.id}.
+                                  </span>
                                   <span
-                                    className={`text-xs font-semibold ${
+                                    className={`text-xs font-semibold truncate ${
                                       isDone ? "line-through text-slate-400" : "text-slate-800"
                                     }`}
                                   >
@@ -837,20 +842,20 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                                   </span>
                                 </div>
 
-                                <div className="md:col-span-5 text-[11px] font-medium text-slate-500 truncate">
+                                <div className="md:col-span-5 text-xs text-slate-500 font-normal truncate">
                                   {item.detail}
                                 </div>
                               </div>
 
-                              {/* Custom Checkbox */}
+                              {/* Custom Square Checkbox */}
                               <div
-                                className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition-all ${
+                                className={`w-4 h-4 rounded-[4px] border flex items-center justify-center shrink-0 transition-all ${
                                   isDone
-                                    ? "bg-emerald-600 border-emerald-600 text-white shadow-2xs"
-                                    : "border-slate-300 bg-white hover:border-slate-400"
+                                    ? "bg-[#00705a] border-[#00705a] text-white shadow-2xs"
+                                    : "border-slate-300 bg-white group-hover:border-slate-400"
                                 }`}
                               >
-                                {isDone && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
+                                {isDone && <Check className="w-3 h-3 stroke-[3]" />}
                               </div>
                             </div>
                           );
@@ -861,14 +866,14 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 })}
 
                 {/* Footer Bar: Automatic Reminders */}
-                <div className="p-4 sm:p-4.5 bg-gradient-to-r from-purple-50 via-indigo-50/40 to-purple-50 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5 text-left">
-                    <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+                <div className="p-4 sm:p-5 bg-[#FAF8FF] border-t border-purple-100/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 text-left">
+                    <div className="w-8 h-8 rounded-xl bg-[#F3E8FF] text-[#6b46c1] border border-[#E9D5FF] flex items-center justify-center shrink-0">
                       <Bell className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-purple-900">Automatic Reminders</div>
-                      <p className="text-[11px] text-purple-700/90 font-medium">
+                      <div className="text-xs font-bold text-slate-900">Automatic Reminders</div>
+                      <p className="text-[11px] text-slate-500 font-normal mt-0.5">
                         You'll get timely notifications 1 day and 3 hours before your departure date.
                       </p>
                     </div>
@@ -877,9 +882,9 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   <button
                     type="button"
                     onClick={() => setShowRemindersModal(true)}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-purple-200 text-purple-900 text-xs font-bold shadow-2xs hover:bg-purple-50/50 transition-colors cursor-pointer shrink-0"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white border border-purple-200 text-[#5e35b1] text-xs font-bold shadow-2xs hover:bg-purple-50/50 transition-colors cursor-pointer shrink-0"
                   >
-                    <Calendar className="w-3.5 h-3.5 text-purple-600" />
+                    <Calendar className="w-3.5 h-3.5 text-[#6b46c1]" />
                     <span>Manage Reminders</span>
                   </button>
                 </div>
