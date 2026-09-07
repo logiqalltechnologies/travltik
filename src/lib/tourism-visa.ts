@@ -11929,8 +11929,8 @@ export function getTourismSteps(countryOrFrom: string, maybeCountry?: string): s
       'Step 3: Complete GVCW Greece Application — Fill the official Schengen visa application form on in-gr.gvcworld.eu.',
       'Step 4: Gather Required Documents — Compile passport, 35x45mm photos, €30,000 insurance, flight/hotel bookings, 3-6 month bank statements, ITR, and NOC.',
       'Step 5: Book GVCW Appointment — Schedule biometric appointment at GVCW Greece Visa Application Centre (Greece does NOT use VFS Global).',
-      'Step 6: Pay Visa Fee — Pay €90 adult Schengen fee + GVCW service fee at the appointment.',
-      'Step 7: Attend Biometrics & Submit Dossier — Submit your complete dossier and record biometric fingerprints.',
+      'Step 6: Attend Biometrics & Submit Dossier — Submit your complete dossier and record biometric fingerprints.',
+      'Step 7: Pay Visa Fee — Pay €90 adult Schengen fee + GVCW service fee at the appointment.',
       'Step 8: Track Application Status — Monitor your visa processing status online via GVCW tracking portal.',
       'Step 9: Receive Passport with Visa — Collect your stamped passport from GVCW or receive via courier.',
       'Step 10: Travel to Greece & Europe — Valid for up to 90 days within 180 days across all 29 Schengen countries.'

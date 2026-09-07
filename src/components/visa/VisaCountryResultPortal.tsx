@@ -7661,7 +7661,7 @@ export function VisaCountryResultPortal({
                                           ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
                                           : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
                                       }`}
-                                      title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Tick when valid'}
+                                      title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
                                     >
                                       {isCondChecked ? (
                                         <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3] text-white" />
@@ -7687,7 +7687,7 @@ export function VisaCountryResultPortal({
                         <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
                           <th className="py-3.5 px-4 text-left w-[28%]">Document Name</th>
                           <th className="py-3.5 px-4 text-left">Conditions and Validity</th>
-                          <th className="py-3.5 px-4 text-center w-36 sm:w-40 whitespace-nowrap">Tick when Valid</th>
+                          <th className="py-3.5 px-4 text-center w-36 sm:w-40 whitespace-nowrap">Ready</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -7722,7 +7722,7 @@ export function VisaCountryResultPortal({
                                 </div>
                               </td>
 
-                              {/* Conditions and Validity with Tick Checkbox under Tick when Valid header */}
+                              {/* Conditions and Validity with Tick Checkbox under Ready header */}
                               <td colSpan={2} className="py-4 px-4 align-top">
                                 <ol className="space-y-2.5 list-none">
                                   {doc.conditions.map((cond: string, cIdx: number) => {
@@ -7747,7 +7747,7 @@ export function VisaCountryResultPortal({
                                           </span>
                                         </div>
 
-                                        {/* 2. Tick Checkbox (directly centered under Tick when Valid header) */}
+                                        {/* 2. Tick Checkbox (directly centered under Ready header) */}
                                         <div className="w-36 sm:w-40 shrink-0 flex items-center justify-center">
                                           <button
                                             type="button"
@@ -7759,7 +7759,7 @@ export function VisaCountryResultPortal({
                                                 ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
                                                 : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
                                             }`}
-                                            title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Tick when valid'}
+                                            title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
                                           >
                                             {isCondChecked ? (
                                               <Check className="w-3.5 h-3.5 stroke-[3] text-white" />

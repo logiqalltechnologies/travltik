@@ -4978,8 +4978,8 @@ export function getVerifiedOfficialData(rawFrom: string, rawTo: string, rawPurpo
         'Gather Required Documents: Prepare all mandatory documents as per the official checklist.',
         'Fill Application Form: Complete the Harmonised Schengen Visa Application Form on the official GVCW portal (in-gr.gvcworld.eu).',
         'Book Appointment: Schedule your in-person appointment at the nearest GVCW Visa Application Center.',
-        'Pay Visa Fees: Pay the applicable visa fee online or at the Visa Center counter.',
         'Submit Application: Attend appointment to submit physical dossier and record biometric data.',
+        'Pay Visa Fees: Pay the applicable visa fee online or at the Visa Center counter.',
         'Track Application Status: Track your application status online via the official GVCW tracking portal.',
         'Receive Passport & Visa: Collect your stamped passport or receive it by secure courier.'
       ] : [
