@@ -31,26 +31,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     await runMigrations();
     const pool = getPool();
+    const cleanEmail = email.toLowerCase().trim();
 
-    // Verify email verification has succeeded
-    const otpCheck = await pool.query(
-      'SELECT verified FROM email_verifications WHERE LOWER(email) = LOWER($1) AND verified = true ORDER BY created_at DESC LIMIT 1',
-      [email.toLowerCase().trim()]
-    );
-
-    if (otpCheck.rows.length === 0) {
-      return new Response(JSON.stringify({ 
-        status: 'error', 
-        message: 'Please verify your email first' 
-      }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
+    // ── Step 1: Duplicate Check (Seeker or Expert) ──────────────
     const [seekerCheck, expertCheck] = await Promise.all([
-      pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]),
-      pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
+      pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [cleanEmail]),
+      pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [cleanEmail]),
     ]);
     if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
       return new Response(JSON.stringify({ 
@@ -58,57 +44,84 @@ export const POST: APIRoute = async ({ request }) => {
         code: 'EMAIL_ALREADY_EXISTS',
         message: 'This email is already registered. Please log in instead.' 
       }), {
+        status: 409,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // ── Step 2: Mandatory OTP Verification Check (15 min validity) ───
+    const otpCheck = await pool.query(
+      `SELECT verified, created_at FROM email_verifications 
+       WHERE LOWER(email) = LOWER($1) AND verified = true 
+         AND created_at > NOW() - INTERVAL '15 minutes'
+       ORDER BY created_at DESC LIMIT 1`,
+      [cleanEmail]
+    );
+
+    if (otpCheck.rows.length === 0) {
+      return new Response(JSON.stringify({ 
+        status: 'error', 
+        code: 'EMAIL_NOT_VERIFIED',
+        message: 'Please verify your email with the 6-digit code first.' 
+      }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    const isNew = true;
-
     // Hash password with bcrypt (12 salt rounds)
     const hashedPassword = password ? await bcrypt.hash(password, 12) : '';
-
     const fullAddress = address || [area, city, state, zip_code].filter(Boolean).join(', ');
 
-    // Insert seeker record
-    await pool.query(`
-      INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations, looking_for, area, city, state, zip_code, address, current_visa_status, date_of_birth)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-      ON CONFLICT (email) DO UPDATE 
-      SET first_name = $1, last_name = $2, phone = $5, passport_country = $6, goals = $7, destinations = $8, looking_for = $9, area = $10, city = $11, state = $12, zip_code = $13, address = $14, current_visa_status = $15, date_of_birth = $16;
-    `, [
-      first_name, 
-      last_name, 
-      email, 
-      hashedPassword,
-      phone, 
-      passport_country, 
-      JSON.stringify(goals || []), 
-      JSON.stringify(destinations || []),
-      looking_for || '',
-      area || '',
-      city || '',
-      state || '',
-      zip_code || '',
-      fullAddress || '',
-      current_visa_status || '',
-      finalDob
-    ]);
-
-    if (isNew) {
-      try {
-        // Clean up OTP record after successful registration
-        await deleteOtpRecord(email);
-        // Send welcome email via EmailService
-        await sendWelcomeEmail({
-          firstName: first_name,
-          displayName: `${first_name} ${last_name || ''}`.trim(),
-          email,
-          userType: 'seeker',
+    // ── Step 3: Insert Seeker Record with Race Condition Protection ───
+    try {
+      await pool.query(`
+        INSERT INTO seekers (first_name, last_name, email, password_hash, phone, passport_country, goals, destinations, looking_for, area, city, state, zip_code, address, current_visa_status, date_of_birth)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16);
+      `, [
+        first_name, 
+        last_name, 
+        cleanEmail, 
+        hashedPassword,
+        phone, 
+        passport_country, 
+        JSON.stringify(goals || []), 
+        JSON.stringify(destinations || []),
+        looking_for || '',
+        area || '',
+        city || '',
+        state || '',
+        zip_code || '',
+        fullAddress || '',
+        current_visa_status || '',
+        finalDob
+      ]);
+    } catch (insertErr: any) {
+      // PostgreSQL unique constraint error code 23505
+      if (insertErr?.code === '23505' || insertErr?.message?.includes('duplicate key') || insertErr?.message?.includes('unique')) {
+        return new Response(JSON.stringify({
+          status: 'error',
+          code: 'EMAIL_ALREADY_EXISTS',
+          message: 'This email is already registered. Please log in instead.'
+        }), {
+          status: 409,
+          headers: { 'Content-Type': 'application/json' }
         });
-      } catch (emailErr) {
-        console.error('Post-registration actions failed for seeker:', emailErr);
       }
+      throw insertErr;
+    }
+
+    // ── Step 4: Cleanup OTP & Send Welcome Email ─────────────────
+    try {
+      await deleteOtpRecord(cleanEmail);
+      await sendWelcomeEmail({
+        firstName: first_name,
+        displayName: `${first_name} ${last_name || ''}`.trim(),
+        email: cleanEmail,
+        userType: 'seeker',
+      });
+    } catch (emailErr) {
+      console.error('Post-registration actions failed for seeker:', emailErr);
     }
 
     const userRes = await pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);

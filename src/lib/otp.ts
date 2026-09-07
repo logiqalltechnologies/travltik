@@ -34,11 +34,11 @@ export async function saveOtp(email: string, otp: string): Promise<{
       const lastTime = row.last_resend_at || row.created_at;
       const lastAttempt = new Date(lastTime);
       const secondsSince = (Date.now() - lastAttempt.getTime()) / 1000;
-      if (secondsSince < 30) {
+      if (secondsSince < 60) {
         return {
           success: false,
           error: 'COOLDOWN_ACTIVE',
-          cooldownSecondsLeft: Math.ceil(30 - secondsSince),
+          cooldownSecondsLeft: Math.ceil(60 - secondsSince),
         };
       }
     }

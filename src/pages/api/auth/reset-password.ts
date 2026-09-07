@@ -58,12 +58,26 @@ export const POST: APIRoute = async ({ request }) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // Update in seekers or experts table
-    const seekerRes = await pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
+    const seekerRes = await pool.query('SELECT id, password_hash FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
     if (seekerRes.rows.length > 0) {
+      if (!seekerRes.rows[0].password_hash || seekerRes.rows[0].password_hash.trim() === '') {
+        return new Response(JSON.stringify({
+          status: 'error',
+          isGoogleAccount: true,
+          message: 'This account was registered using Google Sign-In and cannot have its password reset. Please log in using Google.'
+        }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      }
       await pool.query('UPDATE seekers SET password_hash = $1 WHERE LOWER(email) = LOWER($2)', [hashedPassword, email]);
     } else {
-      const expertRes = await pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
+      const expertRes = await pool.query('SELECT id, password_hash FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
       if (expertRes.rows.length > 0) {
+        if (!expertRes.rows[0].password_hash || expertRes.rows[0].password_hash.trim() === '') {
+          return new Response(JSON.stringify({
+            status: 'error',
+            isGoogleAccount: true,
+            message: 'This account was registered using Google Sign-In and cannot have its password reset. Please log in using Google.'
+          }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+        }
         await pool.query('UPDATE experts SET password_hash = $1 WHERE LOWER(email) = LOWER($2)', [hashedPassword, email]);
       } else {
         return new Response(JSON.stringify({ status: 'error', message: 'User account not found.' }), {

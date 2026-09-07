@@ -87,8 +87,19 @@ export const POST: APIRoute = async ({ request }) => {
     let userRole: 'seeker' | 'expert' = 'seeker';
     let isNewUser = false;
 
-    // --- SEAMLESS GOOGLE SSO AUTHENTICATION ---
-    // If account exists in either table, log them in immediately without registration/login friction
+    // --- GOOGLE OAUTH DUPLICATE CHECK & ROLE RESOLUTION ---
+    if (mode === 'signup' && (isExistingExpert || isExistingSeeker)) {
+      console.warn(`[API /api/auth/google] Blocked duplicate signup attempt for: ${email}`);
+      return new Response(
+        JSON.stringify({
+          status: 'error',
+          code: 'EMAIL_ALREADY_EXISTS',
+          message: 'This email is already registered. Please log in instead.'
+        }),
+        { status: 409, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     if (isExistingExpert) {
       user = expertRes.rows[0];
       userRole = 'expert';
@@ -106,9 +117,9 @@ export const POST: APIRoute = async ({ request }) => {
           INSERT INTO experts (
             business_name, email, password_hash, contact_number, advisor_type, 
             about_me, portfolio_link, office_address, gov_registration_number, 
-            license_document_url, expertise_tags, countries_expertise
+            license_document_url, expertise_tags, countries_expertise, is_google_verified
           )
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, true)
           RETURNING *;
         `, [
           fallbackName,
@@ -134,9 +145,9 @@ export const POST: APIRoute = async ({ request }) => {
 
         const insertRes = await pool.query(`
           INSERT INTO seekers (
-            first_name, last_name, email, password_hash, phone, passport_country, goals, destinations
+            first_name, last_name, email, password_hash, phone, passport_country, goals, destinations, is_google_verified
           )
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true)
           RETURNING *;
         `, [
           firstName,
@@ -154,8 +165,8 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    // Send Welcome Email for new Google user or whenever coming through signup flow
-    if (isNewUser || mode === 'signup') {
+    // Send Welcome Email for new Google users
+    if (isNewUser) {
       try {
         const { sendWelcomeEmail } = await import('../../../lib/email');
         const firstName = userRole === 'expert'

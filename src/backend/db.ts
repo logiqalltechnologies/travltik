@@ -142,7 +142,9 @@ export async function runMigrations() {
     ALTER TABLE seekers ADD COLUMN IF NOT EXISTS current_visa_status VARCHAR(100);
     ALTER TABLE seekers ADD COLUMN IF NOT EXISTS date_of_birth VARCHAR(50);
     ALTER TABLE seekers ADD COLUMN IF NOT EXISTS vault_password_hash VARCHAR(255);
+    ALTER TABLE seekers ADD COLUMN IF NOT EXISTS is_google_verified BOOLEAN DEFAULT FALSE;
   `);
+  await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_seekers_email_lower ON seekers (LOWER(email));`);
 
   // 2. Experts Table
   await p.query(`
@@ -179,6 +181,8 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS full_name VARCHAR(150);`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS experience_years VARCHAR(50);`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS languages_spoken TEXT;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS is_google_verified BOOLEAN DEFAULT FALSE;`);
+  await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_experts_email_lower ON experts (LOWER(email));`);
 
 
   // 3. Sessions Table
@@ -265,6 +269,8 @@ export async function runMigrations() {
   // Add resend tracking columns if they don't exist
   await p.query(`ALTER TABLE email_verifications ADD COLUMN IF NOT EXISTS resend_count INTEGER DEFAULT 0;`);
   await p.query(`ALTER TABLE email_verifications ADD COLUMN IF NOT EXISTS last_resend_at TIMESTAMP;`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_email_verifications_email_lower ON email_verifications (LOWER(email));`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_email_verifications_verified ON email_verifications (verified, created_at);`);
 
   // 7. Email Logs Table — track every email sent for analytics
   await p.query(`

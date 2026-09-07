@@ -51,7 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
             code: 'EMAIL_ALREADY_EXISTS',
             message: 'This email is already registered. Please log in instead.'
           }), {
-            status: 400,
+            status: 409,
             headers: { 'Content-Type': 'application/json' },
           });
         }

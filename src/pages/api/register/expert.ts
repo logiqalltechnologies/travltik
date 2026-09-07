@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request }) => {
     const pool = getPool();
     await runMigrations().catch(err => console.warn('[RegisterExpert] Migration check:', err));
 
-    // ── Security Check: Block duplicate registrations ───
+    // ── Step 1: Duplicate Check (Seeker or Expert) ──────────────
     const cleanEmail = email.toLowerCase().trim();
     const [seekerCheck, expertCheck] = await Promise.all([
       pool.query('SELECT id FROM seekers WHERE LOWER(email) = LOWER($1)', [cleanEmail]),
@@ -50,9 +50,31 @@ export const POST: APIRoute = async ({ request }) => {
         code: 'EMAIL_ALREADY_EXISTS',
         message: 'This email is already registered. Please log in instead.'
       }), {
-        status: 400,
+        status: 409,
         headers: { 'Content-Type': 'application/json' }
       });
+    }
+
+    // ── Step 2: Mandatory OTP Verification Check (15 min validity) ───
+    if (!is_google_verified) {
+      const otpCheck = await pool.query(
+        `SELECT verified, created_at FROM email_verifications 
+         WHERE LOWER(email) = LOWER($1) AND verified = true 
+           AND created_at > NOW() - INTERVAL '15 minutes'
+         ORDER BY created_at DESC LIMIT 1`,
+        [cleanEmail]
+      );
+
+      if (otpCheck.rows.length === 0) {
+        return new Response(JSON.stringify({ 
+          status: 'error', 
+          code: 'EMAIL_NOT_VERIFIED',
+          message: 'Please verify your email with the 6-digit code first.' 
+        }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
     }
 
     // Hash password with bcrypt (12 salt rounds)
@@ -64,59 +86,67 @@ export const POST: APIRoute = async ({ request }) => {
     const resolvedCountries = typeof countries_expertise === 'string' ? countries_expertise : JSON.stringify(countries_expertise || []);
     const resolvedLanguages = typeof languages_spoken === 'string' ? languages_spoken : JSON.stringify(languages_spoken || []);
 
-    // Insert expert record
-    await pool.query(`
-      INSERT INTO experts (
-        business_name, email, password_hash, contact_number, advisor_type, 
-        about_me, portfolio_link, office_address, gov_registration_number, 
-        license_document_url, expertise_tags, countries_expertise,
-        business_type, year_established, business_email, business_phone,
-        website, city, state, country, pin_code, full_name,
-        experience_years, languages_spoken
-      )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)
-      ON CONFLICT (email) DO UPDATE 
-      SET business_name = $1, contact_number = $4, advisor_type = $5, 
-          about_me = $6, portfolio_link = $7, office_address = $8, 
-          gov_registration_number = $9, license_document_url = $10, 
-          expertise_tags = $11, countries_expertise = $12,
-          business_type = $13, year_established = $14, business_email = $15,
-          business_phone = $16, website = $17, city = $18, state = $19,
-          country = $20, pin_code = $21, full_name = $22,
-          experience_years = $23, languages_spoken = $24;
-    `, [
-      resolvedBusinessName,
-      email.toLowerCase().trim(),
-      hashedPassword,
-      contact_number || business_phone || '',
-      resolvedAdvisorType,
-      about_me || '',
-      website || portfolio_link || '',
-      office_address || '',
-      gov_registration_number || '',
-      license_document_url || '',
-      JSON.stringify(resolvedServices),
-      resolvedCountries,
-      business_type || '',
-      year_established || '',
-      business_email || email,
-      business_phone || contact_number || '',
-      website || '',
-      city || '',
-      state || '',
-      country || '',
-      pin_code || '',
-      full_name || '',
-      experience_years || '',
-      resolvedLanguages
-    ]);
-
+    // ── Step 3: Insert Expert Record with Race Condition Protection ───
     try {
-      await deleteOtpRecord(email);
+      await pool.query(`
+        INSERT INTO experts (
+          business_name, email, password_hash, contact_number, advisor_type, 
+          about_me, portfolio_link, office_address, gov_registration_number, 
+          license_document_url, expertise_tags, countries_expertise,
+          business_type, year_established, business_email, business_phone,
+          website, city, state, country, pin_code, full_name,
+          experience_years, languages_spoken, is_google_verified
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25);
+      `, [
+        resolvedBusinessName,
+        cleanEmail,
+        hashedPassword,
+        contact_number || business_phone || '',
+        resolvedAdvisorType,
+        about_me || '',
+        website || portfolio_link || '',
+        office_address || '',
+        gov_registration_number || '',
+        license_document_url || '',
+        JSON.stringify(resolvedServices),
+        resolvedCountries,
+        business_type || '',
+        year_established || '',
+        business_email || cleanEmail,
+        business_phone || contact_number || '',
+        website || '',
+        city || '',
+        state || '',
+        country || '',
+        pin_code || '',
+        full_name || '',
+        experience_years || '',
+        resolvedLanguages,
+        !!is_google_verified
+      ]);
+    } catch (insertErr: any) {
+      // PostgreSQL unique constraint error code 23505
+      if (insertErr?.code === '23505' || insertErr?.message?.includes('duplicate key') || insertErr?.message?.includes('unique')) {
+        return new Response(JSON.stringify({
+          status: 'error',
+          code: 'EMAIL_ALREADY_EXISTS',
+          message: 'This email is already registered. Please log in instead.'
+        }), {
+          status: 409,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      throw insertErr;
+    }
+
+    // ── Step 4: Cleanup OTP & Send Dedicated Service Provider Welcome Email ──
+    try {
+      await deleteOtpRecord(cleanEmail);
       await sendWelcomeEmail({
         firstName: full_name || resolvedBusinessName,
         displayName: resolvedBusinessName,
-        email,
+        email: cleanEmail,
         userType: 'expert',
       });
     } catch (emailErr) {
