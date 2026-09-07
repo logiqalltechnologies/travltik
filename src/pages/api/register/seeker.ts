@@ -100,12 +100,12 @@ export const POST: APIRoute = async ({ request }) => {
         // Clean up OTP record after successful registration
         await deleteOtpRecord(email);
         // Send welcome email via EmailService
-        sendWelcomeEmail({
+        await sendWelcomeEmail({
           firstName: first_name,
           displayName: `${first_name} ${last_name || ''}`.trim(),
           email,
           userType: 'seeker',
-        }).catch(err => console.error('Welcome email failed for seeker:', err));
+        });
       } catch (emailErr) {
         console.error('Post-registration actions failed for seeker:', emailErr);
       }

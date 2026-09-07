@@ -113,12 +113,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
       await deleteOtpRecord(email);
-      sendWelcomeEmail({
+      await sendWelcomeEmail({
         firstName: full_name || resolvedBusinessName,
         displayName: resolvedBusinessName,
         email,
         userType: 'expert',
-      }).catch(err => console.error('Welcome email failed for expert:', err));
+      });
     } catch (emailErr) {
       console.error('Post-registration actions failed for expert:', emailErr);
     }

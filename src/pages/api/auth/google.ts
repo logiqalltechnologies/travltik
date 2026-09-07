@@ -163,12 +163,12 @@ export const POST: APIRoute = async ({ request }) => {
           ? (user.business_name || profileDisplayName || 'Consultant')
           : `${user.first_name || ''} ${user.last_name || ''}`.trim() || profileDisplayName || 'Traveller';
         
-        sendWelcomeEmail({
+        await sendWelcomeEmail({
           firstName,
           displayName,
           email: user.email,
           userType: userRole,
-        }).catch(emailErr => console.error('[GoogleAuth] Welcome email async failed:', emailErr));
+        });
       } catch (emailErr) {
         console.error('[GoogleAuth] Welcome email invocation failed:', emailErr);
       }
