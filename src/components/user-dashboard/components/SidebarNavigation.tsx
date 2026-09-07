@@ -1,6 +1,29 @@
 import React from "react";
 import { ChevronLeft, LogOut, X } from "lucide-react";
 
+function getAppDisplayTitle(app: any): string {
+  if (!app) return "Canada  Student Visa";
+
+  const dest = (app.destination || app.country || app.targetDest || "").trim();
+  let vType = (app.visaType || "").trim();
+
+  // Normalize visa type into clean professional title (e.g. Student Visa, Work Visa, Tourist Visa)
+  if (vType.toLowerCase().includes("student") || app.purpose?.toLowerCase().includes("study")) {
+    vType = "Student Visa";
+  } else if (vType.toLowerCase().includes("work") || app.purpose?.toLowerCase().includes("work")) {
+    vType = "Work Visa";
+  } else if (vType.toLowerCase().includes("tourist") || vType.toLowerCase().includes("visitor") || app.purpose?.toLowerCase().includes("tourism")) {
+    vType = "Tourist Visa";
+  } else if (vType.toLowerCase().includes("pr") || app.purpose?.toLowerCase().includes("pr")) {
+    vType = "PR Visa";
+  } else if (!vType) {
+    vType = "Student Visa";
+  }
+
+  const countryName = dest || "Canada";
+  return `${countryName}  ${vType}`;
+}
+
 export function SidebarNavigation({
   isSidebarCollapsed,
   setIsSidebarCollapsed,
@@ -74,7 +97,7 @@ export function SidebarNavigation({
           <nav className="space-y-4">
             {navSections.map((section, sIdx) => (
               <div key={sIdx} className="space-y-1">
-                {!isSidebarCollapsed && (
+                {!isSidebarCollapsed && section.title && section.title !== "DASHBOARD" && (
                   <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1">
                     {section.title}
                   </h5>
@@ -120,11 +143,11 @@ export function SidebarNavigation({
 
                         {/* Nested Active Applications List */}
                         {item.id === "cases" && !isSidebarCollapsed && (
-                          <div className="ml-5 pl-2.5 my-1 space-y-1 border-l-2 border-slate-200">
+                          <div className="ml-5 pl-2.5 my-1.5 space-y-1 border-l-2 border-slate-200">
                             {visasProcessingState && visasProcessingState.length > 0 ? (
                               visasProcessingState.map((app: any) => {
                                 const isAppSelected = activeTab === "cases" && selectedApplicationId === app.id;
-                                const appTitle = app.customName || `${app.destination || 'Visa'} ${app.visaType || 'Application'}`;
+                                const displayTitle = getAppDisplayTitle(app);
                                 const appStatus = app.status || "In Review";
                                 const isApproved = appStatus.toLowerCase().includes("approved");
                                 const isRejected = appStatus.toLowerCase().includes("reject");
@@ -138,27 +161,24 @@ export function SidebarNavigation({
                                       setActiveTab("cases");
                                       setSelectedApplicationId?.(app.id);
                                     }}
-                                    title={appTitle}
-                                    className={`w-full text-left px-2 py-1.5 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-between group cursor-pointer ${
+                                    title={displayTitle}
+                                    className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between group cursor-pointer ${
                                       isAppSelected
-                                        ? "bg-teal-50 text-[#00a896] font-bold shadow-2xs border border-teal-200/60"
-                                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                                        ? "bg-teal-50 text-[#00a896] font-extrabold shadow-2xs border border-teal-200/60"
+                                        : "text-slate-700 hover:text-slate-950 hover:bg-slate-50"
                                     }`}
                                   >
-                                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                                      <span className={`w-2 h-2 rounded-full shrink-0 ${
                                         isApproved ? "bg-emerald-500" : isRejected ? "bg-rose-500" : "bg-amber-500"
                                       }`} />
-                                      <span className="truncate">{appTitle}</span>
+                                      <span className="truncate text-slate-800 font-bold">{displayTitle}</span>
                                     </div>
-                                    <span className="text-[9px] font-bold text-slate-400 group-hover:text-slate-600 shrink-0 ml-1">
-                                      {appStatus}
-                                    </span>
                                   </button>
                                 );
                               })
                             ) : (
-                              <div className="px-2 py-1 text-[10px] text-slate-400 italic">
+                              <div className="px-2 py-1 text-[11px] text-slate-400 italic">
                                 No active applications
                               </div>
                             )}
@@ -233,7 +253,7 @@ export function SidebarNavigation({
                         {visasProcessingState && visasProcessingState.length > 0 ? (
                           visasProcessingState.map((app: any) => {
                             const isAppSelected = activeTab === "cases" && selectedApplicationId === app.id;
-                            const appTitle = app.customName || `${app.destination || 'Visa'} ${app.visaType || 'Application'}`;
+                            const displayTitle = getAppDisplayTitle(app);
                             const appStatus = app.status || "In Review";
                             const isApproved = appStatus.toLowerCase().includes("approved");
                             const isRejected = appStatus.toLowerCase().includes("reject");
@@ -248,21 +268,18 @@ export function SidebarNavigation({
                                   setSelectedApplicationId?.(app.id);
                                   setIsMobileSidebarOpen(false);
                                 }}
-                                className={`w-full text-left px-2.5 py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
+                                className={`w-full text-left px-2.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
                                   isAppSelected
-                                    ? "bg-teal-50 text-[#00a896] font-bold border border-teal-200/60"
-                                    : "text-slate-600 hover:bg-slate-50"
+                                    ? "bg-teal-50 text-[#00a896] font-extrabold border border-teal-200/60"
+                                    : "text-slate-700 hover:bg-slate-50"
                                 }`}
                               >
                                 <div className="flex items-center gap-2 min-w-0 flex-1">
-                                  <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                                  <span className={`w-2 h-2 rounded-full shrink-0 ${
                                     isApproved ? "bg-emerald-500" : isRejected ? "bg-rose-500" : "bg-amber-500"
                                   }`} />
-                                  <span className="truncate">{appTitle}</span>
+                                  <span className="truncate text-slate-800 font-bold">{displayTitle}</span>
                                 </div>
-                                <span className="text-[10px] font-bold text-slate-400 shrink-0 ml-1">
-                                  {appStatus}
-                                </span>
                               </button>
                             );
                           })

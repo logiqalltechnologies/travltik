@@ -352,7 +352,7 @@ export function useDashboardState() {
 
   const navSections = [
     {
-      title: "DASHBOARD",
+      title: "",
       items: [
         { id: "cases", label: "Visa Applications", icon: Briefcase, count: appHook.visasProcessingState.length > 0 ? appHook.visasProcessingState.length : undefined },
         { 
