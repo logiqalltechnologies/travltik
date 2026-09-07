@@ -104,12 +104,20 @@ export async function sendVerificationOTP(data: VerificationEmailData): Promise<
  * Send welcome email after successful registration
  */
 export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<EmailResult> {
-  const { generateWelcomeHtml } = await import('../emails/WelcomeEmail');
+  const { generateWelcomeHtml, generateExpertWelcomeHtml } = await import('../emails/WelcomeEmail');
+  const isExpert = data.userType === 'expert';
+  const html = isExpert
+    ? generateExpertWelcomeHtml({ firstName: data.firstName, displayName: data.displayName })
+    : generateWelcomeHtml({ firstName: data.firstName, displayName: data.displayName });
+  const subject = isExpert
+    ? 'Welcome to the TravlTik Partner Network 🚀'
+    : 'Welcome to TravlTik 🎉';
+
   return sendEmail(
     {
       to: data.email,
-      subject: 'Welcome to TravlTik 🎉',
-      html: generateWelcomeHtml({ firstName: data.firstName, displayName: data.displayName }),
+      subject,
+      html,
     },
     'welcome'
   );

@@ -5,6 +5,9 @@ interface WelcomeEmailProps {
     displayName: string;
 }
 
+/**
+ * Welcome email template for Travellers / Seekers
+ */
 export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProps): string {
     const greetingName = firstName || displayName || "there";
 
@@ -90,7 +93,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin: 0 0 36px 0;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://travltik.com/dashboard" style="background-color: #00a896; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(0, 168, 150, 0.3); border: 1px solid #008f80; text-align: center; width: 80%; max-width: 320px;">
+                                        <a href="https://travltik.com/traveller/dashboard" style="background-color: #00a896; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(0, 168, 150, 0.3); border: 1px solid #008f80; text-align: center; width: 80%; max-width: 320px;">
                                             Complete Your Profile
                                         </a>
                                     </td>
@@ -114,6 +117,136 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             <!-- Footer Details -->
                             <p style="color: #9ca3af; font-size: 12px; line-height: 18px; margin: 16px 0 0 0; text-align: center;">
                                 &copy; ${new Date().getFullYear()} TravlTik. The Global Visa & Travel Platform.<br/>
+                                All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+}
+
+/**
+ * Welcome email template for Service Providers / Experts
+ */
+export function generateExpertWelcomeHtml({ firstName, displayName }: WelcomeEmailProps): string {
+    const greetingName = displayName || firstName || "Partner";
+
+    return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the TravlTik Partner Network</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; width: 100% !important;">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f3f4f6; padding: 40px 10px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 580px; background-color: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);">
+                    
+                    <!-- Decorative Top Header Gradient Strip (Dark Navy & Emerald) -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #0c1a2e 0%, #00a896 100%); height: 8px; line-height: 8px; font-size: 1px;">
+                            &nbsp;
+                        </td>
+                    </tr>
+
+                    <!-- Logo Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 24px 40px;">
+                            <img src="https://travltik.com/logo.png" alt="TravlTik Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Body Content -->
+                    <tr>
+                        <td style="padding: 0 40px 40px 40px; text-align: left;">
+                            <div style="text-align: center; margin-bottom: 24px;">
+                                <span style="display: inline-block; background-color: #ecfdf5; color: #047857; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 9999px; border: 1px solid #a7f3d0; text-transform: uppercase; letter-spacing: 0.05em;">
+                                    Service Provider Network
+                                </span>
+                            </div>
+
+                            <h1 style="color: #0c1a2e; font-size: 26px; font-weight: 800; margin: 0 0 12px 0; line-height: 36px; text-align: center; letter-spacing: -0.5px;">
+                                Welcome to TravlTik Partner Network 🚀
+                            </h1>
+                            <p style="color: #4b5563; font-size: 15px; font-weight: 500; margin: 0 0 32px 0; line-height: 24px; text-align: center;">
+                                Your immigration consulting & visa advisory practice is now registered on TravlTik.
+                            </p>
+                            
+                            <p style="color: #1f2937; font-size: 15px; margin: 0 0 20px 0; line-height: 24px; font-weight: 600;">
+                                Hello ${greetingName},
+                            </p>
+                            
+                            <p style="color: #4b5563; font-size: 15px; margin: 0 0 24px 0; line-height: 24px;">
+                                Welcome to the TravlTik Partner Ecosystem. We connect verified immigration lawyers, registered visa consultants, and study abroad advisors with thousands of motivated global applicants.
+                            </p>
+                            
+                            <!-- Features checklist for Experts -->
+                            <div style="background-color: #f8fafc; border-radius: 12px; padding: 24px; border: 1px solid #e2e8f0; margin-bottom: 32px;">
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td valign="top" style="padding: 8px 0; width: 28px;">
+                                            <div style="color: #00a896; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
+                                        </td>
+                                        <td style="padding: 8px 0; color: #0c1a2e; font-size: 15px; line-height: 22px; font-weight: 600;">
+                                            High-Intent Applicant Leads
+                                            <div style="color: #64748b; font-size: 13px; font-weight: 400; margin-top: 2px;">Receive direct inquiries from travellers looking for guidance in your destination countries.</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" style="padding: 16px 0 8px 0; width: 28px;">
+                                            <div style="color: #00a896; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
+                                        </td>
+                                        <td style="padding: 16px 0 8px 0; color: #0c1a2e; font-size: 15px; line-height: 22px; font-weight: 600;">
+                                            Client Case & Document Vault
+                                            <div style="color: #64748b; font-size: 13px; font-weight: 400; margin-top: 2px;">Manage applicants' document filings, track milestones, and update case progress seamlessly.</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" style="padding: 16px 0 8px 0; width: 28px;">
+                                            <div style="color: #00a896; font-weight: bold; font-size: 18px; line-height: 20px;">✓</div>
+                                        </td>
+                                        <td style="padding: 16px 0 8px 0; color: #0c1a2e; font-size: 15px; line-height: 22px; font-weight: 600;">
+                                            Consultation Bookings & Direct Payouts
+                                            <div style="color: #64748b; font-size: 13px; font-weight: 400; margin-top: 2px;">Set your consulting fees, schedule slots, and receive automated, verified payouts.</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <!-- Call to Action Buttons -->
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin: 0 0 32px 0;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://travltik.com/service-provider/dashboard" style="background-color: #0c1a2e; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(12, 26, 46, 0.3); border: 1px solid #0c1a2e; text-align: center; width: 80%; max-width: 320px;">
+                                            Go to Partner Dashboard
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="padding-top: 18px;">
+                                        <a href="https://travltik.com/service-provider/dashboard" style="color: #00a896; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #ccfbf1; padding-bottom: 2px;">
+                                            Complete Your Business Profile & KYC &rarr;
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 32px 0;" />
+                            
+                            <!-- Support Section -->
+                            <p style="color: #6b7280; font-size: 13px; line-height: 20px; margin: 0; text-align: center; font-weight: 500;">
+                                Need assistance setting up your profile or managing clients? Reach out to partner support at <a href="mailto:partners@travltik.com" style="color: #00a896; text-decoration: none; font-weight: 700;">partners@travltik.com</a>
+                            </p>
+                            
+                            <!-- Footer Details -->
+                            <p style="color: #9ca3af; font-size: 12px; line-height: 18px; margin: 16px 0 0 0; text-align: center;">
+                                &copy; ${new Date().getFullYear()} TravlTik Technologies. Global Immigration & Partner Network.<br/>
                                 All rights reserved.
                             </p>
                         </td>
