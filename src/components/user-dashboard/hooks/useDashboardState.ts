@@ -133,6 +133,35 @@ export function useDashboardState() {
     }
   };
 
+  // Synchronize destination, passport, purpose, and readiness when an application is selected
+  useEffect(() => {
+    if (!appHook.selectedApplicationId || !appHook.visasProcessingState || appHook.visasProcessingState.length === 0) return;
+    const targetApp = appHook.visasProcessingState.find((a: any) => a.id === appHook.selectedApplicationId);
+    if (!targetApp) return;
+
+    const dest = normalizeCountryName(targetApp.destination || "United States");
+    const pass = normalizeCountryName(targetApp.passport || "India");
+    const rawPurp = (targetApp.purpose || targetApp.visaType || "").toLowerCase();
+    const purp = rawPurp.includes("study") || rawPurp.includes("student")
+      ? "Academic Study (Higher Ed)"
+      : rawPurp.includes("work") || rawPurp.includes("job")
+      ? "Employment / Work"
+      : "Tourism / Vacation";
+
+    setSelectedDestination(dest);
+    setSelectedPassport(pass);
+    setSelectedPurpose(purp);
+
+    const readinessPurpType = rawPurp.includes("study") || rawPurp.includes("student")
+      ? "study"
+      : rawPurp.includes("work") || rawPurp.includes("job")
+      ? "work"
+      : "tourism";
+    auditHook.setReadinessPurpose(readinessPurpType);
+
+    fetchAiRequirements(dest, pass, purp);
+  }, [appHook.selectedApplicationId, appHook.visasProcessingState]);
+
   const handleCreateOrSwitchTripProfile = (dest?: string, pass?: string, purp?: string) => {
     const targetDest = normalizeCountryName(dest || selectedDestination);
     const targetPass = normalizeCountryName(pass || selectedPassport);

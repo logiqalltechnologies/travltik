@@ -1,7 +1,7 @@
 import React from "react";
 import { ChevronLeft, LogOut, X } from "lucide-react";
 
-function getAppDisplayTitle(app: any): string {
+export function getAppDisplayTitle(app: any): string {
   if (!app) return "Canada  Student Visa";
 
   const dest = (app.destination || app.country || app.targetDest || "").trim();
@@ -140,11 +140,11 @@ export function SidebarNavigation({
                         </button>
 
                         {/* Nested Active Applications List */}
-                        {item.id === "cases" && !isSidebarCollapsed && (
+                        {(item.id === "cases" || item.id === "visa-readiness") && !isSidebarCollapsed && (
                           <div className="ml-5 pl-2.5 my-1.5 space-y-1 border-l-2 border-slate-200">
                             {visasProcessingState && visasProcessingState.length > 0 ? (
                               visasProcessingState.map((app: any) => {
-                                const isAppSelected = activeTab === "cases" && selectedApplicationId === app.id;
+                                const isAppSelected = activeTab === item.id && selectedApplicationId === app.id;
                                 const displayTitle = getAppDisplayTitle(app);
                                 const appStatus = app.status || "In Review";
                                 const isApproved = appStatus.toLowerCase().includes("approved");
@@ -156,7 +156,7 @@ export function SidebarNavigation({
                                     type="button"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      setActiveTab("cases");
+                                      setActiveTab(item.id);
                                       setSelectedApplicationId?.(app.id);
                                     }}
                                     title={displayTitle}
@@ -244,11 +244,11 @@ export function SidebarNavigation({
                       )}
                     </button>
 
-                    {item.id === "cases" && (
+                    {(item.id === "cases" || item.id === "visa-readiness") && (
                       <div className="ml-6 pl-2.5 my-1 space-y-1 border-l-2 border-slate-200">
                         {visasProcessingState && visasProcessingState.length > 0 ? (
                           visasProcessingState.map((app: any) => {
-                            const isAppSelected = activeTab === "cases" && selectedApplicationId === app.id;
+                            const isAppSelected = activeTab === item.id && selectedApplicationId === app.id;
                             const displayTitle = getAppDisplayTitle(app);
                             const appStatus = app.status || "In Review";
                             const isApproved = appStatus.toLowerCase().includes("approved");
@@ -260,7 +260,7 @@ export function SidebarNavigation({
                                 type="button"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setActiveTab("cases");
+                                  setActiveTab(item.id);
                                   setSelectedApplicationId?.(app.id);
                                   setIsMobileSidebarOpen(false);
                                 }}

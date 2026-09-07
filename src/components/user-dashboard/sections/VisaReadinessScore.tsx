@@ -7,6 +7,7 @@ import { normalizeCountryName } from "../utils/countryHelpers";
 import { cleanShortDocRequirement } from "../utils/vaultHelpers";
 import { dashboardDestinationOptions, dashboardPassportOptions } from "../utils/constants";
 import { ReadinessSelect } from "../components/ReadinessSelect";
+import { getAppDisplayTitle } from "../components/SidebarNavigation";
 import type { useReadinessAudit } from "../hooks/useReadinessAudit";
 import type { VaultDocChecklistEntry } from "../types";
 
@@ -18,6 +19,9 @@ export interface VisaReadinessScoreProps {
   toggleReadinessDoc?: (docKey: string, docTitle: string) => void;
   setActiveTab?: (tab: string) => void;
   handleVaultDocScan?: (file: File, docKey: string, docTitle: string) => Promise<any> | void;
+  visasProcessingState?: any[];
+  selectedApplicationId?: string | null;
+  setSelectedApplicationId?: (id: string | null) => void;
 }
 
 export function VisaReadinessScore({
@@ -27,7 +31,10 @@ export function VisaReadinessScore({
   vaultChecklistState = {},
   toggleReadinessDoc,
   setActiveTab = () => {},
-  handleVaultDocScan = () => {}
+  handleVaultDocScan = () => {},
+  visasProcessingState = [],
+  selectedApplicationId = null,
+  setSelectedApplicationId = () => {}
 }: VisaReadinessScoreProps) {
   const {
     aiVisaData,
@@ -89,19 +96,142 @@ export function VisaReadinessScore({
     auditRefusalMitigation, setAuditRefusalMitigation,
   } = readiness;
 
-                        const normalizedDest = normalizeCountryName(selectedDestination);
-                        const normalizedPass = normalizeCountryName(selectedPassport);
-                        const currentDestObj = dashboardDestinationOptions.find(d => 
-                            normalizeCountryName(d.value) === normalizedDest || d.value.toLowerCase() === normalizedDest.toLowerCase() || d.label.toLowerCase().includes(normalizedDest.toLowerCase())
-                        );
-                        const destFlag = currentDestObj?.flag || '🌍';
-                        const currentPassObj = dashboardPassportOptions.find(p => 
-                            normalizeCountryName(p.value) === normalizedPass || p.value.toLowerCase() === normalizedPass.toLowerCase() || p.label.toLowerCase().includes(normalizedPass.toLowerCase())
-                        );
-                        const passFlag = currentPassObj?.flag || '🇮🇳';
+  // If no application is selected, show active applications first
+  if (!selectedApplicationId && visasProcessingState && visasProcessingState.length > 0) {
+    return (
+      <div className="space-y-6 animate-fade-up text-left">
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-700/60 relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl space-y-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold border border-teal-500/30">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              Visa Readiness Engine
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+              Select an Active Application
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
+              Every country and visa category has different consular requirements, financial benchmarks, and checklists. Click any of your active applications below to review its personalized readiness audit.
+            </p>
+          </div>
+        </div>
 
-                        return (
-                            <div className="space-y-6 animate-fade-up">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {visasProcessingState.map((app: any) => {
+            const displayTitle = getAppDisplayTitle(app);
+            const appStatus = app.status || "In Review";
+            const isApproved = appStatus.toLowerCase().includes("approved");
+            const isRejected = appStatus.toLowerCase().includes("reject");
+
+            return (
+              <div
+                key={app.id}
+                onClick={() => setSelectedApplicationId?.(app.id)}
+                className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs hover:shadow-md hover:border-teal-500/60 transition-all cursor-pointer group flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl">{app.destinationFlag || "✈️"}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      isApproved 
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                        : isRejected 
+                        ? "bg-rose-50 text-rose-700 border-rose-200" 
+                        : "bg-amber-50 text-amber-700 border-amber-200"
+                    }`}>
+                      {appStatus}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="text-base font-black text-slate-900 group-hover:text-[#00a896] transition-colors">
+                      {displayTitle}
+                    </h3>
+                    <p className="text-xs font-semibold text-slate-400 mt-0.5">
+                      Tracking ID: {app.trackingId || "TT-PENDING"}
+                    </p>
+                  </div>
+
+                  <div className="text-[11px] font-medium text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span>Destination:</span>
+                      <strong className="text-slate-700">{app.destination || "Target Country"}</strong>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Category:</span>
+                      <strong className="text-slate-700 capitalize">{app.purpose || app.visaType || "Visa"}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedApplicationId?.(app.id);
+                  }}
+                  className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-[#00a896] text-white text-xs font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Check Visa Readiness</span>
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  const normalizedDest = normalizeCountryName(selectedDestination);
+  const normalizedPass = normalizeCountryName(selectedPassport);
+  const currentDestObj = dashboardDestinationOptions.find(d => 
+      normalizeCountryName(d.value) === normalizedDest || d.value.toLowerCase() === normalizedDest.toLowerCase() || d.label.toLowerCase().includes(normalizedDest.toLowerCase())
+  );
+  const destFlag = currentDestObj?.flag || '🌍';
+  const currentPassObj = dashboardPassportOptions.find(p => 
+      normalizeCountryName(p.value) === normalizedPass || p.value.toLowerCase() === normalizedPass.toLowerCase() || p.label.toLowerCase().includes(normalizedPass.toLowerCase())
+  );
+  const passFlag = currentPassObj?.flag || '🇮🇳';
+
+  return (
+      <div className="space-y-6 animate-fade-up">
+          {/* Active Application Switcher Bar */}
+          {visasProcessingState && visasProcessingState.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-3.5 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-left">
+              <div className="flex items-center gap-2 overflow-x-auto min-w-0">
+                <span className="text-[11px] font-extrabold uppercase text-slate-400 shrink-0">
+                  Application:
+                </span>
+                {visasProcessingState.map((app: any) => {
+                  const isSelected = selectedApplicationId === app.id;
+                  const displayTitle = getAppDisplayTitle(app);
+                  return (
+                    <button
+                      key={app.id}
+                      type="button"
+                      onClick={() => setSelectedApplicationId?.(app.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ${
+                        isSelected
+                          ? "bg-[#00a896] text-white shadow-xs border border-[#00a896]"
+                          : "bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-950 border border-slate-200"
+                      }`}
+                    >
+                      <span>{app.destinationFlag || "✈️"}</span>
+                      <span>{displayTitle}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedApplicationId?.(null)}
+                className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors shrink-0 cursor-pointer underline underline-offset-4"
+              >
+                View All Applications
+              </button>
+            </div>
+          )}
                                 {/* Header Section */}
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div>

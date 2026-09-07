@@ -83,6 +83,9 @@ export const UserDashboard: React.FC = () => {
                             toggleReadinessDoc={state.readiness.toggleReadinessDoc}
                             setActiveTab={state.setActiveTab}
                             handleVaultDocScan={state.documents.handleVaultDocScan}
+                            visasProcessingState={state.applications.visasProcessingState}
+                            selectedApplicationId={state.applications.selectedApplicationId}
+                            setSelectedApplicationId={state.applications.setSelectedApplicationId}
                         />
                     )}
 
