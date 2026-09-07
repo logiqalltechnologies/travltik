@@ -19,7 +19,7 @@ export const onRequest = async (context: any, next: any): Promise<Response> => {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   // Permissive COOP behavior so Google OAuth / Firebase Auth popups can communicate with window.opener
-  response.headers.delete('Cross-Origin-Opener-Policy');
+  response.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
   response.headers.set(
     'Content-Security-Policy',
     "default-src 'self'; " +

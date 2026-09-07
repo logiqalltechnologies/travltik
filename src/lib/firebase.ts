@@ -5,6 +5,10 @@ let firebaseApp: any = null;
 let auth: any = null;
 let googleProvider: any = null;
 
+let signInWithPopupFn: any = null;
+let signInWithRedirectFn: any = null;
+let getRedirectResultFn: any = null;
+
 let preloadPromise: Promise<void> | null = null;
 
 export async function preloadFirebase() {
@@ -12,7 +16,8 @@ export async function preloadFirebase() {
   preloadPromise = (async () => {
     try {
       const { initializeApp, getApps, getApp } = await import('firebase/app');
-      const { getAuth, GoogleAuthProvider } = await import('firebase/auth');
+      const authModule = await import('firebase/auth');
+      const { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } = authModule;
       
       const firebaseConfig = {
         apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY || import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -29,6 +34,10 @@ export async function preloadFirebase() {
       googleProvider.addScope('email');
       googleProvider.addScope('profile');
       googleProvider.setCustomParameters({ prompt: 'select_account' });
+
+      signInWithPopupFn = signInWithPopup;
+      signInWithRedirectFn = signInWithRedirect;
+      getRedirectResultFn = getRedirectResult;
     } catch (e) {
       console.warn('[Firebase] Preload failed:', e);
     }
@@ -43,10 +52,9 @@ export async function getFirebaseAuth() {
 
 export async function loginWithGooglePopup() {
   await preloadFirebase();
-  const { signInWithPopup } = await import('firebase/auth');
   if (!auth || !googleProvider) throw new Error('Firebase not initialized');
-  const result = await signInWithPopup(auth, googleProvider);
-  return result;
+  const fn = signInWithPopupFn || (await import('firebase/auth')).signInWithPopup;
+  return await fn(auth, googleProvider);
 }
 
 let redirectInProgress = false;
@@ -56,13 +64,13 @@ export async function loginWithGoogleRedirect(returnPath: string = '/traveller/d
   redirectInProgress = true;
   try {
     await preloadFirebase();
-    const { signInWithRedirect } = await import('firebase/auth');
     if (!auth || !googleProvider) throw new Error('Firebase not initialized');
     if (typeof sessionStorage !== 'undefined') {
       sessionStorage.setItem('google_auth_return', returnPath);
       sessionStorage.setItem('google_auth_role', returnPath.includes('service-provider') ? 'expert' : 'seeker');
     }
-    await signInWithRedirect(auth, googleProvider);
+    const fn = signInWithRedirectFn || (await import('firebase/auth')).signInWithRedirect;
+    await fn(auth, googleProvider);
   } catch (e) {
     console.warn('[Firebase] Redirect error:', e);
     redirectInProgress = false;
@@ -72,9 +80,9 @@ export async function loginWithGoogleRedirect(returnPath: string = '/traveller/d
 export async function getGoogleRedirectResult() {
   try {
     await preloadFirebase();
-    const { getRedirectResult } = await import('firebase/auth');
     if (!auth) return null;
-    const result = await getRedirectResult(auth);
+    const fn = getRedirectResultFn || (await import('firebase/auth')).getRedirectResult;
+    const result = await fn(auth);
     return result;
   } catch (e) {
     console.warn('[Firebase] Redirect result error:', e);
@@ -91,12 +99,34 @@ export function focusAuthPopup() {
 }
 
 export async function loginWithGooglePopupWithFallback(returnPath: string = '/traveller/dashboard'): Promise<any> {
-  await loginWithGoogleRedirect(returnPath);
-  return { status: 'redirecting' };
+  await preloadFirebase();
+  try {
+    return await loginWithGooglePopup();
+  } catch (error: any) {
+    const code = error?.code || '';
+    const msg = error?.message || '';
+
+    // If user cancelled / closed popup, don't fallback to redirect — simply cancel cleanly
+    if (
+      code === 'auth/popup-closed-by-user' ||
+      code === 'auth/cancelled-popup-request' ||
+      msg.includes('popup-closed') ||
+      msg.includes('closed-by-user')
+    ) {
+      throw error;
+    }
+
+    // Only if popup was strictly blocked by browser, fallback to redirect
+    if (code === 'auth/popup-blocked' || msg.includes('popup-blocked')) {
+      console.warn('[Firebase] Popup blocked by browser, falling back to redirect...');
+      await loginWithGoogleRedirect(returnPath);
+      return { status: 'redirecting' };
+    }
+
+    throw error;
+  }
 }
 
 if (typeof window !== "undefined") {
-  setTimeout(() => {
-    preloadFirebase();
-  }, 0);
+  preloadFirebase();
 }
