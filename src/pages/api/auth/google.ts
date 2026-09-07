@@ -152,8 +152,10 @@ export const POST: APIRoute = async ({ request }) => {
         userRole = 'seeker';
         console.log(`[API /api/auth/google] Created new Seeker account for: ${email}`);
       }
+    }
 
-      // Send Welcome Email for newly registered Google user
+    // Send Welcome Email for new Google user or whenever coming through signup flow
+    if (isNewUser || mode === 'signup') {
       try {
         const { sendWelcomeEmail } = await import('../../../lib/email');
         const firstName = userRole === 'expert'
