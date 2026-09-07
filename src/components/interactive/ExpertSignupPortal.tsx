@@ -294,9 +294,15 @@ function ExpertSignupPortalContent() {
     setErrorMsg("");
     setGoogleLoading(true);
     try {
-      await signInWithGoogle();
-      setStep(2);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const res = await signInWithGoogle('expert', 'signup');
+      if (res && res.status === 'redirecting') {
+        return;
+      }
+      if (res && res.redirect) {
+        window.location.href = res.redirect;
+        return;
+      }
+      window.location.href = "/service-provider/dashboard";
     } catch (err: any) {
       console.error("[ExpertGoogleAuth]", err);
       setErrorMsg(err.message || "Failed to authenticate with Google.");

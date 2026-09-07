@@ -66,33 +66,11 @@ export function focusAuthPopup(): boolean {
     return false;
 }
 
-// Popup-based sign in (instant response, preserves user gesture & eliminates COOP polling lockups)
+// Popup-based sign in with direct native Firebase call
 export async function loginWithGooglePopup() {
     const { auth, googleProvider } = await initFirebase();
     const signInFn = _signInWithPopupFn || (await import("firebase/auth")).signInWithPopup;
-
-    let origOpen: any = null;
-
-    if (typeof window !== "undefined") {
-        origOpen = window.open;
-        window.open = function (...args: any[]) {
-            const popup = origOpen.apply(window, args as any);
-            if (popup) {
-                _currentAuthPopup = popup;
-            }
-            return popup;
-        };
-    }
-
-    try {
-        const result = await signInFn(auth, googleProvider);
-        return result;
-    } finally {
-        if (origOpen && typeof window !== "undefined") {
-            window.open = origOpen;
-        }
-        _currentAuthPopup = null;
-    }
+    return await signInFn(auth, googleProvider);
 }
 
 // Redirect-based sign in fallback

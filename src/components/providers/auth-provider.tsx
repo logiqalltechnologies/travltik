@@ -77,11 +77,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                                 const resolvedUser = { ...localUser, ...data.user };
                                 setUser(resolvedUser);
                                 localStorage.setItem("travltik_user", JSON.stringify(resolvedUser));
-                                localStorage.setItem("seeker_email", googleEmail);
-                                localStorage.setItem("seeker_firstName", gFirstName);
-                                localStorage.setItem("seeker_lastName", gLastName);
-                                window.location.href = resolvedUser.type === "expert" ? "/service-provider/dashboard" : returnPath;
-                                return;
+                                if (resolvedUser.type === "expert") {
+                                    localStorage.setItem("expert_isLoggedIn", "true");
+                                    localStorage.setItem("expert_email", googleEmail);
+                                    localStorage.setItem("expert_businessName", resolvedUser.displayName || gFirstName);
+                                    localStorage.setItem("expert_fullName", resolvedUser.displayName || gFirstName);
+                                    window.location.href = "/service-provider/dashboard";
+                                    return;
+                                } else {
+                                    localStorage.setItem("seeker_email", googleEmail);
+                                    localStorage.setItem("seeker_firstName", gFirstName);
+                                    localStorage.setItem("seeker_lastName", gLastName);
+                                    window.location.href = returnPath;
+                                    return;
+                                }
                             }
                         }
                     } catch (_) {
@@ -91,10 +100,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     // FALLBACK: Use Firebase user data directly — don't block login on backend
                     setUser(localUser);
                     localStorage.setItem("travltik_user", JSON.stringify(localUser));
-                    localStorage.setItem("seeker_email", googleEmail);
-                    localStorage.setItem("seeker_firstName", gFirstName);
-                    localStorage.setItem("seeker_lastName", gLastName);
-                    window.location.href = role === "expert" ? "/service-provider/dashboard" : returnPath;
+                    if (role === "expert") {
+                        localStorage.setItem("expert_isLoggedIn", "true");
+                        localStorage.setItem("expert_email", googleEmail);
+                        localStorage.setItem("expert_businessName", googleName || gFirstName);
+                        window.location.href = "/service-provider/dashboard";
+                    } else {
+                        localStorage.setItem("seeker_email", googleEmail);
+                        localStorage.setItem("seeker_firstName", gFirstName);
+                        localStorage.setItem("seeker_lastName", gLastName);
+                        window.location.href = returnPath;
+                    }
                     return;
                 }
             } catch (err) {
@@ -231,12 +247,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         let googlePhoto = '';
         let googleUid = '';
 
+        if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("google_auth_role", role);
+            sessionStorage.setItem("google_auth_mode", mode);
+            sessionStorage.setItem("google_auth_return", role === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard');
+        }
+
         setIsGooglePopupActive(true);
 
         try {
-            const { loginWithGooglePopup } = await import("../../lib/firebase");
-            const result = await loginWithGooglePopup();
-            fbUser = result.user;
+            const { loginWithGooglePopup, loginWithGoogleRedirect } = await import("../../lib/firebase");
+
+            // Race popup with 3.5s timeout. If Brave Shields or COOP blocks the popup or if popup hangs, fallback seamlessly to redirect!
+            const popupPromise = loginWithGooglePopup();
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('POPUP_TIMEOUT_FALLBACK')), 3500)
+            );
+
+            let result: any;
+            try {
+                result = await Promise.race([popupPromise, timeoutPromise]);
+            } catch (raceErr: any) {
+                if (
+                    raceErr?.message === 'POPUP_TIMEOUT_FALLBACK' ||
+                    raceErr?.code === 'auth/popup-blocked' ||
+                    raceErr?.code === 'auth/cancelled-popup-request' ||
+                    raceErr?.message?.includes('popup') ||
+                    raceErr?.message?.includes('Cross-Origin')
+                ) {
+                    console.info("[GoogleAuth] Browser blocked or timed out popup, switching seamlessly to Google redirect...");
+                    await loginWithGoogleRedirect(role === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard');
+                    return { status: 'redirecting' };
+                }
+                throw raceErr;
+            }
+
+            fbUser = result?.user;
             if (fbUser) {
                 idToken = await fbUser.getIdToken();
                 googleEmail = (fbUser.email || '').toLowerCase().trim();
@@ -250,8 +296,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (code === 'auth/popup-closed-by-user' || msg.includes('popup-closed') || msg.includes('closed-by-user')) {
                 throw new Error('Google sign-in was cancelled.');
             }
-            if (code === 'auth/popup-blocked') {
-                throw new Error('Popup blocked. Please allow popups and try again.');
+            if (code === 'auth/popup-blocked' || msg.includes('popup')) {
+                const { loginWithGoogleRedirect } = await import("../../lib/firebase");
+                await loginWithGoogleRedirect(role === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard');
+                return { status: 'redirecting' };
             }
             throw new Error(msg || 'Google sign-in failed. Please try again.');
         } finally {
