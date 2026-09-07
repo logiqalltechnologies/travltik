@@ -7613,24 +7613,20 @@ export function VisaCountryResultPortal({
                             isCompleted ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200/90'
                           }`}
                         >
-                          {/* Card Header: Doc Info & Ready Button */}
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex items-start gap-3 min-w-0 flex-1">
-                              <div className={`w-9 h-9 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
-                                {doc.icon}
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">
-                                  {doc.name}
-                                </strong>
-                                <span className={`inline-block mt-0.5 text-[11px] font-medium uppercase px-2 py-0.5 rounded-md ${
-                                  doc.mandatory ? 'text-rose-700 bg-rose-50 border border-rose-200/70' : 'text-slate-600 bg-slate-100'
-                                }`}>
-                                  {doc.mandatory ? 'Mandatory' : 'Recommended'}
-                                </span>
-                              </div>
+                          {/* Card Header: Doc Info */}
+                          <div className="flex items-start gap-3">
+                            <div className={`w-9 h-9 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
+                              {doc.icon}
                             </div>
-
+                            <div className="min-w-0 flex-1">
+                              <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">
+                                {doc.name}
+                              </strong>
+                              <span className={`inline-block mt-0.5 text-[11px] font-medium uppercase px-2 py-0.5 rounded-md ${
+                                doc.mandatory ? 'text-rose-700 bg-rose-50 border border-rose-200/70' : 'text-slate-600 bg-slate-100'
+                              }`}>
+                                {doc.mandatory ? 'Mandatory' : 'Recommended'}
+                              </span>
                             </div>
                           </div>
 
