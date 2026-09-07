@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { 
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
@@ -16,6 +16,37 @@ export function ConsultantDashboard() {
     const [verificationStatus, setVerificationStatus] = useState("pending");
     const [timePeriod, setTimePeriod] = useState("This Month");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
+
+    // Profile Dropdown States (Matching Traveller Dashboard)
+    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const profileMenuRef = useRef<HTMLDivElement>(null);
+    const [providerEmail, setProviderEmail] = useState("");
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+                setIsProfileMenuOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+
+        try {
+            const savedEmail = localStorage.getItem("expert_email") || localStorage.getItem("user_email");
+            if (savedEmail) setProviderEmail(savedEmail);
+            const savedName = localStorage.getItem("expert_name") || localStorage.getItem("user_name");
+            if (savedName) setProfile(prev => ({ ...prev, name: savedName }));
+        } catch(e) {}
+
+        fetch('/api/auth/me')
+            .then(r => r.json())
+            .then(authRes => {
+                if (authRes?.user?.email) setProviderEmail(authRes.user.email);
+                if (authRes?.user?.name) setProfile(prev => ({ ...prev, name: authRes.user.name }));
+            })
+            .catch(() => {});
+
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     // Dynamic Profile Settings States (Reads real user data or clean fallback)
     const [profile, setProfile] = useState({
@@ -113,6 +144,9 @@ export function ConsultantDashboard() {
             }
 
             // Load real Expert Profile details from localStorage
+            const savedEmail = localStorage.getItem("expert_email") || parsedUser?.email || "";
+            if (savedEmail) setProviderEmail(savedEmail);
+
             const firstName = localStorage.getItem("expert_firstName") || "";
             const lastName = localStorage.getItem("expert_lastName") || "";
             const storedName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
@@ -572,11 +606,9 @@ export function ConsultantDashboard() {
                     <button onClick={() => setActiveTab("help")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
                         <HelpCircle className="w-4.5 h-4.5" />
                     </button>
-
                     <button onClick={() => setActiveTab("messages")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
                         <Bell className="w-4.5 h-4.5" />
                     </button>
-
                     <button
                         type="button"
                         onClick={() => setIsVerificationModalOpen(true)}
@@ -586,36 +618,105 @@ export function ConsultantDashboard() {
                         <span>Verify Account</span>
                     </button>
 
-                    <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer" onClick={() => setActiveTab("profile")}>
-                        {profile.image && !profile.image.includes("unsplash.com") ? (
-                            <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
-                        ) : (
-                            <div className="w-9 h-9 rounded-full bg-[#00A86B] text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
-                                {(profile.name || "E").charAt(0).toUpperCase()}
+                    {/* Profile Avatar & Dropdown */}
+                    <div className="relative" ref={profileMenuRef}>
+                        <div 
+                            className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer select-none" 
+                            onClick={() => setIsProfileMenuOpen(prev => !prev)}
+                            aria-haspopup="true"
+                            aria-expanded={isProfileMenuOpen}
+                        >
+                            {profile.image && !profile.image.includes("unsplash.com") ? (
+                                <img src={profile.image} alt={profile.name} className="w-9 h-9 rounded-full object-cover border border-slate-200 shrink-0" />
+                            ) : (
+                                <div className="w-9 h-9 rounded-full bg-[#00A86B] text-white text-sm font-black flex items-center justify-center border border-teal-200 shrink-0 shadow-2xs">
+                                    {(profile.name || "E").charAt(0).toUpperCase()}
+                                </div>
+                            )}
+                            <div className="hidden md:block text-left">
+                                <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{profile.name}</h4>
+                                <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Service Provider</span>
+                            </div>
+                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 hidden sm:block transition-transform duration-200 ${isProfileMenuOpen ? 'rotate-180 text-slate-700' : ''}`} />
+                        </div>
+
+                        {/* Profile Dropdown Menu */}
+                        {isProfileMenuOpen && (
+                            <div className="absolute right-0 mt-2.5 w-64 bg-white rounded-2xl border border-slate-200/90 shadow-xl py-2 z-50 animate-fade-up">
+                                <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-3">
+                                    {profile.image && !profile.image.includes("unsplash.com") ? (
+                                        <img src={profile.image} alt={profile.name} className="w-10 h-10 rounded-full object-cover border border-[#00a896]/30 shrink-0" />
+                                    ) : (
+                                        <div className="w-10 h-10 rounded-full bg-[#00A86B] text-white text-sm font-black flex items-center justify-center border border-[#00a896]/30 shrink-0 shadow-2xs">
+                                            {(profile.name || "E").charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
+                                    <div className="min-w-0 flex-1">
+                                        <h4 className="text-xs font-black text-slate-900 truncate">{profile.name}</h4>
+                                        <p className="text-[11px] text-slate-400 truncate">{providerEmail || "provider@travltik.com"}</p>
+                                        <span className="inline-block bg-teal-50 text-[#00a896] text-[9px] font-bold px-1.5 py-0.2 rounded border border-teal-200 mt-1">Active Service Provider</span>
+                                    </div>
+                                </div>
+                                <div className="p-1 space-y-0.5 text-xs font-semibold text-slate-700">
+                                    <button
+                                        type="button"
+                                        onClick={() => { setActiveTab("profile"); setIsProfileMenuOpen(false); }}
+                                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
+                                    >
+                                        <User className="w-4 h-4 text-slate-400" />
+                                        <span>My Profile</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setActiveTab("services"); setIsProfileMenuOpen(false); }}
+                                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
+                                    >
+                                        <Briefcase className="w-4 h-4 text-slate-400" />
+                                        <span>My Services &amp; Packages</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setActiveTab("leads"); setIsProfileMenuOpen(false); }}
+                                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
+                                    >
+                                        <Users className="w-4 h-4 text-slate-400" />
+                                        <span>Client Leads &amp; Cases</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setActiveTab("settings"); setIsProfileMenuOpen(false); }}
+                                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
+                                    >
+                                        <Settings className="w-4 h-4 text-slate-400" />
+                                        <span>Settings &amp; Preferences</span>
+                                    </button>
+                                </div>
+                                <div className="border-t border-slate-100 my-1"></div>
+                                <div className="p-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => { setIsProfileMenuOpen(false); handleLogout(); }}
+                                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 transition-colors text-left font-bold cursor-pointer"
+                                    >
+                                        <LogOut className="w-4 h-4 text-rose-500" />
+                                        <span>Log Out / Sign Out</span>
+                                    </button>
+                                </div>
                             </div>
                         )}
-                        <div className="hidden md:block text-left">
-                            <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{profile.name}</h4>
-                            <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200/80 mt-0.5">Service Provider</span>
-                        </div>
-                        <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
                     </div>
                 </div>
             </header>
 
             <div className="flex flex-1 min-h-[calc(100vh-61px)]">
-
-                {/* Left Sidebar Navigation (Nexus / Atlys Clean SaaS Style) */}
+                {/* Desktop Sticky Sidebar (Nexus Style) */}
                 <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
                     <div className="p-3.5 space-y-5 overflow-y-auto max-h-[calc(100vh-120px)] no-scrollbar">
-                        {/* Clean Sidebar Header - No duplicate logo, perfectly aligned */}
                         <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
                             {!isSidebarCollapsed ? (
-                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                                    Menu
-                                </span>
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Menu</span>
                             ) : <div className="w-3" />}
-                            <button
+                            <button 
                                 type="button"
                                 onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                                 title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}

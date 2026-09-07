@@ -55,6 +55,20 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
     const [countryCode, setCountryCode] = useState("+91");
     const [phone, setPhone] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
+    const [dobDay, setDobDay] = useState("");
+    const [dobMonth, setDobMonth] = useState("");
+    const [dobYear, setDobYear] = useState("");
+
+    const handleDobChange = (d: string, m: string, y: string) => {
+        setDobDay(d);
+        setDobMonth(m);
+        setDobYear(y);
+        if (d && m && y) {
+            setDateOfBirth(`${y}-${m}-${d}`);
+        } else {
+            setDateOfBirth("");
+        }
+    };
     const [countryOfCitizenship, setCountryOfCitizenship] = useState("India");
     const [residentOf, setResidentOf] = useState("India");
     const [currentVisaStatus, setCurrentVisaStatus] = useState("Citizen");
@@ -771,13 +785,54 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                         <label className="block text-[11px] font-bold text-slate-700 mb-1">
                                             Date of Birth *
                                         </label>
-                                        <input
-                                            type="date"
-                                            required
-                                            value={dateOfBirth}
-                                            onChange={(e) => setDateOfBirth(e.target.value)}
-                                            className="w-full h-11 sm:h-10 px-3 rounded-xl border border-slate-300 text-sm sm:text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900"
-                                        />
+                                        <div className="grid grid-cols-3 gap-1">
+                                            <select
+                                                required
+                                                value={dobDay}
+                                                onChange={(e) => handleDobChange(e.target.value, dobMonth, dobYear)}
+                                                className="w-full h-11 sm:h-10 px-1 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900 cursor-pointer"
+                                            >
+                                                <option value="">Day</option>
+                                                {Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')).map(d => (
+                                                    <option key={d} value={d}>{d}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                required
+                                                value={dobMonth}
+                                                onChange={(e) => handleDobChange(dobDay, e.target.value, dobYear)}
+                                                className="w-full h-11 sm:h-10 px-1 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900 cursor-pointer"
+                                            >
+                                                <option value="">Month</option>
+                                                {[
+                                                    { val: '01', label: 'Jan' },
+                                                    { val: '02', label: 'Feb' },
+                                                    { val: '03', label: 'Mar' },
+                                                    { val: '04', label: 'Apr' },
+                                                    { val: '05', label: 'May' },
+                                                    { val: '06', label: 'Jun' },
+                                                    { val: '07', label: 'Jul' },
+                                                    { val: '08', label: 'Aug' },
+                                                    { val: '09', label: 'Sep' },
+                                                    { val: '10', label: 'Oct' },
+                                                    { val: '11', label: 'Nov' },
+                                                    { val: '12', label: 'Dec' },
+                                                ].map(m => (
+                                                    <option key={m.val} value={m.val}>{m.label}</option>
+                                                ))}
+                                            </select>
+                                            <select
+                                                required
+                                                value={dobYear}
+                                                onChange={(e) => handleDobChange(dobDay, dobMonth, e.target.value)}
+                                                className="w-full h-11 sm:h-10 px-1 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-[#2563eb] bg-white text-slate-900 cursor-pointer"
+                                            >
+                                                <option value="">Year</option>
+                                                {Array.from({ length: 76 }, (_, i) => String(2015 - i)).map(y => (
+                                                    <option key={y} value={y}>{y}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     </div>
                                     <div>
                                         <label className="block text-[11px] font-bold text-slate-700 mb-1">

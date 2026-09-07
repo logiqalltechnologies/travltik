@@ -227,6 +227,8 @@ function ExpertSignupPortalContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [showAlreadyRegisteredModal, setShowAlreadyRegisteredModal] = useState(false);
+  const [existingRegisteredEmail, setExistingRegisteredEmail] = useState("");
 
   // ─── Email OTP Verification State (Submit -> Email Code -> Dashboard) ───────
   const [isVerifyingEmail, setIsVerifyingEmail] = useState(false);
@@ -356,10 +358,11 @@ function ExpertSignupPortalContent() {
         body: JSON.stringify({ email: targetEmail })
       });
       const data = await res.json();
-      if (data.exists) {
+      if (data && data.exists) {
+        setExistingRegisteredEmail(targetEmail);
+        setShowAlreadyRegisteredModal(true);
         setErrorMsg("This email is already registered. Please log in instead.");
         setFieldErrors({ email: "This email is already registered." });
-        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
     } catch (e) {
@@ -461,7 +464,12 @@ function ExpertSignupPortalContent() {
       });
       const data = await res.json();
       if (!res.ok || data.status === "error") {
-        const msg = data.message || "This email is already registered. Please log in instead.";
+        if (data.code === "EMAIL_ALREADY_EXISTS" || (res.status === 409 && data.message && data.message.toLowerCase().includes("already registered"))) {
+          setExistingRegisteredEmail(targetEmail);
+          setShowAlreadyRegisteredModal(true);
+          return;
+        }
+        const msg = data.message || "Unable to send verification code. Please try again.";
         setErrorMsg(msg);
         return;
       }
@@ -611,6 +619,12 @@ function ExpertSignupPortalContent() {
       const data = await resp.json();
 
       if (!resp.ok || data.status === "error") {
+        if (resp.status === 409 || data.code === "EMAIL_ALREADY_EXISTS" || (data.message && data.message.toLowerCase().includes("already registered"))) {
+          setExistingRegisteredEmail(targetEmail);
+          setShowAlreadyRegisteredModal(true);
+          setIsVerifyingOtp(false);
+          return;
+        }
         throw new Error(data.message || "Registration failed. Please try again.");
       }
 
@@ -901,6 +915,7 @@ function ExpertSignupPortalContent() {
                   Email Address *
                 </label>
                 <input
+                  id="expert-signup-email"
                   type="email"
                   required
                   value={email}
@@ -1829,7 +1844,7 @@ function ExpertSignupPortalContent() {
                 <button
                   type="button"
                   onClick={handleInitiateEmailVerification}
-                  disabled={isSendingOtp || isSubmitting || Boolean(errorMsg && errorMsg.toLowerCase().includes('already registered'))}
+                  disabled={isSendingOtp || isSubmitting}
                   className="w-full py-4 px-6 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {isSendingOtp ? (
@@ -1837,8 +1852,6 @@ function ExpertSignupPortalContent() {
                       <Loader2 className="w-5 h-5 animate-spin" />
                       <span>Sending Verification Code...</span>
                     </>
-                  ) : Boolean(errorMsg && errorMsg.toLowerCase().includes('already registered')) ? (
-                    <span>Email Already Registered — Please Log In Above</span>
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
@@ -1912,6 +1925,67 @@ function ExpertSignupPortalContent() {
         )}
 
       </div>
+
+      {/* ─── Dedicated "Already Registered" Popup Modal ────────────────────── */}
+      {showAlreadyRegisteredModal && (
+        <div className="fixed inset-0 z-[99999] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-7 border border-slate-100 text-center relative animate-scale-up">
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setShowAlreadyRegisteredModal(false)}
+              className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              aria-label="Close dialog"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Icon Header */}
+            <div className="w-16 h-16 mx-auto rounded-3xl bg-purple-50 border border-purple-200/80 flex items-center justify-center text-[#481268] shadow-inner mb-4">
+              <Mail className="w-8 h-8" />
+            </div>
+
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              Account Already Registered
+            </h3>
+
+            <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+              The email <strong className="text-slate-900 font-bold break-all">{existingRegisteredEmail || email}</strong> is already registered on TravlTik.
+            </p>
+
+            <div className="mt-4 p-3.5 bg-purple-50/60 border border-purple-100 rounded-2xl text-xs text-purple-900 font-medium text-left flex items-start gap-2.5">
+              <span className="text-base leading-none">💡</span>
+              <span>Each email can only be registered once. If this is your account, please log in below. Otherwise, use another email to sign up.</span>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-6 space-y-2.5">
+              <a
+                href={`/login?tab=expert&email=${encodeURIComponent(existingRegisteredEmail || email)}`}
+                className="w-full py-3.5 px-5 rounded-2xl bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Log In to Your Account</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowAlreadyRegisteredModal(false);
+                  if (step !== 1) setStep(1);
+                  setTimeout(() => {
+                    const emailInput = document.getElementById("expert-signup-email");
+                    if (emailInput) (emailInput as HTMLInputElement).focus();
+                  }, 100);
+                }}
+                className="w-full py-3 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-colors cursor-pointer"
+              >
+                Use a Different Email
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
