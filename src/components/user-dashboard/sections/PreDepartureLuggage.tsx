@@ -219,9 +219,19 @@ export interface PreDepartureLuggageProps {
   handleAddCustomLuggageItem?: (e?: React.FormEvent) => void;
 }
 
+// Helper to get initials from full name
+const getInitials = (name?: string) => {
+  if (!name || !name.trim()) return "PT";
+  const parts = name.trim().split(" ").filter(Boolean);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+};
+
 export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
   selectedDestination = "Goa",
-  fullName = "Lellwyn Prashanth Edwin",
+  selectedPurpose,
+  selectedPassport = "",
+  fullName = "",
   email = ""
 }) => {
   // ── Trip Type Toggle State (Internal Trip vs International Trip) ──
@@ -242,25 +252,18 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
     destinationImage: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80"
   });
 
-  // ── Co-Travellers State ──
+  const primaryName = fullName || "Primary Traveller";
+
+  // ── Co-Travellers State (Real data only, no dummy companions) ──
   const [coTravellers, setCoTravellers] = useState<CoTraveller[]>([
     {
       id: "trav_1",
-      initials: "LP",
-      name: fullName || "Lellwyn Prashanth Edwin",
+      initials: getInitials(primaryName),
+      name: primaryName,
       role: "Primary Traveller",
-      passport: "Z1234567",
-      dob: "05 Apr 1981",
+      passport: selectedPassport || "",
+      dob: "",
       avatarBg: "from-teal-600 to-emerald-700"
-    },
-    {
-      id: "trav_2",
-      initials: "SE",
-      name: "Sarah Edwin",
-      role: "Co-Traveller",
-      passport: "A9876543",
-      dob: "12 Mar 1985",
-      avatarBg: "from-teal-600 to-cyan-700"
     }
   ]);
 
@@ -304,7 +307,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
     dob: ""
   });
 
-  // Load saved state on mount
+  // Load saved state on mount (with automatic dummy data purging)
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
@@ -312,7 +315,39 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         if (savedChecked) setCheckedItems(JSON.parse(savedChecked));
 
         const savedTravellers = localStorage.getItem("pre_departure_co_travellers");
-        if (savedTravellers) setCoTravellers(JSON.parse(savedTravellers));
+        if (savedTravellers) {
+          const parsed = JSON.parse(savedTravellers);
+          // Purge dummy companions (Sarah Edwin, dummy IDs) and update primary traveller
+          const cleaned = parsed
+            .filter((t: any) => t.name !== "Sarah Edwin" && t.passport !== "A9876543")
+            .map((t: any) => {
+              if (t.role === "Primary Traveller" || t.id === "trav_1") {
+                const currentName = fullName || t.name || "Primary Traveller";
+                return {
+                  ...t,
+                  name: currentName,
+                  initials: getInitials(currentName),
+                  passport: t.passport === "Z1234567" ? (selectedPassport || "") : (t.passport || selectedPassport || ""),
+                  dob: t.dob === "05 Apr 1981" ? "" : (t.dob || "")
+                };
+              }
+              return t;
+            });
+
+          const finalList = cleaned.length > 0 ? cleaned : [
+            {
+              id: "trav_1",
+              initials: getInitials(fullName || "Primary Traveller"),
+              name: fullName || "Primary Traveller",
+              role: "Primary Traveller",
+              passport: selectedPassport || "",
+              dob: "",
+              avatarBg: "from-teal-600 to-emerald-700"
+            }
+          ];
+          setCoTravellers(finalList);
+          localStorage.setItem("pre_departure_co_travellers", JSON.stringify(finalList));
+        }
 
         const savedTrip = localStorage.getItem("pre_departure_trip_details");
         if (savedTrip) setTripDetails(JSON.parse(savedTrip));
@@ -323,7 +358,20 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         console.error("Failed to load pre-departure storage:", e);
       }
     }
-  }, []);
+  }, [fullName, selectedPassport]);
+
+  // Keep primary traveller synced with incoming fullName
+  useEffect(() => {
+    if (fullName) {
+      setCoTravellers((prev) =>
+        prev.map((t) =>
+          t.role === "Primary Traveller" || t.id === "trav_1"
+            ? { ...t, name: fullName, initials: getInitials(fullName) }
+            : t
+        )
+      );
+    }
+  }, [fullName]);
 
   // Sync when tripType changes
   useEffect(() => {
@@ -547,7 +595,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* ══════════ LEFT COLUMN (8 cols) ══════════ */}
         <div className="lg:col-span-8 space-y-5">
-          {/* 1. Trip Details Card */}
+          {/* 1. Trip Details Card (Matching Reference Design) */}
           <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-black text-slate-900 tracking-tight">Trip Details</h3>
@@ -563,108 +611,114 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   });
                   setShowEditTripModal(true);
                 }}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl border border-[#008767] text-[#008767] bg-white text-xs font-bold hover:bg-emerald-50/50 shadow-2xs transition-colors cursor-pointer"
               >
-                <Edit2 className="w-3 h-3 text-slate-500" />
+                <Edit2 className="w-3.5 h-3.5 text-[#008767]" />
                 <span>Edit</span>
               </button>
             </div>
 
-            {/* Horizontal metrics grid - centered vertical stacks matching original UI */}
+            {/* Horizontal metrics grid - exact left-aligned columns matching reference */}
             <div className="overflow-x-auto pb-1.5 -mb-1 no-scrollbar">
-              <div className="flex items-start justify-between gap-3 min-w-[780px] xl:min-w-0 pt-1">
+              <div className="flex items-stretch justify-between gap-3 min-w-[840px] pt-1">
                 {/* 1. From */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[80px]">
-                  <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1">
-                    <MapPin className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[90px] pr-2.5 border-r border-slate-100 flex flex-col justify-between text-left">
+                  <div>
+                    <div className="w-8 h-8 rounded-full bg-[#E6F4EA] text-[#008767] flex items-center justify-center mb-2">
+                      <MapPin className="w-4 h-4 fill-[#008767]/20" />
+                    </div>
+                    <div className="text-[11px] font-medium text-slate-400">From</div>
+                    <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.fromCity}</div>
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400">From</span>
-                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.fromCity}</span>
-                  <span className="text-[10px] text-slate-400 font-medium">{tripDetails.fromCountry}</span>
+                  <div className="text-[11px] text-[#0284C7] font-medium mt-1">{tripDetails.fromCountry}</div>
                 </div>
 
                 {/* 2. To */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[80px]">
-                  <div className="w-7 h-7 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mb-1">
-                    <MapPin className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[90px] pr-2.5 border-r border-slate-100 flex flex-col justify-between text-left">
+                  <div>
+                    <div className="w-8 h-8 rounded-full bg-[#FCE8E6] text-[#D93025] flex items-center justify-center mb-2">
+                      <MapPin className="w-4 h-4 fill-[#D93025]/20" />
+                    </div>
+                    <div className="text-[11px] font-medium text-slate-400">To</div>
+                    <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.toCity}</div>
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400">To</span>
-                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.toCity}</span>
-                  <span className="text-[10px] text-slate-400 font-medium">{tripDetails.toCountry}</span>
+                  <div className="text-[11px] text-[#0284C7] font-medium mt-1">{tripDetails.toCountry}</div>
                 </div>
 
                 {/* 3. Departure Date */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[85px]">
-                  <div className="w-7 h-7 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center mb-1">
-                    <Calendar className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
+                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
+                    <Calendar className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Departure Date</span>
-                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.departureDate}</span>
+                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Departure Date</div>
+                  <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.departureDate}</div>
                 </div>
 
                 {/* 4. Return Date */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[85px]">
-                  <div className="w-7 h-7 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center mb-1">
-                    <Calendar className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
+                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
+                    <Calendar className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Return Date</span>
-                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.returnDate}</span>
+                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Return Date</div>
+                  <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.returnDate}</div>
                 </div>
 
                 {/* 5. Total Duration */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[80px]">
-                  <div className="w-7 h-7 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center mb-1">
-                    <Clock className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[85px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
+                  <div className="w-8 h-8 rounded-full bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center mb-2">
+                    <Clock className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Total Duration</span>
-                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.duration}</span>
+                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Total Duration</div>
+                  <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.duration}</div>
                 </div>
 
                 {/* 6. Visa Approval Required */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[90px]">
-                  <div className="w-7 h-7 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mb-1">
-                    <Shield className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
+                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
+                    <Luggage className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400 leading-tight">Visa Approval<br />Required</span>
-                  <div className="flex items-center justify-center gap-1 text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">
-                    <span className={tripDetails.visaApprovalRequired === "No" ? "text-slate-800" : "text-indigo-600"}>
-                      {tripDetails.visaApprovalRequired}
-                    </span>
-                    <Info className="w-3 h-3 text-slate-400" />
+                  <div className="text-[11px] font-medium text-slate-400 leading-tight">
+                    Visa Approval<br />Required
+                  </div>
+                  <div className="flex items-center gap-1 text-xs font-bold text-[#008767] mt-1 whitespace-nowrap">
+                    <span>{tripDetails.visaApprovalRequired}</span>
+                    <Info className="w-3 h-3 text-[#008767]" />
                   </div>
                 </div>
 
                 {/* 7. Forex Card */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[85px]">
-                  <div className="w-7 h-7 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-1">
-                    <CreditCard className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[85px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
+                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
+                    <CreditCard className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Forex Card</span>
-                  <div className="flex items-center justify-center gap-1 text-xs font-bold text-teal-700 whitespace-nowrap mt-0.5">
+                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Forex Card</div>
+                  <div className="flex items-center gap-1 text-xs font-bold text-[#008767] mt-1 whitespace-nowrap">
                     <span>{tripDetails.forexCardRequired}</span>
-                    <Info className="w-3 h-3 text-slate-400" />
+                    <Info className="w-3 h-3 text-[#008767]" />
                   </div>
                 </div>
 
                 {/* 8. Travel Insurance */}
-                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[90px]">
-                  <div className="w-7 h-7 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mb-1">
-                    <ShieldCheck className="w-3.5 h-3.5" />
+                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
+                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
+                    <Shield className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Travel Insurance</span>
-                  <div className="flex items-center justify-center gap-1 text-xs font-bold text-indigo-700 whitespace-nowrap mt-0.5">
+                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">
+                    Travel Insurance
+                  </div>
+                  <div className="flex items-center gap-1 text-xs font-bold text-[#008767] mt-1 whitespace-nowrap">
                     <span>{tripDetails.travelInsuranceRequired}</span>
-                    <Info className="w-3 h-3 text-slate-400" />
+                    <Info className="w-3 h-3 text-[#008767]" />
                   </div>
                 </div>
 
-                {/* 9. Status Badge */}
-                <div className="flex-1 flex flex-col items-center justify-center shrink-0 min-w-[95px]">
-                  <div className="w-full bg-emerald-50 border border-emerald-300/80 rounded-2xl p-2 text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
-                    <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
+                {/* 9. Mint Box: All mandatory for Internal Trips */}
+                <div className="flex-initial shrink-0 min-w-[100px] flex items-center">
+                  <div className="w-full bg-[#E8F8F4] rounded-xl p-2.5 flex flex-col items-center justify-center text-center">
+                    <div className="w-5 h-5 rounded-full bg-[#008767] text-white flex items-center justify-center mb-1.5 shadow-2xs">
+                      <Check className="w-3 h-3 stroke-[3]" />
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-800 leading-snug">
+                    <span className="text-[10px] font-bold text-[#00705a] leading-tight text-center">
                       All mandatory<br />for {tripType === "internal" ? "Internal" : "International"}<br />Trips
                     </span>
                   </div>
@@ -673,9 +727,9 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             </div>
           </div>
 
-          {/* 2. Co-Travellers Section */}
+          {/* 2. Co-Travellers (Dynamic real user, no fake data) */}
           <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-start gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 mt-0.5">
                   <Users className="w-4 h-4" />
@@ -716,7 +770,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                       {trav.initials}
                     </div>
 
-                    <div className="min-w-0">
+                    <div className="min-w-0 text-left">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">{trav.name}</span>
                         <span
@@ -729,9 +783,17 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                           {trav.role}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-500 font-medium mt-0.5 truncate">
-                        Passport: {trav.passport} | DOB: {trav.dob}
-                      </p>
+                      {(trav.passport || trav.dob) ? (
+                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 truncate">
+                          {trav.passport ? `Passport: ${trav.passport}` : ""}
+                          {trav.passport && trav.dob ? " | " : ""}
+                          {trav.dob ? `DOB: ${trav.dob}` : ""}
+                        </p>
+                      ) : (
+                        <p className="text-[11px] text-slate-400 font-normal mt-0.5">
+                          {trav.role === "Primary Traveller" ? "Primary Account Holder" : "Details not added"}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -779,6 +841,21 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   </div>
                 </div>
               ))}
+
+              {/* Optional Prompt to Add Travel Companion if only Primary Traveller exists */}
+              {coTravellers.length === 1 && (
+                <div
+                  onClick={() => {
+                    setEditingTraveller(null);
+                    setTravellerForm({ name: "", role: "Co-Traveller", passport: "", dob: "" });
+                    setShowAddTravellerModal(true);
+                  }}
+                  className="bg-slate-50/40 hover:bg-emerald-50/20 rounded-2xl border border-dashed border-slate-200 hover:border-[#008060] p-3.5 flex items-center justify-center gap-2 text-slate-400 hover:text-[#008060] transition-colors cursor-pointer select-none min-h-[68px]"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span className="text-xs font-semibold">Add Co-Traveller</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -935,7 +1012,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   <h4 className="text-sm font-bold text-slate-900 leading-tight truncate">
                     {tripType === "internal" ? "Goa, India" : `${tripDetails.toCity}, ${tripDetails.toCountry}`}
                   </h4>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E8F8F4] text-[#008767]">
                     {tripType === "internal" ? "Internal Trip" : "International"}
                   </span>
                 </div>
@@ -943,61 +1020,65 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 <p className="text-[11px] font-medium text-slate-500 flex items-center gap-1">
                   <Calendar className="w-3 h-3 text-slate-400" />
                   <span>
-                    {tripDetails.departureDate} – {tripDetails.returnDate} ({tripDetails.duration})
+                    {tripDetails.departureDate} – {tripDetails.returnDate}
                   </span>
                 </p>
+                <p className="text-[10px] text-slate-400 font-medium">({tripDetails.duration})</p>
               </div>
             </div>
 
-            {/* 3 Requirement Pills */}
-            <div className="grid grid-cols-3 gap-2 pt-1 text-center">
-              <div className="bg-slate-50 border border-slate-100 rounded-xl p-2 flex flex-col items-center justify-center space-y-1">
-                <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            {/* 3 Requirement Columns with Vertical Separators */}
+            <div className="grid grid-cols-3 divide-x divide-slate-100 pt-3 border-t border-slate-100/80 text-center">
+              <div className="px-1 flex flex-col items-center justify-center space-y-0.5">
+                <div className="w-8 h-8 rounded-full bg-[#E6F4EA] text-[#008767] flex items-center justify-center mb-1 shadow-2xs">
                   <User className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[10px] font-bold text-slate-700 leading-tight">
-                  {tripDetails.visaApprovalRequired === "No" ? "No Visa Required" : "Visa Required"}
+                <span className="text-[11px] font-bold text-slate-800 leading-tight">
+                  {tripDetails.visaApprovalRequired === "No" ? "No Visa" : "Visa"}
                 </span>
+                <span className="text-[10px] text-slate-400 font-medium">Required</span>
               </div>
 
-              <div className="bg-slate-50 border border-slate-100 rounded-xl p-2 flex flex-col items-center justify-center space-y-1">
-                <div className="w-7 h-7 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center">
+              <div className="px-1 flex flex-col items-center justify-center space-y-0.5">
+                <div className="w-8 h-8 rounded-full bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center mb-1 shadow-2xs">
                   <CreditCard className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[10px] font-bold text-slate-700 leading-tight">Forex Card Required</span>
+                <span className="text-[11px] font-bold text-slate-800 leading-tight">Forex Card</span>
+                <span className="text-[10px] text-slate-400 font-medium">Required</span>
               </div>
 
-              <div className="bg-slate-50 border border-slate-100 rounded-xl p-2 flex flex-col items-center justify-center space-y-1">
-                <div className="w-7 h-7 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center">
-                  <ShieldCheck className="w-3.5 h-3.5" />
+              <div className="px-1 flex flex-col items-center justify-center space-y-0.5">
+                <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-1 shadow-2xs">
+                  <Shield className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-[10px] font-bold text-slate-700 leading-tight">Travel Insurance Required</span>
+                <span className="text-[11px] font-bold text-slate-800 leading-tight">Travel Insurance</span>
+                <span className="text-[10px] text-slate-400 font-medium">Required</span>
               </div>
             </div>
           </div>
 
           {/* Card 2: Checklist Progress */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-3 text-left">
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-3 text-left">
             <h3 className="text-sm font-black text-slate-900 tracking-tight">Checklist Progress</h3>
 
             <div className="flex items-center gap-5 pt-1">
               {/* Circular Gauge */}
-              <div className="relative w-20 h-20 shrink-0 flex items-center justify-center">
+              <div className="relative w-16 h-16 shrink-0 flex items-center justify-center">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 80 80">
                   <circle
                     cx="40"
                     cy="40"
                     r={radius}
                     className="stroke-slate-100"
-                    strokeWidth="7"
+                    strokeWidth="6"
                     fill="transparent"
                   />
                   <circle
                     cx="40"
                     cy="40"
                     r={radius}
-                    className="stroke-teal-600 transition-all duration-700 ease-out"
-                    strokeWidth="7"
+                    className="stroke-[#008767] transition-all duration-700 ease-out"
+                    strokeWidth="6"
                     strokeDasharray={circumference}
                     strokeDashoffset={strokeDashoffset}
                     strokeLinecap="round"
@@ -1005,29 +1086,20 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-base font-black text-slate-900">{progressPercent}%</span>
+                  <span className="text-sm font-black text-slate-900">{progressPercent}%</span>
                 </div>
               </div>
 
-              <div className="space-y-0.5">
-                <div className="text-xs font-bold text-slate-700">
-                  {completedCount} of {totalItemsCount} completed
-                </div>
-                <p className="text-[11px] text-slate-400 font-medium">
-                  {progressPercent === 100
-                    ? "✓ All done! Ready for takeoff!"
-                    : progressPercent > 50
-                    ? "Great momentum! Keep ticking off items."
-                    : "Complete all items before your departure date."}
-                </p>
+              <div className="text-xs font-semibold text-slate-500">
+                {completedCount} of {totalItemsCount} completed
               </div>
             </div>
           </div>
 
           {/* Card 3: Quick Actions */}
           <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-2 text-left">
-            <div className="flex items-center gap-2 pb-1 border-b border-slate-100">
-              <Clock className="w-4 h-4 text-slate-600" />
+            <div className="flex items-center gap-2 pb-1.5 border-b border-slate-100">
+              <Compass className="w-4 h-4 text-slate-600" />
               <h3 className="text-sm font-black text-slate-900 tracking-tight">Quick Actions</h3>
             </div>
 
@@ -1035,117 +1107,136 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               <button
                 type="button"
                 onClick={() => setShowItineraryModal(true)}
-                className="w-full py-2.5 flex items-center justify-between hover:text-teal-600 transition-colors cursor-pointer"
+                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5">
-                  <Compass className="w-4 h-4 text-purple-600" />
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0">
+                    <Compass className="w-3.5 h-3.5" />
+                  </div>
                   <span>View Travel Itinerary</span>
                 </div>
-                <span className="text-slate-400">&gt;</span>
+                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowAddTravellerModal(true)}
-                className="w-full py-2.5 flex items-center justify-between hover:text-teal-600 transition-colors cursor-pointer"
+                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5">
-                  <Users className="w-4 h-4 text-blue-600" />
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center shrink-0">
+                    <Users className="w-3.5 h-3.5" />
+                  </div>
                   <span>Manage Co-Travellers</span>
                 </div>
-                <span className="text-slate-400">&gt;</span>
+                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowWeatherModal(true)}
-                className="w-full py-2.5 flex items-center justify-between hover:text-teal-600 transition-colors cursor-pointer"
+                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5">
-                  <Sun className="w-4 h-4 text-amber-500" />
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#FCE7F3] text-[#BE185D] flex items-center justify-center shrink-0">
+                    <Sun className="w-3.5 h-3.5" />
+                  </div>
                   <span>View Weather Forecast</span>
                 </div>
-                <span className="text-slate-400">&gt;</span>
+                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleDownloadPdf}
-                className="w-full py-2.5 flex items-center justify-between hover:text-teal-600 transition-colors cursor-pointer"
+                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
               >
-                <div className="flex items-center gap-2.5">
-                  <Download className="w-4 h-4 text-teal-600" />
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0">
+                    <Download className="w-3.5 h-3.5" />
+                  </div>
                   <span>Download Checklist (PDF)</span>
                 </div>
-                <span className="text-slate-400">&gt;</span>
+                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
               </button>
             </div>
           </div>
 
           {/* Card 4: Smart Reminders */}
           <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-3 text-left">
-            <div className="flex items-center gap-2 pb-1 border-b border-slate-100">
+            <div className="flex items-center gap-2 pb-1.5 border-b border-slate-100">
               <Bell className="w-4 h-4 text-amber-500" />
               <h3 className="text-sm font-black text-slate-900 tracking-tight">Smart Reminders</h3>
             </div>
 
-            <div className="space-y-2.5 text-xs">
-              <div className="flex items-start gap-2.5">
-                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+            <div className="space-y-3 text-xs">
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0 mt-0.5">
+                  <RefreshCw className="w-3.5 h-3.5" />
+                </div>
                 <div>
-                  <div className="font-bold text-slate-800">1 day before departure</div>
-                  <div className="text-[11px] text-slate-500 font-medium">Check flight details &amp; travel documents</div>
+                  <div className="font-bold text-slate-900">1 day before departure</div>
+                  <div className="text-[11px] text-slate-400 font-normal">Check flight details &amp; travel documents</div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5">
-                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0 mt-0.5">
+                  <Clock className="w-3.5 h-3.5" />
+                </div>
                 <div>
-                  <div className="font-bold text-slate-800">3 hours before departure</div>
-                  <div className="text-[11px] text-slate-500 font-medium">Confirm check-in &amp; baggage</div>
+                  <div className="font-bold text-slate-900">3 hours before departure</div>
+                  <div className="text-[11px] text-slate-400 font-normal">Confirm check-in &amp; baggage</div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5">
-                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0 mt-0.5">
+                  <Luggage className="w-3.5 h-3.5" />
+                </div>
                 <div>
-                  <div className="font-bold text-slate-800">On departure day</div>
-                  <div className="text-[11px] text-slate-500 font-medium">Carry all essential documents</div>
+                  <div className="font-bold text-slate-900">On departure day</div>
+                  <div className="text-[11px] text-slate-400 font-normal">Carry all essential documents</div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Card 5: Travel Tip */}
-          <div className="bg-gradient-to-br from-emerald-50/80 to-teal-50/60 border border-emerald-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs space-y-3 text-left relative overflow-hidden">
-            <div className="flex items-center gap-1.5 text-emerald-900 font-bold text-xs">
-              <span className="text-amber-500 text-sm">💡</span>
-              <span className="tracking-tight font-black">Travel Tip</span>
+          <div className="bg-gradient-to-br from-[#EBF9F5] via-[#E8F8F4] to-[#E0F7F0] border border-[#CDEAE4] rounded-2xl p-4 sm:p-5 shadow-2xs space-y-3 text-left relative overflow-hidden">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-[#D1F2E9] text-[#008767] flex items-center justify-center shrink-0">
+                <span className="text-xs">💡</span>
+              </div>
+              <span className="text-xs font-black text-slate-900 tracking-tight">Travel Tip</span>
             </div>
 
-            <p className="text-xs text-emerald-950 font-medium leading-relaxed">
+            <p className="text-xs text-slate-600 font-normal leading-relaxed">
               Keep your documents, forex card and travel insurance easily accessible in your hand luggage.
             </p>
 
-            {/* Visual passport illustration */}
+            {/* Visual passport illustration + Travel Smart */}
             <div className="pt-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-12 h-14 bg-teal-800 rounded-lg shadow-sm border border-teal-700 flex flex-col items-center justify-center text-white p-1">
-                  <div className="w-4 h-4 rounded-full border border-white/50 flex items-center justify-center text-[7px]">
+                <div className="w-11 h-14 bg-[#0A4D40] rounded-lg shadow-sm border border-[#083E34] flex flex-col items-center justify-center text-white p-1">
+                  <div className="w-4 h-4 rounded-full border border-white/60 flex items-center justify-center text-[7px]">
                     🌐
                   </div>
-                  <span className="text-[6px] font-black uppercase mt-1 tracking-widest">PASSPORT</span>
+                  <span className="text-[6px] font-black uppercase mt-1 tracking-wider">PASSPORT</span>
                 </div>
 
-                <div className="w-16 h-10 bg-white rounded-lg shadow-xs border border-teal-200 flex flex-col justify-center px-1.5 text-teal-800">
-                  <div className="w-full h-1 bg-teal-200 rounded mb-1" />
-                  <div className="w-2/3 h-1 bg-teal-100 rounded" />
+                <div className="w-14 h-9 bg-white rounded-md shadow-2xs border border-teal-200 flex flex-col justify-center px-1.5 gap-1">
+                  <div className="w-full h-1 bg-blue-300 rounded" />
+                  <div className="w-2/3 h-1 bg-blue-200 rounded" />
                 </div>
               </div>
 
-              <span className="text-sm font-black text-emerald-700 italic tracking-tight font-heading">
-                Travel Smart
-              </span>
+              <div className="flex flex-col items-end">
+                <span className="text-sm font-black text-[#008767] italic tracking-tight font-serif">
+                  Travel Smart
+                </span>
+                <div className="w-12 h-0.5 bg-[#008767] mt-0.5 rounded-full" />
+              </div>
             </div>
           </div>
         </div>
