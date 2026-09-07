@@ -42,6 +42,7 @@ export const UserDashboard: React.FC = () => {
                     isMobileSidebarOpen={state.isMobileSidebarOpen}
                     setIsMobileSidebarOpen={state.setIsMobileSidebarOpen}
                     navSections={state.navSections}
+                    allNavItems={state.allNavItems}
                     applicationsCount={state.applications.visasProcessingState.length}
                     visasProcessingState={state.applications.visasProcessingState}
                     selectedApplicationId={state.applications.selectedApplicationId}

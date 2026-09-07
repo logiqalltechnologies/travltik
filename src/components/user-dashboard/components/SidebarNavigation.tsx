@@ -9,6 +9,7 @@ export function SidebarNavigation({
   activeTab,
   setActiveTab,
   navSections,
+  allNavItems,
   visasProcessingState,
   selectedApplicationId,
   setSelectedApplicationId,
