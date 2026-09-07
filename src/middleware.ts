@@ -18,9 +18,8 @@ export const onRequest = async (context: any, next: any): Promise<Response> => {
   response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  // Standard Firebase Auth COOP header: must be 'same-origin-allow-popups' to permit popup cross-origin communication without browser blocks
-  response.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  // Permissive COOP behavior so Google OAuth / Firebase Auth popups can communicate with window.opener
+  response.headers.delete('Cross-Origin-Opener-Policy');
   response.headers.set(
     'Content-Security-Policy',
     "default-src 'self'; " +

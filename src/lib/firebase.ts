@@ -96,23 +96,27 @@ export async function loginWithGooglePopupWithFallback(returnPath: string = '/tr
   if (!auth || !googleProvider) throw new Error('Firebase not initialized');
   
   try {
-    const result = await Promise.race([
-      signInWithPopup(auth, googleProvider),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('POPUP_TIMEOUT')), 5000))
-    ]);
+    const result = await signInWithPopup(auth, googleProvider);
     return result;
   } catch (error: any) {
+    const code = error?.code || '';
+    const msg = error?.message || '';
+
     if (
-      error?.message === 'POPUP_TIMEOUT' || 
-      error?.code === 'auth/popup-blocked' ||
-      error?.code === 'auth/cancelled-popup-request' ||
-      error?.message?.includes('popup') ||
-      error?.message?.includes('Cross-Origin')
+      code === 'auth/popup-blocked' ||
+      code === 'auth/cancelled-popup-request' ||
+      msg.includes('popup-blocked') ||
+      msg.includes('Cross-Origin')
     ) {
       console.warn('[Firebase] Popup blocked, falling back to redirect...');
       await loginWithGoogleRedirect(returnPath);
       return { status: 'redirecting' };
     }
+
+    if (code === 'auth/popup-closed-by-user' || msg.includes('popup-closed') || msg.includes('closed-by-user')) {
+      throw error;
+    }
+
     throw error;
   }
 }
