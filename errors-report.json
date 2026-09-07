@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-09-07T19:13:45.711Z",
+  "project": "TravlTik Visa Platform",
+  "totalErrors": 0,
+  "summary": {
+    "react": 0,
+    "api": 0,
+    "type": 0,
+    "routing": 0,
+    "browser": 0
+  },
+  "categories": {
+    "react": [],
+    "api": [],
+    "type": [],
+    "routing": [],
+    "browser": []
+  }
+}

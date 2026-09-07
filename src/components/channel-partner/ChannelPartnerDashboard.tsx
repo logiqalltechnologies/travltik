@@ -883,7 +883,7 @@ export default function ChannelPartnerDashboard() {
                   icon={DollarSign}
                   iconBg="bg-emerald-50 text-[#00A878] border border-emerald-200/50"
                   label="Total Revenue"
-                  value={`$${metrics.total_revenue.toLocaleString()}`}
+                  value={`$${(metrics?.total_revenue ?? 0).toLocaleString()}`}
                   sub="+0.0%"
                   positive
                 />
@@ -891,7 +891,7 @@ export default function ChannelPartnerDashboard() {
                   icon={Banknote}
                   iconBg="bg-blue-50 text-blue-600 border border-blue-200/50"
                   label="My Commission"
-                  value={`$${metrics.my_commission.toLocaleString()}`}
+                  value={`$${(metrics?.my_commission ?? 0).toLocaleString()}`}
                   sub="+0.0%"
                   positive
                 />
@@ -899,7 +899,7 @@ export default function ChannelPartnerDashboard() {
                   icon={Globe}
                   iconBg="bg-purple-50 text-purple-600 border border-purple-200/50"
                   label="Active State Partners"
-                  value={metrics.state_partners_count}
+                  value={metrics?.state_partners_count ?? 0}
                   sub="In Network"
                   positive
                 />
@@ -907,7 +907,7 @@ export default function ChannelPartnerDashboard() {
                   icon={Users}
                   iconBg="bg-amber-50 text-amber-600 border border-amber-200/50"
                   label="Approved Consultants"
-                  value={metrics.approved_consultants}
+                  value={metrics?.approved_consultants ?? 0}
                   sub="Active"
                   positive
                 />
@@ -915,7 +915,7 @@ export default function ChannelPartnerDashboard() {
                   icon={Target}
                   iconBg="bg-teal-50 text-teal-600 border border-teal-200/50"
                   label="Total Leads Generated"
-                  value={metrics.total_leads.toLocaleString()}
+                  value={(metrics?.total_leads ?? 0).toLocaleString()}
                   sub="Leads"
                   positive
                 />
@@ -923,7 +923,7 @@ export default function ChannelPartnerDashboard() {
                   icon={TrendingUp}
                   iconBg="bg-rose-50 text-rose-500 border border-rose-200/50"
                   label="Network Conversion"
-                  value={`${metrics.conversion_rate}%`}
+                  value={`${metrics?.conversion_rate ?? 0}%`}
                   sub="Rate"
                   positive
                 />
@@ -1177,17 +1177,17 @@ export default function ChannelPartnerDashboard() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70">
                   <div className="text-xs font-medium text-slate-500 mb-1">Gross Network Revenue</div>
-                  <div className="text-2xl font-black text-slate-900">${metrics.total_revenue.toLocaleString()}</div>
+                  <div className="text-2xl font-black text-slate-900">${(metrics?.total_revenue ?? 0).toLocaleString()}</div>
                   <div className="text-[11px] text-slate-400 mt-1">Processed across your territory</div>
                 </div>
                 <div className="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200/80">
                   <div className="text-xs font-medium text-emerald-800 mb-1">Your Net Override Commission</div>
-                  <div className="text-2xl font-black text-emerald-900">${metrics.my_commission.toLocaleString()}</div>
+                  <div className="text-2xl font-black text-emerald-900">${(metrics?.my_commission ?? 0).toLocaleString()}</div>
                   <div className="text-[11px] text-emerald-700 mt-1">Ready for settlement payout</div>
                 </div>
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70">
                   <div className="text-xs font-medium text-slate-500 mb-1">Network Conversion Rate</div>
-                  <div className="text-2xl font-black text-slate-900">{metrics.conversion_rate}%</div>
+                  <div className="text-2xl font-black text-slate-900">{metrics?.conversion_rate ?? 0}%</div>
                   <div className="text-[11px] text-slate-400 mt-1">Leads to successful visas</div>
                 </div>
               </div>
