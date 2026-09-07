@@ -91,34 +91,8 @@ export function focusAuthPopup() {
 }
 
 export async function loginWithGooglePopupWithFallback(returnPath: string = '/traveller/dashboard'): Promise<any> {
-  await preloadFirebase();
-  const { signInWithPopup } = await import('firebase/auth');
-  if (!auth || !googleProvider) throw new Error('Firebase not initialized');
-  
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    return result;
-  } catch (error: any) {
-    const code = error?.code || '';
-    const msg = error?.message || '';
-
-    if (
-      code === 'auth/popup-blocked' ||
-      code === 'auth/cancelled-popup-request' ||
-      msg.includes('popup-blocked') ||
-      msg.includes('Cross-Origin')
-    ) {
-      console.warn('[Firebase] Popup blocked, falling back to redirect...');
-      await loginWithGoogleRedirect(returnPath);
-      return { status: 'redirecting' };
-    }
-
-    if (code === 'auth/popup-closed-by-user' || msg.includes('popup-closed') || msg.includes('closed-by-user')) {
-      throw error;
-    }
-
-    throw error;
-  }
+  await loginWithGoogleRedirect(returnPath);
+  return { status: 'redirecting' };
 }
 
 if (typeof window !== "undefined") {

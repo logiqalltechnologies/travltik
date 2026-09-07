@@ -46,10 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     const googlePhoto = fbUser.photoURL || '';
                     const googleUid = fbUser.uid || '';
                     const role = (sessionStorage.getItem("google_auth_role") || 'seeker') as 'seeker' | 'expert';
+                    const mode = (sessionStorage.getItem("google_auth_mode") || 'login') as 'login' | 'signup';
                     const rawReturn = sessionStorage.getItem("google_auth_return");
-                    const returnPath = (rawReturn && rawReturn.startsWith("/") && rawReturn !== "/" && rawReturn !== "/login" && !rawReturn.startsWith("/login?")) ? rawReturn : "/traveller/dashboard";
+                    const returnPath = (rawReturn && rawReturn.startsWith("/") && rawReturn !== "/" && rawReturn !== "/login" && !rawReturn.startsWith("/login?")) ? rawReturn : (role === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard');
                     sessionStorage.removeItem("google_auth_return");
                     sessionStorage.removeItem("google_auth_role");
+                    sessionStorage.removeItem("google_auth_mode");
 
                     const nameParts = (googleName || '').trim().split(' ');
                     const gFirstName = nameParts[0] || googleEmail.split('@')[0] || 'User';
@@ -69,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         const response = await fetch('/api/auth/google', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ idToken, googleProfile: { email: googleEmail, name: googleName, picture: googlePhoto, uid: googleUid }, role }),
+                            body: JSON.stringify({ idToken, googleProfile: { email: googleEmail, name: googleName, picture: googlePhoto, uid: googleUid }, role, mode }),
                         });
                         if (response.ok) {
                             const data = await response.json();
