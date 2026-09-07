@@ -25,7 +25,8 @@ import {
   Compass,
   FileText,
   Trash2,
-  RefreshCw
+  RefreshCw,
+  Lightbulb
 } from "lucide-react";
 
 interface CoTraveller {
@@ -1203,40 +1204,93 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             </div>
           </div>
 
-          {/* Card 5: Travel Tip */}
-          <div className="bg-gradient-to-br from-[#EBF9F5] via-[#E8F8F4] to-[#E0F7F0] border border-[#CDEAE4] rounded-2xl p-4 sm:p-5 shadow-2xs space-y-3 text-left relative overflow-hidden">
+          {/* Card 5: Travel Tip (Matching media_1788806311175.png) */}
+          <div className="bg-[#E8F7F2] border border-[#D4F0E8] rounded-2xl p-4.5 sm:p-5 shadow-2xs space-y-2 text-left relative overflow-hidden">
+            {/* Header: Green Lightbulb + Title */}
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-[#D1F2E9] text-[#008767] flex items-center justify-center shrink-0">
-                <span className="text-xs">💡</span>
-              </div>
-              <span className="text-xs font-black text-slate-900 tracking-tight">Travel Tip</span>
+              <Lightbulb className="w-5 h-5 text-[#008767] stroke-[2.2]" />
+              <span className="text-sm font-bold text-slate-900 tracking-tight">Travel Tip</span>
             </div>
 
+            {/* Tip Description */}
             <p className="text-xs text-slate-600 font-normal leading-relaxed">
               Keep your documents, forex card and travel insurance easily accessible in your hand luggage.
             </p>
 
-            {/* Visual passport illustration + Travel Smart */}
-            <div className="pt-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-11 h-14 bg-[#0A4D40] rounded-lg shadow-sm border border-[#083E34] flex flex-col items-center justify-center text-white p-1">
-                  <div className="w-4 h-4 rounded-full border border-white/60 flex items-center justify-center text-[7px]">
-                    🌐
-                  </div>
-                  <span className="text-[6px] font-black uppercase mt-1 tracking-wider">PASSPORT</span>
-                </div>
+            {/* 3D Angled Passport + Boarding Pass + Cursive "Travel Smart" */}
+            <div className="pt-3 flex items-center justify-between min-h-[90px]">
+              {/* Vector 3D Passport + Boarding Pass */}
+              <div className="relative w-40 h-24 shrink-0">
+                <svg viewBox="0 0 160 95" className="w-full h-full overflow-visible">
+                  <defs>
+                    <linearGradient id="tipPassportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#1C4B70" />
+                      <stop offset="50%" stopColor="#123554" />
+                      <stop offset="100%" stopColor="#0B6B66" />
+                    </linearGradient>
+                    <filter id="tipShadow" x="-20%" y="-20%" width="150%" height="150%">
+                      <feDropShadow dx="2" dy="4" stdDeviation="3.5" floodColor="#08382e" floodOpacity="0.22" />
+                    </filter>
+                    <filter id="ticketShad" x="-10%" y="-10%" width="130%" height="130%">
+                      <feDropShadow dx="1" dy="2" stdDeviation="2" floodColor="#08382e" floodOpacity="0.12" />
+                    </filter>
+                  </defs>
 
-                <div className="w-14 h-9 bg-white rounded-md shadow-2xs border border-teal-200 flex flex-col justify-center px-1.5 gap-1">
-                  <div className="w-full h-1 bg-blue-300 rounded" />
-                  <div className="w-2/3 h-1 bg-blue-200 rounded" />
-                </div>
+                  {/* Boarding Pass Ticket Behind Passport */}
+                  <g transform="translate(46, 15) rotate(4)" filter="url(#ticketShad)">
+                    <rect x="0" y="0" width="68" height="46" rx="4" fill="#FFFFFF" stroke="#E2E8F0" strokeWidth="0.8" />
+                    {/* Blue right edge tab */}
+                    <path d="M 52 0 L 64 0 A 4 4 0 0 1 68 4 L 68 42 A 4 4 0 0 1 64 46 L 52 46 Z" fill="#2563EB" />
+                    {/* Ticket Header & details */}
+                    <text x="6" y="11" fill="#1E293B" fontSize="4.5" fontWeight="900" letterSpacing="0.4">BOARDING</text>
+                    <line x1="6" y1="17" x2="40" y2="17" stroke="#0284C7" strokeWidth="1.2" strokeLinecap="round" />
+                    <line x1="6" y1="23" x2="32" y2="23" stroke="#0284C7" strokeWidth="1.2" strokeLinecap="round" />
+                    <line x1="6" y1="29" x2="38" y2="29" stroke="#94A3B8" strokeWidth="0.8" strokeLinecap="round" />
+                    {/* Barcode */}
+                    <line x1="6" y1="36" x2="6" y2="42" stroke="#64748B" strokeWidth="1" />
+                    <line x1="9" y1="36" x2="9" y2="42" stroke="#64748B" strokeWidth="1.6" />
+                    <line x1="13" y1="36" x2="13" y2="42" stroke="#64748B" strokeWidth="0.8" />
+                    <line x1="16" y1="36" x2="16" y2="42" stroke="#64748B" strokeWidth="2" />
+                    <line x1="20" y1="36" x2="20" y2="42" stroke="#64748B" strokeWidth="1" />
+                    <line x1="24" y1="36" x2="24" y2="42" stroke="#64748B" strokeWidth="1.5" />
+                  </g>
+
+                  {/* 3D Angled Blue Passport in Front */}
+                  <g transform="translate(10, 4) rotate(-8)" filter="url(#tipShadow)">
+                    {/* Pages spine / bottom teal thickness */}
+                    <rect x="0" y="0" width="54" height="76" rx="5" fill="#005A46" />
+                    {/* Passport Front Cover */}
+                    <rect x="2" y="0" width="52" height="76" rx="5" fill="url(#tipPassportGrad)" />
+                    
+                    {/* Top small seal accent */}
+                    <line x1="22" y1="12" x2="32" y2="12" stroke="#FFFFFF" strokeOpacity="0.45" strokeWidth="0.8" strokeLinecap="round" />
+
+                    {/* Globe Emblem */}
+                    <circle cx="28" cy="33" r="11" fill="none" stroke="#FFFFFF" strokeWidth="1.1" />
+                    <ellipse cx="28" cy="33" rx="5" ry="11" fill="none" stroke="#FFFFFF" strokeWidth="0.9" />
+                    <line x1="17" y1="33" x2="39" y2="33" stroke="#FFFFFF" strokeWidth="0.9" />
+                    <path d="M 19 28 Q 28 30 37 28" fill="none" stroke="#FFFFFF" strokeWidth="0.75" />
+                    <path d="M 19 38 Q 28 36 37 38" fill="none" stroke="#FFFFFF" strokeWidth="0.75" />
+
+                    {/* TRAVEL text */}
+                    <text x="28" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="6" fontWeight="900" letterSpacing="1.5" fontFamily="system-ui, sans-serif">
+                      TRAVEL
+                    </text>
+                  </g>
+                </svg>
               </div>
 
-              <div className="flex flex-col items-end">
-                <span className="text-sm font-black text-[#008767] italic tracking-tight font-serif">
+              {/* Cursive "Travel Smart" with Brush Underline */}
+              <div className="flex flex-col items-end pr-1 -rotate-3 select-none">
+                <span
+                  className="text-2xl sm:text-[26px] font-bold text-[#008767] tracking-normal leading-none"
+                  style={{ fontFamily: "'Caveat', cursive, sans-serif" }}
+                >
                   Travel Smart
                 </span>
-                <div className="w-12 h-0.5 bg-[#008767] mt-0.5 rounded-full" />
+                <svg width="68" height="6" viewBox="0 0 68 6" fill="none" className="mt-1">
+                  <path d="M2 3.5C22 1.5 46 1.8 66 3" stroke="#008767" strokeWidth="2.2" strokeLinecap="round" />
+                </svg>
               </div>
             </div>
           </div>
