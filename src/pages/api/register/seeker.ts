@@ -33,11 +33,15 @@ export const POST: APIRoute = async ({ request }) => {
     const pool = getPool();
 
     // Verify email verification has succeeded
-    const isVerified = await isEmailVerified(email);
-    if (!isVerified) {
+    const otpCheck = await pool.query(
+      'SELECT verified FROM email_verifications WHERE LOWER(email) = LOWER($1) AND verified = true ORDER BY created_at DESC LIMIT 1',
+      [email.toLowerCase().trim()]
+    );
+
+    if (otpCheck.rows.length === 0) {
       return new Response(JSON.stringify({ 
         status: 'error', 
-        message: 'Email address has not been verified. Please verify your email first.' 
+        message: 'Please verify your email first' 
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }

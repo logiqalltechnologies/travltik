@@ -517,6 +517,23 @@ export async function runMigrations() {
   `);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_ai_rate_limits_id_time ON ai_rate_limits (identifier, accessed_at);`);
 
+  // 20. Email Verifications Table (OTP)
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS email_verifications (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255) NOT NULL UNIQUE,
+      otp_hash VARCHAR(255) NOT NULL,
+      expires_at TIMESTAMP NOT NULL,
+      verified BOOLEAN DEFAULT FALSE,
+      attempts INTEGER DEFAULT 0,
+      created_at TIMESTAMP DEFAULT NOW(),
+      resend_count INTEGER DEFAULT 0,
+      last_resend_at TIMESTAMP
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_email_verifications_email ON email_verifications (email);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_email_verifications_expires_at ON email_verifications (expires_at);`);
+
   // ── CHANNEL PARTNER TABLES ──
   await p.query(`
     CREATE TABLE IF NOT EXISTS channel_partners (
