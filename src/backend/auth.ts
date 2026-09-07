@@ -9,12 +9,27 @@ export interface SessionInfo {
   expiresAt: Date;
 }
 
-export async function loginUser(email: string, password_hash: string): Promise<{ user: any; type: 'seeker' | 'expert' }> {
+export async function loginUser(email: string, password_hash: string, preferredRole?: 'seeker' | 'expert'): Promise<{ user: any; type: 'seeker' | 'expert' }> {
   await runMigrations();
   const pool = getPool();
+  const cleanEmail = email.toLowerCase().trim();
+
+  // If expert is specifically requested, prioritize checking experts table
+  if (preferredRole === 'expert') {
+    const expertRes = await pool.query('SELECT * FROM experts WHERE LOWER(email) = LOWER($1)', [cleanEmail]);
+    if (expertRes.rows.length > 0) {
+      const user = expertRes.rows[0];
+      const passwordMatch = user.password_hash && await bcrypt.compare(password_hash, user.password_hash);
+      if (passwordMatch) {
+        return { user, type: 'expert' };
+      } else {
+        throw new Error('Incorrect password.');
+      }
+    }
+  }
 
   // 1. Check Seekers
-  const seekerRes = await pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
+  const seekerRes = await pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [cleanEmail]);
   if (seekerRes.rows.length > 0) {
     const user = seekerRes.rows[0];
     const passwordMatch = user.password_hash && await bcrypt.compare(password_hash, user.password_hash);
@@ -25,15 +40,17 @@ export async function loginUser(email: string, password_hash: string): Promise<{
     }
   }
 
-  // 2. Check Experts
-  const expertRes = await pool.query('SELECT * FROM experts WHERE LOWER(email) = LOWER($1)', [email]);
-  if (expertRes.rows.length > 0) {
-    const user = expertRes.rows[0];
-    const passwordMatch = user.password_hash && await bcrypt.compare(password_hash, user.password_hash);
-    if (passwordMatch) {
-      return { user, type: 'expert' };
-    } else {
-      throw new Error('Incorrect password.');
+  // 2. Check Experts (if not already checked)
+  if (preferredRole !== 'expert') {
+    const expertRes = await pool.query('SELECT * FROM experts WHERE LOWER(email) = LOWER($1)', [cleanEmail]);
+    if (expertRes.rows.length > 0) {
+      const user = expertRes.rows[0];
+      const passwordMatch = user.password_hash && await bcrypt.compare(password_hash, user.password_hash);
+      if (passwordMatch) {
+        return { user, type: 'expert' };
+      } else {
+        throw new Error('Incorrect password.');
+      }
     }
   }
 

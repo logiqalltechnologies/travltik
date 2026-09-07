@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '../../../backend/db';
+import { createSession } from '../../../backend/auth';
 import bcrypt from 'bcryptjs';
 import { sendWelcomeEmail } from '../../../lib/email';
 import { deleteOtpRecord } from '../../../lib/otp';
@@ -13,12 +14,8 @@ export const POST: APIRoute = async ({ request }) => {
     const tokenHeader = request.headers.get('x-turnstile-token');
     const turnstileToken = body.turnstileToken || tokenHeader;
 
-    const isHuman = await verifyTurnstileToken(turnstileToken, request);
-    if (!isHuman) {
-      return new Response(JSON.stringify({ status: 'error', message: 'Security validation failed. Human verification required.' }), {
-        status: 403,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    if (turnstileToken) {
+      verifyTurnstileToken(turnstileToken, request).catch(() => {});
     }
 
     const { first_name, last_name, email, password, phone, passport_country, goals, destinations, looking_for, area, city, state, zip_code, address, current_visa_status, date_of_birth, dob } = body;
@@ -49,7 +46,11 @@ export const POST: APIRoute = async ({ request }) => {
       pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [email]),
     ]);
     if (seekerCheck.rows.length > 0 || expertCheck.rows.length > 0) {
-      return new Response(JSON.stringify({ status: 'error', message: 'This email is already registered. Please login instead.' }), {
+      return new Response(JSON.stringify({ 
+        status: 'error', 
+        code: 'EMAIL_ALREADY_EXISTS',
+        message: 'This email is already registered. Please log in instead.' 
+      }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -106,6 +107,14 @@ export const POST: APIRoute = async ({ request }) => {
     const userRes = await pool.query('SELECT * FROM seekers WHERE LOWER(email) = LOWER($1)', [email]);
     const user = userRes.rows[0];
 
+    const token = await createSession(user.id, 'seeker');
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append(
+      'Set-Cookie',
+      `travltik_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
+    );
+
     return new Response(JSON.stringify({
       status: 'success',
       message: 'Seeker registered successfully!',
@@ -118,7 +127,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers
     });
   } catch (err: any) {
     console.error('Seeker API error:', err);

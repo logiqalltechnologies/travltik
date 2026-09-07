@@ -7,7 +7,8 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { email, password, turnstileToken } = body;
+    const { email, password, turnstileToken, role, portal, preferredRole } = body;
+    const requestedRole = (role || portal || preferredRole) as ('seeker' | 'expert' | undefined);
     const tokenHeader = request.headers.get('x-turnstile-token');
     const cfToken = turnstileToken || tokenHeader;
 
@@ -27,7 +28,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const { user, type } = await loginUser(email, password);
+    const { user, type } = await loginUser(email, password, requestedRole);
     const token = await createSession(user.id, type);
 
     // Set cookie headers for session persistence

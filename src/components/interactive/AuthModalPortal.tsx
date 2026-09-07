@@ -254,7 +254,10 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             
             if (!response.ok) {
                 const errData = await response.json().catch(() => ({}));
-                setSignupError(errData.message || errData.error || "Registration failed. Please check your details.");
+                const errMsg = errData.message || errData.error || "Registration failed. Please check your details.";
+                setOtpError(errMsg);
+                setSignupError(errMsg);
+                setSendingCode(false);
                 setSignupLoading(false);
                 return;
             }
@@ -264,7 +267,10 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                 localStorage.setItem("travltik_user", JSON.stringify(data.user));
             }
         } catch (err: any) {
-            setSignupError(err?.message || "Registration request failed.");
+            const errMsg = err?.message || "Registration request failed.";
+            setOtpError(errMsg);
+            setSignupError(errMsg);
+            setSendingCode(false);
             setSignupLoading(false);
             return;
         }
@@ -561,8 +567,24 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                         <form onSubmit={handleSignupSubmit} className="space-y-4">
                             
                             {signupError && (
-                                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold">
-                                    {signupError}
+                                <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center justify-between gap-2 shadow-xs">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-base shrink-0">⚠️</span>
+                                        <span>{signupError}</span>
+                                    </div>
+                                    {(signupError.toLowerCase().includes("already registered") || signupError.toLowerCase().includes("log in") || signupError.toLowerCase().includes("login")) && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setLoginEmail(signupEmail);
+                                                setActiveTab("login");
+                                                setSignupError("");
+                                            }}
+                                            className="shrink-0 px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer whitespace-nowrap"
+                                        >
+                                            Log In Now →
+                                        </button>
+                                    )}
                                 </div>
                             )}
 
@@ -871,8 +893,24 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                             </div>
 
                             {signupError && (
-                                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold mt-2">
-                                    {signupError}
+                                <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center justify-between gap-2 shadow-xs mt-2">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-base shrink-0">⚠️</span>
+                                        <span>{signupError}</span>
+                                    </div>
+                                    {(signupError.toLowerCase().includes("already registered") || signupError.toLowerCase().includes("log in") || signupError.toLowerCase().includes("login")) && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setLoginEmail(signupEmail);
+                                                setActiveTab("login");
+                                                setSignupError("");
+                                            }}
+                                            className="shrink-0 px-3 py-1.5 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold rounded-xl transition-colors cursor-pointer whitespace-nowrap"
+                                        >
+                                            Log In Now →
+                                        </button>
+                                    )}
                                 </div>
                             )}
 

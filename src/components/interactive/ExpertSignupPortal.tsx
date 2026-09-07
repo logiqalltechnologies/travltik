@@ -225,6 +225,7 @@ function ExpertSignupPortalContent() {
   const [errorMsg, setErrorMsg] = useState("");
   const [comingSoonProvider, setComingSoonProvider] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
 
   // ─── Email OTP Verification State (Submit -> Email Code -> Dashboard) ───────
@@ -305,7 +306,7 @@ function ExpertSignupPortalContent() {
   };
 
   // ─── Step 1 Next: Validate & Advance ────────────────────────────────────────
-  const handleStep1Next = (e: React.FormEvent) => {
+  const handleStep1Next = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
     const errs: Record<string, string> = {};
@@ -337,6 +338,28 @@ function ExpertSignupPortalContent() {
       setFieldErrors(errs);
       setErrorMsg("Please fill in all required fields highlighted below.");
       return;
+    }
+
+    // Fail-Fast: Check if email is already registered before proceeding to Step 2
+    const targetEmail = email.toLowerCase().trim();
+    try {
+      setIsCheckingEmail(true);
+      const res = await fetch("/api/auth/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: targetEmail })
+      });
+      const data = await res.json();
+      if (data.exists) {
+        setErrorMsg("This email is already registered. Please log in instead.");
+        setFieldErrors({ email: "This email is already registered." });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+    } catch (e) {
+      console.warn("Email check fallback:", e);
+    } finally {
+      setIsCheckingEmail(false);
     }
 
     setFieldErrors({});
@@ -1047,10 +1070,20 @@ function ExpertSignupPortalContent() {
               {/* Action Button: Create Account */}
               <button
                 type="submit"
-                className="w-full mt-3 py-3.5 px-4 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm rounded-2xl shadow-md transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
+                disabled={isCheckingEmail}
+                className="w-full mt-3 py-3.5 px-4 bg-[#481268] hover:bg-[#3b0e56] text-white font-bold text-sm rounded-2xl shadow-md transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 disabled:opacity-75"
               >
-                <span>Create Account</span>
-                <ArrowRight className="w-4 h-4" />
+                {isCheckingEmail ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Checking Email Availability...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Next: Business Details</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
 
               {/* Already have account */}
