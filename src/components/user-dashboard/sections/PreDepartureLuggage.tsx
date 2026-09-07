@@ -24,7 +24,8 @@ import {
   X,
   Compass,
   FileText,
-  Trash2
+  Trash2,
+  RefreshCw
 } from "lucide-react";
 
 interface CoTraveller {
