@@ -545,98 +545,104 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               </button>
             </div>
 
-            {/* Horizontal metrics grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-9 gap-3 pt-1 text-left items-stretch">
-              {/* From */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>From</span>
+            {/* Horizontal metrics grid - centered vertical stacks matching original UI */}
+            <div className="overflow-x-auto pb-1.5 -mb-1 no-scrollbar">
+              <div className="flex items-start justify-between gap-3 min-w-[780px] xl:min-w-0 pt-1">
+                {/* 1. From */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[80px]">
+                  <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400">From</span>
+                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.fromCity}</span>
+                  <span className="text-[10px] text-slate-400 font-medium">{tripDetails.fromCountry}</span>
                 </div>
-                <div className="text-xs font-bold text-slate-900 leading-tight">{tripDetails.fromCity}</div>
-                <div className="text-[10px] font-medium text-slate-400">{tripDetails.fromCountry}</div>
-              </div>
 
-              {/* To */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
-                  <span>To</span>
+                {/* 2. To */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[80px]">
+                  <div className="w-7 h-7 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mb-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400">To</span>
+                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.toCity}</span>
+                  <span className="text-[10px] text-slate-400 font-medium">{tripDetails.toCountry}</span>
                 </div>
-                <div className="text-xs font-bold text-slate-900 leading-tight">{tripDetails.toCity}</div>
-                <div className="text-[10px] font-medium text-slate-400">{tripDetails.toCountry}</div>
-              </div>
 
-              {/* Departure Date */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                  <span>Departure Date</span>
+                {/* 3. Departure Date */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[85px]">
+                  <div className="w-7 h-7 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center mb-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Departure Date</span>
+                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.departureDate}</span>
                 </div>
-                <div className="text-xs font-bold text-slate-900 leading-tight">{tripDetails.departureDate}</div>
-              </div>
 
-              {/* Return Date */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                  <span>Return Date</span>
+                {/* 4. Return Date */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[85px]">
+                  <div className="w-7 h-7 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center mb-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Return Date</span>
+                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.returnDate}</span>
                 </div>
-                <div className="text-xs font-bold text-slate-900 leading-tight">{tripDetails.returnDate}</div>
-              </div>
 
-              {/* Total Duration */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                  <span>Total Duration</span>
+                {/* 5. Total Duration */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[80px]">
+                  <div className="w-7 h-7 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center mb-1">
+                    <Clock className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Total Duration</span>
+                  <span className="text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">{tripDetails.duration}</span>
                 </div>
-                <div className="text-xs font-bold text-slate-900 leading-tight">{tripDetails.duration}</div>
-              </div>
 
-              {/* Visa Approval Required */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <Shield className="w-3.5 h-3.5 text-purple-600 shrink-0" />
-                  <span>Visa Approval Required</span>
+                {/* 6. Visa Approval Required */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[90px]">
+                  <div className="w-7 h-7 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mb-1">
+                    <Shield className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400 leading-tight">Visa Approval<br />Required</span>
+                  <div className="flex items-center justify-center gap-1 text-xs font-bold text-slate-900 whitespace-nowrap mt-0.5">
+                    <span className={tripDetails.visaApprovalRequired === "No" ? "text-slate-800" : "text-indigo-600"}>
+                      {tripDetails.visaApprovalRequired}
+                    </span>
+                    <Info className="w-3 h-3 text-slate-400" />
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-bold text-slate-900 leading-tight">
-                  <span className={tripDetails.visaApprovalRequired === "No" ? "text-slate-800" : "text-indigo-600"}>
-                    {tripDetails.visaApprovalRequired}
-                  </span>
-                  <Info className="w-3 h-3 text-slate-400" />
-                </div>
-              </div>
 
-              {/* Forex Card */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <CreditCard className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                  <span>Forex Card</span>
+                {/* 7. Forex Card */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[85px]">
+                  <div className="w-7 h-7 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-1">
+                    <CreditCard className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Forex Card</span>
+                  <div className="flex items-center justify-center gap-1 text-xs font-bold text-teal-700 whitespace-nowrap mt-0.5">
+                    <span>{tripDetails.forexCardRequired}</span>
+                    <Info className="w-3 h-3 text-slate-400" />
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-bold text-teal-700 leading-tight">
-                  <span>{tripDetails.forexCardRequired}</span>
-                  <Info className="w-3 h-3 text-slate-400" />
-                </div>
-              </div>
 
-              {/* Travel Insurance */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
-                  <ShieldCheck className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  <span>Travel Insurance</span>
+                {/* 8. Travel Insurance */}
+                <div className="flex-1 flex flex-col items-center text-center space-y-0.5 min-w-[90px]">
+                  <div className="w-7 h-7 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mb-1">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Travel Insurance</span>
+                  <div className="flex items-center justify-center gap-1 text-xs font-bold text-indigo-700 whitespace-nowrap mt-0.5">
+                    <span>{tripDetails.travelInsuranceRequired}</span>
+                    <Info className="w-3 h-3 text-slate-400" />
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-bold text-indigo-700 leading-tight">
-                  <span>{tripDetails.travelInsuranceRequired}</span>
-                  <Info className="w-3 h-3 text-slate-400" />
-                </div>
-              </div>
 
-              {/* Status Badge */}
-              <div className="col-span-2 sm:col-span-4 lg:col-span-1 flex items-center">
-                <div className="w-full bg-emerald-50 border border-emerald-200/80 rounded-xl p-2 text-center text-[10px] font-bold text-emerald-800 flex items-center justify-center gap-1 leading-tight">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>All mandatory for {tripType === "internal" ? "Internal" : "International"} Trips</span>
+                {/* 9. Status Badge */}
+                <div className="flex-1 flex flex-col items-center justify-center shrink-0 min-w-[95px]">
+                  <div className="w-full bg-emerald-50 border border-emerald-300/80 rounded-2xl p-2 text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                    <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-800 leading-snug">
+                      All mandatory<br />for {tripType === "internal" ? "Internal" : "International"}<br />Trips
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
