@@ -72,6 +72,8 @@ export function SidebarNavigation({
   handleLogout: () => void;
 }) {
   const safeNavItems = allNavItems || (navSections || []).flatMap((s: any) => s.items || []);
+  const [isVisaAppsExpanded, setIsVisaAppsExpanded] = React.useState<boolean>(false);
+
   return (
     <>
       {/* Desktop Collapsible Left Sidebar */}
@@ -111,7 +113,12 @@ export function SidebarNavigation({
                         <button
                           onClick={() => {
                             setActiveTab(item.id);
-                            setSelectedApplicationId?.(null);
+                            if (item.id === "cases") {
+                              setIsVisaAppsExpanded(prev => !prev);
+                            } else {
+                              setSelectedApplicationId?.(null);
+                              setIsVisaAppsExpanded(false);
+                            }
                           }}
                           title={item.label}
                           className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
@@ -139,8 +146,8 @@ export function SidebarNavigation({
                           )}
                         </button>
 
-                        {/* Nested Active Applications List */}
-                        {item.id === "cases" && !isSidebarCollapsed && (
+                        {/* Nested Active Applications List - Only shown when Visa Applications is clicked */}
+                        {item.id === "cases" && !isSidebarCollapsed && isVisaAppsExpanded && (
                           <div className="ml-5 pl-2.5 my-1.5 space-y-1 border-l-2 border-slate-200">
                             {visasProcessingState && visasProcessingState.length > 0 ? (
                               visasProcessingState.map((app: any) => {
@@ -222,8 +229,13 @@ export function SidebarNavigation({
                     <button
                       onClick={() => {
                         setActiveTab(item.id);
-                        setSelectedApplicationId?.(null);
-                        setIsMobileSidebarOpen(false);
+                        if (item.id === "cases") {
+                          setIsVisaAppsExpanded(prev => !prev);
+                        } else {
+                          setSelectedApplicationId?.(null);
+                          setIsMobileSidebarOpen(false);
+                          setIsVisaAppsExpanded(false);
+                        }
                       }}
                       className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer ${
                         isActive && (item.id !== "cases" || !selectedApplicationId)
@@ -244,7 +256,7 @@ export function SidebarNavigation({
                       )}
                     </button>
 
-                    {item.id === "cases" && (
+                    {item.id === "cases" && isVisaAppsExpanded && (
                       <div className="ml-6 pl-2.5 my-1 space-y-1 border-l-2 border-slate-200">
                         {visasProcessingState && visasProcessingState.length > 0 ? (
                           visasProcessingState.map((app: any) => {

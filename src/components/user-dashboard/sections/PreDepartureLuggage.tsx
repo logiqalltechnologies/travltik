@@ -455,68 +455,88 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
 
   return (
     <div className="space-y-5 animate-fade-up text-left text-slate-800 font-sans sharp-typography visa-readiness-scope">
-      {/* ── Breadcrumb ── */}
-      <nav className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-        <span>Home</span>
-        <span className="text-slate-300">&gt;</span>
-        <span>Pre-Departure Checklist</span>
-        <span className="text-slate-300">&gt;</span>
-        <span className="text-slate-800 font-bold">
-          {tripType === "internal" ? "Internal Trip" : "International Trip"}
-        </span>
-      </nav>
+      {/* ── Hero Banner Card (Matching Reference Design) ── */}
+      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 bg-white shadow-xs">
+        {/* Right-Side Scenic Landscape Photo with Smooth Fade */}
+        <div
+          className="absolute top-0 right-0 bottom-0 w-full sm:w-[65%] lg:w-[58%] pointer-events-none"
+          style={{
+            backgroundImage: "url('/images/pre_departure_hero_bg.png')",
+            backgroundPosition: "right center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat"
+          }}
+        >
+          {/* Feathered White Gradient Fade from Left */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent sm:via-white/55" />
+        </div>
 
-      {/* ── Hero Banner ── */}
-      <div className="relative rounded-3xl overflow-hidden shadow-xs border border-slate-200/90 bg-slate-900 min-h-[165px] sm:min-h-[185px] flex items-center">
-        <img
-          src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80"
-          alt="Pre-Departure Highway Landscape"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-80 pointer-events-none"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-sky-950/90 via-sky-900/65 to-transparent pointer-events-none" />
+        {/* Banner Content Container (Clean Sharp Dark Typography over Pure White Left) */}
+        <div className="relative z-10 p-5 sm:p-6 lg:p-7 flex flex-col justify-between min-h-[175px] sm:min-h-[195px] space-y-3 sm:space-y-4">
+          {/* 1. Breadcrumbs (Inside Banner at Top-Left) */}
+          <nav className="flex items-center gap-1.5 text-xs font-medium">
+            <span className="text-[#4f6b92] hover:underline cursor-pointer">Home</span>
+            <span className="text-slate-300">&gt;</span>
+            <span className="text-[#4f6b92] hover:underline cursor-pointer">Pre-Departure Checklist</span>
+            <span className="text-slate-300">&gt;</span>
+            <span className="text-slate-700 font-semibold">
+              {tripType === "internal" ? "Internal Trip" : "International Trip"}
+            </span>
+          </nav>
 
-        <div className="relative z-10 p-5 sm:p-7 w-full flex flex-col justify-between h-full space-y-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight">
+          {/* 2. Main Title & Subtitle */}
+          <div className="max-w-xl">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#0f172a] tracking-tight leading-tight">
               Pre-Departure Checklist
             </h1>
-            <p className="text-xs sm:text-[13px] text-sky-100/90 font-medium mt-1 max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-[13px] text-slate-500 font-normal mt-1 leading-relaxed">
               Stay organized and complete your checklist before your trip. Get timely reminders and travel with confidence.
             </p>
           </div>
 
-          <div className="flex items-center justify-between flex-wrap gap-3 pt-0.5">
-            {/* Toggle Tabs */}
-            <div className="inline-flex items-center gap-2 p-1 rounded-2xl bg-black/25 backdrop-blur-md border border-white/20">
+          {/* 3. Dual Toggle Buttons & Slogan */}
+          <div className="flex items-end justify-between flex-wrap gap-4 pt-1">
+            {/* Toggles */}
+            <div className="flex items-center gap-3">
+              {/* International Trip Button */}
               <button
                 type="button"
                 onClick={() => setTripType("international")}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer bg-white shadow-2xs border ${
                   tripType === "international"
-                    ? "bg-white text-slate-900 shadow-md border border-white"
-                    : "text-white/90 hover:text-white hover:bg-white/10"
+                    ? "border-purple-200 border-b-[3px] border-b-[#6b46c1] text-[#6b46c1]"
+                    : "border-slate-200/90 text-slate-800 hover:bg-slate-50/80"
                 }`}
               >
-                <Plane className="w-3.5 h-3.5" />
+                <Plane className={`w-4 h-4 ${tripType === "international" ? "text-[#6b46c1]" : "text-[#7c3aed]"}`} />
                 <span>International Trip</span>
               </button>
 
+              {/* Internal Trip Button */}
               <button
                 type="button"
                 onClick={() => setTripType("internal")}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer bg-white shadow-2xs border ${
                   tripType === "internal"
-                    ? "bg-white text-emerald-800 shadow-md border border-emerald-500/40"
-                    : "text-white/90 hover:text-white hover:bg-white/10"
+                    ? "border-emerald-200 border-b-[3px] border-b-[#00705a] text-[#00705a]"
+                    : "border-slate-200/90 text-slate-800 hover:bg-slate-50/80"
                 }`}
               >
-                <Luggage className="w-3.5 h-3.5 text-emerald-600" />
+                <div
+                  className={`w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black leading-none transition-colors ${
+                    tripType === "internal"
+                      ? "bg-[#00705a] text-white"
+                      : "bg-slate-100 text-slate-600"
+                  }`}
+                >
+                  P
+                </div>
                 <span>Internal Trip</span>
               </button>
             </div>
 
-            {/* Right Slogan */}
-            <div className="text-xs sm:text-sm font-semibold tracking-wider text-white/85 hidden sm:block">
+            {/* Right Slogan: Plan • Prepare • Travel */}
+            <div className="text-xs sm:text-[13px] font-medium tracking-wide text-white/95 drop-shadow-md pr-3 hidden md:block select-none">
               Plan • Prepare • Travel
             </div>
           </div>
