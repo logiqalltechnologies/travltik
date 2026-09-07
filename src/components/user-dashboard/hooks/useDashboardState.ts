@@ -354,6 +354,7 @@ export function useDashboardState() {
     {
       title: "",
       items: [
+        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
         { id: "cases", label: "Visa Applications", icon: Briefcase, count: appHook.visasProcessingState.length > 0 ? appHook.visasProcessingState.length : undefined },
         { 
           id: "visa-readiness", 

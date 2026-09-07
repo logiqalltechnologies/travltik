@@ -111,13 +111,11 @@ export function SidebarNavigation({
                         <button
                           onClick={() => {
                             setActiveTab(item.id);
-                            if (item.id === "cases") {
-                              setSelectedApplicationId?.(null);
-                            }
+                            setSelectedApplicationId?.(null);
                           }}
                           title={item.label}
                           className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                            isActive && !selectedApplicationId
+                            isActive && (item.id !== "cases" || !selectedApplicationId)
                               ? "bg-slate-100 text-slate-950 font-bold shadow-2xs"
                               : isActive
                               ? "bg-slate-50 text-slate-900 font-bold"
@@ -224,13 +222,11 @@ export function SidebarNavigation({
                     <button
                       onClick={() => {
                         setActiveTab(item.id);
-                        if (item.id === "cases") {
-                          setSelectedApplicationId?.(null);
-                        }
+                        setSelectedApplicationId?.(null);
                         setIsMobileSidebarOpen(false);
                       }}
                       className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer ${
-                        isActive && !selectedApplicationId
+                        isActive && (item.id !== "cases" || !selectedApplicationId)
                           ? "bg-slate-900 text-white shadow-md"
                           : isActive
                           ? "bg-slate-100 text-slate-900"
