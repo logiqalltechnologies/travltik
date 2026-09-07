@@ -7100,51 +7100,55 @@ export function VisaCountryResultPortal({
                 </span>
               </div>
 
-              {/* 4 Quick Stat Badges Strip */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/70 text-left">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+              {/* 4 Key Visa Metadata Badges Box (No Truncation, Roomy Layout) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-50/90 border border-slate-200/80 text-left shadow-2xs">
+                {/* 1. Processing Time */}
+                <div className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Clock className="w-4 h-4" />
                   </div>
-                  <div className="min-w-0">
-                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Processing Time</span>
-                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Processing Time</span>
+                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
                       {getResolvedProcessingTime()}
                     </strong>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                {/* 2. Validity */}
+                <div className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Calendar className="w-4 h-4" />
                   </div>
-                  <div className="min-w-0">
-                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Validity</span>
-                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Validity</span>
+                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
                       {cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}
                     </strong>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+                {/* 3. Stay Period */}
+                <div className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Compass className="w-4 h-4" />
                   </div>
-                  <div className="min-w-0">
-                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Stay Period</span>
-                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Stay Period</span>
+                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
                       {cleanStatValue(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)))}
                     </strong>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                {/* 4. Entry Type */}
+                <div className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Plane className="w-4 h-4" />
                   </div>
-                  <div className="min-w-0">
-                    <span className="text-[12px] sm:text-[13px] font-normal text-slate-500 block truncate">Entry Type</span>
-                    <strong className="text-[15px] sm:text-[16px] font-semibold text-slate-900 truncate block">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Entry Type</span>
+                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
                       {cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}
                     </strong>
                   </div>
@@ -7464,16 +7468,10 @@ export function VisaCountryResultPortal({
                         {/* 2-Column Grid of 8 Document Cards */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                           {overviewDocsList.map((doc: any, idx: number) => {
-                            const isReady = readyDocKeys[doc.title] || false;
                             return (
                               <div
                                 key={idx}
-                                onClick={() => toggleDocReady(doc.title)}
-                                className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all cursor-pointer ${
-                                  isReady
-                                    ? 'bg-emerald-50/40 border-emerald-300 shadow-2xs'
-                                    : 'bg-white border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:border-slate-200/80'
-                                }`}
+                                className="flex items-start gap-3.5 p-4 rounded-2xl border border-slate-100 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:border-slate-200/80 transition-all"
                               >
                                 <div className={`w-9 h-9 rounded-xl ${doc.bg} border flex items-center justify-center shrink-0 font-semibold text-sm shadow-2xs`}>
                                   {doc.icon}
@@ -7481,15 +7479,6 @@ export function VisaCountryResultPortal({
                                 <div className="flex-1 min-w-0">
                                   <h4 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">{doc.title}</h4>
                                   <p className="text-[14px] sm:text-[15px] font-normal text-slate-600 mt-1 leading-relaxed">{doc.desc}</p>
-                                </div>
-                                <div className="shrink-0 mt-0.5">
-                                  <span className={`w-5 h-5 rounded-lg flex items-center justify-center border text-xs transition-colors ${
-                                    isReady
-                                      ? 'bg-emerald-600 border-emerald-600 text-white'
-                                      : 'border-slate-300 text-transparent hover:border-slate-400'
-                                  }`}>
-                                    <Check className="w-3.5 h-3.5 stroke-[3]" />
-                                  </span>
                                 </div>
                               </div>
                             );
@@ -7642,59 +7631,48 @@ export function VisaCountryResultPortal({
                               </div>
                             </div>
 
-                            <button
-                              type="button"
-                              onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
-                              className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer select-none ${
-                                isCompleted
-                                  ? 'bg-emerald-500 border-emerald-600 text-white shadow-xs'
-                                  : 'bg-white border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700 shadow-2xs'
-                              }`}
-                              title={isCompleted ? 'Ready (Click to untick)' : 'Click to tick as Ready'}
-                            >
-                              <span className={`font-mono text-xs font-bold ${isCompleted ? 'text-white' : 'text-slate-400'}`}>
-                                [{isCompleted ? '✓' : ' '}]
-                              </span>
-                              <span>Ready</span>
-                            </button>
+                            </div>
                           </div>
 
-                          {/* Numbered Conditions with Immediate Checkbox */}
+                          {/* Numbered Conditions with Serial No. on left, Condition text in middle, Tick box on right */}
                           {doc.conditions && doc.conditions.length > 0 && (
                             <ol className="pt-2.5 border-t border-slate-100/90 space-y-2 list-none">
                               {doc.conditions.map((cond: string, cIdx: number) => {
                                 const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isCompleted;
                                 return (
-                                  <li key={cIdx} className="flex items-start gap-2 text-[12.5px] sm:text-[13px] text-slate-700 leading-snug">
-                                    <span className="font-bold text-slate-900 shrink-0 select-none mt-0.5 min-w-[16px]">
-                                      {cIdx + 1}.
-                                    </span>
+                                  <li key={cIdx} className="flex items-start justify-between gap-3 text-[12.5px] sm:text-[13px] text-slate-700 leading-snug">
+                                    <div className="flex items-start gap-2 flex-1 min-w-0">
+                                      <span className="font-bold text-slate-900 shrink-0 select-none mt-0.5 min-w-[16px]">
+                                        {cIdx + 1}.
+                                      </span>
+                                      <span
+                                        onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                        className={`cursor-pointer select-none transition-colors ${
+                                          isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
+                                        }`}
+                                      >
+                                        {cond}
+                                      </span>
+                                    </div>
+
                                     <button
                                       type="button"
                                       role="checkbox"
                                       aria-checked={isCondChecked}
                                       onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                      className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
+                                      className={`w-4 h-4 sm:w-5 sm:h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
                                         isCondChecked
                                           ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
                                           : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
                                       }`}
-                                      title={isCondChecked ? 'Marked as satisfied' : 'Tick condition'}
+                                      title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Tick when valid'}
                                     >
                                       {isCondChecked ? (
-                                        <Check className="w-2.5 h-2.5 stroke-[3] text-white" />
+                                        <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3] text-white" />
                                       ) : (
                                         <span className="w-1.5 h-1.5 rounded-[2px] bg-transparent" />
                                       )}
                                     </button>
-                                    <span
-                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                      className={`cursor-pointer select-none transition-colors ${
-                                        isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
-                                      }`}
-                                    >
-                                      {cond}
-                                    </span>
                                   </li>
                                 );
                               })}
@@ -7711,9 +7689,8 @@ export function VisaCountryResultPortal({
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
-                          <th className="py-3.5 px-4 text-left w-[28%]">Document Name</th>
-                          <th className="py-3.5 px-4 text-left w-[52%]">Validity &amp; Conditions</th>
-                          <th className="py-3.5 px-4 text-center w-[20%]">Ready</th>
+                          <th className="py-3.5 px-4 text-left w-[30%]">Document Name</th>
+                          <th className="py-3.5 px-4 text-left w-[70%]">Tick when Valid</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -7748,76 +7725,54 @@ export function VisaCountryResultPortal({
                                 </div>
                               </td>
 
-                              {/* Validity & Conditions - Numbered Format with Immediate Checkbox */}
+                              {/* Tick when Valid - Numbered Condition with Serial No. on Left, Condition Text in Middle, Tick Icon on Right */}
                               <td className="py-4 px-4 align-top">
                                 <ol className="space-y-2.5 list-none">
                                   {doc.conditions.map((cond: string, cIdx: number) => {
                                     const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isYes;
                                     return (
-                                      <li key={cIdx} className="flex items-start gap-2 text-[13px] sm:text-[14px] text-slate-700 leading-relaxed group">
-                                        {/* 1. Number */}
-                                        <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5 min-w-[18px]">
-                                          {cIdx + 1}.
-                                        </span>
+                                      <li
+                                        key={cIdx}
+                                        className="flex items-start justify-between gap-4 p-2 rounded-xl hover:bg-slate-50/80 transition-colors group"
+                                      >
+                                        {/* 1. Serial Number and Condition Text on the Left */}
+                                        <div className="flex items-start gap-2.5 flex-1 min-w-0">
+                                          <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5 min-w-[18px]">
+                                            {cIdx + 1}.
+                                          </span>
+                                          <span
+                                            onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                            className={`cursor-pointer text-[13px] sm:text-[14px] leading-relaxed select-none transition-colors ${
+                                              isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
+                                            }`}
+                                          >
+                                            {cond}
+                                          </span>
+                                        </div>
 
-                                        {/* 2. Immediate check box next to it */}
+                                        {/* 2. Tick Checkbox on the Right */}
                                         <button
                                           type="button"
                                           role="checkbox"
                                           aria-checked={isCondChecked}
                                           onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                          className={`w-4 h-4 sm:w-[18px] sm:h-[18px] rounded border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
+                                          className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
                                             isCondChecked
                                               ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
                                               : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
                                           }`}
-                                          title={isCondChecked ? 'Marked as satisfied (Click to uncheck)' : 'Click to tick this condition'}
+                                          title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Tick when valid'}
                                         >
                                           {isCondChecked ? (
-                                            <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3] text-white" />
+                                            <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
                                           ) : (
                                             <span className="w-2 h-2 rounded-[2px] bg-transparent" />
                                           )}
                                         </button>
-
-                                        {/* 3. Condition text */}
-                                        <span
-                                          onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                          className={`cursor-pointer transition-colors select-none ${
-                                            isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
-                                          }`}
-                                        >
-                                          {cond}
-                                        </span>
                                       </li>
                                     );
                                   })}
                                 </ol>
-                              </td>
-
-                              {/* Ready Column - Square Bracket Ready Checklist */}
-                              <td className="py-4 px-4 align-top text-center">
-                                <div className="flex flex-col items-center gap-1.5">
-                                  <button
-                                    type="button"
-                                    onClick={() => handleToggleDocChecklist(doc.key, 'yes')}
-                                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer select-none ${
-                                      isYes
-                                        ? 'bg-emerald-500 border-emerald-600 text-white shadow-xs ring-2 ring-emerald-500/20'
-                                        : 'bg-white border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-700 hover:bg-emerald-50/40 shadow-2xs'
-                                    }`}
-                                    title={isYes ? 'Ready (Click to untick)' : 'Click to tick as Ready'}
-                                  >
-                                    <span className={`font-mono text-sm font-bold ${isYes ? 'text-white' : 'text-slate-400'}`}>
-                                      [{isYes ? '✓' : ' '}]
-                                    </span>
-                                    <span>Ready</span>
-                                  </button>
-
-                                  <span className="text-[11px] font-medium text-slate-400">
-                                    {isYes ? '✓ Ready / Available' : 'Tick [✓] when ready'}
-                                  </span>
-                                </div>
                               </td>
 
                             </tr>
