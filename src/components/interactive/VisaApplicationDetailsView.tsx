@@ -499,7 +499,29 @@ export function VisaApplicationDetailsView({
           }
         ];
 
-  const [userCheckedDocs, setUserCheckedDocs] = useState<Record<string, boolean>>({});
+  const storageDocKey = `user_checked_docs_${application?.id || application?.country || 'default'}`;
+  const [userCheckedDocs, setUserCheckedDocs] = useState<Record<string, boolean>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(storageDocKey);
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
+  });
+
+  const handleToggleDocReady = (docTitle: string, currentReady: boolean) => {
+    setUserCheckedDocs(prev => {
+      const nextState = !currentReady;
+      const updated = { ...prev, [docTitle]: nextState };
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(storageDocKey, JSON.stringify(updated));
+        } catch (e) {}
+      }
+      return updated;
+    });
+  };
 
   const checklistDocuments = rawDocs.map((docItem) => {
     const t = docItem.title.toLowerCase();
@@ -524,8 +546,10 @@ export function VisaApplicationDetailsView({
 
     const isUploaded = Boolean(matchedVaultDoc);
     const isVerified = Boolean(matchedVaultDoc && (matchedVaultDoc.verified || matchedVaultDoc.status === 'verified'));
-    const isManuallyChecked = Boolean(userCheckedDocs[docItem.title]);
-    const isReady = isVerified || (isUploaded && isManuallyChecked) || isManuallyChecked;
+    const hasExplicitToggle = userCheckedDocs[docItem.title] !== undefined;
+    const isReady = hasExplicitToggle
+      ? Boolean(userCheckedDocs[docItem.title])
+      : Boolean(isVerified || isUploaded);
 
     return {
       name: docItem.title,
@@ -533,95 +557,11 @@ export function VisaApplicationDetailsView({
       mandatory: docItem.is_mandatory !== false,
       isUploaded,
       isVerified,
-      isManuallyChecked,
+      isManuallyChecked: hasExplicitToggle ? Boolean(userCheckedDocs[docItem.title]) : false,
       isReady,
       matchedFileName: matchedVaultDoc?.name || matchedVaultDoc?.label || matchedVaultDoc?.fileName || null
     };
   });
-
-  // Calculate live dynamic readiness score
-  const readyDocsCount = checklistDocuments.filter(d => d.isReady).length;
-  const mandatoryDocs = checklistDocuments.filter(d => d.mandatory);
-  const mandatoryReadyCount = checklistDocuments.filter(d => d.mandatory && d.isReady).length;
-  const allMandatoryReady = mandatoryDocs.length > 0 ? (mandatoryReadyCount >= mandatoryDocs.length) : (readyDocsCount > 0);
-  const docsRatio = checklistDocuments.length > 0 ? (readyDocsCount / checklistDocuments.length) : 0;
-
-  // Check genuine vault documents count
-  const genuineVaultDocs = (vaultDocuments || []).filter(
-    (d: any) => d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
-  );
-  const genuineVaultDocsCount = genuineVaultDocs.length;
-
-  const calculatedReadinessScore = typeof readinessScore === 'number' && readinessScore > 0
-    ? readinessScore
-    : (application?.readinessScore || application?.score || Math.max(45, Math.min(100, Math.round(docsRatio * 50 + (allMandatoryReady ? 35 : 15) + (genuineVaultDocsCount > 0 ? 15 : 0)))));
-
-  const scoreLevel = calculatedReadinessScore >= 80 
-    ? 'High Approval Probability' 
-    : calculatedReadinessScore >= 60 
-    ? 'Good Readiness' 
-    : 'Action Required';
-
-  // Pipeline Statuses
-  const appStatus = (application?.status || '').toLowerCase();
-  const isApproved = appStatus.includes('approved') || appStatus.includes('granted');
-  const isFeePaid = Boolean(application?.isFeePaid) || appStatus.includes('fee paid') || appStatus.includes('submitted to embassy');
-  const isFormSubmitted = Boolean(application?.isFormSubmitted) || appStatus.includes('form submitted') || appStatus.includes('in review');
-
-  // Dynamic step calculation based on genuine documents & application pipeline state
-  let currentStep = 1;
-  let dynamicProgress = 10;
-
-  if (isApproved) {
-    currentStep = 6;
-    dynamicProgress = 100;
-  } else if (isFeePaid) {
-    currentStep = 5;
-    dynamicProgress = 85;
-  } else if (isFormSubmitted) {
-    currentStep = 4;
-    dynamicProgress = 65;
-  } else if (allMandatoryReady && mandatoryDocs.length > 0) {
-    currentStep = 3;
-    dynamicProgress = 45;
-  } else if (readyDocsCount > 0 || genuineVaultDocsCount > 0) {
-    // User has uploaded at least 1 document: Step 1 (Requirements) is checked, Step 2 (Documents) is in progress!
-    currentStep = 2;
-    dynamicProgress = Math.min(40, 15 + Math.round((readyDocsCount / Math.max(1, checklistDocuments.length)) * 25));
-  } else {
-    // Fresh start: 0 documents uploaded, fresh case: Step 1 (Requirements) is in progress, 0 completed!
-    currentStep = 1;
-    dynamicProgress = 10;
-  }
-
-  const progressPercent = typeof application?.progress === 'number' && application.progress > dynamicProgress && (genuineVaultDocsCount > 0 || isFormSubmitted)
-    ? application.progress
-    : dynamicProgress;
-
-  const [expandedSteps, setExpandedSteps] = useState<Record<number, boolean>>({
-    [currentStep]: true
-  });
-  const [allExpanded, setAllExpanded] = useState(false);
-
-  // Sync expanded steps whenever currentStep changes
-  useEffect(() => {
-    setExpandedSteps(prev => ({ ...prev, [currentStep]: true }));
-  }, [currentStep]);
-
-  const handleCopyId = () => {
-    if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(trackingId);
-      setCopiedId(true);
-      setTimeout(() => setCopiedId(false), 2000);
-    }
-  };
-
-  const toggleStep = (stepNumber: number) => {
-    setExpandedSteps(prev => ({
-      ...prev,
-      [stepNumber]: !prev[stepNumber]
-    }));
-  };
 
   // Dynamic Route Steps
   const routeSteps: string[] = (routeData?.how_to_apply && Array.isArray(routeData.how_to_apply) && routeData.how_to_apply.length >= 3)
@@ -666,11 +606,98 @@ export function VisaApplicationDetailsView({
         `Passport Collection: Track status and receive stamped visa passport via courier or VAC collection`
       ];
 
+  // User-interactive completed steps state with local storage persistence
+  const storageStepsKey = `user_completed_steps_${application?.id || application?.country || 'default'}`;
+  const [completedSteps, setCompletedSteps] = useState<Record<number, boolean>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(storageStepsKey);
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
+  });
+
+  const handleToggleStepCompleted = (e: React.MouseEvent, stepNum: number) => {
+    e.stopPropagation();
+    setCompletedSteps(prev => {
+      const nextVal = !prev[stepNum];
+      const updated = { ...prev, [stepNum]: nextVal };
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(storageStepsKey, JSON.stringify(updated));
+        } catch (e) {}
+      }
+      return updated;
+    });
+  };
+
+  const completedStepsCount = Object.values(completedSteps).filter(Boolean).length;
+  const totalStepsCount = Math.max(1, routeSteps.length);
+
+  // Calculate live dynamic readiness score
+  const readyDocsCount = checklistDocuments.filter(d => d.isReady).length;
+  const totalDocsCount = Math.max(1, checklistDocuments.length);
+  const mandatoryDocs = checklistDocuments.filter(d => d.mandatory);
+  const mandatoryReadyCount = checklistDocuments.filter(d => d.mandatory && d.isReady).length;
+  const docsRatio = totalDocsCount > 0 ? (readyDocsCount / totalDocsCount) : 0;
+  const stepsRatio = totalStepsCount > 0 ? (completedStepsCount / totalStepsCount) : 0;
+
+  // For a fresh user with 0 completed steps and 0 ready documents, score is strictly 0%!
+  const calculatedReadinessScore = (readyDocsCount === 0 && completedStepsCount === 0)
+    ? 0
+    : typeof readinessScore === 'number' && readinessScore > 0 && (readyDocsCount > 0 || completedStepsCount > 0)
+    ? readinessScore
+    : Math.min(100, Math.round(docsRatio * 60 + stepsRatio * 40));
+
+  const scoreLevel = calculatedReadinessScore >= 80 
+    ? 'High Approval Probability' 
+    : calculatedReadinessScore >= 60 
+    ? 'Good Readiness' 
+    : calculatedReadinessScore > 0
+    ? 'Action Required'
+    : 'Not Started';
+
+  // Pipeline Statuses
+  const appStatus = (application?.status || '').toLowerCase();
+  const isApproved = appStatus.includes('approved') || appStatus.includes('granted');
+  const isFeePaid = Boolean(application?.isFeePaid) || appStatus.includes('fee paid') || appStatus.includes('submitted to embassy') || Boolean(completedSteps[5]);
+  const isFormSubmitted = Boolean(application?.isFormSubmitted) || appStatus.includes('form submitted') || appStatus.includes('in review') || Boolean(completedSteps[4]);
+
+  // First uncompleted step is the active step
+  const firstUncompletedStep = routeSteps.findIndex((_, i) => !completedSteps[i + 1]) + 1;
+  const currentStep = firstUncompletedStep > 0 ? firstUncompletedStep : totalStepsCount;
+  const dynamicProgress = calculatedReadinessScore;
+
+  const progressPercent = typeof application?.progress === 'number' && application.progress > dynamicProgress && (readyDocsCount > 0 || completedStepsCount > 0)
+    ? application.progress
+    : dynamicProgress;
+
+  const [expandedSteps, setExpandedSteps] = useState<Record<number, boolean>>({
+    1: true
+  });
+  const [allExpanded, setAllExpanded] = useState(false);
+
+  const handleCopyId = () => {
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(trackingId);
+      setCopiedId(true);
+      setTimeout(() => setCopiedId(false), 2000);
+    }
+  };
+
+  const toggleStep = (stepNumber: number) => {
+    setExpandedSteps(prev => ({
+      ...prev,
+      [stepNumber]: !prev[stepNumber]
+    }));
+  };
+
   const toggleAllSteps = () => {
     const nextState = !allExpanded;
     setAllExpanded(nextState);
     const newMap: Record<number, boolean> = {};
-    for (let i = 1; i <= Math.max(6, routeSteps.length); i++) {
+    for (let i = 1; i <= totalStepsCount; i++) {
       newMap[i] = nextState;
     }
     setExpandedSteps(newMap);
@@ -957,19 +984,25 @@ export function VisaApplicationDetailsView({
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0 pr-2">
-                        <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
-                          isStepCompleted 
-                            ? 'bg-emerald-500 text-white' 
-                            : isStepActive 
-                            ? 'bg-[#00a896] text-white' 
-                            : 'border-2 border-slate-300 bg-white'
-                        }`}>
+                        {/* Interactive Clickable Step Checkbox */}
+                        <button
+                          type="button"
+                          onClick={(e) => handleToggleStepCompleted(e, stepNum)}
+                          title={isStepCompleted ? "Completed (Click to unselect)" : "Click to mark completed"}
+                          className={`w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95 ${
+                            isStepCompleted 
+                              ? 'bg-emerald-500 text-white border border-emerald-600' 
+                              : isStepActive 
+                              ? 'border-2 border-[#00a896] bg-emerald-50/40 text-[#00a896]' 
+                              : 'border-2 border-slate-300 bg-white hover:border-[#00a896]'
+                          }`}
+                        >
                           {isStepCompleted ? (
                             <Check className="w-3.5 h-3.5 stroke-[3]" />
                           ) : isStepActive ? (
-                            <CheckSquare className="w-3.5 h-3.5 stroke-[2.5]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#00a896]" />
                           ) : null}
-                        </div>
+                        </button>
                         <div className="min-w-0 flex-1">
                           <h3 className={`text-xs sm:text-sm font-black break-words whitespace-normal ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
                             {stepNum}. {stepTitle}
@@ -1071,7 +1104,7 @@ export function VisaApplicationDetailsView({
                   <tr className="border-b border-slate-100 text-[11px] uppercase font-bold text-slate-400 tracking-wider">
                     <th className="py-2.5 px-3 md:w-[40%]">DOCUMENT</th>
                     <th className="py-2.5 px-3 hidden md:table-cell md:w-[45%]">REQUIREMENT</th>
-                    <th className="py-2.5 px-3 text-right md:text-center whitespace-nowrap">READY TO USE</th>
+                    <th className="py-2.5 px-3 text-right md:text-center whitespace-nowrap">READY</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -1102,24 +1135,24 @@ export function VisaApplicationDetailsView({
                         </p>
                       </td>
 
-                      {/* 3. READY TO USE (Square format checkbox) */}
+                      {/* 3. READY (Square format checkbox) */}
                       <td className="py-2.5 px-3 text-right md:text-center align-middle">
                         <div className="flex items-center justify-end md:justify-center">
                           {doc.isReady ? (
                             <button
                               type="button"
-                              onClick={() => setUserCheckedDocs(prev => ({ ...prev, [doc.name]: false }))}
-                              title="Ready to use (Click to uncheck)"
-                              className="w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md bg-emerald-500 text-white border border-emerald-600 shadow-2xs hover:scale-105 transition-all flex items-center justify-center shrink-0 cursor-pointer"
+                              onClick={() => handleToggleDocReady(doc.name, true)}
+                              title="Ready (Click to uncheck)"
+                              className="w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md bg-emerald-500 text-white border border-emerald-600 shadow-2xs hover:scale-105 active:scale-95 transition-all flex items-center justify-center shrink-0 cursor-pointer"
                             >
                               <Check className="w-3.5 h-3.5 stroke-[3]" />
                             </button>
                           ) : (
                             <button
                               type="button"
-                              onClick={() => setUserCheckedDocs(prev => ({ ...prev, [doc.name]: true }))}
+                              onClick={() => handleToggleDocReady(doc.name, false)}
                               title="Not ready yet (Click when document is prepared)"
-                              className="w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md border-2 border-amber-400 bg-amber-50/40 hover:border-emerald-500 hover:bg-emerald-50/60 hover:scale-105 transition-all flex items-center justify-center shrink-0 cursor-pointer shadow-2xs"
+                              className="w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md border-2 border-amber-400 bg-amber-50/40 hover:border-emerald-500 hover:bg-emerald-50/60 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shrink-0 cursor-pointer shadow-2xs"
                             >
                             </button>
                           )}
@@ -1137,7 +1170,7 @@ export function VisaApplicationDetailsView({
                 <span className="w-4 h-4 rounded-md bg-emerald-500 text-white border border-emerald-600 flex items-center justify-center shadow-2xs shrink-0">
                   <Check className="w-2.5 h-2.5 stroke-[3]" />
                 </span>
-                <span>Ready to Use</span>
+                <span>Ready</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-4 h-4 rounded-md border-2 border-amber-400 bg-amber-50/40 shrink-0" />
@@ -1152,10 +1185,10 @@ export function VisaApplicationDetailsView({
                   type="checkbox"
                   checked={confirmedDeclaration}
                   onChange={(e) => setConfirmedDeclaration(e.target.checked)}
-                  className="w-4 h-4 text-emerald-600 rounded mt-0.5 focus:ring-emerald-500 border-emerald-300 cursor-pointer"
+                  className="mt-0.5 w-4 h-4 rounded-sm border-emerald-400 text-emerald-600 focus:ring-emerald-500"
                 />
-                <span className="text-xs font-bold text-slate-800 leading-relaxed">
-                  I confirm that all the above documents are true, valid and ready to be used as per the terms and conditions of the embassy/consulate.
+                <span className="text-xs font-medium text-slate-700 leading-relaxed">
+                  I confirm that all documents match my passport details and meet the consular specifications outlined above.
                 </span>
               </label>
               <div className="pl-7">
@@ -1172,33 +1205,36 @@ export function VisaApplicationDetailsView({
           </div>
         </div>
 
-        {/* ── RIGHT COLUMN (4 COLS: STATS & REMINDER CARDS) ── */}
-        <div className="lg:col-span-4 space-y-6">
-          
-          {/* 1. VISA READINESS SCORE CARD */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-xs text-center space-y-4">
-            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">Visa Readiness Score</h3>
+        {/* ══════════ RIGHT SIDEBAR (4 cols) ══════════ */}
+        <div className="lg:col-span-4 space-y-5">
+          {/* 1. DYNAMIC VISA READINESS SCORE CARD */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs text-center space-y-4">
+            <h3 className="text-xs font-black uppercase tracking-wider text-slate-900">
+              VISA READINESS SCORE
+            </h3>
 
-            {/* Circular Gauge / Donut */}
-            <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
-              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                {/* Background Ring */}
-                <path
+            {/* Circular Progress Gauge */}
+            <div className="relative flex items-center justify-center my-2">
+              <svg className="w-36 h-36 transform -rotate-90">
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="15.9155"
                   className="text-slate-100"
                   strokeWidth="3.5"
                   stroke="currentColor"
                   fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
-                {/* Dynamic Progress Ring */}
-                <path
-                  className="text-emerald-500 transition-all duration-1000 ease-out"
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="15.9155"
+                  className="text-emerald-500 transition-all duration-500 ease-out"
                   strokeDasharray={`${calculatedReadinessScore}, 100`}
                   strokeWidth="3.5"
                   strokeLinecap="round"
                   stroke="currentColor"
                   fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
               </svg>
               <div className="absolute flex flex-col items-center">
@@ -1210,7 +1246,9 @@ export function VisaApplicationDetailsView({
             <p className="text-xs text-slate-500 font-medium leading-relaxed">
               {calculatedReadinessScore >= 75 
                 ? `Your application dossier meets official consular criteria for ${destination}!` 
-                : `Upload missing documents to strengthen your dossier before final filing.`}
+                : calculatedReadinessScore > 0
+                ? `Upload missing documents to strengthen your dossier before final filing.`
+                : `Complete steps and assemble required documents to build your readiness score.`}
             </p>
 
             {/* Dynamic Score Breakdown Bars */}
@@ -1220,10 +1258,10 @@ export function VisaApplicationDetailsView({
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-slate-700">Requirements Check</span>
-                  <span className="text-slate-950">100%</span>
+                  <span className="text-slate-950">{Math.round(stepsRatio * 100)}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 rounded-full" style={{ width: '100%' }} />
+                  <div className="h-full bg-emerald-500 rounded-full transition-all duration-300" style={{ width: `${Math.round(stepsRatio * 100)}%` }} />
                 </div>
               </div>
 
@@ -1233,27 +1271,27 @@ export function VisaApplicationDetailsView({
                   <span className="text-slate-950">{Math.round(docsRatio * 100)}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${Math.round(docsRatio * 100)}%` }} />
+                  <div className="h-full bg-indigo-500 rounded-full transition-all duration-300" style={{ width: `${Math.round(docsRatio * 100)}%` }} />
                 </div>
               </div>
 
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-slate-700">Application Form</span>
-                  <span className="text-slate-950">{currentStep >= 3 ? '100%' : '50%'}</span>
+                  <span className="text-slate-950">{completedSteps[4] || isFormSubmitted ? '100%' : (completedSteps[3] ? '50%' : '0%')}</span>
                 </div>
                 <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-500 rounded-full" style={{ width: currentStep >= 3 ? '100%' : '50%' }} />
+                  <div className="h-full bg-blue-500 rounded-full transition-all duration-300" style={{ width: completedSteps[4] || isFormSubmitted ? '100%' : (completedSteps[3] ? '50%' : '0%') }} />
                 </div>
               </div>
 
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-slate-700">Fee Settlement</span>
-                  <span className="text-slate-950">{currentStep >= 4 ? '100%' : '0%'}</span>
+                  <span className="text-slate-950">{completedSteps[5] || isFeePaid ? '100%' : '0%'}</span>
                 </div>
                 <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 rounded-full" style={{ width: currentStep >= 4 ? '100%' : '0%' }} />
+                  <div className="h-full bg-emerald-500 rounded-full transition-all duration-300" style={{ width: completedSteps[5] || isFeePaid ? '100%' : '0%' }} />
                 </div>
               </div>
             </div>

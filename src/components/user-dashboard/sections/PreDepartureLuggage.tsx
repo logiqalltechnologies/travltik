@@ -295,10 +295,15 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
   // ── Edit Trip Form State ──
   const [editTripForm, setEditTripForm] = useState({
     fromCity: "Bengaluru (BLR)",
+    fromCountry: "India",
     toCity: "Goa (GOI)",
+    toCountry: "India",
     departureDate: "12 Oct 2025",
     returnDate: "16 Oct 2025",
-    duration: "5 Days"
+    duration: "5 Days",
+    visaApprovalRequired: "No",
+    forexCardRequired: "Required",
+    travelInsuranceRequired: "Required"
   });
 
   // ── Add/Edit Traveller Form State ──
@@ -375,31 +380,36 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
     }
   }, [fullName]);
 
-  // Sync when tripType changes
-  useEffect(() => {
-    if (tripType === "international") {
-      setTripDetails((prev) => ({
-        ...prev,
-        toCity: selectedDestination && selectedDestination !== "Goa" ? `${selectedDestination} Int'l` : "Paris (CDG)",
-        toCountry: selectedDestination && selectedDestination !== "Goa" ? selectedDestination : "France",
-        visaApprovalRequired: "Yes",
-        forexCardRequired: "Required",
-        travelInsuranceRequired: "Required",
-        destinationImage: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80"
-      }));
+  // Handle trip type toggle without destroying custom user edits
+  const handleSwitchTripType = (newType: "internal" | "international") => {
+    setTripType(newType);
+    localStorage.setItem("pre_departure_trip_type", newType);
+    if (newType === "international") {
+      setTripDetails((prev) => {
+        const updated = {
+          ...prev,
+          toCity: prev.toCity && prev.toCity !== "Goa (GOI)" ? prev.toCity : (selectedDestination && selectedDestination !== "Goa" ? `${selectedDestination} Int'l` : "Paris (CDG)"),
+          toCountry: prev.toCountry && prev.toCountry !== "India" ? prev.toCountry : (selectedDestination && selectedDestination !== "Goa" ? selectedDestination : "France"),
+          visaApprovalRequired: prev.visaApprovalRequired === "No" ? "Yes" : prev.visaApprovalRequired,
+          destinationImage: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80"
+        };
+        localStorage.setItem("pre_departure_trip_details", JSON.stringify(updated));
+        return updated;
+      });
     } else {
-      setTripDetails((prev) => ({
-        ...prev,
-        toCity: "Goa (GOI)",
-        toCountry: "India",
-        visaApprovalRequired: "No",
-        forexCardRequired: "Required",
-        travelInsuranceRequired: "Required",
-        destinationImage: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80"
-      }));
+      setTripDetails((prev) => {
+        const updated = {
+          ...prev,
+          toCity: "Goa (GOI)",
+          toCountry: "India",
+          visaApprovalRequired: "No",
+          destinationImage: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80"
+        };
+        localStorage.setItem("pre_departure_trip_details", JSON.stringify(updated));
+        return updated;
+      });
     }
-    localStorage.setItem("pre_departure_trip_type", tripType);
-  }, [tripType, selectedDestination]);
+  };
 
   // Persist checked items
   const handleToggleItem = (itemId: number) => {
@@ -438,14 +448,31 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
     const updated = {
       ...tripDetails,
       fromCity: editTripForm.fromCity,
+      fromCountry: editTripForm.fromCountry,
       toCity: editTripForm.toCity,
+      toCountry: editTripForm.toCountry,
       departureDate: editTripForm.departureDate,
       returnDate: editTripForm.returnDate,
-      duration: editTripForm.duration
+      duration: editTripForm.duration,
+      visaApprovalRequired: editTripForm.visaApprovalRequired,
+      forexCardRequired: editTripForm.forexCardRequired,
+      travelInsuranceRequired: editTripForm.travelInsuranceRequired
     };
     setTripDetails(updated);
     localStorage.setItem("pre_departure_trip_details", JSON.stringify(updated));
     setShowEditTripModal(false);
+
+    // Sync with Neon DB vault
+    if (email) {
+      fetch("/api/user/vault-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "save_journey",
+          trip_details: updated
+        })
+      }).catch(() => {});
+    }
   };
 
   // Add / Edit Traveller
@@ -551,7 +578,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               {/* International Trip Button */}
               <button
                 type="button"
-                onClick={() => setTripType("international")}
+                onClick={() => handleSwitchTripType("international")}
                 className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer bg-white shadow-2xs border ${
                   tripType === "international"
                     ? "border-purple-200 border-b-[3px] border-b-[#6b46c1] text-[#6b46c1]"
@@ -565,7 +592,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               {/* Internal Trip Button */}
               <button
                 type="button"
-                onClick={() => setTripType("internal")}
+                onClick={() => handleSwitchTripType("internal")}
                 className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer bg-white shadow-2xs border ${
                   tripType === "internal"
                     ? "border-emerald-200 border-b-[3px] border-b-[#00705a] text-[#00705a]"
@@ -606,10 +633,15 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 onClick={() => {
                   setEditTripForm({
                     fromCity: tripDetails.fromCity,
+                    fromCountry: tripDetails.fromCountry,
                     toCity: tripDetails.toCity,
+                    toCountry: tripDetails.toCountry,
                     departureDate: tripDetails.departureDate,
                     returnDate: tripDetails.returnDate,
-                    duration: tripDetails.duration
+                    duration: tripDetails.duration,
+                    visaApprovalRequired: tripDetails.visaApprovalRequired,
+                    forexCardRequired: tripDetails.forexCardRequired,
+                    travelInsuranceRequired: tripDetails.travelInsuranceRequired
                   });
                   setShowEditTripModal(true);
                 }}
@@ -1299,86 +1331,173 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
 
       {/* ══════════ MODALS ══════════ */}
 
-      {/* 1. EDIT TRIP DETAILS MODAL */}
+      {/* 1. EDIT TRIP DETAILS MODAL (Luxurious iPhone / iOS 2030 aesthetic) */}
       {showEditTripModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl text-left border border-slate-200 animate-fade-up">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-base font-black text-slate-900">Edit Trip Details</h3>
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 z-50">
+          <div className="bg-white/95 backdrop-blur-xl rounded-3xl max-w-lg w-full p-6 sm:p-7 space-y-5 shadow-2xl text-left border border-slate-200/80 animate-fade-up">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
+                  <Edit2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 tracking-tight">Edit Trip Details</h3>
+                  <p className="text-[11px] text-slate-500 font-medium">Update your journey route, schedule & requirements</p>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => setShowEditTripModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveTripDetails} className="space-y-3 text-xs">
-              <div>
-                <label className="font-bold text-slate-700 block mb-1">From (Origin City &amp; Airport)</label>
-                <input
-                  type="text"
-                  value={editTripForm.fromCity}
-                  onChange={(e) => setEditTripForm({ ...editTripForm, fromCity: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
-                  required
-                />
+            <form onSubmit={handleSaveTripDetails} className="space-y-4 text-xs">
+              {/* Origin Section */}
+              <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60 space-y-2.5">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Origin</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div>
+                    <label className="font-semibold text-slate-700 block mb-1">From City &amp; Airport</label>
+                    <input
+                      type="text"
+                      value={editTripForm.fromCity}
+                      onChange={(e) => setEditTripForm({ ...editTripForm, fromCity: e.target.value })}
+                      placeholder="e.g. Bengaluru (BLR)"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="font-semibold text-slate-700 block mb-1">From Country</label>
+                    <input
+                      type="text"
+                      value={editTripForm.fromCountry}
+                      onChange={(e) => setEditTripForm({ ...editTripForm, fromCountry: e.target.value })}
+                      placeholder="e.g. India"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <label className="font-bold text-slate-700 block mb-1">To (Destination City &amp; Airport)</label>
-                <input
-                  type="text"
-                  value={editTripForm.toCity}
-                  onChange={(e) => setEditTripForm({ ...editTripForm, toCity: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
-                  required
-                />
+              {/* Destination Section */}
+              <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60 space-y-2.5">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Destination</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div>
+                    <label className="font-semibold text-slate-700 block mb-1">To City &amp; Airport</label>
+                    <input
+                      type="text"
+                      value={editTripForm.toCity}
+                      onChange={(e) => setEditTripForm({ ...editTripForm, toCity: e.target.value })}
+                      placeholder="e.g. Goa (GOI) or Paris (CDG)"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="font-semibold text-slate-700 block mb-1">To Country</label>
+                    <input
+                      type="text"
+                      value={editTripForm.toCountry}
+                      onChange={(e) => setEditTripForm({ ...editTripForm, toCountry: e.target.value })}
+                      placeholder="e.g. India or France"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              {/* Schedule & Duration */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Departure Date</label>
+                  <label className="font-semibold text-slate-700 block mb-1">Departure Date</label>
                   <input
                     type="text"
                     value={editTripForm.departureDate}
                     onChange={(e) => setEditTripForm({ ...editTripForm, departureDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
+                    placeholder="e.g. 12 Oct 2025"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Return Date</label>
+                  <label className="font-semibold text-slate-700 block mb-1">Return Date</label>
                   <input
                     type="text"
                     value={editTripForm.returnDate}
                     onChange={(e) => setEditTripForm({ ...editTripForm, returnDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
+                    placeholder="e.g. 16 Oct 2025"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="font-semibold text-slate-700 block mb-1">Total Duration</label>
+                  <input
+                    type="text"
+                    value={editTripForm.duration}
+                    onChange={(e) => setEditTripForm({ ...editTripForm, duration: e.target.value })}
+                    placeholder="e.g. 5 Days"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="font-bold text-slate-700 block mb-1">Total Duration</label>
-                <input
-                  type="text"
-                  value={editTripForm.duration}
-                  onChange={(e) => setEditTripForm({ ...editTripForm, duration: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
-                />
+              {/* Travel Requirements */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                <div>
+                  <label className="font-semibold text-slate-700 block mb-1">Visa Approval</label>
+                  <select
+                    value={editTripForm.visaApprovalRequired}
+                    onChange={(e) => setEditTripForm({ ...editTripForm, visaApprovalRequired: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                  >
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Exempt">Exempt</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="font-semibold text-slate-700 block mb-1">Forex Card</label>
+                  <select
+                    value={editTripForm.forexCardRequired}
+                    onChange={(e) => setEditTripForm({ ...editTripForm, forexCardRequired: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                  >
+                    <option value="Required">Required</option>
+                    <option value="Optional">Optional</option>
+                    <option value="Not Required">Not Required</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="font-semibold text-slate-700 block mb-1">Travel Insurance</label>
+                  <select
+                    value={editTripForm.travelInsuranceRequired}
+                    onChange={(e) => setEditTripForm({ ...editTripForm, travelInsuranceRequired: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                  >
+                    <option value="Required">Required</option>
+                    <option value="Optional">Optional</option>
+                    <option value="Not Required">Not Required</option>
+                  </select>
+                </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setShowEditTripModal(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer"
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold shadow-sm shadow-teal-600/20 active:scale-[0.98] transition-all cursor-pointer"
                 >
                   Save Changes
                 </button>

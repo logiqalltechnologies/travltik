@@ -292,7 +292,7 @@ const domesticCountryData: Record<string, {
     states: [
       { value: 'New South Wales', label: 'New South Wales (NSW)', icon: '🦘' },
       { value: 'Victoria', label: 'Victoria (VIC)', icon: '☕' },
-      { value: 'Queensland', label: 'Queensland (QLD)', icon: '🐠' },
+  { value: 'Queensland', label: 'Queensland (QLD)', icon: '🐠' },
       { value: 'Western Australia', label: 'Western Australia (WA)', icon: '🏜️' },
       { value: 'Tasmania', label: 'Tasmania (TAS)', icon: '🌲' },
     ],
@@ -302,6 +302,259 @@ const domesticCountryData: Record<string, {
       { value: 'Great Ocean Road Melbourne', label: 'Great Ocean Road & 12 Apostles', icon: '🌊' },
       { value: 'Sydney Harbour & Blue Mountains', label: 'Sydney Harbour & Blue Mountains', icon: '🌉' },
       { value: 'Tasmania Cradle Mountain Tour', label: 'Tasmania Wilderness & Hobart Tour', icon: '🌲' },
+    ]
+  },
+  Germany: {
+    name: 'Germany',
+    flag: '🇩🇪',
+    badge: '🇩🇪 Germany Domestic Tours',
+    states: [
+      { value: 'Bavaria', label: 'Bavaria (München)', icon: '🏰' },
+      { value: 'Berlin', label: 'Berlin State', icon: '🏛️' },
+      { value: 'Baden-Württemberg', label: 'Baden-Württemberg (Black Forest)', icon: '🌲' },
+      { value: 'Hamburg', label: 'Hamburg City Port', icon: '⚓' },
+      { value: 'Hesse', label: 'Hesse (Frankfurt)', icon: '🏙️' },
+    ],
+    destinations: [
+      { value: 'Bavarian Alps & Neuschwanstein', label: 'Bavarian Alps & Fairy-tale Castles', icon: '🏰' },
+      { value: 'Black Forest & Baden-Baden', label: 'Black Forest Nature & Thermal Spas', icon: '🌲' },
+      { value: 'Berlin Cultural & Wall Tour', label: 'Berlin Historic Landmarks & Museums', icon: '🏛️' },
+      { value: 'Rhine Valley Vineyards & Cruise', label: 'Romantic Rhine River Valley Cruise', icon: '🍇' },
+    ]
+  },
+  France: {
+    name: 'France',
+    flag: '🇫🇷',
+    badge: '🇫🇷 France Domestic Tours',
+    states: [
+      { value: 'Île-de-France', label: 'Île-de-France (Paris)', icon: '🗼' },
+      { value: "Provence-Alpes-Côte d'Azur", label: 'French Riviera & Provence', icon: '🏖️' },
+      { value: 'Auvergne-Rhône-Alpes', label: 'French Alps (Chamonix)', icon: '⛷️' },
+      { value: 'Normandy', label: 'Normandy & Brittany', icon: '🏰' },
+    ],
+    destinations: [
+      { value: 'Paris Highlights & Louvre', label: 'Paris Icons, Louvre & Seine Cruise', icon: '🗼' },
+      { value: 'French Riviera & Nice Coast', label: 'Nice, Cannes & Monaco Coastal Tour', icon: '🏖️' },
+      { value: 'Chamonix Mont-Blanc Alpine', label: 'Mont-Blanc Ski & Alpine Panorama', icon: '🏔️' },
+      { value: 'Provence Lavender & Vineyards', label: 'Provence Villages & Lavender Trails', icon: '🍇' },
+    ]
+  },
+  Singapore: {
+    name: 'Singapore',
+    flag: '🇸🇬',
+    badge: '🇸🇬 Singapore City & Island Breaks',
+    states: [
+      { value: 'Central Singapore', label: 'Marina Bay & Downtown', icon: '🏙️' },
+      { value: 'Sentosa', label: 'Sentosa Island Resort', icon: '🏖️' },
+      { value: 'Jurong & West', label: 'Jurong Lake & Science Hub', icon: '🌳' },
+      { value: 'East Coast', label: 'East Coast & Changi Coast', icon: '🌊' },
+    ],
+    destinations: [
+      { value: 'Marina Bay Sands & Gardens', label: 'Marina Bay Sands & Supertree Grove', icon: '🌸' },
+      { value: 'Sentosa Universal & Beaches', label: 'Universal Studios & Siloso Beach', icon: '🎢' },
+      { value: 'Night Safari & Mandai Wildlife', label: 'Singapore Zoo & Mandai Rainforest', icon: '🦁' },
+    ]
+  },
+  'New Zealand': {
+    name: 'New Zealand',
+    flag: '🇳🇿',
+    badge: '🇳🇿 New Zealand Domestic Tours',
+    states: [
+      { value: 'Otago (Queenstown)', label: 'Otago & Queenstown', icon: '🏔️' },
+      { value: 'Auckland Region', label: 'Auckland & Islands', icon: '⛵' },
+      { value: 'Canterbury', label: 'Canterbury & Christchurch', icon: '🐑' },
+      { value: 'Waikato', label: 'Waikato & Rotorua', icon: '♨️' },
+    ],
+    destinations: [
+      { value: 'Queenstown Adventure & Milford Sound', label: 'Queenstown & Milford Sound Fjord', icon: '🚤' },
+      { value: 'Rotorua Geothermal & Hobbiton', label: 'Hobbiton Movie Set & Geothermal Springs', icon: '🌋' },
+      { value: 'Mount Cook & Lake Tekapo', label: 'Aoraki Mt Cook & Dark Sky Reserve', icon: '🌌' },
+    ]
+  },
+  Japan: {
+    name: 'Japan',
+    flag: '🇯🇵',
+    badge: '🇯🇵 Japan Domestic Discoveries',
+    states: [
+      { value: 'Kanto (Tokyo)', label: 'Kanto & Tokyo Metropolis', icon: '🗼' },
+      { value: 'Kansai (Kyoto/Osaka)', label: 'Kansai, Kyoto & Osaka', icon: '⛩️' },
+      { value: 'Hokkaido', label: 'Hokkaido (Sapporo/Niseko)', icon: '❄️' },
+      { value: 'Chubu (Mt. Fuji)', label: 'Chubu & Mt. Fuji Lake Region', icon: '🗻' },
+      { value: 'Okinawa', label: 'Okinawa Tropical Islands', icon: '🏝️' },
+    ],
+    destinations: [
+      { value: 'Tokyo Skyline & Shibuya Lights', label: 'Tokyo Modern Metropolis & Harajuku', icon: '🗼' },
+      { value: 'Kyoto Temples & Bamboo Grove', label: 'Historic Kyoto & Arashiyama Bamboo', icon: '⛩️' },
+      { value: 'Mt Fuji & Hakone Hot Springs', label: 'Mt Fuji 5 Lakes & Onsen Retreat', icon: '🗻' },
+      { value: 'Hokkaido Snow & Ski Resort', label: 'Niseko Powder Snow & Sapporo Winter', icon: '⛷️' },
+      { value: 'Okinawa Coral Reefs & Beach', label: 'Okinawa Tropical Islands & Snorkeling', icon: '🐠' },
+    ]
+  },
+  Ireland: {
+    name: 'Ireland',
+    flag: '🇮🇪',
+    badge: '🇮🇪 Ireland Scenic Getaways',
+    states: [
+      { value: 'Leinster (Dublin)', label: 'Dublin & East Coast', icon: '🍀' },
+      { value: 'Munster (Cork/Kerry)', label: 'Cork & Ring of Kerry', icon: '🏰' },
+      { value: 'Connacht (Galway)', label: 'Galway & Connemara', icon: '🎻' },
+    ],
+    destinations: [
+      { value: 'Cliffs of Moher & Galway Bay', label: 'Cliffs of Moher & Wild Atlantic Way', icon: '🌊' },
+      { value: 'Ring of Kerry & Killarney', label: 'Ring of Kerry Scenic Lake Loop', icon: '🏞️' },
+      { value: 'Dublin Castle & Temple Bar', label: 'Dublin Historic City & Culture Tour', icon: '🎻' },
+    ]
+  },
+  Italy: {
+    name: 'Italy',
+    flag: '🇮🇹',
+    badge: '🇮🇹 Italy Domestic Getaways',
+    states: [
+      { value: 'Lazio (Rome)', label: 'Rome & Vatican City', icon: '🏛️' },
+      { value: 'Tuscany', label: 'Tuscany & Florence', icon: '🍷' },
+      { value: 'Veneto', label: 'Venice & Verona', icon: '🎭' },
+      { value: 'Lombardy', label: 'Milan & Lake Como', icon: '🚤' },
+      { value: 'Campania', label: 'Amalfi Coast & Naples', icon: '🍋' },
+    ],
+    destinations: [
+      { value: 'Rome Colosseum & Vatican Highlights', label: 'Rome Antiquities & Vatican Museum', icon: '🏛️' },
+      { value: 'Tuscany Rolling Hills & Florence Art', label: 'Florence Uffizi & Chianti Wine Hills', icon: '🍷' },
+      { value: 'Venice Gondola & St. Marks Square', label: 'Venice Canals & Grand Canal Cruise', icon: '🛶' },
+      { value: 'Amalfi Coast & Positano Views', label: 'Amalfi Cliffside & Capri Island Cruise', icon: '🍋' },
+    ]
+  },
+  Spain: {
+    name: 'Spain',
+    flag: '🇪🇸',
+    badge: '🇪🇸 Spain Domestic Holidays',
+    states: [
+      { value: 'Catalonia (Barcelona)', label: 'Barcelona & Costa Brava', icon: '🎨' },
+      { value: 'Madrid Community', label: 'Madrid Capital Region', icon: '🏛️' },
+      { value: 'Andalusia', label: 'Andalusia (Seville/Granada)', icon: '🏰' },
+      { value: 'Balearic Islands', label: 'Mallorca & Ibiza', icon: '🏖️' },
+      { value: 'Canary Islands', label: 'Tenerife & Gran Canaria', icon: '🌋' },
+    ],
+    destinations: [
+      { value: 'Barcelona Sagrada Familia & Gaudi', label: 'Barcelona Gaudi Architecture & Beach', icon: '🎨' },
+      { value: 'Andalusia Alhambra & Flamenco', label: 'Granada Alhambra & Seville Palaces', icon: '💃' },
+      { value: 'Mallorca Turquoise Coves Tour', label: 'Mallorca Island Coves & Palma Old Town', icon: '🏖️' },
+      { value: 'Madrid Royal Palaces & Prado', label: 'Madrid Royal Heritage & Art Triangle', icon: '🏛️' },
+    ]
+  },
+  Switzerland: {
+    name: 'Switzerland',
+    flag: '🇨🇭',
+    badge: '🇨🇭 Switzerland Alpine Journeys',
+    states: [
+      { value: 'Bernese Oberland', label: 'Interlaken & Jungfrau', icon: '🏔️' },
+      { value: 'Valais (Zermatt)', label: 'Zermatt & Matterhorn', icon: '🎿' },
+      { value: 'Zurich Region', label: 'Zurich City & Lake', icon: '🏙️' },
+      { value: 'Lake Geneva Region', label: 'Geneva & Montreux', icon: '🏰' },
+      { value: 'Lucerne', label: 'Lucerne & Mount Pilatus', icon: '🚠' },
+    ],
+    destinations: [
+      { value: 'Jungfraujoch Top of Europe', label: 'Jungfraujoch & Grindelwald Glaciers', icon: '❄️' },
+      { value: 'Zermatt Matterhorn Peak Experience', label: 'Zermatt Alpine Trails & Matterhorn', icon: '🏔️' },
+      { value: 'Glacier Express Panoramic Train', label: 'Glacier Express Scenic Train Across Alps', icon: '🚂' },
+      { value: 'Lucerne Lake & Chapel Bridge', label: 'Lucerne Historic Old Town & Mt Pilatus', icon: '🚠' },
+    ]
+  },
+  Netherlands: {
+    name: 'Netherlands',
+    flag: '🇳🇱',
+    badge: '🇳🇱 Netherlands Canal & Tulip Breaks',
+    states: [
+      { value: 'North Holland (Amsterdam)', label: 'Amsterdam & Zaanse Schans', icon: '🚲' },
+      { value: 'South Holland (Rotterdam/Hague)', label: 'Rotterdam & The Hague', icon: '🏢' },
+      { value: 'Utrecht', label: 'Utrecht Medieval Canals', icon: '🏰' },
+    ],
+    destinations: [
+      { value: 'Amsterdam Canal Ring & Van Gogh', label: 'Amsterdam Canals & Rijksmuseum', icon: '🎨' },
+      { value: 'Keukenhof Tulip Gardens & Windmills', label: 'Keukenhof Tulips & Historic Windmills', icon: '🌷' },
+      { value: 'Giethoorn Village & Waterways', label: 'Giethoorn Fairy-tale Village by Boat', icon: '🛶' },
+    ]
+  },
+  Thailand: {
+    name: 'Thailand',
+    flag: '🇹🇭',
+    badge: '🇹🇭 Thailand Domestic Tours',
+    states: [
+      { value: 'Bangkok Metropolis', label: 'Bangkok Capital', icon: '🛕' },
+      { value: 'Phuket', label: 'Phuket Province', icon: '🏝️' },
+      { value: 'Chiang Mai', label: 'Chiang Mai Northern Hills', icon: '🐘' },
+      { value: 'Krabi', label: 'Krabi & Andaman Coast', icon: '🏖️' },
+      { value: 'Surat Thani (Koh Samui)', label: 'Koh Samui & Koh Phangan', icon: '🌴' },
+    ],
+    destinations: [
+      { value: 'Phuket & Phi Phi Island Catamaran', label: 'Phuket, Phi Phi & Maya Bay Cruise', icon: '🚤' },
+      { value: 'Chiang Mai Temples & Elephant Care', label: 'Chiang Mai Mountains & Sanctuary', icon: '🐘' },
+      { value: 'Bangkok Grand Palace & River Life', label: 'Bangkok Temples & Chao Phraya Cruise', icon: '🛕' },
+      { value: 'Krabi Railay Beach & Sea Caves', label: 'Krabi Emerald Pool & Railay Cliffs', icon: '🧗' },
+    ]
+  },
+  Malaysia: {
+    name: 'Malaysia',
+    flag: '🇲🇾',
+    badge: '🇲🇾 Malaysia Domestic Getaways',
+    states: [
+      { value: 'Kuala Lumpur', label: 'Kuala Lumpur Metropolis', icon: '🏙️' },
+      { value: 'Penang', label: 'Penang (George Town)', icon: '🍜' },
+      { value: 'Sabah (Borneo)', label: 'Sabah & Mount Kinabalu', icon: '🦧' },
+      { value: 'Langkawi (Kedah)', label: 'Langkawi Geopark', icon: '🦅' },
+    ],
+    destinations: [
+      { value: 'Langkawi Cable Car & Mangroves', label: 'Langkawi SkyBridge & Island Hopping', icon: '🦅' },
+      { value: 'Penang Street Food & Heritage', label: 'George Town UNESCO Heritage & Cuisine', icon: '🍜' },
+      { value: 'Borneo Rainforest & Kinabalu Trek', label: 'Mount Kinabalu & Sepilok Orangutans', icon: '🦧' },
+      { value: 'Kuala Lumpur Twin Towers & Batu Caves', label: 'Petronas Towers & Batu Caves Shrine', icon: '🏙️' },
+    ]
+  },
+  'Saudi Arabia': {
+    name: 'Saudi Arabia',
+    flag: '🇸🇦',
+    badge: '🇸🇦 Saudi Arabia Domestic Tours',
+    states: [
+      { value: 'Riyadh Region', label: 'Riyadh Capital Province', icon: '🏙️' },
+      { value: 'Makkah Region (Jeddah)', label: 'Jeddah Red Sea Coast', icon: '🌊' },
+      { value: 'Madinah Region (AlUla)', label: 'AlUla Historic Oasis', icon: '🏜️' },
+      { value: 'Asir Region', label: 'Asir Mountains & Abha', icon: '⛰️' },
+    ],
+    destinations: [
+      { value: 'AlUla Hegra Ancient Tombs', label: 'AlUla Hegra UNESCO & Elephant Rock', icon: '🏜️' },
+      { value: 'Jeddah Historic Al Balad & Corniche', label: 'Historic Jeddah Old Town & Red Sea', icon: '🌊' },
+      { value: 'Riyadh Edge of the World & Diriyah', label: 'Edge of the World Cliffs & At-Turaif', icon: '🧗' },
+      { value: 'Asir Cloud Mountains & Rijal Almaa', label: 'Abha Cable Car & Green Mountain Views', icon: '⛰️' },
+    ]
+  },
+  Qatar: {
+    name: 'Qatar',
+    flag: '🇶🇦',
+    badge: '🇶🇦 Qatar Domestic Staycations',
+    states: [
+      { value: 'Doha Municipality', label: 'Doha Corniche & West Bay', icon: '🏙️' },
+      { value: 'Al Wakrah', label: 'Al Wakrah Coast', icon: '⛵' },
+      { value: 'Al Khor', label: 'Al Khor Mangroves', icon: '🛶' },
+    ],
+    destinations: [
+      { value: 'Doha Museum of Islamic Art & Souq', label: 'Souq Waqif, MIA & Pearl-Qatar Tour', icon: '🕌' },
+      { value: 'Khor Al Adaid Inland Sea Dunes', label: 'Inland Sea Desert Safari & Dune Bashing', icon: '🏜️' },
+      { value: 'Katara Cultural Village & Corniche', label: 'Katara Cultural Hub & Dhow Harbor Cruise', icon: '⛵' },
+    ]
+  },
+  Worldwide: {
+    name: 'Worldwide',
+    flag: '🌍',
+    badge: '🌍 Global Curated Tours',
+    states: [
+      { value: 'Island Getaways', label: 'Tropical Island Escapes', icon: '🏝️' },
+      { value: 'Alpine Peaks', label: 'Mountain & Alpine Adventures', icon: '🏔️' },
+      { value: 'Cultural Capitals', label: 'World Heritage Cities', icon: '🏛️' },
+      { value: 'Safari & Wildlife', label: 'Wildlife & Safari Sanctuaries', icon: '🦁' },
+    ],
+    destinations: [
+      { value: 'Global Luxury Beach Escape', label: 'Boutique Overwater Beach Resort Escape', icon: '🏝️' },
+      { value: 'Scenic Alpine Glacier Expedition', label: 'Glacier Peaks & Panoramic Mountain Rail', icon: '🏔️' },
+      { value: 'Historic World Wonders Circuit', label: 'Ancient Wonders & Historic Capitals Tour', icon: '🏛️' },
     ]
   }
 };
@@ -1604,6 +1857,19 @@ export function AITripPlannerLanding() {
   const [isDomesticMembersOpen, setIsDomesticMembersOpen] = useState(false);
   const domesticMembersRef = useRef<HTMLDivElement>(null);
 
+  // Computed dynamic states and destination packages based on selected domesticCountry
+  const activeDomesticCountryData = useMemo(() => {
+    return domesticCountryData[domesticCountry] || domesticCountryData['India'] || { states: domesticStateOptions, destinations: domesticDestinationOptions };
+  }, [domesticCountry]);
+
+  const currentDomesticStates = useMemo(() => {
+    return activeDomesticCountryData?.states || domesticStateOptions;
+  }, [activeDomesticCountryData]);
+
+  const currentDomesticDestinations = useMemo(() => {
+    return activeDomesticCountryData?.destinations || domesticDestinationOptions;
+  }, [activeDomesticCountryData]);
+
   // International Travel Duration
   const [tripDurationDays, setTripDurationDays] = useState('');
   const [isDurationOpen, setIsDurationOpen] = useState(false);
@@ -2444,15 +2710,15 @@ return (
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="text-xs sm:text-[13px] font-black text-slate-900 leading-none">78%</span>
-                <span className="text-[7px] sm:text-[8px] font-bold text-[#00A86B] mt-0.5">Ready</span>
+                <span className="text-xs sm:text-[13px] font-semibold text-slate-900 leading-none">78%</span>
+                <span className="text-[7px] sm:text-[8px] font-medium text-[#00A86B] mt-0.5">Ready</span>
               </div>
             </div>
 
             {/* Bottom Label: Travel Readiness > */}
-            <div className="flex items-center gap-0.5 text-[9px] sm:text-[10px] font-black text-slate-800 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
+            <div className="flex items-center gap-0.5 text-[9px] sm:text-[10px] font-medium text-slate-700 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
               <span>Travel Readiness</span>
-              <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
             </div>
           </a>
 
@@ -2464,19 +2730,19 @@ return (
               {/* Top Pill Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2.5 sm:mb-3.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-                <span className="text-xs sm:text-sm md:text-[15px] font-black text-blue-700 tracking-tight">
+                <span className="text-xs sm:text-sm md:text-[15px] font-medium text-blue-700 tracking-tight">
                   Your Journey, Our Expertise
                 </span>
               </div>
 
               {/* Main H1 Headline */}
-              <h1 className="text-[19px] sm:text-3xl lg:text-[38px] font-black text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
+              <h1 className="text-[19px] sm:text-3xl lg:text-[38px] font-semibold text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
                 Everything you need for <br className="hidden sm:inline" />
                 <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
               </h1>
 
               {/* Subheading */}
-              <p className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-medium max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-3">
+              <p className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-normal max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-3">
                 Find trusted consultants, plan your trip, compare services and make your journey seamless.
               </p>
             </div>
@@ -2493,10 +2759,10 @@ return (
                   onClick={() => {
                     setTravelScopeTab('international');
                   }}
-                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
+                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-medium transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
                     travelScopeTab === 'international'
-                      ? 'bg-white text-blue-950 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
+                      ? 'bg-white text-blue-950 font-semibold border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-600 border-transparent'
                   }`}
                 >
                   <span className="relative z-10">International Services</span>
@@ -2511,10 +2777,10 @@ return (
                   onClick={() => {
                     setTravelScopeTab('domestic');
                   }}
-                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-black transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
+                  className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-medium transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
                     travelScopeTab === 'domestic'
-                      ? 'bg-white text-slate-900 border-slate-200/90 shadow-xs -mb-[1px] z-20'
-                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-700 border-transparent'
+                      ? 'bg-white text-slate-900 font-semibold border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-600 border-transparent'
                   }`}
                 >
                   <span>Domestic Trip</span>
@@ -2538,7 +2804,7 @@ return (
                       
                       {/* Field 1: Purpose (Full width on mobile, 4 cols on desktop) */}
                       <div ref={lookingForRef} className="lg:col-span-4 relative">
-                        <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
+                        <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">
                           Purpose
                         </label>
                         <button
@@ -2553,7 +2819,7 @@ return (
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                            <span className={`text-xs sm:text-sm truncate ${serviceLookingFor ? 'font-bold text-slate-800' : 'font-normal text-slate-400'}`}>
+                            <span className={`text-xs sm:text-sm truncate ${serviceLookingFor ? 'font-normal text-slate-700' : 'font-normal text-slate-400'}`}>
                               {serviceLookingFor || 'Select Purpose...'}
                             </span>
                           </div>
@@ -2582,7 +2848,7 @@ return (
                                     setIsLookingForOpen(false);
                                     autoSaveJourney({ purpose: opt.value });
                                   }}
-                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
+                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-normal text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
                                 >
                                   <div className="flex items-center gap-2.5 min-w-0">
                                     <span className="text-base">{opt.icon}</span>
@@ -2600,7 +2866,7 @@ return (
                         
                         {/* Field 2: Going to (Country) */}
                         <div ref={journeyDestRef} className="relative">
-                          <label className="block text-[10px] sm:text-xs font-bold text-slate-800 mb-1 truncate">
+                          <label className="block text-[10px] sm:text-xs font-normal text-slate-500 mb-1 truncate">
                             Going to
                           </label>
                           <button
@@ -2626,7 +2892,7 @@ return (
                                   🌐
                                 </div>
                               )}
-                              <span className={`text-xs sm:text-sm truncate ${journeyDestination ? 'font-semibold text-slate-900' : 'font-normal text-slate-400'}`}>
+                              <span className={`text-xs sm:text-sm truncate ${journeyDestination ? 'font-normal text-slate-700' : 'font-normal text-slate-400'}`}>
                                 {journeyDestination || 'Select Destination'}
                               </span>
                             </div>
@@ -2700,7 +2966,7 @@ return (
 
                         {/* Field 3: Passport Country */}
                         <div ref={originCityRef} className="relative">
-                          <label className="block text-[10px] sm:text-xs font-bold text-slate-800 mb-1 truncate">
+                          <label className="block text-[10px] sm:text-xs font-normal text-slate-500 mb-1 truncate">
                             Passport Country
                           </label>
                           <button
@@ -2726,7 +2992,7 @@ return (
                                   🛂
                                 </div>
                               )}
-                              <span className={`text-xs sm:text-sm truncate ${passportCountry ? 'font-semibold text-slate-900' : 'font-normal text-slate-400'}`}>
+                              <span className={`text-xs sm:text-sm truncate ${passportCountry ? 'font-normal text-slate-700' : 'font-normal text-slate-400'}`}>
                                 {passportCountry || 'Select Passport'}
                               </span>
                             </div>
@@ -2807,7 +3073,7 @@ return (
                           type="button"
                           onClick={handleGeneratePathway}
                           disabled={isGenerating}
-                          className="w-full h-[44px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-base bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[44px] sm:h-[54px] rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-base bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGenerating ? (
                             <>
@@ -2834,7 +3100,7 @@ return (
                     
                     {/* 1. Country (2 Cols) */}
                     <div className="lg:col-span-2 relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Country</label>
+                      <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">Country</label>
                       <div
                         ref={domesticCountryRef}
                         onClick={() => {
@@ -2853,7 +3119,7 @@ return (
                             className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
                             onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/in.png'; }}
                           />
-                          <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                          <span className="text-xs sm:text-sm font-normal text-slate-700 truncate">
                             {domesticCountry || 'India'}
                           </span>
                         </div>
@@ -2867,9 +3133,11 @@ return (
                                 type="button"
                                 onClick={() => {
                                   setDomesticCountry(opt.value);
+                                  setDomesticState('');
+                                  setDomesticDestination('');
                                   setIsDomesticCountryOpen(false);
                                 }}
-                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
+                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-normal text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
                               >
                                 <div className="flex items-center gap-2.5 min-w-0">
                                   <span>{opt.icon}</span>
@@ -2884,7 +3152,7 @@ return (
 
                     {/* 2. State / Region (2 Cols) */}
                     <div className="lg:col-span-2 relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">State / Region</label>
+                      <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">State / Region</label>
                       <div
                         ref={domesticStateRef}
                         onClick={() => {
@@ -2898,7 +3166,7 @@ return (
                       >
                         <div className="flex items-center gap-2 min-w-0">
                           <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                          <span className={`text-xs sm:text-sm truncate ${domesticState ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
+                          <span className={`text-xs sm:text-sm truncate ${domesticState ? 'font-normal text-slate-700' : 'text-slate-400'}`}>
                             {domesticState || 'Select State'}
                           </span>
                         </div>
@@ -2906,7 +3174,7 @@ return (
 
                         {isDomesticStateOpen && (
                           <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
-                            {domesticStateOptions.map((opt) => (
+                            {currentDomesticStates.map((opt) => (
                               <button
                                 key={opt.value}
                                 type="button"
@@ -2914,7 +3182,7 @@ return (
                                   setDomesticState(opt.label);
                                   setIsDomesticStateOpen(false);
                                 }}
-                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
+                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-normal text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
                               >
                                 <div className="flex items-center gap-2.5 min-w-0">
                                   <span>{opt.icon}</span>
@@ -2929,7 +3197,7 @@ return (
 
                     {/* 3. City / Origin (Direct Clean Text Input) (3 Cols) */}
                     <div className="lg:col-span-3 relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">
+                      <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">
                         City / Origin
                       </label>
                       <div className="relative">
@@ -2941,14 +3209,14 @@ return (
                           value={domesticCity}
                           onChange={(e) => setDomesticCity(e.target.value)}
                           placeholder="Type departure city (e.g. Mumbai, Delhi)..."
-                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 focus:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] pl-9 pr-3 text-xs sm:text-sm font-bold text-slate-900 placeholder-slate-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#00A86B]/20 transition-all"
+                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 focus:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] pl-9 pr-3 text-xs sm:text-sm font-normal text-slate-700 placeholder-slate-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#00A86B]/20 transition-all"
                         />
                       </div>
                     </div>
 
                     {/* 4. Destination Package (3 Cols) */}
                     <div className="lg:col-span-3 relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1">Destination Package</label>
+                      <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">Destination Package</label>
                       <div
                         ref={domesticDestRef}
                         onClick={() => {
@@ -2962,7 +3230,7 @@ return (
                       >
                         <div className="flex items-center gap-2 min-w-0">
                           <Compass className="w-4 h-4 text-[#00A86B] shrink-0" />
-                          <span className={`text-xs sm:text-sm truncate ${domesticDestination ? 'font-bold text-slate-900' : 'text-slate-400'}`}>
+                          <span className={`text-xs sm:text-sm truncate ${domesticDestination ? 'font-normal text-slate-700' : 'text-slate-400'}`}>
                             {domesticDestination || 'Select Package Tour'}
                           </span>
                         </div>
@@ -2970,7 +3238,7 @@ return (
 
                         {isDomesticDestOpen && (
                           <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[260px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
-                            {domesticDestinationOptions.map((opt) => (
+                            {currentDomesticDestinations.map((opt) => (
                               <button
                                 key={opt.value}
                                 type="button"
@@ -2978,7 +3246,7 @@ return (
                                   setDomesticDestination(opt.label);
                                   setIsDomesticDestOpen(false);
                                 }}
-                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
+                                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-normal text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left cursor-pointer transition-colors"
                               >
                                 <div className="flex items-center gap-2.5 min-w-0">
                                   <span>{opt.icon}</span>
@@ -2993,7 +3261,7 @@ return (
 
                     {/* 5. Travelers (+ / - Stepper) (2 Cols) */}
                     <div className="lg:col-span-2 relative">
-                      <label className="block text-[11px] sm:text-xs font-black text-slate-800 mb-1 truncate">
+                      <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1 truncate">
                         Travelers
                       </label>
                       <div className="bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 flex items-center justify-between shadow-2xs">
@@ -3001,12 +3269,12 @@ return (
                           type="button"
                           onClick={() => setDomesticMembers(Math.max(1, domesticMembers - 1))}
                           disabled={domesticMembers <= 1}
-                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-slate-800 font-black flex items-center justify-center text-sm transition-all select-none cursor-pointer"
+                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-slate-700 font-medium flex items-center justify-center text-sm transition-all select-none cursor-pointer"
                           title="Decrease travelers"
                         >
-                          <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+                          <Minus className="w-3.5 h-3.5 stroke-[2]" />
                         </button>
-                        <span className="font-extrabold text-xs sm:text-sm text-slate-900 select-none px-1 flex items-center gap-1.5">
+                        <span className="font-normal text-xs sm:text-sm text-slate-700 select-none px-1 flex items-center gap-1.5">
                           <Users className="w-3.5 h-3.5 text-slate-400" />
                           <span>{domesticMembers}</span>
                         </span>
@@ -3014,10 +3282,10 @@ return (
                           type="button"
                           onClick={() => setDomesticMembers(Math.min(20, domesticMembers + 1))}
                           disabled={domesticMembers >= 20}
-                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-slate-800 font-black flex items-center justify-center text-sm transition-all select-none cursor-pointer"
+                          className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed text-slate-700 font-medium flex items-center justify-center text-sm transition-all select-none cursor-pointer"
                           title="Increase travelers"
                         >
-                          <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                          <Plus className="w-3.5 h-3.5 stroke-[2]" />
                         </button>
                       </div>
                     </div>
@@ -3036,7 +3304,7 @@ return (
                           }, 600);
                         }}
                         disabled={isGeneratingDomestic}
-                        className="w-full sm:w-auto px-8 h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                        className="w-full sm:w-auto px-8 h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                       >
                         {isGeneratingDomestic ? (
                           <>
