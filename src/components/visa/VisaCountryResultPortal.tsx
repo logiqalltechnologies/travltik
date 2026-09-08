@@ -8458,26 +8458,72 @@ export function VisaCountryResultPortal({
             {/* TAB: FAQ (MATCHING EXACT ACCORDION CARD media_1788472456972.png) */}
 
             {/* TAB: FAQ */}
-                        {sidebarTab === 'faq' && (
+            {sidebarTab === 'faq' && (
               <div className="space-y-4 text-left animate-fade-up">
-                <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 px-1 tracking-tight">Frequently Asked Questions</h2>
-                <div className="bg-white rounded-3xl border border-slate-200/90 divide-y divide-slate-100 shadow-2xs overflow-hidden">
+                <div className="flex items-center justify-between gap-2 px-1">
+                  <div>
+                    <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-bold text-slate-900 tracking-tight">
+                      Frequently Asked Questions
+                    </h2>
+                    <p className="text-xs text-slate-500 font-medium mt-0.5">
+                      Clear answers for {countryName || 'visa'} applicants
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 shrink-0">
+                      {resolvedFaqs.length} FAQs
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const anyOpen = Object.values(openFaqs).some(Boolean);
+                        if (anyOpen) {
+                          setOpenFaqs({});
+                        } else {
+                          const all: Record<number, boolean> = {};
+                          resolvedFaqs.forEach((_, i) => { all[i] = true; });
+                          setOpenFaqs(all);
+                        }
+                      }}
+                      className="text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline cursor-pointer ml-1 hidden sm:inline"
+                    >
+                      {Object.values(openFaqs).some(Boolean) ? 'Collapse All' : 'Expand All'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5 sm:space-y-3">
                   {resolvedFaqs.map((faq: { question: string; answer: string }, idx: number) => {
                     const isOpen = Boolean(openFaqs[idx]);
                     return (
-                      <div key={idx} className="transition-colors">
+                      <div 
+                        key={idx} 
+                        className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${
+                          isOpen 
+                            ? 'border-emerald-500/40 shadow-sm ring-1 ring-emerald-500/10' 
+                            : 'border-slate-200/85 hover:border-slate-300 shadow-2xs'
+                        }`}
+                      >
                         <button
                           type="button"
                           onClick={() => setOpenFaqs(prev => ({ ...prev, [idx]: !prev[idx] }))}
-                          className="w-full px-6 py-4.5 sm:px-8 sm:py-5 flex items-center justify-between gap-4 text-left hover:bg-slate-50/70 transition-all cursor-pointer group"
+                          className="w-full p-4 sm:p-5 flex items-start justify-between gap-3 text-left transition-colors cursor-pointer group select-none"
                         >
-                          <span className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
+                          <span className={`text-[14px] sm:text-[15px] font-bold leading-snug transition-colors pr-1 flex-1 ${
+                            isOpen ? 'text-slate-950' : 'text-slate-800 group-hover:text-slate-950'
+                          }`}>
                             {faq.question}
                           </span>
-                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-slate-900' : ''}`} />
+                          <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 mt-0.5 ${
+                            isOpen 
+                              ? 'bg-emerald-50 text-emerald-600 rotate-180' 
+                              : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200/80 group-hover:text-slate-700'
+                          }`}>
+                            <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+                          </span>
                         </button>
                         {isOpen && (
-                          <div className="px-6 pb-5 sm:px-8 sm:pb-6 text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed animate-fadeIn">
+                          <div className="px-4 pb-4.5 pt-1.5 sm:px-5 sm:pb-5 text-[13px] sm:text-[14px] text-slate-600 font-normal leading-relaxed border-t border-slate-100/90 bg-slate-50/50 animate-fadeIn">
                             {faq.answer}
                           </div>
                         )}
@@ -8655,7 +8701,7 @@ export function VisaCountryResultPortal({
           </div>
         </div>
         {/* ── APPLICATION PROFILE DETAILS & DOWNLOAD/SYNC (ALWAYS VISIBLE ACROSS ALL TABS - MATCHING EXACT USER REQUEST media_1788583909662.png) ── */}
-        <div className="max-w-5xl mx-auto mt-6 mb-8 text-left animate-fadeIn space-y-5">
+        <div className="max-w-5xl mx-auto mt-8 sm:mt-10 mb-8 text-left animate-fadeIn space-y-5">
             {/* ── DOWNLOAD & SYNC ACTION BUTTON (CENTERED & PROMINENT SIZE - MATCHING USER REQUEST) ── */}
             <div className="flex items-center justify-center pt-2 pb-1">
               <button
@@ -11328,22 +11374,39 @@ export function VisaCountryResultPortal({
                 </h2>
               </div>
 
-              <div className="border border-slate-200/90 rounded-3xl overflow-hidden divide-y divide-slate-100 shadow-2xs">
+              <div className="space-y-2.5 sm:space-y-3">
                 {resolvedFaqs.map((faq: { question: string; answer: string }, idx: number) => {
                   const isOpen = activeFaq === idx;
                   return (
-                    <div key={idx} className="bg-white">
+                    <div 
+                      key={idx} 
+                      className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${
+                        isOpen 
+                          ? 'border-emerald-500/40 shadow-sm ring-1 ring-emerald-500/10' 
+                          : 'border-slate-200/85 hover:border-slate-300 shadow-2xs'
+                      }`}
+                    >
                       <button
                         type="button"
                         onClick={() => setActiveFaq(isOpen ? null : idx)}
-                        className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left font-semibold text-sm sm:text-base text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer select-none"
+                        className="w-full p-4 sm:p-5 flex items-start justify-between gap-3 text-left transition-colors cursor-pointer group select-none"
                       >
-                        <span>{faq.question}</span>
-                        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                        <span className={`text-[14px] sm:text-[15px] font-bold leading-snug transition-colors pr-1 flex-1 ${
+                          isOpen ? 'text-slate-950' : 'text-slate-800 group-hover:text-slate-950'
+                        }`}>
+                          {faq.question}
+                        </span>
+                        <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 mt-0.5 ${
+                          isOpen 
+                            ? 'bg-emerald-50 text-emerald-600 rotate-180' 
+                            : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200/80 group-hover:text-slate-700'
+                        }`}>
+                          <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+                        </span>
                       </button>
 
                       {isOpen && (
-                        <div className="px-4 sm:px-5 pb-5 pt-1 text-sm sm:text-[15px] text-slate-600 font-normal leading-relaxed">
+                        <div className="px-4 pb-4.5 pt-1.5 sm:px-5 sm:pb-5 text-[13px] sm:text-[14px] text-slate-600 font-normal leading-relaxed border-t border-slate-100/90 bg-slate-50/50 animate-fadeIn">
                           {faq.answer}
                         </div>
                       )}
