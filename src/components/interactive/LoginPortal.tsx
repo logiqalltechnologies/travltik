@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Loader2, X } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
 
@@ -50,9 +50,22 @@ function LoginPortalContent() {
 
     const formatAuthError = (errMessage?: string) => {
         if (!errMessage) return "";
-        const msg = String(errMessage);
-        if (msg.includes("popup-closed") || msg.includes("closed-by-user") || msg.includes("cancelled-popup-request") || msg.includes("user-cancelled")) {
+        const msg = String(errMessage).toLowerCase();
+        if (
+            msg.includes("popup-closed") || 
+            msg.includes("closed-by-user") || 
+            msg.includes("cancelled-popup-request") || 
+            msg.includes("user-cancelled") ||
+            msg.includes("cancelled") ||
+            msg.includes("canceled")
+        ) {
             return "";
+        }
+        if (msg.includes("internal-error") || msg.includes("internal error")) {
+            return "Google sign-in timed out. Please try again or sign in with your email.";
+        }
+        if (msg.includes("network-request-failed") || msg.includes("timed_out") || msg.includes("err_timed_out") || msg.includes("timeout")) {
+            return "Connection timed out. Please check your internet connection or use email login.";
         }
         if (msg.includes("auth/invalid-credential") || msg.includes("auth/wrong-password") || msg.includes("auth/user-not-found")) {
             return "Invalid email address or password.";
@@ -69,7 +82,15 @@ function LoginPortalContent() {
         if (msg.includes("popup-blocked")) {
             return "Popup blocked by browser. Please allow popups for this site and try again.";
         }
-        return msg.replace(/^Firebase:\s*Error\s*\(auth\//i, '').replace(/\)\.$/, '').replace(/-/g, ' ');
+        const clean = String(errMessage)
+            .replace(/^Firebase:\s*Error\s*\(auth\//i, '')
+            .replace(/\)\.$/, '')
+            .replace(/-/g, ' ')
+            .trim();
+        if (clean.toLowerCase() === 'internal error') {
+            return "Google sign-in timed out. Please try again or sign in with your email.";
+        }
+        return clean;
     };
 
     const handleGoogleLogin = async () => {
@@ -89,8 +110,17 @@ function LoginPortalContent() {
             }
             window.location.href = getRedirectDestination(res?.user?.type);
         } catch (e: any) {
-            const cleanErr = formatAuthError(e?.message || e?.code);
-            setError(cleanErr || e?.message || "Google sign-in failed.");
+            const rawMsg = String(e?.message || e?.code || "");
+            if (rawMsg.toLowerCase().includes("cancelled") || rawMsg.toLowerCase().includes("closed-by-user") || rawMsg.toLowerCase().includes("popup-closed")) {
+                setError("");
+                return;
+            }
+            const cleanErr = formatAuthError(rawMsg);
+            if (cleanErr && cleanErr.toLowerCase() !== "internal error") {
+                setError(cleanErr);
+            } else {
+                setError("");
+            }
         } finally {
             setGoogleLoading(false);
         }
@@ -196,8 +226,16 @@ function LoginPortalContent() {
                     </div>
 
                     {error && (
-                        <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold text-center">
-                            {error}
+                        <div className="flex items-center justify-between gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-semibold animate-in fade-in">
+                            <span className="flex-1 text-center">{error}</span>
+                            <button
+                                type="button"
+                                onClick={() => setError("")}
+                                className="p-1 hover:bg-red-100 rounded-md text-red-400 hover:text-red-700 transition-colors cursor-pointer shrink-0"
+                                title="Dismiss"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
                         </div>
                     )}
 
@@ -216,7 +254,10 @@ function LoginPortalContent() {
                                         type="email"
                                         required
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) => {
+                                            setEmail(e.target.value);
+                                            if (error) setError("");
+                                        }}
                                         placeholder="john@example.com"
                                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
                                     />
@@ -263,7 +304,10 @@ function LoginPortalContent() {
                                         type={showPwd ? "text" : "password"}
                                         required
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) => {
+                                            setPassword(e.target.value);
+                                            if (error) setError("");
+                                        }}
                                         placeholder="Enter your password"
                                         className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
                                     />

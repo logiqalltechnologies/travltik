@@ -138,11 +138,19 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
             window.location.href = res?.user?.type === "expert" ? "/service-provider/dashboard" : "/traveller/dashboard";
         } catch (e: any) {
             console.error("Google auth error:", e);
-            const msg = e?.message || "Google Authentication failed.";
+            const raw = String(e?.message || e?.code || "");
+            if (raw.toLowerCase().includes("cancelled") || raw.toLowerCase().includes("closed-by-user") || raw.toLowerCase().includes("popup-closed")) {
+                if (activeTab === "signup") setSignupError("");
+                else setLoginError("");
+                return;
+            }
+            const clean = raw.toLowerCase().includes("internal-error") || raw.toLowerCase().includes("internal error")
+                ? "Google sign-in timed out. Please try again or sign in with email."
+                : (e?.message || "Google sign-in failed. Please try again.");
             if (activeTab === "signup") {
-                setSignupError(msg);
+                setSignupError(clean);
             } else {
-                setLoginError(msg);
+                setLoginError(clean);
             }
         } finally {
             setGoogleLoading(false);

@@ -277,13 +277,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } catch (fbErr: any) {
             const code = fbErr?.code || '';
             const msg = fbErr?.message || '';
-            if (code === 'auth/popup-closed-by-user' || msg.includes('popup-closed') || msg.includes('closed-by-user')) {
+            if (code === 'auth/popup-closed-by-user' || msg.includes('popup-closed') || msg.includes('closed-by-user') || code === 'auth/cancelled-popup-request') {
                 throw new Error('Google sign-in was cancelled.');
             }
             if (code === 'auth/popup-blocked' || msg.includes('popup')) {
                 const { loginWithGoogleRedirect } = await import("../../lib/firebase");
                 await loginWithGoogleRedirect(role === 'expert' ? '/service-provider/dashboard' : '/traveller/dashboard');
                 return { status: 'redirecting' };
+            }
+            if (code === 'auth/internal-error' || msg.includes('internal-error') || code === 'auth/network-request-failed' || msg.includes('timed_out') || msg.includes('network')) {
+                throw new Error('Google sign-in timed out. Please try again or sign in with your email.');
             }
             throw new Error(msg || 'Google sign-in failed. Please try again.');
         }
