@@ -4462,6 +4462,18 @@ export function VisaCountryResultPortal({
 
   const handleDownloadAndSyncChecklist = () => {
     if (!checkIsUserLoggedIn()) {
+      try {
+        localStorage.setItem('pending_visa_action', JSON.stringify({
+          action: 'download_and_sync',
+          countrySlug: slugClean,
+          countryName,
+          passportCountry,
+          purpose: activePurposeTab,
+          portalCheckedConditions,
+          portalUploadedDocs,
+          timestamp: Date.now()
+        }));
+      } catch (e) {}
       setShowLoginRequiredModal(true);
       return;
     }
@@ -4500,47 +4512,118 @@ export function VisaCountryResultPortal({
         ? getBusinessStayDuration(countryName)
         : getTourismStayDuration(countryName);
 
-      // Compile Documents List from AI data or defaults
-      const rawDocs = (aiData?.documents_required && Array.isArray(aiData.documents_required) && aiData.documents_required.length > 0)
-        ? aiData.documents_required.map((d: any) => ({
+      // Compile Documents List from portalDocItems (guarantees exact data, numbered conditions and validity match)
+      const rawDocs = (portalDocItems && portalDocItems.length > 0)
+        ? portalDocItems.map((d: any) => ({
+            id: d.key,
+            key: d.key,
+            title: d.name,
+            name: d.name,
+            description: Array.isArray(d.conditions) && d.conditions.length > 0 ? d.conditions.join('; ') : 'Must comply with official consular specifications.',
+            req: Array.isArray(d.conditions) && d.conditions.length > 0 ? d.conditions.join('; ') : 'Must comply with official consular specifications.',
+            isMandatory: d.mandatory !== false,
+            mandatory: d.mandatory !== false,
+            conditions: d.conditions || [],
+            checkedConditions: portalCheckedConditions[d.key] || {},
+            iconBg: d.iconBg,
+            status: portalUploadedDocs[d.key]?.status || 'pending'
+          }))
+        : (aiData?.documents_required && Array.isArray(aiData.documents_required) && aiData.documents_required.length > 0)
+        ? aiData.documents_required.map((d: any, idx: number) => ({
+            id: `doc_${idx}`,
+            key: `doc_${idx}`,
             title: d.title || d.name || 'Document Requirement',
+            name: d.title || d.name || 'Document Requirement',
             description: d.description || d.hint || 'Must comply with official consular specifications.',
-            isMandatory: d.is_mandatory !== false
+            req: d.description || d.hint || 'Must comply with official consular specifications.',
+            isMandatory: d.is_mandatory !== false,
+            mandatory: d.is_mandatory !== false,
+            conditions: parseDocumentConditions(d.title || d.name, d.description || '', d.conditions),
+            checkedConditions: {},
+            status: 'pending'
           }))
         : isFamily
-        ? getFamilyDocuments(passportCountry, countryName, 'Family').map(d => ({
+        ? getFamilyDocuments(passportCountry, countryName, 'Family').map((d, idx) => ({
+            id: `doc_fam_${idx}`,
+            key: `doc_fam_${idx}`,
             title: d.title,
+            name: d.title,
             description: d.description,
-            isMandatory: d.is_mandatory !== false
+            req: d.description,
+            isMandatory: d.is_mandatory !== false,
+            mandatory: d.is_mandatory !== false,
+            conditions: parseDocumentConditions(d.title, d.description, (d as any).conditions),
+            checkedConditions: {},
+            status: 'pending'
           }))
         : isPR
-        ? getPRDocuments(passportCountry, countryName, 'PR').map(d => ({
+        ? getPRDocuments(passportCountry, countryName, 'PR').map((d, idx) => ({
+            id: `doc_pr_${idx}`,
+            key: `doc_pr_${idx}`,
             title: d.title,
+            name: d.title,
             description: d.description,
-            isMandatory: d.is_mandatory !== false
+            req: d.description,
+            isMandatory: d.is_mandatory !== false,
+            mandatory: d.is_mandatory !== false,
+            conditions: parseDocumentConditions(d.title, d.description, (d as any).conditions),
+            checkedConditions: {},
+            status: 'pending'
           }))
         : isStudy
-        ? getStudentDocuments(passportCountry, countryName).map(d => ({
+        ? getStudentDocuments(passportCountry, countryName).map((d, idx) => ({
+            id: `doc_std_${idx}`,
+            key: `doc_std_${idx}`,
             title: d.title,
+            name: d.title,
             description: d.description,
-            isMandatory: d.is_mandatory !== false
+            req: d.description,
+            isMandatory: d.is_mandatory !== false,
+            mandatory: d.is_mandatory !== false,
+            conditions: parseDocumentConditions(d.title, d.description, (d as any).conditions),
+            checkedConditions: {},
+            status: 'pending'
           }))
         : isWork
-        ? getWorkDocuments(passportCountry, countryName, 'Work').map(d => ({
+        ? getWorkDocuments(passportCountry, countryName, 'Work').map((d, idx) => ({
+            id: `doc_work_${idx}`,
+            key: `doc_work_${idx}`,
             title: d.title,
+            name: d.title,
             description: d.description,
-            isMandatory: d.is_mandatory !== false
+            req: d.description,
+            isMandatory: d.is_mandatory !== false,
+            mandatory: d.is_mandatory !== false,
+            conditions: parseDocumentConditions(d.title, d.description, (d as any).conditions),
+            checkedConditions: {},
+            status: 'pending'
           }))
         : isBusiness
-        ? getBusinessDocuments(passportCountry, countryName, 'Business').map(d => ({
+        ? getBusinessDocuments(passportCountry, countryName, 'Business').map((d, idx) => ({
+            id: `doc_biz_${idx}`,
+            key: `doc_biz_${idx}`,
             title: d.title,
+            name: d.title,
             description: d.description,
-            isMandatory: d.is_mandatory !== false
+            req: d.description,
+            isMandatory: d.is_mandatory !== false,
+            mandatory: d.is_mandatory !== false,
+            conditions: parseDocumentConditions(d.title, d.description, (d as any).conditions),
+            checkedConditions: {},
+            status: 'pending'
           }))
-        : getTourismDocuments(countryName).map(d => ({
+        : getTourismDocuments(countryName).map((d, idx) => ({
+            id: `doc_tour_${idx}`,
+            key: `doc_tour_${idx}`,
             title: d.title,
+            name: d.title,
             description: d.description,
-            isMandatory: d.is_mandatory !== false
+            req: d.description,
+            isMandatory: d.is_mandatory !== false,
+            mandatory: d.is_mandatory !== false,
+            conditions: parseDocumentConditions(d.title, d.description, (d as any).conditions),
+            checkedConditions: {},
+            status: 'pending'
           }));
 
       // Compile Procedural Steps
@@ -4737,17 +4820,27 @@ export function VisaCountryResultPortal({
           consularFee: consularFeeVal,
           serviceFee: serviceFeeVal,
           createdAt: new Date().toISOString(),
+          documents_required: rawDocs,
+          portalCheckedConditions,
+          portalUploadedDocs,
           checklist: rawDocs.map((d: any) => ({
-            id: d.title.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+            id: d.key || d.title.toLowerCase().replace(/[^a-z0-9]/g, '_'),
             title: d.title,
+            name: d.title,
             description: d.description,
+            req: d.description,
             mandatory: d.isMandatory !== false,
-            status: 'pending'
+            status: 'pending',
+            conditions: d.conditions || [],
+            checkedConditions: portalCheckedConditions[d.key] || {}
           }))
         };
 
         const updatedCases = [newCase, ...filteredCases];
         localStorage.setItem('active_visa_cases', JSON.stringify(updatedCases));
+        localStorage.setItem(`synced_visa_case_${slugClean}`, JSON.stringify(newCase));
+        localStorage.setItem(`synced_visa_case_${countryName.toLowerCase().trim()}`, JSON.stringify(newCase));
+        localStorage.setItem(`portal_conds_${slugClean}`, JSON.stringify(portalCheckedConditions));
 
         // Also sync user-scoped cases if email is present
         const userEmail = localStorage.getItem('seeker_email') || (JSON.parse(localStorage.getItem('travltik_user') || '{}'))?.email;
@@ -4808,6 +4901,30 @@ export function VisaCountryResultPortal({
   };
 
   const handleDownloadChecklist = handleDownloadAndSyncChecklist;
+
+  // Automatically trigger download & sync if returning from login with autodownload=1 or pending_visa_action
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldAutoDownload = urlParams.get('autodownload') === '1';
+    let pendingAction: any = null;
+    try {
+      const stored = localStorage.getItem('pending_visa_action');
+      if (stored) pendingAction = JSON.parse(stored);
+    } catch (e) {}
+
+    if ((shouldAutoDownload || pendingAction?.action === 'download_and_sync') && checkIsUserLoggedIn()) {
+      localStorage.removeItem('pending_visa_action');
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete('autodownload');
+      window.history.replaceState({}, '', cleanUrl.toString());
+
+      const timer = setTimeout(() => {
+        handleDownloadAndSyncChecklist();
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [countryName, slugClean]);
 
   const [bookingModalConsultant, setBookingModalConsultant] = useState<StudyConsultantItem | null>(null);
   const [consultantBookedToast, setConsultantBookedToast] = useState<string | null>(null);
@@ -7686,7 +7803,7 @@ export function VisaCountryResultPortal({
                         <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
                           <th className="py-3.5 px-4 text-left w-[28%]">Document Name</th>
                           <th className="py-3.5 px-4 text-left">Conditions and Validity</th>
-                          <th className="py-3.5 px-4 text-center w-36 sm:w-40 whitespace-nowrap">Ready</th>
+                          <th className="py-3.5 px-4 text-center w-36 sm:w-44 whitespace-nowrap">Check if Valid</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -11648,7 +11765,7 @@ export function VisaCountryResultPortal({
             {/* Action Buttons */}
             <div className="space-y-2.5 pt-2">
               <a
-                href={`/login?redirect=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname + window.location.search : `/visa/${slugClean}`)}`}
+                href={`/login?redirect=${encodeURIComponent(typeof window !== 'undefined' ? (window.location.pathname + (window.location.search ? (window.location.search.includes('autodownload') ? window.location.search : window.location.search + '&autodownload=1') : '?autodownload=1')) : `/visa/${slugClean}?autodownload=1`)}`}
                 className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-slate-950 to-slate-900 hover:from-black hover:to-slate-900 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
               >
                 <span>Sign In to Continue</span>
@@ -11656,7 +11773,7 @@ export function VisaCountryResultPortal({
               </a>
 
               <a
-                href={`/login?mode=signup&redirect=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname + window.location.search : `/visa/${slugClean}`)}`}
+                href={`/login?mode=signup&redirect=${encodeURIComponent(typeof window !== 'undefined' ? (window.location.pathname + (window.location.search ? (window.location.search.includes('autodownload') ? window.location.search : window.location.search + '&autodownload=1') : '?autodownload=1')) : `/visa/${slugClean}?autodownload=1`)}`}
                 className="w-full flex items-center justify-center py-3 px-6 rounded-2xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-colors"
               >
                 Create Free Account

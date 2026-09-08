@@ -3,9 +3,11 @@ import {
   ArrowLeft, ArrowRight, Copy, CheckCircle2, CheckCircle, Clock, Calendar, 
   CreditCard, ShieldCheck, AlertCircle, ExternalLink, MessageSquare, 
   Phone, ChevronDown, ChevronUp, Check, FileText, Plus, Info, 
-  Sparkles, CheckSquare, XCircle, Shield, RefreshCw, Upload,
+  Sparkles, CheckSquare, XCircle, Shield, RefreshCw, Upload, Download,
   X, Camera, Plane, Building2, Landmark, Briefcase, CircleDollarSign, Compass
 } from 'lucide-react';
+import { parseDocumentConditions } from '../../utils/documentConditions';
+import { downloadVisaChecklistPDF, type VisaChecklistPDFData } from '../../utils/generateVisaChecklistPDF';
 
 export interface VisaApplicationDetailsProps {
   application: any;
@@ -419,30 +421,103 @@ export function VisaApplicationDetailsView({
   const isIndia = passport.toLowerCase().includes('india');
   const isUS = passport.toLowerCase().includes('unit') || passport.toLowerCase().includes('us');
 
-  const rawDocs: Array<{ title: string; description: string; is_mandatory: boolean }> = 
-    (routeData?.documents_required && Array.isArray(routeData.documents_required) && routeData.documents_required.length > 0)
-      ? routeData.documents_required
+  const slugClean = useMemo(() => {
+    return (destination || '').toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').trim();
+  }, [destination]);
+
+  // Retrieve synced case documents if available
+  const syncedCaseDocs: any[] | null = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      if (application?.documents_required && Array.isArray(application.documents_required) && application.documents_required.length > 0) {
+        return application.documents_required;
+      }
+      if (application?.checklist && Array.isArray(application.checklist) && application.checklist.length > 0) {
+        return application.checklist;
+      }
+      if (application?.documents && Array.isArray(application.documents) && application.documents.length > 0) {
+        return application.documents;
+      }
+
+      const syncedKey1 = `synced_visa_case_${slugClean}`;
+      const syncedKey2 = `synced_visa_case_${(destination || '').toLowerCase().trim()}`;
+      const stored = localStorage.getItem(syncedKey1) || localStorage.getItem(syncedKey2);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.documents_required && Array.isArray(parsed.documents_required) && parsed.documents_required.length > 0) {
+          return parsed.documents_required;
+        }
+        if (parsed?.checklist && Array.isArray(parsed.checklist) && parsed.checklist.length > 0) {
+          return parsed.checklist;
+        }
+      }
+
+      const activeCasesStr = localStorage.getItem('active_visa_cases');
+      if (activeCasesStr) {
+        const parsedCases = JSON.parse(activeCasesStr);
+        if (Array.isArray(parsedCases)) {
+          const matched = parsedCases.find((c: any) => 
+            (c.id && application?.id && c.id === application.id) || 
+            (c.destination && destination && c.destination.toLowerCase() === destination.toLowerCase())
+          );
+          if (matched?.documents_required && Array.isArray(matched.documents_required) && matched.documents_required.length > 0) {
+            return matched.documents_required;
+          }
+          if (matched?.checklist && Array.isArray(matched.checklist) && matched.checklist.length > 0) {
+            return matched.checklist;
+          }
+        }
+      }
+    } catch (e) {}
+    return null;
+  }, [application, destination, slugClean]);
+
+  const rawDocs: Array<{ title: string; description: string; is_mandatory: boolean; conditions?: string[]; key?: string }> = 
+    (syncedCaseDocs && syncedCaseDocs.length > 0)
+      ? syncedCaseDocs.map((d: any, idx: number) => ({
+          title: d.title || d.name || 'Document Requirement',
+          description: d.description || d.req || 'Must comply with official consular specifications.',
+          is_mandatory: d.isMandatory !== false && d.is_mandatory !== false && d.mandatory !== false,
+          conditions: Array.isArray(d.conditions) && d.conditions.length > 0
+            ? d.conditions
+            : parseDocumentConditions(d.title || d.name || '', d.description || d.req || ''),
+          key: d.key || d.id || `doc_${idx}`
+        }))
+      : (routeData?.documents_required && Array.isArray(routeData.documents_required) && routeData.documents_required.length > 0)
+      ? routeData.documents_required.map((d: any, idx: number) => ({
+          title: d.title || d.name || 'Document Requirement',
+          description: d.description || d.req || 'Must comply with official consular specifications.',
+          is_mandatory: d.is_mandatory !== false && d.mandatory !== false,
+          conditions: Array.isArray(d.conditions) && d.conditions.length > 0
+            ? d.conditions
+            : parseDocumentConditions(d.title || d.name || '', d.description || d.req || ''),
+          key: d.key || d.id || `doc_${idx}`
+        }))
       : destination.toLowerCase().includes('mauritius')
       ? [
           {
             title: 'Original Passport',
             description: 'Must be valid for at least 6 months beyond intended stay with at least 2 blank visa pages.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Original Passport', 'Must be valid for at least 6 months beyond intended stay with at least 2 blank visa pages.')
           },
           {
             title: 'Confirmed Return / Onward Flight Ticket',
             description: 'Confirmed round-trip or onward airline ticket departing Mauritius within the 60-day permitted stay.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Confirmed Return Flight Ticket', 'Confirmed round-trip or onward airline ticket departing Mauritius within the 60-day permitted stay.')
           },
           {
             title: 'Proof of Accommodation / Hotel Voucher',
             description: 'Confirmed hotel booking reservation or official host accommodation invitation letter with address and contact details.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Proof of Accommodation', 'Confirmed hotel booking reservation or official host accommodation invitation letter with address and contact details.')
           },
           {
             title: 'Mauritius All-in-One Digital Travel Form',
             description: 'Mandatory online entry form completed at safetravel.govmu.org prior to departure to generate the arrival QR code.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Digital Arrival Form', 'Mandatory online entry form completed at safetravel.govmu.org prior to departure to generate the arrival QR code.')
           }
         ]
       : isVisaFree
@@ -450,54 +525,64 @@ export function VisaApplicationDetailsView({
           {
             title: 'Original Passport',
             description: 'Must be valid for at least 6 months beyond intended stay with at least 2 blank visa pages.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Original Passport', 'Must be valid for at least 6 months beyond intended stay with at least 2 blank visa pages.')
           },
           {
             title: 'Confirmed Return / Onward Flight Ticket',
             description: `Confirmed round-trip or onward airline ticket departing ${destination}.`,
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Confirmed Return Flight Ticket', `Confirmed round-trip or onward airline ticket departing ${destination}.`)
           },
           {
             title: 'Proof of Accommodation / Hotel Voucher',
             description: `Confirmed hotel booking reservation or registered host invitation in ${destination}.`,
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Proof of Accommodation', `Confirmed hotel booking reservation or registered host invitation in ${destination}.`)
           },
           {
             title: 'Digital Arrival / Health Declaration Form',
             description: 'Mandatory digital arrival card or immigration declaration form completed prior to arrival.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Digital Arrival Form', 'Mandatory digital arrival card or immigration declaration form completed prior to arrival.')
           }
         ]
       : [
           {
             title: 'Passport Bio-Page Scan',
             description: 'Valid for at least 6 months beyond travel dates with minimum 2 blank pages.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Passport Bio-Page Scan', 'Valid for at least 6 months beyond travel dates with minimum 2 blank pages.')
           },
           {
             title: 'Digital Passport-Size Photograph',
             description: isSchengen ? 'Recent 35mm x 45mm color photo, white background, neutral expression.' : 'Recent passport-size color photograph with white or light neutral background.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Passport Photograph', isSchengen ? 'Recent 35mm x 45mm color photo, white background, neutral expression.' : 'Recent passport-size color photograph with white or light neutral background.')
           },
           {
             title: 'Confirmed Return Flight Ticket',
             description: `Confirmed round-trip airline reservation to ${destination}.`,
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Confirmed Return Flight Ticket', `Confirmed round-trip airline reservation to ${destination}.`)
           },
           {
             title: 'Proof of Accommodation',
             description: `Hotel reservation booking voucher or registered host invitation in ${destination}.`,
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Proof of Accommodation', `Hotel reservation booking voucher or registered host invitation in ${destination}.`)
           },
           {
             title: 'Travel & Medical Insurance',
             description: isSchengen ? 'Mandatory minimum medical coverage of €30,000 for all Schengen states.' : 'Valid international travel medical insurance covering emergency evacuation and hospitalization.',
-            is_mandatory: !isOnlineOrOnArrival
+            is_mandatory: !isOnlineOrOnArrival,
+            conditions: parseDocumentConditions('Travel & Medical Insurance', isSchengen ? 'Mandatory minimum medical coverage of €30,000 for all Schengen states.' : 'Valid international travel medical insurance covering emergency evacuation and hospitalization.')
           },
           {
             title: 'Proof of Financial Solvency',
             description: 'Recent 3 to 6 months bank statements demonstrating adequate travel funds.',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Proof of Financial Solvency', 'Recent 3 to 6 months bank statements demonstrating adequate travel funds.')
           },
           {
             title: 'Identity & Residence Proof',
@@ -506,7 +591,8 @@ export function VisaApplicationDetailsView({
               : isUS 
               ? "Driver's License / State ID / Proof of Legal Residence" 
               : 'National ID Card or Government Residence Permit copy',
-            is_mandatory: true
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Identity & Residence Proof', isIndia ? 'Aadhaar Card / PAN Card copy (Government ID)' : isUS ? "Driver's License / State ID / Proof of Legal Residence" : 'National ID Card or Government Residence Permit copy')
           }
         ];
 
@@ -521,9 +607,52 @@ export function VisaApplicationDetailsView({
     return {};
   });
 
-  const handleToggleDocReady = (docTitle: string, currentReady: boolean) => {
+  const condStorageKey = `portal_conds_${slugClean}`;
+
+  const [checkedConditions, setCheckedConditions] = useState<Record<string, Record<number, boolean>>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(condStorageKey);
+        if (saved) return JSON.parse(saved);
+        if (application?.portalCheckedConditions) return application.portalCheckedConditions;
+      } catch (e) {}
+    }
+    return application?.portalCheckedConditions || {};
+  });
+
+  const handleToggleConditionCheck = (docKey: string, condIdx: number, totalConditions: number) => {
+    setCheckedConditions(prev => {
+      const docConds = { ...(prev[docKey] || {}) };
+      const currentVal = Boolean(docConds[condIdx]);
+      docConds[condIdx] = !currentVal;
+
+      const next = {
+        ...prev,
+        [docKey]: docConds
+      };
+
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(condStorageKey, JSON.stringify(next));
+          const storedCases = JSON.parse(localStorage.getItem('active_visa_cases') || '[]');
+          if (Array.isArray(storedCases)) {
+            const updatedCases = storedCases.map((c: any) => {
+              if (c.id === application?.id || c.destination?.toLowerCase() === destination.toLowerCase()) {
+                return { ...c, portalCheckedConditions: next };
+              }
+              return c;
+            });
+            localStorage.setItem('active_visa_cases', JSON.stringify(updatedCases));
+          }
+        } catch (e) {}
+      }
+      return next;
+    });
+  };
+
+  const handleToggleDocReady = (docTitle: string, currentReady: boolean, totalConditions: number = 0, docKey?: string) => {
+    const nextState = !currentReady;
     setUserCheckedDocs(prev => {
-      const nextState = !currentReady;
       const updated = { ...prev, [docTitle]: nextState };
       if (typeof window !== 'undefined') {
         try {
@@ -532,11 +661,70 @@ export function VisaApplicationDetailsView({
       }
       return updated;
     });
+
+    if (totalConditions > 0 && docKey) {
+      setCheckedConditions(prev => {
+        const docConds: Record<number, boolean> = {};
+        for (let i = 0; i < totalConditions; i++) {
+          docConds[i] = nextState;
+        }
+        const next = { ...prev, [docKey]: docConds };
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem(condStorageKey, JSON.stringify(next));
+          } catch (e) {}
+        }
+        return next;
+      });
+    }
   };
 
-  const checklistDocuments = rawDocs.map((docItem) => {
+  const handleDownloadChecklist = () => {
+    try {
+      const pdfPayload: VisaChecklistPDFData = {
+        countryName: destination,
+        passportCountry: passport,
+        purpose: purpose,
+        visaType: resolvedVisaType,
+        trackingId: trackingId,
+        processingTime: cleanProcessingTime,
+        embassyFee: feeDisplay,
+        serviceFee: '₹0 (Included)',
+        totalFee: feeDisplay,
+        stayDuration: application?.stayDuration || (isVisaFree ? '60 Days' : '30-90 Days'),
+        validity: application?.validity || '180 Days',
+        entryType: entries,
+        documents: checklistDocuments.map(d => ({
+          title: d.name,
+          description: d.req,
+          isMandatory: d.mandatory
+        })),
+        steps: (routeSteps && routeSteps.length > 0) ? routeSteps.map((s, idx) => ({
+          step: idx + 1,
+          title: `Step ${idx + 1}`,
+          desc: s
+        })) : [
+          { step: 1, title: 'Document Verification', desc: 'Prepare and verify all mandatory supporting documents.' },
+          { step: 2, title: 'Form Filing', desc: 'Submit consular application form and pay statutory embassy fees.' },
+          { step: 3, title: 'Biometrics / Submission', desc: 'Schedule VAC biometric appointment or submit passport.' },
+          { step: 4, title: 'Adjudication & Visa Grant', desc: 'Track application status until final visa sticker or e-Visa issuance.' }
+        ],
+        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard?tab=cases&appId=${application?.id || ''}` : 'https://travltik.com/traveller/dashboard'
+      };
+      downloadVisaChecklistPDF(pdfPayload, `${slugClean}-official-visa-checklist.pdf`);
+    } catch (err) {
+      console.error('Error generating checklist PDF:', err);
+    }
+  };
+
+  const checklistDocuments = rawDocs.map((docItem, idx) => {
+    const docKey = docItem.key || `doc_${idx}`;
     const t = docItem.title.toLowerCase();
-    
+    const conds = docItem.conditions || [];
+    const docCheckedMap = checkedConditions[docKey] || {};
+    const hasConds = conds.length > 0;
+    const allConditionsChecked = hasConds && conds.every((_: string, cIdx: number) => Boolean(docCheckedMap[cIdx]));
+
     // Check if matching genuine uploaded document exists in user's vault
     const matchedVaultDoc = (vaultDocuments || []).find((v: any) => {
       if (!v) return false;
@@ -557,18 +745,25 @@ export function VisaApplicationDetailsView({
 
     const isUploaded = Boolean(matchedVaultDoc);
     const isVerified = Boolean(matchedVaultDoc && (matchedVaultDoc.verified || matchedVaultDoc.status === 'verified'));
-    const hasExplicitToggle = userCheckedDocs[docItem.title] !== undefined;
-    const isReady = hasExplicitToggle
-      ? Boolean(userCheckedDocs[docItem.title])
-      : Boolean(isVerified || isUploaded);
+    const hasExplicitToggle = userCheckedDocs[docItem.title] !== undefined || userCheckedDocs[docKey] !== undefined;
+    const explicitChecked = Boolean(userCheckedDocs[docItem.title] ?? userCheckedDocs[docKey]);
+
+    const isReady = hasConds
+      ? (allConditionsChecked || explicitChecked || isVerified || isUploaded)
+      : (hasExplicitToggle ? explicitChecked : Boolean(isVerified || isUploaded));
 
     return {
+      key: docKey,
+      id: docKey,
       name: docItem.title,
+      title: docItem.title,
       req: docItem.description,
+      description: docItem.description,
       mandatory: docItem.is_mandatory !== false,
+      conditions: conds,
       isUploaded,
       isVerified,
-      isManuallyChecked: hasExplicitToggle ? Boolean(userCheckedDocs[docItem.title]) : false,
+      isManuallyChecked: hasExplicitToggle ? explicitChecked : false,
       isReady,
       matchedFileName: matchedVaultDoc?.name || matchedVaultDoc?.label || matchedVaultDoc?.fileName || null
     };
@@ -1133,7 +1328,7 @@ export function VisaApplicationDetailsView({
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
                             >
                               <Upload className="w-3.5 h-3.5" />
-                              <span>{readyDocsCount > 0 ? `Manage Vault Documents (${readyDocsCount}/${checklistDocuments.length} Ready) →` : `Upload Required Documents in Vault →`}</span>
+                              <span>{readyDocsCount > 0 ? `Manage Vault Documents (${readyDocsCount}/${checklistDocuments.length} Valid) →` : `Upload Required Documents in Vault →`}</span>
                             </button>
                           )}
                         </div>
@@ -1159,83 +1354,142 @@ export function VisaApplicationDetailsView({
                   Ensure all documents are available and meet the requirements
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap justify-end">
                 <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700">
-                  {readyDocsCount}/{checklistDocuments.length} Ready
+                  {readyDocsCount}/{checklistDocuments.length} Valid
                 </span>
+                <button
+                  type="button"
+                  onClick={handleDownloadChecklist}
+                  className="text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl inline-flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs"
+                  title="Download official PDF checklist"
+                >
+                  <Download className="w-3.5 h-3.5 text-[#00a896]" />
+                  <span className="hidden sm:inline">Download Checklist PDF</span>
+                  <span className="sm:hidden">Checklist PDF</span>
+                </button>
                 <button
                   type="button"
                   onClick={() => setShowGuidelinesModal(true)}
                   className="text-xs font-bold text-[#00a896] hover:text-[#009282] hover:underline inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <FileText className="w-3.5 h-3.5" />
-                  <span>View Document Guidelines</span>
+                  <span className="hidden sm:inline">View Document Guidelines</span>
+                  <span className="sm:hidden">Guidelines</span>
                 </button>
               </div>
             </div>
 
-            {/* Checklist Table - Sleek Single-Line Compact Rows */}
+            {/* Checklist Table - Sleek Responsive Rows Matching AI Portal */}
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-100 text-[11px] uppercase font-bold text-slate-400 tracking-wider">
-                    <th className="py-2.5 px-3 md:w-[40%]">DOCUMENT</th>
-                    <th className="py-2.5 px-3 hidden md:table-cell md:w-[45%]">REQUIREMENT</th>
-                    <th className="py-2.5 px-3 text-right md:text-center whitespace-nowrap">READY</th>
+                  <tr className="border-b border-slate-100 bg-slate-50/60 text-[12px] uppercase font-bold text-slate-500 tracking-wider">
+                    <th className="py-3 px-3.5 text-left w-[32%] sm:w-[28%]">Document Name</th>
+                    <th className="py-3 px-3.5 text-left">Conditions and Validity</th>
+                    <th className="py-3 px-3.5 text-center w-36 sm:w-44 whitespace-nowrap">Check if Valid</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {checklistDocuments.map((doc, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
-                      {/* 1. DOCUMENT */}
-                      <td className="py-3 px-3.5 align-top">
-                        <div className="flex items-start gap-2.5 min-w-0">
-                          <span className="mt-0.5 shrink-0">
+                    <tr key={doc.key || idx} className="hover:bg-slate-50/70 transition-colors">
+                      {/* 1. DOCUMENT NAME */}
+                      <td className="py-4 px-3.5 align-top w-[32%] sm:w-[28%]">
+                        <div className="flex items-start gap-2.5 sm:gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 shadow-2xs mt-0.5">
                             {getDocumentChecklistIcon(doc.name)}
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <span className="font-bold text-slate-900 text-xs sm:text-sm break-words whitespace-normal block">
+                          </div>
+                          <div className="min-w-0">
+                            <strong className="text-xs sm:text-sm font-bold text-slate-900 block leading-snug break-words">
                               {doc.name}
+                            </strong>
+                            <span className={`inline-block mt-1 text-[10px] sm:text-[11px] font-bold uppercase px-2 py-0.5 rounded-md ${
+                              doc.mandatory ? 'text-rose-700 bg-rose-50 border border-rose-200/70' : 'text-slate-600 bg-slate-100'
+                            }`}>
+                              {doc.mandatory ? 'Mandatory' : 'Recommended'}
                             </span>
-                            {/* Mobile-visible requirement description */}
-                            <p className="text-xs text-slate-600 break-words whitespace-normal leading-relaxed mt-1 md:hidden">
-                              {doc.req}
-                            </p>
                           </div>
                         </div>
                       </td>
 
-                      {/* 2. REQUIREMENT (Desktop / Tablet) */}
-                      <td className="py-3 px-3.5 text-slate-600 font-medium text-xs hidden md:table-cell align-top">
-                        <p className="break-words whitespace-normal leading-relaxed text-slate-600 text-xs">
-                          {doc.req}
-                        </p>
-                      </td>
+                      {/* 2. CONDITIONS & VALIDITY CHECKBOXES */}
+                      <td colSpan={2} className="py-4 px-3.5 align-top">
+                        {doc.conditions && doc.conditions.length > 0 ? (
+                          <ol className="space-y-2.5 list-none">
+                            {doc.conditions.map((cond: string, cIdx: number) => {
+                              const isCondChecked = checkedConditions[doc.key]?.[cIdx] ?? doc.isReady;
+                              return (
+                                <li
+                                  key={cIdx}
+                                  className="flex items-start justify-between gap-3 sm:gap-4 p-1.5 rounded-xl hover:bg-slate-50/80 transition-colors group"
+                                >
+                                  {/* Serial Number and Condition Text */}
+                                  <div className="flex items-start gap-2 flex-1 min-w-0">
+                                    <span className="font-bold text-slate-900 shrink-0 select-none text-xs sm:text-sm mt-0.5 min-w-[18px]">
+                                      {cIdx + 1}.
+                                    </span>
+                                    <span
+                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                      className={`cursor-pointer text-xs sm:text-sm leading-relaxed select-none transition-colors ${
+                                        isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
+                                      }`}
+                                    >
+                                      {cond}
+                                    </span>
+                                  </div>
 
-                      {/* 3. READY (Square format checkbox) */}
-                      <td className="py-2.5 px-3 text-right md:text-center align-middle">
-                        <div className="flex items-center justify-end md:justify-center">
-                          {doc.isReady ? (
-                            <button
-                              type="button"
-                              onClick={() => handleToggleDocReady(doc.name, true)}
-                              title="Ready (Click to uncheck)"
-                              style={{ width: '22px', height: '22px', minWidth: '22px', minHeight: '22px', maxWidth: '22px', maxHeight: '22px' }}
-                              className="w-[22px] h-[22px] rounded-[6px] bg-[#00a878] text-white border border-[#00a878] shadow-xs hover:scale-105 active:scale-95 transition-all flex items-center justify-center shrink-0 cursor-pointer select-none"
-                            >
-                              <Check className="w-3.5 h-3.5 stroke-[3]" />
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => handleToggleDocReady(doc.name, false)}
-                              title="Not ready yet (Click when document is prepared)"
-                              style={{ width: '22px', height: '22px', minWidth: '22px', minHeight: '22px', maxWidth: '22px', maxHeight: '22px' }}
-                              className="w-[22px] h-[22px] rounded-[6px] border border-slate-300 bg-white hover:border-[#00a878] hover:bg-emerald-50/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shrink-0 cursor-pointer shadow-2xs select-none"
-                            >
-                            </button>
-                          )}
-                        </div>
+                                  {/* Checkbox aligned under Check if Valid header */}
+                                  <div className="w-36 sm:w-44 shrink-0 flex items-center justify-center">
+                                    <button
+                                      type="button"
+                                      role="checkbox"
+                                      aria-checked={isCondChecked}
+                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                      className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none ${
+                                        isCondChecked
+                                          ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                          : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                      }`}
+                                      title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Mark as valid'}
+                                    >
+                                      {isCondChecked ? (
+                                        <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                                      ) : (
+                                        <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                      )}
+                                    </button>
+                                  </div>
+                                </li>
+                              );
+                            })}
+                          </ol>
+                        ) : (
+                          <div className="flex items-start justify-between gap-4 p-1.5">
+                            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed flex-1 min-w-0">
+                              {doc.req}
+                            </p>
+                            <div className="w-36 sm:w-44 shrink-0 flex items-center justify-center">
+                              <button
+                                type="button"
+                                role="checkbox"
+                                aria-checked={doc.isReady}
+                                onClick={() => handleToggleDocReady(doc.name, doc.isReady, 0, doc.key)}
+                                className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none ${
+                                  doc.isReady
+                                    ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                    : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                }`}
+                                title={doc.isReady ? 'Marked as valid (Click to untick)' : 'Mark as valid'}
+                              >
+                                {doc.isReady ? (
+                                  <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                                ) : (
+                                  <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -1246,14 +1500,14 @@ export function VisaApplicationDetailsView({
             {/* Checklist Legend */}
             <div className="flex flex-wrap items-center gap-6 pt-3.5 border-t border-slate-100 text-xs font-semibold text-slate-600">
               <div className="flex items-center gap-2">
-                <span className="w-4 h-4 rounded-[5px] bg-[#00a878] text-white border border-[#00a878] flex items-center justify-center shadow-2xs shrink-0">
+                <span className="w-4 h-4 rounded-[5px] bg-emerald-600 text-white border border-emerald-600 flex items-center justify-center shadow-2xs shrink-0">
                   <Check className="w-2.5 h-2.5 stroke-[3]" />
                 </span>
-                <span>Ready</span>
+                <span>Check if Valid (Verified)</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-4 h-4 rounded-[5px] border border-slate-300 bg-white shadow-2xs shrink-0" />
-                <span>Pending Preparation</span>
+                <span>Pending Verification</span>
               </div>
             </div>
 
