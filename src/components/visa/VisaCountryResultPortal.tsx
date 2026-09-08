@@ -7656,18 +7656,17 @@ export function VisaCountryResultPortal({
                                       role="checkbox"
                                       aria-checked={isCondChecked}
                                       onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                      className={`w-4 h-4 sm:w-5 sm:h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 transition-all cursor-pointer select-none ${
+                                      style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px', maxWidth: '20px', maxHeight: '20px' }}
+                                      className={`w-5 h-5 rounded-[6px] border flex items-center justify-center shrink-0 self-start mt-0.5 transition-all duration-150 cursor-pointer select-none active:scale-90 ${
                                         isCondChecked
-                                          ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
-                                          : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                          ? 'bg-[#00a878] border-[#00a878] text-white shadow-xs'
+                                          : 'bg-white border-slate-300 hover:border-[#00a878] hover:bg-emerald-50/30 shadow-2xs'
                                       }`}
                                       title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
                                     >
                                       {isCondChecked ? (
-                                        <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3] text-white" />
-                                      ) : (
-                                        <span className="w-1.5 h-1.5 rounded-[2px] bg-transparent" />
-                                      )}
+                                        <Check className="w-3 h-3 stroke-[3] text-white" />
+                                      ) : null}
                                     </button>
                                   </li>
                                 );

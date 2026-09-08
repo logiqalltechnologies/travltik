@@ -145,67 +145,6 @@ const defaultSchema = {
   <!-- Structured Data (Schema.org) -->
   <script type="application/ld+json" set:html={JSON.stringify(schema || defaultSchema)} />
 
-  <!-- Real-Time Client Error & Console Telemetry Monitor -->
-  <script is:inline>
-    (function() {
-      if (typeof window === 'undefined') return;
-      window.__travltik_errors = window.__travltik_errors || [];
-      function reportError(payload) {
-        window.__travltik_errors.push(payload);
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-          try {
-            fetch('http://localhost:9999/api/telemetry', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload),
-              mode: 'no-cors'
-            }).catch(function() {});
-          } catch(e) {}
-        }
-      }
-
-      window.onerror = function(message, source, lineno, colno, error) {
-        reportError({
-          type: 'UncaughtException',
-          message: String(message),
-          url: source || window.location.pathname,
-          line: lineno,
-          col: colno,
-          stack: error && error.stack ? error.stack : ''
-        });
-      };
-
-      window.addEventListener('unhandledrejection', function(event) {
-        reportError({
-          type: 'UnhandledPromiseRejection',
-          message: event.reason ? (event.reason.message || String(event.reason)) : 'Unhandled rejection',
-          url: window.location.pathname,
-          stack: event.reason && event.reason.stack ? event.reason.stack : ''
-        });
-      });
-
-      var origConsoleError = console.error;
-      console.error = function() {
-        var args = Array.prototype.slice.call(arguments);
-        var msg = args.map(function(a) { 
-          if (typeof a === 'object') {
-            try { return JSON.stringify(a); } catch(e) { return String(a); }
-          }
-          return String(a); 
-        }).join(' ');
-        
-        // Report non-empty console errors
-        if (msg && !msg.includes('Download the React DevTools')) {
-          reportError({
-            type: 'ConsoleError',
-            message: msg,
-            url: window.location.pathname
-          });
-        }
-        origConsoleError.apply(console, arguments);
-      };
-    })();
-  </script>
 </head>
 <body class="font-sans antialiased subpixel-antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden">
   {!hideHeader && <Header />}

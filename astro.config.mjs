@@ -20,15 +20,24 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
+  server: {
+    host: true,
+    port: 4321,
+  },
   vite: {
     server: {
+      host: true,
+      port: 4321,
+      hmr: {
+        clientPort: 4321,
+      },
       headers: {
         'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
       },
     },
     envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_', 'RESEND_', 'EMAIL_', 'DATABASE_', 'TURNSTILE_'],
     define: {
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
     },
     ssr: {
       external: ['resend', 'pg', 'bcryptjs', 'nodemailer', 'firebase-admin', 'firebase-admin/app', 'firebase-admin/auth'],
