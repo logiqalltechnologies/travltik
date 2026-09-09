@@ -3084,7 +3084,18 @@ function parseDocumentConditions(title: string, description: string, rawConditio
   const desc = (description || '').trim();
 
   // 1. Specific tailored condition breakdowns for common visa document types
-  if (tLow.includes('passport')) {
+
+  // Photo FIRST — must run before passport check (title may contain both words e.g. "Passport Photographs")
+  if (tLow.includes('photo') || tLow.includes('picture')) {
+    return [
+      'Two recent identical color photographs taken within the last 6 months',
+      'Biometric format: 35mm × 45mm on a plain white background, 70–80% face coverage',
+      'Neutral expression, eyes clearly open and visible, no tinted glasses or head coverings (except for religious reasons)'
+    ];
+  }
+
+  // Passport (guarded: exclude titles that are actually about photos or size)
+  if (tLow.includes('passport') && !tLow.includes('photo') && !tLow.includes('photograph') && !tLow.includes('size')) {
     return [
       'Original passport valid for at least 6-12 months beyond intended stay with minimum 2 blank visa pages',
       'Must be in undamaged physical condition with machine-readable bio-data page intact',
@@ -3116,11 +3127,28 @@ function parseDocumentConditions(title: string, description: string, rawConditio
     ];
   }
 
-  if (tLow.includes('financial') || tLow.includes('maintenance') || tLow.includes('fund') || tLow.includes('bank') || tLow.includes('solvency') || tLow.includes('blocked') || tLow.includes('gic')) {
+  // Financial — student-specific (education loan, blocked account, GIC, maintenance fund)
+  const isStudentFinancial =
+    tLow.includes('education loan') ||
+    tLow.includes('blocked') ||
+    tLow.includes('gic') ||
+    tLow.includes('maintenance fund') ||
+    tLow.includes('tuition fund') ||
+    tLow.includes('sponsorship letter');
+  if (isStudentFinancial) {
     return [
       desc || 'Verifiable evidence of tuition fees + annual living maintenance + return travel allowance',
       'Official original bank statements for the past 3 to 6 months bearing official bank stamp and branch seal',
       'Approved education loan sanction letter or government blocked deposit certificate with verified source of funds'
+    ];
+  }
+
+  // Financial — general (tourism/business: bank statements, solvency, funds — NO education loan)
+  if (tLow.includes('financial') || tLow.includes('fund') || tLow.includes('bank') || tLow.includes('solvency') || tLow.includes('statement') || tLow.includes('maintenance')) {
+    return [
+      'Original bank statements for the last 3–6 months showing sufficient funds for the entire trip',
+      'Income Tax Returns (ITR) for the last 2 years as proof of financial stability',
+      'No Objection Certificate (NOC) from employer / school / college confirming approved leave of absence'
     ];
   }
 
@@ -3153,14 +3181,6 @@ function parseDocumentConditions(title: string, description: string, rawConditio
       'Valid international travel or student health insurance policy covering emergency medical care and hospitalization',
       'Policy must be active from departure date and cover the entire duration of stay in destination country',
       'Must include repatriation of remains and emergency medical evacuation with zero or minimal deductible'
-    ];
-  }
-
-  if (tLow.includes('photo') || tLow.includes('picture')) {
-    return [
-      'Recent identical color photographs taken within the last 6 months',
-      'Consular biometric standard (35x45mm or 2x2 inches) on plain white or light neutral background',
-      'Full face neutral expression with 80% face coverage and eyes clearly visible with no tinted glasses'
     ];
   }
 
