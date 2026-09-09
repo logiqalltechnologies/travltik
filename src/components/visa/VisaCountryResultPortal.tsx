@@ -3184,7 +3184,31 @@ function parseDocumentConditions(title: string, description: string, rawConditio
     ];
   }
 
-  if (tLow.includes('flight') || tLow.includes('ticket') || tLow.includes('itinerary')) {
+  if (tLow.includes('covering') || tLow.includes('cover letter') || tLow.includes('motivation letter')) {
+    return [
+      'Signed personal covering letter addressed to the Embassy / Consulate explaining purpose of visit and travel itinerary',
+      'Must include exact travel dates, planned accommodation details, and source of financial sponsorship',
+      'Must be signed and dated by the applicant with full name, passport number, and contact details'
+    ];
+  }
+
+  if (tLow.includes('itinerary') && !tLow.includes('flight') && !tLow.includes('ticket')) {
+    return [
+      'Day-by-day travel plan detailing cities to visit, daily scheduled activities, and transit dates',
+      'Must clearly reference corresponding confirmed flight bookings, train journeys, and hotel reservations',
+      'Dates must align exactly with visa application validity and entry/exit timeline'
+    ];
+  }
+
+  if (tLow.includes('invitation')) {
+    return [
+      'Formal invitation letter on official institutional/corporate letterhead or signed personal invitation from host',
+      'Must state applicant full name, passport number, purpose of visit, duration of stay, and relationship with host',
+      'Accompanied by copy of host valid passport, national ID card, resident permit, or company registration certificate'
+    ];
+  }
+
+  if (tLow.includes('flight') || tLow.includes('ticket') || tLow.includes('air booking') || tLow.includes('flight itinerary')) {
     return [
       'Confirmed round-trip flight booking or verifiable travel itinerary showing passenger name and PNR',
       'Must match planned travel dates, entry port, and departure within approved visa validity',
@@ -3194,7 +3218,7 @@ function parseDocumentConditions(title: string, description: string, rawConditio
 
   if (tLow.includes('hotel') || tLow.includes('accommodation') || tLow.includes('stay')) {
     return [
-      'Confirmed hotel reservations, host invitation letter, or university hall accommodation confirmation',
+      'Confirmed hotel reservations, host accommodation voucher, or university hall booking confirmation',
       'Must cover the entire duration of stay showing applicant name and full property contact details'
     ];
   }
@@ -7436,51 +7460,63 @@ export function VisaCountryResultPortal({
                   {/* 1. Overview Card */}
                   <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-5 text-left">
                     <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900">Overview</h2>
-                    <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal">
-                      {resolvedOverview}
+                    <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal max-w-4xl">
+                      {(() => {
+                        const text = (resolvedOverview || '').trim();
+                        if (text.length > 240) {
+                          const sentences = text.match(/[^.!?]+[.!?]+/g);
+                          if (sentences && sentences.length >= 2) {
+                            const firstTwo = (sentences[0] + ' ' + sentences[1]).trim();
+                            if (firstTwo.length >= 70 && firstTwo.length <= 250) {
+                              return firstTwo;
+                            }
+                          }
+                        }
+                        return text;
+                      })()}
                     </p>
 
                     {/* 4 Feature Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-stretch">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 items-stretch">
                     {isStudyTab ? (
                       <>
-                        <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100/90 flex items-start gap-3 h-full">
-                          <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                            <GraduationCap className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-blue-950 block">Higher Education</strong>
-                            <span className="text-[13px] sm:text-[14px] text-blue-700/80 font-normal leading-snug block">Full-time degree or accredited course</span>
-                          </div>
-                        </div>
-
-                        <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100/90 flex items-start gap-3 h-full">
-                          <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-                            <Briefcase className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-purple-950 block">Part-Time Work Rights</strong>
-                            <span className="text-[13px] sm:text-[14px] text-purple-700/80 font-normal leading-snug block">Work during terms &amp; full-time in breaks</span>
+                        <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                          <div>
+                            <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                              <GraduationCap className="w-4 h-4" />
+                            </div>
+                            <strong className="text-[14px] sm:text-[15px] font-bold text-blue-950 block leading-snug">Higher Education</strong>
+                            <span className="text-[12px] sm:text-[13px] text-blue-800/80 font-normal leading-relaxed block mt-1">Full-time degree or accredited course</span>
                           </div>
                         </div>
 
-                        <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100/90 flex items-start gap-3 h-full">
-                          <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
-                            <Award className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-rose-950 block">Post-Study Work</strong>
-                            <span className="text-[13px] sm:text-[14px] text-rose-700/80 font-normal leading-snug block">Graduate job search &amp; post-study permits</span>
+                        <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                          <div>
+                            <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                              <Briefcase className="w-4 h-4" />
+                            </div>
+                            <strong className="text-[14px] sm:text-[15px] font-bold text-purple-950 block leading-snug">Part-Time Work Rights</strong>
+                            <span className="text-[12px] sm:text-[13px] text-purple-800/80 font-normal leading-relaxed block mt-1">Work during terms &amp; full-time in breaks</span>
                           </div>
                         </div>
 
-                        <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100/90 flex items-start gap-3 h-full">
-                          <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                            <Calendar className="w-4 h-4" />
+                        <div className="p-4 rounded-2xl bg-rose-50/60 border border-rose-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                          <div>
+                            <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                              <Award className="w-4 h-4" />
+                            </div>
+                            <strong className="text-[14px] sm:text-[15px] font-bold text-rose-950 block leading-snug">Post-Study Work</strong>
+                            <span className="text-[12px] sm:text-[13px] text-rose-800/80 font-normal leading-relaxed block mt-1">Graduate job search &amp; post-study permits</span>
                           </div>
-                          <div className="min-w-0">
-                            <strong className="text-[15px] sm:text-[16px] font-semibold text-emerald-950 block">Academic Duration</strong>
-                            <span className="text-[13px] sm:text-[14px] text-emerald-700/80 font-normal leading-snug block">
+                        </div>
+
+                        <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                          <div>
+                            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                              <Calendar className="w-4 h-4" />
+                            </div>
+                            <strong className="text-[14px] sm:text-[15px] font-bold text-emerald-950 block leading-snug">Academic Duration</strong>
+                            <span className="text-[12px] sm:text-[13px] text-emerald-800/80 font-normal leading-relaxed block mt-1">
                               Full course duration + post-study buffer
                             </span>
                           </div>
@@ -7502,10 +7538,10 @@ export function VisaCountryResultPortal({
                             : getTourismHighlights(countryName);
 
                           const themes = [
-                            { bg: 'bg-blue-50/70', border: 'border-blue-100/90', iconBg: 'bg-blue-100 text-blue-600', text: 'text-blue-950', sub: 'text-blue-700/80' },
-                            { bg: 'bg-purple-50/70', border: 'border-purple-100/90', iconBg: 'bg-purple-100 text-purple-600', text: 'text-purple-950', sub: 'text-purple-700/80' },
-                            { bg: 'bg-rose-50/70', border: 'border-rose-100/90', iconBg: 'bg-rose-100 text-rose-600', text: 'text-rose-950', sub: 'text-rose-700/80' },
-                            { bg: 'bg-emerald-50/70', border: 'border-emerald-100/90', iconBg: 'bg-emerald-100 text-emerald-600', text: 'text-emerald-950', sub: 'text-emerald-700/80' }
+                            { bg: 'bg-blue-50/60', border: 'border-blue-100/90', iconBg: 'bg-blue-100 text-blue-600', text: 'text-blue-950', sub: 'text-blue-800/80' },
+                            { bg: 'bg-purple-50/60', border: 'border-purple-100/90', iconBg: 'bg-purple-100 text-purple-600', text: 'text-purple-950', sub: 'text-purple-800/80' },
+                            { bg: 'bg-rose-50/60', border: 'border-rose-100/90', iconBg: 'bg-rose-100 text-rose-600', text: 'text-rose-950', sub: 'text-rose-800/80' },
+                            { bg: 'bg-emerald-50/60', border: 'border-emerald-100/90', iconBg: 'bg-emerald-100 text-emerald-600', text: 'text-emerald-950', sub: 'text-emerald-800/80' }
                           ];
 
                           const renderIcon = (iconName: string, idx: number) => {
@@ -7557,14 +7593,33 @@ export function VisaCountryResultPortal({
 
                           return highlights.slice(0, 4).map((h: any, idx: number) => {
                             const theme = themes[idx % themes.length];
+                            const rawTitle = h.title || '';
+                            const cleanTitle = rawTitle
+                              .replace(/\s+National Park/gi, ' Park')
+                              .replace(/Impenetrable\s+/gi, '')
+                              .replace(/\s*&\s*Jinja Rafting/gi, '')
+                              .trim();
+
+                            const rawDesc = h.desc || h.description || '';
+                            const cleanDesc = rawDesc.length > 85 
+                              ? (rawDesc.slice(0, 80).trim().replace(/[,\s]+$/, '') + '...') 
+                              : rawDesc;
+
                             return (
-                              <div key={idx} className={`p-3.5 rounded-2xl ${theme.bg} border ${theme.border} flex items-start gap-3 h-full`}>
-                                <div className={`w-8 h-8 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0`}>
-                                  {renderIcon(h.icon, idx)}
-                                </div>
-                                <div className="min-w-0">
-                                  <strong className={`text-[15px] sm:text-[16px] font-semibold ${theme.text} block`}>{h.title}</strong>
-                                  <span className={`text-[13px] sm:text-[14px] ${theme.sub} font-normal leading-snug block`}>{h.desc || h.description}</span>
+                              <div 
+                                key={idx} 
+                                className={`p-4 rounded-2xl ${theme.bg} border ${theme.border} flex flex-col justify-between h-full hover:shadow-xs transition-all`}
+                              >
+                                <div>
+                                  <div className={`w-8 h-8 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0 mb-3 shadow-2xs`}>
+                                    {renderIcon(h.icon, idx)}
+                                  </div>
+                                  <strong className={`text-[14px] sm:text-[15px] font-bold ${theme.text} block leading-snug`}>
+                                    {cleanTitle}
+                                  </strong>
+                                  <span className={`text-[12px] sm:text-[13px] ${theme.sub} font-normal leading-relaxed block mt-1`}>
+                                    {cleanDesc}
+                                  </span>
                                 </div>
                               </div>
                             );
@@ -7572,9 +7627,8 @@ export function VisaCountryResultPortal({
                         })()}
                       </>
                     )}
+                    </div>
                   </div>
-
-                </div>
 
                 {/* 2. Documents Required Card */}
                 {(() => {
@@ -8235,8 +8289,16 @@ export function VisaCountryResultPortal({
                           : isBusinessTab
                           ? getBusinessRequirements(countryName)
                           : getTourismRequirements(countryName);
-                        if (otherList && otherList.length > 0) {
-                          return otherList.slice(0, 3).map((orq: any, i: number) => (
+                        const filteredList = (otherList && otherList.length > 0)
+                          ? otherList.filter((orq: any) => {
+                              const cat = (orq.category || '').toLowerCase();
+                              const det = (orq.details || '').toLowerCase();
+                              return !cat.includes('financial') && !cat.includes('solvency') && !cat.includes('fund') && !det.includes('proof of funds') && !det.includes('per day of stay');
+                            })
+                          : [];
+
+                        if (filteredList.length > 0) {
+                          return filteredList.slice(0, 3).map((orq: any, i: number) => (
                             <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-slate-700 font-normal leading-relaxed">
                               <span className="text-slate-400 select-none">•</span>
                               <span><strong className="font-semibold text-slate-900">{orq.category}:</strong> {orq.details}</span>

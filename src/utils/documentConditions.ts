@@ -13,7 +13,19 @@ export function parseDocumentConditions(title: string, description: string, rawC
   const desc = (description || '').trim();
 
   // 1. Specific tailored condition breakdowns for common visa document types
-  if (tLow.includes('passport')) {
+
+  // PHOTO must be checked BEFORE passport — "Two Color Passport Photographs" must NOT
+  // fall into the passport block. If title contains 'photo' or 'picture', return photo specs only.
+  if (tLow.includes('photo') || tLow.includes('picture')) {
+    return [
+      'Two recent identical color photographs taken within the last 6 months',
+      'Biometric format: 35mm × 45mm on a plain white background, 70–80% face coverage',
+      'Neutral expression, eyes clearly open and visible, no tinted glasses or head coverings (except for religious reasons)'
+    ];
+  }
+
+  // Passport document (physical passport) — only when title is about the passport itself, not photographs
+  if (tLow.includes('passport') && !tLow.includes('photo') && !tLow.includes('photograph') && !tLow.includes('size')) {
     return [
       'Original passport valid for at least 6-12 months beyond intended stay with minimum 2 blank visa pages',
       'Must be in undamaged physical condition with machine-readable bio-data page intact',
@@ -45,11 +57,23 @@ export function parseDocumentConditions(title: string, description: string, rawC
     ];
   }
 
-  if (tLow.includes('financial') || tLow.includes('maintenance') || tLow.includes('fund') || tLow.includes('bank') || tLow.includes('solvency') || tLow.includes('blocked') || tLow.includes('gic')) {
+  // Financial / funds block — split by purpose context
+  // Student-specific: education loan, blocked account, GIC, maintenance fund
+  const isStudentFinancial = tLow.includes('education loan') || tLow.includes('blocked') || tLow.includes('gic') || tLow.includes('maintenance fund') || tLow.includes('blocked deposit') || tLow.includes('blocked account');
+  if (isStudentFinancial) {
     return [
       desc || 'Verifiable evidence of tuition fees + annual living maintenance + return travel allowance',
       'Official original bank statements for the past 3 to 6 months bearing official bank stamp and branch seal',
       'Approved education loan sanction letter or government blocked deposit certificate with verified source of funds'
+    ];
+  }
+
+  // General financial / bank statements — Tourism, Business, PR (NO education loan)
+  if (tLow.includes('financial') || tLow.includes('fund') || tLow.includes('bank') || tLow.includes('solvency') || tLow.includes('statement')) {
+    return [
+      desc || '6 months bank statements with official branch seal showing sufficient funds for trip',
+      'Latest 2 years Income Tax Return (ITR) or Form 16 as proof of stable income',
+      'No Objection Certificate (NOC) from employer / school / college granting leave for travel'
     ];
   }
 
@@ -85,15 +109,31 @@ export function parseDocumentConditions(title: string, description: string, rawC
     ];
   }
 
-  if (tLow.includes('photo') || tLow.includes('picture')) {
+  if (tLow.includes('covering') || tLow.includes('cover letter') || tLow.includes('motivation letter')) {
     return [
-      'Recent identical color photographs taken within the last 6 months',
-      'Consular biometric standard (35x45mm or 2x2 inches) on plain white or light neutral background',
-      'Full face neutral expression with 80% face coverage and eyes clearly visible with no tinted glasses'
+      'Signed personal covering letter addressed to the Embassy / Consulate explaining purpose of visit and travel itinerary',
+      'Must include exact travel dates, planned accommodation details, and source of financial sponsorship',
+      'Must be signed and dated by the applicant with full name, passport number, and contact details'
     ];
   }
 
-  if (tLow.includes('flight') || tLow.includes('ticket') || tLow.includes('itinerary')) {
+  if (tLow.includes('itinerary') && !tLow.includes('flight') && !tLow.includes('ticket')) {
+    return [
+      'Day-by-day travel plan detailing cities to visit, daily scheduled activities, and transit dates',
+      'Must clearly reference corresponding confirmed flight bookings, train journeys, and hotel reservations',
+      'Dates must align exactly with visa application validity and entry/exit timeline'
+    ];
+  }
+
+  if (tLow.includes('invitation')) {
+    return [
+      'Formal invitation letter on official institutional/corporate letterhead or signed personal invitation from host',
+      'Must state applicant full name, passport number, purpose of visit, duration of stay, and relationship with host',
+      'Accompanied by copy of host valid passport, national ID card, resident permit, or company registration certificate'
+    ];
+  }
+
+  if (tLow.includes('flight') || tLow.includes('ticket') || tLow.includes('air booking') || tLow.includes('flight itinerary')) {
     return [
       'Confirmed round-trip flight booking or verifiable travel itinerary showing passenger name and PNR',
       'Must match planned travel dates, entry port, and departure within approved visa validity',
@@ -103,7 +143,7 @@ export function parseDocumentConditions(title: string, description: string, rawC
 
   if (tLow.includes('hotel') || tLow.includes('accommodation') || tLow.includes('stay')) {
     return [
-      'Confirmed hotel reservations, host invitation letter, or university hall accommodation confirmation',
+      'Confirmed hotel reservations, host accommodation voucher, or university hall booking confirmation',
       'Must cover the entire duration of stay showing applicant name and full property contact details'
     ];
   }

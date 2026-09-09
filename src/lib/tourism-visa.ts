@@ -6342,27 +6342,27 @@ export const TOURISM_DESTS: Record<string, any> = {
     "official_source": "Department of Immigration and Naturalization of Somalia & Somaliland Immigration"
   },
   "uganda": {
-    "overview": "Uganda, the 'Pearl of Africa', is world-renowned for trekking endangered mountain gorillas in Bwindi Impenetrable National Park, chimpanzee tracking in Kibale Forest, spectacular savanna game drives in Queen Elizabeth National Park with tree-climbing lions, roaring Murchison Falls where the Nile thunders through a 7-meter gorge, and white-water rafting at the source of the River Nile in Jinja. Indian passport holders can apply online for an official Uganda tourist eVisa via visas.immigration.go.ug.",
+    "overview": "Uganda, the 'Pearl of Africa', is world-renowned for mountain gorilla trekking in Bwindi, tree-climbing lions in Queen Elizabeth Park, and roaring Murchison Falls on the Nile. Indian travelers can apply online for an official tourist eVisa.",
     "highlights": [
       {
         "icon": "🦍",
-        "title": "Bwindi Impenetrable Mountain Gorillas",
-        "description": "Encounter half of the world's remaining mountain gorilla population in ancient mist-covered rainforests (UNESCO)."
+        "title": "Bwindi Gorillas",
+        "description": "Trek rare mountain gorillas in ancient UNESCO rainforests."
       },
       {
         "icon": "🌊",
-        "title": "Murchison Falls National Park",
-        "description": "The world's most powerful surge of water, where the River Nile crashes through a narrow 7-meter rock gorge."
+        "title": "Murchison Falls",
+        "description": "Watch the Nile thunder through a dramatic 7-meter gorge."
       },
       {
         "icon": "🦁",
-        "title": "Queen Elizabeth National Park",
-        "description": "Kazinga Channel boat safaris with massive hippos and famous tree-climbing lions in the Ishasha sector."
+        "title": "Queen Elizabeth Park",
+        "description": "Classic savanna game drives with famous tree-climbing lions."
       },
       {
         "icon": "🚣",
-        "title": "Source of the Nile & Jinja Rafting",
-        "description": "Grade 5 white-water rafting on the Victoria Nile and exploring the historic source of the River Nile."
+        "title": "Source of the Nile",
+        "description": "Grade-5 white-water rafting & river exploration in Jinja."
       }
     ],
     "documents": [
@@ -13018,9 +13018,9 @@ export function getTourismRequirements(country: string): OtherRequirementItem[] 
     'greece': [
       { category: 'Schengen 90/180 Rule', details: 'Maximum 90 days stay within any rolling 180-day period across all 29 Schengen countries.' },
       { category: 'Travel Insurance', details: 'Mandatory €30,000 medical insurance covering emergency treatment and repatriation.' },
-      { category: 'Financial Solvency', details: 'Proof of funds: €50-70 per day of stay.' },
       { category: 'Island Travel', details: 'Include inter-island ferry/domestic flight bookings in itinerary.' },
-      { category: 'GVCW', details: 'Greece uses GVCW, NOT VFS Global for visa applications.' }
+      { category: 'GVCW Submission', details: 'Greece uses GVCW, NOT VFS Global for visa applications.' },
+      { category: 'Biometrics', details: 'Mandatory 10-finger biometric scan and digital photograph at GVCW VAC.' }
     ],
     'australia': [
       { category: 'Passport Validity', details: 'Valid for at least 6 months from arrival date.' },

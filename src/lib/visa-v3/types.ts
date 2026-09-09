@@ -95,6 +95,9 @@ export interface ValidationResult {
   field_status: Record<string, { has_evidence: boolean; verified: boolean }>;
 }
 
+import type { DocumentRequirement } from '../visa/types';
+export { type DocumentRequirement, DOCUMENT_REQUIREMENTS } from '../visa/types';
+
 export interface VisaResult {
   data: VisaData | null;
   source: 'cache' | 'html' | 'gemini' | 'fallback';
@@ -108,6 +111,7 @@ export interface VisaResult {
   missing_critical_fields?: string[];
   message?: string;
   official_embassy_url?: string;
+  documents?: DocumentRequirement[];
 }
 
 export function createField<T>(

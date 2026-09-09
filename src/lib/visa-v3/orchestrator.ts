@@ -6,6 +6,7 @@ import { extractWithEvidence } from './extractor';
 import { validateVisaData } from './validator';
 import type { VisaData, VisaResult, VerificationStatus, SourceAuthority } from './types';
 import { getSourceAuthority, getSourcePriority } from './registry';
+import { getRequiredDocumentsForRoute } from '../visa/document-requirements';
 
 export async function getVisaRequirements(
   fromCountry: string,
@@ -14,6 +15,7 @@ export async function getVisaRequirements(
 ): Promise<VisaResult> {
   const routeKey = `${fromCountry}→${toCountry}→${purpose}`;
   const startTime = Date.now();
+  const documents = getRequiredDocumentsForRoute(toCountry, purpose);
 
   console.log(`[Orchestrator] Starting: ${routeKey}`);
 
@@ -40,7 +42,8 @@ export async function getVisaRequirements(
             source_authority: cached.source_authority as SourceAuthority,
             source_content_hash: cached.source_content_hash,
             retrieved_at: cached.last_verified_at,
-            is_fresh: true
+            is_fresh: true,
+            documents
           };
         }
       } catch (error) {
@@ -53,7 +56,8 @@ export async function getVisaRequirements(
           source_authority: cached.source_authority as SourceAuthority,
           source_content_hash: cached.source_content_hash,
           retrieved_at: cached.last_verified_at,
-          is_fresh: true
+          is_fresh: true,
+          documents
         };
       }
     } else {
@@ -66,7 +70,8 @@ export async function getVisaRequirements(
         source_authority: cached.source_authority as SourceAuthority,
         source_content_hash: cached.source_content_hash,
         retrieved_at: cached.last_verified_at,
-        is_fresh: true
+        is_fresh: true,
+        documents
       };
     }
   }
@@ -81,7 +86,8 @@ export async function getVisaRequirements(
       data: null,
       source: 'fallback',
       verification_status: 'not_found',
-      is_fresh: true
+      is_fresh: true,
+      documents
     };
   }
 
@@ -97,7 +103,8 @@ export async function getVisaRequirements(
       verification_status: 'not_found',
       source_url: source.url,
       source_authority: source.authority,
-      is_fresh: true
+      is_fresh: true,
+      documents
     };
   }
 
@@ -130,7 +137,8 @@ export async function getVisaRequirements(
       source_url: source.url,
       source_authority: source.authority,
       source_content_hash: content.contentHash,
-      is_fresh: true
+      is_fresh: true,
+      documents
     };
   }
 
@@ -201,6 +209,7 @@ export async function getVisaRequirements(
     retrieved_at: new Date().toISOString(),
     is_fresh: true,
     validation_errors: validation.errors,
-    missing_critical_fields: validation.missing_applicable_fields
+    missing_critical_fields: validation.missing_applicable_fields,
+    documents
   };
 }
