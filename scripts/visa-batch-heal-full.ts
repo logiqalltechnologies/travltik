@@ -343,19 +343,22 @@ UNIVERSAL IMMIGRATION RULES (Apply to ALL countries):
 // ================================================================
 // 6. HEAL SINGLE ROUTE
 // ================================================================
+// 6. HEAL SINGLE ROUTE
+// ================================================================
 
 async function healSingleRoute(country: string, purpose: string): Promise<any> {
   const originalFilePath = path.join(ORIGINAL_DIR, country, `${purpose}.ts`);
   const testFilePath = path.join(TEST_DIR, country, `${purpose}.ts`);
 
-  if (!fs.existsSync(originalFilePath)) {
-    return { country, purpose, status: 'skipped', message: 'Original file not found' };
+  let rawCode = '';
+  if (fs.existsSync(testFilePath)) {
+    rawCode = fs.readFileSync(testFilePath, 'utf-8');
+  } else if (fs.existsSync(originalFilePath)) {
+    rawCode = fs.readFileSync(originalFilePath, 'utf-8');
   }
 
   try {
-    const rawCode = fs.readFileSync(testFilePath, 'utf-8');
-
-    const prompt = `
+    const prompt = rawCode.trim().length > 50 ? `
 You are the Consular Audit Engine for TravlTik.
 
 CURRENT DATA (India → ${country} for ${purpose}):
@@ -374,6 +377,74 @@ OUTPUT RULES:
 6. Use Google Search grounding to verify all information
 
 Return ONLY the code, no additional text.
+` : `
+You are the Consular Audit Engine for TravlTik.
+Generate a complete, production-ready, verified visa data TypeScript file for Indian passport holders traveling from India to ${country} for ${purpose}.
+
+${getUniversalRules()}
+
+${getCountrySpecificRules(country)}
+
+SCHEMA FORMAT TO FOLLOW:
+export default {
+  country: '${country}',
+  fromCountry: 'India',
+  visaCategory: '${purpose === 'tourism' ? 'Tourist Visa' : purpose === 'student' ? 'Student Visa' : purpose === 'work' ? 'Employment / Work Visa' : purpose === 'business' ? 'Business Visa' : 'Family Visit Visa'}',
+  authority: 'Official Consular / Immigration Authority Name',
+  channels: [
+    'Official Portal / Application Channel 1',
+    'Application Centre / VFS / BLS / TLS / GVCW',
+    'Embassy / Consulate'
+  ],
+  processingTime: {
+    eVisa: 'X calendar/working days',
+    standardSticker: 'X working days',
+    expressSticker: 'X working days'
+  },
+  fees: {
+    eVisaTotal: 'Total fee in USD/local currency (~₹ INR)',
+    stickerConsularStandard: 'Official consular fee with currency and INR conversion',
+    vfsServiceFee: 'Applicable outsourced service fee (~₹ INR)'
+  },
+  eVisa: {
+    available: true, // or false if no eVisa
+    portal: 'official URL',
+    territorialScope: 'Nationwide or specify',
+    validity: 'Duration from issue',
+    maxStay: 'Max days per stay',
+    invitationRequired: false,
+    processing: 'X days'
+  },
+  stayDuration: {
+    eVisa: 'Duration',
+    stickerSingleDouble: 'Duration',
+    stickerMultiple: 'Duration'
+  },
+  entryType: 'Single / Double / Multiple Entry',
+  documents: [
+    { key: 'passport', title: 'Valid Indian Passport', description: 'Valid for at least 6 months with 2 blank pages', icon: '📘', mandatory: true },
+    { key: 'photographs', title: 'Passport Photographs (35×45mm)', description: 'Recent white background photo', icon: '📸', mandatory: true },
+    { key: 'visa_form', title: 'Application Form', description: 'Online or printed consular form', icon: '📋', mandatory: true },
+    { key: 'flight_booking', title: 'Flight Itinerary', description: 'Return flight booking', icon: '✈️', mandatory: true },
+    { key: 'accommodation', title: 'Proof of Accommodation', description: 'Hotel or invitation', icon: '🏨', mandatory: true },
+    { key: 'travel_insurance', title: 'Travel Insurance', description: 'Medical coverage as required', icon: '🛡️', mandatory: true },
+    { key: 'bank_statement', title: 'Financial Proof', description: 'Bank statements showing sufficient funds', icon: '🏦', mandatory: true }
+  ],
+  steps: [
+    { step: 1, title: 'Check Visa Eligibility', description: 'Determine eVisa vs Sticker submission' },
+    { step: 2, title: 'Prepare Documentation', description: 'Assemble mandatory verified documents' },
+    { step: 3, title: 'Submit & Pay Fee', description: 'Pay statutory consular fees' },
+    { step: 4, title: 'Receive Clearance', description: 'Track dossier and download approval' }
+  ],
+  specialRequirements: {
+    entry_rules: 'Specific mandates, quarantine, vaccine, or entry permits'
+  }
+};
+
+OUTPUT RULES:
+1. Return COMPLETE TypeScript file starting with export default { and ending with };
+2. Ensure ALL fields (fees, channels, portals, processing times, stay durations) are 100% verified using official government / embassy sources via Google search.
+3. Return ONLY valid TypeScript code without markdown commentary.
 `;
 
     const response = await getAI().models.generateContent({
@@ -393,8 +464,16 @@ Return ONLY the code, no additional text.
       throw new Error('AI response too short');
     }
 
-    const backupPath = testFilePath + '.backup';
-    fs.copyFileSync(testFilePath, backupPath);
+    const testDir = path.dirname(testFilePath);
+    if (!fs.existsSync(testDir)) {
+      fs.mkdirSync(testDir, { recursive: true });
+    }
+
+    if (fs.existsSync(testFilePath)) {
+      const backupPath = testFilePath + '.backup';
+      fs.copyFileSync(testFilePath, backupPath);
+    }
+
     fs.writeFileSync(testFilePath, cleanedCode);
 
     return {
@@ -440,7 +519,8 @@ export async function batchHealAll() {
   for (const country of COUNTRIES) {
     for (const purpose of PURPOSES) {
       const key = `${country}-${purpose}`;
-      if (!completed.has(key)) {
+      const testFilePath = path.join(TEST_DIR, country, `${purpose}.ts`);
+      if (!fs.existsSync(testFilePath) || !completed.has(key)) {
         queue.push({ country, purpose });
       }
     }

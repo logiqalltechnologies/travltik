@@ -32,7 +32,14 @@
     "visa:batch:duplicate": "tsx scripts/visa-batch-heal-full.ts duplicate",
     "visa:batch:heal": "tsx scripts/visa-batch-heal-full.ts heal",
     "visa:batch:resume": "tsx scripts/visa-batch-heal-full.ts resume",
-    "visa:batch:apply": "tsx scripts/visa-batch-heal-full.ts apply"
+    "visa:batch:apply": "tsx scripts/visa-batch-heal-full.ts apply",
+    "visa:apply:russia": "tsx scripts/visa-apply-verified.ts russia",
+    "visa:apply:verify": "tsx scripts/visa-apply-verified.ts verify",
+    "visa:apply:heal": "tsx scripts/visa-apply-verified.ts heal",
+    "visa:apply:verify-all": "tsx scripts/visa-apply-verified.ts verify-all",
+    "visa:apply:all": "tsx scripts/visa-apply-verified.ts apply",
+    "visa:apply:report": "tsx scripts/visa-apply-verified.ts report",
+    "visa:apply:full": "tsx scripts/visa-apply-verified.ts full"
   },
   "dependencies": {
     "@astrojs/node": "^8.3.4",
