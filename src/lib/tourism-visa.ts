@@ -6396,7 +6396,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "Apply Online: Visit the official Directorate of Citizenship and Immigration portal (visas.immigration.go.ug).",
       "Upload Documents: Submit passport biodata page, recent photo, yellow fever card, and travel itinerary.",
       "Pay eVisa Fee Online: Pay the statutory $50 USD visa fee by international credit/debit card.",
-      "Receive Approval Letter: Uganda Immigration reviews and issues the approval letter within 2 to 4 working days.",
+      "Receive Approval Letter: Uganda Immigration reviews and issues the approval letter within 3 to 7 working days.",
       "Fly to Entebbe: Board flight to Entebbe International Airport (EBB).",
       "Border Stamping: Present approval letter, passport, and yellow fever card to receive your visa sticker."
     ],
@@ -6406,7 +6406,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "total_fee": "$50 USD (approx. ₹4,200 Total)",
       "notes": "Payable online on visas.immigration.go.ug."
     },
-    "proc_time": "2 to 4 Business Days (eVisa)",
+    "proc_time": "3 to 7 Working Days (eVisa)",
     "proc_details": "Applied 100% online through Directorate of Citizenship and Immigration Control (DCIC).",
     "requirements": [
       {
