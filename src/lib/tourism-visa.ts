@@ -10812,7 +10812,7 @@ export function getTourismOverview(country: string): string {
     'oman': 'Oman Tourist eVisa allows Indian passport holders to visit Oman for tourism, holidays, and leisure. Apply online at evisa.rop.gov.om for 30-day single entry or 1-year multiple entry. US/UK/Schengen visa holders can enter visa-free for 14 days.',
     'bahrain': 'Bahrain Tourist eVisa allows Indian passport holders to visit Bahrain for tourism, holidays, and leisure. Apply online at evisa.gov.bh for 14 or 30 days multiple entry. Bank statements required for online application.',
     'new-zealand': 'New Zealand Visitor Visa allows Indian passport holders to visit New Zealand for tourism, holidays, and visiting family/friends. Apply online through Immigration New Zealand (immigration.govt.nz). Valid for 3, 6, or 9 months stay. Multiple entry available.',
-    'south-africa': 'South Africa Visitor Visa (Section 11(1)) allows Indian passport holders to visit South Africa for tourism, holidays, and leisure. Apply through VFS Global South Africa. Valid for 90 days single/multiple entry. Consular fee is ₹0 for Indian citizens — only VFS service fee applies.',
+    'south-africa': 'South Africa Visitor Visa (Section 11(1)(a)) allows Indian passport holders to visit South Africa for tourism, holidays, and leisure. Apply online via the DHA eVisa Portal (ehome.dha.gov.za/epermit) for free, or in-person through VFS Global South Africa. Valid for 90 days single/multiple entry. Consular fee is ₹0 for Indian citizens — only VFS service fee applies for in-person submission.',
     'brazil': 'Brazil Tourist Visa allows Indian passport holders to visit Brazil for tourism, holidays, and leisure. Apply through the Brazilian Embassy via VFS Global. Valid for up to 90 days single/multiple entry. E-visa available for eligible applicants.'
   ,
 
@@ -11080,7 +11080,7 @@ export function getTourismHighlights(country: string): TourismHighlightItem[] {
       { icon: '🦁', title: 'Safari Adventure', description: 'Kruger National Park, Big Five, and diverse wildlife' },
       { icon: '🏔️', title: 'Scenic Landscapes', description: 'Table Mountain, Cape Point, Garden Route' },
       { icon: '🏖️', title: 'Coastal Beauty', description: 'Cape Town, Durban, and pristine beaches' },
-      { icon: '💰', title: '₹0 Consular Fee', description: 'Visa fee waived for Indian citizens — only VFS service fee applies' }
+      { icon: '💻', title: 'eVisa Available', description: '₹0 consular fee — apply free online via DHA eVisa Portal or in-person via VFS Global' }
     ],
     'brazil': [
       { icon: '🏖️', title: 'Beaches', description: 'Copacabana, Ipanema, Fernando de Noronha — world-famous beaches' },
@@ -12623,11 +12623,11 @@ export function getTourismFAQ(country: string): FAQItem[] {
       { question: 'Is physical passport submission required for New Zealand?', answer: 'No, New Zealand visitor visas are processed online via RealMe; e-Visas are issued digitally.' }
     ],
     'south-africa': [
-      { question: 'Do Indian citizens need a visa for South Africa?', answer: 'Yes, Indian passport holders require a Visitor Visa (Section 11(1)) to enter South Africa. Apply through VFS Global South Africa.' },
-      { question: 'Is there a visa fee for Indian citizens?', answer: 'No, the consular visa fee is completely waived for Indian citizens. You only pay the VFS Global logistics service charge (₹2,040).' },
-      { question: 'What is the processing time for South Africa Visitor Visa?', answer: 'Standard processing is 10 to 15 business days. Apply 3-6 weeks before travel.' },
-      { question: 'Is the South Africa visa fee really free for Indians?', answer: 'Yes! The official consular visa fee is completely waived for Indian citizens; only the VFS logistics charge applies.' },
-      { question: 'How long does South Africa visa processing take?', answer: 'Processing takes approximately 10 to 15 business days through VFS Global South Africa.' }
+      { question: 'Do Indian citizens need a visa for South Africa?', answer: 'Yes, Indian passport holders require a Visitor Visa (Section 11(1)(a)) to enter South Africa. You can apply online via the DHA eVisa Portal (ehome.dha.gov.za/epermit) for free, or in-person through VFS Global South Africa.' },
+      { question: 'Is there a visa fee for Indian citizens?', answer: 'No, the consular visa fee is completely waived for Indian citizens. For the DHA eVisa Portal, there is no service fee at all. For VFS Global in-person submission, only the VFS logistics service charge (₹2,040) applies.' },
+      { question: 'What is the processing time for South Africa Visitor Visa?', answer: 'DHA eVisa Portal: 5 to 10 working days. VFS Global in-person: 10 to 15 working days. Apply at least 4 to 6 weeks before travel.' },
+      { question: 'Is the South Africa visa fee really free for Indians?', answer: 'Yes! The official consular visa fee is completely waived for Indian citizens. Online via DHA Portal — no extra fee. In-person via VFS Global — only the VFS logistics charge applies.' },
+      { question: 'How long does South Africa visa processing take?', answer: 'Online via DHA eVisa Portal: approximately 5 to 10 working days. In-person via VFS Global South Africa: approximately 10 to 15 working days.' }
     ]
   ,
 
