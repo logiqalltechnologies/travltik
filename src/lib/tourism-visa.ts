@@ -11527,15 +11527,18 @@ export function getTourismDocuments(countryOrFrom: string, maybeCountry?: string
       { title: 'Income Tax Returns (ITR)', description: 'Last 3 years ITR acknowledgements.', is_mandatory: true }
     ],
     'south-africa': [
-      { title: 'Valid Passport', description: 'Valid for at least 30 days beyond departure with 2 blank pages.', is_mandatory: true },
-      { title: 'Form DHA-84 Visa Application Form', description: 'Fully completed in black ink, signed.', is_mandatory: true },
-      { title: 'Passport Photographs (35×45mm)', description: '2 recent photos on white background.', is_mandatory: true },
-      { title: 'Day-by-Day Travel Itinerary / Cover Letter', description: 'Detailed cover letter with trip dates and cities.', is_mandatory: true },
-      { title: 'Confirmed Return Flight Ticket', description: 'Round-trip flight with verifiable PNR.', is_mandatory: true },
-      { title: 'Proof of Accommodation', description: 'Hotel reservations or host invitation letter.', is_mandatory: true },
-      { title: 'Proof of Employment / NOC', description: 'Employer letter with approved leave dates + 3 months salary slips.', is_mandatory: true },
-      { title: 'Bank Statements (3 Months)', description: 'Stamped statements showing ₹1,00,000 – ₹1,50,000 balance.', is_mandatory: true },
-      { title: 'Income Tax Returns (ITR-V)', description: 'Last 2-3 years ITR acknowledgements.', is_mandatory: true }
+      { title: 'Valid Passport', description: 'Valid for at least 30 days beyond departure (6 months recommended by airlines) with 2 blank pages.', is_mandatory: true },
+      { title: 'Form DHA-84 Visa Application Form', description: 'Fully completed in black ink, signed by applicant. Available on the DHA website or VFS Global.', is_mandatory: true },
+      { title: 'Passport Photographs (35×45mm)', description: '2 recent colour photos on plain white background, full face visible.', is_mandatory: true },
+      { title: 'Covering Letter', description: 'Personal letter addressed to the South African High Commission stating purpose of visit, itinerary overview, travel dates, and declaration of self-sufficiency.', is_mandatory: true },
+      { title: 'Detailed Day-by-Day Travel Itinerary', description: 'Day-wise breakdown of travel plan including cities, dates, and planned activities.', is_mandatory: true },
+      { title: 'Confirmed Return Flight Ticket', description: 'Round-trip flight reservation with verifiable PNR showing entry and exit from South Africa.', is_mandatory: true },
+      { title: 'Proof of Accommodation', description: 'Hotel reservations or host invitation letter for all nights of stay.', is_mandatory: true },
+      { title: 'Proof of Employment / NOC', description: 'Official employer letter with approved leave dates, 3 months recent salary slips, and company ID.', is_mandatory: true },
+      { title: 'Bank Statements (3 to 6 Months)', description: 'Physically stamped and signed by bank, showing a minimum balance of ₹1,00,000 – ₹1,50,000.', is_mandatory: true },
+      { title: 'Income Tax Returns (ITR-V)', description: 'Last 2 to 3 years acknowledged ITR-V forms.', is_mandatory: true },
+      { title: 'Yellow Fever Vaccination Certificate', description: 'Required if transiting through yellow fever endemic countries (e.g., Kenya, Ethiopia, Uganda). Must be issued at least 10 days before travel.', is_mandatory: false },
+      { title: 'Unabridged Birth Certificate', description: 'Required for minors (under 18) traveling with one or both parents. Must be accompanied by parental consent affidavit if traveling with one parent.', is_mandatory: false }
     ],
     'brazil': [
       { title: 'Valid Passport', description: 'Valid for at least 6 months beyond stay with 2 blank pages.', is_mandatory: true },
@@ -12189,6 +12192,14 @@ export function getTourismSteps(countryOrFrom: string, maybeCountry?: string): s
       'Upload Required Documents: Upload photo, passport scan, health insurance (€30k), bank balance proof, and accommodation confirmation.',
       'Pay Online Fee: Pay $20-$30 USD visa fee securely online using Visa or Mastercard.',
       'Receive Electronic Visa: Download and print approved e-Visa (PDF with QR code) sent via email within 3-5 business days.'
+    ],
+    'south-africa': [
+      'Step 1: Select Application Channel — Choose between DHA eVisa Portal (ehome.dha.gov.za/epermit) for the free online route, or VFS Global in-person for physical submission.',
+      'Step 2: Complete Form DHA-84 — Fill the South Africa Visitor Visa application form in black ink (available on DHA website or VFS Global portal). Double-check all personal and travel details.',
+      'Step 3: Gather Required Documents — Compile passport, 2 passport photos, covering letter, day-by-day itinerary, confirmed return flights, hotel bookings, 3–6 months bank statements (physically stamped, ₹1,00,000+ balance), employer NOC, salary slips, and ITR-V.',
+      'Step 4: Book VFS Global Appointment (if in-person) — Schedule a biometric appointment at your nearest VFS Global South Africa Visa Application Centre. Upload or carry all original documents.',
+      'Step 5: Submit Application & Biometrics — Submit complete dossier and provide biometric fingerprints at VFS Global, or upload all documents on the DHA eVisa Portal for online submission.',
+      'Step 6: Track Status & Collect Passport — Monitor processing status online. Collect your passport with the South Africa Visitor Visa vignette from VFS Global, or receive eVisa approval via email (DHA Portal: 5–10 working days; VFS: 10–15 working days).'
     ]
 
   };
@@ -12266,7 +12277,7 @@ export function getTourismFees(country: string): any {
     'oman': { visa_fee: 'OMR 20 (approx. ₹4,300 for 30-Day) / OMR 50 (1-Year Multiple)', service_fee: '₹0 (Official Direct Portal)', total_fee: 'OMR 20 Total Reference', notes: 'Non-refundable fee paid directly on official Royal Oman Police gateway.' },
     'bahrain': { visa_fee: 'BHD 9 – BHD 29 (approx. ₹2,000 – ₹6,400)', service_fee: 'BHD 4 (Application Processing Fee)', total_fee: 'BHD 9 – 29 Total Reference', notes: 'Paid online directly on official Bahrain NPRA portal.' },
     'new-zealand': { visa_fee: 'NZD 530 (approx. ₹27,000)', service_fee: 'Payable at VFS Global', total_fee: 'NZD 530 Base Application Charge', notes: 'Paid online via Immigration New Zealand portal. Medical exam fees extra.' },
-    'south-africa': { visa_fee: '₹0 (Free Consular Fee for Indian Citizens)', service_fee: '₹2,040 (VFS Logistics Service Charge)', total_fee: '₹2,040 Total Reference', notes: 'Official consular visa fee is completely waived for Indian passport holders.' },
+    'south-africa': { visa_fee: '₹0 (Free Consular Fee for Indian Citizens)', service_fee: '₹0 (DHA Online Portal) / ₹2,040 – ₹2,300 (VFS Global In-Person)', total_fee: '₹0 (Online) / ₹2,040 – ₹2,300 (VFS Global)', notes: 'Consular visa fee is completely waived for Indian passport holders. Apply free online via DHA eVisa Portal (ehome.dha.gov.za/epermit), or pay VFS service fee only for in-person submission.' },
     'brazil': { visa_fee: 'USD $80 (approx. ₹6,800)', service_fee: '₹1,500 (Consular/VAC)', total_fee: 'approx. ₹8,300 Total Reference', notes: 'Apply via E-Consular portal followed by document submission.' }
   ,
 
@@ -12359,7 +12370,7 @@ export function getTourismProcessingTime(country: string): string {
     'oman': '24–48 Hours Online (eVisa)',
     'bahrain': '3–5 Business Days (Online eVisa)',
     'new-zealand': '15 to 25 Working Days (Standard Assessment)',
-    'south-africa': '10–15 Business Days (VFS Submission)',
+    'south-africa': '5 to 10 Working Days (DHA eVisa Portal) / 10 to 15 Working Days (VFS Global In-Person)',
     'brazil': '5 to 15 Working Days (or Instant / 24–72 Hours for eVisa)'
   ,
 
@@ -13484,7 +13495,7 @@ export function getTourismStayDuration(country: string): string {
     'oman': 'Up to 30 Days Per Visit',
     'bahrain': '14 to 30 Days Per Entry',
     'new-zealand': 'Up to 3, 6, or 9 Months per stay',
-    'south-africa': 'Up to 90 Days',
+    'south-africa': 'Granted per Itinerary (Up to 90 Days Maximum)',
     'brazil': 'Up to 90 Days'
   ,
 
