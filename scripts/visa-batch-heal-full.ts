@@ -113,7 +113,19 @@ function loadCheckpoint(): Set<string> {
   if (!fs.existsSync(CHECKPOINT_FILE)) return new Set();
   try {
     const data = JSON.parse(fs.readFileSync(CHECKPOINT_FILE, 'utf-8'));
-    return new Set(data.completed || []);
+    const valid = new Set<string>();
+    for (const key of (data.completed || [])) {
+      const lastDash = key.lastIndexOf('-');
+      if (lastDash > 0) {
+        const country = key.slice(0, lastDash);
+        const purpose = key.slice(lastDash + 1);
+        const testFile = path.join(TEST_DIR, country, `${purpose}.ts`);
+        if (fs.existsSync(testFile)) {
+          valid.add(key);
+        }
+      }
+    }
+    return valid;
   } catch {
     return new Set();
   }
