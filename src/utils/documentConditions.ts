@@ -102,8 +102,24 @@ export function parseDocumentConditions(title: string, description: string, rawC
   }
 
   if (tLow.includes('insurance') || tLow.includes('medical') || tLow.includes('health') || tLow.includes('oshc')) {
+    const isSchengenDoc = tLow.includes('schengen') || desc.toLowerCase().includes('schengen') || desc.includes('30,000') || desc.includes('€30,000');
+    if (isSchengenDoc) {
+      return [
+        'Valid Schengen travel medical insurance with minimum coverage of €30,000 covering emergency medical care and hospitalization',
+        'Policy must be valid across all 29 Schengen member states and cover the entire duration of intended stay',
+        'Must include repatriation of remains and emergency medical evacuation with zero or minimal deductible'
+      ];
+    }
+    const isStudentDoc = tLow.includes('student') || tLow.includes('oshc') || desc.toLowerCase().includes('student');
+    if (isStudentDoc) {
+      return [
+        'Valid overseas student health cover (OSHC) or comprehensive student medical insurance policy',
+        'Policy must be active from departure date and cover the entire academic study duration',
+        'Must include hospitalization, emergency medical evacuation, and repatriation of remains'
+      ];
+    }
     return [
-      'Valid international travel or student health insurance policy covering emergency medical care and hospitalization',
+      'Valid international travel medical insurance policy covering emergency medical care and hospitalization',
       'Policy must be active from departure date and cover the entire duration of stay in destination country',
       'Must include repatriation of remains and emergency medical evacuation with zero or minimal deductible'
     ];
