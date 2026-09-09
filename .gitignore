@@ -54,3 +54,9 @@ diag_db.js
 diag_*.js
 debug_*.js
 test_db.js
+
+# visa healing artifacts & sandbox
+healing-reports/
+src/data/country-visa-data-test/
+*.backup
+
