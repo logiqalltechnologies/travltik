@@ -7125,6 +7125,9 @@ export function VisaCountryResultPortal({
                     const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
                     if (e.currentTarget.src !== fallback) {
                       e.currentTarget.src = fallback;
+                    } else {
+                      // Both primary and fallback failed — hide img so gradient bg shows
+                      e.currentTarget.style.display = 'none';
                     }
                   }}
                 />
@@ -7223,6 +7226,9 @@ export function VisaCountryResultPortal({
                   const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
                   if (e.currentTarget.src !== fallback) {
                     e.currentTarget.src = fallback;
+                  } else {
+                    // Both primary and fallback failed — hide img so gradient bg shows
+                    e.currentTarget.style.display = 'none';
                   }
                 }}
               />

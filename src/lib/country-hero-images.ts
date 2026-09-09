@@ -491,7 +491,7 @@ export const COUNTRY_HERO_CATALOG: Record<string, CountryHeroEntry> = {
   "jordan": {
     name: "Jordan",
     landmark: "Petra Treasury Al-Khazneh carved sandstone",
-    tourism: U("photo-1579606032836-db4055de02fb"),
+    tourism: U("photo-1564186763535-ebb21ef5277f"),
   },
   "kazakhstan": {
     name: "Kazakhstan",
@@ -536,7 +536,7 @@ export const COUNTRY_HERO_CATALOG: Record<string, CountryHeroEntry> = {
   "lebanon": {
     name: "Lebanon",
     landmark: "Baalbek Roman Temple ruins & Beirut Corniche",
-    tourism: U("photo-1579606032836-db4055de02fb"),
+    tourism: U("photo-1564186763535-ebb21ef5277f"),
   },
   "lesotho": {
     name: "Lesotho",
@@ -955,7 +955,7 @@ export const COUNTRY_HERO_CATALOG: Record<string, CountryHeroEntry> = {
   "syria": {
     name: "Syria",
     landmark: "Umayyad Mosque Damascus & Krak des Chevaliers",
-    tourism: U("photo-1579606032836-db4055de02fb"),
+    tourism: U("photo-1564186763535-ebb21ef5277f"),
   },
   "taiwan": {
     name: "Taiwan",
