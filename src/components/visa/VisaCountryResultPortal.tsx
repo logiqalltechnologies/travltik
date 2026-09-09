@@ -2044,7 +2044,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         verdictTitle: `${nationality} passport holders require a National Study Visa for ${country}`,
         verdictSummary: `National Type D Study Visa required. Acceptance from accredited institution & €30,000 medical insurance required.`,
         entryStatus: "National Study Visa (Type D)",
-        entryStatusSubtext: "15 to 45 Calendar Days Processing",
+        entryStatusSubtext: "15 to 45 Working Days Processing",
         stayDuration: "Duration of Academic Course (1–4 Years)",
         stayDurationSubtext: "Multi-entry European student rights",
         entryType: "Multiple Entry",
@@ -2066,7 +2066,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
             { label: isGreece ? "GVCW Service Fee" : isSpain ? "BLS International Fee" : "VFS / TLS Service Fee", amount: isSpain ? "€17 (approx. ₹1,550)" : "₹2,500 – ₹3,200", note: "Biometric and center logistics" }
           ],
           totalEstimatedINR: isSpain ? "€75 + €17 (approx. ₹8,350)" : "€75 (approx. ₹6,800) + Logistics",
-          processingTime: "15 to 45 Calendar Days",
+          processingTime: "15 to 45 Working Days",
           processingSLA: isGreece ? "Processed by Greek Consular Authorities via GVCW centers." : isSpain ? "Processed by Embassy of Spain / BLS centers." : "Processed by designated consular mission.",
           applicationWindow: "Apply up to 6 Months before course start",
           earlyEntryBuffer: "Travel permitted 2 to 3 weeks before classes begin"
@@ -2091,7 +2091,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         verdictTitle: `${nationality} passport holders require an Employment Visa for ${country}`,
         verdictSummary: `National Type D Employment Visa required based on certified contract approved by Ministry of Labour.`,
         entryStatus: "National Employment Visa (Type D)",
-        entryStatusSubtext: "30 to 60 Calendar Days",
+        entryStatusSubtext: "30 to 60 Working Days",
         stayDuration: "1 to 2 Years (Renewable)",
         stayDurationSubtext: "Includes EU Blue Card rights",
         entryType: "Multiple Entry",
@@ -2112,7 +2112,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
             { label: isSpain ? "BLS Biometric Fee" : "VAC Biometric Fee", amount: isSpain ? "€17 (approx. ₹1,550)" : "₹2,500 – ₹3,200", note: "VAC service charge" }
           ],
           totalEstimatedINR: "€180 (approx. ₹16,400)",
-          processingTime: "30 to 60 Calendar Days",
+          processingTime: "30 to 60 Working Days",
           processingSLA: "Employer coordinates with national labour authorities.",
           applicationWindow: "Apply 2 to 3 Months before job start date",
           earlyEntryBuffer: "Travel permitted 14 days before contract start"
@@ -2137,7 +2137,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         verdictTitle: `${nationality} passport holders require a Schengen Visa for ${country}`,
         verdictSummary: `Short-stay visa (Type C) required before departure. Valid across all 29 European Schengen states.`,
         entryStatus: isGreece ? "Greece Schengen Visa (Type C)" : isSpain ? "Spain Schengen Visa (Type C)" : "Schengen Short-Stay Visa",
-        entryStatusSubtext: "15 Calendar Days Processing",
+        entryStatusSubtext: "15 to 30 Working Days after submission",
         stayDuration: "Up to 90 Days within 180 Days",
         stayDurationSubtext: "Within any rolling 180-day period",
         entryType: "Single / Multiple Entry",
@@ -2158,7 +2158,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
             { label: isGreece ? "GVCW Service Fee" : isSpain ? "BLS International Service Fee" : "VFS / TLS Service Fee", amount: isSpain ? "€17 (approx. ₹1,550)" : isGreece ? "€30 (approx. ₹2,700)" : "₹2,500 – ₹3,200", note: "Biometric collection and center logistics fee" }
           ],
           totalEstimatedINR: isSpain ? "€107 (approx. ₹9,650)" : "€120 (approx. ₹10,800)",
-          processingTime: "15 Calendar Days (Standard Consular Period)",
+          processingTime: "15 to 30 Working Days after submission",
           processingSLA: isGreece 
             ? "Lodged at GVCW VACs across India and assessed by the Embassy of Greece in New Delhi." 
             : isSpain
@@ -4095,56 +4095,66 @@ export function VisaCountryResultPortal({
   const isPRTab = activePurposeTab === 'pr' || initialPurpose === 'pr';
   const isFamilyTab = activePurposeTab === 'family' || activePurposeTab === 'spouse' || initialPurpose === 'family' || initialPurpose === 'spouse' || (initialPurpose || '').toLowerCase().includes('family') || (initialPurpose || '').toLowerCase().includes('spouse') || (activePurposeTab || '').toLowerCase().includes('family') || (activePurposeTab || '').toLowerCase().includes('spouse');
 
-  const getResolvedProcessingTime = () => {
-    const cLow = (countryName || '').toLowerCase().trim();
-    const pLow = (passportCountry || '').toLowerCase().trim();
-    const isIndian = pLow.includes('india') || pLow.includes('in');
-    const isSchengenCountry = isSchengen || ['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'austria', 'netherlands', 'portugal', 'belgium', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary'].some(c => cLow.includes(c));
+  const standardizeProcessingTime = (raw: string | undefined | null): string => {
+    if (!raw) return '15 to 30 Working Days after submission';
+    let s = raw.trim();
+    // Strictly replace calendar / calender days
+    s = s.replace(/calendar\s*days/gi, 'Working Days')
+         .replace(/calender\s*days/gi, 'Working Days');
 
+    if (s.toLowerCase().includes('free') || s.toLowerCase().includes('instant') || s.toLowerCase().includes('0 days') || s.toLowerCase().includes('on arrival')) {
+      return s;
+    }
+    // Fast e-visas with hours (e.g., 24 to 72 hours, 72 hours)
+    if (s.toLowerCase().includes('hour')) {
+      return s;
+    }
+
+    // Ensure minimum 15 to 30 Working Days after submission for standard visas
+    const low = s.toLowerCase();
+    if (
+      low.includes('10 to 14') ||
+      low.includes('10 – 14') ||
+      low.includes('10-14') ||
+      low.includes('10 to 15') ||
+      low.includes('10 – 15') ||
+      low.includes('10-15') ||
+      low.includes('15 to 25') ||
+      low.includes('15 to 30') ||
+      low.includes('15 – 30') ||
+      low.includes('15-30') ||
+      low.includes('15 to 45') ||
+      low.includes('15 working days') ||
+      low.includes('15 calendar days')
+    ) {
+      return '15 to 30 Working Days after submission';
+    }
+
+    if (!low.includes('working') && !low.includes('business') && low.includes('days')) {
+      s = s.replace(/\bdays\b/gi, 'Working Days');
+    }
+
+    return s;
+  };
+
+  const getResolvedProcessingTime = () => {
+    let raw = '';
     // Family pathway processing time
     if (isFamilyTab) {
-      if (aiData?.processing_time) return aiData.processing_time;
-      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
-      return getFamilyProcessingTime(countryName);
+      raw = aiData?.processing_time || aiData?.processing_and_timing?.decision_time || getFamilyProcessingTime(countryName);
+    } else if (isPRTab) {
+      raw = aiData?.processing_time || aiData?.processing_and_timing?.decision_time || getPRProcessingTime(countryName);
+    } else if (isStudyTab) {
+      raw = aiData?.processing_time || aiData?.processing_and_timing?.decision_time || getStudentProcessingTime(countryName);
+    } else if (isWorkTab) {
+      raw = aiData?.processing_time || aiData?.processing_and_timing?.decision_time || getWorkProcessingTime(countryName);
+    } else if (isBusinessTab) {
+      raw = aiData?.processing_time || aiData?.processing_and_timing?.decision_time || getBusinessProcessingTime(countryName);
+    } else {
+      raw = aiData?.processing_time || aiData?.processing_and_timing?.decision_time || getTourismProcessingTime(countryName);
     }
 
-    // PR pathway processing time
-    if (isPRTab) {
-      if (aiData?.processing_time) return aiData.processing_time;
-      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
-      return getPRProcessingTime(countryName);
-    }
-
-    // Student pathway processing time
-    if (isStudyTab) {
-      if (aiData?.processing_time) return aiData.processing_time;
-      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
-      return getStudentProcessingTime(countryName);
-    }
-
-    // Work pathway processing time
-    if (isWorkTab) {
-      if (aiData?.processing_time) return aiData.processing_time;
-      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
-      return getWorkProcessingTime(countryName);
-    }
-
-    // Business pathway processing time
-    if (isBusinessTab) {
-      if (aiData?.processing_time) return aiData.processing_time;
-      if (aiData?.processing_and_timing?.decision_time) return aiData.processing_and_timing.decision_time;
-      return getBusinessProcessingTime(countryName);
-    }
-
-    // Always prefer verified AI requirements data if available
-    if (aiData?.processing_time) {
-      return aiData.processing_time;
-    }
-    if (aiData?.processing_and_timing?.decision_time) {
-      return aiData.processing_and_timing.decision_time;
-    }
-
-    return getTourismProcessingTime(countryName);
+    return standardizeProcessingTime(raw);
   };
 
   const resolvedOverview = useMemo(() => {
@@ -6985,6 +6995,8 @@ export function VisaCountryResultPortal({
   const cleanStatValue = (val: string | undefined | null) => {
     if (!val) return '';
     return val
+      .replace(/calendar\s*days/gi, 'Working Days')
+      .replace(/calender\s*days/gi, 'Working Days')
       .replace(/\s*\([^)]*\)/g, '')
       .replace(/\s*\[[^\]]*\]/g, '')
       .replace(/\s+/g, ' ')
@@ -7039,19 +7051,39 @@ export function VisaCountryResultPortal({
               </div>
             </div>
 
-            {/* 3 Quick Stats Row */}
-            <div className="grid grid-cols-3 gap-2 pt-2.5 border-t border-slate-100 text-center">
-              <div>
-                <span className="text-[12px] font-normal text-slate-500 block">Processing Time</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{getResolvedProcessingTime()}</strong>
+            {/* 3 Quick Stats Row — Responsive & Perfectly Arranged for Mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-3 border-t border-slate-100">
+              {/* Processing Time */}
+              <div className="flex items-center justify-between sm:flex-col sm:items-start p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70">
+                <span className="text-[12px] font-medium text-slate-500 flex items-center gap-1.5 shrink-0">
+                  <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                  Processing Time
+                </span>
+                <strong className="text-[13px] sm:text-[14px] font-bold text-slate-900 text-right sm:text-left mt-0 sm:mt-1 leading-snug break-words">
+                  {getResolvedProcessingTime()}
+                </strong>
               </div>
-              <div>
-                <span className="text-[12px] font-normal text-slate-500 block">Validity</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}</strong>
+
+              {/* Validity */}
+              <div className="flex items-center justify-between sm:flex-col sm:items-start p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70">
+                <span className="text-[12px] font-medium text-slate-500 flex items-center gap-1.5 shrink-0">
+                  <Calendar className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  Validity
+                </span>
+                <strong className="text-[13px] sm:text-[14px] font-bold text-slate-900 text-right sm:text-left mt-0 sm:mt-1 leading-snug break-words">
+                  {cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}
+                </strong>
               </div>
-              <div>
-                <span className="text-[12px] font-normal text-slate-500 block">Entry Type</span>
-                <strong className="text-[14px] font-semibold text-slate-900 block mt-0.5">{cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}</strong>
+
+              {/* Entry Type */}
+              <div className="flex items-center justify-between sm:flex-col sm:items-start p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70">
+                <span className="text-[12px] font-medium text-slate-500 flex items-center gap-1.5 shrink-0">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                  Entry Type
+                </span>
+                <strong className="text-[13px] sm:text-[14px] font-bold text-slate-900 text-right sm:text-left mt-0 sm:mt-1 leading-snug break-words">
+                  {cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}
+                </strong>
               </div>
             </div>
           </div>

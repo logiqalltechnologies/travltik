@@ -962,7 +962,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                   <span>Processing Time</span>
                 </div>
                 <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight mt-1 leading-relaxed break-words whitespace-normal">
-                  {data.processing_time || data.processing_and_timing?.decision_time || (['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'netherlands', 'austria', 'portugal', 'schengen'].some(c => cleanTo.toLowerCase().includes(c)) ? '15 Calendar Days (Standard)' : '5–7 Working Days')}
+                  {(data.processing_time || data.processing_and_timing?.decision_time || (['greece', 'france', 'germany', 'italy', 'spain', 'switzerland', 'netherlands', 'austria', 'portugal', 'schengen'].some(c => cleanTo.toLowerCase().includes(c)) ? '15 to 30 Working Days after submission' : '5–7 Working Days')).replace(/calendar\s*days/gi, 'Working Days').replace(/calender\s*days/gi, 'Working Days')}
                 </h4>
               </div>
               {((data as any).processing_time_details || (data.processing_time && data.processing_time.includes('('))) && (

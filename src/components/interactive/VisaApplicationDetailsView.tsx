@@ -130,7 +130,7 @@ function getRouteStatutoryTime(dest: string): string {
   if (s.includes('mauritius') || s.includes('maldives') || s.includes('nepal')) return 'Instant on Arrival (0 Days)';
   if (s.includes('emirate') || s.includes('uae') || s.includes('dubai')) return '24 to 72 Working Hours';
   if (s.includes('singapore')) return '2 to 4 Business Days';
-  if (s.includes('france') || s.includes('germany') || s.includes('schengen')) return '15 Calendar Days';
+  if (s.includes('france') || s.includes('germany') || s.includes('schengen')) return '15 to 30 Working Days after submission';
   if (s.includes('kingdom') || s.includes('uk')) return '3 Weeks (Priority Available)';
   if ((s.includes('unit') && s.includes('state')) || s.includes('usa')) return 'Subject to Consular Interview Wait Times';
   if (s.includes('canada')) return '15 to 30 Working Days';
@@ -382,8 +382,8 @@ export function VisaApplicationDetailsView({
     if (isVisaFree) return 'Instant on Arrival (0 Days)';
     if (!processingTimeDisplay) return '15 - 20 Working Days';
     const s = processingTimeDisplay.trim();
-    if (s.toLowerCase().includes('15') && s.toLowerCase().includes('45')) {
-      return '15 - 45 Calendar Days';
+    if ((s.toLowerCase().includes('15') && s.toLowerCase().includes('45')) || s.toLowerCase().includes('calendar') || s.toLowerCase().includes('calender')) {
+      return '15 to 30 Working Days after submission';
     }
     return s
       .replace(/\s*\(Standard Consular SLA\)/gi, '')
@@ -813,7 +813,7 @@ export function VisaApplicationDetailsView({
       ];
 
   // User-interactive completed steps state with local storage persistence
-  const storageStepsKey = `user_completed_steps_${application?.id || application?.country || 'default'}`;
+  const storageStepsKey = `user_completed_steps_${application?.id || application?.trackingId || slugClean || 'default'}`;
   const [completedSteps, setCompletedSteps] = useState<Record<number, boolean>>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -1228,8 +1228,8 @@ export function VisaApplicationDetailsView({
             <div className="space-y-3 pt-1">
               {routeSteps.map((stepText, idx) => {
                 const stepNum = idx + 1;
-                const isStepCompleted = currentStep > stepNum;
-                const isStepActive = currentStep === stepNum;
+                const isStepCompleted = Boolean(completedSteps[stepNum]);
+                const isStepActive = !isStepCompleted && currentStep === stepNum;
                 const isExpanded = !!expandedSteps[stepNum];
                 const { title: stepTitle, description: stepDesc, url: stepUrl } = parseStepText(stepText, idx);
 
@@ -1237,7 +1237,9 @@ export function VisaApplicationDetailsView({
                   <div 
                     key={stepNum} 
                     className={`border rounded-2xl overflow-hidden transition-all ${
-                      isStepActive 
+                      isStepCompleted
+                        ? 'border-emerald-200/90 bg-emerald-50/10'
+                        : isStepActive 
                         ? 'border-2 border-[#00a896]/80 shadow-xs' 
                         : 'border-slate-200'
                     }`}
@@ -1247,6 +1249,8 @@ export function VisaApplicationDetailsView({
                       className={`flex items-center justify-between p-4 transition-colors cursor-pointer ${
                         isStepActive 
                           ? 'bg-[#00a896]/5 hover:bg-[#00a896]/10' 
+                          : isStepCompleted
+                          ? 'bg-white hover:bg-emerald-50/20'
                           : 'bg-white hover:bg-slate-50/70'
                       }`}
                     >
@@ -1256,12 +1260,12 @@ export function VisaApplicationDetailsView({
                           type="button"
                           onClick={(e) => handleToggleStepCompleted(e, stepNum)}
                           title={isStepCompleted ? "Completed (Click to unselect)" : "Click to mark completed"}
-                          className={`w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] aspect-square rounded-md flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95 ${
+                          className={`w-6 h-6 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] aspect-square rounded-lg flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95 z-10 ${
                             isStepCompleted 
-                              ? 'bg-emerald-500 text-white border border-emerald-600' 
+                              ? 'bg-emerald-600 text-white border border-emerald-700' 
                               : isStepActive 
                               ? 'border-2 border-[#00a896] bg-emerald-50/40 text-[#00a896]' 
-                              : 'border-2 border-slate-300 bg-white hover:border-[#00a896]'
+                              : 'border-2 border-slate-300 bg-white hover:border-emerald-500'
                           }`}
                         >
                           {isStepCompleted ? (
@@ -1271,7 +1275,7 @@ export function VisaApplicationDetailsView({
                           ) : null}
                         </button>
                         <div className="min-w-0 flex-1">
-                          <h3 className={`text-xs sm:text-sm font-black break-words whitespace-normal ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
+                          <h3 className={`text-xs sm:text-sm font-black break-words whitespace-normal ${isStepActive ? 'text-[#00a896]' : isStepCompleted ? 'text-slate-900 line-through/20' : 'text-slate-700'}`}>
                             {stepNum}. {stepTitle}
                           </h3>
                           {stepDesc && (
@@ -1309,6 +1313,20 @@ export function VisaApplicationDetailsView({
                         </p>
 
                         <div className="flex flex-wrap items-center gap-2 pt-1">
+                          {/* Dedicated Step Completion Toggle Button inside details */}
+                          <button
+                            type="button"
+                            onClick={(e) => handleToggleStepCompleted(e, stepNum)}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold text-xs shadow-xs transition-all cursor-pointer ${
+                              isStepCompleted
+                                ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300'
+                                : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                            }`}
+                          >
+                            <Check className="w-3.5 h-3.5 stroke-[3]" />
+                            <span>{isStepCompleted ? 'Marked Completed (Click to Undo)' : 'Mark Step Completed'}</span>
+                          </button>
+
                           {stepUrl && (
                             <a
                               href={stepUrl}

@@ -3711,7 +3711,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "Consular Validation: Romanian consular authorities validate the online dossier and issue an appointment date.",
       "Attend Consular Appointment: Submit original passport, biometric fingerprints, and hard-copy documents at the Embassy of Romania in New Delhi.",
       "Pay Schengen Visa Fee: Pay the statutory €90 Schengen visa fee.",
-      "Collect Passport: Retrieve passport with Schengen visa sticker within 15 to 45 calendar days."
+      "Collect Passport: Retrieve passport with Schengen visa sticker within 15 to 30 working days after submission."
     ],
     "fees": {
       "visa_fee": "€90 (Standard Schengen Type C Visa Fee)",
@@ -3719,7 +3719,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "total_fee": "€90 (approx. ₹8,100 + logistics)",
       "notes": "Official EU statutory Schengen visa fee updated in 2024."
     },
-    "proc_time": "15 to 30 Calendar Days",
+    "proc_time": "15 to 30 Working Days after submission",
     "proc_details": "Applied online via evisa.mae.ro and finalized at the Embassy of Romania in New Delhi.",
     "requirements": [
       {
@@ -3833,7 +3833,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "Book VFS Global Appointment: Schedule a biometric submission appointment at your nearest VFS Bulgaria visa application center.",
       "Submit Biometrics & Dossier: Attend appointment to submit fingerprints, facial photograph, and hard-copy documents.",
       "Pay Statutory Schengen Fee: Pay €90 consular fee plus VFS logistics fee.",
-      "Track & Collect Passport: Receive passport with Schengen visa sticker within 15 to 30 calendar days."
+      "Track & Collect Passport: Receive passport with Schengen visa sticker within 15 to 30 working days."
     ],
     "fees": {
       "visa_fee": "€90 (Standard Schengen Type C Visa)",
@@ -3841,7 +3841,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
       "notes": "Standardized EU Schengen fee updated in 2024."
     },
-    "proc_time": "15 to 30 Calendar Days",
+    "proc_time": "15 to 30 Working Days after submission",
     "proc_details": "Submitted via VFS Global Visa Application Centres across India and evaluated by the Embassy of the Republic of Bulgaria in New Delhi.",
     "requirements": [
       {
@@ -3961,7 +3961,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "Book Appointment at VFS Global: Schedule appointment at your nearest VFS Global Croatian Visa Application Centre in India.",
       "Submit Biometrics & Application: Attend appointment to provide fingerprint scans, facial photo, and physical dossier.",
       "Pay Statutory Schengen Fee: Pay €90 consular fee plus VFS logistics fee.",
-      "Receive Stamped Passport: Retrieve passport with Uniform Schengen Visa sticker within 15 to 30 calendar days."
+      "Receive Stamped Passport: Retrieve passport with Uniform Schengen Visa sticker within 15 to 30 working days."
     ],
     "fees": {
       "visa_fee": "€90 (Uniform Schengen Type C Visa)",
@@ -3969,7 +3969,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
       "notes": "Official EU Schengen fee updated in 2024; currency in Croatia is Euro (€)."
     },
-    "proc_time": "15 to 30 Calendar Days",
+    "proc_time": "15 to 30 Working Days after submission",
     "proc_details": "Applied via VFS Global in New Delhi, Mumbai, etc., and adjudicated by the Embassy of Croatia in New Delhi.",
     "requirements": [
       {
@@ -4088,7 +4088,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "Book Appointment at VFS Global: Schedule an appointment at the nearest VFS Global Slovenia Visa Application Centre in India.",
       "Submit Biometrics & Application: Attend appointment to provide digital fingerprints, photograph, and submit physical file.",
       "Pay Statutory Schengen Fee: Pay €90 consular fee plus VFS logistics fee.",
-      "Collect Passport: Retrieve passport with Uniform Schengen Visa sticker within 15 to 30 calendar days."
+      "Collect Passport: Retrieve passport with Uniform Schengen Visa sticker within 15 to 30 working days."
     ],
     "fees": {
       "visa_fee": "€90 (Uniform Schengen Type C Visa)",
@@ -4096,7 +4096,7 @@ export const TOURISM_DESTS: Record<string, any> = {
       "total_fee": "€90 (approx. ₹8,100 + VFS fee)",
       "notes": "Official EU Schengen fee; currency in Slovenia is Euro (€)."
     },
-    "proc_time": "15 to 30 Calendar Days",
+    "proc_time": "15 to 30 Working Days after submission",
     "proc_details": "Applied via VFS Global and adjudicated by the Embassy of the Republic of Slovenia in New Delhi.",
     "requirements": [
       {
@@ -12157,7 +12157,7 @@ export function getTourismSteps(countryOrFrom: string, maybeCountry?: string): s
       'Await Consular Validation: Embassy/consulate reviews digital dossier and schedules physical submission.',
       'Prepare Physical Documents: Print verified application, gather stamped bank statements, hotel vouchers, flights, and €30k insurance.',
       'Attend Consular Appointment: Submit physical passport and documents at Romanian Embassy/Consulate and pay €90 fee.',
-      'Collect Passport: Collect passport with visa sticker within 10 to 14 calendar days.'
+      'Collect Passport: Collect passport with visa sticker within 15 to 30 working days after submission.'
     ],
     'israel': [
       'Complete B/2 Application: Fill out official Israel visa application form.',
@@ -12327,23 +12327,23 @@ export function getTourismProcessingTime(country: string): string {
     'tanzania': '5–10 Working Days (or Visa on Arrival)',
     
     // ── SCHENGEN COUNTRIES ──
-    'france': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'germany': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'italy': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'spain': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'greece': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'netherlands': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'switzerland': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'portugal': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'austria': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'belgium': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'denmark': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'sweden': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'norway': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
-    'finland': '15 Calendar Days (Consular SLA) — Up to 45 Days (Peak)',
+    'france': '15 to 30 Working Days after submission',
+    'germany': '15 to 30 Working Days after submission',
+    'italy': '15 to 30 Working Days after submission',
+    'spain': '15 to 30 Working Days after submission',
+    'greece': '15 to 30 Working Days after submission',
+    'netherlands': '15 to 30 Working Days after submission',
+    'switzerland': '15 to 30 Working Days after submission',
+    'portugal': '15 to 30 Working Days after submission',
+    'austria': '15 to 30 Working Days after submission',
+    'belgium': '15 to 30 Working Days after submission',
+    'denmark': '15 to 30 Working Days after submission',
+    'sweden': '15 to 30 Working Days after submission',
+    'norway': '15 to 30 Working Days after submission',
+    'finland': '15 to 30 Working Days after submission',
     
     // ── STANDARD TOURIST VISA COUNTRIES ──
-    'australia': '15 to 25 Calendar Days (Standard Assessment Stream)',
+    'australia': '15 to 25 Working Days (Standard Assessment Stream)',
     'uk': 'Standard 3 Weeks (15 Working Days) — Priority 5 Working Days (+£500)',
     'usa': 'Verbal Decision at Consular Window — Passport dispatch 3-5 Business Days',
     'canada': '15 to 30 Business Days after Biometrics Submission',
@@ -12358,27 +12358,27 @@ export function getTourismProcessingTime(country: string): string {
     'saudi-arabia': '24–72 Hours Online (or 3–5 Days via Tasheer)',
     'oman': '24–48 Hours Online (eVisa)',
     'bahrain': '3–5 Business Days (Online eVisa)',
-    'new-zealand': '15 to 25 Calendar Days (Standard Assessment)',
+    'new-zealand': '15 to 25 Working Days (Standard Assessment)',
     'south-africa': '10–15 Business Days (VFS Submission)',
     'brazil': '5 to 15 Working Days (or Instant / 24–72 Hours for eVisa)'
   ,
 
-    'czech-republic': '15 Calendar Days statutory consular SLA',
-    'poland': '15 Calendar Days statutory consular SLA',
-    'hungary': '15 Calendar Days statutory consular SLA',
-    'croatia': '15 Calendar Days statutory consular SLA',
-    'slovakia': '15 Calendar Days statutory consular SLA',
-    'slovenia': '15 Calendar Days statutory consular SLA',
-    'estonia': '15 Calendar Days statutory consular SLA',
-    'latvia': '15 Calendar Days statutory consular SLA',
-    'lithuania': '15 Calendar Days statutory consular SLA',
-    'luxembourg': '15 Calendar Days statutory consular SLA',
-    'malta': '15 Calendar Days statutory consular SLA',
-    'iceland': '15 Calendar Days statutory consular SLA',
-    'liechtenstein': '15 Calendar Days statutory consular SLA',
-    'bulgaria': '10 – 15 Working Days',
-    'cyprus': '10 – 15 Working Days',
-    'romania': '10 – 14 Calendar Days',
+    'czech-republic': '15 to 30 Working Days after submission',
+    'poland': '15 to 30 Working Days after submission',
+    'hungary': '15 to 30 Working Days after submission',
+    'croatia': '15 to 30 Working Days after submission',
+    'slovakia': '15 to 30 Working Days after submission',
+    'slovenia': '15 to 30 Working Days after submission',
+    'estonia': '15 to 30 Working Days after submission',
+    'latvia': '15 to 30 Working Days after submission',
+    'lithuania': '15 to 30 Working Days after submission',
+    'luxembourg': '15 to 30 Working Days after submission',
+    'malta': '15 to 30 Working Days after submission',
+    'iceland': '15 to 30 Working Days after submission',
+    'liechtenstein': '15 to 30 Working Days after submission',
+    'bulgaria': '15 to 30 Working Days after submission',
+    'cyprus': '15 to 30 Working Days after submission',
+    'romania': '15 to 30 Working Days after submission',
     'israel': '10 – 15 Business Days',
     'chile': '15 – 20 Business Days',
     'mexico': '10 – 15 Working Days',
@@ -12426,22 +12426,22 @@ export function getTourismProcessingDetails(country: string): string {
     'south-africa': 'Apply 3-6 weeks before travel. ₹0 consular fee for Indian citizens.'
   ,
 
-    'czech-republic': 'Under Schengen Visa Code rules, standard processing takes 15 calendar days from document receipt at Embassy in New Delhi. Apply 4 to 6 weeks prior to travel.',
-    'poland': 'Standard Schengen processing time of 15 calendar days from consular receipt. May extend to 45 days if additional security screening is required.',
-    'hungary': 'Consular processing standard SLA is 15 calendar days. Early appointment booking at VFS Hungary is recommended.',
-    'croatia': 'Processed in approximately 15 calendar days in accordance with Schengen regulations. Apply 1 to 2 months before planned departure.',
-    'slovakia': 'Schengen processing SLA is 15 calendar days from submission at VFS Global.',
-    'slovenia': 'Standard Schengen timeframe is 15 calendar days from appointment date.',
-    'estonia': 'Consular decision takes 15 calendar days under standard circumstances.',
-    'latvia': 'Embassy of Latvia processes Schengen tourist applications within 15 calendar days.',
-    'lithuania': 'Standard processing timeline is 15 calendar days from biometric appointment.',
-    'luxembourg': 'Processed within 15 calendar days in accordance with Schengen guidelines.',
-    'malta': 'Central Visa Unit processes applications within 15 calendar days. Peak summer seasons may experience longer queues.',
-    'iceland': 'Applications processed via representation within 15 calendar days.',
-    'liechtenstein': 'Processed via Swiss Embassy within 15 calendar days.',
-    'bulgaria': 'Consular section of Bulgarian Embassy evaluates tourist visa applications within 10-15 working days.',
-    'cyprus': 'High Commission of Cyprus processes applications in 10-15 working days.',
-    'romania': 'Online validation followed by consular processing takes approximately 10-14 calendar days.',
+    'czech-republic': 'Under Schengen Visa Code rules, standard processing takes 15 to 30 working days after submission from document receipt at Embassy in New Delhi. Apply 4 to 6 weeks prior to travel.',
+    'poland': 'Standard Schengen processing time of 15 to 30 working days after submission from consular receipt. May extend if additional security screening is required.',
+    'hungary': 'Consular processing standard SLA is 15 to 30 working days after submission. Early appointment booking at VFS Hungary is recommended.',
+    'croatia': 'Processed in approximately 15 to 30 working days after submission in accordance with Schengen regulations. Apply 1 to 2 months before planned departure.',
+    'slovakia': 'Schengen processing SLA is 15 to 30 working days after submission from submission at VFS Global.',
+    'slovenia': 'Standard Schengen timeframe is 15 to 30 working days after submission from appointment date.',
+    'estonia': 'Consular decision takes 15 to 30 working days after submission under standard circumstances.',
+    'latvia': 'Embassy of Latvia processes Schengen tourist applications within 15 to 30 working days after submission.',
+    'lithuania': 'Standard processing timeline is 15 to 30 working days after submission from biometric appointment.',
+    'luxembourg': 'Processed within 15 to 30 working days after submission in accordance with Schengen guidelines.',
+    'malta': 'Central Visa Unit processes applications within 15 to 30 working days after submission. Peak summer seasons may experience longer queues.',
+    'iceland': 'Applications processed via representation within 15 to 30 working days after submission.',
+    'liechtenstein': 'Processed via Swiss Embassy within 15 to 30 working days after submission.',
+    'bulgaria': 'Consular section of Bulgarian Embassy evaluates tourist visa applications within 15 to 30 working days after submission.',
+    'cyprus': 'High Commission of Cyprus processes applications in 15 to 30 working days after submission.',
+    'romania': 'Online validation followed by consular processing takes approximately 15 to 30 working days after submission.',
     'israel': 'Embassy of Israel and Israel VAC process B/2 visitor applications within 10 to 15 business days.',
     'chile': 'Chilean consular authorities process electronic applications within 15 to 20 business days.',
     'mexico': 'Consular interview and visa issuance typically takes 10 to 15 working days at Embassy in New Delhi.',
@@ -12728,7 +12728,7 @@ export function getTourismFAQ(country: string): FAQItem[] {
     'romania': [
       { question: 'Can I visit Romania with a Schengen visa?', answer: 'Holders of valid double or multiple-entry Schengen visas may enter Romania for up to 90 days within any 180-day period without a Romanian visa.' },
       { question: 'What is the eVisa Romania portal?', answer: 'All applicants must first register and upload their dossier on evisa.mae.ro. Once approved, an appointment is scheduled for physical passport submission.' },
-      { question: 'How long does it take to process a Romania tourist visa?', answer: 'Total processing typically takes 10 to 14 calendar days from the physical document submission.' },
+      { question: 'How long does it take to process a Romania tourist visa?', answer: 'Total processing typically takes 15 to 30 working days after submission of application.' },
       { question: 'What financial proof is required for Romania?', answer: 'You must show bank statements demonstrating at least €50 per day of stay (minimum €500).' },
       { question: 'Is travel insurance required for Romania?', answer: 'Yes, comprehensive medical insurance with at least €30,000 coverage valid across the EU is required.' }
     ],
