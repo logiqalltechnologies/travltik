@@ -3180,9 +3180,10 @@ function parseDocumentConditions(title: string, description: string, rawConditio
     const isSchengenDoc = tLow.includes('schengen') || desc.toLowerCase().includes('schengen') || desc.includes('30,000') || desc.includes('€30,000');
     if (isSchengenDoc) {
       return [
-        'Valid Schengen travel medical insurance with minimum coverage of €30,000 covering emergency medical care and hospitalization',
-        'Policy must be valid across all 29 Schengen member states and cover the entire duration of intended stay',
-        'Must include repatriation of remains and emergency medical evacuation with zero or minimal deductible'
+        'Minimum Coverage: Must provide a minimum medical and repatriation coverage of €30,000 (or equivalent in convertible foreign currency).',
+        'Territorial Validity: Must be valid across all Schengen Area member states without any geographic exclusions.',
+        'Trip Duration: Must cover the exact and entire duration of your stay, starting from the scheduled entry date through the final departure date.',
+        'Multiple-Entry Condition: For multiple-entry visa applications, the policy must at least cover the entire duration of your first intended visit.'
       ];
     }
     const isStudentDoc = tLow.includes('student') || tLow.includes('oshc') || desc.toLowerCase().includes('student');
