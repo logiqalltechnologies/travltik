@@ -29,9 +29,10 @@
     "seed:readiness": "tsx scripts/seed-readiness-db.ts",
     "matrix:readiness": "tsx scripts/matrix-readiness-pipeline.ts",
     "matrix:readiness:py": "python scripts/matrix-readiness-pipeline.py",
-    "visa:batch:duplicate": "tsx scripts/visa-batch-heal.ts duplicate",
-    "visa:batch:heal": "tsx scripts/visa-batch-heal.ts heal",
-    "visa:batch:apply": "tsx scripts/visa-batch-heal.ts apply"
+    "visa:batch:duplicate": "tsx scripts/visa-batch-heal-full.ts duplicate",
+    "visa:batch:heal": "tsx scripts/visa-batch-heal-full.ts heal",
+    "visa:batch:resume": "tsx scripts/visa-batch-heal-full.ts resume",
+    "visa:batch:apply": "tsx scripts/visa-batch-heal-full.ts apply"
   },
   "dependencies": {
     "@astrojs/node": "^8.3.4",
