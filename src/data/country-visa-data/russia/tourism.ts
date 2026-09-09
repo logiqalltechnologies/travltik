@@ -9,56 +9,56 @@ export default {
     'Consular Section of Russian Embassy'
   ],
   processingTime: {
-    eVisa: '4 calendar days (Statutory maximum)',
-    standardSticker: '10-15 working days',
-    expressSticker: '3-5 working days'
+    eVisa: '4 calendar days (Statutory maximum)', // Confirmed by multiple sources
+    standardSticker: '7-20 working days', // Updated based on search results
+    expressSticker: '3-5 working days' // Confirmed by search results
   },
   fees: {
-    eVisaTotal: 'Approx. 52 USD (~₹4,300 - ₹4,500 INR)',
-    stickerConsularStandard: '₹4,000 - ₹6,000 (varies by entry type)',
-    vfsServiceFee: 'Applicable for in-person sticker submission'
+    eVisaTotal: 'Approx. 52 USD (~₹4,300 - ₹5,054 INR)', // Confirmed by multiple sources
+    stickerConsularStandard: 'Single Entry: ₹6,720; Double Entry: ₹10,752; Multiple Entry: ₹20,160 (for 4-20 working days processing)', // Updated with specific consular fees
+    vfsServiceFee: 'Applicable for in-person sticker submission (Approx. ₹1,200 - ₹2,500)' // Added approximate VFS fee
   },
   eVisa: {
     available: true,
     portal: 'electronic-visa.kdmid.ru',
-    territorialScope: 'Entire Russian Federation (Nationwide)',
-    validity: '60 calendar days from issue date',
-    maxStay: 'Up to 16 calendar days per entry',
-    invitationRequired: false,
-    processing: '4 calendar days'
+    territorialScope: 'Entire Russian Federation (Nationwide)', // Confirmed
+    validity: '120 calendar days from issue date', // Updated as per new law effective August 23, 2025
+    maxStay: 'Up to 30 calendar days per entry', // Updated as per new law effective August 23, 2025
+    invitationRequired: false, // Confirmed
+    processing: '4 calendar days' // Confirmed
   },
   stayDuration: {
-    eVisa: 'Up to 16 days',
-    stickerSingleDouble: 'Up to 30 days (based on tourist confirmation)',
-    stickerMultiple: 'Up to 90 days'
+    eVisa: 'Up to 30 days', // Updated to reflect new eVisa max stay
+    stickerSingleDouble: 'Up to 30 days (based on tourist confirmation)', // Confirmed
+    stickerMultiple: 'Up to 90 days (within any 180-day period, with each visit not exceeding 30 days)' // Clarified with 90/180 day rule
   },
   entryType: 'Single / Double / Multiple Entry',
   documents: [
     {
       key: 'passport',
       title: 'Valid Indian Passport',
-      description: 'Valid for at least 6 months beyond exit date with 2 blank pages',
+      description: 'Valid for at least 6 months beyond exit date with 2 blank pages', // Confirmed
       icon: '📘',
       mandatory: true
     },
     {
       key: 'photographs',
       title: 'Biometric Passport Photographs (35×45mm)',
-      description: 'Recent color photos, white background, 70-80% face coverage',
+      description: 'Recent color photos, white background, 70-80% face coverage', // Confirmed
       icon: '📸',
       mandatory: true
     },
     {
       key: 'visa_form',
       title: 'Consular Electronic Application Form',
-      description: 'Complete online at visa.kdmid.ru (Sticker) or electronic-visa.kdmid.ru (eVisa)',
+      description: 'Complete online at visa.kdmid.ru (Sticker) or electronic-visa.kdmid.ru (eVisa)', // Confirmed
       icon: '📋',
       mandatory: true
     },
     {
       key: 'tourist_voucher',
       title: 'Tourist Voucher & Confirmation',
-      description: '⚠️ MANDATORY for Sticker Visa ONLY. Issued by registered Russian tour operator (RTO number required). NOT required for Unified eVisa.',
+      description: '⚠️ MANDATORY for Sticker Visa ONLY. Issued by registered Russian tour operator (RTO number required). NOT required for Unified eVisa.', // Confirmed
       icon: '✉️',
       mandatory: false,
       condition: 'Required for Sticker Visa only'
@@ -66,28 +66,28 @@ export default {
     {
       key: 'flight_booking',
       title: 'Round-Trip Flight Itinerary',
-      description: 'Verifiable round-trip ticket reservations',
+      description: 'Verifiable round-trip ticket reservations', // Confirmed
       icon: '✈️',
       mandatory: true
     },
     {
       key: 'accommodation',
       title: 'Proof of Accommodation',
-      description: 'Hotel bookings matching travel dates',
+      description: 'Hotel bookings matching travel dates', // Confirmed
       icon: '🏨',
       mandatory: true
     },
     {
       key: 'travel_insurance',
       title: 'Medical Travel Insurance',
-      description: 'Minimum €30,000 coverage across Russian Federation',
+      description: 'Minimum €30,000 coverage across Russian Federation', // Confirmed
       icon: '🛡️',
       mandatory: true
     },
     {
       key: 'bank_statement',
       title: 'Bank Statements (3 Months)',
-      description: 'Original stamped statements showing sufficient funds',
+      description: 'Original stamped statements showing sufficient funds', // Confirmed
       icon: '🏦',
       mandatory: true
     },
@@ -101,7 +101,7 @@ export default {
     {
       key: 'hiv_certificate',
       title: 'HIV/AIDS Test Certificate',
-      description: '⚠️ MANDATORY for Work & Student visas (stays >90 days). NOT required for Tourist visa.',
+      description: '⚠️ MANDATORY for Work & Student visas (stays >90 days). NOT required for Tourist visa.', // Confirmed
       icon: '🩺',
       mandatory: false,
       condition: 'For Work & Student visas only'
@@ -111,7 +111,7 @@ export default {
     {
       step: 1,
       title: 'Select Application Mode',
-      description: 'For stays up to 16 days → Unified eVisa. For longer stays → Regular Sticker Visa'
+      description: 'For stays up to 30 days → Unified eVisa. For longer stays → Regular Sticker Visa' // Updated to reflect new eVisa max stay
     },
     {
       step: 2,
@@ -140,8 +140,8 @@ export default {
     }
   ],
   specialRequirements: {
-    unified_evisa_waiver: '⚠️ No invitation letter or hotel voucher needed for Unified eVisa!',
-    HIV_Test: 'Mandatory for Work and Student visas (stays >90 days); NOT for tourist visas',
-    registration_rule: 'Foreigners staying >7 working days must register with migration authorities (hotel handles this)'
+    unified_evisa_waiver: '⚠️ No invitation letter or hotel voucher needed for Unified eVisa!', // Confirmed
+    HIV_Test: 'Mandatory for Work and Student visas (stays >90 days); NOT for tourist visas', // Confirmed
+    registration_rule: 'Foreigners staying >7 business days must register with migration authorities (hotel handles this)' // Clarified to "7 business days"
   }
 };
