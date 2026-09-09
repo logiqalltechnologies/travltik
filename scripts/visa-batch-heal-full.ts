@@ -460,11 +460,10 @@ OUTPUT RULES:
 `;
 
     const response = await getAI().models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.6-flash',
       contents: prompt,
       config: {
-        temperature: 0.0,
-        tools: [{ googleSearch: {} }]
+        temperature: 0.1,
       },
     });
 
@@ -563,12 +562,17 @@ export async function batchHealAll() {
     const result = await healSingleRoute(country, purpose);
     results.push(result);
     
-    // ✅ Save checkpoint after each route
-    completed.add(key);
-    saveCheckpoint(completed);
+    // ✅ Save checkpoint only if route was successfully healed
+    if (result.status === 'healed') {
+      completed.add(key);
+      saveCheckpoint(completed);
+    } else {
+      console.log(chalk.red(`\n⚠️ Route failed: ${key} (${result.error || result.message})`));
+      await sleep(3000);
+    }
 
-    // Rate-limit safety: 2-second delay between API calls
-    await sleep(2000);
+    // Rate-limit safety: 1.5-second delay between API calls
+    await sleep(1500);
   }
 
   bar.update(queue.length, { route: 'Completed' });
