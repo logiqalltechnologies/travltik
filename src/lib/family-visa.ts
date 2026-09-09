@@ -342,8 +342,8 @@ const DESTS: Record<string, any> = {
       "currency": "USD",
       "notes": "Visa fee varies by relationship and duration."
     },
-    "proc_time": "4-8 Weeks (Standard)",
-    "proc_details": "Issued by Russian Consulate based on notarized invitation or MVD family voucher.",
+    "proc_time": "10 to 15 Working Days (Standard) | 3 to 5 Working Days (Express)",
+    "proc_details": "Issued by Russian Consulate based on notarized invitation or MVD family voucher. Apply via visa.kdmid.ru or lodge at VFS Global India.",
     "source": "Russian Ministry of Internal Affairs (MVD) & Consular Department / VFS Global",
     "validity": "1 Year Multi-Entry (Private Visa) / 3 Years (RVP Family Quota Exemption)",
     "stay": "Duration of Family Status",

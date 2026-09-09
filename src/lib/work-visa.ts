@@ -341,8 +341,8 @@ const DESTS: Record<string, any> = {
       "total_fee": "$50-150 USD + VFS Logistics",
       "notes": "Work permit fees paid by employer. Visa fee varies by duration."
     },
-    "proc_time": "4-8 Weeks (Work Permit) + 2-4 Weeks (Visa)",
-    "proc_details": "Employer secures MVD work permit and invitation, followed by consular entry visa issuance.",
+    "proc_time": "10 to 15 Working Days (Visa) | 4 to 8 Weeks (Work Permit by Employer)",
+    "proc_details": "Employer first secures MVD work permit authorization; then consular entry visa applied via visa.kdmid.ru or VFS Global India (10–15 working days). ⚠️ HIV/AIDS Test Certificate (within 6 months validity) is MANDATORY for Work Visa applicants — obtain from an ICMR-approved laboratory.",
     "source": "Russian Ministry of Internal Affairs (MVD) & Consular Department / VFS Global",
     "validity": "1-3 Years (Renewable)",
     "stay": "Duration of Employment Contract",

@@ -329,7 +329,7 @@ const DESTS: Record<string, any> = {
       "total_fee": "$50-100 USD + VFS Logistics",
       "notes": "Visa fee varies by entry type. University tuition: ₹20-35 Lakhs total for MBBS."
     },
-    "proc_time": "15-20 Working Days",
+    "proc_time": "10 to 15 Working Days",
     "proc_details": "Consular processing following official invitation from the Ministry of Internal Affairs (MVD).",
     "source": "Russian Ministry of Internal Affairs & Consular Department / VFS Global",
     "work_term": "Up to 20 hours per week (during studies)",
@@ -337,7 +337,7 @@ const DESTS: Record<string, any> = {
     "post_study": "Job search / work visa transition upon graduation",
     "min_funds": "Proof of funds for tuition + living expenses (approx. ₹3-4 Lakhs/year)",
     "acceptance_doc": "Official Admission Letter & MVD Invitation Voucher",
-    "acceptance_desc": "Ministry of Internal Affairs (MVD) official study invitation voucher processed by the university."
+    "acceptance_desc": "Ministry of Internal Affairs (MVD) official study invitation voucher processed by the university. ⚠️ HIV/AIDS Test Certificate (within 6 months validity) is MANDATORY for Student Visa applicants staying beyond 90 days — obtain from an ICMR-approved laboratory before applying."
   },
   "kazakhstan": {
     "overview": "Kazakhstan is a major medical and engineering education hub for Indian students. Universities such as Kazakh National Medical University (Asfendiyarov), Al-Farabi Kazakh National University, and Astana Medical University offer internationally recognized MBBS and technical programs in English.",

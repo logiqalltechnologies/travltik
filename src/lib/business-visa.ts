@@ -340,8 +340,8 @@ const DESTS: Record<string, any> = {
       "total_fee": "$50-100 USD + VFS Logistics",
       "notes": "Visa fee varies by entry type and duration."
     },
-    "proc_time": "4-7 Working Days (Standard)",
-    "proc_details": "Processed at Russian Embassy/VFS based on official electronic MFA/MVD business invitation.",
+    "proc_time": "10 to 15 Working Days (Standard) | 3 to 5 Working Days (Express)",
+    "proc_details": "Processed at Russian Embassy / VFS Global based on official electronic MFA/MVD business invitation. Apply via visa.kdmid.ru or lodge at VFS Global India.",
     "source": "Russian Ministry of Foreign Affairs & Consular Department / VFS Global",
     "validity": "Up to 90 Days (Single/Double Entry) or 1-Year Multi-Entry",
     "stay": "Up to 90 Days per 180-Day Period",

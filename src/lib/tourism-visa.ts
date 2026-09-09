@@ -350,7 +350,7 @@ export function normalizeCountry(str: string): string {
 export const TOURISM_DESTS: Record<string, any> = {
   ...SPECIAL_REGIONS_DESTS,
   "russia": {
-    "overview": "Russia offers eVisa and traditional tourist visas for Indian travelers. Explore Moscow, St. Petersburg, the Trans-Siberian Railway, and stunning natural landscapes. eVisa available for select regions including St. Petersburg and the Far East. Valid for up to 30 days.",
+    "overview": "Russia offers two application channels for Indian tourist travelers: Unified eVisa (valid across the entire Russian Federation) and Sticker Visa via VFS Global / Russian Consulate. Explore iconic Moscow, St. Petersburg, the Trans-Siberian Railway, and stunning natural landscapes. Apply for eVisa online at electronic-visa.kdmid.ru (processed within 4 calendar days). For longer stays, apply for a sticker tourist visa via VFS Global or the Russian Consulate.",
     "highlights": [
       {
         "icon": "🏛️",
@@ -369,98 +369,132 @@ export const TOURISM_DESTS: Record<string, any> = {
       },
       {
         "icon": "📱",
-        "title": "eVisa Available",
-        "description": "Unified Electronic Visa available online for Indian citizens"
+        "title": "Unified eVisa — Nationwide",
+        "description": "Valid across entire Russian Federation. Apply at electronic-visa.kdmid.ru — processed in 4 calendar days (statutory max)"
       }
     ],
     "documents": [
       {
-        "title": "Valid Passport",
-        "description": "Valid for at least 6 months with 2 blank pages.",
+        "title": "Valid Indian Passport",
+        "description": "Valid for at least 6 months beyond your exit date, with minimum 2 blank pages.",
         "is_mandatory": true
       },
       {
-        "title": "eVisa Application Form",
-        "description": "Completed online for eligible regions.",
+        "title": "Biometric Passport Photographs (35×45mm)",
+        "description": "2 recent color photos, white background, 70–80% face coverage, taken within the last 6 months.",
         "is_mandatory": true
       },
       {
-        "title": "Confirmed Return Flight Ticket",
-        "description": "Round-trip flight reservation.",
+        "title": "Consular Electronic Application Form",
+        "description": "Complete online: electronic-visa.kdmid.ru (for Unified eVisa) or visa.kdmid.ru (for Sticker Visa).",
         "is_mandatory": true
       },
       {
-        "title": "Hotel Booking / Invitation Letter",
-        "description": "Accommodation proof or host invitation.",
+        "title": "Tourist Voucher & Confirmation",
+        "description": "⚠️ MANDATORY for Sticker Visa ONLY — issued by a registered Russian tour operator (RTO number required). NOT required for Unified eVisa.",
+        "is_mandatory": false,
+        "condition": "Required for Sticker Visa only; NOT needed for Unified eVisa"
+      },
+      {
+        "title": "Round-Trip Flight Itinerary",
+        "description": "Verifiable round-trip flight ticket reservations covering your travel dates.",
         "is_mandatory": true
       },
       {
-        "title": "Travel Medical Insurance",
-        "description": "Valid for the entire stay in Russia.",
+        "title": "Proof of Accommodation",
+        "description": "Hotel bookings or registered accommodation proof matching your travel dates.",
         "is_mandatory": true
+      },
+      {
+        "title": "Medical Travel Insurance",
+        "description": "Minimum €30,000 coverage valid across the entire Russian Federation for the full duration of stay.",
+        "is_mandatory": true
+      },
+      {
+        "title": "Bank Statements (3–6 Months)",
+        "description": "Original stamped bank statements showing sufficient funds (approx. ₹1,50,000 – ₹2,50,000).",
+        "is_mandatory": true
+      },
+      {
+        "title": "Proof of Employment / NOC",
+        "description": "Employer leave letter + payslips (salaried) or business registration documents (self-employed).",
+        "is_mandatory": false
+      },
+      {
+        "title": "HIV/AIDS Test Certificate",
+        "description": "⚠️ NOT required for Tourist visa. Mandatory only for Work and Student visas (stays exceeding 90 days).",
+        "is_mandatory": false,
+        "condition": "For Work & Student visas only — NOT required for tourist visa"
       }
     ],
     "steps": [
-      "Step 1: Plan Your Russia Itinerary — Research Moscow, St. Petersburg, and other destinations.",
-      "Step 2: Check eVisa Eligibility — Visit Russian MFA website to check if you qualify for eVisa.",
-      "Step 3: Complete eVisa Application — Fill online form with passport scan and photograph.",
-      "Step 4: Book Flights & Accommodation — Secure confirmed bookings.",
-      "Step 5: Receive eVisa — Download eVisa PDF (issued within 4 days).",
-      "Step 6: Board Flight to Russia — Carry passport, eVisa, and supporting documents.",
-      "Step 7: Clear Immigration — Present documents at Russian airport immigration."
+      "Step 1: Select Application Mode — For stays up to 16 days: Unified eVisa at electronic-visa.kdmid.ru. For longer stays (up to 90 days): Sticker Visa via VFS Global / Russian Consulate.",
+      "Step 2: Obtain Documentation — For Sticker Visa: Get Tourist Voucher & Confirmation from a registered Russian tour operator (RTO number required).",
+      "Step 3: Fill Online Application — Complete form at electronic-visa.kdmid.ru (eVisa) or visa.kdmid.ru (Sticker Visa).",
+      "Step 4: Pay Fees & Book Appointment — Pay online for eVisa (~₹4,300–₹4,500 / ~$52 USD). For Sticker Visa: book VFS Global appointment and pay consular fee ₹4,000–₹6,000.",
+      "Step 5: Submit Application & Documents — Upload digital documents for eVisa portal, or submit physical dossier at VFS Global for sticker visa.",
+      "Step 6: Receive Visa — Download eVisa PDF (within 4 calendar days) or collect stamped passport from VFS (10–15 working days standard, 3–5 working days express)."
     ],
     "fees": {
-      "visa_fee": "eVisa: $40 USD (approx. ₹3,300)",
-      "service_fee": "₹0 (Online Portal)",
-      "total_fee": "$40 USD Total Reference",
-      "notes": "eVisa fee paid online via Russian MFA portal."
+      "visa_fee": "eVisa: ~₹4,300–₹4,500 (~$52 USD) | Sticker Visa: ₹4,000–₹6,000 (varies by entry type)",
+      "service_fee": "VFS Global service fee applicable for Sticker Visa route",
+      "total_fee": "eVisa: ~₹4,300–₹4,500 | Sticker Consular: ₹4,000–₹6,000 + VFS fee",
+      "notes": "eVisa fee paid online at electronic-visa.kdmid.ru. Sticker visa consular fee paid at VFS Global India. Fee varies by single/double/multiple entry."
     },
-    "proc_time": "4 Calendar Days (eVisa Standard)",
-    "proc_details": "Processed online via the Russian Ministry of Foreign Affairs (MFA) electronic visa portal.",
+    "proc_time": "4 Calendar Days (Unified eVisa — Statutory Max) | 10–15 Working Days (Sticker Standard) | 3–5 Working Days (Sticker Express)",
+    "proc_details": "Unified eVisa: Apply online at electronic-visa.kdmid.ru — processed within 4 calendar days (statutory maximum set by Russian MFA). Valid across the entire Russian Federation. Max stay 16 calendar days per entry, 60-day validity from issue. Sticker Visa: 10–15 working days via VFS Global / Russian Embassy; express 3–5 working days.",
     "requirements": [
       {
         "category": "Passport Validity",
-        "details": "Valid for at least 6 months from entry date with 2 blank pages."
+        "details": "Valid for at least 6 months beyond exit date with minimum 2 blank pages."
       },
       {
-        "category": "eVisa Regions",
-        "details": "Unified electronic visa valid for travel across the Russian Federation."
+        "category": "eVisa Territorial Scope",
+        "details": "Unified eVisa is valid across the entire Russian Federation (nationwide). No regional restriction."
       },
       {
         "category": "Duration of Stay",
-        "details": "Maximum 16 days on eVisa; traditional tourist visa allows up to 30-90 days."
+        "details": "Unified eVisa: max 16 calendar days per entry (60-day validity). Sticker Tourist Visa: up to 30 days (single/double) or up to 90 days (multiple entry)."
       },
       {
         "category": "Insurance",
-        "details": "Travel medical insurance covering the entire stay with at least €30,000 coverage."
+        "details": "Medical travel insurance covering the entire stay with minimum €30,000 coverage across the Russian Federation."
+      },
+      {
+        "category": "Registration Rule",
+        "details": "Foreigners staying more than 7 working days must register with migration authorities — hotels handle this automatically upon check-in."
       }
     ],
     "financial_proofs": [
       {
         "type": "Personal Bank Statement",
-        "minimum_balance_or_amount": "₹1,50,000 - ₹2,50,000",
-        "time_frame": "Past 3 months",
-        "notes": "Bank statement showing adequate daily travel allowance."
+        "minimum_balance_or_amount": "₹1,50,000 – ₹2,50,000",
+        "time_frame": "Past 3–6 months",
+        "notes": "Original stamped bank statements showing sufficient funds for the entire duration of stay."
       }
     ],
     "faqs": [
       {
         "question": "Do Indian citizens need a visa for Russia?",
-        "answer": "Yes, Indian passport holders require an electronic visa (eVisa) or traditional consular visa."
+        "answer": "Yes. Indian passport holders can apply for a Unified eVisa online at electronic-visa.kdmid.ru (valid across the entire Russian Federation, processed within 4 calendar days) or a traditional Sticker Visa via VFS Global / Russian Consulate."
       },
       {
-        "question": "How long can I stay in Russia?",
-        "answer": "Up to 16 days on unified eVisa; traditional consular tourist visa allows up to 30 to 90 days."
+        "question": "How long can I stay in Russia on a tourist visa?",
+        "answer": "Unified eVisa: up to 16 calendar days per entry (60-day validity from issue date). Sticker Tourist Visa: up to 30 days (single/double entry) or up to 90 days (multiple entry)."
       },
       {
-        "question": "What is the processing time for Russia eVisa?",
-        "answer": "eVisa is typically processed within 4 calendar days on the Russian MFA portal."
+        "question": "What is the processing time for Russia tourist visa?",
+        "answer": "Unified eVisa at electronic-visa.kdmid.ru: 4 calendar days (statutory maximum). Sticker Visa via VFS Global: 10–15 working days (standard) or 3–5 working days (express)."
+      },
+      {
+        "question": "Do I need an invitation letter or hotel voucher for Russia eVisa?",
+        "answer": "No! The Unified eVisa does NOT require an invitation letter or hotel voucher. A Tourist Voucher from a registered Russian tour operator is mandatory ONLY for the Sticker Visa route."
       }
     ],
-    "validity": "60 Days Validity / 16-30 Days Stay",
-    "stay_duration": "Up to 16-30 Days",
-    "entry_type": "Single Entry",
-    "official_source": "Russian Ministry of Foreign Affairs (MFA) & Consular Department"
+    "validity": "60 Calendar Days from Issue (eVisa) / 30–90 Days (Sticker Tourist Visa)",
+    "stay_duration": "Up to 16 Calendar Days (eVisa) / Up to 30–90 Days (Sticker Visa)",
+    "entry_type": "Single / Double / Multiple Entry",
+    "official_source": "Russian Ministry of Foreign Affairs (MFA) — electronic-visa.kdmid.ru (eVisa) | visa.kdmid.ru (Sticker) | VFS Global India"
   },
   "kazakhstan": {
     "overview": "Kazakhstan offers visa-free entry for Indian passport holders for up to 14 days (extendable to 30 days). Explore Almaty, Astana (Nur-Sultan), the Altai Mountains, and the Caspian Sea. Growing tourism destination with modern infrastructure.",
