@@ -70,6 +70,17 @@ function getCountryCode(country: string): string {
   if (c.includes('philippines') || c === 'ph') return 'ph';
   if (c.includes('georgia') || c === 'ge') return 'ge';
   if (c.includes('kazakhstan') || c === 'kz') return 'kz';
+  if (c.includes('bulgaria') || c === 'bg') return 'bg';
+  if (c.includes('romania') || c === 'ro') return 'ro';
+  if (c.includes('croatia') || c === 'hr') return 'hr';
+  if (c.includes('slovenia') || c === 'si') return 'si';
+  if (c.includes('slovakia') || c === 'sk') return 'sk';
+  if (c.includes('poland') || c === 'pl') return 'pl';
+  if (c.includes('hungary') || c === 'hu') return 'hu';
+  if (c.includes('czech') || c === 'cz') return 'cz';
+  if (c.includes('cyprus') || c === 'cy') return 'cy';
+  if (c.includes('iceland') || c === 'is') return 'is';
+  if (c.includes('malta') || c === 'mt') return 'mt';
 
   const match = ALL_COUNTRIES.find(item => item.name.toLowerCase() === c || item.code.toLowerCase() === c);
   if (match) return match.code.toLowerCase();
@@ -909,9 +920,19 @@ export function VisaApplicationDetailsView({
     setExpandedSteps(newMap);
   };
 
+  const resumeUrl = useMemo(() => {
+    if (!destination) return '/';
+    const slug = destination.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const p = encodeURIComponent(purpose || 'tourism');
+    const pass = encodeURIComponent(passport || 'India');
+    return `/visa/${slug}?purpose=${p}&passport=${pass}`;
+  }, [destination, purpose, passport]);
+
+  const applicationName = application?.customName || application?.title || resolvedVisaType || `${destination} Visa Application`;
+
   return (
     <div className="space-y-6 animate-fade-up font-sans text-left">
-      {/* ── TOP HEADER WITH BACK BUTTON ── */}
+      {/* ── TOP HEADER WITH BACK BUTTON & RESUME APPLICATION ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Visa Application Details</h1>
@@ -919,65 +940,106 @@ export function VisaApplicationDetailsView({
             Track and manage your visa application progress
           </p>
         </div>
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs self-start sm:self-auto cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 text-slate-600" />
-          <span>Back to Applications</span>
-        </button>
+        <div className="flex items-center gap-2.5 self-start sm:self-auto flex-wrap">
+          <a
+            href={resumeUrl}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white text-xs font-black transition-all shadow-xs cursor-pointer"
+            title="Resume Visa Application"
+          >
+            <span>Resume Application</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-slate-600" />
+            <span>Back to Applications</span>
+          </button>
+        </div>
       </div>
 
-      {/* ── 1. APPLICATION METADATA HERO CARD (EXACT SLEEK LAYOUT MATCHING USER DESIGN) ── */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-2xs">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+      {/* ── 1. APPLICATION METADATA HERO CARD (NEATLY ORGANIZED VERTICAL HIERARCHY) ── */}
+      <div className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-xs">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
-          {/* Section 1: Application ID */}
-          <div className="lg:col-span-4 space-y-1">
-            <span className="text-xs text-slate-400 font-normal block">Application ID</span>
-            <div className="flex items-center gap-2 pt-0.5">
-              <span className="text-base sm:text-lg font-bold text-[#009b68] font-mono tracking-tight">
-                {trackingId}
+          {/* Section 1: Application Name & Application ID (arranged vertically) */}
+          <div className="lg:col-span-5 space-y-3.5">
+            {/* Application Name */}
+            <div>
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                Application Name
               </span>
-              <button
-                type="button"
-                onClick={handleCopyId}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-600 text-xs font-medium transition-all shadow-2xs cursor-pointer"
-                title="Copy Application ID"
-              >
-                <Copy className="w-3 h-3 text-slate-500" />
-                <span>{copiedId ? 'Copied' : 'Copy'}</span>
-              </button>
+              <div className="flex items-center gap-2 mt-1">
+                <CountryFlag country={destination} className="w-5 h-3.5 object-cover rounded-xs border border-slate-200/80 shadow-2xs shrink-0" />
+                <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug break-words">
+                  {applicationName}
+                </h2>
+              </div>
             </div>
-            <div className="text-[11px] text-slate-400 font-normal pt-3">
-              Created on: {appliedDate} &nbsp;·&nbsp; Last Updated: {lastUpdated}
+
+            {/* Application ID (Ek ke neeche ek) */}
+            <div>
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                Application ID
+              </span>
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <span className="text-base sm:text-lg font-bold text-[#009b68] font-mono tracking-tight bg-emerald-50/70 px-2.5 py-0.5 rounded-md border border-emerald-100">
+                  {trackingId}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleCopyId}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-all shadow-2xs cursor-pointer active:scale-95"
+                  title="Copy Application ID"
+                >
+                  <Copy className="w-3.5 h-3.5 text-slate-500" />
+                  <span>{copiedId ? 'Copied ✓' : 'Copy'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Created on & Last Updated */}
+            <div className="text-[11px] text-slate-500 font-normal flex flex-wrap items-center gap-2 pt-0.5">
+              <span>Created on: <strong className="text-slate-800 font-semibold">{appliedDate}</strong></span>
+              <span>·</span>
+              <span>Last Updated: <strong className="text-slate-800 font-semibold">{lastUpdated}</strong></span>
+            </div>
+
+            {/* Resume Application Action in Hero Card */}
+            <div className="pt-2">
+              <a
+                href={resumeUrl}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white text-xs font-black shadow-xs transition-all cursor-pointer"
+              >
+                <span>Resume Application</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
 
-          {/* Section 2: Name & Route & Visa Type */}
-          <div className="lg:col-span-7 space-y-4 pl-0 lg:pl-4">
-            {/* Top Row: Name, From -> To */}
-            <div className="flex flex-wrap items-center gap-6 sm:gap-8">
+          {/* Section 2: Applicant & Route Specifications */}
+          <div className="lg:col-span-7 space-y-4 pl-0 lg:pl-6 lg:border-l lg:border-slate-100">
+            {/* Top Row: Applicant Name, From (Passport), To (Destination) */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div>
-                <span className="text-xs text-slate-400 font-normal block">Name</span>
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Applicant</span>
                 <strong className="text-xs sm:text-sm font-bold text-slate-900 block break-words whitespace-normal mt-1">
                   {applicantName || 'Applicant'}
                 </strong>
               </div>
 
               <div>
-                <span className="text-xs text-slate-400 font-normal block">From</span>
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">From (Passport)</span>
                 <div className="flex items-center gap-1.5 mt-1">
                   <CountryFlag country={passport} />
                   <strong className="text-xs sm:text-sm font-bold text-slate-900">{passport}</strong>
                 </div>
               </div>
 
-              <span className="text-slate-400 text-sm mt-5 inline-block select-none">→</span>
-
-              <div>
-                <span className="text-xs text-slate-400 font-normal block">To</span>
+              <div className="col-span-2 sm:col-span-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">To (Destination)</span>
                 <div className="flex items-center gap-1.5 mt-1">
                   <CountryFlag country={destination} />
                   <strong className="text-xs sm:text-sm font-bold text-slate-900">{destination}</strong>
@@ -985,15 +1047,15 @@ export function VisaApplicationDetailsView({
               </div>
             </div>
 
-            {/* Bottom Row: Visa Type & Entries */}
-            <div className="flex flex-wrap items-center gap-8 sm:gap-12 text-xs">
+            {/* Middle Row: Visa Type & Entries */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50/80 p-3.5 rounded-xl border border-slate-100">
               <div>
                 <span className="text-slate-400 font-normal">Visa Type: </span>
-                <strong className="font-semibold text-slate-800">{resolvedVisaType}</strong>
+                <strong className="font-semibold text-slate-900 block sm:inline mt-0.5 sm:mt-0">{resolvedVisaType}</strong>
               </div>
               <div>
                 <span className="text-slate-400 font-normal">Entries: </span>
-                <strong className="font-semibold text-slate-800">{entries}</strong>
+                <strong className="font-semibold text-slate-900 block sm:inline mt-0.5 sm:mt-0">{entries}</strong>
               </div>
             </div>
 

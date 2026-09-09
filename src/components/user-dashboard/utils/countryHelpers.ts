@@ -108,5 +108,16 @@ export function getCountryCode(countryName: string): string {
   if (c.includes('philippines') || c === 'ph') return 'ph';
   if (c.includes('georgia') || c === 'ge') return 'ge';
   if (c.includes('kazakhstan') || c === 'kz') return 'kz';
+  if (c.includes('bulgaria') || c === 'bg') return 'bg';
+  if (c.includes('romania') || c === 'ro') return 'ro';
+  if (c.includes('croatia') || c === 'hr') return 'hr';
+  if (c.includes('slovenia') || c === 'si') return 'si';
+  if (c.includes('slovakia') || c === 'sk') return 'sk';
+  if (c.includes('poland') || c === 'pl') return 'pl';
+  if (c.includes('hungary') || c === 'hu') return 'hu';
+  if (c.includes('czech') || c === 'cz') return 'cz';
+  if (c.includes('cyprus') || c === 'cy') return 'cy';
+  if (c.includes('iceland') || c === 'is') return 'is';
+  if (c.includes('malta') || c === 'mt') return 'mt';
   return 'un';
 }
