@@ -4504,17 +4504,45 @@ export function VisaCountryResultPortal({
 
   const [checklistSyncedToast, setChecklistSyncedToast] = useState<{ show: boolean; msg: string; trackingId: string; caseId?: string } | null>(null);
   const [showLoginRequiredModal, setShowLoginRequiredModal] = useState(false);
+  const [showServiceProviderNoticeModal, setShowServiceProviderNoticeModal] = useState(false);
+  const [isServiceProvider, setIsServiceProvider] = useState(false);
+
+  const isServiceProviderLoggedIn = () => {
+    if (typeof window === 'undefined') return false;
+    if (localStorage.getItem('expert_isLoggedIn') === 'true') return true;
+    if (localStorage.getItem('expert_businessName')) return true;
+    if (localStorage.getItem('expert_email')) return true;
+    try {
+      const userStr = localStorage.getItem('travltik_user');
+      if (userStr && userStr !== 'null' && userStr !== 'undefined') {
+        const u = JSON.parse(userStr);
+        if (u && (u.type === 'expert' || u.role === 'expert' || u.type === 'service_provider' || u.role === 'service_provider' || u.role === 'consultant' || u.role === 'partner')) {
+          return true;
+        }
+      }
+    } catch (_) {}
+    if (typeof document !== 'undefined' && document.cookie.includes('cp_sid=')) return true;
+    return false;
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsServiceProvider(isServiceProviderLoggedIn());
+    }
+  }, []);
 
   const checkIsUserLoggedIn = () => {
     if (typeof window === 'undefined') return false;
+    // Service providers are NOT logged in with a traveller account
+    if (isServiceProviderLoggedIn()) return false;
+
     const userStr = localStorage.getItem('travltik_user');
     const seekerEmail = localStorage.getItem('seeker_email');
-    const expertLoggedIn = localStorage.getItem('expert_isLoggedIn') === 'true';
 
     if (userStr && userStr !== 'null' && userStr !== 'undefined') {
       try {
         const parsed = JSON.parse(userStr);
-        if (parsed && (parsed.email || parsed.uid || parsed.id)) {
+        if (parsed && (parsed.email || parsed.uid || parsed.id) && parsed.type !== 'expert') {
           return true;
         }
       } catch (_) {}
@@ -4524,14 +4552,16 @@ export function VisaCountryResultPortal({
       return true;
     }
 
-    if (expertLoggedIn) {
-      return true;
-    }
-
     return false;
   };
 
   const handleDownloadAndSyncChecklist = () => {
+    // If a service provider is logged in, ask them to login to a traveller account
+    if (isServiceProviderLoggedIn()) {
+      setShowServiceProviderNoticeModal(true);
+      return;
+    }
+
     if (!checkIsUserLoggedIn()) {
       try {
         localStorage.setItem('pending_visa_action', JSON.stringify({
@@ -8680,7 +8710,7 @@ export function VisaCountryResultPortal({
         {/* ── APPLICATION PROFILE DETAILS & DOWNLOAD/SYNC (ALWAYS VISIBLE ACROSS ALL TABS - MATCHING EXACT USER REQUEST media_1788583909662.png) ── */}
         <div className="max-w-5xl mx-auto mt-8 sm:mt-10 mb-8 text-left animate-fadeIn space-y-5">
             {/* ── DOWNLOAD & SYNC ACTION BUTTON (CENTERED & PROMINENT SIZE - MATCHING USER REQUEST) ── */}
-            <div className="flex items-center justify-center pt-2 pb-1">
+            <div className="flex flex-col items-center justify-center pt-2 pb-1 text-center">
               <button
                 type="button"
                 onClick={handleDownloadAndSyncChecklist}
@@ -8690,6 +8720,17 @@ export function VisaCountryResultPortal({
                 <span className="tracking-wide">Download &amp; Sync</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </button>
+
+              {isServiceProvider && (
+                <button
+                  type="button"
+                  onClick={() => setShowServiceProviderNoticeModal(true)}
+                  className="mt-3.5 inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-amber-50 border border-amber-200/90 hover:bg-amber-100 text-amber-900 text-xs sm:text-sm font-semibold shadow-xs transition-all cursor-pointer animate-fadeIn"
+                >
+                  <Info className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Login in Traveller account for download and sync</span>
+                </button>
+              )}
             </div>
 
             {/* ── APPLICATION PROFILE DETAILS (MATCHING EXACT PHOTO media_1788470844697.png) ── */}
@@ -11822,6 +11863,63 @@ export function VisaCountryResultPortal({
 
             <p className="text-[11px] text-slate-400">
               🔒 256-bit encrypted • Official Embassy &amp; Consular Document Security
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ── SERVICE PROVIDER NOTICE MODAL (TRIGGERED ON DOWNLOAD & SYNC) ── */}
+      {showServiceProviderNoticeModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200 text-left">
+          <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5 animate-in zoom-in-95 duration-200">
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setShowServiceProviderNoticeModal(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Icon Badge */}
+            <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center mx-auto text-amber-600 shadow-xs">
+              <Info className="w-7 h-7" />
+            </div>
+
+            {/* Title & Description */}
+            <div className="space-y-2">
+              <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider">
+                Service Provider Account
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Login in Traveller account for download and sync
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                You are currently logged in with a Service Provider account. Case syncing and official visa checklist downloads are linked directly to personal traveller profiles.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-2.5 pt-2">
+              <a
+                href={`/login?redirect=${encodeURIComponent(typeof window !== 'undefined' ? (window.location.pathname + (window.location.search ? (window.location.search.includes('autodownload') ? window.location.search : window.location.search + '&autodownload=1') : '?autodownload=1')) : `/visa/${slugClean}?autodownload=1`)}`}
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
+              >
+                <span>Login in Traveller Account</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setShowServiceProviderNoticeModal(false)}
+                className="w-full flex items-center justify-center py-3 px-6 rounded-2xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-colors cursor-pointer"
+              >
+                Continue Browsing
+              </button>
+            </div>
+
+            <p className="text-[11px] text-slate-400">
+              Need to manage client cases? Visit your Partner / Expert Dashboard.
             </p>
           </div>
         </div>
