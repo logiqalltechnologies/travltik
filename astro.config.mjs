@@ -29,6 +29,7 @@ export default defineConfig({
       host: true,
       port: 4321,
       hmr: {
+        port: 4321,
         clientPort: 4321,
       },
       headers: {
@@ -61,7 +62,7 @@ export default defineConfig({
         'firebase/auth',
         '@marsidev/react-turnstile',
       ],
-      force: false,
+      force: true,
     },
   },
 });

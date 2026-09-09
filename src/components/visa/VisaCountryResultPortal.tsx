@@ -7421,10 +7421,10 @@ export function VisaCountryResultPortal({
                     </p>
 
                     {/* 4 Feature Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-stretch">
                     {isStudyTab ? (
                       <>
-                        <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100/90 flex items-start gap-3">
+                        <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100/90 flex items-start gap-3 h-full">
                           <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
                             <GraduationCap className="w-4 h-4" />
                           </div>
@@ -7434,7 +7434,7 @@ export function VisaCountryResultPortal({
                           </div>
                         </div>
 
-                        <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100/90 flex items-start gap-3">
+                        <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100/90 flex items-start gap-3 h-full">
                           <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
                             <Briefcase className="w-4 h-4" />
                           </div>
@@ -7444,7 +7444,7 @@ export function VisaCountryResultPortal({
                           </div>
                         </div>
 
-                        <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100/90 flex items-start gap-3">
+                        <div className="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100/90 flex items-start gap-3 h-full">
                           <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
                             <Award className="w-4 h-4" />
                           </div>
@@ -7454,7 +7454,7 @@ export function VisaCountryResultPortal({
                           </div>
                         </div>
 
-                        <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100/90 flex items-start gap-3">
+                        <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100/90 flex items-start gap-3 h-full">
                           <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
                             <Calendar className="w-4 h-4" />
                           </div>
@@ -7538,7 +7538,7 @@ export function VisaCountryResultPortal({
                           return highlights.slice(0, 4).map((h: any, idx: number) => {
                             const theme = themes[idx % themes.length];
                             return (
-                              <div key={idx} className={`p-3.5 rounded-2xl ${theme.bg} border ${theme.border} flex items-start gap-3`}>
+                              <div key={idx} className={`p-3.5 rounded-2xl ${theme.bg} border ${theme.border} flex items-start gap-3 h-full`}>
                                 <div className={`w-8 h-8 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0`}>
                                   {renderIcon(h.icon, idx)}
                                 </div>
@@ -7553,6 +7553,7 @@ export function VisaCountryResultPortal({
                       </>
                     )}
                   </div>
+
                 </div>
 
                 {/* 2. Documents Required Card */}

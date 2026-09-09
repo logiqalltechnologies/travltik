@@ -27,7 +27,7 @@ export const onRequest = async (context: any, next: any): Promise<Response> => {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.cdnfonts.com; " +
     "img-src 'self' data: https: blob:; " +
     "font-src 'self' data: https://fonts.gstatic.com https://fonts.cdnfonts.com; " +
-    "connect-src 'self' https: wss:; " +
+    "connect-src 'self' https: wss: ws: http://localhost:*; " +
     "frame-src 'self' https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://accounts.google.com https://travltik.firebaseapp.com https://visaformula-auth.firebaseapp.com https://*.firebaseapp.com;"
   );
 
