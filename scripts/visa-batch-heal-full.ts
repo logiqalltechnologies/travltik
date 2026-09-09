@@ -11,7 +11,7 @@ const REPORTS_DIR = path.join(process.cwd(), 'healing-reports');
 const CHECKPOINT_FILE = path.join(REPORTS_DIR, 'checkpoint.json');
 
 // ================================================================
-// ALL 192 COUNTRIES - DUPLICATES REMOVED ✅
+// ALL 193 COUNTRIES - DUPLICATES REMOVED
 // ================================================================
 
 const COUNTRIES_RAW = [
@@ -26,8 +26,8 @@ const COUNTRIES_RAW = [
   'poland', 'portugal', 'romania', 'russia', 'san-marino',
   'serbia', 'slovakia', 'slovenia', 'spain', 'sweden',
   'switzerland', 'ukraine', 'united-kingdom', 'vatican-city',
-  
-  // ── ASIA (No duplicates with Europe) ──
+
+  // ── ASIA ──
   'afghanistan', 'bahrain', 'bangladesh', 'bhutan', 'brunei',
   'cambodia', 'china', 'india', 'indonesia', 'iran',
   'iraq', 'israel', 'japan', 'jordan', 'kazakhstan',
@@ -37,7 +37,7 @@ const COUNTRIES_RAW = [
   'saudi-arabia', 'singapore', 'south-korea', 'sri-lanka', 'syria',
   'taiwan', 'tajikistan', 'thailand', 'timor-leste', 'turkey',
   'turkmenistan', 'uae', 'uzbekistan', 'vietnam',
-  
+
   // ── AFRICA ──
   'algeria', 'angola', 'benin', 'botswana', 'burkina-faso',
   'burundi', 'cabo-verde', 'cameroon', 'central-african-republic',
@@ -50,7 +50,7 @@ const COUNTRIES_RAW = [
   'rwanda', 'sao-tome', 'senegal', 'seychelles', 'sierra-leone',
   'somalia', 'south-africa', 'south-sudan', 'sudan', 'tanzania',
   'togo', 'tunisia', 'uganda', 'zambia', 'zimbabwe',
-  
+
   // ── AMERICAS ──
   'antigua-barbuda', 'argentina', 'bahamas', 'barbados', 'belize',
   'bolivia', 'brazil', 'canada', 'chile', 'colombia',
@@ -59,17 +59,19 @@ const COUNTRIES_RAW = [
   'honduras', 'jamaica', 'mexico', 'nicaragua', 'panama',
   'paraguay', 'peru', 'saint-kitts-nevis', 'saint-lucia', 'saint-vincent',
   'suriname', 'trinidad-tobago', 'uruguay', 'usa', 'venezuela',
-  
+
   // ── OCEANIA ──
   'australia', 'fiji', 'kiribati', 'marshall-islands', 'micronesia',
   'nauru', 'new-zealand', 'palau', 'papua-new-guinea', 'samoa',
   'solomon-islands', 'tonga', 'tuvalu', 'vanuatu'
 ];
 
-// ✅ FIX 1: Remove duplicates
 const COUNTRIES = [...new Set(COUNTRIES_RAW)];
-
 const PURPOSES = ['tourism', 'student', 'work', 'business', 'family_visit'];
+
+// ================================================================
+// ENV LOADER
+// ================================================================
 
 function loadEnv() {
   const envPath = path.join(process.cwd(), '.env');
@@ -91,22 +93,75 @@ function loadEnv() {
 }
 loadEnv();
 
-let aiInstance: GoogleGenAI | null = null;
-function getAI(): GoogleGenAI {
-  if (!aiInstance) {
-    const key = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-    if (!key) {
-      throw new Error('GEMINI_API_KEY environment variable is not set. Please export GEMINI_API_KEY before running.');
+// ================================================================
+// MULTI-KEY ROUND-ROBIN SYSTEM
+// ================================================================
+
+function getApiKeys(): string[] {
+  const keys: string[] = [];
+  const seen = new Set<string>();
+
+  const addKey = (k: string | undefined) => {
+    if (k && k.trim().length > 10 && !seen.has(k.trim())) {
+      seen.add(k.trim());
+      keys.push(k.trim());
     }
-    aiInstance = new GoogleGenAI({ apiKey: key });
+  };
+
+  addKey(process.env.GEMINI_API_KEY);
+  addKey(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
+
+  for (let i = 1; i <= 10; i++) {
+    addKey(process.env[`NEXT_PUBLIC_GEMINI_API_KEY_${i}`]);
   }
-  return aiInstance;
+  for (let i = 1; i <= 10; i++) {
+    addKey(process.env[`GEMINI_API_KEY_${i}`]);
+  }
+
+  return keys;
 }
+
+const API_KEYS = getApiKeys();
+
+if (API_KEYS.length === 0) {
+  console.error(chalk.red('No Gemini API keys found! Set GEMINI_API_KEY in .env'));
+  process.exit(1);
+}
+
+console.log(chalk.green(`🔑 Loaded ${API_KEYS.length} API key(s)`));
+
+// Per-key cached AI instances
+const _aiInstances = new Map<string, GoogleGenAI>();
+function getAIForKey(apiKey: string): GoogleGenAI {
+  if (!_aiInstances.has(apiKey)) {
+    _aiInstances.set(apiKey, new GoogleGenAI({ apiKey }));
+  }
+  return _aiInstances.get(apiKey)!;
+}
+
+// All keys now use gemini-3.6-flash
+// NOTE: gemini-2.0-flash is 404 deprecated as of Sept 2026
+// gemini-3.6-flash works for all key types (AIzaSy standard + AQ. OAuth)
+// Free tier: 20 req/day per key (OAuth keys), ~1500/day (standard key)
+function getModelForKey(_apiKey: string): string {
+  return 'gemini-3.6-flash';
+}
+
+// ================================================================
+// PARALLEL WORKERS CONFIG
+// ================================================================
+
+const PARALLEL_WORKERS = 2;
+const BATCH_DELAY_MS = 2000;
+
+console.log(chalk.blue(`⚡ Parallel workers: ${PARALLEL_WORKERS}`));
+console.log(chalk.gray(`📈 Speed: ~${PARALLEL_WORKERS * 60} routes/hour`));
+console.log(chalk.gray(`⏱️  ETA: ~${Math.ceil(965 / (PARALLEL_WORKERS * 60))} hours for 965 routes`));
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // ================================================================
-// 1. CHECKPOINT SYSTEM (Resume on interruption)
+// CHECKPOINT SYSTEM
 // ================================================================
 
 function loadCheckpoint(): Set<string> {
@@ -131,17 +186,31 @@ function loadCheckpoint(): Set<string> {
   }
 }
 
-function saveCheckpoint(completed: Set<string>) {
-  fs.mkdirSync(REPORTS_DIR, { recursive: true });
-  fs.writeFileSync(CHECKPOINT_FILE, JSON.stringify({
-    completed: Array.from(completed),
-    total: COUNTRIES.length * PURPOSES.length,
-    timestamp: new Date().toISOString()
-  }, null, 2));
+let _savingCheckpoint = false;
+let _latestPendingSet: Set<string> | null = null;
+
+async function saveCheckpoint(completed: Set<string>) {
+  _latestPendingSet = completed;
+  if (_savingCheckpoint) return;
+  _savingCheckpoint = true;
+  try {
+    while (_latestPendingSet) {
+      const toSave = _latestPendingSet;
+      _latestPendingSet = null;
+      fs.mkdirSync(REPORTS_DIR, { recursive: true });
+      fs.writeFileSync(CHECKPOINT_FILE, JSON.stringify({
+        completed: Array.from(toSave),
+        total: COUNTRIES.length * PURPOSES.length,
+        timestamp: new Date().toISOString()
+      }, null, 2));
+    }
+  } finally {
+    _savingCheckpoint = false;
+  }
 }
 
 // ================================================================
-// 2. GET ALL FILES
+// GET ALL FILES
 // ================================================================
 
 function getAllFiles(dir: string): string[] {
@@ -152,7 +221,7 @@ function getAllFiles(dir: string): string[] {
     const fullPath = path.join(dir, item);
     if (fs.statSync(fullPath).isDirectory()) {
       results.push(...getAllFiles(fullPath));
-    } else if (item.endsWith('.ts')) {
+    } else if (item.endsWith('.ts') && !item.endsWith('.backup')) {
       results.push(fullPath);
     }
   }
@@ -160,67 +229,59 @@ function getAllFiles(dir: string): string[] {
 }
 
 // ================================================================
-// 3. DUPLICATE ALL FILES
+// DUPLICATE ALL FILES
 // ================================================================
 
 export async function duplicateAllFiles() {
-  console.log(chalk.blue('📋 Creating sandbox duplicates of visa data files...'));
+  console.log(chalk.blue('Creating sandbox duplicates of visa data files...'));
 
   if (!fs.existsSync(ORIGINAL_DIR)) {
     fs.mkdirSync(ORIGINAL_DIR, { recursive: true });
-    console.log(chalk.gray(`📁 Created original directory: ${ORIGINAL_DIR}`));
   }
 
   if (fs.existsSync(TEST_DIR)) {
     fs.rmSync(TEST_DIR, { recursive: true, force: true });
-    console.log(chalk.gray('🧹 Removed old test directory'));
+    console.log(chalk.gray('Removed old test directory'));
   }
 
   fs.cpSync(ORIGINAL_DIR, TEST_DIR, { recursive: true });
-  console.log(chalk.green(`✅ Sandbox ready at: ${TEST_DIR}`));
-
   const files = getAllFiles(TEST_DIR);
-  console.log(chalk.green(`✅ ${files.length} files duplicated`));
+  console.log(chalk.green(`✅ ${files.length} files duplicated to sandbox`));
 }
 
 // ================================================================
-// 4. COUNTRY-SPECIFIC RULES (CORRECTED)
+// COUNTRY-SPECIFIC RULES
 // ================================================================
 
 function getCountrySpecificRules(country: string): string {
   const rules: Record<string, string> = {
     'nepal': `
 NEPAL-SPECIFIC RULES:
-- ✅ CORRECTED: Indian passport holders do NOT require any visa for Nepal
+- Visa-Free for Indian citizens (Indo-Nepal Treaty 1950)
 - Entry: Valid Indian Passport OR Election Voter ID Card
 - Stay: Up to 150 days per year
-- Treaty: Indo-Nepal Treaty of Peace and Friendship (1950)
 - No visa fee, no application required (Gratis / Visa-Free)
 `,
     'bhutan': `
 BHUTAN-SPECIFIC RULES:
-- ✅ CORRECTED: Indian passport holders do NOT require any visa for Bhutan
+- Visa-Free for Indian citizens (India-Bhutan Friendship Treaty)
 - Entry: Valid Indian Passport OR Election Voter ID Card
-- Stay: As per tourism regulations (typically 15 days)
-- Treaty: India-Bhutan Friendship Treaty
-- Sustainable Development Fee (SDF): ₹1,200/day for Indian tourists (concessional)
-- Entry Permit required (issued at border/airport or online), no visa required
+- Sustainable Development Fee (SDF): 1200 INR/day (concessional)
+- Entry Permit required at border/airport, no visa required
 `,
     'russia': `
 RUSSIA-SPECIFIC RULES:
 - eVisa: Unified All-Russia eVisa (Nationwide, NOT regional)
 - Portal: electronic-visa.kdmid.ru
-- Processing: 4 calendar days max (statutory)
-- Fee: ~52 USD (~₹4,300 - ₹4,500)
-- Unified eVisa does NOT require tourist voucher/invitation letter
-- HIV Test: Mandatory for stays >90 days (Student/Work visas only)
+- Processing: 4 calendar days max
+- Fee: ~52 USD (~4300-4500 INR)
+- Unified eVisa does NOT require tourist voucher
 `,
     'south-africa': `
 SOUTH AFRICA-SPECIFIC RULES:
-- Visa fee: ₹0 (Gratis for Indian citizens across both eVisa and VFS)
+- Visa fee: 0 INR (Gratis for Indian citizens)
 - Channels: eVisa (DHA Portal) + VFS Global (Sticker)
-- Passport: Valid at least 30 days beyond intended departure
-- Required: Yellow Fever certificate (if arriving from or transiting endemic countries)
+- Required: Yellow Fever certificate (if arriving from endemic countries)
 - Required: Unabridged Birth Certificate for traveling minors
 `,
     'france': `
@@ -229,8 +290,7 @@ FRANCE-SPECIFIC RULES:
 - Insurance: Minimum 30,000 EUR medical coverage
 - Processing: 15 calendar days standard
 - Statutory Fee: 90 EUR consular fee + VFS service fee
-- Portal: France-Visas (official portal)
-- External Service Provider: VFS Global
+- Portal: France-Visas
 `,
     'greece': `
 GREECE-SPECIFIC RULES:
@@ -239,82 +299,72 @@ GREECE-SPECIFIC RULES:
 - Processing: 15 calendar days standard
 - Statutory Fee: 90 EUR consular fee + GVCW service fee
 - External Service Provider: GVCW (in-gr.gvcworld.eu), NOT VFS Global
-- Portal: Greece-Visas (official portal)
 `,
     'uk': `
 UK-SPECIFIC RULES:
 - Standard Visitor Visa (6 Months)
-- Processing: 15 working days standard
-- Statutory Fee: £127
+- Processing: 15 working days
+- Statutory Fee: 127 GBP
 - Portal: GOV.UK (Access UK)
-- Submission: VFS Global / TLScontact for biometrics
 `,
     'united-kingdom': `
 UK-SPECIFIC RULES:
 - Standard Visitor Visa (6 Months)
-- Processing: 15 working days standard
-- Statutory Fee: £127
-- Portal: GOV.UK (Access UK)
-- Submission: VFS Global / TLScontact for biometrics
+- Processing: 15 working days
+- Statutory Fee: 127 GBP
+- Portal: GOV.UK
 `,
     'usa': `
 USA-SPECIFIC RULES:
 - B1/B2 Visitor Visa
 - Application: DS-160 Form via CEAC portal
 - Fee: 185 USD (MRV Fee)
-- Appointment: VAC (Biometrics) + US Embassy/Consulate (In-person Interview)
+- Appointment: VAC (Biometrics) + US Embassy (In-person Interview)
 `,
     'canada': `
 CANADA-SPECIFIC RULES:
 - Visitor Visa (Temporary Resident Visa - TRV)
 - Application: IRCC Portal
 - Fee: 100 CAD application fee + 85 CAD biometrics fee
-- Submission: Biometrics capture at VFS Global Canada VAC
 `,
     'uae': `
 UAE-SPECIFIC RULES:
 - Tourist eVisa (30 Days / 60 Days)
 - Processing: 24 to 72 hours
 - Channels: ICP (Federal) or GDRFA (Dubai)
-- Single or Multiple Entry options
 `,
     'australia': `
 AUSTRALIA-SPECIFIC RULES:
 - Visitor Visa: Subclass 600 (Base fee: 195 AUD)
-- Student Visa: Subclass 500 (Base fee: AUD 1,600+, requires eCoE + OSHC + Genuine Student criteria)
+- Student Visa: Subclass 500 (requires eCoE + OSHC)
 - Portal: ImmiAccount (online.immi.gov.au)
-- Biometrics: VFS Global Australian Biometric Collection Centre
 `,
     'thailand': `
 THAILAND-SPECIFIC RULES:
-- Visa exemption / Visa-free for Indian passport holders for tourism
+- Visa exemption for Indian passport holders for tourism
 - Stay: Up to 30 days per entry
-- Extension: Extendable locally at immigration offices
 `,
     'singapore': `
 SINGAPORE-SPECIFIC RULES:
-- Entry Scheme: Pre-entry digital SG Arrival Card (SGAC) with health declaration
-- Submission: Via ICA official portal or MyICA Mobile app within 3 days prior to arrival
-- Transit: 96-hour Visa Free Transit Facility (VFTF) applicable only if holding valid forward ticket and qualifying visa for select third countries
+- SG Arrival Card (SGAC): Mandatory digital pre-entry declaration
+- Submit via ICA portal within 3 days prior to arrival
 `,
     'jamaica': `
 JAMAICA-SPECIFIC RULES:
-- Visa Exemption: Visa-free entry for Indian citizens up to 30 days for tourism (Commonwealth waiver)
-- Mandatory: Online C5 Immigration & Customs form at enterjamaica.com before boarding
-- Transit Warning: Enforce requirement of transit visa (US, UK, Canada, or Schengen) for flight connections
+- Visa-free for Indian citizens up to 30 days for tourism
+- Mandatory: Online C5 Immigration form at enterjamaica.com before boarding
 `
   };
 
   return rules[country] || `
 ${country.toUpperCase()}-SPECIFIC RULES:
-- Ground output using official government (.gov, .mfa, embassy) sources only.
+- Use official government (.gov, .mfa, embassy) sources only.
 - Strict isolation: Do not bleed US/Schengen statutes into this jurisdiction.
-- Use Google Search grounding to find official visa requirements for Indian passport holders.
 `;
 }
 
 // ================================================================
-// 5. UNIVERSAL RULES
+// UNIVERSAL RULES
 // ================================================================
 
 function getUniversalRules(): string {
@@ -329,36 +379,28 @@ UNIVERSAL IMMIGRATION RULES (Apply to ALL countries):
 2. FINANCIAL PRECISION:
    - Education loans ONLY for Student visas
    - Tourism visas: Bank statements + ITR + NOC only
-   - Fix typographical spacing: "₹0 for" not "₹0for"
 
 3. HEALTH MANDATES:
    - Yellow Fever ONLY for endemic African/South American countries
    - HIV Test ONLY for stays >90 days (Student/Work)
 
 4. PASSPORT PHOTO:
-   - Should be: 35×45mm, white background, 6 months recent
-   - NOT: passport validity conditions
+   - Should be: 35x45mm, white background, 6 months recent
 
-5. eVISA SCOPE:
-   - Check latest official scope (not outdated regional programs)
-
-6. FEES (Verified):
+5. FEES (Verified):
    - Schengen countries: 90 EUR consular fee
-   - UK: £127
+   - UK: 127 GBP
    - Australia: 195 AUD
    - Canada: 100 CAD + 85 CAD biometrics
    - USA: 185 USD
-   - Always verify from official source
 `;
 }
 
 // ================================================================
-// 6. HEAL SINGLE ROUTE
-// ================================================================
-// 6. HEAL SINGLE ROUTE
+// HEAL SINGLE ROUTE (worker-index based key assignment)
 // ================================================================
 
-async function healSingleRoute(country: string, purpose: string): Promise<any> {
+async function healSingleRoute(country: string, purpose: string, workerIndex: number): Promise<any> {
   const originalFilePath = path.join(ORIGINAL_DIR, country, `${purpose}.ts`);
   const testFilePath = path.join(TEST_DIR, country, `${purpose}.ts`);
 
@@ -369,11 +411,14 @@ async function healSingleRoute(country: string, purpose: string): Promise<any> {
     rawCode = fs.readFileSync(originalFilePath, 'utf-8');
   }
 
+  const apiKey = API_KEYS[workerIndex % API_KEYS.length];
+  const ai = getAIForKey(apiKey);
+
   try {
     const prompt = rawCode.trim().length > 50 ? `
 You are the Consular Audit Engine for TravlTik.
 
-CURRENT DATA (India → ${country} for ${purpose}):
+CURRENT DATA (India to ${country} for ${purpose}):
 ${rawCode}
 
 ${getUniversalRules()}
@@ -386,88 +431,57 @@ OUTPUT RULES:
 3. Do NOT add any new fields unless mandatory
 4. Preserve ALL existing comments and formatting
 5. Ensure ALL fields are accurate according to official sources
-6. Use Google Search grounding to verify all information
 
-Return ONLY the code, no additional text.
+Return ONLY the TypeScript code, no markdown fences, no extra text.
 ` : `
 You are the Consular Audit Engine for TravlTik.
-Generate a complete, production-ready, verified visa data TypeScript file for Indian passport holders traveling from India to ${country} for ${purpose}.
+Generate a complete, production-ready visa data TypeScript file for Indian passport holders traveling from India to ${country} for ${purpose}.
 
 ${getUniversalRules()}
 
 ${getCountrySpecificRules(country)}
 
-SCHEMA FORMAT TO FOLLOW:
+SCHEMA FORMAT:
 export default {
   country: '${country}',
   fromCountry: 'India',
   visaCategory: '${purpose === 'tourism' ? 'Tourist Visa' : purpose === 'student' ? 'Student Visa' : purpose === 'work' ? 'Employment / Work Visa' : purpose === 'business' ? 'Business Visa' : 'Family Visit Visa'}',
   authority: 'Official Consular / Immigration Authority Name',
-  channels: [
-    'Official Portal / Application Channel 1',
-    'Application Centre / VFS / BLS / TLS / GVCW',
-    'Embassy / Consulate'
-  ],
-  processingTime: {
-    eVisa: 'X calendar/working days',
-    standardSticker: 'X working days',
-    expressSticker: 'X working days'
-  },
-  fees: {
-    eVisaTotal: 'Total fee in USD/local currency (~₹ INR)',
-    stickerConsularStandard: 'Official consular fee with currency and INR conversion',
-    vfsServiceFee: 'Applicable outsourced service fee (~₹ INR)'
-  },
-  eVisa: {
-    available: true, // or false if no eVisa
-    portal: 'official URL',
-    territorialScope: 'Nationwide or specify',
-    validity: 'Duration from issue',
-    maxStay: 'Max days per stay',
-    invitationRequired: false,
-    processing: 'X days'
-  },
-  stayDuration: {
-    eVisa: 'Duration',
-    stickerSingleDouble: 'Duration',
-    stickerMultiple: 'Duration'
-  },
+  channels: ['Official Portal', 'VFS / BLS / TLS / GVCW', 'Embassy / Consulate'],
+  processingTime: { eVisa: 'X days', standardSticker: 'X working days', expressSticker: 'X working days' },
+  fees: { eVisaTotal: 'Total fee', stickerConsularStandard: 'Consular fee', vfsServiceFee: 'Service fee' },
+  eVisa: { available: true, portal: 'official URL', territorialScope: 'Nationwide', validity: 'Duration', maxStay: 'Max days', invitationRequired: false, processing: 'X days' },
+  stayDuration: { eVisa: 'Duration', stickerSingleDouble: 'Duration', stickerMultiple: 'Duration' },
   entryType: 'Single / Double / Multiple Entry',
   documents: [
-    { key: 'passport', title: 'Valid Indian Passport', description: 'Valid for at least 6 months with 2 blank pages', icon: '📘', mandatory: true },
-    { key: 'photographs', title: 'Passport Photographs (35×45mm)', description: 'Recent white background photo', icon: '📸', mandatory: true },
-    { key: 'visa_form', title: 'Application Form', description: 'Online or printed consular form', icon: '📋', mandatory: true },
-    { key: 'flight_booking', title: 'Flight Itinerary', description: 'Return flight booking', icon: '✈️', mandatory: true },
-    { key: 'accommodation', title: 'Proof of Accommodation', description: 'Hotel or invitation', icon: '🏨', mandatory: true },
-    { key: 'travel_insurance', title: 'Travel Insurance', description: 'Medical coverage as required', icon: '🛡️', mandatory: true },
-    { key: 'bank_statement', title: 'Financial Proof', description: 'Bank statements showing sufficient funds', icon: '🏦', mandatory: true }
+    { key: 'passport', title: 'Valid Indian Passport', description: 'Valid for at least 6 months with 2 blank pages', icon: 'passport', mandatory: true },
+    { key: 'photographs', title: 'Passport Photographs (35x45mm)', description: 'Recent white background photo', icon: 'photo', mandatory: true },
+    { key: 'visa_form', title: 'Application Form', description: 'Online or printed consular form', icon: 'form', mandatory: true },
+    { key: 'flight_booking', title: 'Flight Itinerary', description: 'Return flight booking', icon: 'flight', mandatory: true },
+    { key: 'accommodation', title: 'Proof of Accommodation', description: 'Hotel or invitation', icon: 'hotel', mandatory: true },
+    { key: 'travel_insurance', title: 'Travel Insurance', description: 'Medical coverage as required', icon: 'insurance', mandatory: true },
+    { key: 'bank_statement', title: 'Financial Proof', description: 'Bank statements showing sufficient funds', icon: 'bank', mandatory: true }
   ],
   steps: [
     { step: 1, title: 'Check Visa Eligibility', description: 'Determine eVisa vs Sticker submission' },
     { step: 2, title: 'Prepare Documentation', description: 'Assemble mandatory verified documents' },
-    { step: 3, title: 'Submit & Pay Fee', description: 'Pay statutory consular fees' },
+    { step: 3, title: 'Submit and Pay Fee', description: 'Pay statutory consular fees' },
     { step: 4, title: 'Receive Clearance', description: 'Track dossier and download approval' }
   ],
-  specialRequirements: {
-    entry_rules: 'Specific mandates, quarantine, vaccine, or entry permits'
-  }
+  specialRequirements: { entry_rules: 'Specific mandates or N/A' }
 };
 
-OUTPUT RULES:
-1. Return COMPLETE TypeScript file starting with export default { and ending with };
-2. Ensure ALL fields (fees, channels, portals, processing times, stay durations) are 100% verified using official government / embassy sources via Google search.
-3. Return ONLY valid TypeScript code without markdown commentary.
+Return ONLY valid TypeScript code, no markdown commentary.
 `;
 
-    const response = await getAI().models.generateContent({
-      model: 'gemini-3.6-flash',
+    const response = await ai.models.generateContent({
+      model: getModelForKey(apiKey),
       contents: prompt,
-      config: {
-        temperature: 0.1,
-      },
+      config: { temperature: 0.1 },
     });
 
     const responseText = response.text || '';
+    // Strip markdown fences if present
     const codeMatch = responseText.match(/```(?:typescript|ts)?\n([\s\S]*?)\n```/);
     const cleanedCode = codeMatch ? codeMatch[1] : responseText;
 
@@ -481,51 +495,34 @@ OUTPUT RULES:
     }
 
     if (fs.existsSync(testFilePath)) {
-      const backupPath = testFilePath + '.backup';
-      fs.copyFileSync(testFilePath, backupPath);
+      fs.copyFileSync(testFilePath, testFilePath + '.backup');
     }
 
     fs.writeFileSync(testFilePath, cleanedCode);
 
-    return {
-      country,
-      purpose,
-      status: 'healed',
-      testFilePath,
-      message: 'Successfully healed'
-    };
+    return { country, purpose, status: 'healed', testFilePath, message: 'Successfully healed' };
 
   } catch (error: any) {
-    return {
-      country,
-      purpose,
-      status: 'failed',
-      error: error.message
-    };
+    return { country, purpose, status: 'failed', error: error.message };
   }
 }
 
 // ================================================================
-// 7. BATCH HEAL ALL (WITH CHECKPOINT)
+// BATCH HEAL ALL — PARALLEL WORKERS
 // ================================================================
 
 export async function batchHealAll() {
   if (!fs.existsSync(TEST_DIR)) {
-    console.log(chalk.red('❌ Sandbox directory missing. Run duplicate first!'));
+    console.log(chalk.red('Sandbox directory missing. Run duplicate first!'));
     return;
   }
 
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
-  
-  // Load checkpoint
+
   const completed = loadCheckpoint();
   const totalRoutes = COUNTRIES.length * PURPOSES.length;
-  
-  console.log(chalk.bold.blue(`\n🚀 Processing ${COUNTRIES.length} countries × ${PURPOSES.length} purposes...`));
-  console.log(chalk.gray(`📊 Total routes: ${totalRoutes}`));
-  console.log(chalk.gray(`✅ Already completed: ${completed.size}`));
-  console.log(chalk.gray(`⏱️ Estimated time: ~${Math.ceil((totalRoutes * 2) / 60)} minutes`));
 
+  // Build queue
   const queue: { country: string; purpose: string }[] = [];
   for (const country of COUNTRIES) {
     for (const purpose of PURPOSES) {
@@ -538,47 +535,63 @@ export async function batchHealAll() {
   }
 
   if (queue.length === 0) {
-    console.log(chalk.green('✅ All routes already healed!'));
+    console.log(chalk.green('All routes already healed!'));
     return;
   }
 
-  console.log(chalk.yellow(`📝 ${queue.length} routes remaining to heal`));
+  console.log(chalk.bold.blue(`\n🚀 Processing ${COUNTRIES.length} countries x ${PURPOSES.length} purposes...`));
+  console.log(chalk.gray(`📊 Total routes: ${totalRoutes}`));
+  console.log(chalk.green(`✅ Already completed: ${completed.size}`));
+  console.log(chalk.yellow(`📝 ${queue.length} routes remaining`));
+  console.log(chalk.blue(`⚡ Using ${PARALLEL_WORKERS} parallel workers (${API_KEYS.length} API keys)`));
+  console.log(chalk.gray(`⏱️  Estimated: ~${Math.ceil(queue.length / (PARALLEL_WORKERS * 60))} hours`));
 
   const bar = new cliProgress.SingleBar({
-    format: 'Progress |{bar}| {percentage}% | {value}/{total} Routes | {route}',
+    format: 'Progress |{bar}| {percentage}% | {value}/{total} Routes | ETA: {eta_formatted}',
     hideCursor: true,
   });
-
-  bar.start(queue.length, 0, { route: 'Starting...' });
+  bar.start(queue.length, 0);
 
   const results: any[] = [];
-  
-  for (let i = 0; i < queue.length; i++) {
-    const { country, purpose } = queue[i];
-    const key = `${country}-${purpose}`;
-    
-    bar.update(i, { route: `${country}/${purpose}` });
+  let processedCount = 0;
 
-    const result = await healSingleRoute(country, purpose);
-    results.push(result);
-    
-    // ✅ Save checkpoint only if route was successfully healed
-    if (result.status === 'healed') {
-      completed.add(key);
-      saveCheckpoint(completed);
-    } else {
-      console.log(chalk.red(`\n⚠️ Route failed: ${key} (${result.error || result.message})`));
-      await sleep(3000);
+  // Process in parallel chunks
+  for (let i = 0; i < queue.length; i += PARALLEL_WORKERS) {
+    const chunk = queue.slice(i, i + PARALLEL_WORKERS);
+
+    const chunkResults = await Promise.allSettled(
+      chunk.map(({ country, purpose }, idx) => healSingleRoute(country, purpose, idx))
+    );
+
+    for (const result of chunkResults) {
+      if (result.status === 'fulfilled') {
+        const r = result.value;
+        results.push(r);
+        if (r.status === 'healed') {
+          completed.add(`${r.country}-${r.purpose}`);
+        } else {
+          process.stderr.write(chalk.red(`\n⚠️ Failed: ${r.country}-${r.purpose} (${r.error || r.message})\n`));
+        }
+      } else {
+        process.stderr.write(chalk.red(`\n❌ Worker crashed: ${result.reason}\n`));
+      }
     }
 
-    // Rate-limit safety: 1.5-second delay between API calls
-    await sleep(1500);
+    processedCount += chunk.length;
+    bar.update(processedCount);
+
+    // Save checkpoint after each batch
+    await saveCheckpoint(completed);
+
+    // Small delay between batches
+    if (i + PARALLEL_WORKERS < queue.length) {
+      await sleep(BATCH_DELAY_MS);
+    }
   }
 
-  bar.update(queue.length, { route: 'Completed' });
+  bar.update(queue.length);
   bar.stop();
 
-  // Save final results
   fs.writeFileSync(
     path.join(REPORTS_DIR, 'batch-summary.json'),
     JSON.stringify(results, null, 2)
@@ -588,7 +601,7 @@ export async function batchHealAll() {
 }
 
 // ================================================================
-// 8. GENERATE BATCH REPORT
+// GENERATE BATCH REPORT
 // ================================================================
 
 function generateBatchReport(results: any[], completed: Set<string>) {
@@ -596,8 +609,7 @@ function generateBatchReport(results: any[], completed: Set<string>) {
   const skipped = results.filter(r => r.status === 'skipped');
   const failed = results.filter(r => r.status === 'failed');
 
-  const html = `
-<!DOCTYPE html>
+  const html = `<!DOCTYPE html>
 <html>
 <head>
   <title>Visa Data Batch Healing Report</title>
@@ -614,28 +626,23 @@ function generateBatchReport(results: any[], completed: Set<string>) {
     th, td { padding: 8px; text-align: left; border-bottom: 1px solid #e2e8f0; }
     th { background: #f1f5f9; }
     .healed { color: #166534; }
-    .skipped { color: #854d0e; }
     .failed { color: #991b1b; }
   </style>
 </head>
 <body>
-  <h1>📊 Visa Data Batch Healing Report</h1>
+  <h1>Visa Data Batch Healing Report</h1>
   <p>Generated: ${new Date().toLocaleString()}</p>
-  <p>Total Routes Checked: ${results.length}</p>
-  <p>Countries: ${COUNTRIES.length}</p>
-  <p>Purposes: ${PURPOSES.length}</p>
-
+  <p>API Keys: ${API_KEYS.length} | Workers: ${PARALLEL_WORKERS}</p>
   <div class="card">
     <div class="stats">
-      <div class="stat stat-healed">✅ Healed: ${healed.length}</div>
-      <div class="stat stat-skipped">⏭️ Skipped: ${skipped.length}</div>
-      <div class="stat stat-failed">❌ Failed: ${failed.length}</div>
-      <div class="stat stat-total">📊 Total Completed: ${completed.size}</div>
+      <div class="stat stat-healed">Healed: ${healed.length}</div>
+      <div class="stat stat-skipped">Skipped: ${skipped.length}</div>
+      <div class="stat stat-failed">Failed: ${failed.length}</div>
+      <div class="stat stat-total">Total: ${completed.size}</div>
     </div>
   </div>
-
   <div class="card">
-    <h2>📋 All Results</h2>
+    <h2>All Results</h2>
     <table>
       <tr><th>Country</th><th>Purpose</th><th>Status</th><th>Message</th></tr>
       ${results.map(r => `
@@ -643,14 +650,13 @@ function generateBatchReport(results: any[], completed: Set<string>) {
           <td>${r.country}</td>
           <td>${r.purpose}</td>
           <td class="${r.status}">${r.status}</td>
-          <td>${r.message || r.error || '—'}</td>
+          <td>${r.message || r.error || '-'}</td>
         </tr>
       `).join('')}
     </table>
   </div>
 </body>
-</html>
-  `;
+</html>`;
 
   const htmlPath = path.join(REPORTS_DIR, 'batch-report.html');
   fs.writeFileSync(htmlPath, html);
@@ -658,24 +664,18 @@ function generateBatchReport(results: any[], completed: Set<string>) {
 }
 
 // ================================================================
-// 9. APPLY ALL TO ORIGINAL
+// APPLY ALL TO ORIGINAL
 // ================================================================
 
 export async function applyAllToOriginal() {
-  console.log(chalk.bold.yellow('\n⚠️ WARNING: This will apply ALL test changes to original files!'));
+  console.log(chalk.bold.yellow('\nWARNING: This will apply ALL test changes to original files!'));
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  const answer = await new Promise(resolve => {
-    rl.question(chalk.red('\nType "yes" to confirm: '), resolve);
-  });
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await new Promise(resolve => rl.question(chalk.red('\nType "yes" to confirm: '), resolve));
   rl.close();
 
   if (answer !== 'yes') {
-    console.log(chalk.gray('❌ Cancelled. Original files untouched.'));
+    console.log(chalk.gray('Cancelled. Original files untouched.'));
     return;
   }
 
@@ -685,21 +685,23 @@ export async function applyAllToOriginal() {
   for (const testFile of allFiles) {
     const relativePath = path.relative(TEST_DIR, testFile);
     const originalFile = path.join(ORIGINAL_DIR, relativePath);
+    const originalDir = path.dirname(originalFile);
+
+    if (!fs.existsSync(originalDir)) fs.mkdirSync(originalDir, { recursive: true });
 
     if (fs.existsSync(originalFile)) {
-      const backupPath = originalFile + '.backup';
-      fs.copyFileSync(originalFile, backupPath);
-      fs.copyFileSync(testFile, originalFile);
-      applied++;
+      fs.copyFileSync(originalFile, originalFile + '.backup');
     }
+    fs.copyFileSync(testFile, originalFile);
+    applied++;
   }
 
   console.log(chalk.green(`\n✅ Applied ${applied} files to original directory.`));
-  console.log(chalk.gray(`📂 Backups created with .backup extension`));
+  console.log(chalk.gray('Backups created with .backup extension'));
 }
 
 // ================================================================
-// 10. RESUME COMMAND
+// RESUME
 // ================================================================
 
 export async function resumeHealing() {
@@ -730,32 +732,19 @@ async function main() {
       break;
     default:
       console.log(`
-📋 Visa Data Batch Healing System (Fixed - All Countries)
+Visa Data Batch Healing System - PARALLEL MODE
 
 Commands:
-  npm run visa:batch:duplicate    # Create test copies (ALL ${COUNTRIES.length} countries)
-  npm run visa:batch:heal         # Heal ALL test files (original untouched)
-  npm run visa:batch:resume       # Resume from last checkpoint (if interrupted)
-  npm run visa:batch:apply        # Apply ALL test changes to original (⚠️ confirmation)
+  npm run visa:batch:duplicate    # Create test copies
+  npm run visa:batch:heal         # Heal ALL (${PARALLEL_WORKERS} workers x ${API_KEYS.length} keys)
+  npm run visa:batch:resume       # Resume from checkpoint
+  npm run visa:batch:apply        # Apply to original
 
-✅ FIXES APPLIED:
-  1. Duplicate country keys removed (Set)
-  2. Nepal/Bhutan: Visa-Free (not Visa on Arrival)
-  3. Checkpoint/Resume system added (saves progress after each route)
-
-✅ COVERAGE:
-  Countries: ${COUNTRIES.length}
-  Purposes: ${PURPOSES.length}
-  Total Routes: ${COUNTRIES.length * PURPOSES.length}
-
-✅ CORRECTED STATUTORY FEES:
-  Schengen: 90 EUR
-  UK: £127
-  Australia: 195 AUD
-  Canada: 100 CAD + 85 CAD biometrics
-  USA: 185 USD
-
-⚠️ Estimated Time: ~${Math.ceil((COUNTRIES.length * PURPOSES.length * 2) / 60)} minutes
+Configuration:
+  API Keys: ${API_KEYS.length} loaded
+  Workers:  ${PARALLEL_WORKERS} parallel
+  Speed:    ~${PARALLEL_WORKERS * 60} routes/hour
+  ETA:      ~${Math.ceil(965 / (PARALLEL_WORKERS * 60))} hours for 965 routes
       `);
   }
 }
