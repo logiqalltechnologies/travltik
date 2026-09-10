@@ -7793,10 +7793,20 @@ export function VisaCountryResultPortal({
 
                 {/* Mobile Compact Document Cards List */}
                 <div className="md:hidden space-y-3 text-left">
-                  {/* Single column header above all cards */}
-                  <div className="flex items-center justify-between px-1 pb-1">
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Document Name</span>
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Tick if valid</span>
+                  {/* Attractive column header bar */}
+                  <div className="flex items-center justify-between px-4 py-2.5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-700 shadow-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-md bg-white/15 flex items-center justify-center">
+                        <FileText className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-[12px] font-semibold text-white tracking-wide">Document Name</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[12px] font-semibold text-white tracking-wide">Tick if valid</span>
+                      <div className="w-5 h-5 rounded-md bg-white/15 flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                    </div>
                   </div>
                   {portalDocItems
                     .filter((item: any) => {
