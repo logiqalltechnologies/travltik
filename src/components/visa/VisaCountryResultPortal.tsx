@@ -7793,6 +7793,11 @@ export function VisaCountryResultPortal({
 
                 {/* Mobile Compact Document Cards List */}
                 <div className="md:hidden space-y-3 text-left">
+                  {/* Single column header above all cards */}
+                  <div className="flex items-center justify-between px-1 pb-1">
+                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Document Name</span>
+                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Tick if valid</span>
+                  </div>
                   {portalDocItems
                     .filter((item: any) => {
                       if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
@@ -7816,7 +7821,6 @@ export function VisaCountryResultPortal({
                               {doc.icon}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block mb-0.5">Document Name</span>
                               <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">
                                 {doc.name}
                               </strong>
@@ -7831,11 +7835,6 @@ export function VisaCountryResultPortal({
                           {/* Numbered Conditions with Serial No. on left, Condition text in middle, Tick box on right */}
                           {doc.conditions && doc.conditions.length > 0 && (
                             <ol className="pt-2.5 border-t border-slate-100/90 space-y-2 list-none">
-                              {/* Column headers */}
-                              <li className="flex items-center justify-between gap-3 pb-1 border-b border-slate-100">
-                                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide flex-1">Conditions</span>
-                                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide shrink-0 whitespace-nowrap">Tick if valid</span>
-                              </li>
                               {doc.conditions.map((cond: string, cIdx: number) => {
                                 const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isCompleted;
                                 return (
