@@ -1,0 +1,60 @@
+export default {
+  country: 'cyprus',
+  fromCountry: 'India',
+  visaCategory: 'Employment / Work Visa',
+  authority: 'Civil Registry and Migration Department (CRMD) / Ministry of Foreign Affairs of Cyprus',
+  channels: ['High Commission of the Republic of Cyprus in New Delhi, India'],
+  processingTime: {
+    eVisa: null,
+    standardSticker: '60-90 working days (including CRMD pre-approval)',
+    expressSticker: null,
+  },
+  fees: {
+    eVisaTotal: null,
+    stickerConsularStandard: '60 EUR (equivalent in INR)',
+    vfsServiceFee: null, // Not applicable for direct embassy submission
+  },
+  eVisa: {
+    available: false,
+    portal: null,
+    territorialScope: null,
+    validity: null,
+    maxStay: null,
+    invitationRequired: false,
+    processing: null,
+  },
+  stayDuration: {
+    eVisa: null,
+    stickerSingleDouble: null, // Not typical for work visas
+    stickerMultiple: 'Up to 1 year, renewable based on employment contract',
+  },
+  entryType: 'Multiple Entry',
+  documents: [
+    { key: 'passport', title: 'Valid Indian Passport', description: 'Valid for at least 6 months beyond the intended stay, with at least 2 blank pages. All previous passports must also be submitted.', icon: 'passport', mandatory: true },
+    { key: 'photographs', title: 'Passport Photographs (35x45mm)', description: 'Two recent (not older than 6 months) passport-sized photographs, white background, matte finish, 80% face coverage.', icon: 'photo', mandatory: true },
+    { key: 'visa_form', title: 'Application Form', description: 'Duly completed and signed national visa application form (Form M.61).', icon: 'form', mandatory: true },
+    { key: 'flight_booking', title: 'Flight Itinerary', description: 'Confirmed one-way flight booking to Cyprus.', icon: 'flight', mandatory: true },
+    { key: 'accommodation', title: 'Proof of Accommodation', description: 'Proof of accommodation in Cyprus (e.g., rental agreement, letter from employer stating accommodation is provided, or hotel booking for initial period).', icon: 'hotel', mandatory: true },
+    { key: 'travel_insurance', title: 'Travel Insurance', description: 'Comprehensive medical travel insurance covering the initial period of stay in Cyprus, with a minimum coverage of €30,000 for medical emergencies, hospitalization, and repatriation.', icon: 'insurance', mandatory: true },
+    { key: 'bank_statement', title: 'Financial Proof', description: 'Latest 3-6 months bank statements and Income Tax Returns (ITR) to demonstrate sufficient funds for initial sustenance until salary commences.', icon: 'bank', mandatory: true },
+    { key: 'employment_contract', title: 'Employment Contract', description: 'Original employment contract, duly stamped and signed by both the applicant and the employer in Cyprus, detailing terms of employment, salary, and duration.', icon: 'contract', mandatory: true },
+    { key: 'crmd_approval', title: 'CRMD Pre-Approval Letter', description: 'Original pre-approval letter from the Civil Registry and Migration Department (CRMD) of Cyprus, confirming the approval of the employment permit.', icon: 'approval', mandatory: true },
+    { key: 'educational_qualifications', title: 'Educational & Professional Qualifications', description: 'Certified copies of all relevant academic degrees, diplomas, and professional certificates. These must be apostilled by the Ministry of External Affairs (MEA) of India.', icon: 'certificate', mandatory: true },
+    { key: 'police_clearance', title: 'Police Clearance Certificate (PCC)', description: 'Original Police Clearance Certificate issued by the Passport Seva Kendra (PSK) in India, apostilled by the Ministry of External Affairs (MEA) of India.', icon: 'police', mandatory: true },
+    { key: 'medical_certificate', title: 'Medical Certificate', description: 'Original medical certificate from a recognized hospital in India, confirming the applicant is free from HIV, Hepatitis B & C, and Syphilis. This certificate must be apostilled by the Ministry of External Affairs (MEA) of India.', icon: 'health', mandatory: true },
+    { key: 'employer_guarantee', title: 'Employer\'s Guarantee Letter', description: 'Letter from the employer in Cyprus guaranteeing the applicant\'s employment and responsibility for repatriation costs if necessary.', icon: 'letter', mandatory: true },
+    { key: 'company_registration', title: 'Cyprus Company Registration', description: 'Copy of the employer company\'s registration certificate and other relevant legal documents in Cyprus.', icon: 'company', mandatory: true },
+    { key: 'curriculum_vitae', title: 'Curriculum Vitae (CV)', description: 'Detailed and updated Curriculum Vitae of the applicant.', icon: 'cv', mandatory: true },
+  ],
+  steps: [
+    { step: 1, title: 'Obtain CRMD Pre-Approval', description: 'The employer in Cyprus must first apply for and obtain an employment permit pre-approval from the Civil Registry and Migration Department (CRMD) in Cyprus.' },
+    { step: 2, title: 'Prepare Documentation', description: 'Assemble all mandatory documents, ensuring all Indian-issued documents are apostilled by the Ministry of External Affairs (MEA) of India.' },
+    { step: 3, title: 'Schedule Appointment', description: 'Book an appointment at the High Commission of the Republic of Cyprus in New Delhi, India.' },
+    { step: 4, title: 'Submit Application and Pay Fee', description: 'Attend the appointment, submit the complete application dossier, and pay the statutory consular visa fee in INR equivalent.' },
+    { step: 5, title: 'Attend Interview (if required)', description: 'Be prepared to attend a visa interview if requested by the consular officer.' },
+    { step: 6, title: 'Receive Visa', description: 'Collect your passport with the affixed work visa once the application is processed and approved.' },
+  ],
+  specialRequirements: {
+    entry_rules: 'Prior approval from the Civil Registry and Migration Department (CRMD) in Cyprus is mandatory before applying for the visa at the High Commission. All Indian-issued documents (PCC, Medical Certificate, Educational Qualifications) must be apostilled by the Ministry of External Affairs (MEA) of India. A medical certificate including HIV, Hepatitis B & C, and Syphilis tests is required for stays exceeding 90 days.',
+  },
+};
