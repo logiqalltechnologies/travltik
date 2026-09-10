@@ -7248,9 +7248,6 @@ export function VisaCountryResultPortal({
                 <h1 className="text-[28px] sm:text-[30px] lg:text-[32px] font-semibold text-slate-900 tracking-tight leading-tight">
                   {countryName} {purposeLabel} Visa
                 </h1>
-                <span className="text-[13px] sm:text-[14px] font-normal text-slate-500 mt-1 block">
-                  {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
-                </span>
               </div>
 
               {/* 4 Key Visa Metadata Badges Box (No Truncation, Roomy Layout) */}
@@ -7308,6 +7305,10 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
+              {/* Official Source / Authority — shown below 4 boxes */}
+              <span className="text-[13px] sm:text-[14px] font-normal text-slate-500 block">
+                {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
+              </span>
 
               {/* Bottom Action Buttons */}
               <div className="flex items-center gap-3 pt-1">
