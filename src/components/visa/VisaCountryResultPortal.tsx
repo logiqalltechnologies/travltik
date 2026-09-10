@@ -7791,103 +7791,100 @@ export function VisaCountryResultPortal({
                   </div>
                 </div>
 
-                {/* Mobile Compact Document Cards List */}
-                <div className="md:hidden space-y-3 text-left">
-                  {/* Attractive column header bar */}
-                  <div className="flex items-center justify-between px-4 py-2.5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-700 shadow-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-md bg-white/15 flex items-center justify-center">
-                        <FileText className="w-3 h-3 text-white" />
-                      </div>
-                      <span className="text-[12px] font-semibold text-white tracking-wide">Document Name</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[12px] font-semibold text-white tracking-wide">Tick if valid</span>
-                      <div className="w-5 h-5 rounded-md bg-white/15 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
-                    </div>
-                  </div>
-                  {portalDocItems
-                    .filter((item: any) => {
-                      if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
-                      if (portalDocFilter === 'recommended' && item.mandatory) return false;
-                      if (portalDocSearch && !item.name.toLowerCase().includes(portalDocSearch.toLowerCase())) return false;
-                      return true;
-                    })
-                    .map((doc: any) => {
-                      const uploaded = portalUploadedDocs[doc.key];
-                      const isCompleted = uploaded?.status === 'completed';
-                      return (
-                        <div
-                          key={doc.key}
-                          className={`bg-white rounded-2xl border p-4 shadow-2xs space-y-3 text-left transition-all select-none ${
-                            isCompleted ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200/90'
-                          }`}
-                        >
-                          {/* Card Header: Doc Info */}
-                          <div className="flex items-start gap-3">
-                            <div className={`w-9 h-9 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
-                              {doc.icon}
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">
-                                {doc.name}
-                              </strong>
-                              <span className={`inline-block mt-0.5 text-[11px] font-medium uppercase px-2 py-0.5 rounded-md ${
-                                doc.mandatory ? 'text-rose-700 bg-rose-50 border border-rose-200/70' : 'text-slate-600 bg-slate-100'
-                              }`}>
-                                {doc.mandatory ? 'Mandatory' : 'Recommended'}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Numbered Conditions with Serial No. on left, Condition text in middle, Tick box on right */}
-                          {doc.conditions && doc.conditions.length > 0 && (
-                            <ol className="pt-2.5 border-t border-slate-100/90 space-y-2 list-none">
-                              {doc.conditions.map((cond: string, cIdx: number) => {
-                                const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isCompleted;
-                                return (
-                                  <li key={cIdx} className="flex items-start justify-between gap-3 text-[12.5px] sm:text-[13px] text-slate-700 leading-snug">
-                                    <div className="flex items-start gap-2 flex-1 min-w-0">
-                                      <span className="font-bold text-slate-900 shrink-0 select-none mt-0.5 min-w-[16px]">
-                                        {cIdx + 1}.
-                                      </span>
-                                      <span
-                                        onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                        className={`cursor-pointer select-none transition-colors ${
-                                          isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
-                                        }`}
-                                      >
-                                        {cond}
+                {/* Mobile Document Table — same layout as desktop */}
+                <div className="md:hidden bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden text-left">
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse" style={{ minWidth: '520px' }}>
+                      <thead>
+                        <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                          <th className="py-3 px-3 text-left w-[38%]">Document Name</th>
+                          <th className="py-3 px-3 text-left">Conditions and Validity</th>
+                          <th className="py-3 px-3 text-center w-20 whitespace-nowrap">Check if Valid</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {portalDocItems
+                          .filter((item: any) => {
+                            if (portalDocFilter === 'mandatory' && !item.mandatory) return false;
+                            if (portalDocFilter === 'recommended' && item.mandatory) return false;
+                            if (portalDocSearch && !item.name.toLowerCase().includes(portalDocSearch.toLowerCase())) return false;
+                            return true;
+                          })
+                          .map((doc: any) => {
+                            const uploaded = portalUploadedDocs[doc.key];
+                            const isYes = uploaded?.status === 'completed';
+                            return (
+                              <tr key={doc.key} className="hover:bg-slate-50/70 transition-colors">
+                                {/* Document Name */}
+                                <td className="py-3.5 px-3 align-top w-[38%]">
+                                  <div className="flex items-start gap-2.5">
+                                    <div className={`w-8 h-8 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
+                                      {doc.icon}
+                                    </div>
+                                    <div>
+                                      <strong className="text-[13px] font-semibold text-slate-900 block leading-snug">{doc.name}</strong>
+                                      <span className={`inline-block mt-1 text-[11px] font-medium uppercase px-2 py-0.5 rounded-md ${
+                                        doc.mandatory ? 'text-rose-700 bg-rose-50 border border-rose-200/70' : 'text-slate-600 bg-slate-100'
+                                      }`}>
+                                        {doc.mandatory ? 'Mandatory' : 'Recommended'}
                                       </span>
                                     </div>
-
-                                    <button
-                                      type="button"
-                                      role="checkbox"
-                                      aria-checked={isCondChecked}
-                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                      style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px', maxWidth: '20px', maxHeight: '20px' }}
-                                      className={`w-5 h-5 rounded-[6px] border flex items-center justify-center shrink-0 self-start mt-0.5 transition-all duration-150 cursor-pointer select-none active:scale-90 ${
-                                        isCondChecked
-                                          ? 'bg-[#00a878] border-[#00a878] text-white shadow-xs'
-                                          : 'bg-white border-slate-300 hover:border-[#00a878] hover:bg-emerald-50/30 shadow-2xs'
-                                      }`}
-                                      title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
-                                    >
-                                      {isCondChecked ? (
-                                        <Check className="w-3 h-3 stroke-[3] text-white" />
-                                      ) : null}
-                                    </button>
-                                  </li>
-                                );
-                              })}
-                            </ol>
-                          )}
-                        </div>
-                      );
-                    })}
+                                  </div>
+                                </td>
+                                {/* Conditions + Checkboxes */}
+                                <td colSpan={2} className="py-3.5 px-3 align-top">
+                                  <ol className="space-y-2 list-none">
+                                    {doc.conditions.map((cond: string, cIdx: number) => {
+                                      const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isYes;
+                                      return (
+                                        <li
+                                          key={cIdx}
+                                          className="flex items-start justify-between gap-3 p-1 rounded-xl hover:bg-slate-50/80 transition-colors group"
+                                        >
+                                          <div className="flex items-start gap-2 flex-1 min-w-0">
+                                            <span className="font-bold text-slate-900 shrink-0 select-none text-[12px] mt-0.5 min-w-[16px]">
+                                              {cIdx + 1}.
+                                            </span>
+                                            <span
+                                              onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                              className={`cursor-pointer text-[12px] leading-relaxed select-none transition-colors ${
+                                                isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
+                                              }`}
+                                            >
+                                              {cond}
+                                            </span>
+                                          </div>
+                                          <div className="w-16 shrink-0 flex items-center justify-center">
+                                            <button
+                                              type="button"
+                                              role="checkbox"
+                                              aria-checked={isCondChecked}
+                                              onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                                              className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none active:scale-90 ${
+                                                isCondChecked
+                                                  ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                                  : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                              }`}
+                                              title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
+                                            >
+                                              {isCondChecked ? (
+                                                <Check className="w-3 h-3 stroke-[3] text-white" />
+                                              ) : (
+                                                <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                              )}
+                                            </button>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </ol>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 {/* Document Table (Desktop & Tablet) */}
