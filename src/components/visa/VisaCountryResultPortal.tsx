@@ -7118,7 +7118,7 @@ export function VisaCountryResultPortal({
 
             {/* Top Row: Image + Title */}
             <div className="flex items-start gap-3">
-              <div className="w-[68px] h-[68px] rounded-xl overflow-hidden shrink-0 border border-slate-100 shadow-sm relative bg-slate-100">
+              <div className="w-[60px] h-[60px] rounded-xl overflow-hidden shrink-0 border border-slate-100 shadow-sm relative bg-slate-100">
                 <img
                   src={heroImage}
                   alt={heroImageAlt || `${countryName} Visa`}
@@ -7133,11 +7133,14 @@ export function VisaCountryResultPortal({
                   }}
                 />
               </div>
-              <div className="min-w-0 flex-1 pt-0.5">
-                <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-200/60 mb-1.5">
+              <div className="min-w-0 flex-1">
+                <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-200/60 mb-1">
                   {purposeLabel} Visa
                 </span>
-                <h1 className="text-[20px] font-semibold text-slate-900 tracking-tight leading-snug break-words">
+                <h1
+                  className="font-semibold text-slate-900 tracking-tight leading-tight break-words"
+                  style={{ fontSize: `${Math.max(14, 20 - Math.max(0, (`${countryName} ${purposeLabel} Visa`.length - 20)) * 0.3)}px` }}
+                >
                   {countryName} {purposeLabel} Visa
                 </h1>
               </div>
@@ -7813,6 +7816,7 @@ export function VisaCountryResultPortal({
                               {doc.icon}
                             </div>
                             <div className="min-w-0 flex-1">
+                              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide block mb-0.5">Document Name</span>
                               <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words">
                                 {doc.name}
                               </strong>
@@ -7827,6 +7831,11 @@ export function VisaCountryResultPortal({
                           {/* Numbered Conditions with Serial No. on left, Condition text in middle, Tick box on right */}
                           {doc.conditions && doc.conditions.length > 0 && (
                             <ol className="pt-2.5 border-t border-slate-100/90 space-y-2 list-none">
+                              {/* Column headers */}
+                              <li className="flex items-center justify-between gap-3 pb-1 border-b border-slate-100">
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide flex-1">Conditions</span>
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide shrink-0 whitespace-nowrap">Tick if valid</span>
+                              </li>
                               {doc.conditions.map((cond: string, cIdx: number) => {
                                 const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isCompleted;
                                 return (
