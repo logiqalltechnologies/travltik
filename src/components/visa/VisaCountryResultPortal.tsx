@@ -7423,16 +7423,11 @@ export function VisaCountryResultPortal({
                     <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal max-w-4xl">
                       {(() => {
                         const text = (resolvedOverview || '').trim();
-                        if (text.length > 240) {
-                          const sentences = text.match(/[^.!?]+[.!?]+/g);
-                          if (sentences && sentences.length >= 2) {
-                            const firstTwo = (sentences[0] + ' ' + sentences[1]).trim();
-                            if (firstTwo.length >= 70 && firstTwo.length <= 250) {
-                              return firstTwo;
-                            }
-                          }
-                        }
-                        return text;
+                        // Just show the first sentence, max 160 chars
+                        const firstSentenceMatch = text.match(/^[^.!?]+[.!?]+/);
+                        const firstSentence = firstSentenceMatch ? firstSentenceMatch[0].trim() : text;
+                        if (firstSentence.length <= 160) return firstSentence;
+                        return firstSentence.slice(0, 155).trim().replace(/[,\s]+$/, '') + '...';
                       })()}
                     </p>
 
@@ -7558,11 +7553,15 @@ export function VisaCountryResultPortal({
                               .replace(/\s+National Park/gi, ' Park')
                               .replace(/Impenetrable\s+/gi, '')
                               .replace(/\s*&\s*Jinja Rafting/gi, '')
+                              .replace(/\s*\(.*?\)\s*/g, '') // remove parenthetical parts like (Qal'at al-Hosn)
                               .trim();
+                            const displayTitle = cleanTitle.length > 28
+                              ? cleanTitle.slice(0, 25).trim().replace(/[,\s]+$/, '') + '...'
+                              : cleanTitle;
 
                             const rawDesc = h.desc || h.description || '';
-                            const cleanDesc = rawDesc.length > 85 
-                              ? (rawDesc.slice(0, 80).trim().replace(/[,\s]+$/, '') + '...') 
+                            const cleanDesc = rawDesc.length > 55
+                              ? (rawDesc.slice(0, 52).trim().replace(/[,\s]+$/, '') + '...')
                               : rawDesc;
 
                             return (
@@ -7575,7 +7574,7 @@ export function VisaCountryResultPortal({
                                     {renderIcon(h.icon, idx)}
                                   </div>
                                   <strong className={`text-[14px] sm:text-[15px] font-bold ${theme.text} block leading-snug`}>
-                                    {cleanTitle}
+                                    {displayTitle}
                                   </strong>
                                   <span className={`text-[12px] sm:text-[13px] ${theme.sub} font-normal leading-relaxed block mt-1`}>
                                     {cleanDesc}
