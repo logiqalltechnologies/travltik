@@ -7308,10 +7308,6 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
-              {/* Description */}
-              <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
-                {resolvedOverview}
-              </p>
 
               {/* Bottom Action Buttons */}
               <div className="flex items-center gap-3 pt-1">
