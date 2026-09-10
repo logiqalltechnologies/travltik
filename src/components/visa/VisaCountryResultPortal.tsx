@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { OfficialRequirementsCard } from './OfficialRequirementsCard';
-import { ConsularMockPrepCard } from './ConsularMockPrepCard';
+
 import {
   getStudentVisaSteps,
   getStudentDocuments,
@@ -11168,12 +11168,7 @@ export function VisaCountryResultPortal({
           {/* ── VISA RESULT & SPECIFICATION WORKSPACE ── */}
           <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10 sm:space-y-14">
             
-            {/* AI CONSULAR MOCK INTERVIEW PREP KIT (ABOVE DOING IT WITH TRAVLTIK) */}
-            <ConsularMockPrepCard 
-              countryName={countryName}
-              passportCountry={passportCountry}
-              purpose={initialPurpose === 'study' ? 'Higher Studies' : initialPurpose === 'work' ? 'Employment / Work' : 'Tourism / Vacation'}
-            />
+
 
             {/* ================================================== */}
             {/* 4. ATLYS-STYLE COMPARISON TIMELINE (DOING IT WITH ATLYS vs DOING IT YOURSELF) */}
