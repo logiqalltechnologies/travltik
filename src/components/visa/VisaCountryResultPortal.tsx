@@ -7111,12 +7111,14 @@ export function VisaCountryResultPortal({
           </span>
         </div>
 
-        {/* ── MOBILE HERO & READINESS & QUICK TABS (MATCHING EXACT SPECIFICATION media_1788533487648.png) ── */}
-        <div className="md:hidden space-y-3.5">
+        {/* ── MOBILE HERO & READINESS & QUICK TABS ── */}
+        <div className="md:hidden space-y-3">
           {/* Mobile Top Hero Card */}
-          <div className="bg-white rounded-2xl border border-slate-100 p-4 shadow-2xs space-y-3 text-left">
-            <div className="flex items-center gap-3.5">
-              <div className="w-[72px] h-[72px] rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-2xs relative bg-slate-100">
+          <div className="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm space-y-3 text-left">
+
+            {/* Top Row: Image + Title */}
+            <div className="flex items-start gap-3">
+              <div className="w-[68px] h-[68px] rounded-xl overflow-hidden shrink-0 border border-slate-100 shadow-sm relative bg-slate-100">
                 <img
                   src={heroImage}
                   alt={heroImageAlt || `${countryName} Visa`}
@@ -7126,60 +7128,70 @@ export function VisaCountryResultPortal({
                     if (e.currentTarget.src !== fallback) {
                       e.currentTarget.src = fallback;
                     } else {
-                      // Both primary and fallback failed — hide img so gradient bg shows
                       e.currentTarget.style.display = 'none';
                     }
                   }}
                 />
               </div>
-              <div className="min-w-0 flex-1">
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[12px] font-medium border border-emerald-200/60 mb-1">
+              <div className="min-w-0 flex-1 pt-0.5">
+                <span className="inline-block px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-200/60 mb-1.5">
                   {purposeLabel} Visa
                 </span>
-                <h1 className="text-[22px] sm:text-[24px] font-semibold text-slate-900 tracking-tight leading-snug">
+                <h1 className="text-[20px] font-semibold text-slate-900 tracking-tight leading-snug break-words">
                   {countryName} {purposeLabel} Visa
                 </h1>
               </div>
             </div>
 
-            {/* 3 Quick Stats Row — Responsive & Perfectly Arranged for Mobile */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-3 border-t border-slate-100">
+            {/* 4 Stat Boxes — 2×2 grid on mobile, matching desktop style */}
+            <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-slate-100">
               {/* Processing Time */}
-              <div className="flex items-center justify-between sm:flex-col sm:items-start p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70">
-                <span className="text-[12px] font-medium text-slate-500 flex items-center gap-1.5 shrink-0">
-                  <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+              <div className="flex flex-col gap-0.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1 leading-none">
+                  <Clock className="w-3 h-3 text-teal-600 shrink-0" />
                   Processing Time
                 </span>
-                <strong className="text-[13px] sm:text-[14px] font-bold text-slate-900 text-right sm:text-left mt-0 sm:mt-1 leading-snug break-words">
+                <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
                   {getResolvedProcessingTime()}
                 </strong>
               </div>
 
               {/* Validity */}
-              <div className="flex items-center justify-between sm:flex-col sm:items-start p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70">
-                <span className="text-[12px] font-medium text-slate-500 flex items-center gap-1.5 shrink-0">
-                  <Calendar className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <div className="flex flex-col gap-0.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1 leading-none">
+                  <Calendar className="w-3 h-3 text-emerald-600 shrink-0" />
                   Validity
                 </span>
-                <strong className="text-[13px] sm:text-[14px] font-bold text-slate-900 text-right sm:text-left mt-0 sm:mt-1 leading-snug break-words">
+                <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
                   {cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}
                 </strong>
               </div>
 
+              {/* Stay Period */}
+              <div className="flex flex-col gap-0.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1 leading-none">
+                  <Compass className="w-3 h-3 text-sky-600 shrink-0" />
+                  Stay Period
+                </span>
+                <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
+                  {cleanStatValue(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)))}
+                </strong>
+              </div>
+
               {/* Entry Type */}
-              <div className="flex items-center justify-between sm:flex-col sm:items-start p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70">
-                <span className="text-[12px] font-medium text-slate-500 flex items-center gap-1.5 shrink-0">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+              <div className="flex flex-col gap-0.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1 leading-none">
+                  <Plane className="w-3 h-3 text-purple-600 shrink-0" />
                   Entry Type
                 </span>
-                <strong className="text-[13px] sm:text-[14px] font-bold text-slate-900 text-right sm:text-left mt-0 sm:mt-1 leading-snug break-words">
+                <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
                   {cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}
                 </strong>
               </div>
             </div>
 
-            {/* Authority subtitle — below the 3 stat boxes */}
-            <span className="text-[12px] font-normal text-slate-500 block mt-1">
+            {/* Authority subtitle — below the 4 stat boxes */}
+            <span className="text-[11px] font-normal text-slate-400 block leading-snug">
               {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
             </span>
           </div>
