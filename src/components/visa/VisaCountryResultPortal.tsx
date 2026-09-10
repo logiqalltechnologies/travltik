@@ -7139,9 +7139,6 @@ export function VisaCountryResultPortal({
                 <h1 className="text-[22px] sm:text-[24px] font-semibold text-slate-900 tracking-tight leading-snug">
                   {countryName} {purposeLabel} Visa
                 </h1>
-                <span className="text-[13px] font-normal text-slate-500 block mt-0.5">
-                  {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
-                </span>
               </div>
             </div>
 
@@ -7180,6 +7177,11 @@ export function VisaCountryResultPortal({
                 </strong>
               </div>
             </div>
+
+            {/* Authority subtitle — below the 3 stat boxes */}
+            <span className="text-[12px] font-normal text-slate-500 block mt-1">
+              {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
+            </span>
           </div>
 
           {/* Mobile 5-Icon Navigation Tabs (Matching media_1788533487648.png) */}
