@@ -4,13 +4,13 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { getOrignMetrics } from '../../../lib/visa/orizn-client';
+import { getOrignMetrics, getOriznApiKey, isOriznEnabled } from '../../../lib/visa/orizn-client';
 
 export const GET: APIRoute = async () => {
   try {
     const metrics = getOrignMetrics();
-    const isEnabled = process.env.ORIZN_ENABLED !== 'false';
-    const hasKey = Boolean(process.env.ORIZN_API_KEY);
+    const isEnabled = isOriznEnabled();
+    const hasKey = Boolean(getOriznApiKey());
 
     const status = isEnabled && hasKey ? 'operational' : 'disabled';
 

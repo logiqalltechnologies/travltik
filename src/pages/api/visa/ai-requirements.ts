@@ -9,6 +9,7 @@ import type { V3EngineResult } from '../../../lib/visa-v3/types';
 import fs from 'fs';
 import path from 'path';
 import { resolveVisaData } from '../../../lib/visa/visa-source-resolver';
+import { isOriznEnabled, getOriznApiKey } from '../../../lib/visa/orizn-client';
 import {
   normalizeCountry,
   getStudentOverview,
@@ -6313,6 +6314,34 @@ export const POST: APIRoute = async ({ request }) => {
 
     const fromCountry = cleanCountryName(rawFrom);
     const toCountry = cleanCountryName(rawTo);
+
+    // ── Pure Orizn Data Flow (Primary Data Source) ──────────────────────────
+    if (isOriznEnabled() && getOriznApiKey()) {
+      console.log(`[VisaEngine:Orizn] Fetching via Orizn: ${fromCountry} -> ${toCountry} (${purpose})`);
+      const orignData = await resolveVisaData(fromCountry, toCountry, purpose);
+
+      if (!orignData) {
+        console.warn(`[VisaEngine:Orizn] Orizn returned null for ${fromCountry}-${toCountry}`);
+        return new Response(JSON.stringify({
+          success: false,
+          error: 'Visa data temporarily unavailable. Please try again shortly.',
+          source: 'orizn',
+        }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      return new Response(JSON.stringify({
+        success: true,
+        data: sanitizeCurrencyCodes(orignData as any),
+        source: 'orizn',
+        verification_status: 'verified',
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     const purposeLower = (purpose || '').toLowerCase();
     const isPR = purposeLower.includes('pr') ||

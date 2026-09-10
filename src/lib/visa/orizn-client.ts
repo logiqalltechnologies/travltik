@@ -94,13 +94,54 @@ async function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+import fs from 'fs';
+import path from 'path';
+
+export function getOriznApiKey(): string {
+  let key = (
+    (import.meta?.env?.ORIZN_API_KEY as string | undefined) ||
+    process.env.ORIZN_API_KEY ||
+    ''
+  )?.trim();
+  if (key) return key;
+
+  try {
+    const envFiles = ['.env', '.env.local'];
+    for (const f of envFiles) {
+      const envPath = path.resolve(process.cwd(), f);
+      if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf8');
+        const match = content.match(/^ORIZN_API_KEY\s*=\s*(.*)$/m);
+        if (match) {
+          key = match[1].trim().replace(/^["']|["']$/g, '');
+          if (key) return key;
+        }
+      }
+    }
+  } catch (err) {}
+  return '';
+}
+
+export function isOriznEnabled(): boolean {
+  if (process.env.ORIZN_ENABLED === 'false') return false;
+  try {
+    const envPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf8');
+      const match = content.match(/^ORIZN_ENABLED\s*=\s*(.*)$/m);
+      if (match && match[1].trim().toLowerCase() === 'false') return false;
+    }
+  } catch {}
+  return true;
+}
+
 export async function fetchVisaFromOrizn(
   fromCountry: string,
   toCountry: string,
   lang = 'en'
 ): Promise<OrignRawResponse | null> {
-  const apiKey = process.env.ORIZN_API_KEY;
-  const enabled = process.env.ORIZN_ENABLED !== 'false';
+  const apiKey = getOriznApiKey();
+  const enabled = isOriznEnabled();
 
   if (!apiKey || !enabled) {
     console.warn('[ORIZN] API key not set or ORIZN_ENABLED=false — skipping');
@@ -150,6 +191,9 @@ export async function fetchVisaFromOrizn(
       const json = await res.json();
       console.log(`[ORIZN] Success ${fromCountry}-${toCountry} attempt=${attempt}`);
       _lastError = null;
+      if (json?.meta?.quota?.remaining !== undefined) {
+        _quotaRemaining = json.meta.quota.remaining;
+      }
       return json as OrignRawResponse;
 
     } catch (err: any) {

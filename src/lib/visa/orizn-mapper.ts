@@ -36,8 +36,18 @@ function mapDocuments(docs: string[] | undefined): DocumentRequiredItem[] {
   }));
 }
 
-function mapHowToApply(process: string[] | undefined, requirement: string): string[] {
-  if (Array.isArray(process) && process.length) return process;
+function mapHowToApply(process: any[] | undefined, requirement: string): string[] {
+  if (Array.isArray(process) && process.length) {
+    return process.map((item, idx) => {
+      if (typeof item === 'string') return item;
+      if (typeof item === 'object' && item !== null) {
+        const title = item.titre || item.title || item.step || `Step ${idx + 1}`;
+        const desc = item.description || item.details || '';
+        return desc ? `${title}: ${desc}` : String(title);
+      }
+      return String(item);
+    });
+  }
   // Sensible defaults based on requirement type
   switch (requirement?.toLowerCase()) {
     case 'visa_free':
@@ -63,25 +73,33 @@ function mapCost(cost: string | undefined): StructuredVisaRequirements['costs'] 
   };
 }
 
-function mapProcessingTime(days: string | number | undefined): string {
-  if (!days) return 'Refer to official embassy website';
-  const num = typeof days === 'number' ? days : parseInt(String(days), 10);
-  if (!isNaN(num)) return `${num} working day${num !== 1 ? 's' : ''}`;
-  return String(days);
+function mapProcessingTime(data: any): string {
+  if (typeof data?.processing_time === 'string' && data.processing_time.trim()) {
+    return data.processing_time.trim();
+  }
+  const days = data?.processing_days;
+  if (typeof days === 'number') return `${days} working day${days !== 1 ? 's' : ''}`;
+  if (typeof days === 'string' && days.trim() && !days.toLowerCase().includes('upgrade')) {
+    return days.trim();
+  }
+  return 'Refer to official embassy website';
 }
 
 export function mapOrignToStructured(
-  raw: OrignRawResponse,
+  raw: any,
   fromCountry: string,
   toCountry: string,
   purpose: string
 ): StructuredVisaRequirements {
   try {
-    const d = raw.data;
+    const d = raw.data || {};
     const req = d.requirement || 'visa_required';
     const visaType = mapRequirementType(req);
     const isVisaFree = req === 'visa_free';
-    const stayDays = d.visa_free_days ? `${d.visa_free_days} days` : undefined;
+    const stayDuration = d.max_stay || (d.visa_free_days ? `${d.visa_free_days} days` : undefined);
+    const validity = d.validity || (stayDuration ? `Up to ${stayDuration}` : undefined);
+    const processingTime = mapProcessingTime(d);
+    const extensionInfo = d.extension?.details || 'Refer to immigration authority';
 
     const financialProofs: FinancialProofItem[] = isVisaFree ? [] : [
       {
@@ -93,8 +111,14 @@ export function mapOrignToStructured(
     ];
 
     const otherRequirements: OtherRequirementItem[] = [];
+    if (d.passport_validity_months) {
+      otherRequirements.push({
+        category: 'Passport Validity',
+        details: `Passport must be valid for at least ${d.passport_validity_months} months.`,
+      });
+    }
     if (Array.isArray(d.tips) && d.tips.length) {
-      d.tips.forEach(tip => {
+      d.tips.filter((t: string) => !t.toLowerCase().includes('upgrade to pro')).forEach((tip: string) => {
         otherRequirements.push({ category: 'Travel Tip', details: tip });
       });
     }
@@ -103,6 +127,9 @@ export function mapOrignToStructured(
     }
     if (d.country_info?.language) {
       otherRequirements.push({ category: 'Official Language', details: d.country_info.language });
+    }
+    if (d.safety?.advisory) {
+      otherRequirements.push({ category: 'Travel Advisory', details: `${d.safety.advisory} (${d.safety.details || ''})` });
     }
 
     const result: StructuredVisaRequirements = {
@@ -113,11 +140,17 @@ export function mapOrignToStructured(
       source_url: `https://visa.orizn.app`,
       official_source_name: 'Orizn Visa Intelligence',
       overview: d.description || `${visaType} requirements for ${fromCountry} passport holders traveling to ${toCountry}.`,
-      processing_time: mapProcessingTime(d.processing_days),
-      stay_duration: stayDays,
+      processing_time: processingTime,
+      processing_time_details: processingTime,
+      validity: validity,
+      validity_details: validity,
+      stay_duration: stayDuration,
+      stay_duration_details: stayDuration,
+      entry_type: 'Single / Multiple — check official source',
+      entry_type_details: 'Single / Multiple — check official source',
       validity_and_stay: {
-        visa_validity: stayDays ? `Up to ${stayDays}` : undefined,
-        max_stay_per_entry: stayDays,
+        visa_validity: validity,
+        max_stay_per_entry: stayDuration,
         entry_type: 'Single / Multiple — check official source',
       },
       documents_required: mapDocuments(d.documents_required),
@@ -127,8 +160,8 @@ export function mapOrignToStructured(
       costs: mapCost(d.cost),
       processing_and_timing: {
         apply_window: isVisaFree ? 'Not applicable' : 'At least 4-6 weeks before travel',
-        decision_time: mapProcessingTime(d.processing_days),
-        max_extension: 'Refer to immigration authority',
+        decision_time: processingTime,
+        max_extension: extensionInfo,
       },
     };
 
