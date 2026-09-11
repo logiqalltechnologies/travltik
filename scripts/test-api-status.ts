@@ -18,7 +18,7 @@ async function test() {
     const ai = new GoogleGenAI({ apiKey: keys[i] });
     try {
       const res = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-1.5-flash',
         contents: 'hi'
       });
       console.log(`Key #${i + 1}: ACTIVE & WORKING (${res.text?.trim()})`);
