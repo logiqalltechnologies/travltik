@@ -311,8 +311,8 @@ CRITICAL RULES:
     });
 
     if (res.status === 429) {
-      process.stderr.write(chalk.yellow(`  ⏳ ${provider.name} rate limit (429). Waiting 3s...\n`));
-      await sleep(3000);
+      process.stderr.write(chalk.yellow(`  ⏳ ${provider.name} rate limit (429). Waiting 10s...\n`));
+      await sleep(10000);
       continue;
     }
 
@@ -524,7 +524,34 @@ Return ONLY the corrected TypeScript file starting with "export default {", no m
         };
       } catch (e: any) {
         lastErr = e.message || String(e);
+        if (lastErr.includes('429') || lastErr.includes('RESOURCE_EXHAUSTED')) {
+          break;
+        }
         continue;
+      }
+    }
+  }
+
+  // Fallback to Free Providers auditor if Gemini is exhausted
+  if (FREE_PROVIDERS.length > 0) {
+    for (const provider of FREE_PROVIDERS) {
+      try {
+        const txt = await callFreeProvider(provider, prompt);
+        const code = cleanTypeScriptOutput(txt);
+        const validation = isValidTypeScript(code);
+        if (validation.valid) {
+          const verPath = path.join(VERIFIED_DIR, country, `${purpose}.ts`);
+          const dir = path.dirname(verPath);
+          if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+          fs.writeFileSync(verPath, code);
+          return {
+            country, purpose, status: 'verified',
+            sourcesCount: 0,
+            sources: [`auditor:${provider.name}`],
+          };
+        }
+      } catch (fErr: any) {
+        lastErr = fErr.message || String(fErr);
       }
     }
   }
