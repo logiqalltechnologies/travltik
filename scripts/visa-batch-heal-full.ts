@@ -179,14 +179,32 @@ interface FreeProvider {
 
 function getFreeProviders(): FreeProvider[] {
   const p: FreeProvider[] = [];
-  if (process.env.GROQ_API_KEY) p.push({
-    name: 'groq',
-    baseUrl: 'https://api.groq.com/openai/v1',
-    model: 'openai/gpt-oss-20b',
-    apiKey: process.env.GROQ_API_KEY,
-    dailyLimit: 1000,
-    delayMs: 2000,
-  });
+  if (process.env.GROQ_API_KEY) {
+    p.push({
+      name: 'groq-120b',
+      baseUrl: 'https://api.groq.com/openai/v1',
+      model: 'openai/gpt-oss-120b',
+      apiKey: process.env.GROQ_API_KEY,
+      dailyLimit: 1000,
+      delayMs: 1500,
+    });
+    p.push({
+      name: 'groq-20b',
+      baseUrl: 'https://api.groq.com/openai/v1',
+      model: 'openai/gpt-oss-20b',
+      apiKey: process.env.GROQ_API_KEY,
+      dailyLimit: 1000,
+      delayMs: 1500,
+    });
+    p.push({
+      name: 'groq-qwen',
+      baseUrl: 'https://api.groq.com/openai/v1',
+      model: 'qwen/qwen3.8-27b',
+      apiKey: process.env.GROQ_API_KEY,
+      dailyLimit: 1000,
+      delayMs: 1500,
+    });
+  }
   return p;
 }
 
@@ -266,38 +284,47 @@ function getUniversalRules(): string {
 // PHASE 1: BULK LAYOUT via FREE PROVIDERS
 // ================================================================
 async function callFreeProvider(provider: FreeProvider, prompt: string): Promise<string> {
-  const res = await fetch(`${provider.baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${provider.apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: provider.model,
-      messages: [
-        {
-          role: 'system',
-          content: `You are a TypeScript code generator for official visa data.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const res = await fetch(`${provider.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${provider.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: provider.model,
+        messages: [
+          {
+            role: 'system',
+            content: `You are a TypeScript code generator for official visa data.
 CRITICAL RULES:
 - Return ONLY raw TypeScript code starting with "export default {"
 - Do NOT include any explanation, markdown fences (\`\`\`), or conversational text
 - Start your response directly with: export default {
 - End your response with: };`,
-        },
-        { role: 'user', content: prompt },
-      ],
-      temperature: 0.1,
-      max_tokens: 4000,
-    }),
-  });
+          },
+          { role: 'user', content: prompt },
+        ],
+        temperature: 0.1,
+        max_tokens: 4000,
+      }),
+    });
 
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`${provider.name} HTTP ${res.status}: ${errText.slice(0, 150)}`);
+    if (res.status === 429) {
+      process.stderr.write(chalk.yellow(`  ⏳ ${provider.name} rate limit (429). Waiting 3s...\n`));
+      await sleep(3000);
+      continue;
+    }
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`${provider.name} HTTP ${res.status}: ${errText.slice(0, 150)}`);
+    }
+
+    const data = await res.json() as any;
+    return data.choices?.[0]?.message?.content || '';
   }
-
-  const data = await res.json() as any;
-  return data.choices?.[0]?.message?.content || '';
+  throw new Error(`${provider.name}: max retries exceeded after 429`);
 }
 
 async function phase1HealRoute(country: string, purpose: string, workerIdx: number): Promise<any> {
@@ -367,7 +394,7 @@ export default {
   specialRequirements: { entry_rules: 'Specific mandates or N/A' }
 };`;
 
-  const maxAttempts = 1;
+  const maxAttempts = FREE_PROVIDERS.length;
   let lastErr = '';
 
   for (let a = 0; a < maxAttempts; a++) {
@@ -390,7 +417,7 @@ export default {
     } catch (e: any) {
       lastErr = e.message || String(e);
       process.stderr.write(chalk.red(`  ❌ ${provider?.name || 'unknown'} [${country}-${purpose}]: ${lastErr.slice(0, 80)}\n`));
-      await sleep(1500);
+      await sleep(1000);
     }
   }
 
@@ -419,6 +446,9 @@ export default {
           }
         } catch (gErr: any) {
           lastErr = `Gemini fallback (${model}): ${gErr.message || gErr}`;
+          if (lastErr.includes('429') || lastErr.includes('RESOURCE_EXHAUSTED')) {
+            break;
+          }
           continue;
         }
       }
