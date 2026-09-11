@@ -9,7 +9,7 @@ export default {
   ],
   processingTime: { 
     eVisa: 'N/A', 
-    standardSticker: '30 calendar days', 
+    standardSticker: '30 working days', 
     expressSticker: 'N/A' 
   },
   fees: { 

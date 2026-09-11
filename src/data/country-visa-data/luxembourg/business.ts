@@ -9,8 +9,8 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A (Schengen Short-Stay Visa requires physical biometrics)',
-    standardSticker: '15 calendar days',
-    expressSticker: 'Up to 45 calendar days if detailed examination is required'
+    standardSticker: '15 working days',
+    expressSticker: 'Up to 45 working days if detailed examination is required'
   },
   fees: {
     eVisaTotal: 'N/A',

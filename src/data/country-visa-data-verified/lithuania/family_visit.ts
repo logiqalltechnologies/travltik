@@ -6,7 +6,7 @@ export default {
   channels: ['MIGRIS Information System', 'VFS Global Center', 'Embassy of the Republic of Lithuania'],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days',
+    standardSticker: '15 working days',
     expressSticker: 'N/A'
   },
   fees: {

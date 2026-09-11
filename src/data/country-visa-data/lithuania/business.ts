@@ -10,7 +10,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A (eVisa not available for Schengen Short-Stay Visa)',
-    standardSticker: '15 calendar days (may extend up to 45 days if additional scrutiny is required)',
+    standardSticker: '15 working days (may extend up to 45 days if additional scrutiny is required)',
     expressSticker: 'N/A'
   },
   fees: {

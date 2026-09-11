@@ -6,7 +6,7 @@ export default {
   channels: ['VFS Global Visa Application Centre', 'Embassy / Consulate General of Italy'],
   processingTime: {
     eVisa: 'N/A (eVisa not available for Schengen Area)',
-    standardSticker: '15 calendar days (may extend up to 45 days under the Schengen Visa Code if further assessment is required)',
+    standardSticker: '15 working days (may extend up to 45 days under the Schengen Visa Code if further assessment is required)',
     expressSticker: 'N/A (No express or expedited service available)'
   },
   fees: {

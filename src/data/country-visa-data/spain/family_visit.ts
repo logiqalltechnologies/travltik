@@ -8,7 +8,7 @@ export default {
     'https://india.blsspainvisas.com/',
     'https://www.exteriores.gob.es/Embajadas/NEWDELHI/en/Pages/Visas.aspx'
   ],
-  processingTime: { eVisa: 'N/A', standardSticker: '15 calendar days', expressSticker: 'N/A' },
+  processingTime: { eVisa: 'N/A', standardSticker: '15 working days', expressSticker: 'N/A' },
   fees: { eVisaTotal: 'N/A', stickerConsularStandard: '90 EUR', vfsServiceFee: '15.45 EUR' },
   eVisa: { available: false, portal: '', territorialScope: '', validity: '', maxStay: '', invitationRequired: false, processing: '' },
   stayDuration: { eVisa: 'N/A', stickerSingleDouble: '90 days', stickerMultiple: '90 days' },

@@ -26,11 +26,17 @@ for (const dir of DIRS) {
       const filePath = path.join(countryDir, file);
       const original = fs.readFileSync(filePath, 'utf-8');
 
-      // Only replace "calendar days" in lines that contain `processing:`
-      const fixed = original.replace(
-        /(processing\s*:\s*['"`][^'"`]*?)calendar days([^'"`]*?['"`])/g,
-        '$1working days$2'
-      );
+      // Replace "calendar days" in processing, standardSticker, expressSticker, processingTime fields
+      let fixed = original;
+      const patterns = [
+        /(processing\s*:\s*['"`][^'"`]*?)calendar days([^'"`]*?['"`])/gi,
+        /(standardSticker\s*:\s*['"`][^'"`]*?)calendar days([^'"`]*?['"`])/gi,
+        /(expressSticker\s*:\s*['"`][^'"`]*?)calendar days([^'"`]*?['"`])/gi,
+        /(processingTime\s*:\s*['"`][^'"`]*?)calendar days([^'"`]*?['"`])/gi,
+      ];
+      for (const pat of patterns) {
+        fixed = fixed.replace(pat, '$1working days$2');
+      }
 
       if (fixed !== original) {
         fs.writeFileSync(filePath, fixed, 'utf-8');

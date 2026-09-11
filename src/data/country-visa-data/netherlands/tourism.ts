@@ -4,7 +4,7 @@ export default {
   visaCategory: 'Tourist Visa',
   authority: 'Netherlands Ministry of Foreign Affairs',
   channels: ['https://consular.mfa.nl/', 'https://www.vfsglobal.com/Netherlands/India/', 'https://www.netherlandsworldwide.nl/'],
-  processingTime: { eVisa: 'N/A', standardSticker: '15 calendar days', expressSticker: 'N/A' },
+  processingTime: { eVisa: 'N/A', standardSticker: '15 working days', expressSticker: 'N/A' },
   fees: { eVisaTotal: 'N/A', stickerConsularStandard: '90 EUR', vfsServiceFee: '30 EUR' },
   eVisa: { available: false, portal: 'N/A', territorialScope: 'N/A', validity: 'N/A', maxStay: 'N/A', invitationRequired: false, processing: 'N/A' },
   stayDuration: { eVisa: 'N/A', stickerSingleDouble: '90 days within any 180-day period', stickerMultiple: '90 days within any 180-day period' },

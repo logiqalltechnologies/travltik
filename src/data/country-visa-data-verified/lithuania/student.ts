@@ -4,7 +4,7 @@ export default {
   visaCategory: 'Student Visa',
   authority: 'Lithuanian Embassy in New Delhi / Migration Department (MIGRIS)',
   channels: ['https://migris.lrv.lt', 'VFS Global Service Center'],
-  processingTime: { eVisa: 'N/A', standardSticker: '15 calendar days', expressSticker: 'N/A' },
+  processingTime: { eVisa: 'N/A', standardSticker: '15 working days', expressSticker: 'N/A' },
   fees: { eVisaTotal: 'N/A', stickerConsularStandard: '140 EUR', vfsServiceFee: '15.90 EUR' },
   eVisa: { available: false, portal: 'https://migris.lrv.lt', territorialScope: 'Nationwide', validity: 'N/A', maxStay: 'N/A', invitationRequired: false, processing: 'N/A' },
   stayDuration: { eVisa: 'N/A', stickerSingleDouble: 'Up to 1 year', stickerMultiple: 'Up to 1 year' },
