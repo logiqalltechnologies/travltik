@@ -396,28 +396,31 @@ export default {
 
   // Fallback to Gemini if free providers fail
   if (GEMINI_KEYS.length > 0) {
-    for (let k = 0; k < GEMINI_KEYS.length; k++) {
-      try {
-        const apiKey = GEMINI_KEYS[(workerIdx + k) % GEMINI_KEYS.length];
-        const ai = getAI(apiKey);
-        const res = await ai.models.generateContent({
-          model: 'gemini-3.6-flash',
-          contents: prompt,
-          config: { temperature: 0.1 },
-        });
-        const txt = res.text || '';
-        const code = cleanTypeScriptOutput(txt);
-        const validation = isValidTypeScript(code);
-        if (validation.valid) {
-          const dir = path.dirname(testPath);
-          if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-          if (fs.existsSync(testPath)) fs.copyFileSync(testPath, testPath + '.backup');
-          fs.writeFileSync(testPath, code);
-          return { country, purpose, status: 'healed', provider: 'gemini-fallback' };
+    const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
+    for (const model of GEMINI_MODELS) {
+      for (let k = 0; k < GEMINI_KEYS.length; k++) {
+        try {
+          const apiKey = GEMINI_KEYS[(workerIdx + k) % GEMINI_KEYS.length];
+          const ai = getAI(apiKey);
+          const res = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: { temperature: 0.1 },
+          });
+          const txt = res.text || '';
+          const code = cleanTypeScriptOutput(txt);
+          const validation = isValidTypeScript(code);
+          if (validation.valid) {
+            const dir = path.dirname(testPath);
+            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+            if (fs.existsSync(testPath)) fs.copyFileSync(testPath, testPath + '.backup');
+            fs.writeFileSync(testPath, code);
+            return { country, purpose, status: 'healed', provider: `gemini-fallback (${model})` };
+          }
+        } catch (gErr: any) {
+          lastErr = `Gemini fallback (${model}): ${gErr.message || gErr}`;
+          continue;
         }
-      } catch (gErr: any) {
-        lastErr = `Gemini fallback: ${gErr.message || gErr}`;
-        continue;
       }
     }
   }
@@ -455,41 +458,44 @@ If a value is correct → keep it unchanged.
 Return ONLY the corrected TypeScript file starting with "export default {", no markdown fences.`;
 
   let lastErr = '';
-  for (let k = 0; k < GEMINI_KEYS.length; k++) {
-    const apiKey = GEMINI_KEYS[(workerIdx + k) % GEMINI_KEYS.length];
-    const ai = getAI(apiKey);
-    try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
-        contents: prompt,
-        config: {
-          temperature: 0,
-        },
-      });
+  const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-flash-latest'];
+  for (const model of GEMINI_MODELS) {
+    for (let k = 0; k < GEMINI_KEYS.length; k++) {
+      const apiKey = GEMINI_KEYS[(workerIdx + k) % GEMINI_KEYS.length];
+      const ai = getAI(apiKey);
+      try {
+        const response = await ai.models.generateContent({
+          model,
+          contents: prompt,
+          config: {
+            temperature: 0,
+          },
+        });
 
-      const txt = response.text || '';
-      const code = cleanTypeScriptOutput(txt);
-      const validation = isValidTypeScript(code);
+        const txt = response.text || '';
+        const code = cleanTypeScriptOutput(txt);
+        const validation = isValidTypeScript(code);
 
-      if (!validation.valid) {
-        throw new Error(`Validation failed: ${validation.reason}`);
+        if (!validation.valid) {
+          throw new Error(`Validation failed: ${validation.reason}`);
+        }
+
+        const sources = (response.candidates?.[0] as any)?.groundingMetadata?.groundingChunks || [];
+
+        const verPath = path.join(VERIFIED_DIR, country, `${purpose}.ts`);
+        const dir = path.dirname(verPath);
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(verPath, code);
+
+        return {
+          country, purpose, status: 'verified',
+          sourcesCount: sources.length,
+          sources: sources.slice(0, 3).map((s: any) => s.web?.uri).filter(Boolean),
+        };
+      } catch (e: any) {
+        lastErr = e.message || String(e);
+        continue;
       }
-
-      const sources = (response.candidates?.[0] as any)?.groundingMetadata?.groundingChunks || [];
-
-      const verPath = path.join(VERIFIED_DIR, country, `${purpose}.ts`);
-      const dir = path.dirname(verPath);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(verPath, code);
-
-      return {
-        country, purpose, status: 'verified',
-        sourcesCount: sources.length,
-        sources: sources.slice(0, 3).map((s: any) => s.web?.uri).filter(Boolean),
-      };
-    } catch (e: any) {
-      lastErr = e.message || String(e);
-      continue;
     }
   }
 
@@ -669,8 +675,8 @@ async function runPhase2() {
           completed.add(`${r.value.country}-${r.value.purpose}`);
           console.log(chalk.green(`  ✅ Verified: ${r.value.country}-${r.value.purpose}`));
         } else if (r.value.status === 'quota_exceeded') {
-          quotaHit = true;
-          console.log(chalk.yellow(`\n⚠️ Gemini quota hit. Checkpoint saved. Resume with: npm run visa:phase2`));
+          console.log(chalk.yellow(`\n⚠️ Gemini rate limit hit for ${r.value.country}-${r.value.purpose}. Sleeping 12s for reset...`));
+          await sleep(12000);
         } else {
           console.log(chalk.red(`\n⚠️ ${r.value.country}-${r.value.purpose}: ${r.value.error}\n`));
         }
@@ -680,7 +686,7 @@ async function runPhase2() {
     done += chunk.length;
     bar.update(done);
     saveCheckpoint(CHECKPOINT_P2, completed);
-    if (i + PARALLEL_WORKERS < queue.length && !quotaHit) await sleep(4000);
+    if (i + PARALLEL_WORKERS < queue.length) await sleep(2000);
   }
 
   bar.stop();
