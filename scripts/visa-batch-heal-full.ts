@@ -45,6 +45,18 @@ const PRIORITY_GROUPS: Record<string, string[]> = {
   P5_AFRICA:   ['south-africa', 'kenya', 'egypt', 'morocco', 'mauritius'],
   P6_OCEANIA:  ['australia', 'new-zealand', 'fiji'],
   P7_BASE:     ['albania','andorra','austria','belarus','belgium','bosnia-herzegovina','bulgaria','croatia','cyprus','czech-republic','denmark','estonia','finland','germany','greece','hungary','iceland','ireland','italy','kosovo','monaco','netherlands'],
+  P8:          ['turkey', 'georgia', 'azerbaijan', 'armenia', 'uzbekistan', 'kazakhstan', 'sri-lanka', 'maldives'],
+  P8_TOURISM:  ['turkey', 'georgia', 'azerbaijan', 'armenia', 'uzbekistan', 'kazakhstan', 'sri-lanka', 'maldives'],
+  P11:         ['iran', 'iraq', 'jordan', 'israel', 'lebanon', 'pakistan', 'bangladesh', 'afghanistan', 'myanmar', 'laos', 'cambodia', 'brunei', 'mongolia', 'timor-leste'],
+  P11_ASIA:    ['iran', 'iraq', 'jordan', 'israel', 'lebanon', 'pakistan', 'bangladesh', 'afghanistan', 'myanmar', 'laos', 'cambodia', 'brunei', 'mongolia', 'timor-leste'],
+  P12:         ['nigeria', 'ghana', 'tanzania', 'uganda', 'rwanda', 'ethiopia', 'senegal', 'ivory-coast', 'cameroon', 'zambia', 'zimbabwe', 'botswana', 'namibia'],
+  P12_AFRICA:  ['nigeria', 'ghana', 'tanzania', 'uganda', 'rwanda', 'ethiopia', 'senegal', 'ivory-coast', 'cameroon', 'zambia', 'zimbabwe', 'botswana', 'namibia'],
+  P13:         ['argentina', 'chile', 'colombia', 'peru', 'ecuador', 'bolivia', 'uruguay', 'paraguay', 'venezuela', 'costa-rica', 'panama', 'cuba', 'dominican-republic', 'jamaica', 'bahamas', 'trinidad-tobago', 'guyana', 'suriname'],
+  P13_AMERICAS:['argentina', 'chile', 'colombia', 'peru', 'ecuador', 'bolivia', 'uruguay', 'paraguay', 'venezuela', 'costa-rica', 'panama', 'cuba', 'dominican-republic', 'jamaica', 'bahamas', 'trinidad-tobago', 'guyana', 'suriname'],
+  P14:         ['russia', 'ukraine', 'belarus', 'serbia', 'bosnia', 'albania', 'north-macedonia', 'montenegro', 'kosovo'],
+  P14_EUROPE:  ['russia', 'ukraine', 'belarus', 'serbia', 'bosnia', 'albania', 'north-macedonia', 'montenegro', 'kosovo'],
+  P15:         ['papua-new-guinea', 'samoa', 'tonga', 'vanuatu', 'solomon-islands', 'kiribati', 'marshall-islands', 'micronesia', 'palau', 'nauru', 'tuvalu'],
+  P15_OCEANIA: ['papua-new-guinea', 'samoa', 'tonga', 'vanuatu', 'solomon-islands', 'kiribati', 'marshall-islands', 'micronesia', 'palau', 'nauru', 'tuvalu'],
 };
 
 // ================================================================
