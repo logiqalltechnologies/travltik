@@ -42,6 +42,16 @@ async function runBatch(batch: string) {
     } catch (tErr: any) {
       log(`⚠️ Type-check reported errors (continuing pipeline)`);
     }
+
+    log(`📤 Committing and pushing ${batch} to origin/main...`);
+    try {
+      execSync('git add src/data/country-visa-data package.json scripts healing-reports', { stdio: 'inherit', cwd: process.cwd() });
+      execSync(`git commit -m "feat(visa-data): heal, verify & apply ${batch} batch"`, { stdio: 'inherit', cwd: process.cwd() });
+      execSync('git push origin main', { stdio: 'inherit', cwd: process.cwd() });
+      log(`🚀 ${batch} successfully pushed to origin/main.`);
+    } catch (gErr: any) {
+      log(`⚠️ Git commit/push note: ${gErr.message}`);
+    }
   } catch (err: any) {
     log(`❌ Batch ${batch} FAILED: ${err.message}`);
   }
