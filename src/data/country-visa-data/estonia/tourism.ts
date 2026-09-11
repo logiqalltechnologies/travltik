@@ -6,7 +6,7 @@ export default {
   channels: ['VFS Global Visa Application Centre', 'Embassy of Estonia, New Delhi'],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days',
+    standardSticker: '15 working days',
     expressSticker: 'N/A'
   },
   fees: {

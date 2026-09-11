@@ -7792,14 +7792,18 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* Mobile Document Table — same layout as desktop */}
-                <div className="md:hidden bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden text-left">
+                <div className="md:hidden bg-white rounded-2xl border border-black shadow-sm overflow-hidden text-left">
                   <div className="overflow-x-auto">
-                    <table className="w-full border-collapse" style={{ minWidth: '520px' }}>
+                    <table className="w-full border-collapse" style={{ minWidth: '480px' }}>
                       <thead>
-                        <tr className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                          <th className="py-3 px-3 text-left w-[38%]">Document Name</th>
-                          <th className="py-3 px-3 text-left">Conditions and Validity</th>
-                          <th className="py-3 px-3 text-center w-20 whitespace-nowrap">Check if Valid</th>
+                        <tr className="border-b border-black bg-slate-50/70 text-[11px] font-semibold text-slate-500 tracking-wider">
+                          <th className="py-3 px-3 text-left w-[36%] uppercase">Document Name</th>
+                          <th className="py-3 px-3 text-left">
+                            <span className="uppercase">Conditions and Validity</span>
+                            <span className="ml-1 font-normal normal-case text-slate-400 text-[10px] tracking-normal">
+                              (Tick if applicable)
+                            </span>
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -7816,7 +7820,7 @@ export function VisaCountryResultPortal({
                             return (
                               <tr key={doc.key} className="hover:bg-slate-50/70 transition-colors">
                                 {/* Document Name */}
-                                <td className="py-3.5 px-3 align-top w-[38%]">
+                                <td className="py-3.5 px-3 align-top w-[36%]">
                                   <div className="flex items-start gap-2.5">
                                     <div className={`w-8 h-8 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
                                       {doc.icon}
@@ -7832,48 +7836,48 @@ export function VisaCountryResultPortal({
                                   </div>
                                 </td>
                                 {/* Conditions + Checkboxes */}
-                                <td colSpan={2} className="py-3.5 px-3 align-top">
+                                <td className="py-3.5 px-3 align-top">
                                   <ol className="space-y-2 list-none">
                                     {doc.conditions.map((cond: string, cIdx: number) => {
                                       const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isYes;
                                       return (
                                         <li
                                           key={cIdx}
-                                          className="flex items-start justify-between gap-3 p-1 rounded-xl hover:bg-slate-50/80 transition-colors group"
+                                          className="flex items-start gap-2.5 p-1 rounded-xl hover:bg-slate-50/80 transition-colors group cursor-pointer"
+                                          onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
                                         >
-                                          <div className="flex items-start gap-2 flex-1 min-w-0">
-                                            <span className="font-bold text-slate-900 shrink-0 select-none text-[12px] mt-0.5 min-w-[16px]">
-                                              {cIdx + 1}.
-                                            </span>
-                                            <span
-                                              onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                              className={`cursor-pointer text-[12px] leading-relaxed select-none transition-colors ${
-                                                isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
-                                              }`}
-                                            >
-                                              {cond}
-                                            </span>
-                                          </div>
-                                          <div className="w-16 shrink-0 flex items-center justify-center">
-                                            <button
-                                              type="button"
-                                              role="checkbox"
-                                              aria-checked={isCondChecked}
-                                              onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                              className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none active:scale-90 ${
-                                                isCondChecked
-                                                  ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
-                                                  : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
-                                              }`}
-                                              title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
-                                            >
-                                              {isCondChecked ? (
-                                                <Check className="w-3 h-3 stroke-[3] text-white" />
-                                              ) : (
-                                                <span className="w-2 h-2 rounded-[2px] bg-transparent" />
-                                              )}
-                                            </button>
-                                          </div>
+                                          <button
+                                            type="button"
+                                            role="checkbox"
+                                            aria-checked={isCondChecked}
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length);
+                                            }}
+                                            style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px', maxWidth: '20px', maxHeight: '20px', flexShrink: 0 }}
+                                            className={`w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] rounded-[6px] border inline-flex items-center justify-center shrink-0 self-start transition-all cursor-pointer select-none active:scale-90 mt-0.5 ${
+                                              isCondChecked
+                                                ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                                : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                            }`}
+                                            title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
+                                          >
+                                            {isCondChecked ? (
+                                              <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                                            ) : (
+                                              <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                            )}
+                                          </button>
+                                          <span className="font-bold text-slate-900 shrink-0 select-none text-[12px] mt-0.5 min-w-[16px]">
+                                            {cIdx + 1}.
+                                          </span>
+                                          <span
+                                            className={`text-[12px] leading-relaxed select-none transition-colors flex-1 min-w-0 ${
+                                              isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
+                                            }`}
+                                          >
+                                            {cond}
+                                          </span>
                                         </li>
                                       );
                                     })}
@@ -7888,14 +7892,18 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* Document Table (Desktop & Tablet) */}
-                <div className="hidden md:block bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden text-left">
+                <div className="hidden md:block bg-white rounded-2xl border border-black shadow-sm overflow-hidden text-left">
                   <div className="overflow-x-auto">
                     <table className="w-full border-collapse">
                       <thead>
-                        <tr className="border-b border-slate-100 bg-slate-50/50 text-[12px] sm:text-[13px] font-semibold text-slate-500 uppercase tracking-wider">
-                          <th className="py-3.5 px-4 text-left w-[28%]">Document Name</th>
-                          <th className="py-3.5 px-4 text-left">Conditions and Validity</th>
-                          <th className="py-3.5 px-4 text-center w-36 sm:w-44 whitespace-nowrap">Check if Valid</th>
+                        <tr className="border-b border-black bg-slate-50/70 text-[12px] sm:text-[13px] font-semibold text-slate-500 tracking-wider">
+                          <th className="py-3.5 px-4 text-left w-[30%] uppercase">Document Name</th>
+                          <th className="py-3.5 px-4 text-left">
+                            <span className="uppercase">Conditions and Validity</span>
+                            <span className="ml-1.5 font-normal normal-case text-slate-400 text-[11px] sm:text-[12px] tracking-normal">
+                              (Tick if applicable)
+                            </span>
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -7914,7 +7922,7 @@ export function VisaCountryResultPortal({
                             <tr key={doc.key} className="hover:bg-slate-50/70 transition-colors">
                               
                               {/* Document Name */}
-                              <td className="py-4 px-4 align-top w-[28%]">
+                              <td className="py-4 px-4 align-top w-[30%]">
                                 <div className="flex items-start gap-3">
                                   <div className={`w-8 h-8 rounded-xl ${doc.iconBg} flex items-center justify-center shrink-0 shadow-2xs mt-0.5`}>
                                     {doc.icon}
@@ -7930,52 +7938,54 @@ export function VisaCountryResultPortal({
                                 </div>
                               </td>
 
-                              {/* Conditions and Validity with Tick Checkbox under Ready header */}
-                              <td colSpan={2} className="py-4 px-4 align-top">
+                              {/* Conditions and Validity with Tick Checkbox to the left of Serial Number */}
+                              <td className="py-4 px-4 align-top">
                                 <ol className="space-y-2.5 list-none">
                                   {doc.conditions.map((cond: string, cIdx: number) => {
                                     const isCondChecked = portalCheckedConditions[doc.key]?.[cIdx] ?? isYes;
                                     return (
                                       <li
                                         key={cIdx}
-                                        className="flex items-start justify-between gap-4 p-1.5 rounded-xl hover:bg-slate-50/80 transition-colors group"
+                                        className="flex items-start gap-3 p-1.5 rounded-xl hover:bg-slate-50/80 transition-colors group cursor-pointer"
+                                        onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
                                       >
-                                        {/* 1. Serial Number and Condition Text (under Conditions and Validity header) */}
-                                        <div className="flex items-start gap-2.5 flex-1 min-w-0">
-                                          <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5 min-w-[18px]">
-                                            {cIdx + 1}.
-                                          </span>
-                                          <span
-                                            onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                            className={`cursor-pointer text-[13px] sm:text-[14px] leading-relaxed select-none transition-colors ${
-                                              isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
-                                            }`}
-                                          >
-                                            {cond}
-                                          </span>
-                                        </div>
+                                        {/* Tick Checkbox (to the left of Serial Number) */}
+                                        <button
+                                          type="button"
+                                          role="checkbox"
+                                          aria-checked={isCondChecked}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length);
+                                          }}
+                                          style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px', maxWidth: '20px', maxHeight: '20px', flexShrink: 0 }}
+                                          className={`w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] rounded-[6px] border inline-flex items-center justify-center shrink-0 self-start transition-all cursor-pointer select-none mt-0.5 ${
+                                            isCondChecked
+                                              ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                              : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                          }`}
+                                          title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
+                                        >
+                                          {isCondChecked ? (
+                                            <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                                          ) : (
+                                            <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                          )}
+                                        </button>
 
-                                        {/* 2. Tick Checkbox (directly centered under Ready header) */}
-                                        <div className="w-36 sm:w-40 shrink-0 flex items-center justify-center">
-                                          <button
-                                            type="button"
-                                            role="checkbox"
-                                            aria-checked={isCondChecked}
-                                            onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                            className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none ${
-                                              isCondChecked
-                                                ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
-                                                : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
-                                            }`}
-                                            title={isCondChecked ? 'Marked as ready (Click to untick)' : 'Mark as ready'}
-                                          >
-                                            {isCondChecked ? (
-                                              <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
-                                            ) : (
-                                              <span className="w-2 h-2 rounded-[2px] bg-transparent" />
-                                            )}
-                                          </button>
-                                        </div>
+                                        {/* Serial Number */}
+                                        <span className="font-bold text-slate-900 shrink-0 select-none text-[13px] sm:text-[14px] mt-0.5 min-w-[18px]">
+                                          {cIdx + 1}.
+                                        </span>
+
+                                        {/* Condition Text */}
+                                        <span
+                                          className={`text-[13px] sm:text-[14px] leading-relaxed select-none transition-colors flex-1 min-w-0 ${
+                                            isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-700 hover:text-slate-900'
+                                          }`}
+                                        >
+                                          {cond}
+                                        </span>
                                       </li>
                                     );
                                   })}
@@ -9553,7 +9563,7 @@ export function VisaCountryResultPortal({
                     How would you like to apply for your visa?
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-xl mx-auto">
-                    Choose between connecting with certified local immigration consultants or applying directly online.
+                    Choose between connecting with certified local immigration consultants or self apply with guidance from our AI.
                   </p>
 
                   {/* Clean Segment Switch Matching Photo 1 Capsule */}
@@ -9705,7 +9715,7 @@ export function VisaCountryResultPortal({
                     <div className="space-y-3" id="student-doc-vault">
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                          <span>1. Mandatory Document Vault Checklist</span>
+                          <span>1. Documents Required Checklist</span>
                         </h5>
                         <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
                           ["passport","transcripts","financials","sop_cv","english_test"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length >= 5
@@ -9801,7 +9811,7 @@ export function VisaCountryResultPortal({
 
                       <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 pt-1">
                         <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Document Vault.</span>
+                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Documents Checklist.</span>
                       </p>
                     </div>
 
@@ -9809,9 +9819,9 @@ export function VisaCountryResultPortal({
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                          2. One-Click Concierge Add-On Services
+                          2. Mandatory Concierge Add-On Services
                         </h5>
-                        <span className="text-[11px] text-slate-500 font-medium">Optional automated protections</span>
+                        <span className="text-[11px] text-slate-500 font-medium">Essential automated protections</span>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -9995,7 +10005,7 @@ export function VisaCountryResultPortal({
                     How would you like to apply for your {countryName} Tourist Visa?
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-xl mx-auto">
-                    Choose between connecting with certified local travel visa experts or applying directly online.
+                    Choose between connecting with certified local travel visa experts or self apply with guidance from our AI.
                   </p>
 
                   {/* Clean Segment Switch Matching Capsule */}
@@ -10146,7 +10156,7 @@ export function VisaCountryResultPortal({
                     <div className="space-y-3" id="tourist-doc-vault">
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                          <span>1. Mandatory Document Vault Checklist</span>
+                          <span>1. Documents Required Checklist</span>
                         </h5>
                         <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
                           ["passport","flights_hotel","bank_statements","leave_noc","insurance","itinerary"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length >= 6
@@ -10247,7 +10257,7 @@ export function VisaCountryResultPortal({
 
                       <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 pt-1">
                         <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Document Vault.</span>
+                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Documents Checklist.</span>
                       </p>
                     </div>
 
@@ -10255,7 +10265,7 @@ export function VisaCountryResultPortal({
                     <div className="space-y-3 pt-2">
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                          2. Smart Concierge Add-Ons (Optional)
+                          2. Mandatory Concierge Add-Ons
                         </h5>
                         <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                           Instant Approval Boosters
@@ -10533,7 +10543,7 @@ export function VisaCountryResultPortal({
                     How would you like to apply for your {countryName} Work Visa?
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-xl mx-auto">
-                    Choose between connecting with licensed corporate solicitors or applying directly online.
+                    Choose between connecting with licensed corporate solicitors or self apply with guidance from our AI.
                   </p>
 
                   {/* Clean Segment Switch Matching Capsule */}
@@ -10689,7 +10699,7 @@ export function VisaCountryResultPortal({
                     <div className="space-y-3" id="work-doc-vault">
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                          <span>1. Mandatory Document Vault Checklist</span>
+                          <span>1. Documents Required Checklist</span>
                         </h5>
                         <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full border ${
                           ["passport","cos_contract","transcripts","english_test","tb_screening","pcc"].filter(k => readyDocKeys[k] || uploadedDocuments[k]).length >= 6
@@ -10790,7 +10800,7 @@ export function VisaCountryResultPortal({
 
                       <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5 pt-1">
                         <Info className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Document Vault.</span>
+                        <span>Confirm readiness here. Official files are uploaded in your Dashboard Documents Checklist.</span>
                       </p>
                     </div>
 
@@ -10798,7 +10808,7 @@ export function VisaCountryResultPortal({
                     <div className="space-y-3 pt-2">
                       <div className="flex items-center justify-between">
                         <h5 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                          2. Smart Concierge Add-Ons (Optional)
+                          2. Mandatory Concierge Add-Ons
                         </h5>
                         <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                           Instant Approval Boosters

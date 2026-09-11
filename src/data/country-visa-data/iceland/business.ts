@@ -6,8 +6,8 @@ export default {
   channels: ['VFS Global', 'Embassy / Consulate'],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days',
-    expressSticker: 'Up to 45 calendar days (if extended scrutiny required)'
+    standardSticker: '15 working days',
+    expressSticker: 'Up to 45 working days (if extended scrutiny required)'
   },
   fees: {
     eVisaTotal: 'N/A',

@@ -9,7 +9,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A (eVisa not available for tourist short stay)',
-    standardSticker: '15 to 45 calendar days',
+    standardSticker: '15 to 45 working days',
     expressSticker: 'Not available'
   },
   fees: {

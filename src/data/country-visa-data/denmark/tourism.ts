@@ -6,8 +6,8 @@ export default {
   channels: ['Official Portal (ApplyVisa)', 'VFS Global Application Centre', 'Embassy of Denmark'],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days',
-    expressSticker: 'Up to 45 calendar days'
+    standardSticker: '15 working days',
+    expressSticker: 'Up to 45 working days'
   },
   fees: {
     eVisaTotal: 'N/A',

@@ -6,7 +6,7 @@ export default {
   channels: ['VFS Global Czech Republic Visa Application Centre'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15 calendar days (up to 30 days at peak seasons)',
+    standardSticker: '15 working days (up to 30 days at peak seasons)',
     expressSticker: 'Not applicable'
   },
   fees: {

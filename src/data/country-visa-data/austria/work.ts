@@ -9,7 +9,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'Not Applicable',
-    standardSticker: '15-20 working days (for National D Visa), up to 30-60 calendar days in complex cases or peak season',
+    standardSticker: '15-20 working days (for National D Visa), up to 30-60 working days in complex cases or peak season',
     expressSticker: 'Not explicitly stated for work visas, standard processing applies.'
   },
   fees: {

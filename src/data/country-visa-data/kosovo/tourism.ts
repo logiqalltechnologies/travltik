@@ -6,8 +6,8 @@ export default {
   channels: ['Online Portal (visas.rks-gov.net)', 'Embassy / Consulate'],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days',
-    expressSticker: '30 calendar days (if detailed review is required)'
+    standardSticker: '15 working days',
+    expressSticker: '30 working days (if detailed review is required)'
   },
   fees: {
     eVisaTotal: 'N/A',
@@ -21,7 +21,7 @@ export default {
     validity: 'Up to 90 days within a 180-day period',
     maxStay: '90 days',
     invitationRequired: false,
-    processing: '15 calendar days'
+    processing: '15 working days'
   },
   stayDuration: {
     eVisa: 'N/A',

@@ -9,7 +9,7 @@ export default {
     'Consulate General of Belarus in Mumbai (for specific jurisdictions)'
   ],
   processingTime: {
-    eVisa: '7 calendar days',
+    eVisa: '7 working days',
     standardSticker: '5 working days',
     expressSticker: 'within 48 hours (usually next working day)'
   },
@@ -25,7 +25,7 @@ export default {
     validity: 'Up to 30 days from issue',
     maxStay: '30 days per stay',
     invitationRequired: false,
-    processing: '7 calendar days'
+    processing: '7 working days'
   },
   stayDuration: {
     eVisa: 'Up to 30 days',

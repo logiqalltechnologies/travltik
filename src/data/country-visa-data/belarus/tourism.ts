@@ -8,7 +8,7 @@ export default {
     'Embassy of the Republic of Belarus in New Delhi'
   ],
   processingTime: {
-    eVisa: '7 calendar days',
+    eVisa: '7 working days',
     standardSticker: '5 business days',
     expressSticker: 'Within 48 hours (usually next working day)'
   },
@@ -24,7 +24,7 @@ export default {
     validity: 'Up to 30 days from issue', //
     maxStay: '30 days per stay', //
     invitationRequired: false, // Not explicitly mentioned as mandatory for tourism eVisa.
-    processing: '7 calendar days' //
+    processing: '7 working days' //
   },
   stayDuration: {
     eVisa: 'Up to 30 days', //

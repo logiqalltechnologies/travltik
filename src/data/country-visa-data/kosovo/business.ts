@@ -6,7 +6,7 @@ export default {
   channels: ['Embassy / Consulate', 'Official Portal'],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days',
+    standardSticker: '15 working days',
     expressSticker: 'N/A'
   },
   fees: {
@@ -21,7 +21,7 @@ export default {
     validity: 'Up to 90 days',
     maxStay: '90 days within 180 days',
     invitationRequired: true,
-    processing: '15 calendar days'
+    processing: '15 working days'
   },
   stayDuration: {
     eVisa: 'N/A',

@@ -9,7 +9,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '60 to 90 calendar days',
+    standardSticker: '60 to 90 working days',
     expressSticker: 'Not available for long-term employment visas'
   },
   fees: {

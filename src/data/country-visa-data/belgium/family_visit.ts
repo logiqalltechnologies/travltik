@@ -10,7 +10,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A (Sticker Visa Only)',
-    standardSticker: '15 calendar days (can extend up to 45 days if additional scrutiny required)',
+    standardSticker: '15 working days (can extend up to 45 days if additional scrutiny required)',
     expressSticker: 'Not applicable'
   },
   fees: {
@@ -25,7 +25,7 @@ export default {
     validity: 'Up to 90 days within a 180-day period',
     maxStay: '90 days',
     invitationRequired: true,
-    processing: '15 calendar days'
+    processing: '15 working days'
   },
   stayDuration: {
     eVisa: 'N/A',

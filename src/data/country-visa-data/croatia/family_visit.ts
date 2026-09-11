@@ -10,8 +10,8 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15-30 calendar days',
-    expressSticker: 'Up to 45 calendar days'
+    standardSticker: '15-30 working days',
+    expressSticker: 'Up to 45 working days'
   },
   fees: {
     eVisaTotal: 'N/A',
@@ -25,7 +25,7 @@ export default {
     validity: 'Up to 5 years',
     maxStay: '90 days within any 180-day period',
     invitationRequired: true,
-    processing: '15-30 calendar days'
+    processing: '15-30 working days'
   },
   stayDuration: {
     eVisa: 'N/A',

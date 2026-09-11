@@ -6,8 +6,8 @@ export default {
   channels: ['Official Portal (visas.rks-gov.net)', 'Embassy of Kosovo in Sofia / Istanbul (Accredited Missions)'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15 calendar days',
-    expressSticker: 'Up to 30 calendar days (if detailed review required)'
+    standardSticker: '15 working days',
+    expressSticker: 'Up to 30 working days (if detailed review required)'
   },
   fees: {
     eVisaTotal: 'Not applicable',

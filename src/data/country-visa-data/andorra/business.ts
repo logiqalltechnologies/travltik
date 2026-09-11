@@ -9,7 +9,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'Not Applicable',
-    standardSticker: '15 calendar days (can extend up to 45-60 days in complex cases or during busy periods)',
+    standardSticker: '15 working days (can extend up to 45-60 days in complex cases or during busy periods)',
     expressSticker: 'Not Applicable'
   },
   fees: {

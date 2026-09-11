@@ -9,7 +9,7 @@ export default {
     'Consular Section of Russian Embassy'
   ],
   processingTime: {
-    eVisa: '4 calendar days (Statutory maximum)', // Confirmed by multiple sources
+    eVisa: '4 working days (Statutory maximum)', // Confirmed by multiple sources
     standardSticker: '7-20 working days', // Updated based on search results
     expressSticker: '3-5 working days' // Confirmed by search results
   },
@@ -25,7 +25,7 @@ export default {
     validity: '120 calendar days from issue date', // Updated as per new law effective August 23, 2025
     maxStay: 'Up to 30 calendar days per entry', // Updated as per new law effective August 23, 2025
     invitationRequired: false, // Confirmed
-    processing: '4 calendar days' // Confirmed
+    processing: '4 working days' // Confirmed
   },
   stayDuration: {
     eVisa: 'Up to 30 days', // Updated to reflect new eVisa max stay

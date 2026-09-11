@@ -10,7 +10,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A (eVisa not available)',
-    standardSticker: '15 to 45 calendar days (may extend up to 60 days for residence permit concurrence)',
+    standardSticker: '15 to 45 working days (may extend up to 60 days for residence permit concurrence)',
     expressSticker: 'Not Available'
   },
   fees: {

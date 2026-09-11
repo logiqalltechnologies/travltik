@@ -10,7 +10,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '60 calendar days',
+    standardSticker: '60 working days',
     expressSticker: 'N/A'
   },
   fees: {
@@ -25,7 +25,7 @@ export default {
     validity: 'Duration of educational program',
     maxStay: 'Up to duration of studies + 6 months job seeker allowance',
     invitationRequired: true,
-    processing: '60 calendar days'
+    processing: '60 working days'
   },
   stayDuration: {
     eVisa: 'N/A',

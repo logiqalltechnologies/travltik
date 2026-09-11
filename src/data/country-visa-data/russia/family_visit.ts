@@ -5,7 +5,7 @@ export default {
   authority: 'Ministry of Foreign Affairs of the Russian Federation (MFA)',
   channels: ['Unified eVisa Portal (electronic-visa.kdmid.ru)', 'Russian Visa Application Centre (VFS Global)', 'Consular Section of Russian Embassy'],
   processingTime: {
-    eVisa: '4 calendar days',
+    eVisa: '4 working days',
     standardSticker: '7-20 working days',
     expressSticker: '3-5 working days'
   },
@@ -21,7 +21,7 @@ export default {
     validity: '60 calendar days from issue date',
     maxStay: 'Up to 16 calendar days per entry',
     invitationRequired: false,
-    processing: '4 calendar days'
+    processing: '4 working days'
   },
   stayDuration: {
     eVisa: 'Up to 16 days',

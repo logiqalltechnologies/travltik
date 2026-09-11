@@ -6,7 +6,7 @@ export default {
   channels: ['VFS Global', 'Embassy of Finland in New Delhi'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15 calendar days',
+    standardSticker: '15 working days',
     expressSticker: 'Not available'
   },
   fees: {

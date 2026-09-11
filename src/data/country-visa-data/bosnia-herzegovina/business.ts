@@ -8,7 +8,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'Not applicable (eVisa not available)',
-    standardSticker: '10–15 calendar days',
+    standardSticker: '10–15 working days',
     expressSticker: 'Not offered'
   },
   fees: {
@@ -122,7 +122,7 @@ export default {
     {
       step: 4,
       title: 'Collect Passport',
-      description: 'Collect processed passport with entry sticker upon decision notification (typically 10–15 calendar days).'
+      description: 'Collect processed passport with entry sticker upon decision notification (typically 10-15 working days).'
     }
   ],
   specialRequirements: {

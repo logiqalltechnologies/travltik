@@ -6,7 +6,7 @@ export default {
   channels: ['VFS Global Belgium Visa Application Centre'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15 calendar days (can extend up to 45 days during peak seasons)',
+    standardSticker: '15 working days (can extend up to 45 days during peak seasons)',
     expressSticker: 'Not applicable'
   },
   fees: {

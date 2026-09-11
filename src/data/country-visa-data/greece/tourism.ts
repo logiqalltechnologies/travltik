@@ -6,7 +6,7 @@ export default {
   channels: ['GVCW Application Centre', 'Embassy of Greece / Consulate General'],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days',
+    standardSticker: '15 working days',
     expressSticker: 'Not Available'
   },
   fees: {

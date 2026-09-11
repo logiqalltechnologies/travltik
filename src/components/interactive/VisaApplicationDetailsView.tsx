@@ -1488,24 +1488,20 @@ export function VisaApplicationDetailsView({
                         {doc.conditions.map((cond: string, cIdx: number) => {
                           const isCondChecked = checkedConditions[doc.key]?.[cIdx] ?? doc.isReady;
                           return (
-                            <li key={cIdx} className="flex items-start gap-3">
-                              <span className="font-bold text-slate-900 shrink-0 text-sm mt-0.5 min-w-[20px]">
-                                {cIdx + 1}.
-                              </span>
-                              <span
-                                onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                className={`flex-1 text-sm leading-relaxed cursor-pointer select-none transition-colors ${
-                                  isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-600'
-                                }`}
-                              >
-                                {cond}
-                              </span>
+                            <li
+                              key={cIdx}
+                              className="flex items-start gap-2.5 p-1 rounded-xl hover:bg-slate-50/80 transition-colors group cursor-pointer"
+                              onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
+                            >
                               <button
                                 type="button"
                                 role="checkbox"
                                 aria-checked={isCondChecked}
-                                onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer mt-0.5 ${
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length);
+                                }}
+                                className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer mt-0.5 select-none ${
                                   isCondChecked
                                     ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
                                     : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
@@ -1513,24 +1509,39 @@ export function VisaApplicationDetailsView({
                                 title={isCondChecked ? 'Marked as valid' : 'Mark as valid'}
                               >
                                 {isCondChecked ? (
-                                  <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                                  <Check className="w-3 h-3 stroke-[3] text-white" />
                                 ) : (
                                   <span className="w-2 h-2 rounded-[2px] bg-transparent" />
                                 )}
                               </button>
+                              <span className="font-bold text-slate-900 shrink-0 text-sm mt-0.5 min-w-[18px] select-none">
+                                {cIdx + 1}.
+                              </span>
+                              <span
+                                className={`flex-1 text-sm leading-relaxed select-none transition-colors ${
+                                  isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-600'
+                                }`}
+                              >
+                                {cond}
+                              </span>
                             </li>
                           );
                         })}
                       </ol>
                     ) : (
-                      <div className="flex items-start gap-3">
-                        <p className="flex-1 text-sm text-slate-600 leading-relaxed">{doc.req}</p>
+                      <div
+                        className="flex items-start gap-2.5 p-1 cursor-pointer"
+                        onClick={() => handleToggleDocReady(doc.name, doc.isReady, 0, doc.key)}
+                      >
                         <button
                           type="button"
                           role="checkbox"
                           aria-checked={doc.isReady}
-                          onClick={() => handleToggleDocReady(doc.name, doc.isReady, 0, doc.key)}
-                          className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer mt-0.5 ${
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggleDocReady(doc.name, doc.isReady, 0, doc.key);
+                          }}
+                          className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer mt-0.5 select-none ${
                             doc.isReady
                               ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
                               : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
@@ -1538,11 +1549,12 @@ export function VisaApplicationDetailsView({
                           title={doc.isReady ? 'Marked as valid' : 'Mark as valid'}
                         >
                           {doc.isReady ? (
-                            <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                            <Check className="w-3 h-3 stroke-[3] text-white" />
                           ) : (
                             <span className="w-2 h-2 rounded-[2px] bg-transparent" />
                           )}
                         </button>
+                        <p className="flex-1 text-sm text-slate-600 leading-relaxed">{doc.req}</p>
                       </div>
                     )}
                   </div>
@@ -1551,20 +1563,24 @@ export function VisaApplicationDetailsView({
             </div>
 
             {/* ── DESKTOP sm+: Original table layout ── */}
-            <div className="hidden sm:block overflow-x-auto">
+            <div className="hidden sm:block overflow-x-auto rounded-2xl border border-black shadow-sm">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/60 text-[12px] uppercase font-bold text-slate-500 tracking-wider">
-                    <th className="py-3 px-3.5 text-left w-[28%]">Document Name</th>
-                    <th className="py-3 px-3.5 text-left">Conditions and Validity</th>
-                    <th className="py-3 px-3.5 text-center w-44 whitespace-nowrap">Check if Valid</th>
+                  <tr className="border-b border-black bg-slate-50/70 text-[12px] font-bold text-slate-500 tracking-wider">
+                    <th className="py-3 px-3.5 text-left w-[30%] uppercase">Document Name</th>
+                    <th className="py-3 px-3.5 text-left">
+                      <span className="uppercase">Conditions and Validity</span>
+                      <span className="ml-1.5 font-medium normal-case text-slate-400 text-[11px] tracking-normal">
+                        (Tick if applicable)
+                      </span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {checklistDocuments.map((doc, idx) => (
                     <tr key={doc.key || idx} className="hover:bg-slate-50/70 transition-colors">
                       {/* 1. DOCUMENT NAME */}
-                      <td className="py-4 px-3.5 align-top w-[28%]">
+                      <td className="py-4 px-3.5 align-top w-[30%]">
                         <div className="flex items-start gap-3">
                           <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 shadow-2xs mt-0.5">
                             {getDocumentChecklistIcon(doc.name)}
@@ -1583,7 +1599,7 @@ export function VisaApplicationDetailsView({
                       </td>
 
                       {/* 2. CONDITIONS & VALIDITY CHECKBOXES */}
-                      <td colSpan={2} className="py-4 px-3.5 align-top">
+                      <td className="py-4 px-3.5 align-top">
                         {doc.conditions && doc.conditions.length > 0 ? (
                           <ol className="space-y-2.5 list-none">
                             {doc.conditions.map((cond: string, cIdx: number) => {
@@ -1591,70 +1607,78 @@ export function VisaApplicationDetailsView({
                               return (
                                 <li
                                   key={cIdx}
-                                  className="flex items-start justify-between gap-4 p-1.5 rounded-xl hover:bg-slate-50/80 transition-colors group"
+                                  className="flex items-start gap-3 p-1.5 rounded-xl hover:bg-slate-50/80 transition-colors group cursor-pointer"
+                                  onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
                                 >
-                                  <div className="flex items-start gap-2 flex-1 min-w-0">
-                                    <span className="font-bold text-slate-900 shrink-0 select-none text-sm mt-0.5 min-w-[18px]">
-                                      {cIdx + 1}.
-                                    </span>
-                                    <span
-                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                      className={`cursor-pointer text-sm leading-relaxed select-none transition-colors ${
-                                        isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
-                                      }`}
-                                    >
-                                      {cond}
-                                    </span>
-                                  </div>
-                                  <div className="w-44 shrink-0 flex items-center justify-center">
-                                    <button
-                                      type="button"
-                                      role="checkbox"
-                                      aria-checked={isCondChecked}
-                                      onClick={() => handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length)}
-                                      className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none ${
-                                        isCondChecked
-                                          ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
-                                          : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
-                                      }`}
-                                      title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Mark as valid'}
-                                    >
-                                      {isCondChecked ? (
-                                        <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
-                                      ) : (
-                                        <span className="w-2 h-2 rounded-[2px] bg-transparent" />
-                                      )}
-                                    </button>
-                                  </div>
+                                  {/* Tick Checkbox (to the left of Serial Number) */}
+                                  <button
+                                    type="button"
+                                    role="checkbox"
+                                    aria-checked={isCondChecked}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleToggleConditionCheck(doc.key, cIdx, doc.conditions.length);
+                                    }}
+                                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none mt-0.5 ${
+                                      isCondChecked
+                                        ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                        : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                                    }`}
+                                    title={isCondChecked ? 'Marked as valid (Click to untick)' : 'Mark as valid'}
+                                  >
+                                    {isCondChecked ? (
+                                      <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                                    ) : (
+                                      <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                                    )}
+                                  </button>
+
+                                  {/* Serial Number */}
+                                  <span className="font-bold text-slate-900 shrink-0 select-none text-sm mt-0.5 min-w-[18px]">
+                                    {cIdx + 1}.
+                                  </span>
+
+                                  {/* Condition Text */}
+                                  <span
+                                    className={`text-sm leading-relaxed select-none transition-colors flex-1 min-w-0 ${
+                                      isCondChecked ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
+                                    }`}
+                                  >
+                                    {cond}
+                                  </span>
                                 </li>
                               );
                             })}
                           </ol>
                         ) : (
-                          <div className="flex items-start justify-between gap-4 p-1.5">
+                          <div
+                            className="flex items-start gap-3 p-1.5 cursor-pointer"
+                            onClick={() => handleToggleDocReady(doc.name, doc.isReady, 0, doc.key)}
+                          >
+                            <button
+                              type="button"
+                              role="checkbox"
+                              aria-checked={doc.isReady}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleToggleDocReady(doc.name, doc.isReady, 0, doc.key);
+                              }}
+                              className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none mt-0.5 ${
+                                doc.isReady
+                                  ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                                  : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
+                              }`}
+                              title={doc.isReady ? 'Marked as valid (Click to untick)' : 'Mark as valid'}
+                            >
+                              {doc.isReady ? (
+                                <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
+                              ) : (
+                                <span className="w-2 h-2 rounded-[2px] bg-transparent" />
+                              )}
+                            </button>
                             <p className="text-sm text-slate-600 leading-relaxed flex-1 min-w-0">
                               {doc.req}
                             </p>
-                            <div className="w-44 shrink-0 flex items-center justify-center">
-                              <button
-                                type="button"
-                                role="checkbox"
-                                aria-checked={doc.isReady}
-                                onClick={() => handleToggleDocReady(doc.name, doc.isReady, 0, doc.key)}
-                                className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-all cursor-pointer select-none ${
-                                  doc.isReady
-                                    ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
-                                    : 'bg-white border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/40'
-                                }`}
-                                title={doc.isReady ? 'Marked as valid (Click to untick)' : 'Mark as valid'}
-                              >
-                                {doc.isReady ? (
-                                  <Check className="w-3.5 h-3.5 stroke-[3] text-white" />
-                                ) : (
-                                  <span className="w-2 h-2 rounded-[2px] bg-transparent" />
-                                )}
-                              </button>
-                            </div>
                           </div>
                         )}
                       </td>

@@ -6,7 +6,7 @@ export default {
   channels: ['VisaOnWeb Portal (visaonweb.diplomatie.be)', 'VFS Global', 'Embassy/Consulate'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15 calendar days',
+    standardSticker: '15 working days',
     expressSticker: 'Not available'
   },
   fees: {

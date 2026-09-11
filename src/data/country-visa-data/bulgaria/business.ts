@@ -9,7 +9,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '15 calendar days (up to 45 days if additional scrutiny is required)',
+    standardSticker: '15 working days (up to 45 days if additional scrutiny is required)',
     expressSticker: 'N/A'
   },
   fees: {

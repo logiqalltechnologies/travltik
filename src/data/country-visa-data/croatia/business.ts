@@ -11,7 +11,7 @@ export default {
   processingTime: {
     eVisa: 'N/A',
     standardSticker: '15 working days',
-    expressSticker: 'Up to 45 calendar days if individual case assessment requires extended verification'
+    expressSticker: 'Up to 45 working days if individual case assessment requires extended verification'
   },
   fees: {
     eVisaTotal: 'N/A',
