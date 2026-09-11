@@ -87,7 +87,7 @@ async function runBatch(batch: BatchDef) {
 
     log(`📤 Committing and pushing ${batch.name} to origin/main (NEVER logiqall)...`);
     try {
-      execSync('git add src/data/country-visa-data src/data/country-visa-data-verified scripts healing-reports', {
+      execSync('git add src/data/country-visa-data/ src/data/country-visa-data-verified/ healing-reports/', {
         stdio: 'inherit',
         cwd: process.cwd(),
       });
