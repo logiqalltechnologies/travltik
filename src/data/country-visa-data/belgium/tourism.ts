@@ -10,7 +10,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'Not Applicable',
-    standardSticker: '15 working days (up to 45 calendar days in exceptional cases)',
+    standardSticker: '15 working days (up to 45 working days in exceptional cases)',
     expressSticker: 'Not Applicable'
   },
   fees: {

@@ -1,79 +1,141 @@
 export default {
   country: 'cyprus',
   fromCountry: 'India',
-  visaCategory: 'Student Visa (National Visa D - Long Stay)',
-  authority: 'High Commission of Cyprus in New Delhi / Honorary Consulate of Cyprus',
-  channels: ['VFS Global Cyprus Visa Application Centre', 'Direct submission to Cyprus High Commission'],
+  visaCategory: 'Student Visa',
+  authority: 'Civil Registry and Migration Department / High Commission of the Republic of Cyprus in New Delhi',
+  channels: ['VFS Global', 'High Commission of Cyprus in New Delhi', 'Official Educational Institution Portal'],
   processingTime: {
-    eVisa: 'Not applicable',
-    standardSticker: '30–60 working days (can vary based on university processing)',
-    expressSticker: 'Not applicable'
+    eVisa: 'N/A',
+    standardSticker: '15-30 working days',
+    expressSticker: 'N/A'
   },
   fees: {
-    eVisaTotal: 'Not applicable',
-    stickerConsularStandard: 'EUR 70 (approx. INR 6,300)',
-    stickerVfsServiceFee: 'INR 1,850',
-    stickerTotal: 'Approx. INR 8,150',
-    expressAddon: 'Not applicable',
-    childrenDiscount: 'Not applicable'
+    eVisaTotal: 'N/A',
+    stickerConsularStandard: '60 EUR',
+    vfsServiceFee: '1800 INR'
   },
-  stayPeriod: {
-    maxSingleEntry: 'Duration of course / academic programme',
-    validity: '1 year (renewable annually for duration of study)',
-    extensionPossible: true,
-    extensionNote: 'Renewable annually at Civil Registry and Migration Department in Cyprus'
+  eVisa: {
+    available: false,
+    portal: 'N/A',
+    territorialScope: 'Nationwide',
+    validity: 'N/A',
+    maxStay: 'N/A',
+    invitationRequired: true,
+    processing: 'N/A'
   },
-  eligibility: {
-    nationality: 'Indian passport holders',
-    ageRequirement: 'Minimum 17 years (18+ preferred)',
-    employmentStatus: 'Full-time enrolled student at a recognised Cyprus institution',
-    restrictions: 'Must be admitted to an accredited higher education institution in Cyprus'
+  stayDuration: {
+    eVisa: 'N/A',
+    stickerSingleDouble: 'Up to 90 days (Entry visa to be converted to Temporary Residence Permit upon arrival)',
+    stickerMultiple: 'Duration of academic course (via annual Temporary Residence Permit)'
   },
-  applicationProcess: {
-    steps: [
-      'Receive official admission letter from Cyprus university/college',
-      'Book VFS Global appointment',
-      'Complete national visa application form (Type D)',
-      'Gather all supporting documents',
-      'Submit application at VFS Global or High Commission',
-      'Biometrics enrollment if required',
-      'Await processing (30–60 days)',
-      'Collect visa and travel to Cyprus',
-      'Register with Civil Registry and Migration Department within 3 days of arrival'
-    ],
-    biometricsRequired: true,
-    interviewRequired: false,
-    onlineApplicationAvailable: false
-  },
-  requiredDocuments: [
-    'Valid passport (min. 6 months beyond course end date)',
-    'Completed national visa application form (Type D)',
-    '4 recent passport-size photos (35×45 mm)',
-    'Original admission letter / offer letter from Cyprus institution',
-    'Proof of enrolment / acceptance confirmation',
-    'Academic transcripts and certificates (10th, 12th, degree)',
-    'English language proficiency proof (IELTS/TOEFL if required)',
-    'Bank statements (last 6 months, min. EUR 5,000 or sponsorship letter)',
-    'Proof of tuition fee payment or scholarship letter',
-    'Accommodation arrangement in Cyprus (university hostel or rental agreement)',
-    'Travel insurance covering the entire study period',
-    'Medical certificate (HIV test, general health)',
-    'Police clearance certificate (PCC) from India',
-    'Parental consent letter (if under 18)',
-    'Visa fee payment receipt'
+  entryType: 'Single Entry',
+  documents: [
+    {
+      key: 'passport',
+      title: 'Valid Indian Passport',
+      description: 'Original passport valid for at least 2 years or full duration of studies, with at least 2 blank pages.',
+      icon: 'passport',
+      mandatory: true
+    },
+    {
+      key: 'photographs',
+      title: 'Passport Photographs',
+      description: 'Two recent 35x45mm photographs with a white background, taken within the last 6 months.',
+      icon: 'photo',
+      mandatory: true
+    },
+    {
+      key: 'visa_form',
+      title: 'Application Form (Form M.58 / M.70)',
+      description: 'Duly completed and signed Cyprus long-stay student visa application form.',
+      icon: 'form',
+      mandatory: true
+    },
+    {
+      key: 'admission_letter',
+      title: 'Official Letter of Acceptance',
+      description: 'Unconditional acceptance letter from a recognized Cyprus Higher Education Institution detailing course duration and fees.',
+      icon: 'document',
+      mandatory: true
+    },
+    {
+      key: 'academic_certificates',
+      title: 'Educational Qualification Certificates',
+      description: 'Attested marksheets and certificates (10th, 12th, and Degree), legalized/attested by MEA India and Cyprus High Commission.',
+      icon: 'certificate',
+      mandatory: true
+    },
+    {
+      key: 'pcc',
+      title: 'Police Clearance Certificate (PCC)',
+      description: 'Original PCC issued by Passport Seva Kendra (valid for 6 months), legalized/attested by MEA India.',
+      icon: 'shield',
+      mandatory: true
+    },
+    {
+      key: 'medical_certificate',
+      title: 'Medical Examination Clearance',
+      description: 'Medical reports for HIV, Hepatitis B & C, Syphilis, and Chest X-Ray for Tuberculosis issued within 4 months prior to arrival, attested by MEA.',
+      icon: 'health',
+      mandatory: true
+    },
+    {
+      key: 'bank_statement',
+      title: 'Financial Proof & Bank Guarantee',
+      description: 'Original bank statements covering tuition and minimum living expenses (~7,000 EUR equivalent) and/or education loan approval letter.',
+      icon: 'bank',
+      mandatory: true
+    },
+    {
+      key: 'fee_receipt',
+      title: 'Tuition Fee Payment Receipt',
+      description: 'Official payment receipt from the Cyprus educational institution verifying advance fee deposit.',
+      icon: 'receipt',
+      mandatory: true
+    },
+    {
+      key: 'flight_booking',
+      title: 'Flight Itinerary',
+      description: 'Reserved entry flight ticket to Larnaca or Paphos airport.',
+      icon: 'flight',
+      mandatory: true
+    },
+    {
+      key: 'accommodation',
+      title: 'Proof of Accommodation',
+      description: 'University dormitory agreement or private lease agreement in Cyprus.',
+      icon: 'hotel',
+      mandatory: true
+    }
   ],
-  additionalNotes: [
-    'Cyprus national (Type D) visa is for long-stay; different from Schengen short-stay',
-    'Cyprus is NOT a full Schengen member — Type D visa does NOT grant Schengen travel rights',
-    'Students must register with Civil Registry and Migration Department upon arrival',
-    'Residence permit required for stays beyond 3 months',
-    'Part-time work allowed up to 20 hours/week during term time',
-    'Cyprus student visa may be applied through VFS Global centres in major Indian cities',
-    'Processing is done at High Commission of Cyprus, New Delhi'
+  steps: [
+    {
+      step: 1,
+      title: 'University Admission & Pre-Approval Clearance',
+      description: 'Obtain unconditional acceptance letter; institution submits initial clearance dossier to Civil Registry and Migration Department in Nicosia.'
+    },
+    {
+      step: 2,
+      title: 'Document Legalization',
+      description: 'Apostille / attest educational marksheets, Police Clearance Certificate, and medical test reports at Ministry of External Affairs (MEA), India.'
+    },
+    {
+      step: 3,
+      title: 'Dossier Submission & Interview',
+      description: 'Submit the complete visa application dossier at VFS Global or the High Commission of Cyprus in New Delhi and attend the consular interview.'
+    },
+    {
+      step: 4,
+      title: 'Entry Visa Issuance & Travel',
+      description: 'Collect your passport with the entry visa sticker and depart for Cyprus.'
+    },
+    {
+      step: 5,
+      title: 'Arrival Registration & Temporary Residence Permit (Pink Slip)',
+      description: 'Undergo repeated medical check in Cyprus, register with the Civil Registry and Migration Department within 7 days of arrival to obtain the Temporary Residence Permit.'
+    }
   ],
-  officialLinks: {
-    embassy: 'https://www.mfa.gov.cy/mfa/highcommission/newdelhi.nsf/',
-    immigration: 'https://www.moi.gov.cy/moi/crmd/crmd.nsf/',
-    vfsGlobal: 'https://www.vfsglobal.com/cyprus/india/'
+  specialRequirements: {
+    entry_rules: 'Cyprus student entry visa acts solely as an entry permit. Students must register at their institution and report to the Migration Department within 7 days of arrival to complete mandatory local blood/health tests and apply for the Temporary Residence Permit (Pink Slip).'
   }
 };
