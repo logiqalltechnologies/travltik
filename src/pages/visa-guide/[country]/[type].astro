@@ -3,7 +3,7 @@
 export const prerender = false;
 import Layout from '../../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { Globe, FileText, Clock, DollarSign, CheckCircle, ArrowRight, Users, Sparkles } from 'lucide-react';
+import { Globe, FileText, Clock, DollarSign, CheckCircle, ArrowRight, Users, Sparkles, Shield, AlertCircle, ExternalLink } from 'lucide-react';
 
 // Static fallback data
 const staticVisas = [
@@ -277,9 +277,122 @@ const schema = {
 
           {/* TAB 2: Documents */}
           <div id="sec-documents" class="tab-section hidden space-y-6">
+              
+              {/* LIVE REQUIREMENTS ENGINE (GEMINI) */}
+              <section class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-indigo-900/50">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                      <div class="space-y-1">
+                          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold tracking-wider uppercase">
+                              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                              Live Verification Engine
+                          </div>
+                          <h2 class="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                              <Sparkles class="w-5 h-5 text-indigo-400" />
+                              Official Live Requirements Check
+                          </h2>
+                          <p class="text-xs text-slate-300 max-w-xl">
+                              Query official embassy authorities, immigration gazettes, and official application portals in real-time via Gemini AI.
+                          </p>
+                      </div>
+
+                      <button
+                          id="btn-check-live"
+                          onclick="checkLiveRequirements()"
+                          class="shrink-0 bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-2xl transition-all shadow-lg hover:shadow-indigo-500/20 active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                          <Sparkles class="w-4 h-4 text-indigo-600" />
+                          <span>Check Live Requirements</span>
+                      </button>
+                  </div>
+
+                  {/* LOADING STATE */}
+                  <div id="live-loading" class="hidden py-8 text-center space-y-3 bg-white/5 rounded-2xl border border-white/10">
+                      <div class="inline-block w-8 h-8 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
+                      <p class="text-xs font-semibold text-indigo-200">
+                          Contacting official immigration authorities & verifying current regulations...
+                      </p>
+                      <p class="text-[10px] text-slate-400">Verifying documents, mandatory fees, and working day processing windows.</p>
+                  </div>
+
+                  {/* ERROR STATE */}
+                  <div id="live-error" class="hidden p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl text-rose-300 text-xs">
+                      <div class="flex items-center gap-2 font-bold mb-1 text-rose-200">
+                          <AlertCircle class="w-4 h-4 text-rose-400 shrink-0" />
+                          <span>Verification Error</span>
+                      </div>
+                      <p id="live-error-msg" class="text-slate-300"></p>
+                  </div>
+
+                  {/* RESULTS CONTAINER */}
+                  <div id="live-results" class="hidden space-y-6 pt-4 border-t border-white/10">
+                      {/* Live Meta Badges */}
+                      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                              <span class="text-[9px] text-slate-400 uppercase font-bold block mb-0.5">VISA CATEGORY</span>
+                              <span id="live-meta-type" class="text-xs font-bold text-white block truncate">-</span>
+                          </div>
+                          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                              <span class="text-[9px] text-slate-400 uppercase font-bold block mb-0.5">PROCESSING TIME</span>
+                              <span id="live-meta-processing" class="text-xs font-bold text-emerald-400 block truncate">-</span>
+                          </div>
+                          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                              <span class="text-[9px] text-slate-400 uppercase font-bold block mb-0.5">CONFIDENCE</span>
+                              <span id="live-meta-confidence" class="text-xs font-bold text-indigo-300 uppercase block truncate">-</span>
+                          </div>
+                          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                              <span class="text-[9px] text-slate-400 uppercase font-bold block mb-0.5">LAST VERIFIED</span>
+                              <span id="live-meta-date" class="text-xs font-bold text-slate-300 block truncate">-</span>
+                          </div>
+                      </div>
+
+                      {/* CATEGORIES SECTION */}
+                      <div class="space-y-4">
+                          {/* Mandatory Docs */}
+                          <div id="section-mandatory" class="space-y-2">
+                              <div class="flex items-center gap-2">
+                                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                                      MANDATORY DOCUMENTS
+                                  </span>
+                                  <span id="count-mandatory" class="text-[10px] text-slate-400 font-bold"></span>
+                              </div>
+                              <div id="list-mandatory" class="grid grid-cols-1 gap-2.5"></div>
+                          </div>
+
+                          {/* Conditional Docs */}
+                          <div id="section-conditional" class="space-y-2 hidden">
+                              <div class="flex items-center gap-2">
+                                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                      CONDITIONAL REQUIREMENTS
+                                  </span>
+                                  <span id="count-conditional" class="text-[10px] text-slate-400 font-bold"></span>
+                              </div>
+                              <div id="list-conditional" class="grid grid-cols-1 gap-2.5"></div>
+                          </div>
+
+                          {/* Recommended Docs */}
+                          <div id="section-recommended" class="space-y-2 hidden">
+                              <div class="flex items-center gap-2">
+                                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                                      RECOMMENDED DOCUMENTS
+                                  </span>
+                                  <span id="count-recommended" class="text-[10px] text-slate-400 font-bold"></span>
+                              </div>
+                              <div id="list-recommended" class="grid grid-cols-1 gap-2.5"></div>
+                          </div>
+                      </div>
+
+                      {/* Official Sources Citation */}
+                      <div id="live-sources-box" class="p-3.5 bg-white/5 rounded-xl border border-white/10 space-y-1.5 hidden">
+                          <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">OFFICIAL CITATIONS & SOURCES</span>
+                          <div id="live-sources-list" class="flex flex-wrap gap-2 text-xs"></div>
+                      </div>
+                  </div>
+              </section>
+
+              {/* Standard Document Checklist */}
               <section class="bg-white rounded-3xl border border-gray-150 p-6 shadow-sm">
                   <h2 class="font-sans text-xl font-bold text-navy mb-5 flex items-center gap-2">
-                      <FileText class="w-5 h-5 text-slate-850" /> Mandatory Document Scan Checklist
+                      <FileText class="w-5 h-5 text-slate-850" /> Standard Document Checklist
                   </h2>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {visa.documents.map((d: string, i: number) => (
@@ -368,6 +481,8 @@ const schema = {
       </div>
   </div>
 
+  <div id="live-requirements-meta" data-country={visa.country} data-purpose={visa.type} class="hidden"></div>
+
   <script is:inline>
       function switchTab(tabId) {
           // Hide all sections
@@ -387,6 +502,140 @@ const schema = {
           if (btn) {
               btn.className = "tab-link py-4 px-2 text-xs sm:text-sm font-bold tracking-wide transition-all border-b-2 outline-none whitespace-nowrap border-slate-900 text-slate-900 font-black";
           }
+      }
+
+      async function checkLiveRequirements() {
+          const meta = document.getElementById('live-requirements-meta');
+          const destinationCountry = meta?.dataset?.country || 'France';
+          const purpose = meta?.dataset?.purpose || 'tourism';
+
+          const btn = document.getElementById('btn-check-live');
+          const loading = document.getElementById('live-loading');
+          const errorBox = document.getElementById('live-error');
+          const errorMsg = document.getElementById('live-error-msg');
+          const results = document.getElementById('live-results');
+
+          if (btn) {
+              btn.setAttribute('disabled', 'true');
+              btn.classList.add('opacity-50', 'pointer-events-none');
+          }
+          if (loading) loading.classList.remove('hidden');
+          if (errorBox) errorBox.classList.add('hidden');
+          if (results) results.classList.add('hidden');
+
+          try {
+              const response = await fetch('/api/visa/live-requirements', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                      passportCountry: 'India',
+                      destinationCountry,
+                      purpose,
+                  }),
+              });
+
+              const data = await response.json();
+
+              if (!data.success) {
+                  throw new Error(data.error || (data.details || 'Failed to fetch live requirements'));
+              }
+
+              renderLiveResults(data);
+              if (results) results.classList.remove('hidden');
+          } catch (err) {
+              if (errorBox && errorMsg) {
+                  errorMsg.textContent = err.message || 'Unable to retrieve live requirements at this moment.';
+                  errorBox.classList.remove('hidden');
+              }
+          } finally {
+              if (loading) loading.classList.add('hidden');
+              if (btn) {
+                  btn.removeAttribute('disabled');
+                  btn.classList.remove('opacity-50', 'pointer-events-none');
+              }
+          }
+      }
+
+      function renderLiveResults(data) {
+          const metaType = document.getElementById('live-meta-type');
+          const metaProc = document.getElementById('live-meta-processing');
+          const metaConf = document.getElementById('live-meta-confidence');
+          const metaDate = document.getElementById('live-meta-date');
+
+          if (metaType) metaType.textContent = data.visaType || 'Official Visa';
+          if (metaProc) metaProc.textContent = data.processing?.estimatedTime || 'Standard Processing';
+          if (metaConf) metaConf.textContent = (data.confidence || 'HIGH').toUpperCase();
+          if (metaDate) {
+              const d = new Date(data.checkedAt || Date.now());
+              metaDate.textContent = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+          }
+
+          const mandatory = [];
+          const conditional = [];
+          const recommended = [];
+
+          (data.documents || []).forEach(doc => {
+              const m = (doc.mandatory || 'mandatory').toLowerCase();
+              if (m.includes('condition')) {
+                  conditional.push(doc);
+              } else if (m.includes('recommend')) {
+                  recommended.push(doc);
+              } else {
+                  mandatory.push(doc);
+              }
+          });
+
+          renderCategory('mandatory', mandatory, 'bg-rose-500/20 text-rose-300 border-rose-500/30');
+          renderCategory('conditional', conditional, 'bg-amber-500/20 text-amber-300 border-amber-500/30');
+          renderCategory('recommended', recommended, 'bg-sky-500/20 text-sky-300 border-sky-500/30');
+
+          const sourcesBox = document.getElementById('live-sources-box');
+          const sourcesList = document.getElementById('live-sources-list');
+          if (sourcesBox && sourcesList) {
+              if (data.groundingSources && data.groundingSources.length > 0) {
+                  sourcesList.innerHTML = data.groundingSources.map(s => `
+                      <a href="${s.uri}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-indigo-200 hover:text-white transition-colors">
+                          <span>${s.title}</span>
+                          <span class="text-[10px]">↗</span>
+                      </a>
+                  `).join('');
+                  sourcesBox.classList.remove('hidden');
+              } else {
+                  sourcesBox.classList.add('hidden');
+              }
+          }
+      }
+
+      function renderCategory(category, items, badgeClass) {
+          const sec = document.getElementById('section-' + category);
+          const count = document.getElementById('count-' + category);
+          const list = document.getElementById('list-' + category);
+          if (!sec || !list) return;
+
+          if (!items || items.length === 0) {
+              sec.classList.add('hidden');
+              return;
+          }
+
+          sec.classList.remove('hidden');
+          if (count) count.textContent = `(${items.length} ${items.length === 1 ? 'item' : 'items'})`;
+
+          list.innerHTML = items.map(doc => `
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-white/[0.07] transition-colors">
+                  <div class="flex items-start justify-between gap-3">
+                      <h4 class="text-xs sm:text-sm font-bold text-white leading-snug">${doc.name || 'Required Document'}</h4>
+                      <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider shrink-0 border ${badgeClass}">
+                          ${category.toUpperCase()}
+                      </span>
+                  </div>
+                  ${doc.description ? `<p class="text-xs text-slate-300 leading-relaxed">${doc.description}</p>` : ''}
+                  ${doc.condition ? `<div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-200"><strong>Condition:</strong> ${doc.condition}</div>` : ''}
+                  <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-white/5 text-[10px] text-slate-400">
+                      <span>${doc.sourceName ? `Authority: ${doc.sourceName}` : 'Official Consular Source'}</span>
+                      ${doc.sourceUrl ? `<a href="${doc.sourceUrl}" target="_blank" rel="noopener noreferrer" class="text-indigo-300 hover:text-white underline inline-flex items-center gap-1">View Source →</a>` : ''}
+                  </div>
+              </div>
+          `).join('');
       }
   </script>
 </Layout>
