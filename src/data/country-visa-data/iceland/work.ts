@@ -10,12 +10,12 @@ export default {
   ],
   processingTime: {
     eVisa: 'N/A',
-    standardSticker: '30 to 90 working days',
+    standardSticker: '60 to 120 working days',
     expressSticker: 'N/A'
   },
   fees: {
     eVisaTotal: 'N/A',
-    stickerConsularStandard: '16,000 ISK (Residence Permit Fee) + €90 (D-Visa / Entry Visa Fee)',
+    stickerConsularStandard: '16,000 ISK (Residence Permit Fee) + €90 (D-Visa Entry Fee)',
     vfsServiceFee: '₹2,100'
   },
   eVisa: {

@@ -6,8 +6,8 @@ export default {
   channels: ['Official Application Portal (visas.rks-gov.net)', 'Embassy / Consulate General of Kosovo (e.g., Istanbul, Sofia)'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15 calendar days',
-    expressSticker: 'Up to 30 calendar days (extendable to 60 days in exceptional cases)'
+    standardSticker: '15 working days',
+    expressSticker: 'Up to 30 working days (extendable to 60 days in exceptional cases)'
   },
   fees: {
     eVisaTotal: 'Not applicable',

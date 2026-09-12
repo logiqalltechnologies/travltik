@@ -15,7 +15,7 @@ export default {
   },
   fees: {
     eVisaTotal: 'N/A',
-    stickerConsularStandard: '90 EUR (approx. ₹8,100)',
+    stickerConsularStandard: '90 EUR',
     vfsServiceFee: 'approx. ₹1,480'
   },
   eVisa: {

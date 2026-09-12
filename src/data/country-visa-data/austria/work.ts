@@ -9,12 +9,12 @@ export default {
   ],
   processingTime: {
     eVisa: 'Not Applicable',
-    standardSticker: '15-20 working days (for National D Visa), up to 30-60 working days in complex cases or peak season',
+    standardSticker: '15-30 working days for National D Visa; 8 weeks to 6 months for Residence Permit (e.g., Red-White-Red Card)',
     expressSticker: 'Not explicitly stated for work visas, standard processing applies.'
   },
   fees: {
     eVisaTotal: 'Not Applicable',
-    stickerConsularStandard: 'National D Visa (entry visa): €90 (~₹8,100). Residence Permit (e.g., Red-White-Red Card) application fee: €218 (~₹19,620). Consular surcharge: €3.00 (~₹270).',
+    stickerConsularStandard: 'National D Visa: €150. Residence Permit (e.g., Red-White-Red Card): €120 (application fee) + €20 (issuance) + €20 (personalisation) = €160 total.',
     vfsServiceFee: 'Approximately ₹2,433'
   },
   eVisa: {
@@ -28,20 +28,20 @@ export default {
   },
   stayDuration: {
     eVisa: 'Not Applicable',
-    stickerSingleDouble: 'National D Visa: 91 days to 6 months. Red-White-Red Card: 24 months initially.',
-    stickerMultiple: 'National D Visa can be single or multiple entry depending on issuance.'
+    stickerSingleDouble: 'National D Visa: Up to 180 days (6 months). Red-White-Red Card: Up to 24 months (2 years).',
+    stickerMultiple: 'National D Visa can be single or multiple entry depending on issuance, valid up to 180 days.'
   },
   entryType: 'Single / Multiple Entry (for National D Visa, depending on issuance)',
   documents: [
     { key: 'passport', title: 'Valid Indian Passport', description: 'Valid for at least 6 months beyond the intended stay with at least 2 blank pages, issued within the last 10 years. Photocopies of front and back pages are required.', icon: '📘', mandatory: true },
     { key: 'photographs', title: 'Passport Photographs (35×45mm)', description: 'Two recent (not older than 6 months) passport-size colour photos with a white background, full face visible, and neutral expression, adhering to biometric standards.', icon: '📸', mandatory: true },
-    { key: 'visa_form', title: 'Application Form', description: 'Duly completed and signed National Long-Stay Visa (Type D) application form.', icon: '📋', mandatory: true },
+    { key: 'visa_form', title: 'Application Form', description: 'Duly completed and signed National Long-Stay Visa (Type D) application form or Residence Permit application form.', icon: '📋', mandatory: true },
     { key: 'work_contract', title: 'Work Contract / Job Offer', description: 'A valid and signed employment contract or binding job offer letter from an Austrian employer, specifying salary, job title, and duration.', icon: '📄', mandatory: true },
     { key: 'qualifications', title: 'Proof of Qualifications & Experience', description: 'Copies of diplomas, degrees, certifications, and work experience letters from previous employers relevant to the job or permit type.', icon: '🎓', mandatory: true },
-    { key: 'police_clearance', title: 'Police Clearance Certificate (PCC)', description: 'A police clearance certificate from India.', icon: '📜', mandatory: true },
-    { key: 'health_insurance', title: 'Travel Medical Insurance', description: 'Medical insurance covering the entire period of stay in Austria and across the Schengen area, with a minimum coverage of €30,000 for medical emergencies, hospitalization, and repatriation. Must be from an approved list of companies (as of 2026).', icon: '🛡️', mandatory: true },
+    { key: 'police_clearance', title: 'Police Clearance Certificate (PCC)', description: 'A police clearance certificate from India, apostilled/authenticated.', icon: '📜', mandatory: true },
+    { key: 'health_insurance', title: 'Travel Medical Insurance', description: 'Medical insurance covering the entire period of stay in Austria and across the Schengen area, with a minimum coverage of €30,000 for medical emergencies, hospitalization, and repatriation.', icon: '🛡️', mandatory: true },
     { key: 'accommodation', title: 'Proof of Accommodation', description: 'Proof of a legal title to locally customary accommodation in Austria (e.g., lease contract, hotel reservation, or invitation letter from host with their proof of residence).', icon: '🏨', mandatory: true },
-    { key: 'financial_proof', title: 'Financial Proof', description: 'Personal bank statements for the last 3-6 months, salary slips from the last 3 months, and Income Tax Returns (ITR) for the last 2 years, demonstrating sufficient funds to support your stay (guideline: €60-80 per day).', icon: '🏦', mandatory: true },
+    { key: 'financial_proof', title: 'Financial Proof', description: 'Personal bank statements for the last 3-6 months, salary slips from the last 3 months, and Income Tax Returns (ITR) for the last 2 years, demonstrating sufficient funds to support your stay.', icon: '🏦', mandatory: true },
     { key: 'flight_itinerary', title: 'Flight Itinerary', description: 'Round-trip flight reservation showing entry and exit dates from the Schengen Area.', icon: '✈️', mandatory: true },
     { key: 'cover_letter', title: 'Cover Letter', description: 'A personal cover letter explaining the purpose of the visit, itinerary, and ties to India.', icon: '📝', mandatory: true },
     { key: 'language_skills', title: 'Proof of Language Skills', description: 'Evidence of German or English language proficiency, if applicable, especially for points-based systems like the Red-White-Red Card.', icon: '🗣️', mandatory: false },

@@ -12,7 +12,7 @@ export default {
   fees: {
     eVisaTotal: 'N/A',
     stickerConsularStandard: 'EUR 90',
-    vfsServiceFee: 'INR 1,490'
+    vfsServiceFee: 'INR 1,691'
   },
   eVisa: {
     available: false,
@@ -75,7 +75,7 @@ export default {
     {
       key: 'bank_statement',
       title: 'Financial Proof & Income Tax Returns',
-      description: 'Original bank statements for the past 3 to 6 months stamped by the bank showing sufficient funds (min. DKK 500/day for hotel stay), along with Income Tax Returns (ITR-V) for the last 3 years.',
+      description: 'Original bank statements for the past 3 to 6 months stamped by the bank showing sufficient funds (min. DKK 500/day for hotel stay or DKK 350/day if staying with private host), along with Income Tax Returns (ITR-V) for the last 3 years.',
       icon: 'bank',
       mandatory: true
     },
@@ -106,7 +106,7 @@ export default {
     {
       step: 4,
       title: 'Submit Dossier and Biometrics',
-      description: 'Attend the appointment with printed documents, cover letter, passport, and pay the local VFS service fee for biometric capture.'
+      description: 'Attend the appointment with printed documents, signed cover letter, passport, and pay the VFS service fee for biometric capture.'
     },
     {
       step: 5,

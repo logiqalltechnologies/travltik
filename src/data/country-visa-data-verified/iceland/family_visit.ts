@@ -6,7 +6,7 @@ export default {
   channels: ['VFS Global'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15-45 calendar days',
+    standardSticker: '15-45 working days',
     expressSticker: 'Not available'
   },
   fees: {

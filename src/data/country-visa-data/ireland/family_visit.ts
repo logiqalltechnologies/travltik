@@ -18,10 +18,10 @@ export default {
     available: false,
     portal: 'https://www.visas.inis.gov.ie/avats/OnlineHome.aspx',
     territorialScope: 'Republic of Ireland',
-    validity: 'Up to 90 days',
-    maxStay: '90 days',
+    validity: 'Not applicable',
+    maxStay: 'Not applicable',
     invitationRequired: true,
-    processing: '20-40 working days'
+    processing: 'Not applicable'
   },
   stayDuration: {
     eVisa: 'Not applicable',
@@ -35,7 +35,7 @@ export default {
     { key: 'visa_form', title: 'AVATS Online Application Summary Sheet', description: 'Signed AVATS online application summary printout', icon: '📋', mandatory: true },
     { key: 'invitation_letter', title: 'Invitation Letter from Host', description: 'Official invitation from family member in Ireland with host details and relationship proof', icon: '✉️', mandatory: true },
     { key: 'host_id_proof', title: 'Host ID/Residence Proof', description: 'Copy of host passport or Irish Residence Permit (IRP)', icon: '🪪', mandatory: true },
-    { key: 'relationship_proof', title: 'Proof of Relationship', description: 'Birth certificate, marriage certificate, or family register', icon: '👨👩👧', mandatory: true },
+    { key: 'relationship_proof', title: 'Proof of Relationship', description: 'Birth certificate, marriage certificate, or family register', icon: '👨‍👩‍👧', mandatory: true },
     { key: 'flight_booking', title: 'Flight Itinerary', description: 'Confirmed round-trip flight reservation', icon: '✈️', mandatory: true },
     { key: 'accommodation', title: 'Proof of Accommodation', description: 'Host address proof or hotel bookings', icon: '🏨', mandatory: true },
     { key: 'travel_insurance', title: 'Comprehensive Travel Insurance', description: 'Travel health insurance covering emergency medical expenses', icon: '🛡️', mandatory: true },

@@ -6,7 +6,7 @@ export default {
   channels: ['Embassy of the Czech Republic in New Delhi'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '60 calendar days',
+    standardSticker: '60 working days',
     expressSticker: 'Not available'
   },
   fees: {

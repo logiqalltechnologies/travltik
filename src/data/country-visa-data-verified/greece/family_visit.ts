@@ -6,7 +6,7 @@ export default {
   channels: ['GVCW Application Centre', 'Embassy of Greece in New Delhi'],
   processingTime: {
     eVisa: 'Not applicable',
-    standardSticker: '15 calendar days (extendable up to 45 days)',
+    standardSticker: '15 working days (extendable up to 45 days)',
     expressSticker: 'Not available'
   },
   fees: {

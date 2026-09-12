@@ -2,8 +2,8 @@ export default {
   country: 'iceland',
   fromCountry: 'India',
   visaCategory: 'Family Visit Visa (Schengen Type C)',
-  authority: 'Directorate of Immigration (Útlendingastofnun) / Embassy of Iceland',
-  channels: ['VFS Global', 'Embassy of Iceland'],
+  authority: 'Directorate of Immigration (Útlendingastofnun) / Embassy of Iceland in New Delhi',
+  channels: ['VFS Global'],
   processingTime: {
     eVisa: 'Not applicable',
     standardSticker: '15-45 working days',
@@ -12,7 +12,7 @@ export default {
   fees: {
     eVisaTotal: 'Not applicable',
     stickerConsularStandard: '€90 (~₹8,100)',
-    vfsServiceFee: '€23 (~₹2,070)'
+    vfsServiceFee: '€24.60 (~₹2,214)'
   },
   eVisa: {
     available: false,
@@ -26,12 +26,12 @@ export default {
   stayDuration: {
     eVisa: 'Not applicable',
     stickerSingleDouble: 'Up to 90 days',
-    stickerMultiple: 'Up to 90 days within 180-day period'
+    stickerMultiple: 'Up to 90 days within any 180-day period'
   },
   entryType: 'Single / Double / Multiple Entry',
   documents: [
     { key: 'passport', title: 'Valid Indian Passport', description: 'Valid for at least 3 months beyond departure from Schengen, issued within 10 years, 2 blank pages', icon: '📘', mandatory: true },
-    { key: 'photographs', title: 'Passport Photographs (35×45mm)', description: 'Two recent color photos, white background', icon: '📸', mandatory: true },
+    { key: 'photographs', title: 'Passport Photographs (35×45mm)', description: 'Two recent color photos (35×45mm), white background, taken within the last 6 months', icon: '📸', mandatory: true },
     { key: 'visa_form', title: 'Schengen Visa Application Form', description: 'Completed and signed application form', icon: '📋', mandatory: true },
     { key: 'invitation_letter', title: 'Invitation Letter from Host', description: 'Official invitation from family member in Iceland with host details and relationship proof', icon: '✉️', mandatory: true },
     { key: 'host_id_proof', title: 'Host ID/Residence Proof', description: 'Copy of host passport or Icelandic residence permit', icon: '🪪', mandatory: true },
