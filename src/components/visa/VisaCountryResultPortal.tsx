@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { OfficialRequirementsCard } from './OfficialRequirementsCard';
+import { LiveVisaRequirementsWidget } from './LiveVisaRequirementsWidget';
 
 import {
   getStudentVisaSteps,
@@ -7645,6 +7646,14 @@ export function VisaCountryResultPortal({
 
                   return (
                     <>
+                      {/* LIVE AI REQUIREMENTS ENGINE (GEMINI) */}
+                      <LiveVisaRequirementsWidget
+                        countryName={countryName}
+                        countrySlug={slugClean}
+                        passportCountry={passportCountry}
+                        purpose={activePurposeTab}
+                      />
+
                       {/* 2. Documents Required Card */}
                       <div id="documents-section" className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-5 text-left">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
