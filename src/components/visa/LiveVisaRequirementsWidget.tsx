@@ -1,47 +1,71 @@
 import React, { useState } from 'react';
-import { Sparkles, CheckCircle2, AlertCircle, ExternalLink, Clock, ShieldCheck, DollarSign, FileText, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, CheckCircle2, AlertCircle, ExternalLink, Clock, ShieldCheck, DollarSign, FileText, ChevronDown, ChevronUp, Globe, ListOrdered, ShieldAlert } from 'lucide-react';
 
 interface LiveDoc {
-  name: string;
-  mandatory: string;
-  condition?: string;
+  key?: string;
+  title?: string;
+  name?: string;
   description?: string;
+  icon?: string;
+  mandatory: boolean | string;
+  condition?: string;
   sourceName?: string;
   sourceUrl?: string;
   lastVerified?: string;
 }
 
-interface LiveFee {
-  name: string;
-  amount: string;
-  currency: string;
-  sourceName?: string;
-  sourceUrl?: string;
-}
-
-interface LiveProcessing {
-  estimatedTime: string;
-  sourceName?: string;
-  sourceUrl?: string;
-}
-
-interface GroundingSource {
+interface LiveStep {
+  step: number;
   title: string;
-  uri: string;
+  description: string;
+}
+
+interface LiveSource {
+  name: string;
+  url: string;
+  lastVerified?: string;
 }
 
 interface LiveVisaResponse {
   success: boolean;
   checkedAt: string;
-  passportCountry: string;
-  destinationCountry: string;
-  purpose: string;
-  visaType: string;
-  confidence: string;
-  documents: LiveDoc[];
-  fees: LiveFee[];
-  processing: LiveProcessing;
-  groundingSources?: GroundingSource[];
+  country?: string;
+  fromCountry?: string;
+  visaCategory?: string;
+  authority?: string;
+  channels?: string[];
+  processingTime?: {
+    eVisa?: string;
+    standardSticker?: string;
+    expressSticker?: string;
+  };
+  fees?: {
+    eVisaTotal?: string;
+    stickerConsularStandard?: string;
+    vfsServiceFee?: string;
+  };
+  eVisa?: {
+    available?: boolean;
+    portal?: string;
+    territorialScope?: string;
+    validity?: string;
+    maxStay?: string;
+    invitationRequired?: boolean;
+    processing?: string;
+  };
+  stayDuration?: {
+    eVisa?: string;
+    stickerSingleDouble?: string;
+    stickerMultiple?: string;
+  };
+  entryType?: string;
+  documents?: LiveDoc[];
+  steps?: LiveStep[];
+  specialRequirements?: {
+    entry_rules?: string;
+  };
+  sources?: LiveSource[];
+  confidence?: string;
   error?: string;
   details?: string;
 }
@@ -62,7 +86,6 @@ export function LiveVisaRequirementsWidget({
   const [liveData, setLiveData] = useState<LiveVisaResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState(true);
 
   async function checkLiveRequirements() {
     setLoading(true);
@@ -82,7 +105,6 @@ export function LiveVisaRequirementsWidget({
       const data: LiveVisaResponse = await response.json();
       if (data.success) {
         setLiveData(data);
-        setExpanded(true);
       } else {
         setError(data.error || data.details || 'Unable to retrieve live requirements.');
       }
@@ -93,20 +115,25 @@ export function LiveVisaRequirementsWidget({
     }
   }
 
-  // Split documents into three categories
+  // Split documents into categories
   const mandatoryDocs = liveData?.documents?.filter(d => {
-    const m = (d.mandatory || 'mandatory').toLowerCase();
-    return !m.includes('condition') && !m.includes('recommend');
+    if (typeof d.mandatory === 'boolean') return d.mandatory;
+    const m = (d.mandatory || '').toLowerCase();
+    return !m.includes('condition') && !m.includes('recommend') && !m.includes('false');
   }) || [];
 
   const conditionalDocs = liveData?.documents?.filter(d => {
-    const m = (d.mandatory || '').toLowerCase();
-    return m.includes('condition') || (d.condition && d.condition.trim().length > 0);
+    if (d.condition && d.condition.trim().length > 0) return true;
+    if (typeof d.mandatory === 'string') {
+      return d.mandatory.toLowerCase().includes('condition');
+    }
+    return false;
   }) || [];
 
   const recommendedDocs = liveData?.documents?.filter(d => {
+    if (typeof d.mandatory === 'boolean') return !d.mandatory && !d.condition;
     const m = (d.mandatory || '').toLowerCase();
-    return m.includes('recommend');
+    return m.includes('recommend') || m.includes('false') || m.includes('optional');
   }) || [];
 
   return (
@@ -151,7 +178,7 @@ export function LiveVisaRequirementsWidget({
 
       {/* Live Data Results */}
       {liveData && (
-        <div className="space-y-5 pt-4 border-t border-white/10 animate-in fade-in duration-300">
+        <div className="space-y-6 pt-4 border-t border-white/10 animate-in fade-in duration-300">
           {/* Top Verified Banner */}
           <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl">
             <div className="flex items-center gap-2 text-xs font-bold text-emerald-300">
@@ -159,47 +186,101 @@ export function LiveVisaRequirementsWidget({
               <span>✓ LIVE VERIFIED — {new Date(liveData.checkedAt).toLocaleString()}</span>
             </div>
             <div className="flex items-center gap-3 text-[11px] text-slate-300">
-              <span>Visa Type: <strong className="text-white">{liveData.visaType || 'Official Visa'}</strong></span>
-              <span className="px-2 py-0.5 rounded-full bg-white/10 text-indigo-200 font-bold uppercase text-[9px]">
+              <span>Category: <strong className="text-white">{liveData.visaCategory || 'Tourist Visa'}</strong></span>
+              <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-indigo-200 font-bold uppercase text-[9px]">
                 {liveData.confidence || 'HIGH'} Confidence
               </span>
             </div>
           </div>
 
-          {/* Quick Metrics (Processing & Fees) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Processing Time */}
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
-              <div className="flex items-center gap-1.5 text-slate-400 text-[11px] uppercase font-bold tracking-wider">
-                <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Processing Window (Official)</span>
+          {/* Authority & Channels */}
+          {liveData.authority && (
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="text-[11px] uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Issuing Authority &amp; Channels</span>
               </div>
-              <div className="text-sm font-bold text-emerald-300">
-                {liveData.processing?.estimatedTime || 'Per embassy schedules'}
+              <div className="text-xs sm:text-sm font-semibold text-white">
+                {liveData.authority}
               </div>
-              {liveData.processing?.sourceName && (
-                <div className="text-[10px] text-slate-400">
-                  Authority: {liveData.processing.sourceName}
+              {liveData.channels && liveData.channels.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {liveData.channels.map((ch, idx) => (
+                    <span key={idx} className="px-2.5 py-1 rounded-lg bg-indigo-500/15 border border-indigo-500/25 text-[11px] text-indigo-200">
+                      {ch}
+                    </span>
+                  ))}
                 </div>
               )}
             </div>
+          )}
 
-            {/* Fees */}
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+          {/* Quick Metrics: Processing & Fees Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {/* Processing Time */}
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="flex items-center gap-1.5 text-slate-400 text-[11px] uppercase font-bold tracking-wider">
+                <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Processing Schedule</span>
+              </div>
+              <div className="space-y-1 text-xs">
+                {liveData.processingTime?.eVisa && liveData.processingTime.eVisa !== 'N/A' && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">eVisa:</span>
+                    <strong className="text-emerald-300 font-bold">{liveData.processingTime.eVisa}</strong>
+                  </div>
+                )}
+                {liveData.processingTime?.standardSticker && liveData.processingTime.standardSticker !== 'N/A' && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Standard Sticker:</span>
+                    <strong className="text-emerald-300 font-bold">{liveData.processingTime.standardSticker}</strong>
+                  </div>
+                )}
+                {liveData.processingTime?.expressSticker && liveData.processingTime.expressSticker !== 'N/A' && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Express:</span>
+                    <strong className="text-emerald-300 font-bold">{liveData.processingTime.expressSticker}</strong>
+                  </div>
+                )}
+                {liveData.eVisa?.validity && (
+                  <div className="flex justify-between items-center pt-1 border-t border-white/5 text-[11px]">
+                    <span className="text-slate-400">Validity:</span>
+                    <span className="text-slate-200">{liveData.eVisa.validity}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Official Fee Schedule */}
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
               <div className="flex items-center gap-1.5 text-slate-400 text-[11px] uppercase font-bold tracking-wider">
                 <DollarSign className="w-3.5 h-3.5 text-amber-400" />
                 <span>Official Fee Schedule</span>
               </div>
-              <div className="text-xs font-semibold text-white space-y-0.5">
-                {liveData.fees && liveData.fees.length > 0 ? (
-                  liveData.fees.map((f, i) => (
-                    <div key={i} className="flex justify-between items-center">
-                      <span className="text-slate-300">{f.name}:</span>
-                      <strong className="text-amber-300">{f.amount} {f.currency}</strong>
-                    </div>
-                  ))
-                ) : (
-                  <span className="text-slate-400">Per official mission consular tariff</span>
+              <div className="space-y-1 text-xs">
+                {liveData.fees?.eVisaTotal && liveData.fees.eVisaTotal !== 'N/A' && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">eVisa Total:</span>
+                    <strong className="text-amber-300 font-bold">{liveData.fees.eVisaTotal}</strong>
+                  </div>
+                )}
+                {liveData.fees?.stickerConsularStandard && liveData.fees.stickerConsularStandard !== 'N/A' && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Consular Fee:</span>
+                    <strong className="text-amber-300 font-bold">{liveData.fees.stickerConsularStandard}</strong>
+                  </div>
+                )}
+                {liveData.fees?.vfsServiceFee && liveData.fees.vfsServiceFee !== 'N/A' && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-300">Service Fee:</span>
+                    <strong className="text-amber-300 font-bold">{liveData.fees.vfsServiceFee}</strong>
+                  </div>
+                )}
+                {liveData.entryType && (
+                  <div className="flex justify-between items-center pt-1 border-t border-white/5 text-[11px]">
+                    <span className="text-slate-400">Entry Type:</span>
+                    <span className="text-slate-200">{liveData.entryType}</span>
+                  </div>
                 )}
               </div>
             </div>
@@ -217,23 +298,17 @@ export function LiveVisaRequirementsWidget({
                 </div>
                 <div className="grid grid-cols-1 gap-2.5">
                   {mandatoryDocs.map((doc, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-white/[0.07] transition-all">
+                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/[0.07] transition-all">
                       <div className="flex items-start justify-between gap-3">
-                        <h4 className="text-xs sm:text-sm font-bold text-white leading-snug">{doc.name}</h4>
+                        <h4 className="text-xs sm:text-sm font-bold text-white leading-snug flex items-center gap-2">
+                          <span>{doc.icon || '📘'}</span>
+                          <span>{doc.title || doc.name}</span>
+                        </h4>
                         <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider shrink-0 bg-rose-500/20 text-rose-300 border border-rose-500/30">
                           MANDATORY
                         </span>
                       </div>
-                      {doc.description && <p className="text-xs text-slate-300 leading-relaxed">{doc.description}</p>}
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-white/5 text-[10px] text-slate-400">
-                        <span>Authority: {doc.sourceName || 'Official Consular Source'}</span>
-                        {doc.sourceUrl && (
-                          <a href={doc.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-300 hover:text-white underline inline-flex items-center gap-1">
-                            Official Source <ExternalLink className="w-2.5 h-2.5" />
-                          </a>
-                        )}
-                        <span>Last verified: {doc.lastVerified ? new Date(doc.lastVerified).toLocaleDateString() : 'Real-time'}</span>
-                      </div>
+                      {doc.description && <p className="text-xs text-slate-300 leading-relaxed pl-6">{doc.description}</p>}
                     </div>
                   ))}
                 </div>
@@ -252,26 +327,20 @@ export function LiveVisaRequirementsWidget({
                   {conditionalDocs.map((doc, idx) => (
                     <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-white/[0.07] transition-all">
                       <div className="flex items-start justify-between gap-3">
-                        <h4 className="text-xs sm:text-sm font-bold text-white leading-snug">{doc.name}</h4>
+                        <h4 className="text-xs sm:text-sm font-bold text-white leading-snug flex items-center gap-2">
+                          <span>{doc.icon || '⚠️'}</span>
+                          <span>{doc.title || doc.name}</span>
+                        </h4>
                         <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider shrink-0 bg-amber-500/20 text-amber-300 border border-amber-500/30">
                           CONDITIONAL
                         </span>
                       </div>
-                      {doc.description && <p className="text-xs text-slate-300 leading-relaxed">{doc.description}</p>}
+                      {doc.description && <p className="text-xs text-slate-300 leading-relaxed pl-6">{doc.description}</p>}
                       {doc.condition && (
                         <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-200">
                           <strong>Trigger Condition:</strong> {doc.condition}
                         </div>
                       )}
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-white/5 text-[10px] text-slate-400">
-                        <span>Authority: {doc.sourceName || 'Official Consular Source'}</span>
-                        {doc.sourceUrl && (
-                          <a href={doc.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-300 hover:text-white underline inline-flex items-center gap-1">
-                            Official Source <ExternalLink className="w-2.5 h-2.5" />
-                          </a>
-                        )}
-                        <span>Last verified: {doc.lastVerified ? new Date(doc.lastVerified).toLocaleDateString() : 'Real-time'}</span>
-                      </div>
                     </div>
                   ))}
                 </div>
@@ -288,23 +357,17 @@ export function LiveVisaRequirementsWidget({
                 </div>
                 <div className="grid grid-cols-1 gap-2.5">
                   {recommendedDocs.map((doc, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-white/[0.07] transition-all">
+                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/[0.07] transition-all">
                       <div className="flex items-start justify-between gap-3">
-                        <h4 className="text-xs sm:text-sm font-bold text-white leading-snug">{doc.name}</h4>
+                        <h4 className="text-xs sm:text-sm font-bold text-white leading-snug flex items-center gap-2">
+                          <span>{doc.icon || '📄'}</span>
+                          <span>{doc.title || doc.name}</span>
+                        </h4>
                         <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider shrink-0 bg-sky-500/20 text-sky-300 border border-sky-500/30">
-                          RECOMMENDED
+                          OPTIONAL
                         </span>
                       </div>
-                      {doc.description && <p className="text-xs text-slate-300 leading-relaxed">{doc.description}</p>}
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-white/5 text-[10px] text-slate-400">
-                        <span>Authority: {doc.sourceName || 'Official Consular Source'}</span>
-                        {doc.sourceUrl && (
-                          <a href={doc.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-300 hover:text-white underline inline-flex items-center gap-1">
-                            Official Source <ExternalLink className="w-2.5 h-2.5" />
-                          </a>
-                        )}
-                        <span>Last verified: {doc.lastVerified ? new Date(doc.lastVerified).toLocaleDateString() : 'Real-time'}</span>
-                      </div>
+                      {doc.description && <p className="text-xs text-slate-300 leading-relaxed pl-6">{doc.description}</p>}
                     </div>
                   ))}
                 </div>
@@ -312,22 +375,56 @@ export function LiveVisaRequirementsWidget({
             )}
           </div>
 
+          {/* Steps to Follow */}
+          {liveData.steps && liveData.steps.length > 0 && (
+            <div className="space-y-3 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-[11px] uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
+                <ListOrdered className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Application Steps</span>
+              </div>
+              <div className="space-y-2">
+                {liveData.steps.map((st) => (
+                  <div key={st.step} className="flex items-start gap-3 text-xs">
+                    <span className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold flex items-center justify-center shrink-0 text-[10px]">
+                      {st.step}
+                    </span>
+                    <div className="flex-1">
+                      <span className="font-bold text-white">{st.title}: </span>
+                      <span className="text-slate-300">{st.description}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Special Entry Rules / Biometrics */}
+          {liveData.specialRequirements?.entry_rules && (
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 space-y-1 text-xs">
+              <div className="flex items-center gap-1.5 font-bold text-amber-300">
+                <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
+                <span>Special Entry Directives</span>
+              </div>
+              <p className="text-slate-200 leading-relaxed">{liveData.specialRequirements.entry_rules}</p>
+            </div>
+          )}
+
           {/* Official Grounding Sources Citations */}
-          {liveData.groundingSources && liveData.groundingSources.length > 0 && (
+          {liveData.sources && liveData.sources.length > 0 && (
             <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 space-y-2">
               <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
                 OFFICIAL CITATIONS & EMBASSY SOURCES
               </span>
               <div className="flex flex-wrap gap-2 text-xs">
-                {liveData.groundingSources.map((s, idx) => (
+                {liveData.sources.map((s, idx) => (
                   <a
                     key={idx}
-                    href={s.uri}
+                    href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-indigo-200 hover:text-white transition-colors text-xs"
                   >
-                    <span>{s.title}</span>
+                    <span>{s.name}</span>
                     <ExternalLink className="w-3 h-3 text-indigo-400" />
                   </a>
                 ))}

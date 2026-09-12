@@ -197,24 +197,73 @@ Travel date: ${input.travelDate || 'Not provided'}
 Duration: ${input.duration || 'Not provided'} days
 Country of residence: ${input.residenceCountry || input.passportCountry}
 
-Provide the CURRENT official visa and entry requirements based on official government and embassy regulations. Use only official sources: embassy, immigration authority, VFS/BLS/TLS.
+Provide the CURRENT official visa and entry requirements based on official government and embassy regulations. Use only official sources: embassy, immigration authority, VFS/BLS/TLS/CVASC.
 
-Return ONLY valid JSON (no markdown):
+CRITICAL RULES:
+1. Return ONLY valid JSON in the EXACT nested format below. Do NOT use flat structure. Use nested objects as shown.
+2. Processing time must use "working days" format, NOT "calendar days".
+3. Documents array must contain: key, title, description, icon, mandatory (boolean).
+4. Steps array must contain: step (number), title, description.
+5. Sources array must contain: name, url, lastVerified.
+
+REQUIRED FORMAT:
 {
-  "success": true,
-  "checkedAt": "${today}",
-  "passportCountry": "${input.passportCountry}",
-  "destinationCountry": "${input.destinationCountry}",
-  "purpose": "${input.purpose}",
-  "visaType": "",
-  "visaStatus": "",
-  "documents": [{"name":"","mandatory":"mandatory","condition":"","description":"","sourceName":"","sourceUrl":"","lastVerified":"${today}"}],
-  "financialRequirements": [{"name":"","amount":"","currency":"","period":"","condition":"","sourceName":"","sourceUrl":""}],
-  "fees": [{"name":"","amount":"","currency":"","sourceName":"","sourceUrl":""}],
-  "processing": {"estimatedTime":"","sourceName":"","sourceUrl":""},
-  "biometrics": {"required":false,"details":"","sourceName":"","sourceUrl":""},
-  "application": {"onlineApplicationUrl":"","appointmentUrl":"","officialGuideUrl":""},
-  "warnings": [],
+  "country": "${input.destinationCountry.toLowerCase()}",
+  "fromCountry": "${input.passportCountry}",
+  "visaCategory": "${input.purpose.charAt(0).toUpperCase() + input.purpose.slice(1)} Visa",
+  "authority": "",
+  "channels": [""],
+  "processingTime": {
+    "eVisa": "",
+    "standardSticker": "",
+    "expressSticker": ""
+  },
+  "fees": {
+    "eVisaTotal": "",
+    "stickerConsularStandard": "",
+    "vfsServiceFee": ""
+  },
+  "eVisa": {
+    "available": true,
+    "portal": "",
+    "territorialScope": "",
+    "validity": "",
+    "maxStay": "",
+    "invitationRequired": false,
+    "processing": ""
+  },
+  "stayDuration": {
+    "eVisa": "",
+    "stickerSingleDouble": "",
+    "stickerMultiple": ""
+  },
+  "entryType": "",
+  "documents": [
+    {
+      "key": "passport",
+      "title": "",
+      "description": "",
+      "icon": "📘",
+      "mandatory": true
+    }
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "title": "",
+      "description": ""
+    }
+  ],
+  "specialRequirements": {
+    "entry_rules": ""
+  },
+  "sources": [
+    {
+      "name": "",
+      "url": "",
+      "lastVerified": "${today}"
+    }
+  ],
   "confidence": "high"
 }`;
 
@@ -235,17 +284,35 @@ Return ONLY valid JSON (no markdown):
         }
         const jsonStr = cleaned.slice(firstBrace, lastBrace + 1);
         const result = JSON.parse(jsonStr);
-        if (result.processing?.estimatedTime) {
-          result.processing.estimatedTime = result.processing.estimatedTime.replace(/calendar days/gi, 'working days');
+
+        // Rule #6: Enforce working days replacement
+        if (result.processingTime) {
+          if (result.processingTime.eVisa && typeof result.processingTime.eVisa === 'string') {
+            result.processingTime.eVisa = result.processingTime.eVisa.replace(/calendar days/gi, 'working days');
+          }
+          if (result.processingTime.standardSticker && typeof result.processingTime.standardSticker === 'string') {
+            result.processingTime.standardSticker = result.processingTime.standardSticker.replace(/calendar days/gi, 'working days');
+          }
+          if (result.processingTime.expressSticker && typeof result.processingTime.expressSticker === 'string') {
+            result.processingTime.expressSticker = result.processingTime.expressSticker.replace(/calendar days/gi, 'working days');
+          }
         }
+        if (result.eVisa?.processing && typeof result.eVisa.processing === 'string') {
+          result.eVisa.processing = result.eVisa.processing.replace(/calendar days/gi, 'working days');
+        }
+
         const sources = geminiResponse.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
         const groundingSources = sources.slice(0, 10).map((s: any) => ({
-          title: s.web?.title || 'Official Source',
-          uri: s.web?.uri || '',
-        })).filter((s: any) => s.uri);
+          name: s.web?.title || 'Official Source',
+          url: s.web?.uri || '',
+          lastVerified: today
+        })).filter((s: any) => s.url);
 
         const payload = {
+          success: true,
+          checkedAt: today,
           ...result,
+          sources: (result.sources && result.sources.length > 0) ? result.sources : groundingSources,
           groundingSources,
           responseTimeMs: Date.now() - startTime,
         };
