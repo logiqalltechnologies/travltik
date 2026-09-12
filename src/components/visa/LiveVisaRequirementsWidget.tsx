@@ -9,6 +9,7 @@ interface LiveDoc {
   icon?: string;
   mandatory: boolean | string;
   condition?: string;
+  conditions?: string[];
   sourceName?: string;
   sourceUrl?: string;
   lastVerified?: string;
@@ -298,7 +299,7 @@ export function LiveVisaRequirementsWidget({
                 </div>
                 <div className="grid grid-cols-1 gap-2.5">
                   {mandatoryDocs.map((doc, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/[0.07] transition-all">
+                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-white/[0.07] transition-all">
                       <div className="flex items-start justify-between gap-3">
                         <h4 className="text-xs sm:text-sm font-bold text-white leading-snug flex items-center gap-2">
                           <span>{doc.icon || '📘'}</span>
@@ -309,6 +310,34 @@ export function LiveVisaRequirementsWidget({
                         </span>
                       </div>
                       {doc.description && <p className="text-xs text-slate-300 leading-relaxed pl-6">{doc.description}</p>}
+                      {doc.conditions && doc.conditions.length > 0 && (
+                        <div className="pl-6 space-y-1.5 pt-0.5">
+                          <div className="text-[10px] font-bold text-indigo-300 uppercase tracking-wider">
+                            Validity &amp; Conditions ({doc.conditions.length}):
+                          </div>
+                          <ul className="space-y-1 text-xs text-slate-300">
+                            {doc.conditions.map((cond, cIdx) => (
+                              <li key={cIdx} className="flex items-start gap-2">
+                                <span className="text-indigo-400 font-bold text-xs mt-0.5">•</span>
+                                <span className="leading-relaxed">{cond}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {doc.sourceUrl && (
+                        <div className="pl-6 pt-1">
+                          <a
+                            href={doc.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-[11px] text-indigo-300 hover:text-indigo-200"
+                          >
+                            <span>Source: {doc.sourceName || 'Official Source'}</span>
+                            <ExternalLink className="w-3 h-3 text-indigo-400" />
+                          </a>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -341,6 +370,34 @@ export function LiveVisaRequirementsWidget({
                           <strong>Trigger Condition:</strong> {doc.condition}
                         </div>
                       )}
+                      {doc.conditions && doc.conditions.length > 0 && (
+                        <div className="pl-6 space-y-1.5 pt-0.5">
+                          <div className="text-[10px] font-bold text-amber-300 uppercase tracking-wider">
+                            Conditions &amp; Rules ({doc.conditions.length}):
+                          </div>
+                          <ul className="space-y-1 text-xs text-slate-300">
+                            {doc.conditions.map((cond, cIdx) => (
+                              <li key={cIdx} className="flex items-start gap-2">
+                                <span className="text-amber-400 font-bold text-xs mt-0.5">•</span>
+                                <span className="leading-relaxed">{cond}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {doc.sourceUrl && (
+                        <div className="pl-6 pt-1">
+                          <a
+                            href={doc.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-[11px] text-amber-300 hover:text-amber-200"
+                          >
+                            <span>Source: {doc.sourceName || 'Official Source'}</span>
+                            <ExternalLink className="w-3 h-3 text-amber-400" />
+                          </a>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -357,7 +414,7 @@ export function LiveVisaRequirementsWidget({
                 </div>
                 <div className="grid grid-cols-1 gap-2.5">
                   {recommendedDocs.map((doc, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 hover:bg-white/[0.07] transition-all">
+                    <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-white/[0.07] transition-all">
                       <div className="flex items-start justify-between gap-3">
                         <h4 className="text-xs sm:text-sm font-bold text-white leading-snug flex items-center gap-2">
                           <span>{doc.icon || '📄'}</span>
@@ -368,6 +425,34 @@ export function LiveVisaRequirementsWidget({
                         </span>
                       </div>
                       {doc.description && <p className="text-xs text-slate-300 leading-relaxed pl-6">{doc.description}</p>}
+                      {doc.conditions && doc.conditions.length > 0 && (
+                        <div className="pl-6 space-y-1.5 pt-0.5">
+                          <div className="text-[10px] font-bold text-sky-300 uppercase tracking-wider">
+                            Guidelines ({doc.conditions.length}):
+                          </div>
+                          <ul className="space-y-1 text-xs text-slate-300">
+                            {doc.conditions.map((cond, cIdx) => (
+                              <li key={cIdx} className="flex items-start gap-2">
+                                <span className="text-sky-400 font-bold text-xs mt-0.5">•</span>
+                                <span className="leading-relaxed">{cond}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {doc.sourceUrl && (
+                        <div className="pl-6 pt-1">
+                          <a
+                            href={doc.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-[11px] text-sky-300 hover:text-sky-200"
+                          >
+                            <span>Source: {doc.sourceName || 'Official Source'}</span>
+                            <ExternalLink className="w-3 h-3 text-sky-400" />
+                          </a>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

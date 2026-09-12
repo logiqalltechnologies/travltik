@@ -199,12 +199,21 @@ Country of residence: ${input.residenceCountry || input.passportCountry}
 
 Provide the CURRENT official visa and entry requirements based on official government and embassy regulations. Use only official sources: embassy, immigration authority, VFS/BLS/TLS/CVASC.
 
-CRITICAL RULES:
+DOCUMENT CONDITIONS RULES:
+- For EACH document, research and provide ALL the specific conditions/validity requirements from official sources.
+- Do NOT force a fixed number of conditions. Provide as many as actually exist.
+- If a document has 2 conditions, provide 2. If it has 4, provide 4. If it has 5, provide 5. If it has only 1 condition, provide 1.
+- Do NOT use generic descriptions. Each condition must be SPECIFIC to this country and document.
+- Research the ACTUAL requirements from official embassy/government sources.
+- Each condition should be a SEPARATE, DISTINCT requirement.
+- Conditions should cover different aspects: validity, format, content, quantity, certification, etc.
+- Do NOT invent conditions that don't exist in official sources.
+
+GENERAL CRITICAL RULES:
 1. Return ONLY valid JSON in the EXACT nested format below. Do NOT use flat structure. Use nested objects as shown.
 2. Processing time must use "working days" format, NOT "calendar days".
-3. Documents array must contain: key, title, description, icon, mandatory (boolean).
-4. Steps array must contain: step (number), title, description.
-5. Sources array must contain: name, url, lastVerified.
+3. Steps array must contain: step (number), title, description.
+4. Sources array must contain: name, url, lastVerified.
 
 REQUIRED FORMAT:
 {
@@ -241,10 +250,16 @@ REQUIRED FORMAT:
   "documents": [
     {
       "key": "passport",
-      "title": "",
-      "description": "",
+      "title": "Valid Passport",
       "icon": "📘",
-      "mandatory": true
+      "mandatory": true,
+      "conditions": [
+        "Condition 1 (specific to this country)",
+        "Condition 2 (specific to this country)"
+      ],
+      "sourceName": "Official Authority Name",
+      "sourceUrl": "https://official-source-url",
+      "lastVerified": "${today}"
     }
   ],
   "steps": [
