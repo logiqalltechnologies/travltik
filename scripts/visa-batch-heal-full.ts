@@ -299,6 +299,7 @@ async function callFreeProvider(provider: FreeProvider, prompt: string): Promise
   for (let attempt = 0; attempt < 3; attempt++) {
     const res = await fetch(`${provider.baseUrl}/chat/completions`, {
       method: 'POST',
+      signal: AbortSignal.timeout(25000),
       headers: {
         'Authorization': `Bearer ${provider.apiKey}`,
         'Content-Type': 'application/json',
