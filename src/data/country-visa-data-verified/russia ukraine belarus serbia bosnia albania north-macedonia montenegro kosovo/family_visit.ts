@@ -18,7 +18,7 @@ export default {
   ],
   processingTime: {
     eVisa: 'Russia: 4 calendar days; Ukraine: 9 working days; Albania: 15 working days; Others: N/A',
-    standardSticker: 'Russia: 10-20 working days; Ukraine: 10 working days; Belarus: 5 working days; Serbia: 15 calendar days; Bosnia and Herzegovina: 15 calendar days; Albania: 15 working days; North Macedonia: 10-15 working days; Montenegro: 14-30 calendar days; Kosovo: 15 calendar days',
+    standardSticker: 'Russia: 10-20 working days; Ukraine: 10 working days; Belarus: 5 working days; Serbia: 15 working days; Bosnia and Herzegovina: 15 calendar days; Albania: 15 working days; North Macedonia: 10-15 working days; Montenegro: 14-30 calendar days; Kosovo: 15 calendar days',
     expressSticker: 'Russia: 3 working days; Belarus: 2 working days; Ukraine: 5 working days; Others: N/A'
   },
   fees: {

@@ -25,7 +25,7 @@ export default {
     validity: 'Russia: 60 days | Albania: Up to 180 days',
     maxStay: 'Russia: 16 days | Albania: 90 days',
     invitationRequired: false,
-    processing: 'Russia: 4 calendar days | Albania: 15 working days'
+    processing: 'Russia: 4 working days | Albania: 15 working days'
   },
   stayDuration: {
     eVisa: 'Russia: 16 days | Albania: 90 days',
