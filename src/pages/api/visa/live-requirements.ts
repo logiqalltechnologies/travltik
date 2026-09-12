@@ -15,9 +15,17 @@ interface VisaRequest {
 // All available Gemini keys (AQ.Ab format — use x-goog-api-key header)
 function getGeminiKeys(): string[] {
   const keys: string[] = [];
-  const candidates = [
-    // Try process.env first (Node.js SSR)
+
+  // 1. Explicit named candidates (including exact production name from dashboard)
+  const explicit = [
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY,
     process.env.GEMINI_API_KEY,
+    process.env.PUBLIC_GEMINI_API_KEY,
+    process.env.GEMINI_API_KEY_1,
+    process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3,
+    process.env.GEMINI_API_KEY_4,
+    process.env.GEMINI_API_KEY_5,
     process.env.GEMINI_API_KEY_6,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_1,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_2,
@@ -25,8 +33,10 @@ function getGeminiKeys(): string[] {
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_4,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_5,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_6,
-    // Try import.meta.env (Vite/Astro)
+    // Try import.meta.env (Vite/Astro inlined vars)
+    (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY,
     (import.meta as any).env?.GEMINI_API_KEY,
+    (import.meta as any).env?.PUBLIC_GEMINI_API_KEY,
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_1,
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_2,
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_3,
@@ -34,11 +44,22 @@ function getGeminiKeys(): string[] {
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_5,
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_6,
   ];
-  for (const k of candidates) {
-    if (k && typeof k === 'string' && k.length > 10 && !keys.includes(k)) {
-      keys.push(k);
+
+  for (const k of explicit) {
+    if (k && typeof k === 'string' && k.trim().length > 10 && !keys.includes(k.trim())) {
+      keys.push(k.trim());
     }
   }
+
+  // 2. Dynamic scan of all process.env variables matching GEMINI
+  if (typeof process !== 'undefined' && process.env) {
+    for (const [k, v] of Object.entries(process.env)) {
+      if (k.toUpperCase().includes('GEMINI') && typeof v === 'string' && v.trim().length > 10) {
+        if (!keys.includes(v.trim())) keys.push(v.trim());
+      }
+    }
+  }
+
   return keys;
 }
 
