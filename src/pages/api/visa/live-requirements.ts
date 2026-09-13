@@ -27,12 +27,14 @@ function getGeminiKeys(): string[] {
     process.env.GEMINI_API_KEY_4,
     process.env.GEMINI_API_KEY_5,
     process.env.GEMINI_API_KEY_6,
+    process.env.GEMINI_API_KEY_7,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_1,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_2,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_3,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_4,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_5,
     process.env.NEXT_PUBLIC_GEMINI_API_KEY_6,
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY_7,
     // Try import.meta.env (Vite/Astro inlined vars)
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY,
     (import.meta as any).env?.GEMINI_API_KEY,
@@ -43,6 +45,7 @@ function getGeminiKeys(): string[] {
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_4,
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_5,
     (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_6,
+    (import.meta as any).env?.NEXT_PUBLIC_GEMINI_API_KEY_7,
   ];
 
   for (const k of explicit) {
@@ -130,7 +133,7 @@ async function callGeminiWithGrounding(prompt: string, apiKey: string): Promise<
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { temperature: 0.1 },
         }),
-        signal: AbortSignal.timeout(25000),
+        signal: AbortSignal.timeout(50000),
       }
     );
 
