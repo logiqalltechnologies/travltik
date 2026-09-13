@@ -3610,7 +3610,16 @@ export function VisaCountryResultPortal({
     }
     return null;
   });
-  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [isAiLoading, setIsAiLoading] = useState<boolean>(() => !aiData);
+  const [loadingStepIdx, setLoadingStepIdx] = useState<number>(0);
+
+  useEffect(() => {
+    if (!isAiLoading || aiData) return;
+    const timer = setInterval(() => {
+      setLoadingStepIdx(prev => (prev + 1) % 4);
+    }, 2200);
+    return () => clearInterval(timer);
+  }, [isAiLoading, !!aiData]);
 
   const [userCheckedSteps, setUserCheckedSteps] = useState<Record<number, boolean>>({});
 
@@ -4270,8 +4279,21 @@ export function VisaCountryResultPortal({
 
   useEffect(() => {
     let mounted = true;
+    const cacheKey = `travltik_ai_live_v6_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+    try {
+      const cached = typeof window !== 'undefined' ? localStorage.getItem(cacheKey) : null;
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        setAiData(parsed);
+        setIsAiLoading(false);
+        return;
+      }
+    } catch (_) {}
+
+    setAiData(null);
+    setIsAiLoading(true);
+
     const fetchLiveAiRequirements = async () => {
-      setIsAiLoading(true);
       try {
         let userEmail = 'seeker@travltik.com';
         try {
@@ -7229,6 +7251,87 @@ export function VisaCountryResultPortal({
     }
     return cleaned;
   };
+
+  if (isAiLoading && !aiData) {
+    const loadingStatusMessages = [
+      `Connecting to official ${countryName} consular database...`,
+      `Verifying official fees & biometric exemption rules...`,
+      `Structuring verified document requirements...`,
+      `Finalizing real-time application roadmap...`
+    ];
+
+    return (
+      <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
+        <section className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-3 sm:pt-6 space-y-6 font-sans antialiased text-slate-900">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-2">
+            <a href="/" className="hover:text-slate-900 transition-colors">Home</a>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <a href="/visas" className="hover:text-slate-900 transition-colors">Visas</a>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-bold">
+              {isSchengen ? `Schengen ${purposeLabel} Visa (${countryName})` : `${countryName} ${purposeLabel} Visa`}
+            </span>
+          </div>
+
+          {/* Centered Loading Workspace matching user reference media_1789283046576.png */}
+          <div className="min-h-[62vh] flex flex-col items-center justify-center py-16 px-4">
+            <div className="flex flex-col items-center max-w-md w-full text-center">
+              {/* Circular Spinner with Green Center & 3-Bar Icon */}
+              <div className="relative w-20 h-20 flex items-center justify-center mb-6">
+                <svg className="w-full h-full animate-spin" viewBox="0 0 100 100">
+                  <circle
+                    className="text-emerald-100"
+                    strokeWidth="5"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="43"
+                    cx="50"
+                    cy="50"
+                  />
+                  <circle
+                    className="text-emerald-500"
+                    strokeWidth="5"
+                    strokeDasharray="270"
+                    strokeDashoffset="190"
+                    strokeLinecap="round"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="43"
+                    cx="50"
+                    cy="50"
+                  />
+                </svg>
+                <div className="absolute inset-2.5 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+                  <div className="flex items-end gap-[3.5px] h-5">
+                    <div className="w-[3.5px] bg-white rounded-full h-2.5 animate-pulse" />
+                    <div className="w-[3.5px] bg-white rounded-full h-5 animate-pulse [animation-delay:180ms]" />
+                    <div className="w-[3.5px] bg-white rounded-full h-3.5 animate-pulse [animation-delay:360ms]" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Title */}
+              <h2 className="text-[22px] sm:text-[25px] font-bold text-slate-900 tracking-tight">
+                Analyzing Live Embassy Requirements
+              </h2>
+
+              {/* Subtitle */}
+              <p className="text-[13.5px] sm:text-[14.5px] text-slate-500 mt-2 leading-relaxed">
+                Querying official consular databases, real-time fee schedules, and verified regulations for {countryName}...
+              </p>
+
+              {/* Dynamic Status Pill */}
+              <div className="mt-5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200/80 text-[12px] sm:text-[12.5px] text-slate-600 font-medium shadow-2xs">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
+                <span>{loadingStatusMessages[loadingStepIdx]}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
