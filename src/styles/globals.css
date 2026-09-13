@@ -1,10 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Caveat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Caveat:wght@700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* ── 1. Lovable OKLCH Semantic Color System ── */
+    --brand: oklch(0.72 0.16 165);
+    --brand-soft: oklch(0.955 0.035 168);
+    --violet: oklch(0.55 0.19 292);
+    --violet-soft: oklch(0.955 0.03 292);
+    --success: oklch(0.62 0.15 158);
+    --success-soft: oklch(0.94 0.05 160);
+    --amber-soft: oklch(0.955 0.05 85);
+    --sky-soft: oklch(0.95 0.035 240);
+
+    /* ── 2. Lovable Multi-Layer Shadows ── */
+    --shadow-card: 
+      0 1px 2px oklch(0.2 0.04 265 / 0.04),
+      0 8px 24px -12px oklch(0.2 0.04 265 / 0.12);
+    --shadow-float: 
+      0 18px 40px -18px oklch(0.2 0.04 265 / 0.35);
+
+    /* ── 3. Lovable Brand Gradient (Green -> Violet) ── */
+    --gradient-brand: linear-gradient(135deg, 
+      oklch(0.72 0.16 165), 
+      oklch(0.55 0.19 292)
+    );
+
+    /* ── 4. Lovable Consistent Border Radius System (0.875rem = 14px) ── */
+    --radius: 0.875rem;
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    --radius-2xl: calc(var(--radius) + 8px);
+
+    /* ── 5. Typography Scale (Plus Jakarta Sans + Bricolage Grotesque) ── */
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-display: "Bricolage Grotesque", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
+  }
+
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -16,7 +53,7 @@
   }
 
   body, button, input, select, textarea {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -32,13 +69,13 @@
     }
   }
 
-  /* ── 1. Page Title (Razor-sharp Apple Heading with Luxury Spacing) ── */
+  /* ── 1. Page Title (Bricolage Grotesque Heading with Luxury Spacing) ── */
   h1, .page-title, .tt-page-title {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-family: var(--font-display);
     font-size: 24px;
     line-height: 1.25;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+    font-weight: 650;
+    letter-spacing: -0.015em;
     color: #09090b;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -58,11 +95,11 @@
 
   /* ── 2. Section Heading (Luxury Spacing) ── */
   h2, .section-heading, .tt-section-heading {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-family: var(--font-display);
     font-size: 18px;
     line-height: 1.35;
     font-weight: 600;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.01em;
     color: #09090b;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -81,11 +118,11 @@
 
   /* ── 3. Card Heading ── */
   h3, .card-heading, .tt-card-heading {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-family: var(--font-display);
     font-size: 15px;
     line-height: 1.4;
-    font-weight: 550;
-    letter-spacing: 0.01em;
+    font-weight: 600;
+    letter-spacing: -0.005em;
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -98,9 +135,9 @@
   }
 
   h4, h5, h6 {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-    font-weight: 550;
-    letter-spacing: 0.01em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.005em;
     line-height: 1.4;
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
@@ -175,21 +212,22 @@
     transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* ── LUXURY STYLES & MICRO-INTERACTIONS (EXACT SPECIFICATION) ── */
+  /* ── LOVABLE & LUXURY STYLES (MULTI-LAYER OKLCH SHADOWS + CONSISTENT RADIUS) ── */
   .card, .luxury-card {
-    box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: var(--shadow-card);
+    border: 1px solid oklch(0.2 0.04 265 / 0.06);
+    border-radius: var(--radius-xl);
     margin-bottom: 24px;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateZ(0);
     will-change: transform, box-shadow;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
   .card:hover, .luxury-card:hover {
-    transform: translateY(-4px) translateZ(0);
-    box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px) translateZ(0);
+    box-shadow: var(--shadow-float);
   }
 
   .button, .luxury-btn {
@@ -213,21 +251,21 @@
     }
   }
 
-  /* Modern 2030 iOS Smooth Cards with Soft Layered Shadows */
+  /* Lovable / Modern iOS Smooth Cards with Multi-Layer Soft Shadows */
   .ios-card {
     background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--radius-xl);
+    border: 1px solid oklch(0.2 0.04 265 / 0.06);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateZ(0);
     will-change: transform, box-shadow;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
   .ios-card:hover {
-    transform: translateY(-4px) translateZ(0);
-    box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px) translateZ(0);
+    box-shadow: var(--shadow-float);
   }
 
   /* HD Image Sharpness (Apple/Retina Contrast Optimization) */
@@ -258,12 +296,51 @@
     scrollbar-width: none !important;
   }
 
+  /* Lovable Brand Gradient Utilities (Green → Violet) */
+  .gradient-brand, .bg-gradient-brand {
+    background-image: var(--gradient-brand) !important;
+  }
+  .gradient-text, .text-gradient-brand {
+    background-image: var(--gradient-brand) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  /* Lovable OKLCH Semantic Badges */
+  .badge-brand {
+    background-color: var(--brand-soft) !important;
+    color: oklch(0.42 0.14 165) !important;
+    border: 1px solid oklch(0.72 0.16 165 / 0.25) !important;
+  }
+  .badge-violet {
+    background-color: var(--violet-soft) !important;
+    color: var(--violet) !important;
+    border: 1px solid oklch(0.55 0.19 292 / 0.25) !important;
+  }
+  .badge-success {
+    background-color: var(--success-soft) !important;
+    color: oklch(0.42 0.14 158) !important;
+    border: 1px solid oklch(0.62 0.15 158 / 0.25) !important;
+  }
+  .badge-amber {
+    background-color: var(--amber-soft) !important;
+    color: oklch(0.52 0.13 85) !important;
+    border: 1px solid oklch(0.75 0.14 85 / 0.25) !important;
+  }
+  .badge-sky {
+    background-color: var(--sky-soft) !important;
+    color: oklch(0.45 0.12 240) !important;
+    border: 1px solid oklch(0.65 0.12 240 / 0.25) !important;
+  }
+
   /* Universal Solid Dark Slate / Black Action Button */
   .btn-primary-action {
     background-color: #0f172a !important;
     color: #ffffff !important;
     font-weight: 600 !important;
-    border-radius: 0.75rem !important;
+    border-radius: var(--radius-md) !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
     transition: all 0.2s ease !important;
   }
