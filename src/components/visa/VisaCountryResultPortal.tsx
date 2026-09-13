@@ -106,6 +106,8 @@ import {
   getFamilyOfficialSourceName
 } from '../../lib/family-visa';
 import { getStaticCountryHeroImage } from '../../lib/country-hero-images';
+import { motion } from 'framer-motion';
+import { ScrollReveal, StaggerContainer, StaggerItem } from '../ui/ScrollReveal';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -7474,145 +7476,155 @@ export function VisaCountryResultPortal({
           </div>
         </div>
 
-        {/* ── TOP HERO HEADER CARD (DESKTOP) (LOVABLE / BOLT 14PX RADIUS & MULTI-LAYER SHADOW) ── */}
-        <div className="hidden md:block bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable hover:-translate-y-1">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-            {/* Left: Country Landmark Photo */}
-            <div className="w-full md:w-72 lg:w-80 h-60 sm:h-72 rounded-[14px] overflow-hidden shrink-0 border border-slate-100 shadow-xs relative bg-slate-100 group">
-              <img
-                src={heroImage}
-                alt={heroImageAlt || `${countryName} Visa`}
-                loading="eager"
-                decoding="async"
-                className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700 ${isHeroLoading ? 'opacity-85' : 'opacity-100'}`}
-                onError={(e) => {
-                  const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
-                  if (e.currentTarget.src !== fallback) {
-                    e.currentTarget.src = fallback;
-                  } else {
-                    // Both primary and fallback failed — hide img so gradient bg shows
-                    e.currentTarget.style.display = 'none';
-                  }
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              <span className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-[10px] font-semibold text-white tracking-wide uppercase border border-white/20">
-                Official 4K View
-              </span>
-            </div>
-
-            {/* Right: Visa Details */}
-            <div className="flex-1 min-w-0 space-y-4 text-left w-full">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[12px] sm:text-[13px] font-medium border border-emerald-200/70">
-                  {purposeLabel} Visa
+        {/* ── TOP HERO HEADER CARD (DESKTOP) (SCROLL REVEAL & STAGGER ANIMATIONS) ── */}
+        <ScrollReveal direction="up" delay={0.05}>
+          <div className="hidden md:block bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable hover:-translate-y-1">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              {/* Left: Country Landmark Photo */}
+              <div className="w-full md:w-72 lg:w-80 h-60 sm:h-72 rounded-[14px] overflow-hidden shrink-0 border border-slate-100 shadow-xs relative bg-slate-100 group">
+                <img
+                  src={heroImage}
+                  alt={heroImageAlt || `${countryName} Visa`}
+                  loading="eager"
+                  decoding="async"
+                  className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700 ${isHeroLoading ? 'opacity-85' : 'opacity-100'}`}
+                  onError={(e) => {
+                    const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
+                    if (e.currentTarget.src !== fallback) {
+                      e.currentTarget.src = fallback;
+                    } else {
+                      // Both primary and fallback failed — hide img so gradient bg shows
+                      e.currentTarget.style.display = 'none';
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-[10px] font-semibold text-white tracking-wide uppercase border border-white/20">
+                  Official 4K View
                 </span>
-                {aiData?.is_live && (
-                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-slate-50 text-slate-800 text-[11px] sm:text-[12px] font-semibold border border-indigo-200/70 shadow-2xs">
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-                    <span className="gradient-text font-bold">Live Verified</span> ({aiData.official_source_name || 'Official Sources'})
+              </div>
+
+              {/* Right: Visa Details */}
+              <div className="flex-1 min-w-0 space-y-4 text-left w-full">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[12px] sm:text-[13px] font-medium border border-emerald-200/70">
+                    {purposeLabel} Visa
                   </span>
-                )}
-                {isAiLoading && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] sm:text-[12px] font-medium border border-slate-200 animate-pulse">
-                    <RefreshCw className="w-3 h-3 animate-spin text-indigo-500" />
-                    Querying live embassy data...
-                  </span>
-                )}
-              </div>
-
-              <div>
-                <h1 className="text-[28px] sm:text-[30px] lg:text-[32px] font-semibold text-slate-900 tracking-tight leading-tight">
-                  {countryName} {purposeLabel} Visa
-                </h1>
-              </div>
-
-              {/* 4 Key Visa Metadata Badges Box (Roomy Layout with Multi-Layer Soft Shadows) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 p-4 sm:p-5 rounded-[14px] bg-slate-50/70 border border-black/[0.04] text-left">
-                {/* 1. Processing Time */}
-                <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable">
-                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Processing Time</span>
-                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {renderStatOrFallback(getResolvedProcessingTime(), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
-                    </strong>
-                    {aiData?.sources?.[0]?.url && (
-                      <a href={aiData.sources[0].url} target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-slate-600 truncate block mt-0.5">
-                        Source: {aiData.sources[0].name || 'Official Authority'}
-                      </a>
-                    )}
-                  </div>
+                  {aiData?.is_live && (
+                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-slate-50 text-slate-800 text-[11px] sm:text-[12px] font-semibold border border-indigo-200/70 shadow-2xs">
+                      <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                      <span className="gradient-text font-bold">Live Verified</span> ({aiData.official_source_name || 'Official Sources'})
+                    </span>
+                  )}
+                  {isAiLoading && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] sm:text-[12px] font-medium border border-slate-200 animate-pulse">
+                      <RefreshCw className="w-3 h-3 animate-spin text-indigo-500" />
+                      Querying live embassy data...
+                    </span>
+                  )}
                 </div>
 
-                {/* 2. Validity */}
-                <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
-                    <Calendar className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Validity</span>
-                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {renderStatOrFallback(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
-                    </strong>
-                  </div>
+                <div>
+                  <h1 className="text-[28px] sm:text-[30px] lg:text-[32px] font-semibold text-slate-900 tracking-tight leading-tight">
+                    {countryName} {purposeLabel} Visa
+                  </h1>
                 </div>
 
-                {/* 3. Stay Period */}
-                <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable">
-                  <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
-                    <Compass className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Stay Period</span>
-                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {renderStatOrFallback(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
-                    </strong>
-                  </div>
+                {/* 4 Key Visa Metadata Badges Box (Roomy Layout with Multi-Layer Soft Shadows & Stagger Animation) */}
+                <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 p-4 sm:p-5 rounded-[14px] bg-slate-50/70 border border-black/[0.04] text-left">
+                  {/* 1. Processing Time */}
+                  <StaggerItem>
+                    <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable h-full">
+                      <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Processing Time</span>
+                        <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
+                          {renderStatOrFallback(getResolvedProcessingTime(), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
+                        </strong>
+                        {aiData?.sources?.[0]?.url && (
+                          <a href={aiData.sources[0].url} target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-slate-600 truncate block mt-0.5">
+                            Source: {aiData.sources[0].name || 'Official Authority'}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  {/* 2. Validity */}
+                  <StaggerItem>
+                    <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable h-full">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <Calendar className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Validity</span>
+                        <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
+                          {renderStatOrFallback(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
+                        </strong>
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  {/* 3. Stay Period */}
+                  <StaggerItem>
+                    <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable h-full">
+                      <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <Compass className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Stay Period</span>
+                        <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
+                          {renderStatOrFallback(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
+                        </strong>
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  {/* 4. Entry Type */}
+                  <StaggerItem>
+                    <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable h-full">
+                      <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <Plane className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Entry Type</span>
+                        <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
+                          {renderStatOrFallback(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
+                        </strong>
+                        {(aiData?.entry_type && (aiData.entry_type.toLowerCase().includes('single/double/multiple') || aiData.entry_type.toLowerCase().includes('single / multiple'))) && (
+                          <span className="text-[11px] text-amber-600 font-normal block mt-0.5">⚠️ Generic value — verify from official source</span>
+                        )}
+                      </div>
+                    </div>
+                  </StaggerItem>
+                </StaggerContainer>
+
+                {/* Official Source / Authority — shown below 4 boxes */}
+                <span className="text-[13px] sm:text-[14px] font-normal text-slate-500 block">
+                  {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
+                </span>
+
+                {/* Bottom Action Buttons */}
+                <div className="flex items-center gap-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={handleToggleSave}
+                    className={`px-4 py-2.5 rounded-[14px] border text-xs font-bold flex items-center gap-2 cursor-pointer transition-all duration-300 hover:-translate-y-0.5 shadow-card hover:shadow-float ${
+                      isSaved
+                        ? 'bg-rose-50 border-rose-300 text-rose-700'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-600 text-rose-600' : 'text-slate-400'}`} />
+                    <span>{isSaved ? 'Saved' : 'Add to Saved'}</span>
+                  </button>
                 </div>
-
-                {/* 4. Entry Type */}
-                <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-[14px] border border-black/[0.04] shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-400 ease-lovable">
-                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
-                    <Plane className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Entry Type</span>
-                    <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {renderStatOrFallback(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
-                    </strong>
-                    {(aiData?.entry_type && (aiData.entry_type.toLowerCase().includes('single/double/multiple') || aiData.entry_type.toLowerCase().includes('single / multiple'))) && (
-                      <span className="text-[11px] text-amber-600 font-normal block mt-0.5">⚠️ Generic value — verify from official source</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Official Source / Authority — shown below 4 boxes */}
-              <span className="text-[13px] sm:text-[14px] font-normal text-slate-500 block">
-                {isSchengen ? 'Schengen Area' : (aiData?.official_source_name || (baseData.countryName ? `Immigration & Consular Authority of ${baseData.countryName}` : 'Official Immigration Authority'))}
-              </span>
-
-              {/* Bottom Action Buttons */}
-              <div className="flex items-center gap-3 pt-1">
-                <button
-                  type="button"
-                  onClick={handleToggleSave}
-                  className={`px-4 py-2.5 rounded-[14px] border text-xs font-bold flex items-center gap-2 cursor-pointer transition-all duration-300 hover:-translate-y-0.5 shadow-card hover:shadow-float ${
-                    isSaved
-                      ? 'bg-rose-50 border-rose-300 text-rose-700'
-                      : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                  }`}
-                >
-                  <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-600 text-rose-600' : 'text-slate-400'}`} />
-                  <span>{isSaved ? 'Saved' : 'Add to Saved'}</span>
-                </button>
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* ── 2-COLUMN MAIN WORKSPACE (MATCHING EXACT PHOTO media_1788520146795.png) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -7715,176 +7727,187 @@ export function VisaCountryResultPortal({
                 {/* Desktop 3 Cards */}
                 <div className="hidden md:block space-y-6">
                   {/* 1. Overview Card */}
-                  <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-5 text-left">
-                    <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900">Overview</h2>
-                    <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal max-w-4xl">
-                      {(() => {
-                        const text = (resolvedOverview || '').trim();
-                        // Just show the first sentence, max 160 chars
-                        const firstSentenceMatch = text.match(/^[^.!?]+[.!?]+/);
-                        const firstSentence = firstSentenceMatch ? firstSentenceMatch[0].trim() : text;
-                        if (firstSentence.length <= 160) return firstSentence;
-                        return firstSentence.slice(0, 155).trim().replace(/[,\s]+$/, '') + '...';
-                      })()}
-                    </p>
-
-                    {/* 4 Feature Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 items-stretch">
-                    {isStudyTab ? (
-                      <>
-                        <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                          <div>
-                            <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                              <GraduationCap className="w-4 h-4" />
-                            </div>
-                            <strong className="text-[14px] sm:text-[15px] font-bold text-blue-950 block leading-snug">Higher Education</strong>
-                            <span className="text-[12px] sm:text-[13px] text-blue-800/80 font-normal leading-relaxed block mt-1">Full-time degree or accredited course</span>
-                          </div>
-                        </div>
-
-                        <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                          <div>
-                            <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                              <Briefcase className="w-4 h-4" />
-                            </div>
-                            <strong className="text-[14px] sm:text-[15px] font-bold text-purple-950 block leading-snug">Part-Time Work Rights</strong>
-                            <span className="text-[12px] sm:text-[13px] text-purple-800/80 font-normal leading-relaxed block mt-1">Work during terms &amp; full-time in breaks</span>
-                          </div>
-                        </div>
-
-                        <div className="p-4 rounded-2xl bg-rose-50/60 border border-rose-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                          <div>
-                            <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                              <Award className="w-4 h-4" />
-                            </div>
-                            <strong className="text-[14px] sm:text-[15px] font-bold text-rose-950 block leading-snug">Post-Study Work</strong>
-                            <span className="text-[12px] sm:text-[13px] text-rose-800/80 font-normal leading-relaxed block mt-1">Graduate job search &amp; post-study permits</span>
-                          </div>
-                        </div>
-
-                        <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                          <div>
-                            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                              <Calendar className="w-4 h-4" />
-                            </div>
-                            <strong className="text-[14px] sm:text-[15px] font-bold text-emerald-950 block leading-snug">Academic Duration</strong>
-                            <span className="text-[12px] sm:text-[13px] text-emerald-800/80 font-normal leading-relaxed block mt-1">
-                              Full course duration + post-study buffer
-                            </span>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
+                  <ScrollReveal direction="up" delay={0.08}>
+                    <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-7 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-5 text-left">
+                      <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900">Overview</h2>
+                      <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal max-w-4xl">
                         {(() => {
-                          const highlights = (aiData?.highlights && aiData.highlights.length > 0)
-                            ? aiData.highlights
-                            : isFamilyTab
-                            ? getFamilyHighlights(countryName)
-                            : isPRTab
-                            ? getPRHighlights(countryName)
-                            : isWorkTab
-                            ? getWorkHighlights(countryName)
-                            : isBusinessTab
-                            ? getBusinessHighlights(countryName)
-                            : getTourismHighlights(countryName);
-
-                          const themes = [
-                            { bg: 'bg-blue-50/60', border: 'border-blue-100/90', iconBg: 'bg-blue-100 text-blue-600', text: 'text-blue-950', sub: 'text-blue-800/80' },
-                            { bg: 'bg-purple-50/60', border: 'border-purple-100/90', iconBg: 'bg-purple-100 text-purple-600', text: 'text-purple-950', sub: 'text-purple-800/80' },
-                            { bg: 'bg-rose-50/60', border: 'border-rose-100/90', iconBg: 'bg-rose-100 text-rose-600', text: 'text-rose-950', sub: 'text-rose-800/80' },
-                            { bg: 'bg-emerald-50/60', border: 'border-emerald-100/90', iconBg: 'bg-emerald-100 text-emerald-600', text: 'text-emerald-950', sub: 'text-emerald-800/80' }
-                          ];
-
-                          const renderIcon = (iconName: string, idx: number) => {
-                            const i = (iconName || '').toLowerCase();
-                            if (i.includes('briefcase') || i.includes('work') || i.includes('job') || i.includes('business')) return <Briefcase className="w-4 h-4" />;
-                            if (i.includes('handshake') || i.includes('deal') || i.includes('meeting')) return <Users className="w-4 h-4" />;
-                            if (i.includes('building') || i.includes('office') || i.includes('corporate') || i.includes('home') || i.includes('house')) return <Building2 className="w-4 h-4" />;
-                            if (i.includes('trending') || i.includes('chart')) return <TrendingUp className="w-4 h-4" />;
-                            if (i.includes('dollar') || i.includes('money')) return <CreditCard className="w-4 h-4" />;
-                            if (i.includes('sun')) return <Sun className="w-4 h-4" />;
-                            if (i.includes('plane')) return <Plane className="w-4 h-4" />;
-                            if (i.includes('map') || i.includes('pin')) return <MapPin className="w-4 h-4" />;
-                            if (i.includes('shield')) return <ShieldCheck className="w-4 h-4" />;
-                            if (i.includes('calendar') || i.includes('clock')) return <Calendar className="w-4 h-4" />;
-                            if (i.includes('user') || i.includes('people') || i.includes('family') || i.includes('spouse') || i.includes('partner') || i.includes('heart')) return <Users className="w-4 h-4" />;
-                            if (i.includes('award') || i.includes('star')) return <Award className="w-4 h-4" />;
-                            if (i.includes('file') || i.includes('doc')) return <FileText className="w-4 h-4" />;
-                            if (i.includes('credit') || i.includes('card') || i.includes('fee')) return <CreditCard className="w-4 h-4" />;
-                            if (i.includes('globe')) return <Globe className="w-4 h-4" />;
-                            if (isFamilyTab) {
-                              if (idx === 0) return <Users className="w-4 h-4" />;
-                              if (idx === 1) return <ShieldCheck className="w-4 h-4" />;
-                              if (idx === 2) return <Building2 className="w-4 h-4" />;
-                              return <Award className="w-4 h-4" />;
-                            }
-                            if (isPRTab) {
-                              if (idx === 0) return <Award className="w-4 h-4" />;
-                              if (idx === 1) return <Globe className="w-4 h-4" />;
-                              if (idx === 2) return <TrendingUp className="w-4 h-4" />;
-                              return <ShieldCheck className="w-4 h-4" />;
-                            }
-                            if (isWorkTab) {
-                              if (idx === 0) return <Briefcase className="w-4 h-4" />;
-                              if (idx === 1) return <Award className="w-4 h-4" />;
-                              if (idx === 2) return <TrendingUp className="w-4 h-4" />;
-                              return <ShieldCheck className="w-4 h-4" />;
-                            }
-                            if (isBusinessTab) {
-                              if (idx === 0) return <Briefcase className="w-4 h-4" />;
-                              if (idx === 1) return <Users className="w-4 h-4" />;
-                              if (idx === 2) return <Building2 className="w-4 h-4" />;
-                              return <ShieldCheck className="w-4 h-4" />;
-                            }
-                            if (idx === 0) return <Sun className="w-4 h-4" />;
-                            if (idx === 1) return <Users className="w-4 h-4" />;
-                            if (idx === 2) return <Calendar className="w-4 h-4" />;
-                            return <ShieldCheck className="w-4 h-4" />;
-                          };
-
-                          return highlights.slice(0, 4).map((h: any, idx: number) => {
-                            const theme = themes[idx % themes.length];
-                            const rawTitle = h.title || '';
-                            const cleanTitle = rawTitle
-                              .replace(/\s+National Park/gi, ' Park')
-                              .replace(/Impenetrable\s+/gi, '')
-                              .replace(/\s*&\s*Jinja Rafting/gi, '')
-                              .replace(/\s*\(.*?\)\s*/g, '') // remove parenthetical parts like (Qal'at al-Hosn)
-                              .trim();
-                            const displayTitle = cleanTitle.length > 28
-                              ? cleanTitle.slice(0, 25).trim().replace(/[,\s]+$/, '') + '...'
-                              : cleanTitle;
-
-                            const rawDesc = h.desc || h.description || '';
-                            const cleanDesc = rawDesc.length > 55
-                              ? (rawDesc.slice(0, 52).trim().replace(/[,\s]+$/, '') + '...')
-                              : rawDesc;
-
-                            return (
-                              <div 
-                                key={idx} 
-                                className={`p-4 rounded-2xl ${theme.bg} border ${theme.border} flex flex-col justify-between h-full hover:shadow-xs transition-all`}
-                              >
-                                <div>
-                                  <div className={`w-8 h-8 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0 mb-3 shadow-2xs`}>
-                                    {renderIcon(h.icon, idx)}
-                                  </div>
-                                  <strong className={`text-[14px] sm:text-[15px] font-bold ${theme.text} block leading-snug`}>
-                                    {displayTitle}
-                                  </strong>
-                                  <span className={`text-[12px] sm:text-[13px] ${theme.sub} font-normal leading-relaxed block mt-1`}>
-                                    {cleanDesc}
-                                  </span>
-                                </div>
-                              </div>
-                            );
-                          });
+                          const text = (resolvedOverview || '').trim();
+                          // Just show the first sentence, max 160 chars
+                          const firstSentenceMatch = text.match(/^[^.!?]+[.!?]+/);
+                          const firstSentence = firstSentenceMatch ? firstSentenceMatch[0].trim() : text;
+                          if (firstSentence.length <= 160) return firstSentence;
+                          return firstSentence.slice(0, 155).trim().replace(/[,\s]+$/, '') + '...';
                         })()}
-                      </>
-                    )}
+                      </p>
+
+                      {/* 4 Feature Cards */}
+                      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 items-stretch">
+                      {isStudyTab ? (
+                        <>
+                          <StaggerItem>
+                            <div className="p-4 rounded-[14px] bg-blue-50/60 border border-blue-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                              <div>
+                                <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                                  <GraduationCap className="w-4 h-4" />
+                                </div>
+                                <strong className="text-[14px] sm:text-[15px] font-bold text-blue-950 block leading-snug">Higher Education</strong>
+                                <span className="text-[12px] sm:text-[13px] text-blue-800/80 font-normal leading-relaxed block mt-1">Full-time degree or accredited course</span>
+                              </div>
+                            </div>
+                          </StaggerItem>
+
+                          <StaggerItem>
+                            <div className="p-4 rounded-[14px] bg-purple-50/60 border border-purple-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                              <div>
+                                <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                                  <Briefcase className="w-4 h-4" />
+                                </div>
+                                <strong className="text-[14px] sm:text-[15px] font-bold text-purple-950 block leading-snug">Part-Time Work Rights</strong>
+                                <span className="text-[12px] sm:text-[13px] text-purple-800/80 font-normal leading-relaxed block mt-1">Work during terms &amp; full-time in breaks</span>
+                              </div>
+                            </div>
+                          </StaggerItem>
+
+                          <StaggerItem>
+                            <div className="p-4 rounded-[14px] bg-rose-50/60 border border-rose-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                              <div>
+                                <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                                  <Award className="w-4 h-4" />
+                                </div>
+                                <strong className="text-[14px] sm:text-[15px] font-bold text-rose-950 block leading-snug">Post-Study Work</strong>
+                                <span className="text-[12px] sm:text-[13px] text-rose-800/80 font-normal leading-relaxed block mt-1">Graduate job search &amp; post-study permits</span>
+                              </div>
+                            </div>
+                          </StaggerItem>
+
+                          <StaggerItem>
+                            <div className="p-4 rounded-[14px] bg-emerald-50/60 border border-emerald-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
+                              <div>
+                                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
+                                  <Calendar className="w-4 h-4" />
+                                </div>
+                                <strong className="text-[14px] sm:text-[15px] font-bold text-emerald-950 block leading-snug">Academic Duration</strong>
+                                <span className="text-[12px] sm:text-[13px] text-emerald-800/80 font-normal leading-relaxed block mt-1">
+                                  Full course duration + post-study buffer
+                                </span>
+                              </div>
+                            </div>
+                          </StaggerItem>
+                        </>
+                      ) : (
+                        <>
+                          {(() => {
+                            const highlights = (aiData?.highlights && aiData.highlights.length > 0)
+                              ? aiData.highlights
+                              : isFamilyTab
+                              ? getFamilyHighlights(countryName)
+                              : isPRTab
+                              ? getPRHighlights(countryName)
+                              : isWorkTab
+                              ? getWorkHighlights(countryName)
+                              : isBusinessTab
+                              ? getBusinessHighlights(countryName)
+                              : getTourismHighlights(countryName);
+
+                            const themes = [
+                              { bg: 'bg-blue-50/60', border: 'border-blue-100/90', iconBg: 'bg-blue-100 text-blue-600', text: 'text-blue-950', sub: 'text-blue-800/80' },
+                              { bg: 'bg-purple-50/60', border: 'border-purple-100/90', iconBg: 'bg-purple-100 text-purple-600', text: 'text-purple-950', sub: 'text-purple-800/80' },
+                              { bg: 'bg-rose-50/60', border: 'border-rose-100/90', iconBg: 'bg-rose-100 text-rose-600', text: 'text-rose-950', sub: 'text-rose-800/80' },
+                              { bg: 'bg-emerald-50/60', border: 'border-emerald-100/90', iconBg: 'bg-emerald-100 text-emerald-600', text: 'text-emerald-950', sub: 'text-emerald-800/80' }
+                            ];
+
+                            const renderIcon = (iconName: string, idx: number) => {
+                              const i = (iconName || '').toLowerCase();
+                              if (i.includes('briefcase') || i.includes('work') || i.includes('job') || i.includes('business')) return <Briefcase className="w-4 h-4" />;
+                              if (i.includes('handshake') || i.includes('deal') || i.includes('meeting')) return <Users className="w-4 h-4" />;
+                              if (i.includes('building') || i.includes('office') || i.includes('corporate') || i.includes('home') || i.includes('house')) return <Building2 className="w-4 h-4" />;
+                              if (i.includes('trending') || i.includes('chart')) return <TrendingUp className="w-4 h-4" />;
+                              if (i.includes('dollar') || i.includes('money')) return <CreditCard className="w-4 h-4" />;
+                              if (i.includes('sun')) return <Sun className="w-4 h-4" />;
+                              if (i.includes('plane')) return <Plane className="w-4 h-4" />;
+                              if (i.includes('map') || i.includes('pin')) return <MapPin className="w-4 h-4" />;
+                              if (i.includes('shield')) return <ShieldCheck className="w-4 h-4" />;
+                              if (i.includes('calendar') || i.includes('clock')) return <Calendar className="w-4 h-4" />;
+                              if (i.includes('user') || i.includes('people') || i.includes('family') || i.includes('spouse') || i.includes('partner') || i.includes('heart')) return <Users className="w-4 h-4" />;
+                              if (i.includes('award') || i.includes('star')) return <Award className="w-4 h-4" />;
+                              if (i.includes('file') || i.includes('doc')) return <FileText className="w-4 h-4" />;
+                              if (i.includes('credit') || i.includes('card') || i.includes('fee')) return <CreditCard className="w-4 h-4" />;
+                              if (i.includes('globe')) return <Globe className="w-4 h-4" />;
+                              if (isFamilyTab) {
+                                if (idx === 0) return <Users className="w-4 h-4" />;
+                                if (idx === 1) return <ShieldCheck className="w-4 h-4" />;
+                                if (idx === 2) return <Building2 className="w-4 h-4" />;
+                                return <Award className="w-4 h-4" />;
+                              }
+                              if (isPRTab) {
+                                if (idx === 0) return <Award className="w-4 h-4" />;
+                                if (idx === 1) return <Globe className="w-4 h-4" />;
+                                if (idx === 2) return <TrendingUp className="w-4 h-4" />;
+                                return <ShieldCheck className="w-4 h-4" />;
+                              }
+                              if (isWorkTab) {
+                                if (idx === 0) return <Briefcase className="w-4 h-4" />;
+                                if (idx === 1) return <Award className="w-4 h-4" />;
+                                if (idx === 2) return <TrendingUp className="w-4 h-4" />;
+                                return <ShieldCheck className="w-4 h-4" />;
+                              }
+                              if (isBusinessTab) {
+                                if (idx === 0) return <Briefcase className="w-4 h-4" />;
+                                if (idx === 1) return <Users className="w-4 h-4" />;
+                                if (idx === 2) return <Building2 className="w-4 h-4" />;
+                                return <ShieldCheck className="w-4 h-4" />;
+                              }
+                              if (idx === 0) return <Sun className="w-4 h-4" />;
+                              if (idx === 1) return <Users className="w-4 h-4" />;
+                              if (idx === 2) return <Calendar className="w-4 h-4" />;
+                              return <ShieldCheck className="w-4 h-4" />;
+                            };
+
+                            return highlights.slice(0, 4).map((h: any, idx: number) => {
+                              const theme = themes[idx % themes.length];
+                              const rawTitle = h.title || '';
+                              const cleanTitle = rawTitle
+                                .replace(/\s+National Park/gi, ' Park')
+                                .replace(/Impenetrable\s+/gi, '')
+                                .replace(/\s*&\s*Jinja Rafting/gi, '')
+                                .replace(/\s*\(.*?\)\s*/g, '')
+                                .trim();
+                              const displayTitle = cleanTitle.length > 28
+                                ? cleanTitle.slice(0, 25).trim().replace(/[,\s]+$/, '') + '...'
+                                : cleanTitle;
+
+                              const rawDesc = h.desc || h.description || '';
+                              const cleanDesc = rawDesc.length > 55
+                                ? (rawDesc.slice(0, 52).trim().replace(/[,\s]+$/, '') + '...')
+                                : rawDesc;
+
+                              return (
+                                <StaggerItem key={idx}>
+                                  <div 
+                                    className={`p-4 rounded-[14px] ${theme.bg} border ${theme.border} flex flex-col justify-between h-full hover:shadow-xs transition-all`}
+                                  >
+                                    <div>
+                                      <div className={`w-8 h-8 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0 mb-3 shadow-2xs`}>
+                                        {renderIcon(h.icon, idx)}
+                                      </div>
+                                      <strong className={`text-[14px] sm:text-[15px] font-bold ${theme.text} block leading-snug`}>
+                                        {displayTitle}
+                                      </strong>
+                                      <span className={`text-[12px] sm:text-[13px] ${theme.sub} font-normal leading-relaxed block mt-1`}>
+                                        {cleanDesc}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </StaggerItem>
+                              );
+                            });
+                          })()}
+                        </>
+                      )}
+                      </StaggerContainer>
                     </div>
-                  </div>
+                  </ScrollReveal>
 
                 {/* 2. Documents Required Card */}
                 {(() => {
@@ -8001,87 +8024,94 @@ export function VisaCountryResultPortal({
                     <>
 
                       {/* 2. Documents Required Card */}
-                      <div id="documents-section" className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-6 text-left">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                          <div>
-                            <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Documents Required</h3>
-                            <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
+                      <ScrollReveal direction="up" delay={0.1}>
+                        <div id="documents-section" className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-6 text-left">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                              <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Documents Required</h3>
+                              <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={handleDownloadAndSyncChecklist}
+                              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-[14px] border border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100 text-[12px] sm:text-[13px] font-medium text-indigo-700 transition-all duration-300 ease-lovable hover:-translate-y-0.5 hover:shadow-md cursor-pointer self-start sm:self-auto"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                              <span>Download &amp; Sync Checklist (PDF)</span>
+                            </button>
                           </div>
-                          <button
-                            type="button"
-                            onClick={handleDownloadAndSyncChecklist}
-                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-[14px] border border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100 text-[12px] sm:text-[13px] font-medium text-indigo-700 transition-all duration-300 ease-lovable hover:-translate-y-0.5 hover:shadow-md cursor-pointer self-start sm:self-auto"
-                          >
-                            <Download className="w-3.5 h-3.5" />
-                            <span>Download &amp; Sync Checklist (PDF)</span>
-                          </button>
-                        </div>
 
-                        {/* 2-Column Grid of 8 Document Cards */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                          {overviewDocsList.map((doc: any, idx: number) => {
-                            return (
-                              <div
-                                key={idx}
-                                className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[14px] border border-black/[0.04] bg-white shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-300 ease-lovable"
-                              >
-                                <div className={`w-9 h-9 rounded-[14px] ${doc.bg} border flex items-center justify-center shrink-0 font-semibold text-sm shadow-2xs mt-0.5`}>
-                                  {doc.icon}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h4 className="text-[14px] sm:text-[15px] font-semibold text-slate-900 leading-snug truncate" title={doc.title}>
-                                    {doc.title}
-                                  </h4>
-                                  <p className="text-[12.5px] sm:text-[13px] font-normal text-slate-500 mt-1 leading-relaxed line-clamp-2" title={doc.fullDesc || doc.desc}>
-                                    {doc.desc}
-                                  </p>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                          {/* 2-Column Grid of 8 Document Cards with Stagger Animation */}
+                          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                            {overviewDocsList.map((doc: any, idx: number) => {
+                              return (
+                                <StaggerItem key={idx}>
+                                  <div
+                                    className="flex items-start gap-3.5 p-4 sm:p-5 rounded-[14px] border border-black/[0.04] bg-white shadow-card hover:shadow-float hover:-translate-y-0.5 transition-all duration-300 ease-lovable h-full"
+                                  >
+                                    <div className={`w-9 h-9 rounded-[14px] ${doc.bg} border flex items-center justify-center shrink-0 font-semibold text-sm shadow-2xs mt-0.5`}>
+                                      {doc.icon}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="text-[14px] sm:text-[15px] font-semibold text-slate-900 leading-snug truncate" title={doc.title}>
+                                        {doc.title}
+                                      </h4>
+                                      <p className="text-[12.5px] sm:text-[13px] font-normal text-slate-500 mt-1 leading-relaxed line-clamp-2" title={doc.fullDesc || doc.desc}>
+                                        {doc.desc}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </StaggerItem>
+                              );
+                            })}
+                          </StaggerContainer>
 
-                        <div className="flex justify-center pt-2">
-                          <button
-                            type="button"
-                            onClick={() => setSidebarTab('documents')}
-                            className="px-6 py-2.5 rounded-[14px] border border-emerald-500/80 text-emerald-700 bg-white hover:bg-emerald-50 text-[13px] sm:text-[14px] font-medium shadow-card hover:shadow-float transition-all duration-300 ease-lovable hover:-translate-y-0.5 cursor-pointer"
-                          >
-                            View Full Document Checklist
-                          </button>
+                          <div className="flex justify-center pt-2">
+                            <button
+                              type="button"
+                              onClick={() => setSidebarTab('documents')}
+                              className="px-6 py-2.5 rounded-[14px] border border-emerald-500/80 text-emerald-700 bg-white hover:bg-emerald-50 text-[13px] sm:text-[14px] font-medium shadow-card hover:shadow-float transition-all duration-300 ease-lovable hover:-translate-y-0.5 cursor-pointer"
+                            >
+                              View Full Document Checklist
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      </ScrollReveal>
 
                       {/* 3. Steps to Follow Card */}
-                      <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-7 text-left">
-                        <div>
-                          <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Steps to Follow</h3>
-                          <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
-                        </div>
+                      <ScrollReveal direction="up" delay={0.15}>
+                        <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-7 text-left">
+                          <div>
+                            <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Steps to Follow</h3>
+                            <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
+                          </div>
 
-                        <div className="relative pt-2 pb-1">
-                          {/* Connecting line behind circles on desktop */}
-                          <div className="hidden lg:block absolute top-[28px] left-[6%] right-[6%] h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
+                          <div className="relative pt-2 pb-1">
+                            {/* Connecting line behind circles on desktop */}
+                            <div className="hidden lg:block absolute top-[28px] left-[6%] right-[6%] h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
 
-                          <div className={`grid grid-cols-2 sm:grid-cols-3 ${overviewStepsList.length === 5 ? 'lg:grid-cols-5' : overviewStepsList.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-6'} gap-4 sm:gap-3.5 relative z-10`}>
-                            {overviewStepsList.map((step: any, idx: number) => (
-                              <div key={idx} className="flex flex-col items-center text-center px-1.5">
-                                <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-semibold shadow-xs ring-4 ring-white z-10 shrink-0">
-                                  {idx + 1}
-                                </div>
-                                <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-slate-900 mt-2.5 leading-snug break-words" title={step.fullTitle || step.title}>
-                                  {step.title}
-                                </h4>
-                                {step.desc && (
-                                  <p className="text-[11.5px] sm:text-[12px] text-slate-500 font-normal mt-1 leading-normal px-0.5 break-words" title={step.fullDesc || step.desc}>
-                                    {step.desc}
-                                  </p>
-                                )}
-                              </div>
-                            ))}
+                            <StaggerContainer className={`grid grid-cols-2 sm:grid-cols-3 ${overviewStepsList.length === 5 ? 'lg:grid-cols-5' : overviewStepsList.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-6'} gap-4 sm:gap-3.5 relative z-10`}>
+                              {overviewStepsList.map((step: any, idx: number) => (
+                                <StaggerItem key={idx}>
+                                  <div className="flex flex-col items-center text-center px-1.5">
+                                    <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-semibold shadow-xs ring-4 ring-white z-10 shrink-0">
+                                      {idx + 1}
+                                    </div>
+                                    <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-slate-900 mt-2.5 leading-snug break-words" title={step.fullTitle || step.title}>
+                                      {step.title}
+                                    </h4>
+                                    {step.desc && (
+                                      <p className="text-[11.5px] sm:text-[12px] text-slate-500 font-normal mt-1 leading-normal px-0.5 break-words" title={step.fullDesc || step.desc}>
+                                        {step.desc}
+                                      </p>
+                                    )}
+                                  </div>
+                                </StaggerItem>
+                              ))}
+                            </StaggerContainer>
                           </div>
                         </div>
-                      </div>
+                      </ScrollReveal>
                     </>
                   );
                 })()}
@@ -9016,100 +9046,106 @@ export function VisaCountryResultPortal({
           <div className="hidden lg:block lg:col-span-4 space-y-6 sticky top-6">
             
             {/* Card 1: Fees Details */}
-            <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-5 sm:p-6 shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-400 ease-lovable space-y-3.5 text-left">
-              <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Fees Details</h3>
+            <ScrollReveal direction="left" delay={0.08}>
+              <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-5 sm:p-6 shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-400 ease-lovable space-y-3.5 text-left">
+                <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Fees Details</h3>
 
-              <div className="space-y-2 text-[13px] sm:text-[14px]">
-                <div className="flex items-center justify-between text-slate-600 font-normal">
-                  <span>Visa Fee (Adult)</span>
-                  <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.visa_fee || (isFamilyTab ? getFamilyFees(countryName).visa_fee : isPRTab ? getPRFees(countryName).visa_fee : isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : isBusinessTab ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
-                  </strong>
-                </div>
-                <div className="flex items-center justify-between text-slate-600 font-normal">
-                  <span>Visa Fee (Child 6-12 yrs)</span>
-                  <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.child_fee || (isFamilyTab ? 'Included / Child Dependent Rate' : isPRTab ? 'Included / Child Dependent Rate' : isStudyTab ? 'N/A (Primary Applicant)' : isWorkTab ? 'N/A (Individual Worker)' : isBusinessTab ? 'N/A (Business Delegate)' : isSchengen ? '€45' : '$95 USD')}
-                  </strong>
-                </div>
-                <div className="flex items-center justify-between text-slate-600 font-normal">
-                  <span>Service Fee</span>
-                  <strong className="text-slate-900 font-semibold">
-                    {aiData?.costs?.service_fee || (isFamilyTab ? getFamilyFees(countryName).service_fee : isPRTab ? getPRFees(countryName).service_fee : isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : isBusinessTab ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
-                  </strong>
-                </div>
+                <div className="space-y-2 text-[13px] sm:text-[14px]">
+                  <div className="flex items-center justify-between text-slate-600 font-normal">
+                    <span>Visa Fee (Adult)</span>
+                    <strong className="text-slate-900 font-semibold">
+                      {aiData?.costs?.visa_fee || (isFamilyTab ? getFamilyFees(countryName).visa_fee : isPRTab ? getPRFees(countryName).visa_fee : isStudyTab ? getStudentFees(countryName).visa_fee : isWorkTab ? getWorkFees(countryName).visa_fee : isBusinessTab ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee)}
+                    </strong>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-600 font-normal">
+                    <span>Visa Fee (Child 6-12 yrs)</span>
+                    <strong className="text-slate-900 font-semibold">
+                      {aiData?.costs?.child_fee || (isFamilyTab ? 'Included / Child Dependent Rate' : isPRTab ? 'Included / Child Dependent Rate' : isStudyTab ? 'N/A (Primary Applicant)' : isWorkTab ? 'N/A (Individual Worker)' : isBusinessTab ? 'N/A (Business Delegate)' : isSchengen ? '€45' : '$95 USD')}
+                    </strong>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-600 font-normal">
+                    <span>Service Fee</span>
+                    <strong className="text-slate-900 font-semibold">
+                      {aiData?.costs?.service_fee || (isFamilyTab ? getFamilyFees(countryName).service_fee : isPRTab ? getPRFees(countryName).service_fee : isStudyTab ? getStudentFees(countryName).service_fee : isWorkTab ? getWorkFees(countryName).service_fee : isBusinessTab ? getBusinessFees(countryName).service_fee : getTourismFees(countryName).service_fee)}
+                    </strong>
+                  </div>
 
-                <div className="border-t border-slate-100 my-2" />
+                  <div className="border-t border-slate-100 my-2" />
 
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-900 text-[14px]">Total</span>
-                  <strong className="text-[16px] font-semibold text-slate-900">
-                    {aiData?.costs?.total_fee || (isFamilyTab ? getFamilyFees(countryName).total_fee : isPRTab ? getPRFees(countryName).total_fee : isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : isBusinessTab ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).total_fee)}
-                  </strong>
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-900 text-[14px]">Total</span>
+                    <strong className="text-[16px] font-semibold text-slate-900">
+                      {aiData?.costs?.total_fee || (isFamilyTab ? getFamilyFees(countryName).total_fee : isPRTab ? getPRFees(countryName).total_fee : isStudyTab ? getStudentFees(countryName).total_fee : isWorkTab ? getWorkFees(countryName).total_fee : isBusinessTab ? getBusinessFees(countryName).total_fee : getTourismFees(countryName).service_fee)}
+                    </strong>
+                  </div>
+
+                  <p className="text-[12px] text-slate-500 font-normal pt-1">
+                    Fees are non-refundable and may vary.
+                  </p>
                 </div>
-
-                <p className="text-[12px] text-slate-500 font-normal pt-1">
-                  Fees are non-refundable and may vary.
-                </p>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Card 3: Need Help? */}
-            <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-5 sm:p-6 shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-400 ease-lovable space-y-3.5 text-left">
-              <div>
-                <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Need Help?</h3>
-                <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-1 leading-relaxed">
-                  Connect with our visa experts for a smooth application process.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  const defaultCons = VERIFIED_STUDY_CONSULTANTS[0];
-                  if (defaultCons) setBookingModalConsultant(defaultCons);
-                  else window.location.href = `/find-experts?country=${encodeURIComponent(countryName)}&category=${encodeURIComponent(purposeLabel)}`;
-                }}
-                className="w-full py-3 rounded-[14px] bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[13px] sm:text-[14px] flex items-center justify-center gap-2 shadow-card hover:shadow-float transition-all duration-300 ease-lovable hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
-              >
-                <Users className="w-4 h-4" />
-                <span>Consult an Expert</span>
-              </button>
-
-              <div className="flex items-center justify-center gap-2 pt-1">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
-                  <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
-                  <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
-                  <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
+            <ScrollReveal direction="left" delay={0.14}>
+              <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-5 sm:p-6 shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-400 ease-lovable space-y-3.5 text-left">
+                <div>
+                  <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Need Help?</h3>
+                  <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal mt-1 leading-relaxed">
+                    Connect with our visa experts for a smooth application process.
+                  </p>
                 </div>
-                <span className="text-[12px] sm:text-[13px] font-medium text-slate-600">4.8/5 (2.4k+ reviews)</span>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const defaultCons = VERIFIED_STUDY_CONSULTANTS[0];
+                    if (defaultCons) setBookingModalConsultant(defaultCons);
+                    else window.location.href = `/find-experts?country=${encodeURIComponent(countryName)}&category=${encodeURIComponent(purposeLabel)}`;
+                  }}
+                  className="w-full py-3 rounded-[14px] bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[13px] sm:text-[14px] flex items-center justify-center gap-2 shadow-card hover:shadow-float transition-all duration-300 ease-lovable hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
+                >
+                  <Users className="w-4 h-4" />
+                  <span>Consult an Expert</span>
+                </button>
+
+                <div className="flex items-center justify-center gap-2 pt-1">
+                  <div className="flex -space-x-2 overflow-hidden">
+                    <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
+                    <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
+                    <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
+                    <img className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Avatar" />
+                  </div>
+                  <span className="text-[12px] sm:text-[13px] font-medium text-slate-600">4.8/5 (2.4k+ reviews)</span>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Card 4: Important Notes */}
-            <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-5 sm:p-6 shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-400 ease-lovable space-y-3.5 text-left">
-              <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Important Notes</h3>
+            <ScrollReveal direction="left" delay={0.2}>
+              <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-5 sm:p-6 shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-400 ease-lovable space-y-3.5 text-left">
+                <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Important Notes</h3>
 
-              <ul className="space-y-2.5 text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                  <span>Apply at least 15 days before your travel date.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                  <span>Ensure all documents are genuine and valid.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                  <span>Biometric is mandatory for all applicants.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <MessageSquare className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
-                  <span>You may be called for an interview.</span>
-                </li>
-              </ul>
-            </div>
+                <ul className="space-y-2.5 text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
+                  <li className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                    <span>Apply at least 15 days before your travel date.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                    <span>Ensure all documents are genuine and valid.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                    <span>Biometric is mandatory for all applicants.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <MessageSquare className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
+                    <span>You may be called for an interview.</span>
+                  </li>
+                </ul>
+              </div>
+            </ScrollReveal>
 
           </div>
         </div>
