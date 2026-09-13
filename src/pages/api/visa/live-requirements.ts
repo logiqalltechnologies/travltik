@@ -186,28 +186,50 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const today = new Date().toISOString();
     const prompt = `You are TravlTik's live visa-requirements verification engine.
 
-CURRENT DATE/TIME: ${today}
+CURRENT DATE: ${today}
+INTENDED TRAVEL DATE: ${input.travelDate || 'Not provided'}
+VISA TYPE: ${input.visaType || 'Determine from purpose'}
 
 USER INPUT:
 Passport country: ${input.passportCountry}
 Destination country: ${input.destinationCountry}
 Purpose of travel: ${input.purpose}
-Visa type: ${input.visaType || 'Determine applicable visa type'}
 Travel date: ${input.travelDate || 'Not provided'}
 Duration: ${input.duration || 'Not provided'} days
 Country of residence: ${input.residenceCountry || input.passportCountry}
 
 Provide the CURRENT official visa and entry requirements based on official government and embassy regulations. Use only official sources: embassy, immigration authority, VFS/BLS/TLS/CVASC.
 
-DOCUMENT CONDITIONS RULES:
+CRITICAL FEE VERIFICATION RULES:
+- Cross-check EACH fee from at least 2 official sources (embassy + visa center).
+- If sources differ, show BOTH amounts with their respective sources.
+- Separate CONSULAR FEE from SERVICE FEE (VFS/CVASC/BLS/TLScontact).
+- For China: CVASC fee is MANDATORY and separate from consular fee. Check both.
+- Never combine consular fee and service fee into one number.
+- Always provide accurate official fees in local currency and/or USD/INR.
+
+CRITICAL DOCUMENT & FINANCIAL RULES:
 - For EACH document, research and provide ALL the specific conditions/validity requirements from official sources.
 - Do NOT force a fixed number of conditions. Provide as many as actually exist.
 - If a document has 2 conditions, provide 2. If it has 4, provide 4. If it has 5, provide 5. If it has only 1 condition, provide 1.
 - Do NOT use generic descriptions. Each condition must be SPECIFIC to this country and document.
 - Research the ACTUAL requirements from official embassy/government sources.
-- Each condition should be a SEPARATE, DISTINCT requirement.
-- Conditions should cover different aspects: validity, format, content, quantity, certification, etc.
+- Each condition should be a SEPARATE, DISTINCT requirement covering different aspects: validity, format, content, quantity, certification, etc.
 - Do NOT invent conditions that don't exist in official sources.
+- For bank statements, ALWAYS specify in financialRequirements:
+  * Minimum balance required (exact amount + currency)
+  * Statement period (e.g., 3 months, 6 months)
+  * Whether bank seal/stamp/signature is required
+- For biometrics, ALWAYS specify:
+  * Required: true/false
+  * Exempt: true/false
+  * If exempt, state the exact condition (e.g., "Exempt for applicants under 12 and over 70, or biometric fingerprint exemption for single/double entry tourism visas if issued by regulation")
+  * Location where biometrics must be provided (e.g., "CVASC Center", "VFS Global Center", "Embassy")
+
+CRITICAL SOURCE RULES:
+- Verify each fee from at least 2 official sources.
+- If sources conflict, flag it in the warnings array (e.g. "Fee differs between embassy circular and CVASC portal").
+- Never use travel blogs, Reddit, or SEO websites as primary sources.
 
 GENERAL CRITICAL RULES:
 1. Return ONLY valid JSON in the EXACT nested format below. Do NOT use flat structure. Use nested objects as shown.
@@ -230,8 +252,44 @@ REQUIRED FORMAT:
   "fees": {
     "eVisaTotal": "",
     "stickerConsularStandard": "",
-    "vfsServiceFee": ""
+    "vfsServiceFee": "",
+    "consularFee": {
+      "amount": "",
+      "currency": "",
+      "sourceName": "",
+      "sourceUrl": ""
+    },
+    "serviceFee": {
+      "amount": "",
+      "currency": "",
+      "provider": "",
+      "sourceName": "",
+      "sourceUrl": ""
+    },
+    "total": {
+      "amount": "",
+      "currency": ""
+    }
   },
+  "biometrics": {
+    "required": true,
+    "exempt": false,
+    "exemptionCondition": "",
+    "location": "",
+    "sourceName": "",
+    "sourceUrl": ""
+  },
+  "financialRequirements": [
+    {
+      "documentName": "Bank Statement",
+      "minimumBalance": "",
+      "period": "",
+      "bankSealRequired": true,
+      "sourceName": "",
+      "sourceUrl": ""
+    }
+  ],
+  "warnings": [],
   "eVisa": {
     "available": true,
     "portal": "",
@@ -316,6 +374,16 @@ REQUIRED FORMAT:
           result.eVisa.processing = result.eVisa.processing.replace(/calendar days/gi, 'working days');
         }
 
+        // Backwards compatibility & normalization for fees
+        if (result.fees) {
+          if (!result.fees.stickerConsularStandard && result.fees.consularFee?.amount) {
+            result.fees.stickerConsularStandard = `${result.fees.consularFee.currency || ''} ${result.fees.consularFee.amount}`.trim();
+          }
+          if (!result.fees.vfsServiceFee && result.fees.serviceFee?.amount) {
+            result.fees.vfsServiceFee = `${result.fees.serviceFee.currency || ''} ${result.fees.serviceFee.amount} (${result.fees.serviceFee.provider || 'Visa Center'})`.trim();
+          }
+        }
+
         const sources = geminiResponse.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
         const groundingSources = sources.slice(0, 10).map((s: any) => ({
           name: s.web?.title || 'Official Source',
@@ -326,6 +394,9 @@ REQUIRED FORMAT:
         const payload = {
           success: true,
           checkedAt: today,
+          warnings: Array.isArray(result.warnings) ? result.warnings : [],
+          financialRequirements: Array.isArray(result.financialRequirements) ? result.financialRequirements : [],
+          biometrics: result.biometrics || { required: false, exempt: false },
           ...result,
           sources: (result.sources && result.sources.length > 0) ? result.sources : groundingSources,
           groundingSources,
