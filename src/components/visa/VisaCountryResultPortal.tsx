@@ -246,7 +246,8 @@ import {
   Download,
   FileDown,
   Sun,
-  TrendingUp
+  TrendingUp,
+  AlertTriangle
 } from 'lucide-react';
 import { downloadVisaChecklistPDF, openPrintableChecklist, type VisaChecklistPDFData } from '../../utils/generateVisaChecklistPDF';
 
@@ -4217,7 +4218,11 @@ export function VisaCountryResultPortal({
       raw = aiData?.processing_time || aiData?.processing_and_timing?.decision_time || getTourismProcessingTime(countryName);
     }
 
-    return standardizeProcessingTime(raw);
+    const standardized = standardizeProcessingTime(raw);
+    if (!standardized || standardized.trim().toLowerCase() === 'n/a' || standardized.trim().toLowerCase() === 'none' || standardized.trim().toLowerCase() === 'tbd') {
+      return '';
+    }
+    return standardized;
   };
 
   const resolvedOverview = useMemo(() => {
@@ -4290,15 +4295,16 @@ export function VisaCountryResultPortal({
             passportCountry,
             destinationCountry: countryName || slugClean,
             purpose: activePurposeTab,
+            travelDate: new Date().toISOString().split('T')[0],
             visaType: activePurposeTab === 'tourism' ? 'tourist' : activePurposeTab,
           })
         });
         const liveRes = await res.json();
         if (liveRes.success && mounted) {
-          const pt = liveRes.processingTime?.standardSticker || liveRes.processingTime?.eVisa || liveRes.eVisa?.processing || '4 - 5 working days';
-          const val = liveRes.eVisa?.validity || liveRes.stayDuration?.stickerSingleDouble || '30 to 90 Days';
-          const stay = liveRes.eVisa?.maxStay || liveRes.stayDuration?.eVisa || 'Up to 30 Days';
-          const entry = liveRes.entryType || 'Single / Multiple Entry';
+          const pt = liveRes.processingTime?.standardSticker || liveRes.processingTime?.eVisa || liveRes.processingTime?.expressSticker || liveRes.eVisa?.processing || null;
+          const val = liveRes.eVisa?.validity || liveRes.stayDuration?.stickerSingleDouble || liveRes.stayDuration?.eVisa || liveRes.validity || null;
+          const stay = liveRes.eVisa?.maxStay || liveRes.stayDuration?.stickerSingleDouble || liveRes.stayDuration?.eVisa || null;
+          const entry = liveRes.entryType || null;
           const auth = liveRes.authority || (liveRes.sources && liveRes.sources[0]?.name) || `${countryName} Immigration Authority & Consular Affairs`;
 
           const consularFeeStr = liveRes.fees?.consularFee?.amount
@@ -7182,13 +7188,38 @@ export function VisaCountryResultPortal({
 
   const cleanStatValue = (val: string | undefined | null) => {
     if (!val) return '';
-    return val
+    const trimmed = String(val).trim().toLowerCase();
+    if (trimmed === 'n/a' || trimmed === 'na' || trimmed === 'none' || trimmed === 'tbd' || trimmed === 'not applicable') {
+      return '';
+    }
+    return String(val)
       .replace(/calendar\s*days/gi, 'Working Days')
       .replace(/calender\s*days/gi, 'Working Days')
       .replace(/\s*\([^)]*\)/g, '')
       .replace(/\s*\[[^\]]*\]/g, '')
       .replace(/\s+/g, ' ')
       .trim();
+  };
+
+  const renderStatOrFallback = (val: string | undefined | null, sourceUrl?: string, sourceName?: string) => {
+    const cleaned = cleanStatValue(val);
+    if (!cleaned) {
+      if (sourceUrl) {
+        return (
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-600 hover:text-amber-700 underline font-medium transition-colors inline-flex items-center gap-1"
+            title={sourceName ? `Check official ${sourceName}` : 'Check official source'}
+          >
+            Check official source
+          </a>
+        );
+      }
+      return <span className="text-amber-600 font-medium">Check official source</span>;
+    }
+    return cleaned;
   };
 
   return (
@@ -7252,7 +7283,7 @@ export function VisaCountryResultPortal({
                   Processing Time
                 </span>
                 <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
-                  {getResolvedProcessingTime()}
+                  {renderStatOrFallback(getResolvedProcessingTime(), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                 </strong>
               </div>
 
@@ -7263,7 +7294,7 @@ export function VisaCountryResultPortal({
                   Validity
                 </span>
                 <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
-                  {cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}
+                  {renderStatOrFallback(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                 </strong>
               </div>
 
@@ -7274,7 +7305,7 @@ export function VisaCountryResultPortal({
                   Stay Period
                 </span>
                 <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
-                  {cleanStatValue(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)))}
+                  {renderStatOrFallback(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                 </strong>
               </div>
 
@@ -7285,8 +7316,11 @@ export function VisaCountryResultPortal({
                   Entry Type
                 </span>
                 <strong className="text-[12px] font-bold text-slate-900 leading-snug break-words mt-0.5">
-                  {cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}
+                  {renderStatOrFallback(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                 </strong>
+                {(aiData?.entry_type && (aiData.entry_type.toLowerCase().includes('single/double/multiple') || aiData.entry_type.toLowerCase().includes('single / multiple'))) && (
+                  <span className="text-[10px] text-amber-600 font-normal leading-tight mt-0.5">⚠️ Verify with embassy</span>
+                )}
               </div>
             </div>
 
@@ -7388,8 +7422,13 @@ export function VisaCountryResultPortal({
                   <div className="flex-1 min-w-0">
                     <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Processing Time</span>
                     <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {getResolvedProcessingTime()}
+                      {renderStatOrFallback(getResolvedProcessingTime(), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                     </strong>
+                    {aiData?.sources?.[0]?.url && (
+                      <a href={aiData.sources[0].url} target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-slate-600 truncate block mt-0.5">
+                        Source: {aiData.sources[0].name || 'Official Authority'}
+                      </a>
+                    )}
                   </div>
                 </div>
 
@@ -7401,7 +7440,7 @@ export function VisaCountryResultPortal({
                   <div className="flex-1 min-w-0">
                     <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Validity</span>
                     <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {cleanStatValue(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)))}
+                      {renderStatOrFallback(aiData?.validity || (isFamilyTab ? getFamilyValidity(countryName) : isPRTab ? getPRValidity(countryName) : isStudyTab ? getStudentValidity(countryName) : isWorkTab ? getWorkValidity(countryName) : isBusinessTab ? getBusinessValidity(countryName) : getTourismValidity(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                     </strong>
                   </div>
                 </div>
@@ -7414,7 +7453,7 @@ export function VisaCountryResultPortal({
                   <div className="flex-1 min-w-0">
                     <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Stay Period</span>
                     <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {cleanStatValue(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)))}
+                      {renderStatOrFallback(aiData?.stay_duration || (isFamilyTab ? getFamilyStayDuration(countryName) : isPRTab ? getPRStayDuration(countryName) : isStudyTab ? getStudentStayDuration(countryName) : isWorkTab ? getWorkStayDuration(countryName) : isBusinessTab ? getBusinessStayDuration(countryName) : getTourismStayDuration(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                     </strong>
                   </div>
                 </div>
@@ -7427,8 +7466,11 @@ export function VisaCountryResultPortal({
                   <div className="flex-1 min-w-0">
                     <span className="text-[11px] sm:text-[12px] font-semibold text-slate-500 uppercase tracking-wide block">Entry Type</span>
                     <strong className="text-[14px] sm:text-[15px] font-semibold text-slate-900 block leading-snug break-words mt-0.5">
-                      {cleanStatValue(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)))}
+                      {renderStatOrFallback(aiData?.entry_type || (isFamilyTab ? getFamilyEntryType(countryName) : isPRTab ? getPREntryType(countryName) : isStudyTab ? getStudentEntryType(countryName) : isWorkTab ? getWorkEntryType(countryName) : isBusinessTab ? getBusinessEntryType(countryName) : getTourismEntryType(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                     </strong>
+                    {(aiData?.entry_type && (aiData.entry_type.toLowerCase().includes('single/double/multiple') || aiData.entry_type.toLowerCase().includes('single / multiple'))) && (
+                      <span className="text-[11px] text-amber-600 font-normal block mt-0.5">⚠️ Generic value — verify from official source</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -7463,6 +7505,21 @@ export function VisaCountryResultPortal({
           {/* ── LEFT MAIN COLUMN (8 COLS) ── */}
           <div className="lg:col-span-8 space-y-6">
             
+            {/* Live Verification Warnings Notice */}
+            {aiData?.warnings && aiData.warnings.length > 0 && (
+              <div className="warnings-section p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-left shadow-2xs">
+                <div className="flex items-center gap-2 text-amber-900 font-semibold text-[13px] sm:text-[14px] mb-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Official Verification Warnings &amp; Consular Notices</span>
+                </div>
+                <ul className="text-[12px] sm:text-[13px] text-amber-900/90 space-y-1.5 list-disc pl-5">
+                  {aiData.warnings.map((w: string, i: number) => (
+                    <li key={i} className="leading-relaxed">{w}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* Horizontal Tabs Bar (Desktop) */}
             <div className="hidden md:flex bg-white rounded-2xl border border-slate-200/80 p-1.5 shadow-2xs items-center gap-1 overflow-x-auto no-scrollbar">
               {[
@@ -8641,7 +8698,7 @@ export function VisaCountryResultPortal({
                   <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2 text-left">
                     <span className="text-[12px] font-medium text-slate-500 uppercase tracking-wider block">Official Decision Time</span>
                     <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 leading-snug">
-                      {aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isFamilyTab ? getFamilyProcessingTime(countryName) : isPRTab ? getPRProcessingTime(countryName) : isStudyTab ? getStudentProcessingTime(countryName) : isWorkTab ? getWorkProcessingTime(countryName) : isBusinessTab ? getBusinessProcessingTime(countryName) : getTourismProcessingTime(countryName))}
+                      {renderStatOrFallback(aiData?.processing_and_timing?.decision_time || aiData?.processing_time || (isFamilyTab ? getFamilyProcessingTime(countryName) : isPRTab ? getPRProcessingTime(countryName) : isStudyTab ? getStudentProcessingTime(countryName) : isWorkTab ? getWorkProcessingTime(countryName) : isBusinessTab ? getBusinessProcessingTime(countryName) : getTourismProcessingTime(countryName)), aiData?.sources?.[0]?.url, aiData?.sources?.[0]?.name)}
                     </h3>
                     <p className="text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed pt-1">
                       {aiData?.processing_and_timing?.center_notes || aiData?.processing_time_details || (isFamilyTab ? getFamilyProcessingDetails(countryName) : isPRTab ? getPRProcessingDetails(countryName) : isStudyTab ? getStudentProcessingDetails(countryName) : isWorkTab ? getWorkProcessingDetails(countryName) : isBusinessTab ? getBusinessProcessingDetails(countryName) : getTourismProcessingDetails(countryName))}
