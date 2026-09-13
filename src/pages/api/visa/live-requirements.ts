@@ -234,8 +234,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       );
     }
 
-    // Cache check
-    const cacheKey = `${input.passportCountry}|${input.destinationCountry}|${input.purpose}|${input.visaType || ''}|${input.travelDate || ''}`.toLowerCase();
+    // Cache check: normalized by passport, destination, and purpose
+    const cacheKey = `${input.passportCountry}|${input.destinationCountry}|${input.purpose}`.toLowerCase().trim();
     const cached = cache.get(cacheKey);
     if (cached && (Date.now() - cached.timestamp < CACHE_TTL_MS)) {
       return new Response(
