@@ -1,5 +1,5 @@
 import barba from '@barba/core';
-import { gsap } from './gsap';
+import { gsap, ScrollTrigger } from './gsap';
 
 /**
  * Initializes Barba.js smooth page transitions with GSAP fade & slide animation.
@@ -12,6 +12,10 @@ export function initBarba() {
   if (!wrapper) return;
 
   try {
+    barba.hooks.after(() => {
+      ScrollTrigger.refresh();
+    });
+
     barba.init({
       preventRunning: true,
       transitions: [

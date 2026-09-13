@@ -1,5 +1,9 @@
 import SplitType from 'split-type';
-import { gsap } from './gsap';
+import { gsap, ScrollTrigger } from './gsap';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Initializes the text shine and reveal animation on elements matching the selector
@@ -66,6 +70,9 @@ export function initTextShine(target: string | HTMLElement = '.animate-heading')
       console.warn('SplitType initialization error:', err);
     }
   });
+
+  // Recalculate positions after splitting words
+  ScrollTrigger.refresh();
 
   return () => {
     instances.forEach((inst) => inst.cleanup());

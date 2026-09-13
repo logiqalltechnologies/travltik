@@ -159,8 +159,12 @@ const defaultSchema = {
   <!-- Lenis Smooth Scroll, GSAP, SplitType Text Shine & Magnetic Interactions -->
   <script>
     import Lenis from 'lenis';
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
     import { initTextShine } from '../lib/textShine';
     import { initMagneticElements, initTiltCards } from '../lib/magnetic';
+
+    gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -170,13 +174,17 @@ const defaultSchema = {
       touchMultiplier: 2,
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    // Lenis ko ScrollTrigger se sync karo
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
 
     function initInteractiveEffects() {
+      ScrollTrigger.refresh();
       initTextShine('.animate-heading');
       initMagneticElements('.magnetic-btn');
       initTiltCards('.tilt-card');
@@ -188,7 +196,10 @@ const defaultSchema = {
       initInteractiveEffects();
     }
 
-    document.addEventListener('astro:page-load', initInteractiveEffects);
+    document.addEventListener('astro:page-load', () => {
+      ScrollTrigger.refresh();
+      initInteractiveEffects();
+    });
   </script>
 </body>
 </html>

@@ -7737,7 +7737,7 @@ export function VisaCountryResultPortal({
                   {/* 1. Overview Card */}
                   <ScrollReveal direction="up" delay={0.08}>
                     <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-7 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-5 text-left">
-                      <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900">Overview</h2>
+                      <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 animate-heading">Overview</h2>
                       <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal max-w-4xl">
                         {(() => {
                           const text = (resolvedOverview || '').trim();
@@ -8036,7 +8036,7 @@ export function VisaCountryResultPortal({
                         <div id="documents-section" className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-6 text-left">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
-                              <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Documents Required</h3>
+                              <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight animate-heading">Documents Required</h3>
                               <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Prepare the following documents for a smooth application process.</p>
                             </div>
                             <button
@@ -8090,7 +8090,7 @@ export function VisaCountryResultPortal({
                       <ScrollReveal direction="up" delay={0.15}>
                         <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-8 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-7 text-left">
                           <div>
-                            <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Steps to Follow</h3>
+                            <h3 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight animate-heading">Steps to Follow</h3>
                             <p className="text-[13px] sm:text-[14px] text-slate-500 font-normal mt-0.5">Follow these simple steps to complete your visa application.</p>
                           </div>
 
