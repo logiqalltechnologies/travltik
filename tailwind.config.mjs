@@ -129,6 +129,12 @@ export default {
         "card-hover": "0 4px 20px rgba(14,165,233,.12), 0 8px 28px rgba(12,26,52,.06)",
         "premium-card": "0 1px 3px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.03)",
         "premium-card-hover": "0 16px 32px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04)",
+        "luxury": "0 4px 20px -4px rgba(0, 0, 0, 0.08)",
+        "luxury-hover": "0 12px 40px -8px rgba(0, 0, 0, 0.12)",
+        "luxury-glow": "0 8px 30px -4px rgba(46, 125, 50, 0.3)",
+      },
+      transitionTimingFunction: {
+        "luxury": "cubic-bezier(0.4, 0, 0.2, 1)",
       },
       keyframes: {
         "fade-up": {
