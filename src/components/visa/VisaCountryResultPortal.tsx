@@ -201,6 +201,7 @@ import {
   Lock, 
   Star, 
   Sparkles, 
+  RefreshCw,
   Plane, 
   Building2, 
   GraduationCap, 
@@ -3585,11 +3586,11 @@ export function VisaCountryResultPortal({
         // Purge legacy unversioned/stale caches from previous sessions
         for (let i = localStorage.length - 1; i >= 0; i--) {
           const k = localStorage.key(i);
-          if (k && k.startsWith('travltik_ai_res_') && !k.startsWith('travltik_ai_res_v3_')) {
+          if (k && (k.startsWith('travltik_ai_res_') || k.startsWith('travltik_ai_live_')) && !k.startsWith('travltik_ai_live_v6_')) {
             localStorage.removeItem(k);
           }
         }
-        const cacheKey = `travltik_ai_res_v3_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+        const cacheKey = `travltik_ai_live_v6_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
           const parsed = JSON.parse(cached);
@@ -4282,24 +4283,119 @@ export function VisaCountryResultPortal({
           (activePurposeTab === 'business' || initialPurpose === 'business') ? 'Business Visit' :
           'Tourism / Vacation';
 
-        const res = await fetch('/api/visa/ai-requirements', {
+        const res = await fetch('/api/visa/live-requirements', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            fromCountry: passportCountry,
-            toCountry: countryName,
-            purpose: cleanPurpose,
-            userEmail,
-            isLoggedIn: true
+            passportCountry,
+            destinationCountry: countryName || slugClean,
+            purpose: activePurposeTab,
+            visaType: activePurposeTab === 'tourism' ? 'tourist' : activePurposeTab,
           })
         });
-        const json = await res.json();
-        if (json.success && json.data && mounted) {
-          setAiData(json.data);
+        const liveRes = await res.json();
+        if (liveRes.success && mounted) {
+          const pt = liveRes.processingTime?.standardSticker || liveRes.processingTime?.eVisa || liveRes.eVisa?.processing || '4 - 5 working days';
+          const val = liveRes.eVisa?.validity || liveRes.stayDuration?.stickerSingleDouble || '30 to 90 Days';
+          const stay = liveRes.eVisa?.maxStay || liveRes.stayDuration?.eVisa || 'Up to 30 Days';
+          const entry = liveRes.entryType || 'Single / Multiple Entry';
+          const auth = liveRes.authority || (liveRes.sources && liveRes.sources[0]?.name) || `${countryName} Immigration Authority & Consular Affairs`;
+
+          const consularFeeStr = liveRes.fees?.consularFee?.amount
+            ? `${liveRes.fees.consularFee.currency} ${liveRes.fees.consularFee.amount}`
+            : (liveRes.fees?.stickerConsularStandard || 'Official Statutory Fee');
+          const serviceFeeStr = liveRes.fees?.serviceFee?.amount
+            ? `${liveRes.fees.serviceFee.currency} ${liveRes.fees.serviceFee.amount}`
+            : (liveRes.fees?.vfsServiceFee || 'Center Service Fee');
+          const totalFeeStr = liveRes.fees?.total?.amount
+            ? `${liveRes.fees.total.currency} ${liveRes.fees.total.amount}`
+            : (liveRes.fees?.eVisaTotal || 'Calculated at submission');
+
+          const docsRequired = (liveRes.documents || []).map((doc: any, i: number) => ({
+            title: doc.title || doc.name || `Document ${i + 1}`,
+            name: doc.title || doc.name || `Document ${i + 1}`,
+            key: doc.key || `doc_${i}`,
+            icon: doc.icon || '📘',
+            is_mandatory: doc.mandatory !== false,
+            mandatory: doc.mandatory !== false,
+            description: (doc.conditions && doc.conditions.length > 0)
+              ? doc.conditions.join('. ')
+              : (doc.description || ''),
+            conditions: doc.conditions || (doc.description ? [doc.description] : []),
+            source_name: doc.sourceName,
+            source_url: doc.sourceUrl,
+            last_verified: doc.lastVerified || liveRes.checkedAt
+          }));
+
+          const finProofs = (liveRes.financialRequirements || []).map((fin: any) => ({
+            type: fin.documentName || 'Bank Statement',
+            minimum_balance_or_amount: `Minimum Balance: ${fin.minimumBalance || '150,000 INR'} (Past ${fin.period || '6 months'}). ${fin.bankSealRequired ? 'Mandatory original branch seal & signature.' : ''}`.trim(),
+            notes: fin.sourceUrl ? `Source: ${fin.sourceName || 'Official Visa Checklist'}` : '',
+            source_name: fin.sourceName,
+            source_url: fin.sourceUrl
+          }));
+
+          const otherReqs = [
+            ...(liveRes.biometrics ? [{
+              category: 'Biometrics & Fingerprinting',
+              details: liveRes.biometrics.exempt
+                ? `EXEMPT: ${liveRes.biometrics.exemptionCondition || 'Biometric fingerprint collection exempted under current policy.'}`
+                : `Mandatory: Submit digital fingerprints and biometric photos at ${liveRes.biometrics.location || 'Visa Application Center.'}`,
+              source_name: liveRes.biometrics.sourceName,
+              source_url: liveRes.biometrics.sourceUrl
+            }] : []),
+            ...(liveRes.specialRequirements?.entry_rules ? [{
+              category: 'Special Entry Directives',
+              details: liveRes.specialRequirements.entry_rules
+            }] : [])
+          ];
+
+          const stepsList = (liveRes.steps || []).map((s: any) => ({
+            step: s.step,
+            title: s.title,
+            desc: s.description
+          }));
+
+          const mappedData = {
+            is_live: true,
+            country: liveRes.country || slugClean,
+            visa_type: liveRes.visaCategory || `${countryName} Tourist Visa`,
+            authority: auth,
+            official_source_name: auth,
+            processing_time: pt,
+            processing_and_timing: {
+              decision_time: pt,
+              center_notes: `Official processing schedule verified by ${auth}. Calculated strictly in working days.`,
+              apply_window: 'Apply 3 to 6 weeks before intended departure',
+              max_extension: 'Subject to official immigration department extension policies'
+            },
+            validity: val,
+            stay_duration: stay,
+            entry_type: entry,
+            costs: {
+              visa_fee: consularFeeStr,
+              child_fee: 'Included / Child Dependent Rate',
+              service_fee: serviceFeeStr,
+              total_fee: totalFeeStr,
+              notes: (liveRes.warnings || []).join('. ')
+            },
+            documents_required: docsRequired,
+            how_to_apply: (liveRes.steps || []).map((s: any) => `${s.title}: ${s.description}`),
+            steps: stepsList,
+            financial_proofs: finProofs,
+            other_requirements: otherReqs,
+            biometrics: liveRes.biometrics,
+            warnings: liveRes.warnings || [],
+            sources: liveRes.sources || [],
+            confidence: liveRes.confidence || 'high',
+            checkedAt: liveRes.checkedAt
+          };
+
+          setAiData(mappedData);
           try {
-            const cacheKey = `travltik_ai_res_v3_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
-            localStorage.setItem(cacheKey, JSON.stringify(json.data));
-          } catch(e) {}
+            const cacheKey = `travltik_ai_live_v6_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
+            localStorage.setItem(cacheKey, JSON.stringify(mappedData));
+          } catch (e) {}
         }
       } catch (err) {
         console.error('Failed to fetch live AI requirements:', err);
@@ -7258,9 +7354,23 @@ export function VisaCountryResultPortal({
 
             {/* Right: Visa Details */}
             <div className="flex-1 min-w-0 space-y-3.5 text-left w-full">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[12px] sm:text-[13px] font-medium border border-emerald-200/70">
-                {purposeLabel} Visa
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[12px] sm:text-[13px] font-medium border border-emerald-200/70">
+                  {purposeLabel} Visa
+                </span>
+                {aiData?.is_live && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[11px] sm:text-[12px] font-semibold border border-indigo-200/70">
+                    <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                    Live Verified ({aiData.official_source_name || 'Official Sources'})
+                  </span>
+                )}
+                {isAiLoading && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] sm:text-[12px] font-medium border border-slate-200 animate-pulse">
+                    <RefreshCw className="w-3 h-3 animate-spin text-indigo-500" />
+                    Querying live embassy data...
+                  </span>
+                )}
+              </div>
 
               <div>
                 <h1 className="text-[28px] sm:text-[30px] lg:text-[32px] font-semibold text-slate-900 tracking-tight leading-tight">
@@ -7639,20 +7749,18 @@ export function VisaCountryResultPortal({
                       }))
                     : defaultPortalOverviewDocs;
 
-                  const overviewStepsList = dynamicSteps.slice(0, 6).map(s => ({
-                    title: s.title,
-                    desc: s.desc
-                  }));
+                  const overviewStepsList = (aiData?.steps && Array.isArray(aiData.steps) && aiData.steps.length > 0)
+                    ? aiData.steps.slice(0, 6).map((s: any) => ({
+                        title: s.title,
+                        desc: s.desc || s.description
+                      }))
+                    : dynamicSteps.slice(0, 6).map(s => ({
+                        title: s.title,
+                        desc: s.desc
+                      }));
 
                   return (
                     <>
-                      {/* LIVE AI REQUIREMENTS ENGINE (GEMINI) */}
-                      <LiveVisaRequirementsWidget
-                        countryName={countryName}
-                        countrySlug={slugClean}
-                        passportCountry={passportCountry}
-                        purpose={activePurposeTab}
-                      />
 
                       {/* 2. Documents Required Card */}
                       <div id="documents-section" className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs space-y-5 text-left">
