@@ -116,7 +116,7 @@ async function fetchHeroImage(countryInput: string, purposeInput: string = 'tour
           const rawUrl = photo.urls?.raw;
           const regularUrl = photo.urls?.regular;
           const optimalUrl = rawUrl
-            ? `${rawUrl}&w=1600&auto=format&fit=crop&q=85`
+            ? `${rawUrl}&w=2000&auto=format&fit=crop&q=90`
             : (regularUrl || staticFallback.url);
 
           const result = {

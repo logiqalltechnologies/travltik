@@ -18,8 +18,8 @@ export interface CountryHeroEntry {
   business?: string;
 }
 
-const U = (id: string, width = 1600): string =>
-  `https://images.unsplash.com/${id}?w=${width}&auto=format&fit=crop&q=85`;
+const U = (id: string, width = 2000): string =>
+  `https://images.unsplash.com/${id}?w=${width}&auto=format&fit=crop&q=90`;
 
 export const COUNTRY_HERO_CATALOG: Record<string, CountryHeroEntry> = {
   "afghanistan": {

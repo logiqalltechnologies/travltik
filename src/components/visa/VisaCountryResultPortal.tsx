@@ -7357,11 +7357,13 @@ export function VisaCountryResultPortal({
 
             {/* Top Row: Image + Title */}
             <div className="flex items-start gap-3">
-              <div className="w-[60px] h-[60px] rounded-xl overflow-hidden shrink-0 border border-slate-100 shadow-sm relative bg-slate-100">
+              <div className="w-[64px] h-[64px] rounded-xl overflow-hidden shrink-0 border border-slate-100 shadow-sm relative bg-slate-100">
                 <img
                   src={heroImage}
                   alt={heroImageAlt || `${countryName} Visa`}
-                  className={`w-full h-full object-cover object-center transition-opacity duration-300 ${isHeroLoading ? 'opacity-70' : 'opacity-100'}`}
+                  loading="eager"
+                  decoding="async"
+                  className={`w-full h-full object-cover object-center transition-opacity duration-300 ${isHeroLoading ? 'opacity-85' : 'opacity-100'}`}
                   onError={(e) => {
                     const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
                     if (e.currentTarget.src !== fallback) {
@@ -7476,11 +7478,13 @@ export function VisaCountryResultPortal({
         <div className="hidden md:block bg-white rounded-2xl sm:rounded-3xl border border-black/[0.04] p-6 sm:p-8 shadow-luxury transition-all duration-400 ease-luxury hover:shadow-luxury-hover hover:-translate-y-0.5">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
             {/* Left: Country Landmark Photo */}
-            <div className="w-full md:w-64 lg:w-72 h-56 sm:h-64 rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-xs relative bg-slate-100 group">
+            <div className="w-full md:w-72 lg:w-80 h-60 sm:h-72 rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-xs relative bg-slate-100 group">
               <img
                 src={heroImage}
                 alt={heroImageAlt || `${countryName} Visa`}
-                className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700 ${isHeroLoading ? 'opacity-70 blur-[1px]' : 'opacity-100'}`}
+                loading="eager"
+                decoding="async"
+                className={`w-full h-full object-cover object-center group-hover:scale-105 transition-all duration-700 ${isHeroLoading ? 'opacity-85' : 'opacity-100'}`}
                 onError={(e) => {
                   const fallback = getStaticCountryHeroImage(slugClean, activePurposeTab).url;
                   if (e.currentTarget.src !== fallback) {
@@ -7492,7 +7496,7 @@ export function VisaCountryResultPortal({
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              <span className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[10px] font-semibold text-white tracking-wide uppercase border border-white/20">
+              <span className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md text-[10px] font-semibold text-white tracking-wide uppercase border border-white/20">
                 Official 4K View
               </span>
             </div>
@@ -7544,7 +7548,7 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* 2. Validity */}
-                <div className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-2xs">
+                <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-xl border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(0,0,0,0.03)] hover:shadow-xs transition-all duration-300">
                   <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Calendar className="w-4 h-4" />
                   </div>
@@ -7557,7 +7561,7 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* 3. Stay Period */}
-                <div className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-2xs">
+                <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-xl border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(0,0,0,0.03)] hover:shadow-xs transition-all duration-300">
                   <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Compass className="w-4 h-4" />
                   </div>
@@ -7570,7 +7574,7 @@ export function VisaCountryResultPortal({
                 </div>
 
                 {/* 4. Entry Type */}
-                <div className="flex items-start gap-3 bg-white/90 p-3 rounded-xl border border-slate-200/60 shadow-2xs">
+                <div className="flex items-start gap-3.5 bg-white p-3.5 sm:p-4 rounded-xl border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(0,0,0,0.03)] hover:shadow-xs transition-all duration-300">
                   <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Plane className="w-4 h-4" />
                   </div>
