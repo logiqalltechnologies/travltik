@@ -146,9 +146,9 @@ const defaultSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(schema || defaultSchema)} />
 
 </head>
-<body class="font-sans antialiased subpixel-antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden">
+<body class="font-sans antialiased subpixel-antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden" data-barba="wrapper">
   {!hideHeader && <Header />}
-  <main class={`flex-grow ${hideHeader ? "" : "pt-16 lg:pt-20"}`}>
+  <main class={`flex-grow ${hideHeader ? "" : "pt-16 lg:pt-20"}`} data-barba="container" data-barba-namespace="default">
     <slot />
   </main>
   {!hideFooter && <Footer />}
@@ -156,9 +156,11 @@ const defaultSchema = {
   {!shouldHideWidgets && <VisaMatchWidget client:only="react" />}
   {!shouldHideWidgets && <TalkToUs client:only="react" />}
 
-  <!-- Lenis Smooth Scroll -->
+  <!-- Lenis Smooth Scroll, GSAP, SplitType Text Shine & Magnetic Interactions -->
   <script>
     import Lenis from 'lenis';
+    import { initTextShine } from '../lib/textShine';
+    import { initMagneticElements, initTiltCards } from '../lib/magnetic';
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -173,6 +175,20 @@ const defaultSchema = {
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
+
+    function initInteractiveEffects() {
+      initTextShine('.animate-heading');
+      initMagneticElements('.magnetic-btn');
+      initTiltCards('.tilt-card');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initInteractiveEffects);
+    } else {
+      initInteractiveEffects();
+    }
+
+    document.addEventListener('astro:page-load', initInteractiveEffects);
   </script>
 </body>
 </html>

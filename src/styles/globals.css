@@ -1067,4 +1067,39 @@ select {
   }
 }
 
+/* ── Text Shine / Glow Effect (SplitType & GSAP) ── */
+.animate-heading span,
+.animate-heading .word {
+  background: linear-gradient(
+    90deg,
+    #09090b 0%,
+    #09090b 40%,
+    #10b981 50%,
+    #09090b 60%,
+    #09090b 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.dark .animate-heading span,
+.dark .animate-heading .word {
+  background: linear-gradient(
+    90deg,
+    #f8fafc 0%,
+    #f8fafc 40%,
+    #10b981 50%,
+    #f8fafc 60%,
+    #f8fafc 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
 

@@ -108,6 +108,7 @@ import {
 import { getStaticCountryHeroImage } from '../../lib/country-hero-images';
 import { motion } from 'framer-motion';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '../ui/ScrollReveal';
+import { initTextShine } from '../../lib/textShine';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
 function PortalCustomSelect({
@@ -3447,6 +3448,13 @@ export function VisaCountryResultPortal({
       isMounted = false;
     };
   }, [slugClean, activePurposeTab]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      initTextShine('.animate-heading');
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [countryName, purposeLabel]);
 
   const [passportCountry, setPassportCountry] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -7381,7 +7389,7 @@ export function VisaCountryResultPortal({
                   {purposeLabel} Visa
                 </span>
                 <h1
-                  className="font-semibold text-slate-900 tracking-tight leading-tight break-words"
+                  className="font-semibold text-slate-900 tracking-tight leading-tight break-words animate-heading"
                   style={{ fontSize: `${Math.max(14, 20 - Math.max(0, `${countryName} ${purposeLabel} Visa`.length - 20) * 0.3)}px` }}
                 >
                   {countryName} {purposeLabel} Visa
@@ -7525,7 +7533,7 @@ export function VisaCountryResultPortal({
                 </div>
 
                 <div>
-                  <h1 className="text-[28px] sm:text-[30px] lg:text-[32px] font-semibold text-slate-900 tracking-tight leading-tight">
+                  <h1 className="text-[28px] sm:text-[30px] lg:text-[32px] font-semibold text-slate-900 tracking-tight leading-tight animate-heading">
                     {countryName} {purposeLabel} Visa
                   </h1>
                 </div>
