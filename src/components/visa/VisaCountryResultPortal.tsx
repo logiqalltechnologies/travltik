@@ -7847,45 +7847,45 @@ export function VisaCountryResultPortal({
 
                   const overviewStepsList = (aiData?.steps && Array.isArray(aiData.steps) && aiData.steps.length > 0)
                     ? aiData.steps.slice(0, 6).map((s: any) => {
-                        let shortDesc = s.desc || s.description || '';
-                        shortDesc = shortDesc
+                        let cleanTitle = (s.title || '').replace(/^Step\s*\d+[\s:.-]*/i, '').trim();
+
+                        let rawDesc = s.desc || s.description || '';
+                        rawDesc = rawDesc
                           .replace(/\.{2,}/g, '.')
                           .replace(/\s+/g, ' ')
                           .trim();
 
-                        const match = shortDesc.match(/^([^.!?]+[.!?])/);
-                        if (match && match[1].length >= 15 && match[1].length <= 75) {
-                          shortDesc = match[1].trim();
-                        }
-
-                        if (shortDesc.length > 65) {
-                          shortDesc = shortDesc.slice(0, 60).trim().replace(/[,\s.]+$/, '') + '...';
-                        }
-                        if (!shortDesc.endsWith('.') && !shortDesc.endsWith('...')) {
-                          shortDesc += '.';
-                        }
-
-                        let cleanTitle = (s.title || '').trim();
-                        if (cleanTitle.length > 26) {
-                          cleanTitle = cleanTitle.slice(0, 24).trim().replace(/[,\s.]+$/, '') + '...';
+                        // Pick first clean sentence without chopping words mid-sentence
+                        const firstSentence = rawDesc.split(/[.!?]/)[0]?.trim();
+                        let cleanDesc = firstSentence || rawDesc;
+                        if (cleanDesc && !cleanDesc.endsWith('.')) {
+                          cleanDesc += '.';
                         }
 
                         return {
                           title: cleanTitle,
                           fullTitle: s.title,
-                          desc: shortDesc,
+                          desc: cleanDesc,
                           fullDesc: s.desc || s.description
                         };
                       })
                     : dynamicSteps.slice(0, 6).map(s => {
-                        let shortDesc = s.desc || '';
-                        if (shortDesc.length > 65) {
-                          shortDesc = shortDesc.slice(0, 60).trim().replace(/[,\s.]+$/, '') + '...';
+                        let cleanTitle = (s.title || '').replace(/^Step\s*\d+[\s:.-]*/i, '').trim();
+                        let rawDesc = s.desc || '';
+                        rawDesc = rawDesc
+                          .replace(/\.{2,}/g, '.')
+                          .replace(/\s+/g, ' ')
+                          .trim();
+
+                        const firstSentence = rawDesc.split(/[.!?]/)[0]?.trim();
+                        let cleanDesc = firstSentence || rawDesc;
+                        if (cleanDesc && !cleanDesc.endsWith('.')) {
+                          cleanDesc += '.';
                         }
                         return {
-                          title: s.title,
+                          title: cleanTitle,
                           fullTitle: s.title,
-                          desc: shortDesc,
+                          desc: cleanDesc,
                           fullDesc: s.desc
                         };
                       });
@@ -7956,18 +7956,20 @@ export function VisaCountryResultPortal({
                           {/* Connecting line behind circles on desktop */}
                           <div className="hidden lg:block absolute top-[28px] left-[6%] right-[6%] h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
 
-                          <div className={`grid grid-cols-2 sm:grid-cols-3 ${overviewStepsList.length === 5 ? 'lg:grid-cols-5' : overviewStepsList.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-6'} gap-4 sm:gap-3 relative z-10`}>
+                          <div className={`grid grid-cols-2 sm:grid-cols-3 ${overviewStepsList.length === 5 ? 'lg:grid-cols-5' : overviewStepsList.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-6'} gap-4 sm:gap-3.5 relative z-10`}>
                             {overviewStepsList.map((step: any, idx: number) => (
-                              <div key={idx} className="flex flex-col items-center text-center px-1">
+                              <div key={idx} className="flex flex-col items-center text-center px-1.5">
                                 <div className="w-8 h-8 rounded-full bg-[#3730A3] text-white flex items-center justify-center text-xs font-semibold shadow-xs ring-4 ring-white z-10 shrink-0">
                                   {idx + 1}
                                 </div>
-                                <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-slate-900 mt-2 leading-snug line-clamp-2" title={step.fullTitle || step.title}>
+                                <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-slate-900 mt-2.5 leading-snug break-words" title={step.fullTitle || step.title}>
                                   {step.title}
                                 </h4>
-                                <p className="text-[11.5px] sm:text-[12px] text-slate-500 font-normal mt-1 leading-snug line-clamp-2 px-0.5" title={step.fullDesc || step.desc}>
-                                  {step.desc}
-                                </p>
+                                {step.desc && (
+                                  <p className="text-[11.5px] sm:text-[12px] text-slate-500 font-normal mt-1 leading-normal px-0.5 break-words" title={step.fullDesc || step.desc}>
+                                    {step.desc}
+                                  </p>
+                                )}
                               </div>
                             ))}
                           </div>

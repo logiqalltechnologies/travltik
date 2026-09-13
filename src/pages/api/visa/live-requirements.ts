@@ -334,7 +334,9 @@ CRITICAL SOURCE RULES:
 GENERAL CRITICAL RULES:
 1. Return ONLY valid JSON in the EXACT nested format below. Do NOT use flat structure. Use nested objects as shown.
 2. Processing time must use "working days" format, NOT "calendar days".
-3. Steps array must contain: step (number), title, description.
+3. Steps array must contain 4 to 5 sequential steps: step (number), title, description.
+   - "title": MUST be SHORT and punchy (2 to 4 words max, e.g. "University Invitation", "Medical Screening", "Online Visa Form", "Submit at Center", "Collect Visa"). Never use long wordy titles.
+   - "description": MUST be ONE simple, clean single-line sentence (under 10-12 words, e.g. "Receive official acceptance and invite letter.", "Complete required medical health tests.", "Fill and submit the online application.", "Submit documents and biometrics at center.", "Receive stamped visa and prepare travel."). Never write long paragraphs.
 4. Sources array must contain: name, url, lastVerified.
 
 REQUIRED FORMAT:
@@ -423,8 +425,8 @@ REQUIRED FORMAT:
   "steps": [
     {
       "step": 1,
-      "title": "",
-      "description": ""
+      "title": "Short 2-4 word title (e.g. University Invitation)",
+      "description": "One simple crisp sentence under 10 words."
     }
   ],
   "specialRequirements": {
