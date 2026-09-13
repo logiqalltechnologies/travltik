@@ -9129,32 +9129,6 @@ export function VisaCountryResultPortal({
               </div>
             </ScrollReveal>
 
-            {/* Card 4: Important Notes */}
-            <ScrollReveal direction="left" delay={0.2}>
-              <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-5 sm:p-6 shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-400 ease-lovable space-y-3.5 text-left">
-                <h3 className="text-[15px] sm:text-[16px] font-semibold text-slate-900 tracking-tight">Important Notes</h3>
-
-                <ul className="space-y-2.5 text-[14px] sm:text-[15px] text-slate-600 font-normal leading-relaxed">
-                  <li className="flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                    <span>Apply at least 15 days before your travel date.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                    <span>Ensure all documents are genuine and valid.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Biometric is mandatory for all applicants.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <MessageSquare className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
-                    <span>You may be called for an interview.</span>
-                  </li>
-                </ul>
-              </div>
-            </ScrollReveal>
-
           </div>
         </div>
         {/* ── APPLICATION PROFILE DETAILS & DOWNLOAD/SYNC (ALWAYS VISIBLE ACROSS ALL TABS - MATCHING EXACT USER REQUEST media_1788583909662.png) ── */}
