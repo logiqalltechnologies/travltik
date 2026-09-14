@@ -7513,7 +7513,7 @@ export function VisaCountryResultPortal({
                   Traveller Account Required
                 </h3>
                 <p className="text-sm text-slate-600 mt-2 leading-relaxed">
-                  Aap abhi <strong>Service Provider (Expert)</strong> account se logged in hain. Personal visa details aur Document Vault access karne ke liye kripya <strong>Traveller Account</strong> se login karein.
+                  You are currently logged in with a <strong>Service Provider (Expert)</strong> account. To access your personal visa details and Document Vault, please sign in with a <strong>Traveller Account</strong>.
                 </p>
               </div>
             ) : (
@@ -7522,7 +7522,7 @@ export function VisaCountryResultPortal({
                   Login Required
                 </h3>
                 <p className="text-sm text-slate-600 mt-2 leading-relaxed">
-                  Apne verified visas aur Document Vault ko access karne ke liye, kripya pehle apne <strong>Traveller Account</strong> se login karein.
+                  To access your verified visas and Document Vault, please sign in to your <strong>Traveller Account</strong>.
                 </p>
               </div>
             )}

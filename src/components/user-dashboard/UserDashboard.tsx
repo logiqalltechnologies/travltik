@@ -79,7 +79,7 @@ export const UserDashboard: React.FC = () => {
                                 <span className="text-2xl p-2 rounded-xl bg-amber-100/80 shrink-0">⚠️</span>
                                 <div className="text-xs sm:text-sm">
                                     <strong className="font-bold text-amber-900 block sm:inline">Service Provider Account Detected: </strong>
-                                    <span>Aap ek Service Provider (Expert) account se logged in hain. Apne personal visas aur Document Vault manage karne ke liye kripya Traveller account se login karein.</span>
+                                    <span>You are currently signed in with a Service Provider (Expert) account. To manage your personal visas and Document Vault, please sign in with a Traveller account.</span>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
