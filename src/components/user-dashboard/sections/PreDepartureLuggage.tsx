@@ -460,8 +460,209 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
   return (
     <div className="w-full text-slate-800 font-sans antialiased [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility] space-y-6 pb-20">
       
-      {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-[#481268]/15 p-5 sm:p-7 shadow-xs min-h-[220px]">
+      {/* ══════════════════════════════════════════════════════════ */}
+      {/* ── MOBILE VIEW (block lg:hidden) - EXACT NATIVE APP UI ── */}
+      {/* ══════════════════════════════════════════════════════════ */}
+      <div className="block lg:hidden space-y-4 pt-1">
+        {/* 1. Mobile Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0066FF] to-[#0047BA] text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/25">
+              <Luggage className="w-6 h-6 stroke-[2.2]" />
+            </div>
+            <div>
+              <h1 className="text-xl font-black text-[#0B1527] tracking-tight">
+                Luggage Checklist
+              </h1>
+              <p className="text-xs text-slate-500 font-medium">
+                {tripData.destination === "Set Destination" ? "Japan" : tripData.destination} • {tripData.startDate === "Departure Date" ? "15 Oct" : tripData.startDate} – {tripData.endDate === "Return Date" ? "28 Oct 2026" : tripData.endDate}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowEditTripModal(true)}
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer"
+            title="Edit Trip Details"
+          >
+            <Edit3 className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* 2. Top 4 Metric Cards in 1 Row */}
+        <div className="grid grid-cols-4 gap-2">
+          {/* Card 1: Travellers */}
+          <div className="bg-white rounded-2xl p-2.5 border border-blue-50/80 bg-blue-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
+            <div className="flex items-center justify-center gap-0.5 text-[#0066FF]">
+              <User className="w-4 h-4 stroke-[2.5]" />
+              <span className="text-xs font-bold">{tripData.travellersCount || 4}</span>
+            </div>
+            <span className="text-[10px] font-semibold text-[#0066FF] mt-1">Travellers</span>
+          </div>
+
+          {/* Card 2: Checked */}
+          <div className="bg-white rounded-2xl p-2.5 border border-emerald-50/80 bg-emerald-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
+            <div className="text-lg font-black text-emerald-500 leading-tight">
+              {packedItemsCount}
+            </div>
+            <span className="text-[10px] font-semibold text-emerald-700 mt-0.5">Checked</span>
+          </div>
+
+          {/* Card 3: Pending */}
+          <div className="bg-white rounded-2xl p-2.5 border border-amber-50/80 bg-amber-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
+            <div className="flex items-center justify-center gap-0.5 text-amber-500">
+              <Clock className="w-4 h-4 stroke-[2.5]" />
+              <span className="text-xs font-bold">{pendingItemsCount}</span>
+            </div>
+            <span className="text-[10px] font-semibold text-amber-700 mt-1">Pending</span>
+          </div>
+
+          {/* Card 4: Action */}
+          <div className="bg-white rounded-2xl p-2.5 border border-rose-50/80 bg-rose-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
+            <div className="flex items-center justify-center gap-0.5 text-rose-500">
+              <AlertCircle className="w-4 h-4 stroke-[2.5]" />
+              <span className="text-xs font-bold">{actionItemsCount}</span>
+            </div>
+            <span className="text-[10px] font-semibold text-rose-700 mt-1">Action</span>
+          </div>
+        </div>
+
+        {/* 3. Status Filter Buttons */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+          <button
+            type="button"
+            onClick={() => setActiveStatusFilter("all")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+              activeStatusFilter === "all"
+                ? "bg-[#0066FF] text-white shadow-xs"
+                : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+            }`}
+          >
+            All ({totalItemsCount})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveStatusFilter("packed")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+              activeStatusFilter === "packed"
+                ? "bg-[#0066FF] text-white shadow-xs"
+                : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+            }`}
+          >
+            Packed ({packedItemsCount})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveStatusFilter("pending")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+              activeStatusFilter === "pending"
+                ? "bg-[#0066FF] text-white shadow-xs"
+                : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+            }`}
+          >
+            Pending ({pendingItemsCount})
+          </button>
+          {actionItemsCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setActiveStatusFilter("action")}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+                activeStatusFilter === "action"
+                  ? "bg-[#0066FF] text-white shadow-xs"
+                  : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+              }`}
+            >
+              Action ({actionItemsCount})
+            </button>
+          )}
+        </div>
+
+        {/* 4. Traveller Wise Luggage Section */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-extrabold text-[#0B1527] tracking-tight">
+              Traveller Wise Luggage
+            </h2>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setShowAddTravellerModal(true)}
+                className="text-xs font-bold text-[#0066FF] hover:underline cursor-pointer flex items-center gap-0.5"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedTravellerId("all")}
+                className="text-xs font-bold text-[#0066FF] hover:underline cursor-pointer"
+              >
+                View All
+              </button>
+            </div>
+          </div>
+
+          {/* Traveller Cards List */}
+          <div className="space-y-2.5">
+            {travellerStats.map((t, idx) => {
+              const avatarBg = idx === 0 
+                ? "bg-purple-500 text-white" 
+                : idx === 1 
+                ? "bg-rose-500 text-white" 
+                : idx === 2 
+                ? "bg-emerald-500 text-white" 
+                : "bg-blue-500 text-white";
+
+              return (
+                <div
+                  key={t.id}
+                  onClick={() => setSelectedTravellerId(selectedTravellerId === t.id ? "all" : t.id)}
+                  className={`bg-white rounded-2xl border p-3.5 shadow-2xs space-y-2.5 transition cursor-pointer ${
+                    selectedTravellerId === t.id
+                      ? "border-[#0066FF] ring-1 ring-[#0066FF]/30 shadow-xs"
+                      : "border-slate-100/90 hover:border-slate-200"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className={`w-10 h-10 rounded-full ${avatarBg} flex items-center justify-center font-bold text-xs shrink-0 shadow-xs`}>
+                        {t.initials}
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-sm font-bold text-[#0B1527] leading-tight truncate">
+                          {t.name} {t.role && <span className="text-slate-400 font-normal text-xs">({t.role})</span>}
+                        </h3>
+                        <p className="text-xs mt-0.5 truncate">
+                          <span className="text-[#0066FF] font-semibold">{t.checked}/{t.displayTotal} items</span>
+                          <span className="text-slate-400 font-medium"> • {t.bagName}</span>
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                  </div>
+
+                  {/* Bottom Progress Bar */}
+                  <div className="flex items-center gap-2 pt-0.5">
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden flex-1">
+                      <div
+                        className="h-full bg-gradient-to-r from-blue-500 to-[#0066FF] rounded-full transition-all duration-500"
+                        style={{ width: `${t.percent}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-slate-400 font-semibold whitespace-nowrap">
+                      {t.checked}/{t.displayTotal} items
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 1. DESKTOP HERO BANNER (Hidden on Mobile) ── */}
+      <div className="hidden lg:block relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-[#481268]/15 p-5 sm:p-7 shadow-xs min-h-[220px]">
         
         {/* Background Scenic Photo with Airplane, Mountains & Blue Suitcases (Ultra High Definition) */}
         <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] md:w-[58%] lg:w-[52%] pointer-events-none overflow-hidden select-none">
@@ -596,8 +797,8 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         </div>
       </div>
 
-      {/* ── 2. TRAVELLER FILTER PILLS & SEARCH BAR ── */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-100 shadow-2xs">
+      {/* ── 2. TRAVELLER FILTER PILLS & SEARCH BAR (Hidden on Mobile) ── */}
+      <div className="hidden lg:flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-100 shadow-2xs">
         
         {/* Horizontal Scrollable Filter Pills */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
@@ -665,8 +866,8 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
 
       {/* ── 3. MAIN WORKSPACE: TRAVELLER WISE LUGGAGE & PACKING CHECKLIST ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* ── COLUMN 1: TRAVELLER WISE LUGGAGE (4 COLS) ── */}
-            <div className="lg:col-span-4 space-y-4">
+        {/* ── COLUMN 1: DESKTOP TRAVELLER WISE LUGGAGE (4 COLS - Hidden on Mobile) ── */}
+        <div className="hidden lg:block lg:col-span-4 space-y-4">
           <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
             
             {/* Header */}
@@ -1416,6 +1617,75 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   <div className="text-slate-500 text-[11px]">Passports, visas, foreign currency card, prescription meds</div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-emerald-600 shrink-0" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setTripData({
+                    destination: "Japan",
+                    startDate: "15 Oct",
+                    endDate: "28 Oct 2026",
+                    travellersCount: 4,
+                    visaApproved: true
+                  });
+                  const demoTravellers: Traveller[] = [
+                    { id: "t_prashanth", initials: "PP", name: "Prashanth", role: "Main Traveller", color: "bg-purple-600 text-white", bagName: "Main Suitcase", bagWeight: "20kg", totalItems: 10 },
+                    { id: "t_anika", initials: "AK", name: "Anika", role: "Adult", color: "bg-pink-500 text-white", bagName: "Cabin Bag", bagWeight: "7kg", totalItems: 8 },
+                    { id: "t_rahul", initials: "RK", name: "Rahul", role: "Adult", color: "bg-emerald-600 text-white", bagName: "Large Suitcase", bagWeight: "23kg", totalItems: 10 },
+                    { id: "t_cabin_bag", initials: "RG", name: "Cabin Bag", role: "Shared", color: "bg-blue-600 text-white", bagName: "Cabin Bag", bagWeight: "7kg", totalItems: 6 }
+                  ];
+                  setTravellers(demoTravellers);
+
+                  // 28 items matching screenshot (18 packed / checked, 6 pending, 1-4 action)
+                  const demoItems: PackingItem[] = [
+                    // Prashanth (7 packed, 3 pending)
+                    { id: "jp-1", categoryId: "clothing", name: "Thermal Innerwear Set", quantity: 3, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Main Suitcase", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-2", categoryId: "clothing", name: "Winter Jacket / Fleece", quantity: 1, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Main Suitcase", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-3", categoryId: "clothing", name: "Casual Shirts & Chinos", quantity: 4, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Main Suitcase", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-4", categoryId: "clothing", name: "Walking Shoes & Warm Socks", quantity: 2, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Main Suitcase", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-5", categoryId: "documents", name: "Passport & Japan eVisa", quantity: 1, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Hand Bag", customsRule: "Immigration Mandatory", status: "packed" },
+                    { id: "jp-6", categoryId: "documents", name: "JR Pass Exchange Order", quantity: 1, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Hand Bag", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-7", categoryId: "electronics", name: "Pocket WiFi / Japan eSIM", quantity: 1, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Hand Bag", customsRule: "Lithium battery rules", status: "packed" },
+                    { id: "jp-8", categoryId: "meds", name: "Prescription Inhaler & Doctor Letter", quantity: 1, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Cabin Bag", customsRule: "Declaration Required", status: "action" },
+                    { id: "jp-9", categoryId: "electronics", name: "Camera & Extra Lens", quantity: 1, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Main Suitcase", customsRule: "Duty over ¥200,000", status: "pending" },
+                    { id: "jp-10", categoryId: "clothing", name: "Rain Poncho / Umbrella", quantity: 1, travellerId: "t_prashanth", travellerName: "Prashanth", location: "Main Suitcase", customsRule: "No Declaration", status: "pending" },
+
+                    // Anika (5 packed, 3 pending)
+                    { id: "jp-11", categoryId: "clothing", name: "Woolen Sweaters & Cardigans", quantity: 2, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-12", categoryId: "clothing", name: "Scarves, Gloves & Beanie", quantity: 2, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-13", categoryId: "toiletries", name: "Moisturizer & Lip Balm (<100ml)", quantity: 1, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "Liquids under 100ml", status: "packed" },
+                    { id: "jp-14", categoryId: "documents", name: "Hotel & Shinkansen Bookings", quantity: 1, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-15", categoryId: "electronics", name: "Noise Cancelling Earphones", quantity: 1, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "Lithium battery rules", status: "packed" },
+                    { id: "jp-16", categoryId: "clothing", name: "Extra Boots & Insoles", quantity: 1, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "No Declaration", status: "pending" },
+                    { id: "jp-17", categoryId: "toiletries", name: "Skincare Travel Kit", quantity: 1, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "Liquids under 100ml", status: "pending" },
+                    { id: "jp-18", categoryId: "meds", name: "Personal Multivitamins", quantity: 1, travellerId: "t_anika", travellerName: "Anika", location: "Cabin Bag", customsRule: "No Declaration", status: "pending" },
+
+                    // Rahul (4 packed, 6 pending)
+                    { id: "jp-19", categoryId: "clothing", name: "Heavy Winter Overcoat", quantity: 1, travellerId: "t_rahul", travellerName: "Rahul", location: "Large Suitcase", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-20", categoryId: "clothing", name: "Jeans & Cargo Pants", quantity: 3, travellerId: "t_rahul", travellerName: "Rahul", location: "Large Suitcase", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-21", categoryId: "electronics", name: "Laptop & 65W GaN Charger", quantity: 1, travellerId: "t_rahul", travellerName: "Rahul", location: "Large Suitcase", customsRule: "Duty Assessment", status: "packed" },
+                    { id: "jp-22", categoryId: "electronics", name: "Universal Japan Type-A Plug Adapter", quantity: 2, travellerId: "t_rahul", travellerName: "Rahul", location: "Large Suitcase", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-23", categoryId: "clothing", name: "Formal Dinner Blazer", quantity: 1, travellerId: "t_rahul", travellerName: "Rahul", location: "Large Suitcase", customsRule: "No Declaration", status: "pending" },
+                    { id: "jp-24", categoryId: "clothing", name: "Trek Shoes", quantity: 1, travellerId: "t_rahul", travellerName: "Rahul", location: "Large Suitcase", customsRule: "No Declaration", status: "pending" },
+
+                    // Cabin Bag Shared (3 packed, 3 pending)
+                    { id: "jp-25", categoryId: "meds", name: "First Aid Kit & Bandages", quantity: 1, travellerId: "t_cabin_bag", travellerName: "Cabin Bag", location: "Cabin Bag", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-26", categoryId: "documents", name: "Travel Insurance Physical Copy", quantity: 1, travellerId: "t_cabin_bag", travellerName: "Cabin Bag", location: "Cabin Bag", customsRule: "No Declaration", status: "packed" },
+                    { id: "jp-27", categoryId: "electronics", name: "10000mAh Power Bank (Carry-on)", quantity: 2, travellerId: "t_cabin_bag", travellerName: "Cabin Bag", location: "Cabin Bag", customsRule: "Lithium Carry-on Only", status: "packed" },
+                    { id: "jp-28", categoryId: "toiletries", name: "Sanitizing Wipes & Tissue Packs", quantity: 3, travellerId: "t_cabin_bag", travellerName: "Cabin Bag", location: "Cabin Bag", customsRule: "No Declaration", status: "pending" }
+                  ];
+
+                  setItems(demoItems);
+                  setShowTemplateModal(false);
+                }}
+                className="w-full p-3 rounded-xl border border-blue-200 bg-blue-50/50 hover:bg-blue-100/60 text-left flex items-center justify-between transition cursor-pointer"
+              >
+                <div>
+                  <div className="font-bold text-blue-900">Japan 14-Day Trip Complete Starter</div>
+                  <div className="text-blue-700 text-[11px]">4 Travellers • 28 Items (18 Packed, 6 Pending, 1 Action)</div>
+                </div>
+                <ArrowRight className="w-4 h-4 text-blue-600 shrink-0" />
               </button>
             </div>
           </div>
