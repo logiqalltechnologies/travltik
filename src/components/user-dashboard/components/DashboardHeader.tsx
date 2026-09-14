@@ -71,8 +71,8 @@ export function DashboardHeader({
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">
-        <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm">
-          <Search className="w-3.5 h-3.5" /> Find Consultants
+        <a href="/find-experts" className="hidden sm:flex items-center gap-1.5 bg-[#10b981] hover:bg-[#059669] active:bg-[#047857] text-slate-950 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all shadow-sm">
+          <Search className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]" /> Find Consultants
         </a>
 
         <button onClick={() => setActiveTab("consultations")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
@@ -88,15 +88,15 @@ export function DashboardHeader({
             aria-expanded={isProfileOpen}
           >
             {profilePhoto && !profilePhoto.includes("unsplash.com") ? (
-              <img src={profilePhoto} alt={fullName} className="w-9 h-9 rounded-full object-cover border border-[#00a896]/30 shrink-0" />
+              <img src={profilePhoto} alt={fullName} className="w-9 h-9 rounded-full object-cover border border-[#10b981]/30 shrink-0" />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-[#00a896] text-white text-sm font-black flex items-center justify-center border border-[#00a896]/30 shrink-0 shadow-2xs">
+              <div className="w-9 h-9 rounded-full bg-[#10b981] text-slate-950 text-sm font-black flex items-center justify-center border border-[#10b981]/30 shrink-0 shadow-2xs">
                 {(userDisplayName || "U").charAt(0).toUpperCase()}
               </div>
             )}
             <div className="hidden md:block text-left">
               <h4 className="text-xs font-extrabold text-slate-900 leading-tight truncate max-w-[140px]">{fullName}</h4>
-              <span className="inline-block bg-teal-50 text-[#00a896] text-[10px] font-bold px-1.5 py-0.2 rounded border border-teal-200 mt-0.5">Traveller</span>
+              <span className="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-1.5 py-0.2 rounded border border-emerald-200 mt-0.5">Traveller</span>
             </div>
             <ChevronDown className={`w-3.5 h-3.5 text-slate-400 hidden sm:block transition-transform duration-200 ${isProfileOpen ? 'rotate-180 text-slate-700' : ''}`} />
           </div>

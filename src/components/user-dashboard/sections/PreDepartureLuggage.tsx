@@ -678,14 +678,14 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
     <div className="w-full text-slate-800 font-sans antialiased [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility] space-y-6 pb-20">
       
       {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-blue-100/80 p-5 sm:p-7 shadow-xs">
+      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-blue-100/80 p-5 sm:p-7 shadow-xs min-h-[220px]">
         
         {/* Background Scenic Photo with Airplane, Mountains & Blue Suitcases (Ultra High Definition) */}
-        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] md:w-[55%] lg:w-[48%] pointer-events-none overflow-hidden select-none">
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] md:w-[58%] lg:w-[52%] pointer-events-none overflow-hidden select-none">
           <img
             src="/images/luggage_hero_hd.png"
             alt="Japan Flight and Luggage"
-            className="w-full h-full object-cover object-right opacity-95 mix-blend-multiply"
+            className="w-full h-full object-cover object-[right_top] opacity-95 mix-blend-multiply"
           />
         </div>
 
