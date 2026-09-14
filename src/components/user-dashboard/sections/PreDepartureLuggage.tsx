@@ -677,57 +677,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
   return (
     <div className="w-full text-slate-800 font-sans antialiased [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility] space-y-6 pb-20">
       
-      {/* ── DESKTOP HEADER & TOP SEARCH BAR ── */}
-      <div className="hidden lg:flex items-center justify-between gap-4 bg-white p-3.5 px-6 rounded-2xl border border-slate-100 shadow-2xs">
-        <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search trips, destinations, documents..."
-            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-          />
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* Notification Bell with Red Badge */}
-          <button
-            type="button"
-            className="relative p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer"
-            title="Notifications"
-          >
-            <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 ring-2 ring-white" />
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-          </button>
-
-          {/* User Profile Pill */}
-          <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-            <div className="w-8 h-8 rounded-full bg-[#1E3A8A] text-white flex items-center justify-center font-bold text-xs shadow-2xs">
-              LP
-            </div>
-            <div className="flex items-center gap-1 text-xs font-semibold text-slate-800 cursor-pointer">
-              <span>Leilwyn Prashanth</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            </div>
-            <button
-              type="button"
-              className="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
-            >
-              <MoreHorizontal className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-            {/* ── DESKTOP TWO-PANE WORKSPACE: LEFT MAIN (BANNER + FILTERS + 2 COLUMNS) & RIGHT SIDEBAR (CUSTOMS & DECLARATIONS) ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
-
-        {/* ── LEFT WORKSPACE (Hero Banner + Filters + 2 Columns) ── */}
-        <div className="xl:col-span-9 space-y-4">
-          {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
+      {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
       <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-blue-100/80 p-5 sm:p-7 shadow-xs">
         
         {/* Background Scenic Photo with Airplane, Mountains & Blue Suitcases (Exact match to uploaded design) */}
@@ -930,9 +880,8 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
 
       </div>
 
-          {/* ── TWO-COLUMN WORKSPACE: TRAVELLER WISE LUGGAGE & PACKING CHECKLIST ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-        
+      {/* ── 3. MAIN WORKSPACE: TRAVELLER WISE LUGGAGE & PACKING CHECKLIST ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* ── COLUMN 1: TRAVELLER WISE LUGGAGE (4 COLS) ── */}
             <div className="lg:col-span-4 space-y-4">
           <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
@@ -1019,8 +968,55 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           </div>
         </div>
 
-        {/* ── COLUMN 2: PACKING CHECKLIST (8 COLS) ── */}
-            <div className="lg:col-span-8 space-y-4">
+                {/* ── COLUMN 2: PACKING CHECKLIST & CUSTOMS ADVISORY (8 COLS) ── */}
+        <div className="lg:col-span-8 space-y-4">
+          
+          {/* Destination Customs & Travel Advisory Banner */}
+          <div className="bg-white rounded-2xl border border-blue-100/80 p-3.5 sm:p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center shadow-2xs overflow-hidden shrink-0">
+                <div className="w-4 h-4 rounded-full bg-rose-600" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs sm:text-sm font-bold text-slate-900">Customs Advisory: {tripData.destination}</span>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    <span>Visa Approved</span>
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-500 mt-0.5 flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
+                  <span>Personal: <strong className="text-slate-700">No declaration</strong></span>
+                  <span>•</span>
+                  <span>Meds: <strong className="text-rose-600">Declaration required</strong></span>
+                  <span>•</span>
+                  <span>Electronics: <strong className="text-slate-700">Lithium rules</strong></span>
+                  <span>•</span>
+                  <span>Cash: <strong className="text-slate-700">&lt; ¥1,000,000</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setShowCustomsDetailsModal(true)}
+                className="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition flex items-center gap-1 shadow-2xs cursor-pointer"
+              >
+                <Info className="w-3.5 h-3.5 text-blue-600" />
+                <span>Customs Details</span>
+              </button>
+              <a
+                href="/visa/japan?tab=customs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
+              >
+                <span>Full Guide</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          </div>
           <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
             
             {/* Header & Actions */}
@@ -1271,204 +1267,6 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
 
           </div>
         </div>
-          </div>
-        </div>
-
-        {/* ── COLUMN 3: CUSTOMS & DECLARATIONS + QUICK ACTIONS ── */}
-        <div className="xl:col-span-3 space-y-4">
-          
-          {/* Card 1: Customs & Declarations */}
-          {isCustomsOpen && (
-            <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4 relative">
-              
-              {/* Top Header with Close Icon */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-blue-600" />
-                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                    Customs &amp; Declarations
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsCustomsOpen(false)}
-                  className="p-1 rounded-lg text-slate-400 hover:text-slate-700 cursor-pointer"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              {/* Destination Pill */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
-                <div className="flex items-center gap-2.5">
-                  {/* Japan Flag Circle */}
-                  <div className="w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-2xs overflow-hidden">
-                    <div className="w-3 h-3 rounded-full bg-rose-600" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Destination</div>
-                    <div className="text-xs font-bold text-slate-900">{tripData.destination}</div>
-                  </div>
-                </div>
-
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  <Check className="w-2.5 h-2.5 stroke-[3]" />
-                  <span>Visa Approved</span>
-                </span>
-              </div>
-
-              {/* Key Customs Requirements List */}
-              <div className="space-y-2.5 pt-1">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                  Key Customs Requirements
-                </div>
-
-                <div className="space-y-2 text-xs">
-                  {/* Item 1 */}
-                  <div className="flex items-start gap-2.5">
-                    <div className="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
-                      <Luggage className="w-3.5 h-3.5" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-800">Personal items</div>
-                      <div className="text-[11px] text-slate-500">No declaration required</div>
-                    </div>
-                  </div>
-
-                  {/* Item 2 */}
-                  <div className="flex items-start gap-2.5">
-                    <div className="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 mt-0.5">
-                      <Pill className="w-3.5 h-3.5" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-800">Medications</div>
-                      <div className="text-[11px] text-rose-600 font-semibold">Medical declaration required</div>
-                    </div>
-                  </div>
-
-                  {/* Item 3 */}
-                  <div className="flex items-start gap-2.5">
-                    <div className="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
-                      <Laptop className="w-3.5 h-3.5" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-800">Electronics</div>
-                      <div className="text-[11px] text-slate-500">May require declaration (depends on value)</div>
-                    </div>
-                  </div>
-
-                  {/* Item 4 */}
-                  <div className="flex items-start gap-2.5">
-                    <div className="w-6 h-6 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
-                      <span className="font-bold text-[11px]">¥</span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-800">Baggage value</div>
-                      <div className="text-[11px] text-slate-500">If over ¥1,000,000 (approx. USD 6,500)</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* View Full Customs Guide Button */}
-              <a
-                href="/visa/japan?tab=customs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2 px-3 rounded-xl border border-blue-200 text-blue-600 hover:bg-blue-50 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-              >
-                <span>View Full Customs Guide</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-
-              {/* Attention Alert Callout */}
-              <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 space-y-2 text-left">
-                <div className="flex items-start gap-2">
-                  <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                  <p className="text-[11.5px] text-slate-700 leading-relaxed">
-                    <strong>You have 2 items requiring attention.</strong> Please check the customs requirements for medications and high-value items.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setShowCustomsDetailsModal(true)}
-                  className="w-full py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs font-bold transition shadow-xs cursor-pointer"
-                >
-                  View Details
-                </button>
-              </div>
-
-            </div>
-          )}
-
-          {/* Card 2: Quick Actions */}
-          <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-blue-600" />
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                Quick Actions
-              </h3>
-            </div>
-
-            <div className="space-y-1">
-              <button
-                type="button"
-                onClick={() => setShowQuickActionModal("Search Item Location")}
-                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Search className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
-                  <span>Search Item Location</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setShowQuickActionModal("Check Customs Requirements")}
-                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
-                  <span>Check Customs Requirements</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  window.print();
-                }}
-                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Download className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
-                  <span>Download Packing List</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  navigator.clipboard?.writeText(window.location.href);
-                  alert("Packing list share link copied to clipboard!");
-                }}
-                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Share2 className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
-                  <span>Share with Travellers</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
-              </button>
-            </div>
-          </div>
-
-        </div>
-
       </div>
 
       {/* ── 4. MOBILE BOTTOM NAVIGATION BAR ── */}
