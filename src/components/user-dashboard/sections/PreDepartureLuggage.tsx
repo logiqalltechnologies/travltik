@@ -722,45 +722,21 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         </div>
       </div>
 
-      {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
+            {/* ── DESKTOP TWO-PANE WORKSPACE: LEFT MAIN (BANNER + FILTERS + 2 COLUMNS) & RIGHT SIDEBAR (CUSTOMS & DECLARATIONS) ── */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+
+        {/* ── LEFT WORKSPACE (Hero Banner + Filters + 2 Columns) ── */}
+        <div className="xl:col-span-9 space-y-4">
+          {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
       <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-blue-100/80 p-5 sm:p-7 shadow-xs">
         
-        {/* Background Scenic Elements & Suitcases Graphic */}
-        <div className="absolute right-0 top-0 bottom-0 w-1/2 max-w-[420px] pointer-events-none hidden sm:block opacity-90 overflow-hidden">
-          {/* Subtle Sun & Cloud Glow */}
-          <div className="absolute top-2 right-12 w-24 h-24 bg-sky-200/40 rounded-full blur-xl" />
-          
-          {/* Plane Flying Across */}
-          <div className="absolute top-6 right-36 -rotate-12 text-blue-500/80">
-            <Plane className="w-7 h-7 stroke-[2.2]" />
-          </div>
-
-          {/* Mountain Silhouettes */}
-          <svg className="absolute bottom-0 right-0 w-full h-32 text-blue-200/50" viewBox="0 0 400 120" preserveAspectRatio="none">
-            <polygon points="0,120 120,40 220,120" fill="currentColor" opacity="0.6" />
-            <polygon points="100,120 250,15 360,120" fill="currentColor" opacity="0.8" />
-            <polygon points="200,120 320,35 400,120" fill="currentColor" opacity="0.7" />
-          </svg>
-
-          {/* Blue Hard-shell Suitcases Illustration */}
-          <div className="absolute bottom-0 right-4 flex items-end gap-1.5 z-10 drop-shadow-md">
-            <div className="w-12 h-20 bg-gradient-to-b from-blue-600 to-blue-700 rounded-t-lg border-t-2 border-x-2 border-blue-400 relative flex flex-col justify-between p-1 shadow-md">
-              <div className="w-4 h-2 bg-slate-900 rounded-t-xs mx-auto -mt-3" />
-              <div className="space-y-1 my-auto">
-                <div className="h-0.5 bg-blue-400/60 rounded-full" />
-                <div className="h-0.5 bg-blue-400/60 rounded-full" />
-                <div className="h-0.5 bg-blue-400/60 rounded-full" />
-              </div>
-            </div>
-            <div className="w-14 h-24 bg-gradient-to-b from-sky-500 to-blue-600 rounded-t-lg border-t-2 border-x-2 border-sky-300 relative flex flex-col justify-between p-1 shadow-lg">
-              <div className="w-5 h-2.5 bg-slate-900 rounded-t-xs mx-auto -mt-3.5" />
-              <div className="space-y-1.5 my-auto">
-                <div className="h-0.5 bg-sky-300/60 rounded-full" />
-                <div className="h-0.5 bg-sky-300/60 rounded-full" />
-                <div className="h-0.5 bg-sky-300/60 rounded-full" />
-              </div>
-            </div>
-          </div>
+        {/* Background Scenic Photo with Airplane, Mountains & Blue Suitcases (Exact match to uploaded design) */}
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] md:w-[58%] lg:w-[50%] pointer-events-none overflow-hidden select-none">
+          <img
+            src="/images/luggage_hero_photo_3x.png"
+            alt="Japan Flight and Luggage"
+            className="w-full h-full object-cover object-right opacity-95 mix-blend-multiply"
+          />
         </div>
 
         {/* Banner Content */}
@@ -954,11 +930,11 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
 
       </div>
 
-      {/* ── 3. MAIN WORKSPACE GRID: 3 COLUMNS ON DESKTOP ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* ── TWO-COLUMN WORKSPACE: TRAVELLER WISE LUGGAGE & PACKING CHECKLIST ── */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         
-        {/* ── COLUMN 1: TRAVELLER WISE LUGGAGE (3.5 COLS) ── */}
-        <div className="lg:col-span-4 space-y-4">
+        {/* ── COLUMN 1: TRAVELLER WISE LUGGAGE (4 COLS) ── */}
+            <div className="lg:col-span-4 space-y-4">
           <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
             
             {/* Header */}
@@ -1043,8 +1019,8 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           </div>
         </div>
 
-        {/* ── COLUMN 2: PACKING CHECKLIST (5.5 COLS) ── */}
-        <div className="lg:col-span-5 space-y-4">
+        {/* ── COLUMN 2: PACKING CHECKLIST (8 COLS) ── */}
+            <div className="lg:col-span-8 space-y-4">
           <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
             
             {/* Header & Actions */}
@@ -1295,9 +1271,11 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
 
           </div>
         </div>
+          </div>
+        </div>
 
-        {/* ── COLUMN 3: CUSTOMS & DECLARATIONS + QUICK ACTIONS (3 COLS) ── */}
-        <div className="lg:col-span-3 space-y-4">
+        {/* ── COLUMN 3: CUSTOMS & DECLARATIONS + QUICK ACTIONS ── */}
+        <div className="xl:col-span-3 space-y-4">
           
           {/* Card 1: Customs & Declarations */}
           {isCustomsOpen && (
@@ -1415,7 +1393,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowCustomsDetailsModal(true)}
-                  className="w-full py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-2xs cursor-pointer"
+                  className="w-full py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 text-xs font-bold transition shadow-xs cursor-pointer"
                 >
                   View Details
                 </button>
