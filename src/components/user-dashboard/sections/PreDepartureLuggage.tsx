@@ -461,7 +461,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
     <div className="w-full text-slate-800 font-sans antialiased [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility] space-y-6 pb-20">
       
       {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-blue-100/80 p-5 sm:p-7 shadow-xs min-h-[220px]">
+      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-[#481268]/15 p-5 sm:p-7 shadow-xs min-h-[220px]">
         
         {/* Background Scenic Photo with Airplane, Mountains & Blue Suitcases (Ultra High Definition) */}
         <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] md:w-[58%] lg:w-[52%] pointer-events-none overflow-hidden select-none">
@@ -476,7 +476,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         <div className="relative z-10 space-y-5">
           {/* Title Row */}
           <div className="flex items-start gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/20">
+            <div className="w-12 h-12 rounded-2xl bg-[#481268] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#481268]/20">
               <Luggage className="w-6 h-6 stroke-[2.2]" />
             </div>
             <div>
@@ -493,9 +493,9 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-1">
             
             {/* Left Trip Info Card */}
-            <div className="lg:col-span-5 bg-white/95 backdrop-blur-xs rounded-2xl p-3.5 sm:p-4 border border-blue-100 shadow-2xs flex items-center justify-between gap-3">
+            <div className="lg:col-span-5 bg-white/95 backdrop-blur-xs rounded-2xl p-3.5 sm:p-4 border border-[#481268]/15 shadow-2xs flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
+                <div className="w-10 h-10 rounded-xl bg-[#481268]/10 text-[#481268] flex items-center justify-center shrink-0 border border-[#481268]/20">
                   <Plane className="w-5 h-5 stroke-[2]" />
                 </div>
                 <div className="min-w-0">
@@ -509,7 +509,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                     </span>
                   </div>
                   <div className="mt-1">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#481268] bg-[#481268]/10 px-2 py-0.5 rounded-md border border-[#481268]/20">
                       <Users className="w-3 h-3" />
                       <span>{tripData.travellersCount} Travellers</span>
                     </span>
@@ -520,7 +520,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               <button
                 type="button"
                 onClick={() => setShowEditTripModal(true)}
-                className="px-3 py-1.5 rounded-xl border border-blue-200 text-blue-700 bg-white hover:bg-blue-50 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                className="px-3 py-1.5 rounded-xl border border-[#481268]/30 text-[#481268] bg-white hover:bg-[#481268]/10 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs shrink-0 cursor-pointer active:scale-95"
               >
                 <Edit3 className="w-3.5 h-3.5" />
                 <span>Edit Trip</span>
@@ -532,7 +532,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               
               {/* Counter 1: Travellers */}
               <div className="bg-white/95 backdrop-blur-xs rounded-2xl p-3 sm:p-3.5 border border-slate-100 shadow-2xs flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[#481268]/10 text-[#481268] flex items-center justify-center shrink-0">
                   <Users className="w-4 h-4 stroke-[2.5]" />
                 </div>
                 <div>
@@ -608,7 +608,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             onClick={() => setSelectedTravellerId("all")}
             className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition shrink-0 cursor-pointer ${
               selectedTravellerId === "all"
-                ? "bg-blue-600 text-white shadow-xs"
+                ? "bg-[#481268] text-white shadow-xs"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200"
             }`}
           >
@@ -625,7 +625,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 onClick={() => setSelectedTravellerId(isSelected ? "all" : t.id)}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition shrink-0 cursor-pointer border ${
                   isSelected
-                    ? "bg-blue-50 border-blue-400 text-blue-800 shadow-2xs"
+                    ? "bg-[#481268]/10 border-[#481268]/40 text-[#481268] shadow-2xs font-bold"
                     : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
                 }`}
               >
@@ -648,7 +648,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search items, locations..."
-              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-[#481268]"
             />
           </div>
 
@@ -687,7 +687,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   onClick={() => setSelectedTravellerId(selectedTravellerId === t.id ? "all" : t.id)}
                   className={`p-3.5 rounded-2xl border transition-all cursor-pointer space-y-3 ${
                     selectedTravellerId === t.id
-                      ? "bg-blue-50/50 border-blue-300 ring-1 ring-blue-300 shadow-xs"
+                      ? "bg-[#481268]/5 border-[#481268]/30 ring-1 ring-[#481268]/20 shadow-xs"
                       : "bg-white border-slate-100 hover:border-slate-200 hover:shadow-2xs"
                   }`}
                 >
@@ -729,7 +729,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                     {/* Progress Track */}
                     <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-blue-600 rounded-full transition-all duration-500"
+                        className="h-full bg-[#481268] rounded-full transition-all duration-500"
                         style={{ width: `${t.percent}%` }}
                       />
                     </div>
@@ -742,7 +742,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             <button
               type="button"
               onClick={() => setShowAddTravellerModal(true)}
-              className="w-full py-2.5 rounded-xl border border-dashed border-blue-300 hover:border-blue-500 text-blue-600 hover:text-blue-700 bg-blue-50/40 hover:bg-blue-50 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2.5 rounded-xl border border-dashed border-[#481268]/30 hover:border-[#481268] text-[#481268] hover:text-[#3b0e56] bg-[#481268]/5 hover:bg-[#481268]/10 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Add Traveller</span>
@@ -755,7 +755,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         <div className="lg:col-span-8 space-y-4">
           
           {/* Destination Customs & Travel Advisory Banner */}
-          <div className="bg-white rounded-2xl border border-blue-100/80 p-3.5 sm:p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-white rounded-2xl border border-[#481268]/15 p-3.5 sm:p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center shadow-2xs overflow-hidden shrink-0">
                 <div className="w-4 h-4 rounded-full bg-rose-600" />
@@ -786,14 +786,14 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 onClick={() => setShowCustomsDetailsModal(true)}
                 className="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition flex items-center gap-1 shadow-2xs cursor-pointer"
               >
-                <Info className="w-3.5 h-3.5 text-blue-600" />
+                <Info className="w-3.5 h-3.5 text-[#481268]" />
                 <span>Customs Details</span>
               </button>
               <a
                 href="/visa/japan?tab=customs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
+                className="px-2.5 py-1.5 rounded-xl bg-[#481268]/10 hover:bg-[#481268]/20 text-[#481268] text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
               >
                 <span>Full Guide</span>
                 <ExternalLink className="w-3 h-3" />
@@ -819,7 +819,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   onClick={() => setShowTemplateModal(true)}
                   className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
                 >
-                  <FolderDown className="w-3.5 h-3.5 text-blue-600" />
+                  <FolderDown className="w-3.5 h-3.5 text-[#481268]" />
                   <span>Import from Template</span>
                 </button>
                 <button
@@ -838,7 +838,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 onClick={() => setActiveStatusFilter("all")}
                 className={`px-3 py-1.5 rounded-full text-xs font-bold transition shrink-0 cursor-pointer ${
                   activeStatusFilter === "all"
-                    ? "bg-blue-600 text-white shadow-2xs"
+                    ? "bg-[#481268] text-white shadow-2xs"
                     : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
               >
@@ -952,7 +952,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                       </div>
 
                       {!isExpanded && (
-                        <span className="text-xs text-blue-600 font-semibold hover:underline">
+                        <span className="text-xs text-[#481268] font-semibold hover:underline">
                           Show items
                         </span>
                       )}
@@ -1011,7 +1011,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                                   {/* Traveller */}
                                   <td className="py-2.5 px-2 text-slate-700 whitespace-nowrap">
                                     <div className="flex items-center gap-1 text-[11px]">
-                                      <User className="w-3 h-3 text-blue-500 shrink-0" />
+                                      <User className="w-3 h-3 text-[#481268] shrink-0" />
                                       <span>{item.travellerName}</span>
                                     </div>
                                   </td>
@@ -1070,7 +1070,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                             <button
                               type="button"
                               onClick={() => toggleShowMore(category.id)}
-                              className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1 cursor-pointer"
+                              className="text-xs text-[#481268] hover:text-[#3b0e56] font-semibold flex items-center gap-1 cursor-pointer"
                             >
                               <span>Show {hiddenCount} more items</span>
                               <ChevronDown className="w-3.5 h-3.5" />
@@ -1094,7 +1094,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           type="button"
           onClick={() => setMobileActiveNav("home")}
           className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
-            mobileActiveNav === "home" ? "text-blue-600" : "text-slate-400"
+            mobileActiveNav === "home" ? "text-[#481268]" : "text-slate-400"
           }`}
         >
           <Home className="w-4 h-4" />
@@ -1105,7 +1105,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           type="button"
           onClick={() => setMobileActiveNav("trips")}
           className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
-            mobileActiveNav === "trips" ? "text-blue-600" : "text-slate-400"
+            mobileActiveNav === "trips" ? "text-[#481268]" : "text-slate-400"
           }`}
         >
           <Plane className="w-4 h-4" />
@@ -1116,13 +1116,13 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           type="button"
           onClick={() => setMobileActiveNav("luggage")}
           className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
-            mobileActiveNav === "luggage" ? "text-blue-600" : "text-slate-400"
+            mobileActiveNav === "luggage" ? "text-[#481268]" : "text-slate-400"
           }`}
         >
-          <div className="p-1 rounded-lg bg-blue-50 text-blue-600">
+          <div className="p-1 rounded-lg bg-[#481268]/10 text-[#481268]">
             <Luggage className="w-4 h-4" />
           </div>
-          <span className="text-blue-600 font-bold">Luggage</span>
+          <span className="text-[#481268] font-bold">Luggage</span>
         </button>
 
         <button
@@ -1133,7 +1133,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
           }}
           className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
-            mobileActiveNav === "customs" ? "text-blue-600" : "text-slate-400"
+            mobileActiveNav === "customs" ? "text-[#481268]" : "text-slate-400"
           }`}
         >
           <ShieldCheck className="w-4 h-4" />
@@ -1144,7 +1144,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           type="button"
           onClick={() => setMobileActiveNav("more")}
           className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
-            mobileActiveNav === "more" ? "text-blue-600" : "text-slate-400"
+            mobileActiveNav === "more" ? "text-[#481268]" : "text-slate-400"
           }`}
         >
           <MoreHorizontal className="w-4 h-4" />
@@ -1176,7 +1176,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   type="text"
                   value={tripData.destination}
                   onChange={e => setTripData(prev => ({ ...prev, destination: e.target.value }))}
-                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-[#481268]"
                 />
               </div>
 
@@ -1187,7 +1187,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                     type="text"
                     value={tripData.startDate}
                     onChange={e => setTripData(prev => ({ ...prev, startDate: e.target.value }))}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-[#481268]"
                   />
                 </div>
                 <div>
@@ -1196,7 +1196,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                     type="text"
                     value={tripData.endDate}
                     onChange={e => setTripData(prev => ({ ...prev, endDate: e.target.value }))}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-[#481268]"
                   />
                 </div>
               </div>
@@ -1213,7 +1213,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               <button
                 type="button"
                 onClick={() => setShowEditTripModal(false)}
-                className="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 text-xs font-bold cursor-pointer shadow-xs"
+                className="px-4 py-2 rounded-xl text-white bg-[#481268] hover:bg-[#3b0e56] text-xs font-bold cursor-pointer shadow-xs"
               >
                 Save Changes
               </button>
@@ -1249,7 +1249,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   value={newTravellerName}
                   onChange={e => setNewTravellerName(e.target.value)}
                   placeholder="e.g. Sameer Sharma"
-                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-[#481268]"
                 />
               </div>
 
@@ -1258,7 +1258,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 <select
                   value={newTravellerRole}
                   onChange={e => setNewTravellerRole(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500 bg-white"
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-[#481268] bg-white"
                 >
                   <option value="Adult">Adult</option>
                   <option value="Child">Child</option>
@@ -1272,7 +1272,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 <select
                   value={newTravellerBag}
                   onChange={e => setNewTravellerBag(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500 bg-white"
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-[#481268] bg-white"
                 >
                   <option value="Main Suitcase (20kg)">Main Suitcase (20kg)</option>
                   <option value="Cabin Bag (7kg)">Cabin Bag (7kg)</option>
@@ -1292,7 +1292,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 text-xs font-bold cursor-pointer shadow-xs"
+                className="px-4 py-2 rounded-xl text-white bg-[#481268] hover:bg-[#3b0e56] text-xs font-bold cursor-pointer shadow-xs"
               >
                 Add Traveller
               </button>
@@ -1349,7 +1349,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               <button
                 type="button"
                 onClick={() => setShowCustomsDetailsModal(false)}
-                className="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 text-xs font-bold cursor-pointer"
+                className="px-4 py-2 rounded-xl text-white bg-[#481268] hover:bg-[#3b0e56] text-xs font-bold cursor-pointer"
               >
                 Understood &amp; Close
               </button>

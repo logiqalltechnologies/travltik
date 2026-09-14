@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, Star, MapPin, Award, CheckCircle, Calendar, 
   MessageSquare, ShieldCheck, Globe, Share2, Bookmark, 
@@ -34,6 +34,14 @@ interface ExpertProfileModalProps {
 
 export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfileModalProps) {
   if (!expert) return null;
+
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow || "unset";
+    };
+  }, []);
 
   const [isSaved, setIsSaved] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -109,13 +117,17 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
   ];
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/75 backdrop-blur-md animate-fadeIn overflow-y-auto font-sans">
+    <div 
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/75 backdrop-blur-md animate-fadeIn font-sans"
+      onClick={onClose}
+    >
       <div 
-        className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 my-auto transform transition-all duration-300 max-h-[92vh] flex flex-col font-sans text-slate-900"
+        className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 my-auto transform transition-all duration-300 max-h-[90vh] flex flex-col font-sans text-slate-900 overscroll-contain"
         onClick={(e) => e.stopPropagation()}
+        onWheel={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
-        <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-5 py-3.5 border-b border-slate-100 flex items-center justify-between font-sans">
+        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-5 py-3.5 border-b border-slate-100 flex items-center justify-between font-sans shrink-0">
           <div className="flex items-center gap-2">
             <span className="text-sm font-extrabold text-slate-900 tracking-tight font-sans">{expert.name}</span>
             {expert.isVerified && (
@@ -157,7 +169,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
         </div>
 
         {/* Scrollable Content Body */}
-        <div className="overflow-y-auto flex-1 custom-scrollbar">
+        <div className="overflow-y-auto flex-1 custom-scrollbar overscroll-contain touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
           
           {/* Cover Photo Banner (Sleek Obsidian Slate Navy) */}
           <div className="h-32 sm:h-40 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
@@ -346,7 +358,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
         </div>
 
         {/* Fixed Bottom Booking Footer */}
-        <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-slate-100 px-5 py-3.5 flex items-center justify-between gap-4 font-sans">
+        <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-slate-100 px-5 py-3.5 flex items-center justify-between gap-4 font-sans shrink-0">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block font-sans">Consultation Fee</span>
             <div className="flex items-baseline gap-1 font-sans">
