@@ -4245,46 +4245,54 @@ export function VisaCountryResultPortal({
   };
 
   const resolvedOverview = useMemo(() => {
+    let ov = '';
     if (aiData?.overview) {
       const oLow = aiData.overview.toLowerCase();
       // Guard against tourist overview leaking into family tab
       if (isFamilyTab && !oLow.includes('family') && !oLow.includes('spouse') && !oLow.includes('partner') && !oLow.includes('marriage') && !oLow.includes('reunification') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('holiday') || oLow.includes('sightseeing'))) {
-        return getFamilyOverview(countryName);
+        ov = getFamilyOverview(countryName);
       }
       // Guard against tourist overview leaking into PR tab
-      if (isPRTab && !oLow.includes('permanent') && !oLow.includes('pr') && !oLow.includes('settle') && !oLow.includes('immigrat') && !oLow.includes('residency') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family') || oLow.includes('holiday') || oLow.includes('sightseeing'))) {
-        return getPROverview(countryName);
+      else if (isPRTab && !oLow.includes('permanent') && !oLow.includes('pr') && !oLow.includes('settle') && !oLow.includes('immigrat') && !oLow.includes('residency') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family') || oLow.includes('holiday') || oLow.includes('sightseeing'))) {
+        ov = getPROverview(countryName);
       }
       // Guard against tourist overview leaking into study tab
-      if (isStudyTab && !oLow.includes('study') && !oLow.includes('student') && !oLow.includes('academic') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
-        return getStudentOverview(countryName);
+      else if (isStudyTab && !oLow.includes('study') && !oLow.includes('student') && !oLow.includes('academic') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
+        ov = getStudentOverview(countryName);
       }
       // Guard against tourist overview leaking into work tab
-      if (isWorkTab && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
-        return getWorkOverview(countryName);
+      else if (isWorkTab && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family'))) {
+        ov = getWorkOverview(countryName);
       }
       // Guard against tourist overview leaking into business tab
-      if (isBusinessTab && !oLow.includes('business') && !oLow.includes('commercial') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family') || oLow.includes('holiday') || oLow.includes('sightseeing'))) {
-        return getBusinessOverview(countryName);
+      else if (isBusinessTab && !oLow.includes('business') && !oLow.includes('commercial') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay') || oLow.includes('visiting family') || oLow.includes('holiday') || oLow.includes('sightseeing'))) {
+        ov = getBusinessOverview(countryName);
+      } else {
+        ov = aiData.overview;
       }
-      return aiData.overview;
+    } else if (isFamilyTab) {
+      ov = getFamilyOverview(countryName);
+    } else if (isPRTab) {
+      ov = getPROverview(countryName);
+    } else if (isStudyTab) {
+      ov = getStudentOverview(countryName);
+    } else if (isWorkTab) {
+      ov = getWorkOverview(countryName);
+    } else if (isBusinessTab) {
+      ov = getBusinessOverview(countryName);
+    } else {
+      ov = getTourismOverview(countryName);
     }
-    if (isFamilyTab) {
-      return getFamilyOverview(countryName);
+
+    if (ov) {
+      ov = ov.trim().replace(/\r?\n+/g, ' ');
+      // If overly long or multi-sentence, extract first complete sentence cleanly
+      const firstSent = ov.match(/^[^.!?]+[.!?]+/);
+      if (firstSent && firstSent[0].length >= 20 && (firstSent[0].length <= 150 || ov.length > 150)) {
+        ov = firstSent[0].trim();
+      }
     }
-    if (isPRTab) {
-      return getPROverview(countryName);
-    }
-    if (isStudyTab) {
-      return getStudentOverview(countryName);
-    }
-    if (isWorkTab) {
-      return getWorkOverview(countryName);
-    }
-    if (isBusinessTab) {
-      return getBusinessOverview(countryName);
-    }
-    return getTourismOverview(countryName);
+    return ov;
   }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab, isBusinessTab, isPRTab, isFamilyTab]);
 
   useEffect(() => {
@@ -4404,6 +4412,7 @@ export function VisaCountryResultPortal({
 
           const mappedData = {
             is_live: true,
+            overview: liveRes.overview || '',
             country: liveRes.country || slugClean,
             visa_type: liveRes.visaCategory || `${countryName} Tourist Visa`,
             authority: auth,
@@ -4705,7 +4714,8 @@ export function VisaCountryResultPortal({
       return;
     }
 
-    if (!checkIsUserLoggedIn()) {
+    const userLoggedIn = checkIsUserLoggedIn();
+    if (!userLoggedIn) {
       try {
         localStorage.setItem('pending_visa_action', JSON.stringify({
           action: 'download_and_sync',
@@ -4718,8 +4728,6 @@ export function VisaCountryResultPortal({
           timestamp: Date.now()
         }));
       } catch (e) {}
-      setShowLoginRequiredModal(true);
-      return;
     }
 
     try {
@@ -4733,13 +4741,13 @@ export function VisaCountryResultPortal({
       const visaTypeName = isFamily
         ? `${countryName} Family / Spouse Visa`
         : isStudy 
-        ? 'Student Visa' 
+        ? (countryName.toLowerCase().includes('canada') ? 'Canada Study Permit (Student Visa)' : `${countryName} Student Visa`)
         : isWork 
-        ? 'Skilled Worker Visa' 
+        ? `${countryName} Skilled Worker Visa` 
         : isBusiness 
-        ? 'Business Visa' 
+        ? `${countryName} Business Visa` 
         : isPR
-        ? 'Permanent Residency'
+        ? `${countryName} Permanent Residency`
         : (isSchengen ? 'Schengen Tourist Visa (Type C)' : `${countryName} Tourist Visa`);
       const processingTimeVal = getResolvedProcessingTime() || aiData?.processing_time || (isFamily ? getFamilyProcessingTime(countryName) : isPR ? getPRProcessingTime(countryName) : isStudy ? getStudentProcessingTime(countryName) : isWork ? getWorkProcessingTime(countryName) : isBusiness ? getBusinessProcessingTime(countryName) : getTourismProcessingTime(countryName));
       const consularFeeVal = aiData?.costs?.visa_fee || (isFamily ? getFamilyFees(countryName).visa_fee : isPR ? getPRFees(countryName).visa_fee : isStudy ? getStudentFees(countryName).visa_fee : isWork ? getWorkFees(countryName).visa_fee : isBusiness ? getBusinessFees(countryName).visa_fee : getTourismFees(countryName).visa_fee);
@@ -5045,8 +5053,11 @@ export function VisaCountryResultPortal({
         const existingCases = JSON.parse(localStorage.getItem('active_visa_cases') || '[]');
         const filteredCases = existingCases.filter((c: any) => c.id !== caseId && c.destination?.toLowerCase() !== countryName.toLowerCase());
 
+        const appCustomName = `${countryName} ${isStudy ? 'student' : isWork ? 'work' : isBusiness ? 'business' : isPR ? 'pr' : isFamily ? 'family' : 'tourist'} 2026`;
         const newCase = {
           id: caseId,
+          customName: appCustomName,
+          title: appCustomName,
           trackingId,
           destination: countryName,
           destinationFlag: flagEmoji,
@@ -5123,8 +5134,12 @@ export function VisaCountryResultPortal({
 
         // 4. AUTOMATICALLY REDIRECT TO DOCUMENTS REQUIRED UNDER VISA APPLICATIONS
         setTimeout(() => {
-          window.location.href = `/traveller/dashboard?tab=cases&appId=${caseId}#documents-required-section`;
-        }, 700);
+          if (userLoggedIn) {
+            window.location.href = `/traveller/dashboard?tab=cases&appId=${caseId}#documents-required-section`;
+          } else {
+            setShowLoginRequiredModal(true);
+          }
+        }, 800);
       }
 
       // 5. SHOW CONFIRMATION TOAST
@@ -7797,181 +7812,8 @@ export function VisaCountryResultPortal({
                     <div className="bg-white rounded-[14px] sm:rounded-2xl border border-black/[0.05] p-6 sm:p-7 shadow-card hover:shadow-float transition-all duration-400 ease-lovable space-y-5 text-left">
                       <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 animate-heading">Overview</h2>
                       <p className="text-[14px] sm:text-[15px] text-slate-600 leading-relaxed font-normal max-w-4xl">
-                        {(() => {
-                          const text = (resolvedOverview || '').trim();
-                          // Just show the first sentence, max 160 chars
-                          const firstSentenceMatch = text.match(/^[^.!?]+[.!?]+/);
-                          const firstSentence = firstSentenceMatch ? firstSentenceMatch[0].trim() : text;
-                          if (firstSentence.length <= 160) return firstSentence;
-                          return firstSentence.slice(0, 155).trim().replace(/[,\s]+$/, '') + '...';
-                        })()}
+                        {resolvedOverview || (aiData?.overview) || `You need a visa to visit ${countryName} for ${activePurposeTab || initialPurpose || 'tourism'}.`}
                       </p>
-
-                      {/* 4 Feature Cards */}
-                      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 items-stretch">
-                      {isStudyTab ? (
-                        <>
-                          <StaggerItem>
-                            <div className="p-4 rounded-[14px] bg-blue-50/60 border border-blue-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                              <div>
-                                <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                                  <GraduationCap className="w-4 h-4" />
-                                </div>
-                                <strong className="text-[14px] sm:text-[15px] font-bold text-blue-950 block leading-snug">Higher Education</strong>
-                                <span className="text-[12px] sm:text-[13px] text-blue-800/80 font-normal leading-relaxed block mt-1">Full-time degree or accredited course</span>
-                              </div>
-                            </div>
-                          </StaggerItem>
-
-                          <StaggerItem>
-                            <div className="p-4 rounded-[14px] bg-purple-50/60 border border-purple-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                              <div>
-                                <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                                  <Briefcase className="w-4 h-4" />
-                                </div>
-                                <strong className="text-[14px] sm:text-[15px] font-bold text-purple-950 block leading-snug">Part-Time Work Rights</strong>
-                                <span className="text-[12px] sm:text-[13px] text-purple-800/80 font-normal leading-relaxed block mt-1">Work during terms &amp; full-time in breaks</span>
-                              </div>
-                            </div>
-                          </StaggerItem>
-
-                          <StaggerItem>
-                            <div className="p-4 rounded-[14px] bg-rose-50/60 border border-rose-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                              <div>
-                                <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                                  <Award className="w-4 h-4" />
-                                </div>
-                                <strong className="text-[14px] sm:text-[15px] font-bold text-rose-950 block leading-snug">Post-Study Work</strong>
-                                <span className="text-[12px] sm:text-[13px] text-rose-800/80 font-normal leading-relaxed block mt-1">Graduate job search &amp; post-study permits</span>
-                              </div>
-                            </div>
-                          </StaggerItem>
-
-                          <StaggerItem>
-                            <div className="p-4 rounded-[14px] bg-emerald-50/60 border border-emerald-100/90 flex flex-col justify-between h-full hover:shadow-xs transition-all">
-                              <div>
-                                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mb-3 shadow-2xs">
-                                  <Calendar className="w-4 h-4" />
-                                </div>
-                                <strong className="text-[14px] sm:text-[15px] font-bold text-emerald-950 block leading-snug">Academic Duration</strong>
-                                <span className="text-[12px] sm:text-[13px] text-emerald-800/80 font-normal leading-relaxed block mt-1">
-                                  Full course duration + post-study buffer
-                                </span>
-                              </div>
-                            </div>
-                          </StaggerItem>
-                        </>
-                      ) : (
-                        <>
-                          {(() => {
-                            const highlights = (aiData?.highlights && aiData.highlights.length > 0)
-                              ? aiData.highlights
-                              : isFamilyTab
-                              ? getFamilyHighlights(countryName)
-                              : isPRTab
-                              ? getPRHighlights(countryName)
-                              : isWorkTab
-                              ? getWorkHighlights(countryName)
-                              : isBusinessTab
-                              ? getBusinessHighlights(countryName)
-                              : getTourismHighlights(countryName);
-
-                            const themes = [
-                              { bg: 'bg-blue-50/60', border: 'border-blue-100/90', iconBg: 'bg-blue-100 text-blue-600', text: 'text-blue-950', sub: 'text-blue-800/80' },
-                              { bg: 'bg-purple-50/60', border: 'border-purple-100/90', iconBg: 'bg-purple-100 text-purple-600', text: 'text-purple-950', sub: 'text-purple-800/80' },
-                              { bg: 'bg-rose-50/60', border: 'border-rose-100/90', iconBg: 'bg-rose-100 text-rose-600', text: 'text-rose-950', sub: 'text-rose-800/80' },
-                              { bg: 'bg-emerald-50/60', border: 'border-emerald-100/90', iconBg: 'bg-emerald-100 text-emerald-600', text: 'text-emerald-950', sub: 'text-emerald-800/80' }
-                            ];
-
-                            const renderIcon = (iconName: string, idx: number) => {
-                              const i = (iconName || '').toLowerCase();
-                              if (i.includes('briefcase') || i.includes('work') || i.includes('job') || i.includes('business')) return <Briefcase className="w-4 h-4" />;
-                              if (i.includes('handshake') || i.includes('deal') || i.includes('meeting')) return <Users className="w-4 h-4" />;
-                              if (i.includes('building') || i.includes('office') || i.includes('corporate') || i.includes('home') || i.includes('house')) return <Building2 className="w-4 h-4" />;
-                              if (i.includes('trending') || i.includes('chart')) return <TrendingUp className="w-4 h-4" />;
-                              if (i.includes('dollar') || i.includes('money')) return <CreditCard className="w-4 h-4" />;
-                              if (i.includes('sun')) return <Sun className="w-4 h-4" />;
-                              if (i.includes('plane')) return <Plane className="w-4 h-4" />;
-                              if (i.includes('map') || i.includes('pin')) return <MapPin className="w-4 h-4" />;
-                              if (i.includes('shield')) return <ShieldCheck className="w-4 h-4" />;
-                              if (i.includes('calendar') || i.includes('clock')) return <Calendar className="w-4 h-4" />;
-                              if (i.includes('user') || i.includes('people') || i.includes('family') || i.includes('spouse') || i.includes('partner') || i.includes('heart')) return <Users className="w-4 h-4" />;
-                              if (i.includes('award') || i.includes('star')) return <Award className="w-4 h-4" />;
-                              if (i.includes('file') || i.includes('doc')) return <FileText className="w-4 h-4" />;
-                              if (i.includes('credit') || i.includes('card') || i.includes('fee')) return <CreditCard className="w-4 h-4" />;
-                              if (i.includes('globe')) return <Globe className="w-4 h-4" />;
-                              if (isFamilyTab) {
-                                if (idx === 0) return <Users className="w-4 h-4" />;
-                                if (idx === 1) return <ShieldCheck className="w-4 h-4" />;
-                                if (idx === 2) return <Building2 className="w-4 h-4" />;
-                                return <Award className="w-4 h-4" />;
-                              }
-                              if (isPRTab) {
-                                if (idx === 0) return <Award className="w-4 h-4" />;
-                                if (idx === 1) return <Globe className="w-4 h-4" />;
-                                if (idx === 2) return <TrendingUp className="w-4 h-4" />;
-                                return <ShieldCheck className="w-4 h-4" />;
-                              }
-                              if (isWorkTab) {
-                                if (idx === 0) return <Briefcase className="w-4 h-4" />;
-                                if (idx === 1) return <Award className="w-4 h-4" />;
-                                if (idx === 2) return <TrendingUp className="w-4 h-4" />;
-                                return <ShieldCheck className="w-4 h-4" />;
-                              }
-                              if (isBusinessTab) {
-                                if (idx === 0) return <Briefcase className="w-4 h-4" />;
-                                if (idx === 1) return <Users className="w-4 h-4" />;
-                                if (idx === 2) return <Building2 className="w-4 h-4" />;
-                                return <ShieldCheck className="w-4 h-4" />;
-                              }
-                              if (idx === 0) return <Sun className="w-4 h-4" />;
-                              if (idx === 1) return <Users className="w-4 h-4" />;
-                              if (idx === 2) return <Calendar className="w-4 h-4" />;
-                              return <ShieldCheck className="w-4 h-4" />;
-                            };
-
-                            return highlights.slice(0, 4).map((h: any, idx: number) => {
-                              const theme = themes[idx % themes.length];
-                              const rawTitle = h.title || '';
-                              const cleanTitle = rawTitle
-                                .replace(/\s+National Park/gi, ' Park')
-                                .replace(/Impenetrable\s+/gi, '')
-                                .replace(/\s*&\s*Jinja Rafting/gi, '')
-                                .replace(/\s*\(.*?\)\s*/g, '')
-                                .trim();
-                              const displayTitle = cleanTitle.length > 28
-                                ? cleanTitle.slice(0, 25).trim().replace(/[,\s]+$/, '') + '...'
-                                : cleanTitle;
-
-                              const rawDesc = h.desc || h.description || '';
-                              const cleanDesc = rawDesc.length > 55
-                                ? (rawDesc.slice(0, 52).trim().replace(/[,\s]+$/, '') + '...')
-                                : rawDesc;
-
-                              return (
-                                <StaggerItem key={idx}>
-                                  <div 
-                                    className={`p-4 rounded-[14px] ${theme.bg} border ${theme.border} flex flex-col justify-between h-full hover:shadow-xs transition-all`}
-                                  >
-                                    <div>
-                                      <div className={`w-8 h-8 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0 mb-3 shadow-2xs`}>
-                                        {renderIcon(h.icon, idx)}
-                                      </div>
-                                      <strong className={`text-[14px] sm:text-[15px] font-bold ${theme.text} block leading-snug`}>
-                                        {displayTitle}
-                                      </strong>
-                                      <span className={`text-[12px] sm:text-[13px] ${theme.sub} font-normal leading-relaxed block mt-1`}>
-                                        {cleanDesc}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </StaggerItem>
-                              );
-                            });
-                          })()}
-                        </>
-                      )}
-                      </StaggerContainer>
                     </div>
                   </ScrollReveal>
 

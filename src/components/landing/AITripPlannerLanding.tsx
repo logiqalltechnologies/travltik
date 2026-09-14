@@ -2407,6 +2407,75 @@ export function AITripPlannerLanding() {
         has_visa: false
       });
 
+      // Automatically sync and export search to active_visa_cases in localStorage for dashboard
+      if (typeof window !== 'undefined') {
+        const isStud = selectedPurpose.includes('study') || selectedPurpose.includes('student');
+        const isWk = selectedPurpose.includes('work');
+        const isBiz = selectedPurpose.includes('business');
+        const isPr = selectedPurpose.includes('pr');
+        const vType = isStud
+          ? (targetCountry.toLowerCase().includes('canada') ? 'Canada Study Permit (Student Visa)' : `${targetCountry} Student Visa`)
+          : isWk ? `${targetCountry} Skilled Worker Visa`
+          : isBiz ? `${targetCountry} Business Visa`
+          : isPr ? `${targetCountry} Permanent Residency`
+          : `${targetCountry} Tourist Visa`;
+
+        const newCase = {
+          id: `app_${targetCountry.toLowerCase().replace(/[^a-z0-9]/g, '-')}_${Date.now()}`,
+          customName: `${targetCountry} ${isStud ? 'student' : isWk ? 'work' : isBiz ? 'business' : isPr ? 'pr' : 'tourist'} 2026`,
+          title: `${targetCountry} ${isStud ? 'student' : isWk ? 'work' : isBiz ? 'business' : isPr ? 'pr' : 'tourist'} 2026`,
+          trackingId: `TT-${targetCountry.slice(0, 2).toUpperCase()}-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+          destination: targetCountry,
+          visaType: vType,
+          purpose: selectedPurpose,
+          passport: passport,
+          status: 'Requirements & Eligibility Active',
+          stage: 'Requirements & Document Collection',
+          progress: 20,
+          documentsCount: 6,
+          submittedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          targetDate: '15-20 Working Days',
+          createdAt: new Date().toISOString()
+        };
+
+        try {
+          let existingCases: any[] = [];
+          const storedCases = localStorage.getItem('active_visa_cases');
+          if (storedCases) {
+            existingCases = JSON.parse(storedCases);
+            if (!Array.isArray(existingCases)) existingCases = [];
+          }
+          const existingIdx = existingCases.findIndex((c: any) => 
+            c && c.destination && c.destination.toLowerCase() === targetCountry.toLowerCase()
+          );
+          if (existingIdx >= 0) {
+            existingCases[existingIdx] = {
+              ...existingCases[existingIdx],
+              customName: newCase.customName,
+              title: newCase.title,
+              visaType: newCase.visaType,
+              purpose: newCase.purpose,
+              passport: passport,
+              updatedAt: new Date().toISOString()
+            };
+          } else {
+            existingCases.unshift(newCase);
+            if (existingCases.length > 5) existingCases = existingCases.slice(0, 5);
+          }
+          localStorage.setItem('active_visa_cases', JSON.stringify(existingCases));
+          localStorage.setItem('active_travel_profile', JSON.stringify({
+            destination: targetCountry,
+            passport: passport,
+            purpose: selectedPurpose,
+            visaType: vType,
+            trackingId: newCase.trackingId,
+            createdAt: new Date().toISOString()
+          }));
+          window.dispatchEvent(new Event('storage'));
+          window.dispatchEvent(new CustomEvent('travltik_visa_synced', { detail: newCase }));
+        } catch(e) {}
+      }
+
       if (typeof window !== 'undefined') {
         window.location.href = destinationUrl;
       }

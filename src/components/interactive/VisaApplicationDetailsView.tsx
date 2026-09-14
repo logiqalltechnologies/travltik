@@ -243,8 +243,20 @@ export function VisaApplicationDetailsView({
   // Derive route metadata from application
   const trackingId = application?.trackingId || 'TT-APP-2026-9824';
   const destination = application?.destination || 'United Arab Emirates';
-  const passport = application?.passport || 'United States';
-  const purpose = application?.purpose || 'tourism';
+  const passport = application?.passport || 'India';
+  const rawPurpose = (application?.purpose || '').toLowerCase();
+  const appNameLower = (application?.customName || application?.title || '').toLowerCase();
+  const appVisaTypeLower = (application?.visaType || '').toLowerCase();
+
+  const purpose = useMemo(() => {
+    if (rawPurpose && rawPurpose !== 'tourism') return rawPurpose;
+    if (appNameLower.includes('student') || appNameLower.includes('study') || appVisaTypeLower.includes('student') || appVisaTypeLower.includes('study')) return 'study';
+    if (appNameLower.includes('work') || appNameLower.includes('job') || appVisaTypeLower.includes('work') || appVisaTypeLower.includes('job')) return 'work';
+    if (appNameLower.includes('business') || appVisaTypeLower.includes('business')) return 'business';
+    if (appNameLower.includes('pr') || appNameLower.includes('permanent') || appVisaTypeLower.includes('pr')) return 'pr';
+    if (appNameLower.includes('family') || appVisaTypeLower.includes('family') || appVisaTypeLower.includes('spouse')) return 'family';
+    return rawPurpose || 'tourism';
+  }, [rawPurpose, appNameLower, appVisaTypeLower]);
   const destinationFlag = application?.destinationFlag || getCountryFlag(destination);
   const passportFlag = getCountryFlag(passport);
 
@@ -336,8 +348,56 @@ export function VisaApplicationDetailsView({
       }
       return `${destination} Visa-Free Entry (On-Arrival Permit)`;
     }
+
+    // 1. If student / study purpose or name indicates student
+    if (purpose === 'study' || appNameLower.includes('student') || appNameLower.includes('study')) {
+      if (routeData?.visa_type && (routeData.visa_type.toLowerCase().includes('student') || routeData.visa_type.toLowerCase().includes('study'))) {
+        return routeData.visa_type;
+      }
+      return destination.toLowerCase().includes('canada')
+        ? 'Canada Study Permit (Student Visa)'
+        : destination.toLowerCase().includes('united states') || destination.toLowerCase().includes('usa')
+        ? 'US F-1 Academic Student Visa'
+        : destination.toLowerCase().includes('united kingdom') || destination.toLowerCase().includes('uk')
+        ? 'UK Student Visa (Subclass / Tier 4)'
+        : `${destination} Student Visa`;
+    }
+
+    // 2. If application explicitly specifies a non-generic visa type, honor it
+    if (
+      application?.visaType &&
+      !application.visaType.toLowerCase().includes('tourist') &&
+      !application.visaType.toLowerCase().includes('visitor') &&
+      !application.visaType.toLowerCase().includes('standard visa')
+    ) {
+      return application.visaType;
+    }
+
+    // 3. Work / Employment
+    if (purpose === 'work' || appNameLower.includes('work') || appNameLower.includes('job')) {
+      if (routeData?.visa_type && (routeData.visa_type.toLowerCase().includes('work') || routeData.visa_type.toLowerCase().includes('skilled'))) {
+        return routeData.visa_type;
+      }
+      return `${destination} Skilled Worker Visa`;
+    }
+
+    // 4. Business
+    if (purpose === 'business' || appNameLower.includes('business')) {
+      return routeData?.visa_type || `${destination} Business Visa`;
+    }
+
+    // 5. PR
+    if (purpose === 'pr' || appNameLower.includes('pr') || appNameLower.includes('permanent')) {
+      return routeData?.visa_type || `${destination} Permanent Residency`;
+    }
+
+    // 6. Family
+    if (purpose === 'family' || appNameLower.includes('family')) {
+      return routeData?.visa_type || `${destination} Family / Spouse Visa`;
+    }
+
     return routeData?.visa_type || application?.visaType || `${destination} Tourist / Visitor Visa`;
-  }, [isVisaFree, destination, routeData?.visa_type, application?.visaType]);
+  }, [isVisaFree, destination, purpose, appNameLower, routeData?.visa_type, application?.visaType]);
   
   // Real dates without hardcoded dummy values
   const appliedDate = (application?.submittedAt && application.submittedAt !== 'Active' && application.submittedAt !== 'Recently')
@@ -377,8 +437,14 @@ export function VisaApplicationDetailsView({
       }
       return 'Visa-Free Entry on Arrival';
     }
+    if (purpose === 'study' || appNameLower.includes('student') || appNameLower.includes('study')) {
+      return 'Multiple Entry (Full Course Duration)';
+    }
+    if (purpose === 'work' || appNameLower.includes('work')) {
+      return 'Multiple Entry (Work Permit Validity)';
+    }
     return application?.entries || routeData?.entry_type || (destination.toLowerCase().includes('emirates') ? 'Single / 30-Day Multiple' : 'Single Entry');
-  }, [isVisaFree, destination, application?.entries, routeData?.entry_type]);
+  }, [isVisaFree, destination, purpose, appNameLower, application?.entries, routeData?.entry_type]);
   
   // Fee and Processing Time
   const feeDisplay = isVisaFree
@@ -556,6 +622,57 @@ export function VisaApplicationDetailsView({
             description: 'Mandatory digital arrival card or immigration declaration form completed prior to arrival.',
             is_mandatory: true,
             conditions: parseDocumentConditions('Digital Arrival Form', 'Mandatory digital arrival card or immigration declaration form completed prior to arrival.')
+          }
+        ]
+      : (purpose === 'study' || appNameLower.includes('student') || appNameLower.includes('study'))
+      ? [
+          {
+            title: destination.toLowerCase().includes('canada') ? 'Official Letter of Acceptance (LOA)' : 'University Acceptance / Offer Letter',
+            description: `Official unconditional offer or acceptance letter from an accredited Designated Learning Institution (DLI) in ${destination}.`,
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Letter of Acceptance', `Official unconditional offer from an accredited institution in ${destination}.`)
+          },
+          {
+            title: destination.toLowerCase().includes('canada') ? 'Provincial Attestation Letter (PAL)' : 'Confirmation of Acceptance / Certificate of Eligibility',
+            description: destination.toLowerCase().includes('canada') ? 'Mandatory Provincial Attestation Letter issued by the host province.' : 'Official educational sponsor attestation and compliance certificate.',
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Provincial Attestation Letter', 'Official educational sponsor attestation and compliance certificate.')
+          },
+          {
+            title: destination.toLowerCase().includes('canada') ? 'GIC Certificate / Proof of Living Funds' : 'Proof of Financial Solvency & Funds',
+            description: destination.toLowerCase().includes('canada') ? 'Guaranteed Investment Certificate (CAD $20,635+) from an approved financial institution.' : 'Demonstrated liquid funds covering tuition fees and 1-year living expenses.',
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Financial Proof', 'Demonstrated liquid funds covering tuition fees and 1-year living expenses.')
+          },
+          {
+            title: 'Academic Transcripts & Degree Certificates',
+            description: 'All past secondary and post-secondary marksheets, diplomas, and official graduation certificates.',
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Academic Transcripts', 'All past marksheets, diplomas, and graduation certificates.')
+          },
+          {
+            title: 'Language Proficiency Test Score (IELTS / PTE / TOEFL)',
+            description: 'Valid scorecard meeting the minimum band score requirement for your study program.',
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Language Test Score', 'Valid scorecard meeting the minimum band score requirement.')
+          },
+          {
+            title: 'Valid International Passport Bio-Page',
+            description: 'Valid for at least 12 months beyond program start date with minimum 2 blank pages.',
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Passport Bio-Page', 'Valid for at least 12 months with minimum 2 blank pages.')
+          },
+          {
+            title: 'Statement of Purpose (SOP) & Study Plan',
+            description: 'Comprehensive statement explaining academic background, course choice, career aspirations, and return ties.',
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Statement of Purpose', 'Comprehensive statement explaining academic background, course choice, and return ties.')
+          },
+          {
+            title: 'Immigration Medical Exam (IME) / Panel Physician Receipt',
+            description: 'Medical clearance from an authorized panel physician covering tuberculosis and general health.',
+            is_mandatory: true,
+            conditions: parseDocumentConditions('Medical Clearance', 'Medical clearance from an authorized panel physician.')
           }
         ]
       : [

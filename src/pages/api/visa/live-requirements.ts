@@ -269,6 +269,27 @@ Provide the CURRENT official visa and entry requirements based on official gover
 
 CRITICAL FIELD ACCURACY RULES (DO NOT USE GENERIC OR MISSING VALUES):
 
+0. OVERVIEW FORMAT:
+- Start with "You need..." or "You can..."
+- Max 1-2 lines (max 120 characters)
+- Simple English, no jargon
+- Direct, action-oriented
+
+Examples:
+- "You need an F-1 Student Visa to study full-time at a US college or university."
+- "Indian citizens need a Schengen Visa to visit France for tourism."
+- "You can enter UAE visa-free for 30 days with a valid Indian passport."
+
+BAD examples (avoid):
+- "The F-1 Academic Student Visa enables international students to pursue..."
+- "This visa category facilitates the entry of..."
+
+CRITICAL:
+- No formal government language
+- No "enables", "facilitates", "pursuant to"
+- Use "you" and "your"
+- Max 120 characters, max 2 lines
+
 1. PROCESSING TIME:
 - Must specify WORKING DAYS, not calendar days.
 - For China: Standard visa application center (CVASC) processing is "4 - 7 working days" (or "4 to 7 working days", NOT just "4 working days"). Express processing is "2 - 3 working days".
@@ -344,6 +365,7 @@ REQUIRED FORMAT:
   "country": "${input.destinationCountry.toLowerCase()}",
   "fromCountry": "${input.passportCountry}",
   "visaCategory": "${input.purpose.charAt(0).toUpperCase() + input.purpose.slice(1)} Visa",
+  "overview": "You need a ${input.purpose} visa to visit ${input.destinationCountry}.",
   "authority": "",
   "channels": [""],
   "processingTime": {
@@ -484,6 +506,18 @@ REQUIRED FORMAT:
         if (!result.eVisa?.maxStay && result.stayDuration?.stickerSingleDouble) {
           result.eVisa = result.eVisa || {};
           result.eVisa.maxStay = result.stayDuration.stickerSingleDouble;
+        }
+
+        // Overview normalization: ensure simple, action-oriented single line
+        if (result.overview && typeof result.overview === 'string') {
+          let ov = result.overview.trim().replace(/\r?\n+/g, ' ');
+          const firstSentMatch = ov.match(/^[^.!?]+[.!?]+/);
+          if (firstSentMatch && firstSentMatch[0].length >= 25 && firstSentMatch[0].length <= 150) {
+            ov = firstSentMatch[0].trim();
+          }
+          result.overview = ov;
+        } else {
+          result.overview = `You need a visa to visit ${input.destinationCountry} for ${input.purpose}.`;
         }
 
         // Run validation to catch any missing/generic values and populate warnings

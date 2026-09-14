@@ -67,14 +67,41 @@ export function useApplications({
     }
     const targetDest = normalizeCountryName(newAppDest || selectedDestination || "United States");
     const targetPass = normalizeCountryName(newAppPass || selectedPassport || "India");
-    const targetPurp = newAppPurpose || selectedPurpose || "Tourism / Vacation";
-    const appName = (newAppName || "").trim() || `${targetDest} ${targetPurp.includes('Study') ? 'Student Visa' : targetPurp.includes('Work') ? 'Work Visa' : 'Tourist Visa'}`;
+    let targetPurp = newAppPurpose || selectedPurpose || "Tourism / Vacation";
+    const appName = (newAppName || "").trim();
+    const appNameLower = appName.toLowerCase();
+
+    if (appNameLower.includes('student') || appNameLower.includes('study') || appNameLower.includes('education') || appNameLower.includes('university') || appNameLower.includes('college')) {
+      targetPurp = 'Study / Education';
+    } else if (appNameLower.includes('work') || appNameLower.includes('job') || appNameLower.includes('employment')) {
+      targetPurp = 'Work / Employment';
+    } else if (appNameLower.includes('business')) {
+      targetPurp = 'Business';
+    } else if (appNameLower.includes('pr') || appNameLower.includes('permanent')) {
+      targetPurp = 'Permanent Residency';
+    }
+
+    const purpLower = targetPurp.toLowerCase();
+    const isStud = purpLower.includes('study') || purpLower.includes('student');
+    const isWk = purpLower.includes('work') || purpLower.includes('job');
+    const isBiz = purpLower.includes('business');
+    const isPr = purpLower.includes('pr') || purpLower.includes('permanent');
+
+    const finalAppName = appName || `${targetDest} ${isStud ? 'Student' : isWk ? 'Work' : isBiz ? 'Business' : isPr ? 'PR' : 'Tourist'} 2026`;
     
     const uniqueAppId = `app_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const destCode = targetDest.slice(0, 2).toUpperCase();
     const uniqueTrackingId = `TT-${destCode}-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const flag = getFlagEmoji(targetDest);
-    const visaType = targetPurp.includes('Study') ? 'F-1 / Tier-4 Student Visa' : targetPurp.includes('Work') ? 'Skilled Worker Visa' : 'Tourist / Visitor Visa';
+    const visaType = isStud 
+      ? (targetDest.toLowerCase().includes('canada') ? 'Canada Study Permit (Student Visa)' : `${targetDest} Student Visa`) 
+      : isWk 
+      ? `${targetDest} Skilled Worker Visa` 
+      : isBiz
+      ? `${targetDest} Business Visa`
+      : isPr
+      ? `${targetDest} Permanent Residency`
+      : `${targetDest} Tourist Visa`;
 
     const genuineUploadedDocsCount = (documents || []).filter(
       (d: any) => d && (d.fileData || d.isRealUpload || (d.scannedMethod === 'OCR Scanned' && d.id && !d.id.startsWith('doc_req_') && d.id !== 'global_passport'))
@@ -82,12 +109,13 @@ export function useApplications({
 
     const newCase = {
       id: uniqueAppId,
-      customName: appName,
+      customName: finalAppName,
+      title: finalAppName,
       trackingId: uniqueTrackingId,
       destination: targetDest,
       destinationFlag: flag,
       visaType,
-      purpose: targetPurp.toLowerCase().includes('study') ? 'study' : targetPurp.toLowerCase().includes('work') ? 'work' : 'tourism',
+      purpose: isStud ? 'study' : isWk ? 'work' : isBiz ? 'business' : isPr ? 'pr' : 'tourism',
       passport: targetPass,
       status: genuineUploadedDocsCount > 0 ? "Required Documents & AI Verified" : "Requirements & Eligibility Active",
       stage: genuineUploadedDocsCount > 0 ? "Document Vault Verification" : "Requirements & Document Collection",

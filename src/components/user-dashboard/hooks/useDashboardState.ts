@@ -257,23 +257,110 @@ export function useDashboardState() {
       }
 
       const activeCasesStr = localStorage.getItem("active_visa_cases");
+      let activeCases: any[] = [];
       if (activeCasesStr) {
         try {
           const parsedCases = JSON.parse(activeCasesStr);
           if (Array.isArray(parsedCases) && parsedCases.length > 0) {
-            appHook.setVisasProcessingState(parsedCases);
-            const params = new URLSearchParams(window.location.search);
-            const targetAppId = params.get("appId");
-            if (targetAppId) {
-              const matched = parsedCases.find((c: any) => c.id === targetAppId);
-              if (matched) {
-                appHook.setSelectedApplicationId(matched.id);
-              } else {
-                appHook.setSelectedApplicationId(targetAppId);
+            activeCases = parsedCases.map((c: any) => {
+              const nameL = (c.customName || c.title || '').toLowerCase();
+              const purpL = (c.purpose || '').toLowerCase();
+              const isStud = nameL.includes('student') || nameL.includes('study') || purpL.includes('student') || purpL.includes('study');
+              const isWk = nameL.includes('work') || nameL.includes('job') || purpL.includes('work');
+              const isBiz = nameL.includes('business') || purpL.includes('business');
+              const isPr = nameL.includes('pr') || purpL.includes('permanent') || purpL.includes('settle');
+
+              let fixedPurpose = c.purpose;
+              let fixedVisaType = c.visaType;
+
+              if (isStud) {
+                fixedPurpose = 'study';
+                if (!c.visaType || c.visaType.toLowerCase().includes('tourist') || c.visaType.toLowerCase().includes('visitor') || c.visaType.toLowerCase().includes('standard visa')) {
+                  fixedVisaType = (c.destination || '').toLowerCase().includes('canada') 
+                    ? 'Canada Study Permit (Student Visa)' 
+                    : `${c.destination || 'Destination'} Student Visa`;
+                }
+              } else if (isWk) {
+                fixedPurpose = 'work';
+                if (!c.visaType || c.visaType.toLowerCase().includes('tourist') || c.visaType.toLowerCase().includes('visitor')) {
+                  fixedVisaType = `${c.destination || 'Destination'} Skilled Worker Visa`;
+                }
+              } else if (isBiz) {
+                fixedPurpose = 'business';
+                if (!c.visaType || c.visaType.toLowerCase().includes('tourist') || c.visaType.toLowerCase().includes('visitor')) {
+                  fixedVisaType = `${c.destination || 'Destination'} Business Visa`;
+                }
+              } else if (isPr) {
+                fixedPurpose = 'pr';
+                if (!c.visaType || c.visaType.toLowerCase().includes('tourist') || c.visaType.toLowerCase().includes('visitor')) {
+                  fixedVisaType = `${c.destination || 'Destination'} Permanent Residency`;
+                }
               }
+
+              return {
+                ...c,
+                purpose: fixedPurpose,
+                visaType: fixedVisaType
+              };
+            });
+            try {
+              localStorage.setItem("active_visa_cases", JSON.stringify(activeCases));
+            } catch(e) {}
+          }
+        } catch(e) {}
+      }
+
+      // If active_visa_cases is empty or lacks the search journey destination, check active_travel_profile or travltik_user_journey
+      if (activeCases.length === 0) {
+        try {
+          const profileStr = localStorage.getItem("active_travel_profile") || localStorage.getItem("travltik_user_journey");
+          if (profileStr) {
+            const p = JSON.parse(profileStr);
+            const pDest = p.destination || p.destination_country;
+            if (pDest) {
+              const pPurp = (p.purpose || 'tourism').toLowerCase();
+              const isStud = pPurp.includes('study') || pPurp.includes('student');
+              const isWk = pPurp.includes('work');
+              const isBiz = pPurp.includes('business');
+              const isPr = pPurp.includes('pr');
+              const vType = p.visaType || p.visa_type || (isStud ? (pDest.toLowerCase().includes('canada') ? 'Canada Study Permit (Student Visa)' : `${pDest} Student Visa`) : isWk ? `${pDest} Work Visa` : isBiz ? `${pDest} Business Visa` : isPr ? `${pDest} Permanent Residency` : `${pDest} Tourist Visa`);
+              const synthesizedCase = {
+                id: `case-${pDest.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+                customName: `${pDest} ${isStud ? 'student' : isWk ? 'work' : isBiz ? 'business' : isPr ? 'pr' : 'tourist'} 2026`,
+                title: `${pDest} ${isStud ? 'student' : isWk ? 'work' : isBiz ? 'business' : isPr ? 'pr' : 'tourist'} 2026`,
+                trackingId: p.trackingId || p.tracking_id || `TT-${pDest.slice(0, 2).toUpperCase()}-2026-9824`,
+                destination: pDest,
+                destinationFlag: p.destinationFlag || p.destination_flag || '',
+                visaType: vType,
+                purpose: pPurp,
+                passport: p.passport || p.passport_country || 'India',
+                status: 'Requirements & Eligibility Active',
+                stage: 'Requirements & Document Collection',
+                progress: 20,
+                documentsCount: 6,
+                submittedAt: p.createdAt || p.submitted_at || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                targetDate: '15-20 Working Days',
+                createdAt: new Date().toISOString()
+              };
+              activeCases = [synthesizedCase];
+              localStorage.setItem("active_visa_cases", JSON.stringify(activeCases));
             }
           }
         } catch(e) {}
+      }
+
+      if (activeCases.length > 0) {
+        appHook.setVisasProcessingState(activeCases);
+        const params = new URLSearchParams(window.location.search);
+        const targetAppId = params.get("appId");
+        if (targetAppId) {
+          const matched = activeCases.find((c: any) => c.id === targetAppId);
+          if (matched) {
+            appHook.setSelectedApplicationId(matched.id);
+          } else {
+            appHook.setSelectedApplicationId(targetAppId);
+          }
+        }
       } else {
         const params = new URLSearchParams(window.location.search);
         const targetAppId = params.get("appId");

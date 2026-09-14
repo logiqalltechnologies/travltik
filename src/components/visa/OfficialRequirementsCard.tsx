@@ -927,10 +927,10 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                     const isWork = (purpose || '').toLowerCase().includes('work') || (purpose || '').toLowerCase().includes('employ');
                     const oLow = data.overview.toLowerCase();
                     if (isStudy && !oLow.includes('study') && !oLow.includes('student') && !oLow.includes('academic') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay'))) {
-                      return `The Student Visa allows international students to reside in ${cleanTo} for the full duration of their registered academic program to undertake full-time higher education, vocational training, or postgraduate research.`;
+                      return `You need a Student Visa to study full-time at a recognized institution in ${cleanTo}.`;
                     }
                     if (isWork && !oLow.includes('work') && !oLow.includes('employ') && (oLow.includes('touris') || oLow.includes('visit visa') || oLow.includes('short stay'))) {
-                      return `The Work Visa allows foreign professionals to live and work legally in ${cleanTo} under an authorized employer sponsorship or employment permit.`;
+                      return `You need a Work Visa to live and work legally in ${cleanTo}.`;
                     }
                     return data.overview;
                   })()}
