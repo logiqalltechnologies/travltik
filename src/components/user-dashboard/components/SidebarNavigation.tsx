@@ -73,11 +73,27 @@ export function SidebarNavigation({
 }) {
   const safeNavItems = allNavItems || (navSections || []).flatMap((s: any) => s.items || []);
   const [isVisaAppsExpanded, setIsVisaAppsExpanded] = React.useState<boolean>(false);
+  const [isDesktop, setIsDesktop] = React.useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 1024;
+    }
+    return true;
+  });
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <>
       {/* Desktop Collapsible Left Sidebar */}
-      <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
+      {isDesktop && (
+        <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
         <div className="p-3.5 space-y-5 overflow-y-auto max-h-[calc(100vh-120px)] no-scrollbar">
           <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
             {!isSidebarCollapsed ? (
@@ -208,6 +224,7 @@ export function SidebarNavigation({
           </button>
         </div>
       </aside>
+      )}
 
       {/* Mobile Drawer Navigation */}
       <div className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${isMobileSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>

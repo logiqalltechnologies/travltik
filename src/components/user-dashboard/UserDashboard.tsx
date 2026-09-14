@@ -57,7 +57,7 @@ export const UserDashboard: React.FC = () => {
                 email={state.email}
             />
 
-            <div className="flex">
+            <div className="flex flex-col lg:flex-row w-full min-h-[calc(100vh-64px)]">
                 {/* Left Collapsible Sidebar */}
                 <SidebarNavigation
                     activeTab={state.activeTab}
