@@ -463,18 +463,18 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
       {/* ══════════════════════════════════════════════════════════ */}
       {/* ── MOBILE VIEW (block lg:hidden) - EXACT NATIVE APP UI ── */}
       {/* ══════════════════════════════════════════════════════════ */}
-      <div className="block lg:hidden space-y-4 pt-1">
+      <div className="block lg:hidden space-y-3.5 pt-1">
         {/* 1. Mobile Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#481268] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#481268]/20">
-              <Luggage className="w-6 h-6 stroke-[2.2]" />
+        <div className="flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#481268] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#481268]/20">
+              <Luggage className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
             </div>
-            <div>
-              <h1 className="text-xl font-black text-[#0B1527] tracking-tight">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-lg sm:text-xl font-black text-[#0B1527] tracking-tight leading-tight truncate">
                 Luggage Checklist
               </h1>
-              <p className="text-xs text-slate-500 font-medium">
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium truncate">
                 {tripData.destination === "Set Destination" ? "Japan" : tripData.destination} • {tripData.startDate === "Departure Date" ? "15 Oct" : tripData.startDate} – {tripData.endDate === "Return Date" ? "28 Oct 2026" : tripData.endDate}
               </p>
             </div>
@@ -483,7 +483,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           <button
             type="button"
             onClick={() => setShowEditTripModal(true)}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer"
+            className="p-2 sm:p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer shrink-0"
             title="Edit Trip Details"
           >
             <Edit3 className="w-4 h-4" />
@@ -491,49 +491,49 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         </div>
 
         {/* 2. Top 4 Metric Cards in 1 Row */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
           {/* Card 1: Travellers */}
-          <div className="bg-white rounded-2xl p-2.5 border border-[#481268]/15 bg-[#481268]/5 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-0.5 text-[#481268]">
-              <User className="w-4 h-4 stroke-[2.5]" />
-              <span className="text-xs font-bold">{tripData.travellersCount || 4}</span>
+          <div className="bg-[#481268]/5 rounded-2xl p-2 sm:p-2.5 border border-[#481268]/15 shadow-2xs text-center flex flex-col items-center justify-center min-h-[66px] sm:min-h-[72px]">
+            <div className="flex items-center justify-center gap-1 text-[#481268]">
+              <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
+              <span className="text-sm sm:text-base font-black leading-none">{tripData.travellersCount || 1}</span>
             </div>
-            <span className="text-[10px] font-semibold text-[#481268] mt-1">Travellers</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-[#481268] mt-1.5 uppercase tracking-wider truncate w-full text-center">Travellers</span>
           </div>
 
           {/* Card 2: Checked */}
-          <div className="bg-white rounded-2xl p-2.5 border border-emerald-50/80 bg-emerald-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="text-lg font-black text-emerald-500 leading-tight">
+          <div className="bg-emerald-50/40 rounded-2xl p-2 sm:p-2.5 border border-emerald-100 shadow-2xs text-center flex flex-col items-center justify-center min-h-[66px] sm:min-h-[72px]">
+            <div className="text-sm sm:text-base font-black text-emerald-600 leading-none">
               {packedItemsCount}
             </div>
-            <span className="text-[10px] font-semibold text-emerald-700 mt-0.5">Checked</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-emerald-700 mt-1.5 uppercase tracking-wider truncate w-full text-center">Checked</span>
           </div>
 
           {/* Card 3: Pending */}
-          <div className="bg-white rounded-2xl p-2.5 border border-amber-50/80 bg-amber-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-0.5 text-amber-500">
-              <Clock className="w-4 h-4 stroke-[2.5]" />
-              <span className="text-xs font-bold">{pendingItemsCount}</span>
+          <div className="bg-amber-50/40 rounded-2xl p-2 sm:p-2.5 border border-amber-100 shadow-2xs text-center flex flex-col items-center justify-center min-h-[66px] sm:min-h-[72px]">
+            <div className="flex items-center justify-center gap-1 text-amber-600">
+              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
+              <span className="text-sm sm:text-base font-black leading-none">{pendingItemsCount}</span>
             </div>
-            <span className="text-[10px] font-semibold text-amber-700 mt-1">Pending</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-amber-700 mt-1.5 uppercase tracking-wider truncate w-full text-center">Pending</span>
           </div>
 
           {/* Card 4: Action */}
-          <div className="bg-white rounded-2xl p-2.5 border border-rose-50/80 bg-rose-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-0.5 text-rose-500">
-              <AlertCircle className="w-4 h-4 stroke-[2.5]" />
-              <span className="text-xs font-bold">{actionItemsCount}</span>
+          <div className="bg-rose-50/40 rounded-2xl p-2 sm:p-2.5 border border-rose-100 shadow-2xs text-center flex flex-col items-center justify-center min-h-[66px] sm:min-h-[72px]">
+            <div className="flex items-center justify-center gap-1 text-rose-600">
+              <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
+              <span className="text-sm sm:text-base font-black leading-none">{actionItemsCount}</span>
             </div>
-            <span className="text-[10px] font-semibold text-rose-700 mt-1">Action</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-rose-700 mt-1.5 uppercase tracking-wider truncate w-full text-center">Action</span>
           </div>
         </div>
 
         {/* 3. Status Filter Buttons */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 -mx-1 px-1">
           <button
             type="button"
             onClick={() => setActiveStatusFilter("all")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition shrink-0 cursor-pointer ${
               activeStatusFilter === "all"
                 ? "bg-[#481268] text-white shadow-xs"
                 : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
@@ -544,7 +544,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           <button
             type="button"
             onClick={() => setActiveStatusFilter("packed")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition shrink-0 cursor-pointer ${
               activeStatusFilter === "packed"
                 ? "bg-[#481268] text-white shadow-xs"
                 : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
@@ -555,7 +555,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           <button
             type="button"
             onClick={() => setActiveStatusFilter("pending")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition shrink-0 cursor-pointer ${
               activeStatusFilter === "pending"
                 ? "bg-[#481268] text-white shadow-xs"
                 : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
@@ -567,7 +567,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             <button
               type="button"
               onClick={() => setActiveStatusFilter("action")}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition shrink-0 cursor-pointer ${
                 activeStatusFilter === "action"
                   ? "bg-[#481268] text-white shadow-xs"
                   : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
@@ -579,12 +579,12 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         </div>
 
         {/* 4. Traveller Wise Luggage Section */}
-        <div className="space-y-3 pt-2">
+        <div className="space-y-2.5 sm:space-y-3 pt-1">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-[#0B1527] tracking-tight">
+            <h2 className="text-sm sm:text-base font-extrabold text-[#0B1527] tracking-tight">
               Traveller Wise Luggage
             </h2>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
               <button
                 type="button"
                 onClick={() => setShowAddTravellerModal(true)}
@@ -604,10 +604,10 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           </div>
 
           {/* Traveller Cards List */}
-          <div className="space-y-2.5">
+          <div className="space-y-2 sm:space-y-2.5">
             {travellerStats.map((t, idx) => {
               const avatarBg = idx === 0 
-                ? "bg-purple-600 text-white" 
+                ? "bg-[#481268] text-white" 
                 : idx === 1 
                 ? "bg-rose-500 text-white" 
                 : idx === 2 
@@ -618,22 +618,22 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 <div
                   key={t.id}
                   onClick={() => setSelectedTravellerId(selectedTravellerId === t.id ? "all" : t.id)}
-                  className={`bg-white rounded-2xl border p-3.5 shadow-2xs space-y-2.5 transition cursor-pointer ${
+                  className={`bg-white rounded-2xl border p-3 sm:p-3.5 shadow-2xs space-y-2 sm:space-y-2.5 transition cursor-pointer ${
                     selectedTravellerId === t.id
                       ? "border-[#481268] ring-1 ring-[#481268]/30 shadow-xs"
                       : "border-slate-100/90 hover:border-slate-200"
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className={`w-10 h-10 rounded-full ${avatarBg} flex items-center justify-center font-bold text-xs shrink-0 shadow-xs`}>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                      <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full ${avatarBg} flex items-center justify-center font-bold text-xs shrink-0 shadow-xs`}>
                         {t.initials}
                       </div>
-                      <div className="min-w-0">
-                        <h3 className="text-sm font-bold text-[#0B1527] leading-tight truncate">
-                          {t.name} {t.role && <span className="text-slate-400 font-normal text-xs">({t.role})</span>}
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-xs sm:text-sm font-bold text-[#0B1527] leading-tight truncate">
+                          {t.name} {t.role && <span className="text-slate-400 font-normal text-[11px] sm:text-xs">({t.role})</span>}
                         </h3>
-                        <p className="text-xs mt-0.5 truncate">
+                        <p className="text-[11px] sm:text-xs mt-0.5 truncate">
                           <span className="text-[#481268] font-semibold">{t.checked}/{t.displayTotal} items</span>
                           <span className="text-slate-400 font-medium"> • {t.bagName}</span>
                         </p>
@@ -650,7 +650,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                         style={{ width: `${t.percent}%` }}
                       />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-semibold whitespace-nowrap">
+                    <span className="text-[10px] sm:text-[11px] text-slate-400 font-semibold whitespace-nowrap shrink-0">
                       {t.checked}/{t.displayTotal} items
                     </span>
                   </div>
@@ -956,20 +956,20 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         <div className="lg:col-span-8 space-y-4">
           
           {/* Destination Customs & Travel Advisory Banner */}
-          <div className="bg-white rounded-2xl border border-[#481268]/15 p-3.5 sm:p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
+          <div className="bg-white rounded-2xl border border-[#481268]/15 p-3 sm:p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
               <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center shadow-2xs overflow-hidden shrink-0">
                 <div className="w-4 h-4 rounded-full bg-rose-600" />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs sm:text-sm font-bold text-slate-900">Customs Advisory: {tripData.destination}</span>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                  <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">Customs Advisory: {tripData.destination}</span>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
                     <Check className="w-2.5 h-2.5 stroke-[3]" />
                     <span>Visa Approved</span>
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-500 mt-0.5 flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
+                <div className="text-[11px] text-slate-500 mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
                   <span>Personal: <strong className="text-slate-700">No declaration</strong></span>
                   <span>•</span>
                   <span>Meds: <strong className="text-rose-600">Declaration required</strong></span>
@@ -981,11 +981,11 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setShowCustomsDetailsModal(true)}
-                className="px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition flex items-center gap-1 shadow-2xs cursor-pointer"
+                className="flex-1 sm:flex-initial justify-center px-2.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition flex items-center gap-1 shadow-2xs cursor-pointer"
               >
                 <Info className="w-3.5 h-3.5 text-[#481268]" />
                 <span>Customs Details</span>
@@ -994,27 +994,27 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 href="/visa/japan?tab=customs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-2.5 py-1.5 rounded-xl bg-[#481268]/10 hover:bg-[#481268]/20 text-[#481268] text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
+                className="flex-1 sm:flex-initial justify-center px-2.5 py-1.5 rounded-xl bg-[#481268]/10 hover:bg-[#481268]/20 text-[#481268] text-xs font-semibold transition flex items-center gap-1 cursor-pointer"
               >
                 <span>Full Guide</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-100 p-3.5 sm:p-5 shadow-2xs space-y-3.5 sm:space-y-4">
             
             {/* Header & Actions */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                <h2 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
                   Packing Checklist
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
                   Complete your packing list and check customs requirements for each item.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-2 shrink-0 flex-wrap">
                 <button
                   type="button"
                   onClick={() => setShowTemplateModal(true)}
@@ -1025,9 +1025,14 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                 </button>
                 <button
                   type="button"
-                  className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                  onClick={() => {
+                    setNewItemCategory("clothing");
+                    setShowAddItemModal(true);
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-[#481268] hover:bg-[#3b0e56] text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
                 >
-                  <MoreHorizontal className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Item</span>
                 </button>
               </div>
             </div>
@@ -1167,7 +1172,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                             No items found for current filter.
                           </div>
                         ) : (
-                          <table className="w-full text-left border-collapse text-xs">
+                          <table className="w-full min-w-[500px] text-left border-collapse text-xs">
                             <thead>
                               <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider bg-white">
                                 <th className="py-2.5 pl-3 pr-2">Item</th>
