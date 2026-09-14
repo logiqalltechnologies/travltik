@@ -467,7 +467,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         {/* 1. Mobile Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0066FF] to-[#0047BA] text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/25">
+            <div className="w-12 h-12 rounded-2xl bg-[#481268] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#481268]/20">
               <Luggage className="w-6 h-6 stroke-[2.2]" />
             </div>
             <div>
@@ -493,12 +493,12 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
         {/* 2. Top 4 Metric Cards in 1 Row */}
         <div className="grid grid-cols-4 gap-2">
           {/* Card 1: Travellers */}
-          <div className="bg-white rounded-2xl p-2.5 border border-blue-50/80 bg-blue-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-0.5 text-[#0066FF]">
+          <div className="bg-white rounded-2xl p-2.5 border border-[#481268]/15 bg-[#481268]/5 shadow-2xs text-center flex flex-col items-center justify-center">
+            <div className="flex items-center justify-center gap-0.5 text-[#481268]">
               <User className="w-4 h-4 stroke-[2.5]" />
               <span className="text-xs font-bold">{tripData.travellersCount || 4}</span>
             </div>
-            <span className="text-[10px] font-semibold text-[#0066FF] mt-1">Travellers</span>
+            <span className="text-[10px] font-semibold text-[#481268] mt-1">Travellers</span>
           </div>
 
           {/* Card 2: Checked */}
@@ -535,7 +535,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             onClick={() => setActiveStatusFilter("all")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
               activeStatusFilter === "all"
-                ? "bg-[#0066FF] text-white shadow-xs"
+                ? "bg-[#481268] text-white shadow-xs"
                 : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
             }`}
           >
@@ -546,7 +546,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             onClick={() => setActiveStatusFilter("packed")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
               activeStatusFilter === "packed"
-                ? "bg-[#0066FF] text-white shadow-xs"
+                ? "bg-[#481268] text-white shadow-xs"
                 : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
             }`}
           >
@@ -557,7 +557,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             onClick={() => setActiveStatusFilter("pending")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
               activeStatusFilter === "pending"
-                ? "bg-[#0066FF] text-white shadow-xs"
+                ? "bg-[#481268] text-white shadow-xs"
                 : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
             }`}
           >
@@ -569,7 +569,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               onClick={() => setActiveStatusFilter("action")}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
                 activeStatusFilter === "action"
-                  ? "bg-[#0066FF] text-white shadow-xs"
+                  ? "bg-[#481268] text-white shadow-xs"
                   : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
               }`}
             >
@@ -588,7 +588,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAddTravellerModal(true)}
-                className="text-xs font-bold text-[#0066FF] hover:underline cursor-pointer flex items-center gap-0.5"
+                className="text-xs font-bold text-[#481268] hover:underline cursor-pointer flex items-center gap-0.5"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add</span>
@@ -596,7 +596,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedTravellerId("all")}
-                className="text-xs font-bold text-[#0066FF] hover:underline cursor-pointer"
+                className="text-xs font-bold text-[#481268] hover:underline cursor-pointer"
               >
                 View All
               </button>
@@ -607,7 +607,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           <div className="space-y-2.5">
             {travellerStats.map((t, idx) => {
               const avatarBg = idx === 0 
-                ? "bg-purple-500 text-white" 
+                ? "bg-purple-600 text-white" 
                 : idx === 1 
                 ? "bg-rose-500 text-white" 
                 : idx === 2 
@@ -620,7 +620,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   onClick={() => setSelectedTravellerId(selectedTravellerId === t.id ? "all" : t.id)}
                   className={`bg-white rounded-2xl border p-3.5 shadow-2xs space-y-2.5 transition cursor-pointer ${
                     selectedTravellerId === t.id
-                      ? "border-[#0066FF] ring-1 ring-[#0066FF]/30 shadow-xs"
+                      ? "border-[#481268] ring-1 ring-[#481268]/30 shadow-xs"
                       : "border-slate-100/90 hover:border-slate-200"
                   }`}
                 >
@@ -634,7 +634,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                           {t.name} {t.role && <span className="text-slate-400 font-normal text-xs">({t.role})</span>}
                         </h3>
                         <p className="text-xs mt-0.5 truncate">
-                          <span className="text-[#0066FF] font-semibold">{t.checked}/{t.displayTotal} items</span>
+                          <span className="text-[#481268] font-semibold">{t.checked}/{t.displayTotal} items</span>
                           <span className="text-slate-400 font-medium"> • {t.bagName}</span>
                         </p>
                       </div>
@@ -646,7 +646,7 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
                   <div className="flex items-center gap-2 pt-0.5">
                     <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden flex-1">
                       <div
-                        className="h-full bg-gradient-to-r from-blue-500 to-[#0066FF] rounded-full transition-all duration-500"
+                        className="h-full bg-[#481268] rounded-full transition-all duration-500"
                         style={{ width: `${t.percent}%` }}
                       />
                     </div>
