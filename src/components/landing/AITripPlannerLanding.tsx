@@ -3142,16 +3142,16 @@ return (
                           type="button"
                           onClick={handleGeneratePathway}
                           disabled={isGenerating}
-                          className="w-full h-[44px] sm:h-[54px] rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-base bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[44px] sm:h-[54px] rounded-xl sm:rounded-2xl font-bold text-xs sm:text-base bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 !text-slate-950 shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGenerating ? (
                             <>
-                              <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                              <RefreshCw className="w-4 h-4 animate-spin text-slate-950 stroke-[2.5]" />
                               <span>Searching...</span>
                             </>
                           ) : (
                             <>
-                              <Search className="w-4 h-4 text-white" />
+                              <Search className="w-4 h-4 text-slate-950 stroke-[2.5]" />
                               <span>Search</span>
                             </>
                           )}
@@ -4394,10 +4394,10 @@ return (
                   <button
                     type="button"
                     onClick={handleUnifiedSearch}
-                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 active:scale-95 text-slate-950 !text-slate-950 rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
                   >
-                    <Search className="w-4.5 h-4.5 stroke-[2.5]" />
-                    <span>Search</span>
+                    <Search className="w-4.5 h-4.5 stroke-[2.5] text-slate-950" />
+                    <span className="text-slate-950 !text-slate-950 font-bold">Search</span>
                   </button>
 
                   <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">
@@ -4499,10 +4499,10 @@ return (
                   <button
                     type="button"
                     onClick={handleHomeFindUniversities}
-                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 active:scale-95 text-slate-950 !text-slate-950 rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
                   >
-                    <Building2 className="w-4.5 h-4.5" />
-                    <span>Find Universities</span>
+                    <Building2 className="w-4.5 h-4.5 text-slate-950" />
+                    <span className="text-slate-950 !text-slate-950 font-bold">Find Universities</span>
                   </button>
 
                   <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">
@@ -4604,10 +4604,10 @@ return (
                   <button
                     type="button"
                     onClick={handleHomeJobSearch}
-                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 active:scale-95 text-slate-950 !text-slate-950 rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
                   >
-                    <Briefcase className="w-4.5 h-4.5" />
-                    <span>Search Jobs Abroad</span>
+                    <Briefcase className="w-4.5 h-4.5 text-slate-950" />
+                    <span className="text-slate-950 !text-slate-950 font-bold">Search Jobs Abroad</span>
                   </button>
 
                   <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">
@@ -4721,10 +4721,10 @@ return (
                   <button
                     type="button"
                     onClick={handleHomeLawyerSearch}
-                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-[#009282] to-[#00a896] hover:from-[#008072] hover:to-[#009585] active:scale-95 text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
+                    className="w-full sm:w-auto min-w-[220px] px-14 py-3 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 active:scale-95 text-slate-950 !text-slate-950 rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 font-bold text-sm sm:text-base cursor-pointer transition-all"
                   >
-                    <Scale className="w-4.5 h-4.5" />
-                    <span>Find Appeal Lawyers</span>
+                    <Scale className="w-4.5 h-4.5 text-slate-950" />
+                    <span className="text-slate-950 !text-slate-950 font-bold">Find Appeal Lawyers</span>
                   </button>
 
                   <div className="mt-3 sm:mt-0 sm:absolute sm:right-0">

@@ -30,11 +30,12 @@ export function useDashboardState() {
 
   const [activeTab, setActiveTab] = useState<string>(() => {
     if (typeof window !== "undefined") {
+      if (window.location.pathname.includes("document-vault")) return "scanned-documents";
       const params = new URLSearchParams(window.location.search);
       const tab = params.get("tab");
       if (tab) {
         if (tab === "pre-departure" || tab === "predeparture" || tab === "luggage" || tab === "packing") return "predeparture";
-        if (tab === "vault" || tab === "documents" || tab === "scanned-documents") return "scanned-documents";
+        if (tab === "vault" || tab === "documents" || tab === "scanned-documents" || tab === "document-vault") return "scanned-documents";
         if (tab === "readiness" || tab === "visa-readiness") return "visa-readiness";
         if (tab === "cases" || tab === "applications") return "cases";
         if (tab === "travel-history" || tab === "visa-history") return "travel-history";

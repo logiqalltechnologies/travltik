@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { OfficialRequirementsCard } from './OfficialRequirementsCard';
 import { LiveVisaRequirementsWidget } from './LiveVisaRequirementsWidget';
+import { VisaStatusQuestion } from './VisaStatusQuestion';
 
 import {
   getStudentVisaSteps,
@@ -3337,7 +3338,58 @@ export function VisaCountryResultPortal({
   ];
 
   // ── DECISION GATE STATE ──
+  const [userHasVisa, setUserHasVisa] = useState<boolean | null>(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      const hv = sp.get('has_visa') || sp.get('hasVisa');
+      if (hv === 'no' || hv === 'false') return false;
+      if (hv === 'yes' || hv === 'true') return true;
+    }
+    return null;
+  });
+
+  const [showVisaInfo, setShowVisaInfo] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      const hv = sp.get('has_visa') || sp.get('hasVisa');
+      if (hv === 'no' || hv === 'false') return true;
+    }
+    return false;
+  });
+
   const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes'>('no');
+  const [isGateLoading, setIsGateLoading] = useState<boolean>(false);
+
+  const handleStatusQuestionYes = () => {
+    setUserHasVisa(true);
+    setHasVisaAlready('yes');
+    try {
+      if (typeof window !== 'undefined') {
+        const p = localStorage.getItem('active_travel_profile');
+        if (p) {
+          const parsed = JSON.parse(p);
+          parsed.has_visa = true;
+          localStorage.setItem('active_travel_profile', JSON.stringify(parsed));
+        }
+        localStorage.setItem('seeker_has_visa', 'yes');
+      }
+    } catch(e) {}
+    // Dashboard → Document Vault redirect
+    if (typeof window !== 'undefined') {
+      window.location.href = '/dashboard/document-vault';
+    }
+  };
+
+  const handleStatusQuestionNo = async () => {
+    setUserHasVisa(false);
+    setHasVisaAlready('no');
+    setShowVisaInfo(true);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('seeker_has_visa', 'no');
+      }
+    } catch(e) {}
+  };
   
   const [activePurposeTab, setActivePurposeTab] = useState<string>(() => {
     if (typeof window !== 'undefined') {
@@ -4296,6 +4348,10 @@ export function VisaCountryResultPortal({
   }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab, isBusinessTab, isPRTab, isFamilyTab]);
 
   useEffect(() => {
+    if (!showVisaInfo && userHasVisa === null) {
+      setIsAiLoading(false);
+      return;
+    }
     let mounted = true;
     const cacheKey = `travltik_ai_live_v6_${countryName}_${passportCountry}_${activePurposeTab}`.replace(/\s+/g, '_').toLowerCase();
     try {
@@ -4461,7 +4517,7 @@ export function VisaCountryResultPortal({
 
     fetchLiveAiRequirements();
     return () => { mounted = false; };
-  }, [countryName, passportCountry, activePurposeTab]);
+  }, [countryName, passportCountry, activePurposeTab, showVisaInfo, userHasVisa]);
 
   // Dynamic user-uploaded documents (Starts empty: users fill their own data)
   const [portalUploadedDocs, setPortalUploadedDocs] = useState<Record<string, {
@@ -6695,8 +6751,25 @@ export function VisaCountryResultPortal({
 
   const handleToggleVisaAlready = (val: 'no' | 'yes') => {
     setHasVisaAlready(val);
+    if (val === 'yes') {
+      try {
+        if (typeof window !== 'undefined') {
+          const p = localStorage.getItem('active_travel_profile');
+          if (p) {
+            const parsed = JSON.parse(p);
+            parsed.has_visa = true;
+            localStorage.setItem('active_travel_profile', JSON.stringify(parsed));
+          }
+          localStorage.setItem('seeker_has_visa', 'yes');
+        }
+      } catch(e) {}
+      if (typeof window !== 'undefined') {
+        window.location.href = '/dashboard/document-vault';
+      }
+      return;
+    }
     setTimeout(() => {
-      const targetId = val === 'yes' ? 'pre-departure-branch' : 'visa-application-branch';
+      const targetId = 'visa-application-branch';
       const el = document.getElementById(targetId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -7277,7 +7350,7 @@ export function VisaCountryResultPortal({
     return cleaned;
   };
 
-  if (isAiLoading && !aiData) {
+  if (showVisaInfo && isAiLoading && !aiData) {
     const loadingStatusMessages = [
       `Connecting to official ${countryName} consular database...`,
       `Verifying official fees & biometric exemption rules...`,
@@ -7361,8 +7434,33 @@ export function VisaCountryResultPortal({
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       
-      {/* ── PREMIUM VISA DETAILS WORKSPACE (LUXURY & LOVABLE SPACING & SHADOWS) ── */}
-      <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pt-6 sm:pt-10 pb-20 space-y-8 sm:space-y-10 font-sans antialiased subpixel-antialiased text-slate-900 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
+      {/* ── STATUS QUESTION GATE (SABSE PEHLE - BEFORE VISA INFO) ── */}
+      {!showVisaInfo && userHasVisa === null && (
+        <section className="max-w-3xl mx-auto px-4 pt-12 pb-20 min-h-[60vh] flex flex-col justify-center animate-fadeIn text-center">
+          <div className="flex items-center justify-center gap-2 text-xs sm:text-[13px] font-semibold text-slate-500 mb-6">
+            <a href="/" className="hover:text-slate-900 transition-colors">Home</a>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <a href="/visas" className="hover:text-slate-900 transition-colors">Visas</a>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-bold">
+              {countryName} {purposeLabel} Visa
+            </span>
+          </div>
+
+          <VisaStatusQuestion
+            countryName={countryName}
+            purpose={purposeLabel}
+            onYes={handleStatusQuestionYes}
+            onNo={handleStatusQuestionNo}
+          />
+        </section>
+      )}
+
+      {/* ── VISA INFO (ONLY WHEN showVisaInfo IS TRUE) ── */}
+      {showVisaInfo && (
+        <>
+          {/* ── PREMIUM VISA DETAILS WORKSPACE (LUXURY & LOVABLE SPACING & SHADOWS) ── */}
+          <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pt-6 sm:pt-10 pb-20 space-y-8 sm:space-y-10 font-sans antialiased subpixel-antialiased text-slate-900 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
         
         {/* ── BREADCRUMB & DECISION GATE ROW (DESKTOP) ── */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2 sm:mb-4">
@@ -11763,6 +11861,8 @@ export function VisaCountryResultPortal({
             View Required Documents →
           </a>
         </div>
+      )}
+      </>
       )}
 
       {/* ── LOGIN REQUIRED MODAL (TRIGGERED ON DOWNLOAD & SYNC) ── */}

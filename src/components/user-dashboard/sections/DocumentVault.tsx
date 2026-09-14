@@ -30,6 +30,8 @@ import { normalizeCountryName } from "../utils/countryHelpers";
 import { computeExpiryStatus, formatDatePreview, formatDateOcr } from "../utils/vaultHelpers";
 import { defaultVaultList } from "../utils/constants";
 import type { VaultDocItem } from "../types";
+import { DocumentCategory } from "../../vault/DocumentCategory";
+import { DOCUMENT_CATEGORIES, DOCUMENT_DEFAULTS, OverallProgress } from "../../vault/DocumentVault";
 
 interface DocumentVaultProps {
     hasVaultPassword: boolean | null;
@@ -567,6 +569,63 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
     const verifiedDocsCount = routeDocumentsList.filter(d => d.isUploaded).length;
     const expiringSoonCount = routeDocumentsList.filter(d => d.isUploaded && (d.expiryStatus === 'expiring_soon' || d.status === 'expiring_soon')).length;
 
+    const [vaultViewMode, setVaultViewMode] = React.useState<'categories' | 'table'>('categories');
+
+    // Grouping for 8 categories
+    const groupedCategories = DOCUMENT_CATEGORIES.map(category => {
+        const catDocs: any[] = [];
+        category.documents.forEach(docKey => {
+            const match = routeDocumentsList.find(d => {
+                const dt = (d.type || '').toLowerCase();
+                const dk = (d.key || d.reqKey || d.id || '').toLowerCase();
+                const dtitle = (d.title || '').toLowerCase();
+                return dt.includes(docKey) || dk.includes(docKey) || dtitle.includes(docKey.replace(/_/g, ' '));
+            });
+
+            if (match) {
+                catDocs.push(match);
+            } else {
+                const tpl = DOCUMENT_DEFAULTS[docKey];
+                if (tpl) {
+                    catDocs.push({
+                        id: docKey,
+                        key: docKey,
+                        type: docKey,
+                        title: tpl.title,
+                        description: tpl.description,
+                        icon: tpl.icon,
+                        mandatory: tpl.mandatory || false,
+                        status: 'pending',
+                        isUploaded: false
+                    });
+                }
+            }
+        });
+
+        // Also include any other routeDocumentsList matching this category
+        routeDocumentsList.forEach(d => {
+            if (!catDocs.some(cd => cd.id === d.id)) {
+                const dt = (d.type || '').toLowerCase();
+                const dtitle = (d.title || '').toLowerCase();
+                if (category.documents.some(k => dt.includes(k) || dtitle.includes(k.replace(/_/g, ' ')))) {
+                    catDocs.push(d);
+                }
+            }
+        });
+
+        const filtered = vaultDocSearch.trim()
+            ? catDocs.filter(d => 
+                (d.title || '').toLowerCase().includes(vaultDocSearch.toLowerCase()) ||
+                (d.description || '').toLowerCase().includes(vaultDocSearch.toLowerCase())
+              )
+            : catDocs;
+
+        return {
+            category,
+            documents: filtered
+        };
+    });
+
     return (
         <div className="space-y-6 animate-fade-up font-sans text-left">
             {/* Hidden Inputs for Upload & Replace */}
@@ -758,10 +817,55 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                         <option value="expiry">Sort By: Expiry Date</option>
                         <option value="name">Sort By: Document Name</option>
                     </select>
+
+                    <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shrink-0">
+                        <button
+                            type="button"
+                            onClick={() => setVaultViewMode('categories')}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                vaultViewMode === 'categories' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-900'
+                            }`}
+                        >
+                            📁 8 Categories
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setVaultViewMode('table')}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                vaultViewMode === 'table' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-900'
+                            }`}
+                        >
+                            📋 All Documents
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* ── 4. DOCUMENT TABLE ── */}
+            {/* ── 4. DOCUMENT CATEGORIES OR TABLE ── */}
+            {vaultViewMode === 'categories' ? (
+                <div className="space-y-4">
+                    <OverallProgress documents={routeDocumentsList} />
+                    <div className="space-y-4">
+                        {groupedCategories.map(group => (
+                            <DocumentCategory
+                                key={group.category.id}
+                                category={group.category}
+                                documents={group.documents}
+                                onUpload={(docId, docTitle) => {
+                                    vaultUploadTargetReqRef.current = { key: docId, title: docTitle || docId, type: docId };
+                                    if (vaultFileInputRef.current) {
+                                        vaultFileInputRef.current.value = '';
+                                        vaultFileInputRef.current.click();
+                                    }
+                                }}
+                                onViewDoc={(doc) => {
+                                    setSelectedVaultDoc(doc);
+                                }}
+                            />
+                        ))}
+                    </div>
+                </div>
+            ) : (
             <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
                 <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3.5 bg-white border-b border-slate-100 text-[11px] font-bold uppercase tracking-wider text-slate-400">
                     <div className="col-span-6">DOCUMENT</div>
@@ -1033,6 +1137,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                     </div>
                 )}
             </div>
+            )}
 
             {/* ── 5. DOCUMENT INSPECTION & OCR PREVIEW DRAWER ── */}
             {activeSelectedDoc && (() => {
