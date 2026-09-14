@@ -1114,7 +1114,7 @@ export function FindExpertsPortal() {
                                                             setPaymentExpert(e);
                                                             setPaymentModalOpen(true);
                                                         }} 
-                                                        className="flex-1 sm:flex-initial text-center bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white px-4.5 py-2 rounded-xl text-xs font-medium shadow-xs transition-all cursor-pointer hover-spring flex items-center justify-center gap-1.5"
+                                                        className="flex-1 sm:flex-initial text-center bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs shadow-md hover:shadow-lg hover:shadow-emerald-500/25 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap"
                                                     >
                                                         <span>Book Session</span>
                                                     </button>

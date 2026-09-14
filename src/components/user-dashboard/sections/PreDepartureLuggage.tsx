@@ -680,10 +680,10 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
       {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
       <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-blue-100/80 p-5 sm:p-7 shadow-xs">
         
-        {/* Background Scenic Photo with Airplane, Mountains & Blue Suitcases (Exact match to uploaded design) */}
-        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] md:w-[58%] lg:w-[50%] pointer-events-none overflow-hidden select-none">
+        {/* Background Scenic Photo with Airplane, Mountains & Blue Suitcases (Ultra High Definition) */}
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] md:w-[55%] lg:w-[48%] pointer-events-none overflow-hidden select-none">
           <img
-            src="/images/luggage_hero_photo_3x.png"
+            src="/images/luggage_hero_hd.png"
             alt="Japan Flight and Luggage"
             className="w-full h-full object-cover object-right opacity-95 mix-blend-multiply"
           />
