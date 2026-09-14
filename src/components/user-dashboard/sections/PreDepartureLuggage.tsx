@@ -1,201 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
-  Plane,
   Luggage,
-  Calendar,
-  Clock,
-  MapPin,
-  CreditCard,
-  Shield,
-  ShieldCheck,
-  CheckCircle2,
+  Plane,
   Users,
-  User,
-  Edit2,
-  MoreVertical,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  Calendar,
+  SlidersHorizontal,
+  Search,
+  ChevronRight,
   ChevronDown,
   ChevronUp,
-  Bell,
-  Sun,
-  Download,
-  Info,
-  Check,
   Plus,
-  X,
-  Compass,
+  Download,
+  Share2,
   FileText,
-  Trash2,
-  RefreshCw,
-  Lightbulb
+  Shield,
+  ShieldCheck,
+  ShieldAlert,
+  ExternalLink,
+  X,
+  Check,
+  Info,
+  MoreHorizontal,
+  Shirt,
+  Pill,
+  Laptop,
+  Sparkles,
+  Edit3,
+  User,
+  Home,
+  Compass,
+  ArrowRight,
+  Printer,
+  Copy,
+  FolderDown
 } from "lucide-react";
-
-interface CoTraveller {
-  id: string;
-  initials: string;
-  name: string;
-  role: "Primary Traveller" | "Co-Traveller";
-  passport: string;
-  dob: string;
-  avatarBg: string;
-}
-
-interface ChecklistItem {
-  id: number;
-  sectionId: number;
-  title: string;
-  detail: string;
-}
-
-const DEFAULT_CHECKLIST_ITEMS: ChecklistItem[] = [
-  // Section 1: Trip & Travel Details
-  {
-    id: 1,
-    sectionId: 1,
-    title: "Verify travel dates, destination and total trip duration",
-    detail: "From: 12 Oct 2025  To: 16 Oct 2025  (5 days)"
-  },
-  {
-    id: 2,
-    sectionId: 1,
-    title: "Check visa approval requirement (if applicable)",
-    detail: "Not required for domestic trips"
-  },
-  {
-    id: 3,
-    sectionId: 1,
-    title: "Confirm forex card arrangements",
-    detail: "Ensure sufficient balance & enable international usage"
-  },
-  {
-    id: 4,
-    sectionId: 1,
-    title: "Confirm travel insurance coverage",
-    detail: "Valid for entire trip duration"
-  },
-
-  // Section 2: Flights & Transportation
-  {
-    id: 5,
-    sectionId: 2,
-    title: "Book flight/train/bus tickets",
-    detail: "Keep e-tickets / PNR handy"
-  },
-  {
-    id: 6,
-    sectionId: 2,
-    title: "Check for baggage allowance (as per airline/transport)",
-    detail: "Verify weight & number of bags"
-  },
-  {
-    id: 7,
-    sectionId: 2,
-    title: "Confirm seat numbers and check-in details",
-    detail: "Online check-in (if available)"
-  },
-  {
-    id: 8,
-    sectionId: 2,
-    title: "Arrange local transport at destination",
-    detail: "Airport pick-up / hotel transfer / rental car"
-  },
-
-  // Section 3: Accommodation
-  {
-    id: 9,
-    sectionId: 3,
-    title: "Confirm hotel booking details",
-    detail: "Address, contact number, check-in/out time"
-  },
-  {
-    id: 10,
-    sectionId: 3,
-    title: "Save hotel confirmation voucher",
-    detail: "Keep digital/printed copy"
-  },
-
-  // Section 4: Documents
-  {
-    id: 11,
-    sectionId: 4,
-    title: "Carry original ID proof (Aadhaar / Passport / Driving License)",
-    detail: "As applicable"
-  },
-  {
-    id: 12,
-    sectionId: 4,
-    title: "Keep digital copies of important documents",
-    detail: "Email / cloud storage"
-  },
-  {
-    id: 13,
-    sectionId: 4,
-    title: "Carry printed itinerary, hotel bookings & return tickets",
-    detail: "For verification if required"
-  },
-
-  // Section 5: Packing & Luggage
-  {
-    id: 14,
-    sectionId: 5,
-    title: "Check weather forecast for destination",
-    detail: "Pack suitable clothing"
-  },
-  {
-    id: 15,
-    sectionId: 5,
-    title: "Pack essentials (medicines, chargers, toiletries, etc.)",
-    detail: "For international trips"
-  },
-  {
-    id: 16,
-    sectionId: 5,
-    title: "Keep emergency contacts and embassy/helpline info",
-    detail: "Saved in phone and on physical backup"
-  }
-];
-
-const SECTIONS_META = [
-  {
-    id: 1,
-    title: "Trip & Travel Details",
-    subtitle: "Confirm your trip details and itinerary.",
-    circleBg: "bg-[#00705a]",
-    iconBg: "bg-[#E6F4F1] text-[#00705a] border border-[#CDEAE4]",
-    icon: <CreditCard className="w-3.5 h-3.5 text-[#00705a]" />
-  },
-  {
-    id: 2,
-    title: "Flights & Transportation",
-    subtitle: "Book and confirm your travel arrangements.",
-    circleBg: "bg-[#6b46c1]",
-    iconBg: "bg-[#F3E8FF] text-[#6b46c1] border border-[#E9D5FF]",
-    icon: <Calendar className="w-3.5 h-3.5 text-[#6b46c1]" />
-  },
-  {
-    id: 3,
-    title: "Accommodation",
-    subtitle: "Make sure your stay is confirmed and ready.",
-    circleBg: "bg-[#2563eb]",
-    iconBg: "bg-[#EFF6FF] text-[#2563eb] border border-[#DBEAFE]",
-    icon: <User className="w-3.5 h-3.5 text-[#2563eb]" />
-  },
-  {
-    id: 4,
-    title: "Documents",
-    subtitle: "Carry all essential documents for a hassle-free trip.",
-    circleBg: "bg-[#f59e0b]",
-    iconBg: "bg-[#FEF3C7] text-[#d97706] border border-[#FDE68A]",
-    icon: <FileText className="w-3.5 h-3.5 text-[#d97706]" />
-  },
-  {
-    id: 5,
-    title: "Packing & Luggage",
-    subtitle: "Pack smart and check customs guidelines (for international trips).",
-    circleBg: "bg-[#9333ea]",
-    iconBg: "bg-[#FCE7F3] text-[#be185d] border border-[#FBCFE8]",
-    icon: <Luggage className="w-3.5 h-3.5 text-[#be185d]" />
-  }
-];
 
 export interface PreDepartureLuggageProps {
   selectedDestination?: string;
@@ -204,7 +45,6 @@ export interface PreDepartureLuggageProps {
   fullName?: string;
   email?: string;
   visasProcessingState?: any[];
-  // Legacy optional props
   isFetchingPreDepartureAi?: boolean;
   fetchPreDepartureAi?: (dest?: string) => Promise<void>;
   luggageProgress?: { packed: number; total: number; percent: number };
@@ -221,1300 +61,1581 @@ export interface PreDepartureLuggageProps {
   handleAddCustomLuggageItem?: (e?: React.FormEvent) => void;
 }
 
-// Helper to get initials from full name
-const getInitials = (name?: string) => {
-  if (!name || !name.trim()) return "PT";
-  const parts = name.trim().split(" ").filter(Boolean);
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
-};
+interface Traveller {
+  id: string;
+  initials: string;
+  name: string;
+  role: string;
+  color: string;
+  bagName: string;
+  bagWeight: string;
+  totalItems: number;
+}
+
+interface PackingItem {
+  id: string;
+  categoryId: string;
+  name: string;
+  quantity: number;
+  travellerId: string;
+  travellerName: string;
+  location: string;
+  customsRule: string;
+  status: "packed" | "pending" | "action";
+  notes?: string;
+}
+
+interface PackingCategory {
+  id: string;
+  title: string;
+  itemCount: number;
+}
+
+const INITIAL_TRAVELLERS: Traveller[] = [
+  {
+    id: "t_prashanth",
+    initials: "PP",
+    name: "Prashanth",
+    role: "Main Traveller",
+    color: "bg-purple-600 text-white",
+    bagName: "Main Suitcase",
+    bagWeight: "20kg",
+    totalItems: 10
+  },
+  {
+    id: "t_anika",
+    initials: "AK",
+    name: "Anika",
+    role: "Adult",
+    color: "bg-pink-500 text-white",
+    bagName: "Cabin Bag",
+    bagWeight: "7kg",
+    totalItems: 6
+  },
+  {
+    id: "t_rahul",
+    initials: "RK",
+    name: "Rahul",
+    role: "Adult",
+    color: "bg-blue-600 text-white",
+    bagName: "Large Suitcase",
+    bagWeight: "23kg",
+    totalItems: 10
+  },
+  {
+    id: "t_cabin_shared",
+    initials: "CG",
+    name: "Cabin Bag (Shared)",
+    role: "Shared",
+    color: "bg-sky-500 text-white",
+    bagName: "Cabin Bag",
+    bagWeight: "7kg",
+    totalItems: 6
+  }
+];
+
+const INITIAL_CATEGORIES: PackingCategory[] = [
+  { id: "clothing", title: "Essentials & Clothing", itemCount: 8 },
+  { id: "meds", title: "Medications & Health", itemCount: 4 },
+  { id: "electronics", title: "Electronics & Gadgets", itemCount: 5 },
+  { id: "toiletries", title: "Toiletries & Personal Care", itemCount: 6 },
+  { id: "documents", title: "Documents & Valuables", itemCount: 3 }
+];
+
+const INITIAL_PACKING_ITEMS: PackingItem[] = [
+  // Essentials & Clothing (8)
+  {
+    id: "item-1",
+    categoryId: "clothing",
+    name: "T-shirts",
+    quantity: 5,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-2",
+    categoryId: "clothing",
+    name: "Jeans",
+    quantity: 2,
+    travellerId: "t_anika",
+    travellerName: "Anika",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-3",
+    categoryId: "clothing",
+    name: "Formal Shirt",
+    quantity: 2,
+    travellerId: "t_rahul",
+    travellerName: "Rahul",
+    location: "Large Suitcase",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-4",
+    categoryId: "clothing",
+    name: "Jacket",
+    quantity: 1,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "pending"
+  },
+  {
+    id: "item-5",
+    categoryId: "clothing",
+    name: "Socks",
+    quantity: 6,
+    travellerId: "all",
+    travellerName: "All",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-6",
+    categoryId: "clothing",
+    name: "Thermal Innerwear",
+    quantity: 2,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-7",
+    categoryId: "clothing",
+    name: "Walking Sneakers",
+    quantity: 1,
+    travellerId: "t_anika",
+    travellerName: "Anika",
+    location: "Cabin Bag",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-8",
+    categoryId: "clothing",
+    name: "Rain Poncho / Umbrella",
+    quantity: 2,
+    travellerId: "all",
+    travellerName: "All",
+    location: "Cabin Bag",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+
+  // Medications & Health (4)
+  {
+    id: "item-9",
+    categoryId: "meds",
+    name: "Prescription Medicine",
+    quantity: 1,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Hand Bag",
+    customsRule: "Medical (No Restriction)",
+    status: "packed",
+    notes: "Doctor prescription attached with official stamp"
+  },
+  {
+    id: "item-10",
+    categoryId: "meds",
+    name: "Pain Relief Tablets",
+    quantity: 1,
+    travellerId: "t_anika",
+    travellerName: "Anika",
+    location: "Cabin Bag",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-11",
+    categoryId: "meds",
+    name: "Vitamin Supplements",
+    quantity: 1,
+    travellerId: "t_rahul",
+    travellerName: "Rahul",
+    location: "Large Suitcase",
+    customsRule: "No Declaration",
+    status: "pending"
+  },
+  {
+    id: "item-12",
+    categoryId: "meds",
+    name: "Inhaler",
+    quantity: 1,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Hand Bag",
+    customsRule: "Medical Declaration Req.",
+    status: "action",
+    notes: "Requires customs declaration and doctor certificate at airport"
+  },
+
+  // Electronics & Gadgets (5)
+  {
+    id: "item-13",
+    categoryId: "electronics",
+    name: "Universal Travel Adapter",
+    quantity: 2,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Cabin Bag",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-14",
+    categoryId: "electronics",
+    name: "Power Bank (10,000 mAh)",
+    quantity: 1,
+    travellerId: "t_anika",
+    travellerName: "Anika",
+    location: "Hand Bag",
+    customsRule: "Cabin Baggage Only (Safety)",
+    status: "packed",
+    notes: "Aviation security prohibits power banks in checked luggage"
+  },
+  {
+    id: "item-15",
+    categoryId: "electronics",
+    name: "Noise Cancelling Headphones",
+    quantity: 1,
+    travellerId: "t_rahul",
+    travellerName: "Rahul",
+    location: "Cabin Bag",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-16",
+    categoryId: "electronics",
+    name: "Laptop & Charger",
+    quantity: 1,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Cabin Bag",
+    customsRule: "High-Value Declaration",
+    status: "action",
+    notes: "Value exceeding USD 2,000 must be noted for customs entry"
+  },
+  {
+    id: "item-17",
+    categoryId: "electronics",
+    name: "Smartphone & Cables",
+    quantity: 2,
+    travellerId: "all",
+    travellerName: "All",
+    location: "Hand Bag",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+
+  // Toiletries & Personal Care (6)
+  {
+    id: "item-18",
+    categoryId: "toiletries",
+    name: "Travel Toothpaste & Brush",
+    quantity: 3,
+    travellerId: "all",
+    travellerName: "All",
+    location: "Cabin Bag",
+    customsRule: "Liquids < 100ml Rule",
+    status: "packed"
+  },
+  {
+    id: "item-19",
+    categoryId: "toiletries",
+    name: "Sunscreen SPF 50+",
+    quantity: 1,
+    travellerId: "t_anika",
+    travellerName: "Anika",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-20",
+    categoryId: "toiletries",
+    name: "Shampoo & Body Wash (Mini)",
+    quantity: 2,
+    travellerId: "all",
+    travellerName: "All",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "packed"
+  },
+  {
+    id: "item-21",
+    categoryId: "toiletries",
+    name: "Moisturizer & Lip Balm",
+    quantity: 2,
+    travellerId: "t_anika",
+    travellerName: "Anika",
+    location: "Hand Bag",
+    customsRule: "Liquids < 100ml Rule",
+    status: "packed"
+  },
+  {
+    id: "item-22",
+    categoryId: "toiletries",
+    name: "Electric Shaver & Grooming Kit",
+    quantity: 1,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Main Suitcase",
+    customsRule: "No Declaration",
+    status: "pending"
+  },
+  {
+    id: "item-23",
+    categoryId: "toiletries",
+    name: "Wet Wipes & Hand Sanitizer",
+    quantity: 3,
+    travellerId: "all",
+    travellerName: "All",
+    location: "Hand Bag",
+    customsRule: "Liquids < 100ml Rule",
+    status: "packed"
+  },
+
+  // Documents & Valuables (3)
+  {
+    id: "item-24",
+    categoryId: "documents",
+    name: "Passport & Japanese Visa",
+    quantity: 4,
+    travellerId: "all",
+    travellerName: "All",
+    location: "Hand Bag",
+    customsRule: "Mandatory Customs Check",
+    status: "packed",
+    notes: "Carry original physical passport with at least 6 months validity"
+  },
+  {
+    id: "item-25",
+    categoryId: "documents",
+    name: "Forex Card & Currency (Yen)",
+    quantity: 1,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Hand Bag",
+    customsRule: "Cash Declaration Rule",
+    status: "packed"
+  },
+  {
+    id: "item-26",
+    categoryId: "documents",
+    name: "International Driving Permit",
+    quantity: 1,
+    travellerId: "t_prashanth",
+    travellerName: "Prashanth",
+    location: "Hand Bag",
+    customsRule: "Verified Entry Mandate",
+    status: "packed"
+  }
+];
 
 export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
-  selectedDestination = "Goa",
-  selectedPurpose,
-  selectedPassport = "",
-  fullName = "",
+  selectedDestination = "Japan",
+  fullName = "Prashanth",
   email = ""
 }) => {
-  // ── Trip Type Toggle State (Internal Trip vs International Trip) ──
-  const [tripType, setTripType] = useState<"internal" | "international">("internal");
-
-  // ── Trip Details State ──
-  const [tripDetails, setTripDetails] = useState({
-    fromCity: "Bengaluru (BLR)",
-    fromCountry: "India",
-    toCity: "Goa (GOI)",
-    toCountry: "India",
-    departureDate: "12 Oct 2025",
-    returnDate: "16 Oct 2025",
-    duration: "5 Days",
-    visaApprovalRequired: "No",
-    forexCardRequired: "Required",
-    travelInsuranceRequired: "Required",
-    destinationImage: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80"
+  // ── Trip Information State ──
+  const [tripData, setTripData] = useState({
+    destination: "Japan",
+    startDate: "15 Oct 2026",
+    endDate: "28 Oct 2026",
+    travellersCount: 4,
+    visaApproved: true
   });
 
-  const primaryName = fullName || "Primary Traveller";
-
-  // ── Co-Travellers State (Real data only, no dummy companions) ──
-  const [coTravellers, setCoTravellers] = useState<CoTraveller[]>([
-    {
-      id: "trav_1",
-      initials: getInitials(primaryName),
-      name: primaryName,
-      role: "Primary Traveller",
-      passport: selectedPassport || "",
-      dob: "",
-      avatarBg: "from-teal-600 to-emerald-700"
+  // ── Travellers List State ──
+  const [travellers, setTravellers] = useState<Traveller[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("travltik_luggage_travellers");
+        if (saved) return JSON.parse(saved);
+      } catch (_) {}
     }
-  ]);
+    return INITIAL_TRAVELLERS;
+  });
 
-  // ── Pre-Departure Checklist Checked Items State ──
-  const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
-  const [isChecklistCollapsed, setIsChecklistCollapsed] = useState(false);
+  // ── Active Selected Traveller Filter ──
+  const [selectedTravellerId, setSelectedTravellerId] = useState<string>("all");
+
+  // ── Active Status Filter Tab ──
+  const [activeStatusFilter, setActiveStatusFilter] = useState<"all" | "packed" | "pending" | "action">("all");
+
+  // ── Search & Query State ──
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // ── Packing Items State ──
+  const [items, setItems] = useState<PackingItem[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("travltik_luggage_items");
+        if (saved) return JSON.parse(saved);
+      } catch (_) {}
+    }
+    return INITIAL_PACKING_ITEMS;
+  });
+
+  // ── Collapsible Categories State ──
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    clothing: true,
+    meds: true,
+    electronics: false,
+    toiletries: false,
+    documents: false
+  });
+
+  // ── Expanded "Show More" items per category ──
+  const [showAllInCategory, setShowAllInCategory] = useState<Record<string, boolean>>({
+    clothing: false,
+    meds: false,
+    electronics: false,
+    toiletries: false,
+    documents: false
+  });
+
+  // ── Customs Sidebar Visibility State (Desktop & Mobile) ──
+  const [isCustomsOpen, setIsCustomsOpen] = useState(true);
+
+  // ── Mobile Bottom Navigation Tab State ──
+  const [mobileActiveNav, setMobileActiveNav] = useState<"home" | "trips" | "luggage" | "customs" | "more">("luggage");
 
   // ── Modals State ──
   const [showEditTripModal, setShowEditTripModal] = useState(false);
   const [showAddTravellerModal, setShowAddTravellerModal] = useState(false);
-  const [editingTraveller, setEditingTraveller] = useState<CoTraveller | null>(null);
-  const [showRemindersModal, setShowRemindersModal] = useState(false);
-  const [showItineraryModal, setShowItineraryModal] = useState(false);
-  const [showWeatherModal, setShowWeatherModal] = useState(false);
-  const [activeTravellerMenu, setActiveTravellerMenu] = useState<string | null>(null);
+  const [showCustomsDetailsModal, setShowCustomsDetailsModal] = useState(false);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [showQuickActionModal, setShowQuickActionModal] = useState<string | null>(null);
 
-  // ── Reminder Settings ──
-  const [reminders, setReminders] = useState({
-    oneDayBefore: true,
-    threeHoursBefore: true,
-    departureDay: true,
-    viaEmail: true,
-    viaSms: false,
-    viaWhatsapp: true
-  });
+  // ── Form States ──
+  const [newTravellerName, setNewTravellerName] = useState("");
+  const [newTravellerRole, setNewTravellerRole] = useState("Adult");
+  const [newTravellerBag, setNewTravellerBag] = useState("Cabin Bag (7kg)");
 
-  // ── Edit Trip Form State ──
-  const [editTripForm, setEditTripForm] = useState({
-    fromCity: "Bengaluru (BLR)",
-    fromCountry: "India",
-    toCity: "Goa (GOI)",
-    toCountry: "India",
-    departureDate: "12 Oct 2025",
-    returnDate: "16 Oct 2025",
-    duration: "5 Days",
-    visaApprovalRequired: "No",
-    forexCardRequired: "Required",
-    travelInsuranceRequired: "Required"
-  });
-
-  // ── Add/Edit Traveller Form State ──
-  const [travellerForm, setTravellerForm] = useState({
-    name: "",
-    role: "Co-Traveller" as "Primary Traveller" | "Co-Traveller",
-    passport: "",
-    dob: ""
-  });
-
-  // Load saved state on mount (with automatic dummy data purging)
+  // Persist items & travellers
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
-        const savedChecked = localStorage.getItem("pre_departure_checked_items");
-        if (savedChecked) setCheckedItems(JSON.parse(savedChecked));
+        localStorage.setItem("travltik_luggage_items", JSON.stringify(items));
+        localStorage.setItem("travltik_luggage_travellers", JSON.stringify(travellers));
+      } catch (_) {}
+    }
+  }, [items, travellers]);
 
-        const savedTravellers = localStorage.getItem("pre_departure_co_travellers");
-        if (savedTravellers) {
-          const parsed = JSON.parse(savedTravellers);
-          // Purge dummy companions (Sarah Edwin, dummy IDs) and update primary traveller
-          const cleaned = parsed
-            .filter((t: any) => t.name !== "Sarah Edwin" && t.passport !== "A9876543")
-            .map((t: any) => {
-              if (t.role === "Primary Traveller" || t.id === "trav_1") {
-                const currentName = fullName || t.name || "Primary Traveller";
-                return {
-                  ...t,
-                  name: currentName,
-                  initials: getInitials(currentName),
-                  passport: t.passport === "Z1234567" ? (selectedPassport || "") : (t.passport || selectedPassport || ""),
-                  dob: t.dob === "05 Apr 1981" ? "" : (t.dob || "")
-                };
-              }
-              return t;
-            });
-
-          const finalList = cleaned.length > 0 ? cleaned : [
-            {
-              id: "trav_1",
-              initials: getInitials(fullName || "Primary Traveller"),
-              name: fullName || "Primary Traveller",
-              role: "Primary Traveller",
-              passport: selectedPassport || "",
-              dob: "",
-              avatarBg: "from-teal-600 to-emerald-700"
-            }
-          ];
-          setCoTravellers(finalList);
-          localStorage.setItem("pre_departure_co_travellers", JSON.stringify(finalList));
+  // Toggle item packed status
+  const handleToggleItemStatus = (itemId: string) => {
+    setItems(prev =>
+      prev.map(item => {
+        if (item.id === itemId) {
+          const nextStatus = item.status === "packed" ? "pending" : "packed";
+          return { ...item, status: nextStatus };
         }
-
-        const savedTrip = localStorage.getItem("pre_departure_trip_details");
-        if (savedTrip) setTripDetails(JSON.parse(savedTrip));
-
-        const savedType = localStorage.getItem("pre_departure_trip_type");
-        if (savedType === "internal" || savedType === "international") setTripType(savedType);
-      } catch (e) {
-        console.error("Failed to load pre-departure storage:", e);
-      }
-    }
-  }, [fullName, selectedPassport]);
-
-  // Keep primary traveller synced with incoming fullName
-  useEffect(() => {
-    if (fullName) {
-      setCoTravellers((prev) =>
-        prev.map((t) =>
-          t.role === "Primary Traveller" || t.id === "trav_1"
-            ? { ...t, name: fullName, initials: getInitials(fullName) }
-            : t
-        )
-      );
-    }
-  }, [fullName]);
-
-  // Handle trip type toggle without destroying custom user edits
-  const handleSwitchTripType = (newType: "internal" | "international") => {
-    setTripType(newType);
-    localStorage.setItem("pre_departure_trip_type", newType);
-    if (newType === "international") {
-      setTripDetails((prev) => {
-        const updated = {
-          ...prev,
-          toCity: prev.toCity && prev.toCity !== "Goa (GOI)" ? prev.toCity : (selectedDestination && selectedDestination !== "Goa" ? `${selectedDestination} Int'l` : "Paris (CDG)"),
-          toCountry: prev.toCountry && prev.toCountry !== "India" ? prev.toCountry : (selectedDestination && selectedDestination !== "Goa" ? selectedDestination : "France"),
-          visaApprovalRequired: prev.visaApprovalRequired === "No" ? "Yes" : prev.visaApprovalRequired,
-          destinationImage: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80"
-        };
-        localStorage.setItem("pre_departure_trip_details", JSON.stringify(updated));
-        return updated;
-      });
-    } else {
-      setTripDetails((prev) => {
-        const updated = {
-          ...prev,
-          toCity: "Goa (GOI)",
-          toCountry: "India",
-          visaApprovalRequired: "No",
-          destinationImage: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80"
-        };
-        localStorage.setItem("pre_departure_trip_details", JSON.stringify(updated));
-        return updated;
-      });
-    }
+        return item;
+      })
+    );
   };
 
-  // Persist checked items
-  const handleToggleItem = (itemId: number) => {
-    setCheckedItems((prev) => {
-      const updated = { ...prev, [itemId]: !prev[itemId] };
-      localStorage.setItem("pre_departure_checked_items", JSON.stringify(updated));
-
-      // Sync with Neon DB vault
-      if (email) {
-        fetch("/api/user/vault-data", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "save_luggage",
-            luggage_checklist: updated
-          })
-        }).catch(() => {});
-      }
-      return updated;
-    });
+  // Toggle category expand/collapse
+  const toggleCategory = (catId: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [catId]: !prev[catId]
+    }));
   };
 
-  // Completed count and progress percentage
-  const totalItemsCount = DEFAULT_CHECKLIST_ITEMS.length;
-  const completedCount = Object.values(checkedItems).filter(Boolean).length;
-  const progressPercent = Math.round((completedCount / totalItemsCount) * 100);
+  // Toggle show more rows in category
+  const toggleShowMore = (catId: string) => {
+    setShowAllInCategory(prev => ({
+      ...prev,
+      [catId]: !prev[catId]
+    }));
+  };
 
-  // SVG circular gauge math
-  const radius = 34;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
-
-  // Save Trip Details
-  const handleSaveTripDetails = (e: React.FormEvent) => {
+  // Add new traveller
+  const handleAddTravellerSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const updated = {
-      ...tripDetails,
-      fromCity: editTripForm.fromCity,
-      fromCountry: editTripForm.fromCountry,
-      toCity: editTripForm.toCity,
-      toCountry: editTripForm.toCountry,
-      departureDate: editTripForm.departureDate,
-      returnDate: editTripForm.returnDate,
-      duration: editTripForm.duration,
-      visaApprovalRequired: editTripForm.visaApprovalRequired,
-      forexCardRequired: editTripForm.forexCardRequired,
-      travelInsuranceRequired: editTripForm.travelInsuranceRequired
+    if (!newTravellerName.trim()) return;
+
+    const initials = newTravellerName
+      .trim()
+      .split(" ")
+      .map(p => p[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
+    const colors = [
+      "bg-emerald-600 text-white",
+      "bg-amber-600 text-white",
+      "bg-indigo-600 text-white",
+      "bg-rose-600 text-white",
+      "bg-teal-600 text-white"
+    ];
+    const pickedColor = colors[travellers.length % colors.length];
+
+    const newT: Traveller = {
+      id: `t_${Date.now()}`,
+      initials: initials || "TR",
+      name: newTravellerName.trim(),
+      role: newTravellerRole,
+      color: pickedColor,
+      bagName: newTravellerBag.split("(")[0].trim() || "Luggage",
+      bagWeight: newTravellerBag.match(/\((.*?)\)/)?.[1] || "10kg",
+      totalItems: 8
     };
-    setTripDetails(updated);
-    localStorage.setItem("pre_departure_trip_details", JSON.stringify(updated));
-    setShowEditTripModal(false);
 
-    // Sync with Neon DB vault
-    if (email) {
-      fetch("/api/user/vault-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "save_journey",
-          trip_details: updated
-        })
-      }).catch(() => {});
-    }
-  };
-
-  // Add / Edit Traveller
-  const handleSaveTraveller = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!travellerForm.name.trim()) return;
-
-    const parts = travellerForm.name.trim().split(" ");
-    const initials = parts.length > 1 ? `${parts[0][0]}${parts[1][0]}`.toUpperCase() : parts[0].slice(0, 2).toUpperCase();
-
-    if (editingTraveller) {
-      const updated = coTravellers.map((t) =>
-        t.id === editingTraveller.id
-          ? {
-              ...t,
-              name: travellerForm.name,
-              role: travellerForm.role,
-              passport: travellerForm.passport || t.passport,
-              dob: travellerForm.dob || t.dob,
-              initials
-            }
-          : t
-      );
-      setCoTravellers(updated);
-      localStorage.setItem("pre_departure_co_travellers", JSON.stringify(updated));
-    } else {
-      const newTrav: CoTraveller = {
-        id: `trav_${Date.now()}`,
-        initials,
-        name: travellerForm.name,
-        role: travellerForm.role,
-        passport: travellerForm.passport || "P-PENDING",
-        dob: travellerForm.dob || "01 Jan 1990",
-        avatarBg: coTravellers.length % 2 === 0 ? "from-teal-600 to-emerald-700" : "from-emerald-600 to-cyan-700"
-      };
-      const updated = [...coTravellers, newTrav];
-      setCoTravellers(updated);
-      localStorage.setItem("pre_departure_co_travellers", JSON.stringify(updated));
-    }
-
-    setEditingTraveller(null);
-    setTravellerForm({ name: "", role: "Co-Traveller", passport: "", dob: "" });
+    setTravellers(prev => [...prev, newT]);
+    setTripData(prev => ({ ...prev, travellersCount: prev.travellersCount + 1 }));
+    setNewTravellerName("");
     setShowAddTravellerModal(false);
   };
 
-  const handleDeleteTraveller = (id: string) => {
-    const updated = coTravellers.filter((t) => t.id !== id);
-    setCoTravellers(updated);
-    localStorage.setItem("pre_departure_co_travellers", JSON.stringify(updated));
-    setActiveTravellerMenu(null);
-  };
+  // Calculate Metrics
+  const totalItemsCount = items.length;
+  const packedItemsCount = items.filter(i => i.status === "packed").length;
+  const pendingItemsCount = items.filter(i => i.status === "pending").length;
+  const actionItemsCount = items.filter(i => i.status === "action").length;
 
-  // Print PDF Trigger
-  const handleDownloadPdf = () => {
-    window.print();
-  };
+  // Filtered items based on:
+  // 1. Status tab
+  // 2. Selected traveller
+  // 3. Search query
+  const filteredItems = useMemo(() => {
+    return items.filter(item => {
+      // Status filter
+      if (activeStatusFilter === "packed" && item.status !== "packed") return false;
+      if (activeStatusFilter === "pending" && item.status !== "pending") return false;
+      if (activeStatusFilter === "action" && item.status !== "action") return false;
+
+      // Traveller filter
+      if (selectedTravellerId !== "all") {
+        if (item.travellerId !== selectedTravellerId && item.travellerId !== "all") return false;
+      }
+
+      // Search query
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchesName = item.name.toLowerCase().includes(q);
+        const matchesTraveller = item.travellerName.toLowerCase().includes(q);
+        const matchesLocation = item.location.toLowerCase().includes(q);
+        const matchesCustoms = item.customsRule.toLowerCase().includes(q);
+        if (!matchesName && !matchesTraveller && !matchesLocation && !matchesCustoms) return false;
+      }
+
+      return true;
+    });
+  }, [items, activeStatusFilter, selectedTravellerId, searchQuery]);
+
+  // Group items by categories
+  const groupedItems = useMemo(() => {
+    const map: Record<string, PackingItem[]> = {};
+    INITIAL_CATEGORIES.forEach(c => {
+      map[c.id] = [];
+    });
+    filteredItems.forEach(i => {
+      if (!map[i.categoryId]) map[i.categoryId] = [];
+      map[i.categoryId].push(i);
+    });
+    return map;
+  }, [filteredItems]);
+
+  // Traveller wise packing progress breakdown
+  const travellerStats = useMemo(() => {
+    return travellers.map(trav => {
+      const travItems = items.filter(i => i.travellerId === trav.id || (trav.id === "t_prashanth" && i.travellerId === "all"));
+      const checked = travItems.filter(i => i.status === "packed").length;
+      const pending = travItems.filter(i => i.status === "pending").length;
+      const required = travItems.filter(i => i.status === "action").length;
+      const total = trav.totalItems || travItems.length || 8;
+      const percent = total > 0 ? Math.min(100, Math.round((checked / total) * 100)) : 0;
+
+      return {
+        ...trav,
+        checked,
+        pending,
+        required,
+        percent,
+        displayTotal: total
+      };
+    });
+  }, [travellers, items]);
 
   return (
-    <div className="space-y-5 animate-fade-up text-left text-slate-800 font-sans sharp-typography visa-readiness-scope">
-      {/* ── Hero Banner Card (Matching Reference Design) ── */}
-      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 bg-white shadow-xs">
-        {/* Right-Side Scenic Landscape Photo with Smooth Fade */}
-        <div
-          className="absolute top-0 right-0 bottom-0 w-full sm:w-[65%] lg:w-[58%] pointer-events-none"
-          style={{
-            backgroundImage: "url('/images/pre_departure_hero_bg.png')",
-            backgroundPosition: "right center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat"
-          }}
-        >
-          {/* Feathered White Gradient Fade from Left */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent sm:via-white/55" />
+    <div className="w-full text-slate-800 font-sans antialiased [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility] space-y-6 pb-20">
+      
+      {/* ── DESKTOP HEADER & TOP SEARCH BAR ── */}
+      <div className="hidden lg:flex items-center justify-between gap-4 bg-white p-3.5 px-6 rounded-2xl border border-slate-100 shadow-2xs">
+        <div className="relative flex-1 max-w-md">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Search trips, destinations, documents..."
+            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200/80 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+          />
         </div>
 
-        {/* Banner Content Container (Clean Sharp Dark Typography over Pure White Left) */}
-        <div className="relative z-10 p-5 sm:p-6 lg:p-7 flex flex-col justify-between min-h-[175px] sm:min-h-[195px] space-y-3 sm:space-y-4">
-          {/* 1. Breadcrumbs (Inside Banner at Top-Left) */}
-          <nav className="flex items-center gap-1.5 text-xs font-medium">
-            <span className="text-[#4f6b92] hover:underline cursor-pointer">Home</span>
-            <span className="text-slate-300">&gt;</span>
-            <span className="text-[#4f6b92] hover:underline cursor-pointer">Pre-Departure Checklist</span>
-            <span className="text-slate-300">&gt;</span>
-            <span className="text-slate-700 font-semibold">
-              {tripType === "internal" ? "Internal Trip" : "International Trip"}
-            </span>
-          </nav>
+        <div className="flex items-center gap-3">
+          {/* Notification Bell with Red Badge */}
+          <button
+            type="button"
+            className="relative p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer"
+            title="Notifications"
+          >
+            <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 ring-2 ring-white" />
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </button>
 
-          {/* 2. Main Title & Subtitle */}
-          <div className="max-w-xl">
-            <h1 className="text-2xl sm:text-3xl font-black text-[#0f172a] tracking-tight leading-tight">
-              Pre-Departure Checklist
-            </h1>
-            <p className="text-xs sm:text-[13px] text-slate-500 font-normal mt-1 leading-relaxed">
-              Stay organized and complete your checklist before your trip. Get timely reminders and travel with confidence.
-            </p>
-          </div>
-
-          {/* 3. Dual Toggle Buttons & Slogan */}
-          <div className="flex items-end justify-between flex-wrap gap-4 pt-1">
-            {/* Toggles */}
-            <div className="flex items-center gap-3">
-              {/* International Trip Button */}
-              <button
-                type="button"
-                onClick={() => handleSwitchTripType("international")}
-                className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer bg-white shadow-2xs border ${
-                  tripType === "international"
-                    ? "border-purple-200 border-b-[3px] border-b-[#6b46c1] text-[#6b46c1]"
-                    : "border-slate-200/90 text-slate-800 hover:bg-slate-50/80"
-                }`}
-              >
-                <Plane className={`w-4 h-4 ${tripType === "international" ? "text-[#6b46c1]" : "text-[#7c3aed]"}`} />
-                <span>International Trip</span>
-              </button>
-
-              {/* Internal Trip Button */}
-              <button
-                type="button"
-                onClick={() => handleSwitchTripType("internal")}
-                className={`flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer bg-white shadow-2xs border ${
-                  tripType === "internal"
-                    ? "border-emerald-200 border-b-[3px] border-b-[#00705a] text-[#00705a]"
-                    : "border-slate-200/90 text-slate-800 hover:bg-slate-50/80"
-                }`}
-              >
-                <div
-                  className={`w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black leading-none transition-colors ${
-                    tripType === "internal"
-                      ? "bg-[#00705a] text-white"
-                      : "bg-slate-100 text-slate-600"
-                  }`}
-                >
-                  P
-                </div>
-                <span>Internal Trip</span>
-              </button>
+          {/* User Profile Pill */}
+          <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+            <div className="w-8 h-8 rounded-full bg-[#1E3A8A] text-white flex items-center justify-center font-bold text-xs shadow-2xs">
+              LP
             </div>
-
-            {/* Right Slogan: Plan • Prepare • Travel */}
-            <div className="text-xs sm:text-[13px] font-medium tracking-wide text-white/95 drop-shadow-md pr-3 hidden md:block select-none">
-              Plan • Prepare • Travel
+            <div className="flex items-center gap-1 text-xs font-semibold text-slate-800 cursor-pointer">
+              <span>Leilwyn Prashanth</span>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </div>
+            <button
+              type="button"
+              className="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+            >
+              <MoreHorizontal className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* ── Main Two-Column Grid: Left Content (Checklist & Details) + Right Sidebar (Summary & Progress) ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* ══════════ LEFT COLUMN (8 cols) ══════════ */}
-        <div className="lg:col-span-8 space-y-5">
-          {/* 1. Trip Details Card (Matching Reference Design) */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-black text-slate-900 tracking-tight">Trip Details</h3>
-              <button
-                type="button"
-                onClick={() => {
-                  setEditTripForm({
-                    fromCity: tripDetails.fromCity,
-                    fromCountry: tripDetails.fromCountry,
-                    toCity: tripDetails.toCity,
-                    toCountry: tripDetails.toCountry,
-                    departureDate: tripDetails.departureDate,
-                    returnDate: tripDetails.returnDate,
-                    duration: tripDetails.duration,
-                    visaApprovalRequired: tripDetails.visaApprovalRequired,
-                    forexCardRequired: tripDetails.forexCardRequired,
-                    travelInsuranceRequired: tripDetails.travelInsuranceRequired
-                  });
-                  setShowEditTripModal(true);
-                }}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl border border-[#008767] text-[#008767] bg-white text-xs font-bold hover:bg-emerald-50/50 shadow-2xs transition-colors cursor-pointer"
-              >
-                <Edit2 className="w-3.5 h-3.5 text-[#008767]" />
-                <span>Edit</span>
-              </button>
+      {/* ── 1. HERO BANNER: LUGGAGE TO BE PACKED ── */}
+      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#EFF6FF] via-[#E0F2FE] to-[#F0FDF4] border border-blue-100/80 p-5 sm:p-7 shadow-xs">
+        
+        {/* Background Scenic Elements & Suitcases Graphic */}
+        <div className="absolute right-0 top-0 bottom-0 w-1/2 max-w-[420px] pointer-events-none hidden sm:block opacity-90 overflow-hidden">
+          {/* Subtle Sun & Cloud Glow */}
+          <div className="absolute top-2 right-12 w-24 h-24 bg-sky-200/40 rounded-full blur-xl" />
+          
+          {/* Plane Flying Across */}
+          <div className="absolute top-6 right-36 -rotate-12 text-blue-500/80">
+            <Plane className="w-7 h-7 stroke-[2.2]" />
+          </div>
+
+          {/* Mountain Silhouettes */}
+          <svg className="absolute bottom-0 right-0 w-full h-32 text-blue-200/50" viewBox="0 0 400 120" preserveAspectRatio="none">
+            <polygon points="0,120 120,40 220,120" fill="currentColor" opacity="0.6" />
+            <polygon points="100,120 250,15 360,120" fill="currentColor" opacity="0.8" />
+            <polygon points="200,120 320,35 400,120" fill="currentColor" opacity="0.7" />
+          </svg>
+
+          {/* Blue Hard-shell Suitcases Illustration */}
+          <div className="absolute bottom-0 right-4 flex items-end gap-1.5 z-10 drop-shadow-md">
+            <div className="w-12 h-20 bg-gradient-to-b from-blue-600 to-blue-700 rounded-t-lg border-t-2 border-x-2 border-blue-400 relative flex flex-col justify-between p-1 shadow-md">
+              <div className="w-4 h-2 bg-slate-900 rounded-t-xs mx-auto -mt-3" />
+              <div className="space-y-1 my-auto">
+                <div className="h-0.5 bg-blue-400/60 rounded-full" />
+                <div className="h-0.5 bg-blue-400/60 rounded-full" />
+                <div className="h-0.5 bg-blue-400/60 rounded-full" />
+              </div>
             </div>
+            <div className="w-14 h-24 bg-gradient-to-b from-sky-500 to-blue-600 rounded-t-lg border-t-2 border-x-2 border-sky-300 relative flex flex-col justify-between p-1 shadow-lg">
+              <div className="w-5 h-2.5 bg-slate-900 rounded-t-xs mx-auto -mt-3.5" />
+              <div className="space-y-1.5 my-auto">
+                <div className="h-0.5 bg-sky-300/60 rounded-full" />
+                <div className="h-0.5 bg-sky-300/60 rounded-full" />
+                <div className="h-0.5 bg-sky-300/60 rounded-full" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-            {/* Horizontal metrics grid - exact left-aligned columns matching reference */}
-            <div className="overflow-x-auto pb-1.5 -mb-1 no-scrollbar">
-              <div className="flex items-stretch justify-between gap-3 min-w-[840px] pt-1">
-                {/* 1. From */}
-                <div className="flex-1 min-w-[90px] pr-2.5 border-r border-slate-100 flex flex-col justify-between text-left">
-                  <div>
-                    <div className="w-8 h-8 rounded-full bg-[#E6F4EA] text-[#008767] flex items-center justify-center mb-2">
-                      <MapPin className="w-4 h-4 fill-[#008767]/20" />
-                    </div>
-                    <div className="text-[11px] font-medium text-slate-400">From</div>
-                    <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.fromCity}</div>
-                  </div>
-                  <div className="text-[11px] text-[#0284C7] font-medium mt-1">{tripDetails.fromCountry}</div>
+        {/* Banner Content */}
+        <div className="relative z-10 space-y-5">
+          {/* Title Row */}
+          <div className="flex items-start gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/20">
+              <Luggage className="w-6 h-6 stroke-[2.2]" />
+            </div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Luggage to be Packed
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-600 mt-0.5 max-w-xl font-normal">
+                Organize, check and pack with confidence. Everything you need for a smooth journey.
+              </p>
+            </div>
+          </div>
+
+          {/* Sub-cards Row: Trip Card + 4 Metric Counters */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-1">
+            
+            {/* Left Trip Info Card */}
+            <div className="lg:col-span-5 bg-white/95 backdrop-blur-xs rounded-2xl p-3.5 sm:p-4 border border-blue-100 shadow-2xs flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
+                  <Plane className="w-5 h-5 stroke-[2]" />
                 </div>
-
-                {/* 2. To */}
-                <div className="flex-1 min-w-[90px] pr-2.5 border-r border-slate-100 flex flex-col justify-between text-left">
-                  <div>
-                    <div className="w-8 h-8 rounded-full bg-[#FCE8E6] text-[#D93025] flex items-center justify-center mb-2">
-                      <MapPin className="w-4 h-4 fill-[#D93025]/20" />
-                    </div>
-                    <div className="text-[11px] font-medium text-slate-400">To</div>
-                    <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.toCity}</div>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-bold text-slate-900 truncate">
+                    Trip to {tripData.destination}
+                  </h3>
+                  <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 font-medium">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-slate-400" />
+                      <span>{tripData.startDate} - {tripData.endDate}</span>
+                    </span>
                   </div>
-                  <div className="text-[11px] text-[#0284C7] font-medium mt-1">{tripDetails.toCountry}</div>
-                </div>
-
-                {/* 3. Departure Date */}
-                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
-                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
-                    <Calendar className="w-4 h-4" />
-                  </div>
-                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Departure Date</div>
-                  <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.departureDate}</div>
-                </div>
-
-                {/* 4. Return Date */}
-                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
-                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
-                    <Calendar className="w-4 h-4" />
-                  </div>
-                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Return Date</div>
-                  <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.returnDate}</div>
-                </div>
-
-                {/* 5. Total Duration */}
-                <div className="flex-1 min-w-[85px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
-                  <div className="w-8 h-8 rounded-full bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center mb-2">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Total Duration</div>
-                  <div className="text-xs font-bold text-slate-900 mt-0.5 whitespace-nowrap">{tripDetails.duration}</div>
-                </div>
-
-                {/* 6. Visa Approval Required */}
-                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
-                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
-                    <Luggage className="w-4 h-4" />
-                  </div>
-                  <div className="text-[11px] font-medium text-slate-400 leading-tight">
-                    Visa Approval<br />Required
-                  </div>
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#008767] mt-1 whitespace-nowrap">
-                    <span>{tripDetails.visaApprovalRequired}</span>
-                    <Info className="w-3 h-3 text-[#008767]" />
-                  </div>
-                </div>
-
-                {/* 7. Forex Card */}
-                <div className="flex-1 min-w-[85px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
-                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
-                    <CreditCard className="w-4 h-4" />
-                  </div>
-                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">Forex Card</div>
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#008767] mt-1 whitespace-nowrap">
-                    <span>{tripDetails.forexCardRequired}</span>
-                    <Info className="w-3 h-3 text-[#008767]" />
-                  </div>
-                </div>
-
-                {/* 8. Travel Insurance */}
-                <div className="flex-1 min-w-[95px] pr-2.5 border-r border-slate-100 flex flex-col justify-start text-left">
-                  <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-2">
-                    <Shield className="w-4 h-4" />
-                  </div>
-                  <div className="text-[11px] font-medium text-slate-400 whitespace-nowrap">
-                    Travel Insurance
-                  </div>
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#008767] mt-1 whitespace-nowrap">
-                    <span>{tripDetails.travelInsuranceRequired}</span>
-                    <Info className="w-3 h-3 text-[#008767]" />
-                  </div>
-                </div>
-
-                {/* 9. Mint Box: All mandatory for Internal Trips */}
-                <div className="flex-initial shrink-0 min-w-[100px] flex items-center">
-                  <div className="w-full bg-[#E8F8F4] rounded-xl p-2.5 flex flex-col items-center justify-center text-center">
-                    <div className="w-5 h-5 rounded-full bg-[#008767] text-white flex items-center justify-center mb-1.5 shadow-2xs">
-                      <Check className="w-3 h-3 stroke-[3]" />
-                    </div>
-                    <span className="text-[10px] font-bold text-[#00705a] leading-tight text-center">
-                      All mandatory<br />for {tripType === "internal" ? "Internal" : "International"}<br />Trips
+                  <div className="mt-1">
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                      <Users className="w-3 h-3" />
+                      <span>{tripData.travellersCount} Travellers</span>
                     </span>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* 2. Co-Travellers (Dynamic real user, no fake data) */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-start gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 mt-0.5">
-                  <Users className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-black text-slate-900 tracking-tight">Co-Travellers</h3>
-                  <p className="text-xs text-slate-500 font-medium mt-0.5">
-                    Add your travel companions to include them in the checklist and receive reminders.
-                  </p>
-                </div>
-              </div>
 
               <button
                 type="button"
-                onClick={() => {
-                  setEditingTraveller(null);
-                  setTravellerForm({ name: "", role: "Co-Traveller", passport: "", dob: "" });
-                  setShowAddTravellerModal(true);
-                }}
-                className="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#008060] hover:bg-[#006e52] text-white text-xs font-bold shadow-xs transition-colors cursor-pointer shrink-0"
+                onClick={() => setShowEditTripModal(true)}
+                className="px-3 py-1.5 rounded-xl border border-blue-200 text-blue-700 bg-white hover:bg-blue-50 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs shrink-0 cursor-pointer active:scale-95"
               >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Add Co-Traveller</span>
+                <Edit3 className="w-3.5 h-3.5" />
+                <span>Edit Trip</span>
               </button>
             </div>
 
-            {/* Co-Traveller Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
-              {coTravellers.map((trav) => (
-                <div
-                  key={trav.id}
-                  className="bg-white rounded-2xl border border-slate-200 p-3.5 flex items-center justify-between gap-3 shadow-2xs hover:border-teal-500/50 transition-colors relative"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div
-                      className={`w-10 h-10 rounded-full bg-gradient-to-br ${trav.avatarBg} text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs`}
-                    >
-                      {trav.initials}
-                    </div>
-
-                    <div className="min-w-0 text-left">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">{trav.name}</span>
-                        <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                            trav.role === "Primary Traveller"
-                              ? "bg-purple-100 text-purple-800"
-                              : "bg-teal-100 text-teal-800"
-                          }`}
-                        >
-                          {trav.role}
-                        </span>
-                      </div>
-                      {(trav.passport || trav.dob) ? (
-                        <p className="text-[11px] text-slate-500 font-medium mt-0.5 truncate">
-                          {trav.passport ? `Passport: ${trav.passport}` : ""}
-                          {trav.passport && trav.dob ? " | " : ""}
-                          {trav.dob ? `DOB: ${trav.dob}` : ""}
-                        </p>
-                      ) : (
-                        <p className="text-[11px] text-slate-400 font-normal mt-0.5">
-                          {trav.role === "Primary Traveller" ? "Primary Account Holder" : "Details not added"}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="relative shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => setActiveTravellerMenu(activeTravellerMenu === trav.id ? null : trav.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-                    >
-                      <MoreVertical className="w-4 h-4" />
-                    </button>
-
-                    {activeTravellerMenu === trav.id && (
-                      <div className="absolute right-0 top-8 w-32 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-20 text-xs font-semibold">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditingTraveller(trav);
-                            setTravellerForm({
-                              name: trav.name,
-                              role: trav.role,
-                              passport: trav.passport,
-                              dob: trav.dob
-                            });
-                            setActiveTravellerMenu(null);
-                            setShowAddTravellerModal(true);
-                          }}
-                          className="w-full text-left px-3 py-1.5 text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
-                        >
-                          <Edit2 className="w-3 h-3 text-slate-500" />
-                          <span>Edit</span>
-                        </button>
-                        {trav.role !== "Primary Traveller" && (
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteTraveller(trav.id)}
-                            className="w-full text-left px-3 py-1.5 text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer"
-                          >
-                            <Trash2 className="w-3 h-3 text-rose-500" />
-                            <span>Remove</span>
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-
-              {/* Optional Prompt to Add Travel Companion if only Primary Traveller exists */}
-              {coTravellers.length === 1 && (
-                <div
-                  onClick={() => {
-                    setEditingTraveller(null);
-                    setTravellerForm({ name: "", role: "Co-Traveller", passport: "", dob: "" });
-                    setShowAddTravellerModal(true);
-                  }}
-                  className="bg-slate-50/40 hover:bg-emerald-50/20 rounded-2xl border border-dashed border-slate-200 hover:border-[#008060] p-3.5 flex items-center justify-center gap-2 text-slate-400 hover:text-[#008060] transition-colors cursor-pointer select-none min-h-[68px]"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span className="text-xs font-semibold">Add Co-Traveller</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* 3. Pre-Departure Checklist (Accordion / List) */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
-            {/* Header */}
-            <div
-              onClick={() => setIsChecklistCollapsed(!isChecklistCollapsed)}
-              className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none hover:bg-slate-50/50 transition-colors border-b border-slate-100"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
-                  <Luggage className="w-4 h-4" />
+            {/* Right 4 Stat Counter Cards */}
+            <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+              
+              {/* Counter 1: Travellers */}
+              <div className="bg-white/95 backdrop-blur-xs rounded-2xl p-3 sm:p-3.5 border border-slate-100 shadow-2xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                  <Users className="w-4 h-4 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
-                    Pre-Departure Checklist
-                  </h3>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-bold text-slate-400">
-                  {completedCount}/{totalItemsCount} completed
-                </span>
-                <div className="p-1 text-slate-400 hover:text-slate-700">
-                  {isChecklistCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
-                </div>
-              </div>
-            </div>
-
-            {/* Checklist Body */}
-            {!isChecklistCollapsed && (
-              <div className="divide-y divide-slate-100">
-                {SECTIONS_META.map((sec) => {
-                  const itemsInSec = DEFAULT_CHECKLIST_ITEMS.filter((it) => it.sectionId === sec.id);
-
-                  return (
-                    <div key={sec.id} className="p-4 sm:p-6 space-y-3">
-                      {/* Section Title */}
-                      <div className="flex items-start gap-3">
-                        <div
-                          className={`w-6 h-6 rounded-full ${sec.circleBg} text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs`}
-                        >
-                          {sec.id}
-                        </div>
-
-                        <div className="flex items-center gap-2.5">
-                          <div className={`p-1.5 rounded-lg ${sec.iconBg} shrink-0`}>
-                            {sec.icon}
-                          </div>
-                          <div>
-                            <h4 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight">{sec.title}</h4>
-                            <p className="text-[11px] text-slate-400 font-normal mt-0.5">{sec.subtitle}</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Items List (Flat rows matching reference) */}
-                      <div className="pl-9 sm:pl-11 space-y-1">
-                        {itemsInSec.map((item) => {
-                          const isDone = Boolean(checkedItems[item.id]);
-
-                          return (
-                            <div
-                              key={item.id}
-                              onClick={() => handleToggleItem(item.id)}
-                              className="py-2 sm:py-2.5 px-2 -mx-2 rounded-lg hover:bg-slate-50/70 transition-colors cursor-pointer flex items-center justify-between gap-4 select-none group"
-                            >
-                              <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 flex-1 items-center min-w-0">
-                                <div className="md:col-span-7 flex items-baseline gap-2 min-w-0">
-                                  <span className="text-xs font-semibold text-slate-400 shrink-0 w-4 text-right">
-                                    {item.id}.
-                                  </span>
-                                  <span
-                                    className={`text-xs font-semibold truncate ${
-                                      isDone ? "line-through text-slate-400" : "text-slate-800"
-                                    }`}
-                                  >
-                                    {item.title}
-                                  </span>
-                                </div>
-
-                                <div className="md:col-span-5 text-xs text-slate-500 font-normal truncate">
-                                  {item.detail}
-                                </div>
-                              </div>
-
-                              {/* Custom Square Checkbox */}
-                              <div
-                                className={`w-4 h-4 rounded-[4px] border flex items-center justify-center shrink-0 transition-all ${
-                                  isDone
-                                    ? "bg-[#00705a] border-[#00705a] text-white shadow-2xs"
-                                    : "border-slate-300 bg-white group-hover:border-slate-400"
-                                }`}
-                              >
-                                {isDone && <Check className="w-3 h-3 stroke-[3]" />}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {/* Footer Bar: Automatic Reminders */}
-                <div className="p-4 sm:p-5 bg-[#FAF8FF] border-t border-purple-100/80 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="flex items-center gap-3 text-left">
-                    <div className="w-8 h-8 rounded-xl bg-[#F3E8FF] text-[#6b46c1] border border-[#E9D5FF] flex items-center justify-center shrink-0">
-                      <Bell className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-slate-900">Automatic Reminders</div>
-                      <p className="text-[11px] text-slate-500 font-normal mt-0.5">
-                        You'll get timely notifications 1 day and 3 hours before your departure date.
-                      </p>
-                    </div>
+                  <div className="text-lg sm:text-xl font-black text-slate-900 leading-tight">
+                    {tripData.travellersCount}
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setShowRemindersModal(true)}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white border border-purple-200 text-[#5e35b1] text-xs font-bold shadow-2xs hover:bg-purple-50/50 transition-colors cursor-pointer shrink-0"
-                  >
-                    <Calendar className="w-3.5 h-3.5 text-[#6b46c1]" />
-                    <span>Manage Reminders</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ══════════ RIGHT COLUMN (4 cols) ══════════ */}
-        <div className="lg:col-span-4 space-y-5">
-          {/* Card 1: Trip Summary */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-4 text-left">
-            <div className="flex items-center gap-2 pb-1 border-b border-slate-100">
-              <Plane className="w-4 h-4 text-teal-600" />
-              <h3 className="text-sm font-black text-slate-900 tracking-tight">Trip Summary</h3>
-            </div>
-
-            {/* Destination Thumbnail Card */}
-            <div className="flex items-center gap-3.5">
-              <img
-                src={tripDetails.destinationImage}
-                alt={tripDetails.toCity}
-                className="w-16 h-16 rounded-xl object-cover shrink-0 shadow-2xs border border-slate-200"
-              />
-
-              <div className="space-y-1 min-w-0">
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <h4 className="text-sm font-bold text-slate-900 leading-tight truncate">
-                    {tripType === "internal" ? "Goa, India" : `${tripDetails.toCity}, ${tripDetails.toCountry}`}
-                  </h4>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E8F8F4] text-[#008767]">
-                    {tripType === "internal" ? "Internal Trip" : "International"}
-                  </span>
-                </div>
-
-                <p className="text-[11px] font-medium text-slate-500 flex items-center gap-1">
-                  <Calendar className="w-3 h-3 text-slate-400" />
-                  <span>
-                    {tripDetails.departureDate} – {tripDetails.returnDate}
-                  </span>
-                </p>
-                <p className="text-[10px] text-slate-400 font-medium">({tripDetails.duration})</p>
-              </div>
-            </div>
-
-            {/* 3 Requirement Columns with Vertical Separators */}
-            <div className="grid grid-cols-3 divide-x divide-slate-100 pt-3 border-t border-slate-100/80 text-center">
-              <div className="px-1 flex flex-col items-center justify-center space-y-0.5">
-                <div className="w-8 h-8 rounded-full bg-[#E6F4EA] text-[#008767] flex items-center justify-center mb-1 shadow-2xs">
-                  <User className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-[11px] font-bold text-slate-800 leading-tight">
-                  {tripDetails.visaApprovalRequired === "No" ? "No Visa" : "Visa"}
-                </span>
-                <span className="text-[10px] text-slate-400 font-medium">Required</span>
-              </div>
-
-              <div className="px-1 flex flex-col items-center justify-center space-y-0.5">
-                <div className="w-8 h-8 rounded-full bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center mb-1 shadow-2xs">
-                  <CreditCard className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-[11px] font-bold text-slate-800 leading-tight">Forex Card</span>
-                <span className="text-[10px] text-slate-400 font-medium">Required</span>
-              </div>
-
-              <div className="px-1 flex flex-col items-center justify-center space-y-0.5">
-                <div className="w-8 h-8 rounded-full bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center mb-1 shadow-2xs">
-                  <Shield className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-[11px] font-bold text-slate-800 leading-tight">Travel Insurance</span>
-                <span className="text-[10px] text-slate-400 font-medium">Required</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Checklist Progress */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-3 text-left">
-            <h3 className="text-sm font-black text-slate-900 tracking-tight">Checklist Progress</h3>
-
-            <div className="flex items-center gap-5 pt-1">
-              {/* Circular Gauge */}
-              <div className="relative w-16 h-16 shrink-0 flex items-center justify-center">
-                <svg className="w-full h-full -rotate-90" viewBox="0 0 80 80">
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r={radius}
-                    className="stroke-slate-100"
-                    strokeWidth="6"
-                    fill="transparent"
-                  />
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r={radius}
-                    className="stroke-[#008767] transition-all duration-700 ease-out"
-                    strokeWidth="6"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={strokeDashoffset}
-                    strokeLinecap="round"
-                    fill="transparent"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-sm font-black text-slate-900">{progressPercent}%</span>
-                </div>
-              </div>
-
-              <div className="text-xs font-semibold text-slate-500">
-                {completedCount} of {totalItemsCount} completed
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3: Quick Actions */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-2 text-left">
-            <div className="flex items-center gap-2 pb-1.5 border-b border-slate-100">
-              <Compass className="w-4 h-4 text-slate-600" />
-              <h3 className="text-sm font-black text-slate-900 tracking-tight">Quick Actions</h3>
-            </div>
-
-            <div className="divide-y divide-slate-100 text-xs font-bold text-slate-700">
-              <button
-                type="button"
-                onClick={() => setShowItineraryModal(true)}
-                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0">
-                    <Compass className="w-3.5 h-3.5" />
+                  <div className="text-[11px] font-medium text-slate-500">
+                    Travellers
                   </div>
-                  <span>View Travel Itinerary</span>
                 </div>
-                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
-              </button>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => setShowAddTravellerModal(true)}
-                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#E0F2FE] text-[#0284C7] flex items-center justify-center shrink-0">
-                    <Users className="w-3.5 h-3.5" />
-                  </div>
-                  <span>Manage Co-Travellers</span>
-                </div>
-                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setShowWeatherModal(true)}
-                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#FCE7F3] text-[#BE185D] flex items-center justify-center shrink-0">
-                    <Sun className="w-3.5 h-3.5" />
-                  </div>
-                  <span>View Weather Forecast</span>
-                </div>
-                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleDownloadPdf}
-                className="w-full py-2.5 flex items-center justify-between hover:text-[#008767] transition-colors cursor-pointer group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0">
-                    <Download className="w-3.5 h-3.5" />
-                  </div>
-                  <span>Download Checklist (PDF)</span>
-                </div>
-                <span className="text-slate-300 group-hover:text-slate-600 transition-colors">&gt;</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Card 4: Smart Reminders */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs space-y-3 text-left">
-            <div className="flex items-center gap-2 pb-1.5 border-b border-slate-100">
-              <Bell className="w-4 h-4 text-amber-500" />
-              <h3 className="text-sm font-black text-slate-900 tracking-tight">Smart Reminders</h3>
-            </div>
-
-            <div className="space-y-3 text-xs">
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0 mt-0.5">
-                  <RefreshCw className="w-3.5 h-3.5" />
+              {/* Counter 2: Checked Items */}
+              <div className="bg-white/95 backdrop-blur-xs rounded-2xl p-3 sm:p-3.5 border border-slate-100 shadow-2xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                  <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900">1 day before departure</div>
-                  <div className="text-[11px] text-slate-400 font-normal">Check flight details &amp; travel documents</div>
+                  <div className="text-lg sm:text-xl font-black text-slate-900 leading-tight">
+                    {packedItemsCount}
+                  </div>
+                  <div className="text-[11px] font-medium text-slate-500">
+                    Checked Items
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0 mt-0.5">
-                  <Clock className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <div className="font-bold text-slate-900">3 hours before departure</div>
-                  <div className="text-[11px] text-slate-400 font-normal">Confirm check-in &amp; baggage</div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-lg bg-[#F3E8FF] text-[#7C3AED] flex items-center justify-center shrink-0 mt-0.5">
-                  <Luggage className="w-3.5 h-3.5" />
+              {/* Counter 3: Pending */}
+              <div className="bg-white/95 backdrop-blur-xs rounded-2xl p-3 sm:p-3.5 border border-slate-100 shadow-2xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                  <Clock className="w-4 h-4 stroke-[2.5]" />
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900">On departure day</div>
-                  <div className="text-[11px] text-slate-400 font-normal">Carry all essential documents</div>
+                  <div className="text-lg sm:text-xl font-black text-slate-900 leading-tight">
+                    {pendingItemsCount}
+                  </div>
+                  <div className="text-[11px] font-medium text-slate-500">
+                    Pending
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Card 5: Travel Tip (Matching media_1788806311175.png) */}
-          <div className="bg-[#E8F7F2] border border-[#D4F0E8] rounded-2xl p-4.5 sm:p-5 shadow-2xs space-y-2 text-left relative overflow-hidden">
-            {/* Header: Green Lightbulb + Title */}
-            <div className="flex items-center gap-2">
-              <Lightbulb className="w-5 h-5 text-[#008767] stroke-[2.2]" />
-              <span className="text-sm font-bold text-slate-900 tracking-tight">Travel Tip</span>
-            </div>
-
-            {/* Tip Description */}
-            <p className="text-xs text-slate-600 font-normal leading-relaxed">
-              Keep your documents, forex card and travel insurance easily accessible in your hand luggage.
-            </p>
-
-            {/* 3D Angled Passport + Boarding Pass + Cursive "Travel Smart" */}
-            <div className="pt-3 flex items-center justify-between min-h-[90px]">
-              {/* Vector 3D Passport + Boarding Pass */}
-              <div className="relative w-40 h-24 shrink-0">
-                <svg viewBox="0 0 160 95" className="w-full h-full overflow-visible">
-                  <defs>
-                    <linearGradient id="tipPassportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#1C4B70" />
-                      <stop offset="50%" stopColor="#123554" />
-                      <stop offset="100%" stopColor="#0B6B66" />
-                    </linearGradient>
-                    <filter id="tipShadow" x="-20%" y="-20%" width="150%" height="150%">
-                      <feDropShadow dx="2" dy="4" stdDeviation="3.5" floodColor="#08382e" floodOpacity="0.22" />
-                    </filter>
-                    <filter id="ticketShad" x="-10%" y="-10%" width="130%" height="130%">
-                      <feDropShadow dx="1" dy="2" stdDeviation="2" floodColor="#08382e" floodOpacity="0.12" />
-                    </filter>
-                  </defs>
-
-                  {/* Boarding Pass Ticket Behind Passport */}
-                  <g transform="translate(46, 15) rotate(4)" filter="url(#ticketShad)">
-                    <rect x="0" y="0" width="68" height="46" rx="4" fill="#FFFFFF" stroke="#E2E8F0" strokeWidth="0.8" />
-                    {/* Blue right edge tab */}
-                    <path d="M 52 0 L 64 0 A 4 4 0 0 1 68 4 L 68 42 A 4 4 0 0 1 64 46 L 52 46 Z" fill="#2563EB" />
-                    {/* Ticket Header & details */}
-                    <text x="6" y="11" fill="#1E293B" fontSize="4.5" fontWeight="900" letterSpacing="0.4">BOARDING</text>
-                    <line x1="6" y1="17" x2="40" y2="17" stroke="#0284C7" strokeWidth="1.2" strokeLinecap="round" />
-                    <line x1="6" y1="23" x2="32" y2="23" stroke="#0284C7" strokeWidth="1.2" strokeLinecap="round" />
-                    <line x1="6" y1="29" x2="38" y2="29" stroke="#94A3B8" strokeWidth="0.8" strokeLinecap="round" />
-                    {/* Barcode */}
-                    <line x1="6" y1="36" x2="6" y2="42" stroke="#64748B" strokeWidth="1" />
-                    <line x1="9" y1="36" x2="9" y2="42" stroke="#64748B" strokeWidth="1.6" />
-                    <line x1="13" y1="36" x2="13" y2="42" stroke="#64748B" strokeWidth="0.8" />
-                    <line x1="16" y1="36" x2="16" y2="42" stroke="#64748B" strokeWidth="2" />
-                    <line x1="20" y1="36" x2="20" y2="42" stroke="#64748B" strokeWidth="1" />
-                    <line x1="24" y1="36" x2="24" y2="42" stroke="#64748B" strokeWidth="1.5" />
-                  </g>
-
-                  {/* 3D Angled Blue Passport in Front */}
-                  <g transform="translate(10, 4) rotate(-8)" filter="url(#tipShadow)">
-                    {/* Pages spine / bottom teal thickness */}
-                    <rect x="0" y="0" width="54" height="76" rx="5" fill="#005A46" />
-                    {/* Passport Front Cover */}
-                    <rect x="2" y="0" width="52" height="76" rx="5" fill="url(#tipPassportGrad)" />
-                    
-                    {/* Top small seal accent */}
-                    <line x1="22" y1="12" x2="32" y2="12" stroke="#FFFFFF" strokeOpacity="0.45" strokeWidth="0.8" strokeLinecap="round" />
-
-                    {/* Globe Emblem */}
-                    <circle cx="28" cy="33" r="11" fill="none" stroke="#FFFFFF" strokeWidth="1.1" />
-                    <ellipse cx="28" cy="33" rx="5" ry="11" fill="none" stroke="#FFFFFF" strokeWidth="0.9" />
-                    <line x1="17" y1="33" x2="39" y2="33" stroke="#FFFFFF" strokeWidth="0.9" />
-                    <path d="M 19 28 Q 28 30 37 28" fill="none" stroke="#FFFFFF" strokeWidth="0.75" />
-                    <path d="M 19 38 Q 28 36 37 38" fill="none" stroke="#FFFFFF" strokeWidth="0.75" />
-
-                    {/* TRAVEL text */}
-                    <text x="28" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="6" fontWeight="900" letterSpacing="1.5" fontFamily="system-ui, sans-serif">
-                      TRAVEL
-                    </text>
-                  </g>
-                </svg>
+              {/* Counter 4: Action Required */}
+              <div className="bg-white/95 backdrop-blur-xs rounded-2xl p-3 sm:p-3.5 border border-slate-100 shadow-2xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+                  <AlertCircle className="w-4 h-4 stroke-[2.5]" />
+                </div>
+                <div>
+                  <div className="text-lg sm:text-xl font-black text-slate-900 leading-tight">
+                    {actionItemsCount}
+                  </div>
+                  <div className="text-[11px] font-medium text-slate-500">
+                    Action Required
+                  </div>
+                </div>
               </div>
 
-              {/* Cursive "Travel Smart" with Brush Underline */}
-              <div className="flex flex-col items-end pr-1 -rotate-3 select-none">
-                <span
-                  className="text-2xl sm:text-[26px] font-bold text-[#008767] tracking-normal leading-none"
-                  style={{ fontFamily: "'Caveat', cursive, sans-serif" }}
-                >
-                  Travel Smart
-                </span>
-                <svg width="68" height="6" viewBox="0 0 68 6" fill="none" className="mt-1">
-                  <path d="M2 3.5C22 1.5 46 1.8 66 3" stroke="#008767" strokeWidth="2.2" strokeLinecap="round" />
-                </svg>
-              </div>
             </div>
+
           </div>
         </div>
       </div>
 
-      {/* ══════════ MODALS ══════════ */}
+      {/* ── 2. TRAVELLER FILTER PILLS & SEARCH BAR ── */}
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-100 shadow-2xs">
+        
+        {/* Horizontal Scrollable Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+          
+          {/* All Travellers */}
+          <button
+            type="button"
+            onClick={() => setSelectedTravellerId("all")}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition shrink-0 cursor-pointer ${
+              selectedTravellerId === "all"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+            }`}
+          >
+            All Travellers ({tripData.travellersCount})
+          </button>
 
-      {/* 1. EDIT TRIP DETAILS MODAL (Luxurious iPhone / iOS 2030 aesthetic) */}
-      {showEditTripModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 z-50">
-          <div className="bg-white/95 backdrop-blur-xl rounded-3xl max-w-lg w-full p-6 sm:p-7 space-y-5 shadow-2xl text-left border border-slate-200/80 animate-fade-up">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
-                  <Edit2 className="w-4 h-4" />
+          {/* Individual Travellers */}
+          {travellers.map(t => {
+            const isSelected = selectedTravellerId === t.id;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setSelectedTravellerId(isSelected ? "all" : t.id)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition shrink-0 cursor-pointer border ${
+                  isSelected
+                    ? "bg-blue-50 border-blue-400 text-blue-800 shadow-2xs"
+                    : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                }`}
+              >
+                <span className={`w-5 h-5 rounded-full ${t.color} text-[10px] font-bold flex items-center justify-center shrink-0`}>
+                  {t.initials}
+                </span>
+                <span>{t.name}</span>
+                <span className="text-slate-400 text-[10px]">({t.role})</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Search Input & Filter Icon */}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="relative flex-1 md:w-56">
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Search items, locations..."
+              className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
+
+          <button
+            type="button"
+            className="p-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition cursor-pointer"
+            title="Filters"
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+      </div>
+
+      {/* ── 3. MAIN WORKSPACE GRID: 3 COLUMNS ON DESKTOP ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        {/* ── COLUMN 1: TRAVELLER WISE LUGGAGE (3.5 COLS) ── */}
+        <div className="lg:col-span-4 space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
+            
+            {/* Header */}
+            <div>
+              <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                Traveller Wise Luggage
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                View and manage packing status for each traveller
+              </p>
+            </div>
+
+            {/* Traveller Cards List */}
+            <div className="space-y-3">
+              {travellerStats.map(t => (
+                <div
+                  key={t.id}
+                  onClick={() => setSelectedTravellerId(selectedTravellerId === t.id ? "all" : t.id)}
+                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer space-y-3 ${
+                    selectedTravellerId === t.id
+                      ? "bg-blue-50/50 border-blue-300 ring-1 ring-blue-300 shadow-xs"
+                      : "bg-white border-slate-100 hover:border-slate-200 hover:shadow-2xs"
+                  }`}
+                >
+                  {/* Top: Avatar, Name & Status Pills */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-9 h-9 rounded-xl ${t.color} flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs`}>
+                        {t.initials}
+                      </div>
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
+                          {t.name} {t.role === "Main Traveller" && <span className="text-slate-400 font-normal text-[11px]">(Main Traveller)</span>}
+                        </h4>
+                        <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-slate-500 font-medium">
+                          <span className="text-emerald-700 font-semibold">{t.checked} Checked</span>
+                          <span>•</span>
+                          <span className="text-amber-700 font-semibold">{t.pending} Pending</span>
+                          <span>•</span>
+                          <span className="text-rose-700 font-semibold">{t.required} Required</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <ChevronRight className="w-4 h-4 text-slate-400 shrink-0 mt-1" />
+                  </div>
+
+                  {/* Sub-row: Suitcase Weight & Progress Bar */}
+                  <div className="pt-1 space-y-1.5">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="flex items-center gap-1.5 font-medium text-slate-700">
+                        <Luggage className="w-3.5 h-3.5 text-slate-500" />
+                        <span>{t.bagName} ({t.bagWeight})</span>
+                      </span>
+                      <span className="text-slate-500 font-bold">
+                        {t.checked}/{t.displayTotal} items
+                      </span>
+                    </div>
+
+                    {/* Progress Track */}
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-blue-600 rounded-full transition-all duration-500"
+                        style={{ width: `${t.percent}%` }}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-900 tracking-tight">Edit Trip Details</h3>
-                  <p className="text-[11px] text-slate-500 font-medium">Update your journey route, schedule & requirements</p>
+              ))}
+            </div>
+
+            {/* + Add Traveller Button */}
+            <button
+              type="button"
+              onClick={() => setShowAddTravellerModal(true)}
+              className="w-full py-2.5 rounded-xl border border-dashed border-blue-300 hover:border-blue-500 text-blue-600 hover:text-blue-700 bg-blue-50/40 hover:bg-blue-50 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Traveller</span>
+            </button>
+
+          </div>
+        </div>
+
+        {/* ── COLUMN 2: PACKING CHECKLIST (5.5 COLS) ── */}
+        <div className="lg:col-span-5 space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4">
+            
+            {/* Header & Actions */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                  Packing Checklist
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Complete your packing list and check customs requirements for each item.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setShowTemplateModal(true)}
+                  className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <FolderDown className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Import from Template</span>
+                </button>
+                <button
+                  type="button"
+                  className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                >
+                  <MoreHorizontal className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Filter Tabs Pills */}
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar border-b border-slate-100 pb-3">
+              <button
+                type="button"
+                onClick={() => setActiveStatusFilter("all")}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition shrink-0 cursor-pointer ${
+                  activeStatusFilter === "all"
+                    ? "bg-blue-600 text-white shadow-2xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                All Items ({totalItemsCount})
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveStatusFilter("packed")}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition shrink-0 cursor-pointer flex items-center gap-1.5 ${
+                  activeStatusFilter === "packed"
+                    ? "bg-emerald-600 text-white shadow-2xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                <Check className="w-3 h-3 stroke-[3]" />
+                <span>Packed ({packedItemsCount})</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveStatusFilter("pending")}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition shrink-0 cursor-pointer flex items-center gap-1.5 ${
+                  activeStatusFilter === "pending"
+                    ? "bg-amber-600 text-white shadow-2xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                <Clock className="w-3 h-3" />
+                <span>Pending ({pendingItemsCount})</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveStatusFilter("action")}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition shrink-0 cursor-pointer flex items-center gap-1.5 ${
+                  activeStatusFilter === "action"
+                    ? "bg-rose-600 text-white shadow-2xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                <AlertCircle className="w-3 h-3" />
+                <span>Action Required ({actionItemsCount})</span>
+              </button>
+            </div>
+
+            {/* Category Groups Table */}
+            <div className="space-y-4">
+              {INITIAL_CATEGORIES.map(category => {
+                const catItems = groupedItems[category.id] || [];
+                const isExpanded = expandedCategories[category.id];
+                const showAll = showAllInCategory[category.id];
+                const visibleItems = showAll ? catItems : catItems.slice(0, 5);
+                const hiddenCount = Math.max(0, catItems.length - 5);
+
+                return (
+                  <div key={category.id} className="border border-slate-100 rounded-xl overflow-hidden">
+                    {/* Category Accordion Header */}
+                    <div
+                      onClick={() => toggleCategory(category.id)}
+                      className="flex items-center justify-between p-3 bg-slate-50/70 hover:bg-slate-100/70 transition cursor-pointer select-none"
+                    >
+                      <div className="flex items-center gap-2">
+                        {isExpanded ? (
+                          <ChevronDown className="w-4 h-4 text-slate-500" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 text-slate-500" />
+                        )}
+                        <span className="text-xs sm:text-sm font-bold text-slate-900">
+                          {category.title}
+                        </span>
+                        <span className="text-xs text-slate-400 font-semibold">
+                          ({catItems.length})
+                        </span>
+                      </div>
+
+                      {!isExpanded && (
+                        <span className="text-xs text-blue-600 font-semibold hover:underline">
+                          Show items
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Table of Items */}
+                    {isExpanded && (
+                      <div className="overflow-x-auto">
+                        {catItems.length === 0 ? (
+                          <div className="p-4 text-center text-xs text-slate-400 font-medium">
+                            No items found for current filter.
+                          </div>
+                        ) : (
+                          <table className="w-full text-left border-collapse text-xs">
+                            <thead>
+                              <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider bg-white">
+                                <th className="py-2.5 pl-3 pr-2">Item</th>
+                                <th className="py-2.5 px-2 text-center">Qty</th>
+                                <th className="py-2.5 px-2">Traveller</th>
+                                <th className="py-2.5 px-2">Location</th>
+                                <th className="py-2.5 px-2">Customs</th>
+                                <th className="py-2.5 pr-3 text-right">Status</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100">
+                              {visibleItems.map(item => (
+                                <tr
+                                  key={item.id}
+                                  className="hover:bg-slate-50/60 transition group"
+                                >
+                                  {/* Checkbox & Item Name */}
+                                  <td className="py-2.5 pl-3 pr-2 font-semibold text-slate-900">
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <button
+                                        type="button"
+                                        onClick={() => handleToggleItemStatus(item.id)}
+                                        className={`w-4 h-4 rounded-md border flex items-center justify-center transition shrink-0 cursor-pointer ${
+                                          item.status === "packed"
+                                            ? "bg-emerald-600 border-emerald-600 text-white"
+                                            : "border-slate-300 bg-white hover:border-slate-400"
+                                        }`}
+                                      >
+                                        {item.status === "packed" && <Check className="w-3 h-3 stroke-[3]" />}
+                                      </button>
+                                      <span className={`truncate ${item.status === "packed" ? "text-slate-900" : "text-slate-800"}`}>
+                                        {item.name}
+                                      </span>
+                                    </div>
+                                  </td>
+
+                                  {/* Quantity */}
+                                  <td className="py-2.5 px-2 text-center text-slate-600 font-bold">
+                                    {item.quantity}
+                                  </td>
+
+                                  {/* Traveller */}
+                                  <td className="py-2.5 px-2 text-slate-700 whitespace-nowrap">
+                                    <div className="flex items-center gap-1 text-[11px]">
+                                      <User className="w-3 h-3 text-blue-500 shrink-0" />
+                                      <span>{item.travellerName}</span>
+                                    </div>
+                                  </td>
+
+                                  {/* Location */}
+                                  <td className="py-2.5 px-2 text-slate-700 whitespace-nowrap">
+                                    <div className="flex items-center gap-1 text-[11px]">
+                                      <Luggage className="w-3 h-3 text-slate-400 shrink-0" />
+                                      <span>{item.location}</span>
+                                    </div>
+                                  </td>
+
+                                  {/* Customs */}
+                                  <td className="py-2.5 px-2 whitespace-nowrap">
+                                    <span className={`text-[11px] ${
+                                      item.customsRule.includes("Req") || item.customsRule.includes("Declaration") && !item.customsRule.includes("No")
+                                        ? "text-rose-600 font-semibold"
+                                        : item.customsRule.includes("Liquids")
+                                        ? "text-amber-700 font-medium"
+                                        : "text-slate-500 font-normal"
+                                    }`}>
+                                      {item.customsRule}
+                                    </span>
+                                  </td>
+
+                                  {/* Status Badge */}
+                                  <td className="py-2.5 pr-3 text-right whitespace-nowrap">
+                                    {item.status === "packed" && (
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-200">
+                                        <Check className="w-3 h-3 stroke-[3]" />
+                                        <span>Packed</span>
+                                      </span>
+                                    )}
+                                    {item.status === "pending" && (
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200">
+                                        <Clock className="w-3 h-3" />
+                                        <span>Pending</span>
+                                      </span>
+                                    )}
+                                    {item.status === "action" && (
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[11px] font-bold border border-rose-200">
+                                        <AlertCircle className="w-3 h-3" />
+                                        <span>Action</span>
+                                      </span>
+                                    )}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        )}
+
+                        {/* Show More Link */}
+                        {hiddenCount > 0 && !showAll && (
+                          <div className="p-2.5 bg-slate-50/50 border-t border-slate-100 text-left pl-4">
+                            <button
+                              type="button"
+                              onClick={() => toggleShowMore(category.id)}
+                              className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1 cursor-pointer"
+                            >
+                              <span>Show {hiddenCount} more items</span>
+                              <ChevronDown className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+        </div>
+
+        {/* ── COLUMN 3: CUSTOMS & DECLARATIONS + QUICK ACTIONS (3 COLS) ── */}
+        <div className="lg:col-span-3 space-y-4">
+          
+          {/* Card 1: Customs & Declarations */}
+          {isCustomsOpen && (
+            <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-4 relative">
+              
+              {/* Top Header with Close Icon */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-blue-600" />
+                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                    Customs &amp; Declarations
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsCustomsOpen(false)}
+                  className="p-1 rounded-lg text-slate-400 hover:text-slate-700 cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Destination Pill */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div className="flex items-center gap-2.5">
+                  {/* Japan Flag Circle */}
+                  <div className="w-6 h-6 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-2xs overflow-hidden">
+                    <div className="w-3 h-3 rounded-full bg-rose-600" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Destination</div>
+                    <div className="text-xs font-bold text-slate-900">{tripData.destination}</div>
+                  </div>
+                </div>
+
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <Check className="w-2.5 h-2.5 stroke-[3]" />
+                  <span>Visa Approved</span>
+                </span>
+              </div>
+
+              {/* Key Customs Requirements List */}
+              <div className="space-y-2.5 pt-1">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                  Key Customs Requirements
+                </div>
+
+                <div className="space-y-2 text-xs">
+                  {/* Item 1 */}
+                  <div className="flex items-start gap-2.5">
+                    <div className="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <Luggage className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800">Personal items</div>
+                      <div className="text-[11px] text-slate-500">No declaration required</div>
+                    </div>
+                  </div>
+
+                  {/* Item 2 */}
+                  <div className="flex items-start gap-2.5">
+                    <div className="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <Pill className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800">Medications</div>
+                      <div className="text-[11px] text-rose-600 font-semibold">Medical declaration required</div>
+                    </div>
+                  </div>
+
+                  {/* Item 3 */}
+                  <div className="flex items-start gap-2.5">
+                    <div className="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <Laptop className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800">Electronics</div>
+                      <div className="text-[11px] text-slate-500">May require declaration (depends on value)</div>
+                    </div>
+                  </div>
+
+                  {/* Item 4 */}
+                  <div className="flex items-start gap-2.5">
+                    <div className="w-6 h-6 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="font-bold text-[11px]">¥</span>
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800">Baggage value</div>
+                      <div className="text-[11px] text-slate-500">If over ¥1,000,000 (approx. USD 6,500)</div>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              {/* View Full Customs Guide Button */}
+              <a
+                href="/visa/japan?tab=customs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2 px-3 rounded-xl border border-blue-200 text-blue-600 hover:bg-blue-50 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+              >
+                <span>View Full Customs Guide</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+
+              {/* Attention Alert Callout */}
+              <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 space-y-2 text-left">
+                <div className="flex items-start gap-2">
+                  <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                  <p className="text-[11.5px] text-slate-700 leading-relaxed">
+                    <strong>You have 2 items requiring attention.</strong> Please check the customs requirements for medications and high-value items.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowCustomsDetailsModal(true)}
+                  className="w-full py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-2xs cursor-pointer"
+                >
+                  View Details
+                </button>
+              </div>
+
+            </div>
+          )}
+
+          {/* Card 2: Quick Actions */}
+          <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 shadow-2xs space-y-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-blue-600" />
+              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                Quick Actions
+              </h3>
+            </div>
+
+            <div className="space-y-1">
+              <button
+                type="button"
+                onClick={() => setShowQuickActionModal("Search Item Location")}
+                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Search className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
+                  <span>Search Item Location</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowQuickActionModal("Check Customs Requirements")}
+                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <ShieldCheck className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
+                  <span>Check Customs Requirements</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  window.print();
+                }}
+                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Download className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
+                  <span>Download Packing List</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard?.writeText(window.location.href);
+                  alert("Packing list share link copied to clipboard!");
+                }}
+                className="w-full p-2.5 rounded-xl hover:bg-slate-50 text-left flex items-center justify-between transition cursor-pointer text-xs font-semibold text-slate-700 group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Share2 className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
+                  <span>Share with Travellers</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* ── 4. MOBILE BOTTOM NAVIGATION BAR ── */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          type="button"
+          onClick={() => setMobileActiveNav("home")}
+          className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
+            mobileActiveNav === "home" ? "text-blue-600" : "text-slate-400"
+          }`}
+        >
+          <Home className="w-4 h-4" />
+          <span>Home</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setMobileActiveNav("trips")}
+          className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
+            mobileActiveNav === "trips" ? "text-blue-600" : "text-slate-400"
+          }`}
+        >
+          <Plane className="w-4 h-4" />
+          <span>Trips</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setMobileActiveNav("luggage")}
+          className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
+            mobileActiveNav === "luggage" ? "text-blue-600" : "text-slate-400"
+          }`}
+        >
+          <div className="p-1 rounded-lg bg-blue-50 text-blue-600">
+            <Luggage className="w-4 h-4" />
+          </div>
+          <span className="text-blue-600 font-bold">Luggage</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setMobileActiveNav("customs");
+            setIsCustomsOpen(true);
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          }}
+          className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
+            mobileActiveNav === "customs" ? "text-blue-600" : "text-slate-400"
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4" />
+          <span>Customs</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setMobileActiveNav("more")}
+          className={`flex flex-col items-center gap-1 text-[10px] font-semibold ${
+            mobileActiveNav === "more" ? "text-blue-600" : "text-slate-400"
+          }`}
+        >
+          <MoreHorizontal className="w-4 h-4" />
+          <span>More</span>
+        </button>
+      </div>
+
+      {/* ── 5. MODALS & POPUPS ── */}
+
+      {/* Edit Trip Modal */}
+      {showEditTripModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold text-slate-900">Edit Trip Details</h3>
               <button
                 type="button"
                 onClick={() => setShowEditTripModal(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveTripDetails} className="space-y-4 text-xs">
-              {/* Origin Section */}
-              <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60 space-y-2.5">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Origin</div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="font-semibold text-slate-700 block mb-1">From City &amp; Airport</label>
-                    <input
-                      type="text"
-                      value={editTripForm.fromCity}
-                      onChange={(e) => setEditTripForm({ ...editTripForm, fromCity: e.target.value })}
-                      placeholder="e.g. Bengaluru (BLR)"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="font-semibold text-slate-700 block mb-1">From Country</label>
-                    <input
-                      type="text"
-                      value={editTripForm.fromCountry}
-                      onChange={(e) => setEditTripForm({ ...editTripForm, fromCountry: e.target.value })}
-                      placeholder="e.g. India"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                      required
-                    />
-                  </div>
-                </div>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Destination Country</label>
+                <input
+                  type="text"
+                  value={tripData.destination}
+                  onChange={e => setTripData(prev => ({ ...prev, destination: e.target.value }))}
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-blue-500"
+                />
               </div>
 
-              {/* Destination Section */}
-              <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60 space-y-2.5">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Destination</div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="font-semibold text-slate-700 block mb-1">To City &amp; Airport</label>
-                    <input
-                      type="text"
-                      value={editTripForm.toCity}
-                      onChange={(e) => setEditTripForm({ ...editTripForm, toCity: e.target.value })}
-                      placeholder="e.g. Goa (GOI) or Paris (CDG)"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="font-semibold text-slate-700 block mb-1">To Country</label>
-                    <input
-                      type="text"
-                      value={editTripForm.toCountry}
-                      onChange={(e) => setEditTripForm({ ...editTripForm, toCountry: e.target.value })}
-                      placeholder="e.g. India or France"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Schedule & Duration */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Departure Date</label>
+                  <label className="font-bold text-slate-700 block mb-1">Start Date</label>
                   <input
                     type="text"
-                    value={editTripForm.departureDate}
-                    onChange={(e) => setEditTripForm({ ...editTripForm, departureDate: e.target.value })}
-                    placeholder="e.g. 12 Oct 2025"
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                    value={tripData.startDate}
+                    onChange={e => setTripData(prev => ({ ...prev, startDate: e.target.value }))}
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Return Date</label>
+                  <label className="font-bold text-slate-700 block mb-1">End Date</label>
                   <input
                     type="text"
-                    value={editTripForm.returnDate}
-                    onChange={(e) => setEditTripForm({ ...editTripForm, returnDate: e.target.value })}
-                    placeholder="e.g. 16 Oct 2025"
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                  />
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Total Duration</label>
-                  <input
-                    type="text"
-                    value={editTripForm.duration}
-                    onChange={(e) => setEditTripForm({ ...editTripForm, duration: e.target.value })}
-                    placeholder="e.g. 5 Days"
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
+                    value={tripData.endDate}
+                    onChange={e => setTripData(prev => ({ ...prev, endDate: e.target.value }))}
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
+            </div>
 
-              {/* Travel Requirements */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-                <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Visa Approval</label>
-                  <select
-                    value={editTripForm.visaApprovalRequired}
-                    onChange={(e) => setEditTripForm({ ...editTripForm, visaApprovalRequired: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                  >
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Exempt">Exempt</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Forex Card</label>
-                  <select
-                    value={editTripForm.forexCardRequired}
-                    onChange={(e) => setEditTripForm({ ...editTripForm, forexCardRequired: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                  >
-                    <option value="Required">Required</option>
-                    <option value="Optional">Optional</option>
-                    <option value="Not Required">Not Required</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Travel Insurance</label>
-                  <select
-                    value={editTripForm.travelInsuranceRequired}
-                    onChange={(e) => setEditTripForm({ ...editTripForm, travelInsuranceRequired: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 font-semibold focus:outline-hidden focus:ring-2 focus:ring-teal-500/30 focus:border-teal-600 transition-all text-xs"
-                  >
-                    <option value="Required">Required</option>
-                    <option value="Optional">Optional</option>
-                    <option value="Not Required">Not Required</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setShowEditTripModal(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold shadow-sm shadow-teal-600/20 active:scale-[0.98] transition-all cursor-pointer"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowEditTripModal(false)}
+                className="px-4 py-2 rounded-xl text-slate-600 bg-slate-100 hover:bg-slate-200 text-xs font-semibold cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowEditTripModal(false)}
+                className="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 text-xs font-bold cursor-pointer shadow-xs"
+              >
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* 2. ADD / EDIT CO-TRAVELLER MODAL */}
+      {/* Add Traveller Modal */}
       {showAddTravellerModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl text-left border border-slate-200 animate-fade-up">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-base font-black text-slate-900">
-                {editingTraveller ? "Edit Co-Traveller" : "Add Co-Traveller"}
-              </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+          <form
+            onSubmit={handleAddTravellerSubmit}
+            className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200"
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold text-slate-900">Add New Traveller</h3>
               <button
                 type="button"
                 onClick={() => setShowAddTravellerModal(false)}
@@ -1524,318 +1645,174 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               </button>
             </div>
 
-            <form onSubmit={handleSaveTraveller} className="space-y-3 text-xs">
+            <div className="space-y-3 text-xs">
               <div>
                 <label className="font-bold text-slate-700 block mb-1">Full Name</label>
                 <input
                   type="text"
-                  placeholder="e.g. Sarah Edwin"
-                  value={travellerForm.name}
-                  onChange={(e) => setTravellerForm({ ...travellerForm, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
                   required
+                  value={newTravellerName}
+                  onChange={e => setNewTravellerName(e.target.value)}
+                  placeholder="e.g. Sameer Sharma"
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Role / Status</label>
+                <label className="font-bold text-slate-700 block mb-1">Traveller Role</label>
                 <select
-                  value={travellerForm.role}
-                  onChange={(e) =>
-                    setTravellerForm({ ...travellerForm, role: e.target.value as "Primary Traveller" | "Co-Traveller" })
-                  }
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
+                  value={newTravellerRole}
+                  onChange={e => setNewTravellerRole(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500 bg-white"
                 >
-                  <option value="Co-Traveller">Co-Traveller</option>
-                  <option value="Primary Traveller">Primary Traveller</option>
+                  <option value="Adult">Adult</option>
+                  <option value="Child">Child</option>
+                  <option value="Senior">Senior</option>
+                  <option value="Shared">Shared Cabin Bag</option>
                 </select>
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Passport / ID Number</label>
-                <input
-                  type="text"
-                  placeholder="e.g. A9876543"
-                  value={travellerForm.passport}
-                  onChange={(e) => setTravellerForm({ ...travellerForm, passport: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-
-              <div>
-                <label className="font-bold text-slate-700 block mb-1">Date of Birth</label>
-                <input
-                  type="text"
-                  placeholder="e.g. 12 Mar 1985"
-                  value={travellerForm.dob}
-                  onChange={(e) => setTravellerForm({ ...travellerForm, dob: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 font-semibold focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAddTravellerModal(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 cursor-pointer"
+                <label className="font-bold text-slate-700 block mb-1">Allocated Luggage</label>
+                <select
+                  value={newTravellerBag}
+                  onChange={e => setNewTravellerBag(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-blue-500 bg-white"
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold cursor-pointer"
-                >
-                  {editingTraveller ? "Update Companion" : "Add Companion"}
-                </button>
+                  <option value="Main Suitcase (20kg)">Main Suitcase (20kg)</option>
+                  <option value="Cabin Bag (7kg)">Cabin Bag (7kg)</option>
+                  <option value="Large Suitcase (23kg)">Large Suitcase (23kg)</option>
+                  <option value="Hand Bag (5kg)">Hand Bag (5kg)</option>
+                </select>
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowAddTravellerModal(false)}
+                className="px-4 py-2 rounded-xl text-slate-600 bg-slate-100 hover:bg-slate-200 text-xs font-semibold cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 text-xs font-bold cursor-pointer shadow-xs"
+              >
+                Add Traveller
+              </button>
+            </div>
+          </form>
         </div>
       )}
 
-      {/* 3. MANAGE REMINDERS MODAL */}
-      {showRemindersModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl text-left border border-slate-200 animate-fade-up">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <Bell className="w-4 h-4 text-purple-600" />
-                <h3 className="text-base font-black text-slate-900">Manage Reminders</h3>
+      {/* Customs Attention Modal */}
+      {showCustomsDetailsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-rose-600">
+                <AlertCircle className="w-5 h-5" />
+                <h3 className="text-base font-bold text-slate-900">Customs Attention Items</h3>
               </div>
               <button
                 type="button"
-                onClick={() => setShowRemindersModal(false)}
+                onClick={() => setShowCustomsDetailsModal(false)}
                 className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-4 text-xs">
-              <div>
-                <h4 className="font-bold text-slate-800 mb-2">Notification Timelines</h4>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={reminders.oneDayBefore}
-                      onChange={(e) => setReminders({ ...reminders, oneDayBefore: e.target.checked })}
-                      className="rounded text-teal-600"
-                    />
-                    <span>1 day before departure (Flight details &amp; packing check)</span>
-                  </label>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              These items require special customs declaration or physical certificates upon arrival in {tripData.destination}:
+            </p>
 
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={reminders.threeHoursBefore}
-                      onChange={(e) => setReminders({ ...reminders, threeHoursBefore: e.target.checked })}
-                      className="rounded text-teal-600"
-                    />
-                    <span>3 hours before departure (Web check-in &amp; baggage confirmation)</span>
-                  </label>
-
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={reminders.departureDay}
-                      onChange={(e) => setReminders({ ...reminders, departureDay: e.target.checked })}
-                      className="rounded text-teal-600"
-                    />
-                    <span>On departure morning (Original IDs &amp; tickets alert)</span>
-                  </label>
+            <div className="space-y-2.5 text-xs">
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 space-y-1">
+                <div className="font-bold text-rose-950 flex items-center justify-between">
+                  <span>1. Inhaler (Prescription Medication)</span>
+                  <span className="text-[10px] bg-rose-200 text-rose-800 px-2 py-0.5 rounded-full font-bold">Action Required</span>
+                </div>
+                <div className="text-rose-800 text-[11px]">
+                  Requires an official doctor certificate / prescription copy printed in English detailing dosage and active medical diagnosis.
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-100">
-                <h4 className="font-bold text-slate-800 mb-2">Delivery Channels</h4>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={reminders.viaEmail}
-                      onChange={(e) => setReminders({ ...reminders, viaEmail: e.target.checked })}
-                      className="rounded text-teal-600"
-                    />
-                    <span>Email ({email || "registered email"})</span>
-                  </label>
-
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={reminders.viaWhatsapp}
-                      onChange={(e) => setReminders({ ...reminders, viaWhatsapp: e.target.checked })}
-                      className="rounded text-teal-600"
-                    />
-                    <span>WhatsApp Notifications</span>
-                  </label>
-
-                  <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={reminders.viaSms}
-                      onChange={(e) => setReminders({ ...reminders, viaSms: e.target.checked })}
-                      className="rounded text-teal-600"
-                    />
-                    <span>SMS Alerts</span>
-                  </label>
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 space-y-1">
+                <div className="font-bold text-amber-950 flex items-center justify-between">
+                  <span>2. Laptop &amp; High-Value Gadgets</span>
+                  <span className="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-bold">Duty Assessment</span>
                 </div>
-              </div>
-
-              <div className="flex justify-end gap-2 pt-3">
-                <button
-                  type="button"
-                  onClick={() => setShowRemindersModal(false)}
-                  className="px-4 py-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold cursor-pointer"
-                >
-                  Save Reminder Preferences
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 4. ITINERARY PREVIEW MODAL */}
-      {showItineraryModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-xl text-left border border-slate-200 animate-fade-up max-h-[85vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <Compass className="w-4 h-4 text-purple-600" />
-                <h3 className="text-base font-black text-slate-900">
-                  {tripDetails.toCity} Itinerary (5-Day Plan)
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowItineraryModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="space-y-3 text-xs">
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="font-bold text-slate-900">Day 1: Arrival &amp; Coastal Relaxation</div>
-                <p className="text-slate-600 mt-1 leading-relaxed">
-                  Morning flight to Goa (GOI), airport transfer to beach resort, check-in, sunset walk along Calangute beach.
-                </p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="font-bold text-slate-900">Day 2: North Goa Heritage &amp; Forts</div>
-                <p className="text-slate-600 mt-1 leading-relaxed">
-                  Explore Aguada Fort, Chapora Fort, Anjuna flea market, followed by authentic Goan coastal dinner.
-                </p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="font-bold text-slate-900">Day 3: Water Sports &amp; River Cruise</div>
-                <p className="text-slate-600 mt-1 leading-relaxed">
-                  Water sports at Baga beach (parasailing, jet-ski), evening Mandovi river sunset catamaran cruise.
-                </p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="font-bold text-slate-900">Day 4: South Goa Churches &amp; Spices</div>
-                <p className="text-slate-600 mt-1 leading-relaxed">
-                  Basilica of Bom Jesus, Se Cathedral, Sahakari Spice Farm tour with traditional lunch buffet.
-                </p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="font-bold text-slate-900">Day 5: Souvenirs &amp; Departure</div>
-                <p className="text-slate-600 mt-1 leading-relaxed">
-                  Panjim Latin Quarter (Fontainhas) walk, local cashew shopping, afternoon departure transfer to airport.
-                </p>
+                <div className="text-amber-800 text-[11px]">
+                  High-value personal electronics exceeding equivalent of ¥200,000 should be declared on arrival to avoid duty complications upon return.
+                </div>
               </div>
             </div>
 
             <div className="flex justify-end pt-2">
               <button
                 type="button"
-                onClick={() => setShowItineraryModal(false)}
-                className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold cursor-pointer text-xs"
+                onClick={() => setShowCustomsDetailsModal(false)}
+                className="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700 text-xs font-bold cursor-pointer"
               >
-                Close Itinerary
+                Understood &amp; Close
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* 5. WEATHER FORECAST MODAL */}
-      {showWeatherModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl text-left border border-slate-200 animate-fade-up">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <Sun className="w-4 h-4 text-amber-500" />
-                <h3 className="text-base font-black text-slate-900">
-                  {tripDetails.toCity} Weather Forecast
-                </h3>
-              </div>
+      {/* Import from Template Modal */}
+      {showTemplateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200 text-left">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-slate-900">Import Packing Template</h3>
               <button
                 type="button"
-                onClick={() => setShowWeatherModal(false)}
+                onClick={() => setShowTemplateModal(false)}
                 className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
-                <div>
-                  <div className="text-2xl font-black text-amber-950">29°C</div>
-                  <div className="font-bold text-amber-800">Sunny &amp; Pleasant Coastal Breeze</div>
-                  <div className="text-[11px] text-amber-700 mt-0.5">Humidity: 68% | UV Index: 7 (High)</div>
-                </div>
-                <div className="text-4xl">☀️</div>
-              </div>
-
-              <div className="space-y-1.5 pt-1">
-                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100 font-medium">
-                  <span>12 Oct (Arrival)</span>
-                  <span className="font-bold text-slate-800">30°C / 24°C • Sunny</span>
-                </div>
-                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100 font-medium">
-                  <span>13 Oct</span>
-                  <span className="font-bold text-slate-800">29°C / 23°C • Clear Sky</span>
-                </div>
-                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100 font-medium">
-                  <span>14 Oct</span>
-                  <span className="font-bold text-slate-800">29°C / 24°C • Breezy</span>
-                </div>
-                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100 font-medium">
-                  <span>15 Oct</span>
-                  <span className="font-bold text-slate-800">30°C / 24°C • Sunny</span>
-                </div>
-                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100 font-medium">
-                  <span>16 Oct (Departure)</span>
-                  <span className="font-bold text-slate-800">28°C / 23°C • Part Sunny</span>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 text-[11px] font-medium leading-relaxed">
-                💡 <strong>Packing Recommendation:</strong> Pack breathable cotton wear, UV sunglasses, sunscreen lotion, and a lightweight beach hat.
-              </div>
-            </div>
-
-            <div className="flex justify-end pt-1">
+            <div className="space-y-2 text-xs">
               <button
                 type="button"
-                onClick={() => setShowWeatherModal(false)}
-                className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold cursor-pointer text-xs"
+                onClick={() => {
+                  setItems(INITIAL_PACKING_ITEMS);
+                  setShowTemplateModal(false);
+                }}
+                className="w-full p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 text-left flex items-center justify-between transition cursor-pointer"
               >
-                Close
+                <div>
+                  <div className="font-bold text-slate-900">Japan 14-Day Autumn Travel Master List</div>
+                  <div className="text-slate-500 text-[11px]">26 Items • Clothes, electronics, cold weather ponchos</div>
+                </div>
+                <ArrowRight className="w-4 h-4 text-blue-600 shrink-0" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setItems(INITIAL_PACKING_ITEMS);
+                  setShowTemplateModal(false);
+                }}
+                className="w-full p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 text-left flex items-center justify-between transition cursor-pointer"
+              >
+                <div>
+                  <div className="font-bold text-slate-900">International Student Semester Starter</div>
+                  <div className="text-slate-500 text-[11px]">Academic documents, power banks, medicines, forex card</div>
+                </div>
+                <ArrowRight className="w-4 h-4 text-blue-600 shrink-0" />
               </button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };

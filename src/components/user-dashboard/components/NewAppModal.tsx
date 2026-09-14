@@ -118,13 +118,6 @@ export function NewAppModal({
             </p>
           </div>
 
-          {visasProcessingCount >= 3 && (
-            <div className="p-3 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-800 font-bold flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
-              <span>Maximum limit of 3 active visa applications reached. Please remove or complete an application before creating a new one.</span>
-            </div>
-          )}
-
           <div className="flex gap-3 pt-2">
             <button
               type="button"
@@ -135,14 +128,9 @@ export function NewAppModal({
             </button>
             <button
               type="submit"
-              disabled={visasProcessingCount >= 3}
-              className={`flex-1 py-2.5 rounded-xl font-black text-xs shadow-md transition-all ${
-                visasProcessingCount >= 3
-                  ? "bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed"
-                  : "bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white cursor-pointer"
-              }`}
+              className="flex-1 py-2.5 rounded-xl font-black text-xs shadow-md transition-all bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white cursor-pointer"
             >
-              {visasProcessingCount >= 3 ? "Application Limit Reached (3/3)" : `Create & Save Application (${visasProcessingCount}/3)`}
+              Create &amp; Save Application
             </button>
           </div>
         </form>

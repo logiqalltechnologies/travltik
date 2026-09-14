@@ -79,35 +79,19 @@ export const VisaApplications: React.FC<VisaApplicationsProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <div className="flex items-center gap-2">
-                        <h2 className="text-xl font-black text-slate-900">Visa Applications ({visasProcessingState.length}/3)</h2>
-                        {visasProcessingState.length >= 3 && (
-                            <span className="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold">
-                                Limit Reached (3/3)
-                            </span>
-                        )}
+                        <h2 className="text-xl font-black text-slate-900">Visa Applications ({visasProcessingState.length})</h2>
                     </div>
                     <p className="text-xs font-medium text-slate-500 mt-0.5">
-                        Real-time status, timeline milestones, and embassy filing tracker {visasProcessingState.length >= 3 ? "• Maximum 3 active applications allowed" : "(Max 3 active applications)"}
+                        Real-time status, timeline milestones, and embassy filing tracker
                     </p>
                 </div>
                 <button
                     type="button"
-                    onClick={() => {
-                        if (visasProcessingState.length >= 3) {
-                            showToastMsg("⚠️ Limit reached: Maximum 3 active visa applications allowed at a time. Please remove an existing application to add a new one.");
-                        } else {
-                            setShowNewAppModal(true);
-                        }
-                    }}
-                    className={`px-4 py-2 rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 self-start sm:self-auto transition-all ${
-                        visasProcessingState.length >= 3
-                            ? "bg-slate-150 text-slate-400 border border-slate-200 cursor-not-allowed"
-                            : "bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white cursor-pointer"
-                    }`}
-                    title={visasProcessingState.length >= 3 ? "Maximum 3 applications limit reached" : "Start New Application"}
+                    onClick={() => setShowNewAppModal(true)}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition-all shadow-xs cursor-pointer bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white"
                 >
-                    <Plus className={`w-3.5 h-3.5 ${visasProcessingState.length >= 3 ? "text-slate-400" : "text-emerald-400"}`} />
-                    <span>Start New Application ({visasProcessingState.length}/3)</span>
+                    <Plus className="w-4 h-4" />
+                    <span>Start New Application</span>
                 </button>
             </div>
 

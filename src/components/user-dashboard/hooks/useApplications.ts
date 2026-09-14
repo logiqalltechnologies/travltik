@@ -58,13 +58,6 @@ export function useApplications({
 
   const handleCreateNewApplication = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (visasProcessingState.length >= 3) {
-      if (showToastMsg) {
-        showToastMsg("⚠️ Limit reached: Maximum 3 active visa applications allowed. Please delete or complete an existing application first.");
-      }
-      setShowNewAppModal(false);
-      return;
-    }
     const targetDest = normalizeCountryName(newAppDest || selectedDestination || "United States");
     const targetPass = normalizeCountryName(newAppPass || selectedPassport || "India");
     let targetPurp = newAppPurpose || selectedPurpose || "Tourism / Vacation";
@@ -131,7 +124,7 @@ export function useApplications({
     try {
       existingCases = JSON.parse(localStorage.getItem("active_visa_cases") || "[]");
     } catch(e) {}
-    const updatedCases = [newCase, ...existingCases.filter((c: any) => c.id !== uniqueAppId)].slice(0, 3);
+    const updatedCases = [newCase, ...existingCases.filter((c: any) => c.id !== uniqueAppId)];
     setVisasProcessingState(updatedCases);
     try {
       localStorage.setItem("active_visa_cases", JSON.stringify(updatedCases));
