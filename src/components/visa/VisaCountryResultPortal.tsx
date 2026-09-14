@@ -3359,10 +3359,64 @@ export function VisaCountryResultPortal({
 
   const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes'>('no');
   const [isGateLoading, setIsGateLoading] = useState<boolean>(false);
+  const [authNoticeType, setAuthNoticeType] = useState<'service_provider' | 'not_logged_in' | null>(null);
+
+  const checkIsServiceProvider = () => {
+    if (typeof window === 'undefined') return false;
+    try {
+      const expertLoggedIn = localStorage.getItem('expert_isLoggedIn') === 'true';
+      const expertEmail = localStorage.getItem('expert_email');
+      const userRole = localStorage.getItem('user_role') || sessionStorage.getItem('user_role');
+      const travltikUser = localStorage.getItem('travltik_user');
+      let isExpertType = false;
+      if (travltikUser) {
+        const u = JSON.parse(travltikUser);
+        if (u && (u.type === 'expert' || u.role === 'expert')) isExpertType = true;
+      }
+      return expertLoggedIn || Boolean(expertEmail) || userRole === 'expert' || isExpertType;
+    } catch(e) {
+      return false;
+    }
+  };
+
+  const checkIsTravellerLoggedIn = () => {
+    if (typeof window === 'undefined') return false;
+    try {
+      if (checkIsServiceProvider()) return false;
+      const seekerEmail = localStorage.getItem('seeker_email');
+      const travltikUser = localStorage.getItem('travltik_user');
+      const authUser = localStorage.getItem('auth_user') || localStorage.getItem('user');
+      if (seekerEmail) return true;
+      if (travltikUser) {
+        const u = JSON.parse(travltikUser);
+        if (u && (u.type === 'seeker' || u.type === 'traveller' || !u.type || u.type !== 'expert')) return true;
+      }
+      if (authUser) {
+        const u = JSON.parse(authUser);
+        if (u && (u.type !== 'expert')) return true;
+      }
+      return false;
+    } catch(e) {
+      return false;
+    }
+  };
 
   const handleStatusQuestionYes = () => {
     setUserHasVisa(true);
     setHasVisaAlready('yes');
+
+    // 1. If logged in as service provider, prompt to login as traveller
+    if (checkIsServiceProvider()) {
+      setAuthNoticeType('service_provider');
+      return;
+    }
+
+    // 2. If NOT logged in at all, prompt to login before dashboard
+    if (!checkIsTravellerLoggedIn()) {
+      setAuthNoticeType('not_logged_in');
+      return;
+    }
+
     try {
       if (typeof window !== 'undefined') {
         const p = localStorage.getItem('active_travel_profile');
@@ -3374,9 +3428,10 @@ export function VisaCountryResultPortal({
         localStorage.setItem('seeker_has_visa', 'yes');
       }
     } catch(e) {}
-    // Dashboard → Document Vault redirect
+
+    // Redirect directly to official Traveller Dashboard
     if (typeof window !== 'undefined') {
-      window.location.href = '/dashboard/document-vault';
+      window.location.href = '/traveller/dashboard';
     }
   };
 
@@ -6752,6 +6807,14 @@ export function VisaCountryResultPortal({
   const handleToggleVisaAlready = (val: 'no' | 'yes') => {
     setHasVisaAlready(val);
     if (val === 'yes') {
+      if (checkIsServiceProvider()) {
+        setAuthNoticeType('service_provider');
+        return;
+      }
+      if (!checkIsTravellerLoggedIn()) {
+        setAuthNoticeType('not_logged_in');
+        return;
+      }
       try {
         if (typeof window !== 'undefined') {
           const p = localStorage.getItem('active_travel_profile');
@@ -6764,7 +6827,7 @@ export function VisaCountryResultPortal({
         }
       } catch(e) {}
       if (typeof window !== 'undefined') {
-        window.location.href = '/dashboard/document-vault';
+        window.location.href = '/traveller/dashboard';
       }
       return;
     }
@@ -7434,6 +7497,72 @@ export function VisaCountryResultPortal({
   return (
     <div className="w-full bg-white text-slate-800 font-sans antialiased pb-28 lg:pb-12 [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]">
       
+      {/* ── AUTH / LOGIN REQUIRED MODAL (SERVICE PROVIDER OR GUEST) ── */}
+      {authNoticeType && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 text-center space-y-4">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold border ${
+              authNoticeType === 'service_provider' ? 'bg-amber-50 border-amber-200 text-amber-600' : 'bg-emerald-50 border-emerald-200 text-emerald-600'
+            }`}>
+              {authNoticeType === 'service_provider' ? '⚠️' : '🔐'}
+            </div>
+
+            {authNoticeType === 'service_provider' ? (
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                  Traveller Account Required
+                </h3>
+                <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+                  Aap abhi <strong>Service Provider (Expert)</strong> account se logged in hain. Personal visa details aur Document Vault access karne ke liye kripya <strong>Traveller Account</strong> se login karein.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                  Login Required
+                </h3>
+                <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+                  Apne verified visas aur Document Vault ko access karne ke liye, kripya pehle apne <strong>Traveller Account</strong> se login karein.
+                </p>
+              </div>
+            )}
+
+            <div className="space-y-2.5 pt-2">
+              <a
+                href="/login?role=seeker&redirect=/traveller/dashboard"
+                className="w-full py-3.5 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 shadow-md flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
+              >
+                <span>Login to Traveller Account</span>
+              </a>
+
+              {authNoticeType === 'service_provider' ? (
+                <a
+                  href="/service-provider/dashboard"
+                  className="w-full py-2.5 px-4 rounded-xl font-semibold text-xs text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-all cursor-pointer"
+                >
+                  <span>Go to Service Provider Dashboard</span>
+                </a>
+              ) : (
+                <a
+                  href="/signup?role=seeker&redirect=/traveller/dashboard"
+                  className="w-full py-2.5 px-4 rounded-xl font-semibold text-xs text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-all cursor-pointer"
+                >
+                  <span>Don't have an account? Sign Up</span>
+                </a>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setAuthNoticeType(null)}
+                className="text-xs text-slate-400 hover:text-slate-600 font-medium pt-1 cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── STATUS QUESTION GATE (SABSE PEHLE - BEFORE VISA INFO) ── */}
       {!showVisaInfo && userHasVisa === null && (
         <section className="max-w-3xl mx-auto px-4 pt-12 pb-20 min-h-[60vh] flex flex-col justify-center animate-fadeIn text-center">

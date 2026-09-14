@@ -16,6 +16,24 @@ import { Consultations } from "./sections/Consultations";
 
 export const UserDashboard: React.FC = () => {
     const state = useDashboardState();
+    const [isServiceProvider, setIsServiceProvider] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            try {
+                const expertLoggedIn = localStorage.getItem('expert_isLoggedIn') === 'true';
+                const expertEmail = localStorage.getItem('expert_email');
+                const userRole = localStorage.getItem('user_role') || sessionStorage.getItem('user_role');
+                const travltikUser = localStorage.getItem('travltik_user');
+                let isExpertType = false;
+                if (travltikUser) {
+                    const u = JSON.parse(travltikUser);
+                    if (u && (u.type === 'expert' || u.role === 'expert')) isExpertType = true;
+                }
+                setIsServiceProvider(expertLoggedIn || Boolean(expertEmail) || userRole === 'expert' || isExpertType);
+            } catch(e) {}
+        }
+    }, []);
 
     return (
         <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans">
@@ -54,6 +72,33 @@ export const UserDashboard: React.FC = () => {
 
                 {/* Main Content Area */}
                 <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-6">
+                    {/* Service Provider Warning Alert */}
+                    {isServiceProvider && (
+                        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-amber-950 shadow-xs animate-fadeIn">
+                            <div className="flex items-center gap-3">
+                                <span className="text-2xl p-2 rounded-xl bg-amber-100/80 shrink-0">⚠️</span>
+                                <div className="text-xs sm:text-sm">
+                                    <strong className="font-bold text-amber-900 block sm:inline">Service Provider Account Detected: </strong>
+                                    <span>Aap ek Service Provider (Expert) account se logged in hain. Apne personal visas aur Document Vault manage karne ke liye kripya Traveller account se login karein.</span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+                                <a
+                                    href="/login?role=seeker&redirect=/traveller/dashboard"
+                                    className="flex-1 sm:flex-initial text-center px-4 py-2 rounded-xl bg-[#00a896] hover:bg-[#009282] text-white font-bold text-xs shadow-xs transition active:scale-95"
+                                >
+                                    Login as Traveller
+                                </a>
+                                <a
+                                    href="/service-provider/dashboard"
+                                    className="flex-1 sm:flex-initial text-center px-4 py-2 rounded-xl bg-white border border-amber-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 transition active:scale-95"
+                                >
+                                    Provider Portal
+                                </a>
+                            </div>
+                        </div>
+                    )}
+
                     {/* 1. OVERVIEW DASHBOARD */}
                     {state.activeTab === "dashboard" && (
                         <DashboardOverview
