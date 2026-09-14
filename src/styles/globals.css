@@ -21,6 +21,13 @@
     pointer-events: none;
   }
 
+  /* Crisp, sharp, neat typography across all elements and dashboards */
+  *, *::before, *::after {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

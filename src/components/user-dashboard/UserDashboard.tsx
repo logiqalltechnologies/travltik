@@ -36,7 +36,14 @@ export const UserDashboard: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans">
+        <div 
+            className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans antialiased [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale] [text-rendering:optimizeLegibility]"
+            style={{
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+                textRendering: 'optimizeLegibility'
+            }}
+        >
             {/* Top Navigation Bar */}
             <DashboardHeader
                 dashboardSearch={state.dashboardSearch}

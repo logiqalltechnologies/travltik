@@ -146,7 +146,7 @@ const defaultSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(schema || defaultSchema)} />
 
 </head>
-<body class="font-sans antialiased subpixel-antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden" data-barba="wrapper">
+<body class="font-sans antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden" data-barba="wrapper">
   {!hideHeader && <Header />}
   <main class={`flex-grow ${hideHeader ? "" : "pt-16 lg:pt-20"}`} data-barba="container" data-barba-namespace="default">
     <slot />
