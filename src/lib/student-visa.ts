@@ -322,7 +322,7 @@ export function normalizeCountry(str: string): string {
 const DESTS: Record<string, any> = {
   // ── 35 NEW COUNTRIES ──
   "russia": {
-    "overview": "Russia is a top global destination for Indian medical students (MBBS). World-class universities: Moscow State University, Sechenov First MSMU, Kazan Federal University, and Pavlov First St. Petersburg offer affordable degrees in English.",
+    "overview": "You need a Student Visa to study in Russia. Processing takes 7-20 working days.",
     "fees": {
       "visa_fee": "$50-100 USD (approx. ₹4,100-8,200)",
       "service_fee": "Payable at VFS",
@@ -340,7 +340,7 @@ const DESTS: Record<string, any> = {
     "acceptance_desc": "Ministry of Internal Affairs (MVD) official study invitation voucher processed by the university. ⚠️ HIV/AIDS Test Certificate (within 6 months validity) is MANDATORY for Student Visa applicants staying beyond 90 days — obtain from an ICMR-approved laboratory before applying."
   },
   "kazakhstan": {
-    "overview": "Kazakhstan is a major medical and engineering education hub for Indian students. Universities such as Kazakh National Medical University (Asfendiyarov), Al-Farabi Kazakh National University, and Astana Medical University offer internationally recognized MBBS and technical programs in English.",
+    "overview": "You need a C9 Student Visa to study in Kazakhstan. Processing takes 10-15 working days.",
     "fees": {
       "visa_fee": "$80 USD (approx. ₹6,700)",
       "service_fee": "Payable at Embassy/VAC",
@@ -358,7 +358,7 @@ const DESTS: Record<string, any> = {
     "acceptance_desc": "Ministry of Foreign Affairs visa invitation number issued through the university portal."
   },
   "ukraine": {
-    "overview": "Ukraine has historically been a premier European destination for Indian medical students (MBBS). Leading institutions include Bogomolets National Medical University, VN Karazin Kharkiv National University, and Bukovinian State Medical University.",
+    "overview": "You need a Long-Stay Student Visa (Type D-13) to study in Ukraine. Processing takes 15-30 working days.",
     "fees": {
       "visa_fee": "$65-130 USD (approx. ₹5,400-10,800)",
       "service_fee": "Payable at VFS Global Ukraine",
@@ -1348,7 +1348,7 @@ const DESTS: Record<string, any> = {
     "acceptance_desc": "Official enrollment certificate from an accredited Uruguayan university."
   },
   "fiji": {
-    "overview": "Fiji is the premier educational hub of the South Pacific, hosting the University of the South Pacific (USP, a regional university co-owned by 12 Pacific nations) and Fiji National University (FNU). International students obtain a Student Permit issued by the Fiji Immigration Department.",
+    "overview": "You need a Student Permit to study in Fiji. Processing takes 3 to 5 weeks.",
     "fees": {
       "visa_fee": "FJD $250 (Student Permit Application Fee)",
       "service_fee": "FJD $150 (Security Bond / Processing)",
@@ -1366,7 +1366,7 @@ const DESTS: Record<string, any> = {
     "acceptance_desc": "Official enrollment certificate from an accredited tertiary institution in Fiji."
   },
   "panama": {
-    "overview": "Panama is home to prestigious regional universities including Universidad de Panamá, Universidad Tecnológica de Panamá (UTP), and Florida State University (FSU Panama branch campus). International students obtain a Temporary Student Visa (Visa de Estudiante) via the Servicio Nacional de Migración.",
+    "overview": "You need a Temporary Student Visa (Visa de Estudiante) to study in Panama. Processing takes 3 to 6 weeks.",
     "fees": {
       "visa_fee": "$100 (Student Visa Application)",
       "service_fee": "$50 (Carné de Migración)",
@@ -1384,7 +1384,7 @@ const DESTS: Record<string, any> = {
     "acceptance_desc": "Official enrollment certificate from an accredited Panamanian university."
   },
   "dominican-republic": {
-    "overview": "The Dominican Republic hosts prestigious Caribbean universities including Universidad Autónoma de Santo Domingo (UASD, the oldest university in the New World, founded 1538), Pontificia Universidad Católica Madre y Maestra (PUCMM), and UNIBE (renowned for international English-medium medical and dental programs). International students obtain a Student Visa (Visa de Estudiante - E) from the Ministry of Foreign Affairs (MIREX).",
+    "overview": "You need a Student Visa (Visa de Estudiante - E) to study in Dominican Republic. Processing takes 3 to 6 weeks.",
     "fees": {
       "visa_fee": "$100 (Consular Student Visa Fee)",
       "service_fee": "DOP 5,000 (DGM Student Carné)",

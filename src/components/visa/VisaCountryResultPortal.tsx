@@ -4399,8 +4399,45 @@ export function VisaCountryResultPortal({
         ov = firstSent[0].trim();
       }
     }
+
+    const isMarketing = !ov || /top\s+global\s+destination|popular\s+tourist|top\s+destination|premier\s+(educational|european|destination)|is\s+home\s+to|is\s+a\s+major|is\s+renowned|world-class|destinations?\s+for\s+indian/i.test(ov);
+    if (isMarketing || (!ov.startsWith('You need') && !ov.startsWith('Indian citizens') && !ov.startsWith('You can') && !ov.startsWith('A valid'))) {
+      const vName = isStudyTab 
+        ? `${countryName} Student Visa` 
+        : isWorkTab 
+        ? `${countryName} Work Visa` 
+        : isBusinessTab 
+        ? `${countryName} Business Visa` 
+        : isPRTab 
+        ? `${countryName} Permanent Residency (PR)` 
+        : isFamilyTab 
+        ? `${countryName} Family Visa` 
+        : (isVisaOnArrivalOrFree ? `Visa-Free Entry / Visa on Arrival` : `${countryName} Tourist Visa`);
+
+      const purposeAction = isStudyTab 
+        ? `study in ${countryName}` 
+        : isWorkTab 
+        ? `work in ${countryName}` 
+        : isBusinessTab 
+        ? `attend business meetings in ${countryName}` 
+        : isPRTab 
+        ? `settle permanently in ${countryName}` 
+        : isFamilyTab 
+        ? `join family in ${countryName}` 
+        : `visit ${countryName} for tourism`;
+
+      const pTimeRaw = getResolvedProcessingTime();
+      const pTime = pTimeRaw ? ` Processing takes ${pTimeRaw}.` : ' Processing takes 7-20 working days.';
+
+      if (isVisaOnArrivalOrFree && !isStudyTab && !isWorkTab && !isPRTab) {
+        ov = `You can visit ${countryName} visa-free or with a Visa on Arrival for tourism.`;
+      } else {
+        ov = `You need a ${vName} to ${purposeAction}.${pTime}`;
+      }
+    }
+
     return ov;
-  }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab, isBusinessTab, isPRTab, isFamilyTab]);
+  }, [aiData?.overview, activePurposeTab, initialPurpose, countryName, isStudyTab, isWorkTab, isBusinessTab, isPRTab, isFamilyTab, isVisaOnArrivalOrFree]);
 
   useEffect(() => {
     if (!showVisaInfo && userHasVisa === null) {

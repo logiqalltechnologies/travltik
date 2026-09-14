@@ -269,26 +269,33 @@ Provide the CURRENT official visa and entry requirements based on official gover
 
 CRITICAL FIELD ACCURACY RULES (DO NOT USE GENERIC OR MISSING VALUES):
 
-0. OVERVIEW FORMAT:
-- Start with "You need..." or "You can..."
-- Max 1-2 lines (max 120 characters)
-- Simple English, no jargon
-- Direct, action-oriented
+0. OVERVIEW FORMAT (CRITICAL):
+The overview MUST be about the VISA, not the destination.
 
-Examples:
-- "You need an F-1 Student Visa to study full-time at a US college or university."
-- "Indian citizens need a Schengen Visa to visit France for tourism."
+START WITH:
+- "You need a [visa type] to [purpose] in [country]."
+- "Indian citizens need a [visa type] for [purpose] in [country]."
+
+INCLUDE:
+- Visa type name (e.g., "Student Visa (Type D)")
+- Processing time (e.g., "Processing takes 7-20 working days.")
+- Max stay (e.g., "Max stay: up to 90 days per entry" or duration of study)
+
+EXAMPLES (GOOD):
+- "You need a Student Visa (Type D) to study in Russia. Processing takes 7-20 working days."
+- "Indian citizens need a Schengen Visa to visit France for tourism. Max stay: 90 days."
 - "You can enter UAE visa-free for 30 days with a valid Indian passport."
 
-BAD examples (avoid):
+EXAMPLES (BAD — DO NOT USE):
+- "Russia is a top global destination for Indian medical students."
+- "France is a popular tourist destination with rich culture."
 - "The F-1 Academic Student Visa enables international students to pursue..."
-- "This visa category facilitates the entry of..."
 
-CRITICAL:
-- No formal government language
-- No "enables", "facilitates", "pursuant to"
-- Use "you" and "your"
-- Max 120 characters, max 2 lines
+CRITICAL RULES:
+- NEVER write destination marketing
+- NEVER write "is a top destination" or "is popular" or "is renowned"
+- ALWAYS write about the visa
+- Simple English, max 1-2 lines (max 140 characters)
 
 1. PROCESSING TIME:
 - Must specify WORKING DAYS, not calendar days.
