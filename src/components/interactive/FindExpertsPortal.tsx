@@ -969,9 +969,7 @@ export function FindExpertsPortal() {
 
                     {viewMode === "list" && !loading ? (
                         <div className="space-y-4">
-                            {sorted.map(e => {
-                                const startingPrice = e.price || (e.role?.includes('Attorney') || e.role?.includes('Lawyer') ? '$89' : '$49');
-                                return (
+                            {sorted.map(e => (
                                 <div key={e.id} onClick={() => handleExpertCardClick(e)} className="block group cursor-pointer">
                                     <div className="bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row gap-5 shadow-xs hover:shadow-xl hover:border-teal-400/40 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                                         
@@ -1015,20 +1013,11 @@ export function FindExpertsPortal() {
                                                     <p className="text-xs font-medium text-slate-600 mt-0.5">{e.role}</p>
                                                 </div>
 
-                                                {/* Price & Rating Badge Group */}
-                                                <div className="flex flex-col items-center sm:items-end gap-1 shrink-0">
-                                                    {/* Transparent Price Tag */}
-                                                    <div className="inline-flex items-center gap-1.5 bg-teal-50/90 border border-teal-200/80 px-2.5 py-1 rounded-xl shadow-2xs">
-                                                        <span className="text-[10px] uppercase font-medium text-teal-800 tracking-wider">Starting from</span>
-                                                        <span className="text-sm font-semibold text-slate-950 font-sans">{startingPrice}</span>
-                                                        <span className="text-[10px] text-teal-700 font-normal">/ session</span>
-                                                    </div>
-
-                                                    <div className="flex items-center gap-1 mt-0.5">
-                                                        <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                                                        <span className="font-semibold text-xs text-slate-900">{e.rating?.toFixed(1)}</span>
-                                                        {e.reviews > 0 && <span className="text-[10px] text-slate-400 font-normal">({e.reviews} verified reviews)</span>}
-                                                    </div>
+                                                {/* Rating Badge */}
+                                                <div className="flex items-center gap-1 shrink-0">
+                                                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                                                    <span className="font-semibold text-xs text-slate-900">{e.rating?.toFixed(1)}</span>
+                                                    {e.reviews > 0 && <span className="text-[10px] text-slate-400 font-normal">({e.reviews} verified reviews)</span>}
                                                 </div>
                                             </div>
 
@@ -1123,8 +1112,7 @@ export function FindExpertsPortal() {
                                         </div>
                                     </div>
                                 </div>
-                                );
-                            })}
+                            ))}
                         </div>
                     ) : !loading ? (
                         <div className="bg-white border border-slate-100 rounded-3xl p-8 text-center space-y-4 shadow-xl">
