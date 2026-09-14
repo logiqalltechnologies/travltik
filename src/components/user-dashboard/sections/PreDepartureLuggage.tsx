@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import {
   Luggage,
   Plane,
+  Trash2,
   Users,
   CheckCircle2,
   Clock,
@@ -91,48 +92,7 @@ interface PackingCategory {
   itemCount: number;
 }
 
-const INITIAL_TRAVELLERS: Traveller[] = [
-  {
-    id: "t_prashanth",
-    initials: "PP",
-    name: "Prashanth",
-    role: "Main Traveller",
-    color: "bg-purple-600 text-white",
-    bagName: "Main Suitcase",
-    bagWeight: "20kg",
-    totalItems: 10
-  },
-  {
-    id: "t_anika",
-    initials: "AK",
-    name: "Anika",
-    role: "Adult",
-    color: "bg-pink-500 text-white",
-    bagName: "Cabin Bag",
-    bagWeight: "7kg",
-    totalItems: 6
-  },
-  {
-    id: "t_rahul",
-    initials: "RK",
-    name: "Rahul",
-    role: "Adult",
-    color: "bg-blue-600 text-white",
-    bagName: "Large Suitcase",
-    bagWeight: "23kg",
-    totalItems: 10
-  },
-  {
-    id: "t_cabin_shared",
-    initials: "CG",
-    name: "Cabin Bag (Shared)",
-    role: "Shared",
-    color: "bg-sky-500 text-white",
-    bagName: "Cabin Bag",
-    bagWeight: "7kg",
-    totalItems: 6
-  }
-];
+
 
 const INITIAL_CATEGORIES: PackingCategory[] = [
   { id: "clothing", title: "Essentials & Clothing", itemCount: 8 },
@@ -142,332 +102,101 @@ const INITIAL_CATEGORIES: PackingCategory[] = [
   { id: "documents", title: "Documents & Valuables", itemCount: 3 }
 ];
 
-const INITIAL_PACKING_ITEMS: PackingItem[] = [
-  // Essentials & Clothing (8)
-  {
-    id: "item-1",
-    categoryId: "clothing",
-    name: "T-shirts",
-    quantity: 5,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-2",
-    categoryId: "clothing",
-    name: "Jeans",
-    quantity: 2,
-    travellerId: "t_anika",
-    travellerName: "Anika",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-3",
-    categoryId: "clothing",
-    name: "Formal Shirt",
-    quantity: 2,
-    travellerId: "t_rahul",
-    travellerName: "Rahul",
-    location: "Large Suitcase",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-4",
-    categoryId: "clothing",
-    name: "Jacket",
-    quantity: 1,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "pending"
-  },
-  {
-    id: "item-5",
-    categoryId: "clothing",
-    name: "Socks",
-    quantity: 6,
-    travellerId: "all",
-    travellerName: "All",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-6",
-    categoryId: "clothing",
-    name: "Thermal Innerwear",
-    quantity: 2,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-7",
-    categoryId: "clothing",
-    name: "Walking Sneakers",
-    quantity: 1,
-    travellerId: "t_anika",
-    travellerName: "Anika",
-    location: "Cabin Bag",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-8",
-    categoryId: "clothing",
-    name: "Rain Poncho / Umbrella",
-    quantity: 2,
-    travellerId: "all",
-    travellerName: "All",
-    location: "Cabin Bag",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-
-  // Medications & Health (4)
-  {
-    id: "item-9",
-    categoryId: "meds",
-    name: "Prescription Medicine",
-    quantity: 1,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Hand Bag",
-    customsRule: "Medical (No Restriction)",
-    status: "packed",
-    notes: "Doctor prescription attached with official stamp"
-  },
-  {
-    id: "item-10",
-    categoryId: "meds",
-    name: "Pain Relief Tablets",
-    quantity: 1,
-    travellerId: "t_anika",
-    travellerName: "Anika",
-    location: "Cabin Bag",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-11",
-    categoryId: "meds",
-    name: "Vitamin Supplements",
-    quantity: 1,
-    travellerId: "t_rahul",
-    travellerName: "Rahul",
-    location: "Large Suitcase",
-    customsRule: "No Declaration",
-    status: "pending"
-  },
-  {
-    id: "item-12",
-    categoryId: "meds",
-    name: "Inhaler",
-    quantity: 1,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Hand Bag",
-    customsRule: "Medical Declaration Req.",
-    status: "action",
-    notes: "Requires customs declaration and doctor certificate at airport"
-  },
-
-  // Electronics & Gadgets (5)
-  {
-    id: "item-13",
-    categoryId: "electronics",
-    name: "Universal Travel Adapter",
-    quantity: 2,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Cabin Bag",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-14",
-    categoryId: "electronics",
-    name: "Power Bank (10,000 mAh)",
-    quantity: 1,
-    travellerId: "t_anika",
-    travellerName: "Anika",
-    location: "Hand Bag",
-    customsRule: "Cabin Baggage Only (Safety)",
-    status: "packed",
-    notes: "Aviation security prohibits power banks in checked luggage"
-  },
-  {
-    id: "item-15",
-    categoryId: "electronics",
-    name: "Noise Cancelling Headphones",
-    quantity: 1,
-    travellerId: "t_rahul",
-    travellerName: "Rahul",
-    location: "Cabin Bag",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-16",
-    categoryId: "electronics",
-    name: "Laptop & Charger",
-    quantity: 1,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Cabin Bag",
-    customsRule: "High-Value Declaration",
-    status: "action",
-    notes: "Value exceeding USD 2,000 must be noted for customs entry"
-  },
-  {
-    id: "item-17",
-    categoryId: "electronics",
-    name: "Smartphone & Cables",
-    quantity: 2,
-    travellerId: "all",
-    travellerName: "All",
-    location: "Hand Bag",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-
-  // Toiletries & Personal Care (6)
-  {
-    id: "item-18",
-    categoryId: "toiletries",
-    name: "Travel Toothpaste & Brush",
-    quantity: 3,
-    travellerId: "all",
-    travellerName: "All",
-    location: "Cabin Bag",
-    customsRule: "Liquids < 100ml Rule",
-    status: "packed"
-  },
-  {
-    id: "item-19",
-    categoryId: "toiletries",
-    name: "Sunscreen SPF 50+",
-    quantity: 1,
-    travellerId: "t_anika",
-    travellerName: "Anika",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-20",
-    categoryId: "toiletries",
-    name: "Shampoo & Body Wash (Mini)",
-    quantity: 2,
-    travellerId: "all",
-    travellerName: "All",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "packed"
-  },
-  {
-    id: "item-21",
-    categoryId: "toiletries",
-    name: "Moisturizer & Lip Balm",
-    quantity: 2,
-    travellerId: "t_anika",
-    travellerName: "Anika",
-    location: "Hand Bag",
-    customsRule: "Liquids < 100ml Rule",
-    status: "packed"
-  },
-  {
-    id: "item-22",
-    categoryId: "toiletries",
-    name: "Electric Shaver & Grooming Kit",
-    quantity: 1,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Main Suitcase",
-    customsRule: "No Declaration",
-    status: "pending"
-  },
-  {
-    id: "item-23",
-    categoryId: "toiletries",
-    name: "Wet Wipes & Hand Sanitizer",
-    quantity: 3,
-    travellerId: "all",
-    travellerName: "All",
-    location: "Hand Bag",
-    customsRule: "Liquids < 100ml Rule",
-    status: "packed"
-  },
-
-  // Documents & Valuables (3)
-  {
-    id: "item-24",
-    categoryId: "documents",
-    name: "Passport & Japanese Visa",
-    quantity: 4,
-    travellerId: "all",
-    travellerName: "All",
-    location: "Hand Bag",
-    customsRule: "Mandatory Customs Check",
-    status: "packed",
-    notes: "Carry original physical passport with at least 6 months validity"
-  },
-  {
-    id: "item-25",
-    categoryId: "documents",
-    name: "Forex Card & Currency (Yen)",
-    quantity: 1,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Hand Bag",
-    customsRule: "Cash Declaration Rule",
-    status: "packed"
-  },
-  {
-    id: "item-26",
-    categoryId: "documents",
-    name: "International Driving Permit",
-    quantity: 1,
-    travellerId: "t_prashanth",
-    travellerName: "Prashanth",
-    location: "Hand Bag",
-    customsRule: "Verified Entry Mandate",
-    status: "packed"
-  }
+const STARTER_TEMPLATE_ITEMS: Omit<PackingItem, "id" | "travellerId" | "travellerName">[] = [
+  { categoryId: "clothing", name: "T-shirts & Tops", quantity: 4, location: "Main Luggage", customsRule: "No Declaration", status: "pending" },
+  { categoryId: "clothing", name: "Pants & Jeans", quantity: 2, location: "Main Luggage", customsRule: "No Declaration", status: "pending" },
+  { categoryId: "clothing", name: "Comfortable Shoes & Socks", quantity: 3, location: "Main Luggage", customsRule: "No Declaration", status: "pending" },
+  { categoryId: "clothing", name: "Light Jacket / Outerwear", quantity: 1, location: "Main Luggage", customsRule: "No Declaration", status: "pending" },
+  { categoryId: "meds", name: "Prescription Medicines & Doctor Note", quantity: 1, location: "Hand Bag", customsRule: "Medical Declaration", status: "pending" },
+  { categoryId: "meds", name: "First Aid & Pain Relief Kit", quantity: 1, location: "Cabin Bag", customsRule: "No Declaration", status: "pending" },
+  { categoryId: "electronics", name: "Smartphone, Laptop & Chargers", quantity: 2, location: "Hand Bag", customsRule: "Lithium Battery Carry-on Only", status: "pending" },
+  { categoryId: "electronics", name: "Universal Travel Power Adapter", quantity: 1, location: "Cabin Bag", customsRule: "No Declaration", status: "pending" },
+  { categoryId: "toiletries", name: "Toothbrush, Paste & Travel Toiletries", quantity: 1, location: "Cabin Bag", customsRule: "Liquids under 100ml in transparent pouch", status: "pending" },
+  { categoryId: "documents", name: "Passport & Valid Visas", quantity: 1, location: "Hand Bag", customsRule: "Mandatory Immigration Document", status: "pending" },
+  { categoryId: "documents", name: "Flight Tickets & Hotel Confirmations", quantity: 1, location: "Hand Bag", customsRule: "Present at Border Control", status: "pending" },
+  { categoryId: "documents", name: "International Travel Insurance & Forex Card", quantity: 1, location: "Hand Bag", customsRule: "Declaration if cash over limit", status: "pending" }
 ];
 
 export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
-  selectedDestination = "Japan",
-  fullName = "Prashanth",
-  email = ""
+  selectedDestination = "",
+  fullName = "",
+  email = "",
+  visasProcessingState = []
 }) => {
-  // ── Trip Information State ──
-  const [tripData, setTripData] = useState({
-    destination: "Japan",
-    startDate: "15 Oct 2026",
-    endDate: "28 Oct 2026",
-    travellersCount: 4,
-    visaApproved: true
-  });
+  // ── User Identity & Real Details ──
+  const realUserName = (fullName && fullName.trim() && fullName !== "Prashanth" && fullName !== "Leilwyn Prashanth") ? fullName.trim() : "Main Traveller";
+  const realInitials = realUserName
+    .split(" ")
+    .filter(Boolean)
+    .map(w => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase() || "ME";
+  const activeAppCountry = visasProcessingState?.[0]?.country || visasProcessingState?.[0]?.destination;
+  const realDestination = selectedDestination || activeAppCountry || "My Destination";
 
-  // ── Travellers List State ──
-  const [travellers, setTravellers] = useState<Traveller[]>(() => {
+  // Purge any legacy dummy cache from previous test runs
+  useEffect(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem("travltik_luggage_travellers");
+        const oldTrav = localStorage.getItem("travltik_luggage_travellers");
+        if (oldTrav && oldTrav.includes("Prashanth")) {
+          localStorage.removeItem("travltik_luggage_travellers");
+          localStorage.removeItem("travltik_luggage_items");
+        }
+      } catch (_) {}
+    }
+  }, []);
+
+  // ── Trip Information State ──
+  const [tripData, setTripData] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("travltik_user_trip_v2");
         if (saved) return JSON.parse(saved);
       } catch (_) {}
     }
-    return INITIAL_TRAVELLERS;
+    return {
+      destination: realDestination !== "My Destination" ? realDestination : "Set Destination",
+      startDate: "Departure Date",
+      endDate: "Return Date",
+      travellersCount: 1,
+      visaApproved: true
+    };
+  });
+
+  // Keep destination synced if active application loads
+  useEffect(() => {
+    if (realDestination && realDestination !== "My Destination" && tripData.destination === "Set Destination") {
+      setTripData(prev => ({ ...prev, destination: realDestination }));
+    }
+  }, [realDestination]);
+
+  // ── Travellers List State (User is primary, no dummy companions) ──
+  const [travellers, setTravellers] = useState<Traveller[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("travltik_user_travellers_v2");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0 && !JSON.stringify(parsed).includes("Prashanth")) {
+            return parsed;
+          }
+        }
+      } catch (_) {}
+    }
+    return [
+      {
+        id: "t_user_main",
+        initials: realInitials,
+        name: realUserName,
+        role: "Main Traveller",
+        color: "bg-emerald-600 text-white",
+        bagName: "Main Luggage",
+        bagWeight: "20kg",
+        totalItems: 0
+      }
+    ];
   });
 
   // ── Active Selected Traveller Filter ──
@@ -479,16 +208,30 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
   // ── Search & Query State ──
   const [searchQuery, setSearchQuery] = useState("");
 
-  // ── Packing Items State ──
+  // ── Packing Items State (Empty by default for user to add their own details) ──
   const [items, setItems] = useState<PackingItem[]>(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem("travltik_luggage_items");
-        if (saved) return JSON.parse(saved);
+        const saved = localStorage.getItem("travltik_user_items_v2");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && !JSON.stringify(saved).includes("t_prashanth")) {
+            return parsed;
+          }
+        }
       } catch (_) {}
     }
-    return INITIAL_PACKING_ITEMS;
+    return [];
   });
+
+  // ── Add Item Modal & Form State ──
+  const [showAddItemModal, setShowAddItemModal] = useState(false);
+  const [newItemCategory, setNewItemCategory] = useState("clothing");
+  const [newItemName, setNewItemName] = useState("");
+  const [newItemQty, setNewItemQty] = useState(1);
+  const [newItemTravellerId, setNewItemTravellerId] = useState("t_user_main");
+  const [newItemLocation, setNewItemLocation] = useState("Main Luggage");
+  const [newItemCustoms, setNewItemCustoms] = useState("No Declaration");
 
   // ── Collapsible Categories State ──
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
@@ -526,15 +269,55 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
   const [newTravellerRole, setNewTravellerRole] = useState("Adult");
   const [newTravellerBag, setNewTravellerBag] = useState("Cabin Bag (7kg)");
 
-  // Persist items & travellers
+  // Persist items, travellers & tripData to clean versioned keys
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
-        localStorage.setItem("travltik_luggage_items", JSON.stringify(items));
-        localStorage.setItem("travltik_luggage_travellers", JSON.stringify(travellers));
+        localStorage.setItem("travltik_user_items_v2", JSON.stringify(items));
+        localStorage.setItem("travltik_user_travellers_v2", JSON.stringify(travellers));
+        localStorage.setItem("travltik_user_trip_v2", JSON.stringify(tripData));
       } catch (_) {}
     }
-  }, [items, travellers]);
+  }, [items, travellers, tripData]);
+
+  // Keep tripData.travellersCount in sync with travellers array
+  useEffect(() => {
+    setTripData(prev => ({ ...prev, travellersCount: travellers.length }));
+  }, [travellers.length]);
+
+  // Add Item Submit Handler
+  const handleAddItemSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newItemName.trim()) return;
+    const assignedTrav = travellers.find(t => t.id === newItemTravellerId) || travellers[0];
+    const newItem: PackingItem = {
+      id: `item-${Date.now()}`,
+      categoryId: newItemCategory,
+      name: newItemName.trim(),
+      quantity: Math.max(1, Number(newItemQty) || 1),
+      travellerId: assignedTrav?.id || "t_user_main",
+      travellerName: assignedTrav?.name || realUserName,
+      location: newItemLocation,
+      customsRule: newItemCustoms,
+      status: "pending"
+    };
+    setItems(prev => [newItem, ...prev]);
+    setNewItemName("");
+    setShowAddItemModal(false);
+  };
+
+  // Delete Item Handler
+  const handleDeleteItem = (itemId: string) => {
+    setItems(prev => prev.filter(i => i.id !== itemId));
+  };
+
+  // Delete Traveller Handler
+  const handleDeleteTraveller = (travId: string) => {
+    if (travellers.length <= 1) return;
+    setTravellers(prev => prev.filter(t => t.id !== travId));
+    setItems(prev => prev.filter(i => i.travellerId !== travId));
+    if (selectedTravellerId === travId) setSelectedTravellerId("all");
+  };
 
   // Toggle item packed status
   const handleToggleItemStatus = (itemId: string) => {
@@ -1102,6 +885,42 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               </button>
             </div>
 
+            {/* Empty Checklist State if 0 items */}
+            {items.length === 0 && (
+              <div className="p-8 bg-slate-50/70 border border-dashed border-slate-200 rounded-2xl text-center space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-2xs">
+                  <Luggage className="w-6 h-6 stroke-[2]" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-800">Your Packing Checklist is Ready</h4>
+                  <p className="text-xs text-slate-500 mt-0.5 max-w-sm mx-auto">
+                    Start by adding your own luggage items, or import the essential travel template.
+                  </p>
+                </div>
+                <div className="flex items-center justify-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNewItemCategory("clothing");
+                      setShowAddItemModal(true);
+                    }}
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Add First Item</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowTemplateModal(true)}
+                    className="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-1.5 shadow-2xs transition active:scale-95 cursor-pointer"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Import Template</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Category Groups Table */}
             <div className="space-y-4">
               {INITIAL_CATEGORIES.map(category => {
@@ -1558,34 +1377,177 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  setItems(INITIAL_PACKING_ITEMS);
+                  const mainTrav = travellers[0];
+                  const imported: PackingItem[] = STARTER_TEMPLATE_ITEMS.map((t, idx) => ({
+                    ...t,
+                    id: `tpl-${Date.now()}-${idx}`,
+                    travellerId: mainTrav?.id || "t_user_main",
+                    travellerName: mainTrav?.name || realUserName
+                  }));
+                  setItems(prev => [...imported, ...prev]);
                   setShowTemplateModal(false);
                 }}
-                className="w-full p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 text-left flex items-center justify-between transition cursor-pointer"
+                className="w-full p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-left flex items-center justify-between transition cursor-pointer"
               >
                 <div>
-                  <div className="font-bold text-slate-900">Japan 14-Day Autumn Travel Master List</div>
-                  <div className="text-slate-500 text-[11px]">26 Items • Clothes, electronics, cold weather ponchos</div>
+                  <div className="font-bold text-slate-900">Essential International Travel Master List</div>
+                  <div className="text-slate-500 text-[11px]">12 Core Items • Documents, electronics, clothing & medicines</div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-blue-600 shrink-0" />
+                <ArrowRight className="w-4 h-4 text-emerald-600 shrink-0" />
               </button>
 
               <button
                 type="button"
                 onClick={() => {
-                  setItems(INITIAL_PACKING_ITEMS);
+                  const mainTrav = travellers[0];
+                  const studentItems: PackingItem[] = STARTER_TEMPLATE_ITEMS.slice(4).map((t, idx) => ({
+                    ...t,
+                    id: `stu-${Date.now()}-${idx}`,
+                    travellerId: mainTrav?.id || "t_user_main",
+                    travellerName: mainTrav?.name || realUserName
+                  }));
+                  setItems(prev => [...studentItems, ...prev]);
                   setShowTemplateModal(false);
                 }}
-                className="w-full p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 text-left flex items-center justify-between transition cursor-pointer"
+                className="w-full p-3 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-left flex items-center justify-between transition cursor-pointer"
               >
                 <div>
-                  <div className="font-bold text-slate-900">International Student Semester Starter</div>
-                  <div className="text-slate-500 text-[11px]">Academic documents, power banks, medicines, forex card</div>
+                  <div className="font-bold text-slate-900">Documents &amp; Health Essentials Pack</div>
+                  <div className="text-slate-500 text-[11px]">Passports, visas, foreign currency card, prescription meds</div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-blue-600 shrink-0" />
+                <ArrowRight className="w-4 h-4 text-emerald-600 shrink-0" />
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Add Custom Luggage Item Modal */}
+      {showAddItemModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+          <form
+            onSubmit={handleAddItemSubmit}
+            className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200 text-left"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
+                </div>
+                <h3 className="text-base font-bold text-slate-900">Add Luggage Item</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowAddItemModal(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Item Name</label>
+                <input
+                  type="text"
+                  required
+                  value={newItemName}
+                  onChange={e => setNewItemName(e.target.value)}
+                  placeholder="e.g. Passport, Winter Jacket, Laptop..."
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Category</label>
+                  <select
+                    value={newItemCategory}
+                    onChange={e => setNewItemCategory(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                  >
+                    <option value="clothing">Essentials &amp; Clothing</option>
+                    <option value="meds">Medications &amp; Health</option>
+                    <option value="electronics">Electronics &amp; Gadgets</option>
+                    <option value="toiletries">Toiletries &amp; Care</option>
+                    <option value="documents">Documents &amp; Valuables</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Quantity</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="99"
+                    value={newItemQty}
+                    onChange={e => setNewItemQty(Number(e.target.value))}
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Traveller</label>
+                  <select
+                    value={newItemTravellerId}
+                    onChange={e => setNewItemTravellerId(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                  >
+                    {travellers.map(t => (
+                      <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Luggage Location</label>
+                  <select
+                    value={newItemLocation}
+                    onChange={e => setNewItemLocation(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                  >
+                    <option value="Main Luggage">Main Luggage</option>
+                    <option value="Cabin Bag">Cabin Bag</option>
+                    <option value="Hand Bag">Hand Bag</option>
+                    <option value="Backpack">Backpack</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Customs Declaration Note</label>
+                <select
+                  value={newItemCustoms}
+                  onChange={e => setNewItemCustoms(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border border-slate-200 text-slate-900 bg-white focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                >
+                  <option value="No Declaration">No Declaration (Standard Personal)</option>
+                  <option value="Medical Declaration">Medical Declaration Required</option>
+                  <option value="Lithium Battery Rules">Lithium Battery Rules (Carry-on)</option>
+                  <option value="High-Value Declaration">High-Value Item Declaration</option>
+                  <option value="Restricted / Declared">Restricted / Agricultural Declaration</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowAddItemModal(false)}
+                className="px-4 py-2 rounded-xl text-slate-600 bg-slate-100 hover:bg-slate-200 text-xs font-semibold cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-xl text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 font-bold text-xs shadow-md transition active:scale-95 cursor-pointer"
+              >
+                Add Item to Checklist
+              </button>
+            </div>
+          </form>
         </div>
       )}
 
