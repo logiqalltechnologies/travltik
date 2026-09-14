@@ -490,53 +490,54 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           </button>
         </div>
 
-        {/* 2. Top 4 Metric Cards in 1 Row */}
-        <div className="grid grid-cols-4 gap-2">
+        {/* 2. Top 4 Metric Cards in 1 Row with Perfect Alignment */}
+        <div className="grid grid-cols-4 gap-2 sm:gap-2.5">
           {/* Card 1: Travellers */}
-          <div className="bg-white rounded-2xl p-2.5 border border-[#481268]/15 bg-[#481268]/5 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-0.5 text-[#481268]">
-              <User className="w-4 h-4 stroke-[2.5]" />
-              <span className="text-xs font-bold">{tripData.travellersCount || 4}</span>
+          <div className="bg-white rounded-2xl p-2 sm:p-2.5 border border-purple-200/50 bg-purple-50/30 shadow-2xs text-center flex flex-col items-center justify-center min-h-[64px]">
+            <div className="flex items-center justify-center gap-1 text-[#481268]">
+              <User className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span className="text-xs font-black">{tripData.travellersCount || 1}</span>
             </div>
-            <span className="text-[10px] font-semibold text-[#481268] mt-1">Travellers</span>
+            <span className="text-[10px] font-bold text-[#481268]/90 mt-1">Travellers</span>
           </div>
 
           {/* Card 2: Checked */}
-          <div className="bg-white rounded-2xl p-2.5 border border-emerald-50/80 bg-emerald-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="text-lg font-black text-emerald-500 leading-tight">
-              {packedItemsCount}
+          <div className="bg-white rounded-2xl p-2 sm:p-2.5 border border-emerald-200/50 bg-emerald-50/30 shadow-2xs text-center flex flex-col items-center justify-center min-h-[64px]">
+            <div className="flex items-center justify-center gap-1 text-emerald-600">
+              <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span className="text-xs font-black">{packedItemsCount}</span>
             </div>
-            <span className="text-[10px] font-semibold text-emerald-700 mt-0.5">Checked</span>
+            <span className="text-[10px] font-bold text-emerald-700/90 mt-1">Checked</span>
           </div>
 
           {/* Card 3: Pending */}
-          <div className="bg-white rounded-2xl p-2.5 border border-amber-50/80 bg-amber-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-0.5 text-amber-500">
-              <Clock className="w-4 h-4 stroke-[2.5]" />
-              <span className="text-xs font-bold">{pendingItemsCount}</span>
+          <div className="bg-white rounded-2xl p-2 sm:p-2.5 border border-amber-200/50 bg-amber-50/30 shadow-2xs text-center flex flex-col items-center justify-center min-h-[64px]">
+            <div className="flex items-center justify-center gap-1 text-amber-600">
+              <Clock className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span className="text-xs font-black">{pendingItemsCount}</span>
             </div>
-            <span className="text-[10px] font-semibold text-amber-700 mt-1">Pending</span>
+            <span className="text-[10px] font-bold text-amber-700/90 mt-1">Pending</span>
           </div>
 
           {/* Card 4: Action */}
-          <div className="bg-white rounded-2xl p-2.5 border border-rose-50/80 bg-rose-50/20 shadow-2xs text-center flex flex-col items-center justify-center">
-            <div className="flex items-center justify-center gap-0.5 text-rose-500">
-              <AlertCircle className="w-4 h-4 stroke-[2.5]" />
-              <span className="text-xs font-bold">{actionItemsCount}</span>
+          <div className="bg-white rounded-2xl p-2 sm:p-2.5 border border-rose-200/50 bg-rose-50/30 shadow-2xs text-center flex flex-col items-center justify-center min-h-[64px]">
+            <div className="flex items-center justify-center gap-1 text-rose-600">
+              <AlertCircle className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span className="text-xs font-black">{actionItemsCount}</span>
             </div>
-            <span className="text-[10px] font-semibold text-rose-700 mt-1">Action</span>
+            <span className="text-[10px] font-bold text-rose-700/90 mt-1">Action</span>
           </div>
         </div>
 
         {/* 3. Status Filter Buttons */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
           <button
             type="button"
             onClick={() => setActiveStatusFilter("all")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
               activeStatusFilter === "all"
                 ? "bg-[#481268] text-white shadow-xs"
-                : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                : "bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50"
             }`}
           >
             All ({totalItemsCount})
@@ -544,10 +545,10 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           <button
             type="button"
             onClick={() => setActiveStatusFilter("packed")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer flex items-center gap-1 ${
               activeStatusFilter === "packed"
                 ? "bg-[#481268] text-white shadow-xs"
-                : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                : "bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50"
             }`}
           >
             Packed ({packedItemsCount})
@@ -555,10 +556,10 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
           <button
             type="button"
             onClick={() => setActiveStatusFilter("pending")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer flex items-center gap-1 ${
               activeStatusFilter === "pending"
                 ? "bg-[#481268] text-white shadow-xs"
-                : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                : "bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50"
             }`}
           >
             Pending ({pendingItemsCount})
@@ -567,10 +568,10 @@ export const PreDepartureLuggage: React.FC<PreDepartureLuggageProps> = ({
             <button
               type="button"
               onClick={() => setActiveStatusFilter("action")}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 cursor-pointer flex items-center gap-1 ${
                 activeStatusFilter === "action"
                   ? "bg-[#481268] text-white shadow-xs"
-                  : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                  : "bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50"
               }`}
             >
               Action ({actionItemsCount})
