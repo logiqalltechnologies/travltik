@@ -4,6 +4,7 @@ import {
   ArrowRight, Shield, Plane, Star, BadgeCheck, DollarSign,
   Building2, Users, Zap, Code2, Stethoscope, HardHat,
   ChefHat, GraduationCap, Bookmark, BookmarkPlus,
+  AlertCircle, AlertTriangle, CheckCircle2, Lock, X, Mail, Phone, User, Loader2,
 } from "lucide-react";
 
 const initialJobs = [
@@ -173,9 +174,176 @@ export function JobsPortal() {
   const [toastMsg, setToastMsg]           = useState("");
   const [toastOn, setToastOn]             = useState(false);
 
+  // Application Modal States
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [applyStep, setApplyStep] = useState<"form" | "success">("form");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authErrorModal, setAuthErrorModal] = useState<"none" | "expert" | "unauthenticated">("none");
+
+  // Traveller Details Form State
+  const [applicantName, setApplicantName] = useState("");
+  const [applicantEmail, setApplicantEmail] = useState("");
+  const [applicantPhone, setApplicantPhone] = useState("");
+  const [applicantLocation, setApplicantLocation] = useState("");
+  const [applicantMessage, setApplicantMessage] = useState("");
+  const [formErrors, setFormErrors] = useState<{ email?: string; phone?: string; location?: string }>({});
+
   const showToast = (msg: string) => {
     setToastMsg(msg); setToastOn(true);
     setTimeout(() => setToastOn(false), 2500);
+  };
+
+  const handleInitiateApplication = (jobToApply?: any) => {
+    const targetJob = jobToApply || activeJob;
+    if (!targetJob) return;
+
+    if (jobToApply && !activeJob) {
+      setActiveJob(jobToApply);
+    }
+
+    // Check if expert/service provider
+    const isExpert =
+      localStorage.getItem('expert_isLoggedIn') === 'true' ||
+      Boolean(localStorage.getItem('expert_businessName')) ||
+      Boolean(localStorage.getItem('expert_email')) ||
+      localStorage.getItem('user_role') === 'expert';
+
+    if (isExpert) {
+      setAuthErrorModal("expert");
+      return;
+    }
+
+    // Check if logged in as traveller
+    const seekerEmail = localStorage.getItem('seeker_email') || localStorage.getItem('user_email');
+    let travltikUser: any = null;
+    try {
+      const raw = localStorage.getItem('travltik_user') || localStorage.getItem('auth_user');
+      if (raw) travltikUser = JSON.parse(raw);
+    } catch (e) {}
+
+    const hasTravellerAuth =
+      Boolean(seekerEmail) ||
+      Boolean(localStorage.getItem('seeker_name')) ||
+      Boolean(localStorage.getItem('user_token')) ||
+      Boolean(localStorage.getItem('auth_token')) ||
+      Boolean(travltikUser?.email) ||
+      localStorage.getItem('user_role') === 'seeker' ||
+      localStorage.getItem('user_role') === 'traveller';
+
+    if (!hasTravellerAuth) {
+      setAuthErrorModal("unauthenticated");
+      return;
+    }
+
+    // Prefill details if known
+    const prefillEmail = seekerEmail || travltikUser?.email || applicantEmail || "";
+    const prefillName = localStorage.getItem('seeker_name') || localStorage.getItem('seeker_firstName') || travltikUser?.name || applicantName || "";
+    const prefillPhone = localStorage.getItem('seeker_phone') || travltikUser?.phone || applicantPhone || "";
+    const prefillLocation = localStorage.getItem('seeker_location') || localStorage.getItem('seeker_city') || travltikUser?.location || applicantLocation || "";
+
+    setApplicantEmail(prefillEmail);
+    setApplicantName(prefillName);
+    setApplicantPhone(prefillPhone);
+    setApplicantLocation(prefillLocation);
+    setFormErrors({});
+    setApplyStep("form");
+    setIsApplyModalOpen(true);
+  };
+
+  const handleConfirmApplication = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const errors: { email?: string; phone?: string; location?: string } = {};
+
+    if (!applicantEmail.trim() || !applicantEmail.includes("@")) {
+      errors.email = "Please enter a valid email address";
+    }
+    if (!applicantPhone.trim() || applicantPhone.trim().length < 6) {
+      errors.phone = "Please enter a valid phone number with country code";
+    }
+    if (!applicantLocation.trim() || applicantLocation.trim().length < 2) {
+      errors.location = "Please enter your current city and country";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Save details to localStorage for future use
+      localStorage.setItem('seeker_email', applicantEmail.trim());
+      localStorage.setItem('seeker_phone', applicantPhone.trim());
+      localStorage.setItem('seeker_location', applicantLocation.trim());
+      if (applicantName.trim()) {
+        localStorage.setItem('seeker_name', applicantName.trim());
+      }
+
+      // Record job application in travltik_job_applications
+      const currentJob = activeJob;
+      const newApp = {
+        id: `app_${Date.now()}`,
+        jobId: currentJob?.id || 'job_generic',
+        jobTitle: currentJob?.title || 'Work Permit Position',
+        company: currentJob?.company || 'Immigration Partner',
+        location: currentJob?.location || '',
+        country: currentJob?.country || '',
+        salary: currentJob?.salary || '',
+        applicant: {
+          name: applicantName.trim() || 'Traveller Candidate',
+          email: applicantEmail.trim(),
+          phone: applicantPhone.trim(),
+          location: applicantLocation.trim(),
+          message: applicantMessage.trim(),
+        },
+        appliedAt: new Date().toISOString(),
+        status: 'Submitted',
+      };
+
+      let prevApps: any[] = [];
+      try {
+        prevApps = JSON.parse(localStorage.getItem('travltik_job_applications') || '[]');
+      } catch (e) {}
+      localStorage.setItem('travltik_job_applications', JSON.stringify([newApp, ...prevApps]));
+
+      // Also record in active_visa_cases for Traveller Dashboard integration
+      const newCase = {
+        id: `visa_case_${Date.now()}`,
+        customName: `${currentJob?.title || 'Job'} (${currentJob?.country || 'Work Permit'})`,
+        title: `${currentJob?.title || 'Job'} (${currentJob?.country || 'Work Permit'})`,
+        trackingId: `TRK-JOB-${Math.floor(100000 + Math.random() * 900000)}`,
+        destination: currentJob?.country || 'International',
+        destinationFlag: currentJob?.countryCode || '🌐',
+        visaType: 'Work Permit & Employment',
+        purpose: 'work',
+        passport: 'Standard Passport',
+        status: 'Application Under Review',
+        stage: 'Work Permit Verification & Review',
+        progress: 25,
+        documentsCount: 1,
+        addonsCount: 0,
+        submittedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        targetDate: 'Employer Interview & Sponsorship',
+        createdAt: new Date().toISOString(),
+      };
+
+      let prevCases: any[] = [];
+      try {
+        prevCases = JSON.parse(localStorage.getItem('active_visa_cases') || '[]');
+      } catch (e) {}
+      localStorage.setItem('active_visa_cases', JSON.stringify([newCase, ...prevCases]));
+
+      setApplyStep("success");
+      showToast("🎉 Application submitted successfully!");
+
+      setTimeout(() => {
+        window.location.href = '/traveller/dashboard';
+      }, 1600);
+    } catch (err) {
+      console.error("Error submitting job application:", err);
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -454,7 +622,7 @@ export function JobsPortal() {
             {/* Actions */}
             <div className="flex flex-wrap gap-3 pt-4 border-t border-red-100">
               <button
-                onClick={() => showToast("✅ Application submitted successfully!")}
+                onClick={() => handleInitiateApplication(activeJob)}
                 className="bg-black hover:bg-neutral-900 text-white font-bold text-sm px-7 py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center gap-2 outline-none"
               >
                 Submit Application <ArrowRight className="w-4 h-4" />
@@ -888,6 +1056,302 @@ export function JobsPortal() {
                   Load More Jobs →
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TRAVELLER APPLICATION MODAL */}
+      {isApplyModalOpen && (
+        <div
+          data-lenis-prevent="true"
+          className="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !isSubmitting && applyStep !== "success") {
+              setIsApplyModalOpen(false);
+            }
+          }}
+        >
+          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+            {applyStep === "form" ? (
+              <div>
+                {/* Modal Header */}
+                <div className="bg-slate-900 text-white px-6 py-5 flex items-start justify-between">
+                  <div className="pr-4">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md border border-emerald-500/30">
+                        Traveller Application
+                      </span>
+                      {activeJob?.country && (
+                        <span className="text-slate-300 text-xs font-semibold">
+                          📍 {activeJob.country}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-lg font-bold text-white leading-snug">
+                      {activeJob?.title || "Work Permit Application"}
+                    </h3>
+                    <p className="text-xs text-slate-300 mt-0.5">
+                      {activeJob?.company} · {activeJob?.salary || "Competitive Salary"}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => !isSubmitting && setIsApplyModalOpen(false)}
+                    className="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-white/10 transition-colors shrink-0"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Form Content */}
+                <form onSubmit={handleConfirmApplication} className="p-6 space-y-4">
+                  <div className="bg-blue-50/70 border border-blue-100 rounded-xl p-3 text-xs text-blue-900 leading-relaxed">
+                    💡 <strong>Direct Hiring & Sponsorship:</strong> Please verify your details below. The verified immigration sponsor will contact you regarding required documents and interviews.
+                  </div>
+
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Full Name
+                    </label>
+                    <div className="relative">
+                      <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={applicantName}
+                        onChange={(e) => setApplicantName(e.target.value)}
+                        placeholder="e.g. John Doe"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-black focus:bg-white transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                      <span>Email Address <span className="text-red-500">*</span></span>
+                      {formErrors.email && (
+                        <span className="text-red-600 text-[11px] font-medium">{formErrors.email}</span>
+                      )}
+                    </label>
+                    <div className="relative">
+                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="email"
+                        required
+                        value={applicantEmail}
+                        onChange={(e) => {
+                          setApplicantEmail(e.target.value);
+                          if (formErrors.email) setFormErrors({ ...formErrors, email: undefined });
+                        }}
+                        placeholder="e.g. john@example.com"
+                        className={`w-full bg-slate-50 border rounded-xl pl-10 pr-3 py-2.5 text-sm font-medium focus:outline-none focus:bg-white transition-all ${
+                          formErrors.email ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-black"
+                        }`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                      <span>Phone Number (with country code) <span className="text-red-500">*</span></span>
+                      {formErrors.phone && (
+                        <span className="text-red-600 text-[11px] font-medium">{formErrors.phone}</span>
+                      )}
+                    </label>
+                    <div className="relative">
+                      <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="tel"
+                        required
+                        value={applicantPhone}
+                        onChange={(e) => {
+                          setApplicantPhone(e.target.value);
+                          if (formErrors.phone) setFormErrors({ ...formErrors, phone: undefined });
+                        }}
+                        placeholder="e.g. +1 (555) 234-5678"
+                        className={`w-full bg-slate-50 border rounded-xl pl-10 pr-3 py-2.5 text-sm font-medium focus:outline-none focus:bg-white transition-all ${
+                          formErrors.phone ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-black"
+                        }`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                      <span>Current Location (City, Country) <span className="text-red-500">*</span></span>
+                      {formErrors.location && (
+                        <span className="text-red-600 text-[11px] font-medium">{formErrors.location}</span>
+                      )}
+                    </label>
+                    <div className="relative">
+                      <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        required
+                        value={applicantLocation}
+                        onChange={(e) => {
+                          setApplicantLocation(e.target.value);
+                          if (formErrors.location) setFormErrors({ ...formErrors, location: undefined });
+                        }}
+                        placeholder="e.g. Toronto, Canada or New Delhi, India"
+                        className={`w-full bg-slate-50 border rounded-xl pl-10 pr-3 py-2.5 text-sm font-medium focus:outline-none focus:bg-white transition-all ${
+                          formErrors.location ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-black"
+                        }`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Note / Message */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Note / Message to Employer (Optional)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={applicantMessage}
+                      onChange={(e) => setApplicantMessage(e.target.value)}
+                      placeholder="Brief note regarding your experience or relocation preference..."
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 font-medium focus:outline-none focus:border-black focus:bg-white transition-all resize-none"
+                    />
+                  </div>
+
+                  {/* Submit Actions */}
+                  <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button
+                      type="button"
+                      disabled={isSubmitting}
+                      onClick={() => setIsApplyModalOpen(false)}
+                      className="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="bg-black hover:bg-neutral-900 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
+                        </>
+                      ) : (
+                        <>
+                          Submit Application <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              /* Success confirmation state */
+              <div className="p-8 text-center space-y-4">
+                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm animate-bounce">
+                  <CheckCircle2 className="w-9 h-9" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-900 mb-1">
+                    Application Submitted!
+                  </h3>
+                  <p className="text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
+                    Your details have been registered for <strong>{activeJob?.title}</strong>. Redirecting you to your Traveller Dashboard...
+                  </p>
+                </div>
+                <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-500 pt-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-black" />
+                  <span>Loading dashboard...</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* SERVICE PROVIDER BLOCK MODAL */}
+      {authErrorModal === "expert" && (
+        <div
+          data-lenis-prevent="true"
+          className="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setAuthErrorModal("none")}
+        >
+          <div
+            className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 border border-amber-200 text-center space-y-4 animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto shadow-sm">
+              <AlertTriangle className="w-7 h-7" />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-slate-900 mb-1">
+                Service Provider Account Detected
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Service providers and immigration agents cannot submit job applications. Only Traveller accounts can apply for work permit vacancies.
+              </p>
+            </div>
+            <div className="bg-amber-50/80 border border-amber-200/80 rounded-xl p-3 text-[11px] text-amber-900 text-left">
+              💡 If you wish to apply as a job seeker, please log in or register with a <strong>Traveller Account</strong>.
+            </div>
+            <div className="flex gap-2.5 pt-2">
+              <button
+                onClick={() => setAuthErrorModal("none")}
+                className="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  window.location.href = "/login?role=seeker&redirect=/jobs";
+                }}
+                className="flex-1 py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-colors"
+              >
+                Login as Traveller
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* UNAUTHENTICATED PROMPT MODAL */}
+      {authErrorModal === "unauthenticated" && (
+        <div
+          data-lenis-prevent="true"
+          className="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setAuthErrorModal("none")}
+        >
+          <div
+            className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 border border-slate-200 text-center space-y-4 animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto shadow-sm">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-slate-900 mb-1">
+                Traveller Sign In Required
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                You must be logged in with a Traveller account to submit an application and track your visa milestones.
+              </p>
+            </div>
+            <div className="flex gap-2.5 pt-2">
+              <button
+                onClick={() => setAuthErrorModal("none")}
+                className="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  window.location.href = "/login?role=seeker&redirect=/jobs";
+                }}
+                className="flex-1 py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-colors"
+              >
+                Sign In as Traveller
+              </button>
             </div>
           </div>
         </div>
