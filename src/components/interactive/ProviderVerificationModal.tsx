@@ -65,8 +65,14 @@ export function ProviderVerificationModal({
   useEffect(() => {
     if (!isOpen) return;
 
-    // Body scroll lock
+    // Body and HTML scroll lock to prevent background page scrolling
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    const originalBodyTouchAction = document.body.style.touchAction;
+
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
 
     const resolvedEmail = expertEmail || (typeof window !== "undefined" ? localStorage.getItem("expert_email") || "" : "");
     if (resolvedEmail) {
@@ -75,7 +81,9 @@ export function ProviderVerificationModal({
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+      document.body.style.touchAction = originalBodyTouchAction;
     };
   }, [isOpen, expertEmail]);
 
@@ -319,9 +327,22 @@ export function ProviderVerificationModal({
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-xs animate-fadeIn font-sans">
-      <div className="bg-white border border-slate-200 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-slate-900 relative">
+    <div
+      data-lenis-prevent="true"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-xs animate-fadeIn font-sans overflow-y-auto overscroll-contain"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        data-lenis-prevent="true"
+        onWheel={(e) => e.stopPropagation()}
+        className="bg-white border border-slate-200 w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] text-slate-900 relative overscroll-contain my-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Header Strip */}
         <div className="bg-gradient-to-r from-[#481268] via-[#5c1a84] to-[#00a896] p-5 sm:p-6 text-white relative">
@@ -370,7 +391,7 @@ export function ProviderVerificationModal({
         </div>
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 text-left">
+        <div data-lenis-prevent="true" className="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 text-left overscroll-contain">
           
           {/* Notification Alerts */}
           {generalError && (

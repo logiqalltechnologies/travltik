@@ -161,6 +161,7 @@ const countriesList   = ["All Countries", "Canada", "UAE", "UK", "Australia", "G
 
 export function JobsPortal() {
   const [jobs, setJobs]                   = useState(initialJobs);
+  const [allLoadedJobs, setAllLoadedJobs] = useState(initialJobs);
   const [saved, setSaved]                 = useState<string[]>([]);
   const [searchQuery, setSearchQuery]     = useState("");
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
@@ -179,6 +180,30 @@ export function JobsPortal() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    let combined = [...initialJobs];
+    try {
+      const raw = localStorage.getItem("travltik_published_jobs") || localStorage.getItem("travltik_published_offers");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const formatted = parsed.map((p: any) => ({
+            ...p,
+            icon: HardHat,
+            iconColor: "from-blue-600 to-indigo-600",
+            sponsorship: true,
+            featured: true,
+            urgent: p.urgent !== undefined ? p.urgent : true,
+          }));
+          combined = [...formatted, ...initialJobs];
+        }
+      }
+    } catch (e) {
+      console.warn("Could not load published jobs:", e);
+    }
+    setAllLoadedJobs(combined);
+    setJobs(combined);
+
     const params = new URLSearchParams(window.location.search);
     const qParam = params.get("q") || params.get("query") || params.get("role") || "";
     const countryParam = params.get("country") || "";
@@ -227,14 +252,14 @@ export function JobsPortal() {
     if (categoryVal !== "All Categories") setSelectedCategory(categoryVal);
 
     // Filter jobs immediately
-    let f = initialJobs;
+    let f = combined;
     if (qVal) {
       const qLower = qVal.toLowerCase();
       f = f.filter(j =>
         j.title.toLowerCase().includes(qLower) ||
         j.company.toLowerCase().includes(qLower) ||
         j.location.toLowerCase().includes(qLower) ||
-        (j.tags && j.tags.some(t => t.toLowerCase().includes(qLower)))
+        (j.tags && j.tags.some((t: string) => t.toLowerCase().includes(qLower)))
       );
     }
     if (countryVal !== "All Countries") {
@@ -258,7 +283,7 @@ export function JobsPortal() {
   };
 
   const applyFilters = () => {
-    let f = initialJobs;
+    let f = allLoadedJobs;
     if (searchQuery) f = f.filter(j =>
       j.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       j.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -283,25 +308,25 @@ export function JobsPortal() {
     setSearchQuery(""); setSelectedCountry("All Countries");
     setSelectedCategory("All Categories"); setActiveChip("All Jobs");
     setSponsorOnly(false); setRelocationOnly(false);
-    setJobs(initialJobs); showToast("Filters cleared");
+    setJobs(allLoadedJobs); showToast("Filters cleared");
   };
 
   const filterByChip = (chip: string) => {
     setActiveChip(chip);
-    if (chip === "All Jobs") { setJobs(initialJobs); return; }
+    if (chip === "All Jobs") { setJobs(allLoadedJobs); return; }
     const map: Record<string,string> = {
       "IT & Tech": "IT & Tech", "Healthcare": "Healthcare",
       "Engineering": "Engineering", "Hospitality": "Hospitality",
       "Education": "Education",
     };
     const cat = map[chip];
-    setJobs(cat ? initialJobs.filter(j => j.category === cat) : initialJobs.filter(j => j.posted.includes("h")));
+    setJobs(cat ? allLoadedJobs.filter(j => j.category === cat) : allLoadedJobs.filter(j => j.posted.includes("h") || j.posted.includes("Just now")));
   };
 
   const filterByCountry = (displayName: string) => {
     const countryMap: Record<string,string> = { "Dubai, UAE": "UAE" };
     const mapped = countryMap[displayName] || displayName;
-    setJobs(initialJobs.filter(j => j.country === mapped));
+    setJobs(allLoadedJobs.filter(j => j.country === mapped || j.location.includes(mapped)));
     showToast(`Jobs in ${displayName}`);
   };
 
@@ -381,6 +406,40 @@ export function JobsPortal() {
                 {activeJob.desc} We are hiring premium international candidates for this role. Direct visa filing, relocation credits, and official employer sponsorships will be arranged by our expert immigration panel.
               </p>
             </div>
+
+            {/* Custom Process Steps & Payment Milestones */}
+            {activeJob.processSteps && activeJob.processSteps.length > 0 && (
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-6">
+                <h4 className="text-xs font-extrabold text-slate-900 flex items-center gap-2 mb-3">
+                  <Clock className="w-4 h-4 text-blue-600" /> Work Permit Process Steps & Payment Milestones
+                </h4>
+                <div className="space-y-2.5">
+                  {activeJob.processSteps.map((step: any) => (
+                    <div key={step.id || step.number} className="bg-white border border-slate-200/90 rounded-xl p-3.5 flex items-start justify-between gap-3 text-xs shadow-2xs">
+                      <div className="flex items-start gap-2.5">
+                        <span className="w-5 h-5 rounded-full bg-blue-600 text-white font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                          {step.number}
+                        </span>
+                        <div>
+                          <p className="font-bold text-slate-800">{step.title}</p>
+                          {step.description && <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">{step.description}</p>}
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-[10px] font-extrabold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md inline-block">
+                          ⏱ {step.estimatedTime}
+                        </span>
+                        {step.milestone && step.milestone !== 'None' && (
+                          <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md block mt-1">
+                            💰 {step.milestone}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Visa Package */}
             <div className="bg-red-50/30 border border-red-100 rounded-2xl p-5 mb-6">
@@ -745,6 +804,7 @@ export function JobsPortal() {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/60 via-[#0c1a2e]/10 to-transparent"></div>
 
                       <div className="absolute top-2.5 right-2.5 flex gap-1.5">
+                        {job.isProviderOffer && <span className="bg-blue-600 text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow">⚡ Work Permit Offer</span>}
                         {job.featured && <span className="bg-[#0c1a2e] text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow">⭐ Featured</span>}
                         {job.urgent && <span className="bg-red-50 text-red-700 border border-red-200 text-[9px] font-extrabold px-2.5 py-1 rounded-md">🔴 Urgent</span>}
                       </div>

@@ -1827,9 +1827,9 @@ export function ConsultantDashboard() {
 
             {/* Profile Edit Modal */}
             {isEditingProfile && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+                <div data-lenis-prevent="true" className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto overscroll-contain">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsEditingProfile(false)} />
-                    <div className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-5 sm:p-7 space-y-4 z-10 max-h-[88vh] overflow-y-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-5 sm:p-7 space-y-4 z-10 max-h-[88vh] overflow-y-auto overscroll-contain my-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                             <h3 className="text-base sm:text-lg font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Edit Business & Profile Details</h3>
                             <button onClick={() => setIsEditingProfile(false)} className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors">
@@ -2177,9 +2177,9 @@ export function ConsultantDashboard() {
 
             {/* Post an Ad / Offer Modal */}
             {isPostingAd && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div data-lenis-prevent="true" className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsPostingAd(false)} />
-                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10 my-auto overscroll-contain" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                             <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Post New Classified / Offer</h3>
                             <button onClick={() => setIsPostingAd(false)} className="p-1 text-slate-400 hover:text-slate-700">
@@ -2215,9 +2215,9 @@ export function ConsultantDashboard() {
 
             {/* Add New Lead Modal */}
             {isAddingLead && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div data-lenis-prevent="true" className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto overscroll-contain">
                     <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onClick={() => setIsAddingLead(false)} />
-                    <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <div data-lenis-prevent="true" onWheel={(e) => e.stopPropagation()} className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 z-10 my-auto overscroll-contain" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                             <h3 className="text-base font-extrabold text-slate-900" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Add New Client Lead</h3>
                             <button onClick={() => setIsAddingLead(false)} className="p-1 text-slate-400 hover:text-slate-700">

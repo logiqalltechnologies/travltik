@@ -1,11 +1,111 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Briefcase, MapPin, Users, Clock, Check, Plus, Trash2,
   ChevronDown, ChevronUp, ChevronRight, Send, Sparkles,
   ShieldCheck, HeartPulse, Car, UtensilsCrossed, Home, Building2,
   FileCheck2, Package, Headphones, Info, Lightbulb, CheckCircle2,
-  AlertCircle, Save
+  AlertCircle, Save, ImagePlus, UploadCloud, ArrowRight
 } from 'lucide-react';
+
+interface CustomDropdownProps {
+  value: string;
+  onChange: (value: string) => void;
+  options: (string | { label: string; value: string })[];
+  placeholder?: string;
+  icon?: React.ReactNode;
+  className?: string;
+  buttonClassName?: string;
+  dropdownClassName?: string;
+}
+
+function CustomDropdown({
+  value,
+  onChange,
+  options,
+  placeholder = "Select option",
+  icon,
+  className = "",
+  buttonClassName = "",
+  dropdownClassName = ""
+}: CustomDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const normalizedOptions = options.map(opt =>
+    typeof opt === "string" ? { label: opt, value: opt } : opt
+  );
+
+  const selectedOption = normalizedOptions.find(o => o.value === value);
+
+  return (
+    <div className={`relative ${className}`} ref={dropdownRef} data-lenis-prevent="true">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl border transition-all text-left text-xs sm:text-sm cursor-pointer ${
+          isOpen
+            ? "border-blue-600 bg-white ring-2 ring-blue-500/20 shadow-xs"
+            : "border-slate-200 bg-slate-50/70 hover:bg-white hover:border-slate-300"
+        } ${buttonClassName}`}
+      >
+        <div className="flex items-center gap-2 truncate min-w-0">
+          {icon && <span className="text-slate-400 shrink-0">{icon}</span>}
+          <span className={`truncate ${selectedOption ? "font-semibold text-slate-800" : "font-normal text-slate-400"}`}>
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+        </div>
+        <ChevronDown
+          className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${
+            isOpen ? "rotate-180 text-blue-600" : ""
+          }`}
+        />
+      </button>
+
+      {isOpen && (
+        <div
+          data-lenis-prevent="true"
+          className={`absolute left-0 top-full mt-1.5 w-full min-w-[160px] bg-white border border-slate-200/90 rounded-2xl shadow-xl z-50 p-1.5 max-h-56 overflow-y-auto space-y-0.5 animate-fadeIn ${dropdownClassName}`}
+        >
+          {normalizedOptions.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  onChange(opt.value);
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-blue-50 text-blue-700 font-bold"
+                    : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-medium"
+                }`}
+              >
+                <span className="truncate">{opt.label}</span>
+                {isSelected && <Check className="w-3.5 h-3.5 text-blue-600 shrink-0 ml-2" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 interface ProcessStep {
   id: string;
@@ -118,23 +218,23 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
   const [salaryAmount, setSalaryAmount] = useState<string>('');
   const [salaryPeriod, setSalaryPeriod] = useState<'hour' | 'month'>('hour');
 
-  // Section 2: Benefits
+  // Section 2: Benefits (Unchecked by default so service provider can freely choose)
   const [benefits, setBenefits] = useState({
-    accommodation: true,
-    meals: true,
+    accommodation: false,
+    meals: false,
     transport: false,
-    healthInsurance: true,
+    healthInsurance: false,
     lifeInsurance: false,
     other: false
   });
   const [otherBenefitText, setOtherBenefitText] = useState<string>('');
   const [benefitNotes, setBenefitNotes] = useState<string>('');
 
-  // Section 3: Total Cost
-  const [govFee, setGovFee] = useState<number>(400);
-  const [embassyFee, setEmbassyFee] = useState<number>(350);
-  const [courierFee, setCourierFee] = useState<number>(50);
-  const [travltikFee, setTravltikFee] = useState<number>(200);
+  // Section 3: Total Cost (Empty by default so service provider enters custom pricing)
+  const [govFee, setGovFee] = useState<string>('');
+  const [embassyFee, setEmbassyFee] = useState<string>('');
+  const [courierFee, setCourierFee] = useState<string>('');
+  const [travltikFee, setTravltikFee] = useState<string>('');
   const [isCostCardExpanded, setIsCostCardExpanded] = useState<boolean>(true);
 
   // Section 4: Process Steps
@@ -142,6 +242,37 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
 
   // Section 5: Additional Info
   const [additionalNotes, setAdditionalNotes] = useState<string>('');
+
+  // Section 6: Ad Banner
+  const [adBanner, setAdBanner] = useState<string>('');
+  const [adBannerName, setAdBannerName] = useState<string>('');
+  const [adBannerSize, setAdBannerSize] = useState<string>('');
+  const bannerInputRef = useRef<HTMLInputElement>(null);
+
+  const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('Image file size must be less than 10MB', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (uploadEvent) => {
+      const result = uploadEvent.target?.result as string;
+      setAdBanner(result);
+      setAdBannerName(file.name);
+      setAdBannerSize((file.size / (1024 * 1024)).toFixed(2) + ' MB');
+      showToast('Ad banner uploaded successfully!', 'success');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const BANNER_TEMPLATES = [
+    { label: "Construction & Labor", img: "/images/job_construction_greece.png", icon: "🏗️" },
+    { label: "IT & Tech Engineer", img: "/images/job_tech_engineer.png", icon: "💻" },
+    { label: "Hospitality & Chef", img: "/images/job_chef_london.png", icon: "🍳" },
+    { label: "Healthcare & Nursing", img: "/images/job_nurse_dubai.png", icon: "🩺" },
+  ];
 
   // UI state
   const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'info' | 'error'; text: string } | null>(null);
@@ -226,6 +357,9 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
       totalCost,
       processSteps,
       additionalNotes,
+      adBanner,
+      adBannerName,
+      adBannerSize,
       savedAt: new Date().toISOString()
     };
     try {
@@ -249,20 +383,87 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
       setIsPublishing(false);
       setIsPublishedModalOpen(true);
       try {
-        const publishedOffer = {
-          id: 'wp_' + Date.now(),
-          jobLocation: jobLocation || 'Poland',
-          jobTitle: jobTitle || 'General Worker',
-          totalPositions: totalPositions || '1',
-          employmentType: employmentType || 'Full-time',
-          salary: salaryCurrency + ' ' + (salaryAmount || '1,800') + ' / ' + salaryPeriod,
-          totalCost: salaryCurrency + ' ' + totalCost,
-          status: 'Active',
+        const expertName = localStorage.getItem("expert_businessName") || localStorage.getItem("expert_name") || "Verified Immigration Agency";
+        const expertPhoto = localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || "/images/construction_worker.jpg";
+        const expertEmail = localStorage.getItem("expert_email") || "";
+
+        const locLower = (jobLocation || '').toLowerCase();
+        let code = 'eu';
+        if (locLower.includes('canada')) code = 'ca';
+        else if (locLower.includes('uk') || locLower.includes('united kingdom')) code = 'gb';
+        else if (locLower.includes('germany')) code = 'de';
+        else if (locLower.includes('poland')) code = 'pl';
+        else if (locLower.includes('uae') || locLower.includes('dubai')) code = 'ae';
+        else if (locLower.includes('australia')) code = 'au';
+        else if (locLower.includes('new zealand')) code = 'nz';
+        else if (locLower.includes('greece')) code = 'gr';
+        else if (locLower.includes('usa')) code = 'us';
+
+        const bannerImage = adBanner || '/images/job_construction_greece.png';
+
+        const publishedJob = {
+          id: 'wp-' + Date.now(),
+          title: jobTitle,
+          company: expertName,
+          location: jobLocation ? `${jobLocation} 🌍` : 'Europe 🌍',
+          country: jobLocation || 'Europe',
+          countryCode: code,
+          category: 'Engineering',
+          salary: salaryAmount ? `${salaryCurrency} ${Number(salaryAmount).toLocaleString()}` : `${salaryCurrency} Competitive`,
+          salaryNote: `per ${salaryPeriod}`,
+          posted: 'Just now',
+          type: `${employmentType || 'Contract'} (${totalPositions || 1} slots)`,
+          sponsorship: true,
+          relocation: Boolean(benefits.accommodation || benefits.transport),
+          featured: true,
+          urgent: true,
+          logo: expertPhoto,
+          heroImg: bannerImage,
+          tags: [
+            'Verified Contract',
+            'Work Permit Sponsored',
+            benefits.accommodation ? 'Accommodation Provided' : null,
+            benefits.meals ? 'Meals Included' : null,
+            benefits.healthInsurance ? 'Health Insurance' : null,
+            employmentType || 'Full-Time'
+          ].filter(Boolean),
+          desc: additionalNotes || `Official work permit recruitment for ${jobTitle} in ${jobLocation || 'Europe'}. Verified employment contract, official work permit sponsorship, and full visa guidance included. Candidate processing cost: USD ${totalCost.toLocaleString()}.`,
+          processSteps: processSteps,
+          benefits: benefits,
+          totalCost: `${salaryCurrency} ${totalCost.toLocaleString()}`,
+          govFee: govFee || '0',
+          embassyFee: embassyFee || '0',
+          courierFee: courierFee || '0',
+          travltikFee: travltikFee || '0',
+          expertEmail: expertEmail,
+          isProviderOffer: true,
           createdAt: new Date().toISOString()
         };
-        const existing = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
-        localStorage.setItem('travltik_published_offers', JSON.stringify([publishedOffer, ...existing]));
-      } catch (e) {}
+
+        // Save to published jobs & offers in localStorage so /jobs renders it instantly
+        const existingJobs = JSON.parse(localStorage.getItem('travltik_published_jobs') || '[]');
+        localStorage.setItem('travltik_published_jobs', JSON.stringify([publishedJob, ...existingJobs]));
+
+        const existingOffers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
+        localStorage.setItem('travltik_published_offers', JSON.stringify([publishedJob, ...existingOffers]));
+
+        // Sync with backend ads API
+        fetch('/api/ads/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: jobTitle,
+            company: expertName,
+            category: 'Work Permit',
+            cover_photo: bannerImage,
+            description: publishedJob.desc,
+            expert_email: expertEmail
+          })
+        }).catch(err => console.warn('Ad sync notice:', err));
+
+      } catch (e) {
+        console.error('Error publishing work permit offer:', e);
+      }
     }, 800);
   };
 
@@ -349,15 +550,16 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
           </div>
         </div>
 
-        {/* 5-Step Stepper Bar */}
+        {/* 6-Step Stepper Bar */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-3 mb-6 overflow-x-auto scrollbar-none">
-          <div className="flex items-center justify-between min-w-[700px] px-2 sm:px-4">
+          <div className="flex items-center justify-between min-w-[760px] px-2 sm:px-4">
             {[
               { num: 1, label: 'Basic Details', id: 'section-job-details' },
               { num: 2, label: 'Benefits & Costs', id: 'section-benefits' },
               { num: 3, label: 'Process & Steps', id: 'section-steps' },
               { num: 4, label: 'Additional Info', id: 'section-additional' },
-              { num: 5, label: 'Review & Publish', id: 'section-bottom' },
+              { num: 5, label: 'Upload Ad Banner', id: 'section-banner' },
+              { num: 6, label: 'Review & Publish', id: 'section-bottom' },
             ].map((step, idx, arr) => {
               const isActive = activeStepTab === step.num;
               return (
@@ -416,24 +618,13 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   <label className="block text-xs font-bold text-slate-700 mb-1.5">
                     Job Location <span className="text-rose-500">*</span>
                   </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                      <MapPin className="w-4 h-4" />
-                    </div>
-                    <select
-                      value={jobLocation}
-                      onChange={(e) => setJobLocation(e.target.value)}
-                      className="w-full pl-10 pr-9 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all appearance-none cursor-pointer"
-                    >
-                      <option value="">Select Country</option>
-                      {COUNTRIES.map(country => (
-                        <option key={country} value={country}>{country}</option>
-                      ))}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
-                  </div>
+                  <CustomDropdown
+                    value={jobLocation}
+                    onChange={setJobLocation}
+                    options={COUNTRIES}
+                    placeholder="Select Country"
+                    icon={<MapPin className="w-4 h-4" />}
+                  />
                   <p className="text-[11px] text-slate-400 mt-1.5 font-normal">
                     Country where the job is located
                   </p>
@@ -486,24 +677,13 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   <label className="block text-xs font-bold text-slate-700 mb-1.5">
                     Employment Type <span className="text-rose-500">*</span>
                   </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                      <Briefcase className="w-4 h-4" />
-                    </div>
-                    <select
-                      value={employmentType}
-                      onChange={(e) => setEmploymentType(e.target.value)}
-                      className="w-full pl-10 pr-9 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all appearance-none cursor-pointer"
-                    >
-                      <option value="">Select Employment Type</option>
-                      {EMPLOYMENT_TYPES.map(type => (
-                        <option key={type} value={type}>{type}</option>
-                      ))}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
-                  </div>
+                  <CustomDropdown
+                    value={employmentType}
+                    onChange={setEmploymentType}
+                    options={EMPLOYMENT_TYPES}
+                    placeholder="Select Employment Type"
+                    icon={<Briefcase className="w-4 h-4" />}
+                  />
                   <p className="text-[11px] text-slate-400 mt-1.5 font-normal">
                     e.g. Full-time, Part-time, Contract, Temporary etc.
                   </p>
@@ -763,7 +943,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                         <input
                           type="number"
                           value={govFee}
-                          onChange={(e) => setGovFee(Number(e.target.value) || 0)}
+                          onChange={(e) => setGovFee(e.target.value)}
                           placeholder="400"
                           className="w-full pr-3 py-2 bg-transparent text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none"
                         />
@@ -786,7 +966,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                         <input
                           type="number"
                           value={embassyFee}
-                          onChange={(e) => setEmbassyFee(Number(e.target.value) || 0)}
+                          onChange={(e) => setEmbassyFee(e.target.value)}
                           placeholder="350"
                           className="w-full pr-3 py-2 bg-transparent text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none"
                         />
@@ -809,7 +989,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                         <input
                           type="number"
                           value={courierFee}
-                          onChange={(e) => setCourierFee(Number(e.target.value) || 0)}
+                          onChange={(e) => setCourierFee(e.target.value)}
                           placeholder="50"
                           className="w-full pr-3 py-2 bg-transparent text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none"
                         />
@@ -832,7 +1012,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                         <input
                           type="number"
                           value={travltikFee}
-                          onChange={(e) => setTravltikFee(Number(e.target.value) || 0)}
+                          onChange={(e) => setTravltikFee(e.target.value)}
                           placeholder="200"
                           className="w-full pr-3 py-2 bg-transparent text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none"
                         />
@@ -865,7 +1045,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
 
                   <div className="mb-3">
                     <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                      USD {totalCost.toLocaleString()}
+                      USD {totalCost > 0 ? totalCost.toLocaleString() : '0'}
                     </div>
                     <div className="text-[11px] font-medium text-emerald-700">
                       (approx.)
@@ -876,19 +1056,19 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                     <div className="pt-3 border-t border-emerald-200/80 space-y-2 text-xs">
                       <div className="flex items-center justify-between text-slate-600">
                         <span>Government Fees</span>
-                        <span className="font-semibold text-slate-900">USD {govFee}</span>
+                        <span className="font-semibold text-slate-900">USD {govFee ? Number(govFee).toLocaleString() : '0'}</span>
                       </div>
                       <div className="flex items-center justify-between text-slate-600">
                         <span>Embassy Fees</span>
-                        <span className="font-semibold text-slate-900">USD {embassyFee}</span>
+                        <span className="font-semibold text-slate-900">USD {embassyFee ? Number(embassyFee).toLocaleString() : '0'}</span>
                       </div>
                       <div className="flex items-center justify-between text-slate-600">
                         <span>Courier Fee</span>
-                        <span className="font-semibold text-slate-900">USD {courierFee}</span>
+                        <span className="font-semibold text-slate-900">USD {courierFee ? Number(courierFee).toLocaleString() : '0'}</span>
                       </div>
                       <div className="flex items-center justify-between text-slate-600">
                         <span>TravlTik Fee</span>
-                        <span className="font-semibold text-slate-900">USD {travltikFee}</span>
+                        <span className="font-semibold text-slate-900">USD {travltikFee ? Number(travltikFee).toLocaleString() : '0'}</span>
                       </div>
                     </div>
                   )}
@@ -912,8 +1092,8 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                 </div>
               </div>
 
-              <div className="border border-slate-200 rounded-xl overflow-hidden mb-4">
-                <div className="hidden sm:grid sm:grid-cols-12 gap-3 px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              <div className="border border-slate-200 rounded-xl bg-white mb-4">
+                <div className="hidden sm:grid sm:grid-cols-12 gap-3 px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider rounded-t-xl">
                   <div className="sm:col-span-6">Step / Description</div>
                   <div className="sm:col-span-3">Estimated Time</div>
                   <div className="sm:col-span-3">Payment Milestone (Optional)</div>
@@ -921,7 +1101,11 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
 
                 <div className="divide-y divide-slate-100">
                   {processSteps.map((step, idx) => (
-                    <div key={step.id} className="p-3.5 sm:p-4 hover:bg-slate-50/50 transition-colors">
+                    <div
+                      key={step.id}
+                      className="p-3.5 sm:p-4 hover:bg-slate-50/50 transition-colors relative"
+                      style={{ zIndex: processSteps.length - idx + 10 }}
+                    >
                       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
                         <div className="sm:col-span-6 flex items-start gap-3">
                           <div className={`w-6 h-6 rounded-full ${step.badgeColor} font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm`}>
@@ -944,46 +1128,32 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                         </div>
 
                         <div className="sm:col-span-3">
-                          <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
-                              <Clock className="w-3.5 h-3.5" />
-                            </div>
-                            <select
-                              value={step.estimatedTime}
-                              onChange={(e) => handleUpdateStep(idx, 'estimatedTime', e.target.value)}
-                              className="w-full pl-8 pr-7 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none cursor-pointer"
-                            >
-                              {TIME_OPTIONS.map(opt => (
-                                <option key={opt} value={opt}>{opt}</option>
-                              ))}
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none text-slate-400">
-                              <ChevronDown className="w-3.5 h-3.5" />
-                            </div>
-                          </div>
+                          <CustomDropdown
+                            value={step.estimatedTime}
+                            onChange={(val) => handleUpdateStep(idx, 'estimatedTime', val)}
+                            options={TIME_OPTIONS}
+                            placeholder="Select time"
+                            icon={<Clock className="w-3.5 h-3.5" />}
+                            buttonClassName="py-1.5 text-xs bg-slate-50/80 border-slate-200"
+                          />
                         </div>
 
                         <div className="sm:col-span-3 flex items-center gap-2">
-                          <div className="relative flex-1">
-                            <select
+                          <div className="flex-1 min-w-0">
+                            <CustomDropdown
                               value={step.milestone}
-                              onChange={(e) => handleUpdateStep(idx, 'milestone', e.target.value)}
-                              className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none cursor-pointer"
-                            >
-                              {MILESTONE_OPTIONS.map(opt => (
-                                <option key={opt} value={opt}>{opt}</option>
-                              ))}
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none text-slate-400">
-                              <ChevronDown className="w-3.5 h-3.5" />
-                            </div>
+                              onChange={(val) => handleUpdateStep(idx, 'milestone', val)}
+                              options={MILESTONE_OPTIONS}
+                              placeholder="Select milestone"
+                              buttonClassName="py-1.5 text-xs bg-slate-50/80 border-slate-200"
+                            />
                           </div>
 
                           <button
                             type="button"
                             onClick={() => handleDeleteStep(idx)}
                             title="Delete step"
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors shrink-0 cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -1033,6 +1203,149 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   {additionalNotes.length}/500
                 </span>
               </div>
+            </div>
+
+            {/* SECTION 6: Upload Ad Banner / Promotional Poster */}
+            <div id="section-banner" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
+              <div className="flex items-start gap-3.5 mb-6">
+                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                  6
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                    Upload Ad Banner
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    Upload a high-resolution promotional banner or flyer. This will be shown on the TravlTik /jobs portal and client search results.
+                  </p>
+                </div>
+              </div>
+
+              {adBanner ? (
+                <div className="space-y-4">
+                  <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-md group max-h-72 bg-slate-950">
+                    <img
+                      src={adBanner}
+                      alt="Ad Banner Preview"
+                      className="w-full h-56 sm:h-64 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent flex flex-col justify-end p-4 sm:p-5">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="text-white">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500 text-white px-2.5 py-1 rounded-md shadow-xs">
+                            ✓ Banner Ready
+                          </span>
+                          <p className="text-xs sm:text-sm text-white font-bold mt-1.5 truncate max-w-sm">
+                            {adBannerName || 'Uploaded Ad Banner'}
+                          </p>
+                          {adBannerSize && (
+                            <p className="text-[11px] text-white/70 font-medium">
+                              File Size: {adBannerSize}
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => bannerInputRef.current?.click()}
+                            className="px-3.5 py-2 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-md text-white text-xs font-bold transition-all cursor-pointer shadow-sm"
+                          >
+                            Replace Banner
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setAdBanner('');
+                              setAdBannerName('');
+                              setAdBannerSize('');
+                            }}
+                            className="px-3.5 py-2 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white text-xs font-bold transition-all cursor-pointer shadow-sm"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div
+                    onClick={() => bannerInputRef.current?.click()}
+                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const file = e.dataTransfer.files?.[0];
+                      if (file) {
+                        if (file.size > 10 * 1024 * 1024) {
+                          showToast('Image file size must be less than 10MB', 'error');
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                          setAdBanner(ev.target?.result as string);
+                          setAdBannerName(file.name);
+                          setAdBannerSize((file.size / (1024 * 1024)).toFixed(2) + ' MB');
+                          showToast('Ad banner uploaded successfully!', 'success');
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="border-2 border-dashed border-slate-300 hover:border-blue-500 bg-slate-50/70 hover:bg-blue-50/20 rounded-2xl p-8 sm:p-10 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group"
+                  >
+                    <div className="w-14 h-14 rounded-2xl bg-blue-50 group-hover:bg-blue-100 text-blue-600 flex items-center justify-center transition-all shadow-xs group-hover:scale-105">
+                      <ImagePlus className="w-7 h-7" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+                        Drag & Drop your Ad Banner here, or <span className="text-blue-600 underline">Browse Files</span>
+                      </h4>
+                      <p className="text-xs text-slate-400 mt-1 font-normal">
+                        Supports PNG, JPG, WEBP, SVG (Landscape banner, Recommended: 1200 × 630 px, Max 10MB)
+                      </p>
+                    </div>
+                  </div>
+
+                  <input
+                    ref={bannerInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleBannerUpload}
+                    className="hidden"
+                  />
+
+                  {/* Preset Industry Banner Templates */}
+                  <div className="pt-2">
+                    <p className="text-xs font-bold text-slate-600 mb-2">
+                      Or select a pre-made industry banner template:
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      {BANNER_TEMPLATES.map((tmpl) => (
+                        <button
+                          key={tmpl.label}
+                          type="button"
+                          onClick={() => {
+                            setAdBanner(tmpl.img);
+                            setAdBannerName(tmpl.label + ' Template');
+                            setAdBannerSize('Pre-designed');
+                            showToast(`Selected ${tmpl.label} banner`, 'info');
+                          }}
+                          className="group relative rounded-xl overflow-hidden border border-slate-200 hover:border-blue-600 transition-all text-left p-1.5 hover:shadow-md cursor-pointer bg-slate-50"
+                        >
+                          <div className="h-16 rounded-lg overflow-hidden relative mb-1.5">
+                            <img src={tmpl.img} alt={tmpl.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                            <div className="absolute inset-0 bg-black/20" />
+                          </div>
+                          <span className="text-[11px] font-bold text-slate-700 block truncate">
+                            {tmpl.icon} {tmpl.label}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Bottom Actions Bar */}
@@ -1211,10 +1524,11 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 type="button"
-                onClick={() => setIsPublishedModalOpen(false)}
-                className="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                onClick={() => window.location.href = "/jobs"}
+                className="flex-1 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                Create Another
+                <span>View on /jobs Page</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
               <button
                 type="button"

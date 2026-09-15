@@ -2317,10 +2317,19 @@ export function AITripPlannerLanding() {
 
   const handlePillClick = (pillId: string, pillLabel: string) => {
     setSelectedPill(pillId);
+
+    // Direct routing for top categories
+    if (pillId === 'student') {
+      window.location.href = '/universities';
+      return;
+    }
+    if (pillId === 'work') {
+      window.location.href = '/jobs';
+      return;
+    }
+
     let targetPurpose = 'study';
-    if (pillId === 'student') targetPurpose = 'study';
-    else if (pillId === 'work') targetPurpose = 'work';
-    else if (pillId === 'pr') targetPurpose = 'pr';
+    if (pillId === 'pr') targetPurpose = 'pr';
     else if (pillId === 'tourist') targetPurpose = 'tourism';
     else if (pillId === 'business') targetPurpose = 'business';
     else if (pillId === 'nomad') targetPurpose = 'work';
