@@ -26,7 +26,8 @@ export const POST: APIRoute = async ({ request }) => {
       gov_registration_number,
       expertise_tags,
       countries_expertise,
-      profile_photo
+      profile_photo,
+      service_category
     } = body;
 
     if (!email) {
@@ -42,6 +43,16 @@ export const POST: APIRoute = async ({ request }) => {
     const finalTags = Array.isArray(expertise_tags) ? JSON.stringify(expertise_tags) : (typeof expertise_tags === 'string' ? expertise_tags : '[]');
     const finalCountries = Array.isArray(countries_expertise) ? countries_expertise.join(', ') : (countries_expertise || 'Worldwide');
 
+    // Auto-detect work_permit if tags contain WORK or work_permit
+    let finalServiceCategory = service_category || '';
+    if (!finalServiceCategory) {
+      const lowerTags = finalTags.toLowerCase();
+      const lowerType = (advisor_type || '').toLowerCase();
+      if (lowerTags.includes('"work"') || lowerTags.includes('work permit') || lowerType.includes('work')) {
+        finalServiceCategory = 'work_permit';
+      }
+    }
+
     // Check if expert exists, if not insert, else update
     const checkRes = await pool.query('SELECT id FROM experts WHERE LOWER(email) = LOWER($1)', [cleanEmail]);
 
@@ -51,9 +62,10 @@ export const POST: APIRoute = async ({ request }) => {
         INSERT INTO experts (
           business_name, email, password_hash, contact_number, advisor_type,
           about_me, portfolio_link, office_address, city, state, country,
-          gov_registration_number, expertise_tags, countries_expertise, profile_photo, is_verified, verification_status
+          gov_registration_number, expertise_tags, countries_expertise, profile_photo, is_verified, verification_status,
+          service_category
         )
-        VALUES ($1, $2, '', $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, TRUE, 'active')
+        VALUES ($1, $2, '', $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, TRUE, 'active', $15)
         RETURNING *;
       `, [
         finalBusinessName,
@@ -69,7 +81,8 @@ export const POST: APIRoute = async ({ request }) => {
         gov_registration_number || '',
         finalTags,
         finalCountries,
-        profile_photo || ''
+        profile_photo || '',
+        finalServiceCategory
       ]);
       expertRow = insertRes.rows[0];
     } else {
@@ -89,9 +102,10 @@ export const POST: APIRoute = async ({ request }) => {
           expertise_tags = COALESCE($11, expertise_tags),
           countries_expertise = COALESCE($12, countries_expertise),
           profile_photo = COALESCE($13, profile_photo),
+          service_category = CASE WHEN $14 != '' THEN $14 ELSE service_category END,
           is_verified = TRUE,
           verification_status = 'active'
-        WHERE LOWER(email) = LOWER($14)
+        WHERE LOWER(email) = LOWER($15)
         RETURNING *;
       `, [
         finalBusinessName,
@@ -107,6 +121,7 @@ export const POST: APIRoute = async ({ request }) => {
         finalTags,
         finalCountries,
         profile_photo || '',
+        finalServiceCategory,
         cleanEmail
       ]);
       expertRow = updateRes.rows[0];

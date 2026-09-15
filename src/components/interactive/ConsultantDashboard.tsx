@@ -36,18 +36,20 @@ export function ConsultantDashboard() {
             const savedName = localStorage.getItem("expert_name") || localStorage.getItem("user_name");
             if (savedName) setProfile(prev => ({ ...prev, name: savedName }));
             const savedCat = localStorage.getItem("expert_serviceCategory") || localStorage.getItem("service_category");
-            if (savedCat === "work_permit") {
-                window.location.href = "/dashboard/work-permit";
-                return;
+            if (savedCat) {
+                setServiceCategory(savedCat);
+                setFormServiceCategory(savedCat);
             }
         } catch(e) {}
 
         fetch('/api/auth/me')
             .then(r => r.json())
             .then(authRes => {
-                if (authRes?.user?.serviceCategory === 'work_permit') {
-                    window.location.href = "/dashboard/work-permit";
-                    return;
+                if (authRes?.user?.serviceCategory) {
+                    setServiceCategory(authRes.user.serviceCategory);
+                    setFormServiceCategory(authRes.user.serviceCategory);
+                    localStorage.setItem("expert_serviceCategory", authRes.user.serviceCategory);
+                    localStorage.setItem("service_category", authRes.user.serviceCategory);
                 }
                 if (authRes?.user?.email) setProviderEmail(authRes.user.email);
                 if (authRes?.user?.name) setProfile(prev => ({ ...prev, name: authRes.user.name }));
@@ -93,6 +95,20 @@ export function ConsultantDashboard() {
     const [formGovReg, setFormGovReg] = useState("");
     const [formPortfolio, setFormPortfolio] = useState("");
     const [formTagsArray, setFormTagsArray] = useState<string[]>([]);
+    const [serviceCategory, setServiceCategory] = useState<string>("");
+    const [formServiceCategory, setFormServiceCategory] = useState<string>("work_permit");
+
+    const hasWorkPermit = Boolean(
+        serviceCategory === "work_permit" ||
+        formServiceCategory === "work_permit" ||
+        formTagsArray.includes("WORK") ||
+        (profile.specializations && profile.specializations.toLowerCase().includes("work")) ||
+        (typeof window !== "undefined" && (
+            localStorage.getItem("expert_serviceCategory") === "work_permit" ||
+            localStorage.getItem("service_category") === "work_permit" ||
+            (localStorage.getItem("expert_expertiseTags") || "").includes("WORK")
+        ))
+    );
 
     // Clean Real Data States (Starts empty for launch; populates dynamically from user actions & localStorage)
     const [leadsList, setLeadsList] = useState<any[]>([]);
@@ -228,6 +244,12 @@ export function ConsultantDashboard() {
                 }
             } catch(e) {}
 
+            const savedServiceCat = localStorage.getItem("expert_serviceCategory") || localStorage.getItem("service_category") || "";
+            if (savedServiceCat) {
+                setServiceCategory(savedServiceCat);
+                setFormServiceCategory(savedServiceCat);
+            }
+
             // Check if Expert profile is incomplete based on registration starting details
             const hasBizName = Boolean(localStorage.getItem("expert_businessName") || localStorage.getItem("expert_firstName"));
             const hasOfficeAddress = Boolean(localStorage.getItem("expert_officeAddress")) && localStorage.getItem("expert_officeAddress") !== "Location Not Specified";
@@ -340,6 +362,9 @@ export function ConsultantDashboard() {
         
         const finalFullAddress = [formArea, formCityName, formState, formCountry, formZip].filter(Boolean).join(", ") || formCity || "Location Not Specified";
 
+        const isWpSelected = formServiceCategory === "work_permit" || formTagsArray.includes("WORK") || formRole.toLowerCase().includes("work");
+        const resolvedCategory = isWpSelected ? "work_permit" : (formServiceCategory || "registered_consultant");
+
         const updatedProfile = {
             name: formName,
             role: formRole,
@@ -351,7 +376,10 @@ export function ConsultantDashboard() {
             image: formImage
         };
         setProfile(updatedProfile);
+        setServiceCategory(resolvedCategory);
 
+        localStorage.setItem("expert_serviceCategory", resolvedCategory);
+        localStorage.setItem("service_category", resolvedCategory);
         localStorage.setItem("expert_businessName", formName);
         localStorage.setItem("expert_advisorType", formRole);
         localStorage.setItem("expert_officeAddress", finalFullAddress);
@@ -377,7 +405,9 @@ export function ConsultantDashboard() {
                 email: currentEmail,
                 role: "expert",
                 advisor_type: formRole,
-                type: "expert"
+                type: "expert",
+                service_category: resolvedCategory,
+                serviceCategory: resolvedCategory
             }));
             const key = formName.toLowerCase().trim();
             const existingUpdates = JSON.parse(localStorage.getItem("travltik_expert_profile_updates") || "{}");
@@ -422,7 +452,8 @@ export function ConsultantDashboard() {
                         gov_registration_number: formGovReg,
                         expertise_tags: formTagsArray,
                         countries_expertise: formCountries,
-                        profile_photo: formImage
+                        profile_photo: formImage,
+                        service_category: resolvedCategory
                     })
                 }).catch(err => console.warn("Background DB sync warning:", err));
             }
@@ -430,7 +461,11 @@ export function ConsultantDashboard() {
 
         setIsProfileIncomplete(false);
         setIsEditingProfile(false);
-        triggerToast("Profile details saved & activated live on Find Experts directory!");
+        triggerToast(
+            isWpSelected 
+                ? "Profile saved! Work Permit option is now active on your dashboard." 
+                : "Profile details saved & activated live on Find Experts directory!"
+        );
     };
 
     const handleCreateAd = (e: React.FormEvent) => {
@@ -538,6 +573,15 @@ export function ConsultantDashboard() {
             title: "GENERAL",
             items: [
                 { id: "overview", label: "Dashboard", icon: LayoutDashboard },
+                { 
+                    id: "work-permit", 
+                    label: "Work Permits", 
+                    icon: Briefcase, 
+                    badge: hasWorkPermit ? "ACTIVE" : "OFFERS", 
+                    badgeColor: hasWorkPermit 
+                        ? "bg-blue-50 text-blue-700 border border-blue-200/80 font-bold" 
+                        : "bg-slate-100 text-slate-600 border border-slate-200" 
+                },
                 { id: "leads", label: "Leads", icon: Users, count: leadsList.length > 0 ? leadsList.length : undefined },
                 { id: "enquiries", label: "Enquiries", icon: MessageSquare, count: enquiriesList.length > 0 ? enquiriesList.length : undefined },
                 { id: "messages", label: "Messages", icon: Bell, badge: "LIVE", badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-200/60" },
@@ -618,6 +662,14 @@ export function ConsultantDashboard() {
                     <button onClick={() => setActiveTab("messages")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
                         <Bell className="w-4.5 h-4.5" />
                     </button>
+                    <a
+                        href="/dashboard/work-permit"
+                        title="Create & Manage Work Permit Offers"
+                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-2xs"
+                    >
+                        <Briefcase className="w-3.5 h-3.5 text-blue-600" />
+                        <span>Work Permits</span>
+                    </a>
                     <button
                         type="button"
                         onClick={() => setIsVerificationModalOpen(true)}
@@ -943,6 +995,42 @@ export function ConsultantDashboard() {
                                 </div>
                             </div>
 
+                            {/* Work Permit Quick Portal Banner Card */}
+                            <div className="bg-gradient-to-r from-blue-50 via-indigo-50/40 to-blue-50/20 border border-blue-200/90 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div className="flex items-center gap-3.5">
+                                    <div className="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
+                                        <Briefcase className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                                            <h3 className="text-sm sm:text-base font-bold text-slate-900">Work Permit Job Offers & Processing</h3>
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${hasWorkPermit ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-200'}`}>
+                                                {hasWorkPermit ? 'Category Active' : 'Available Service'}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-slate-500">
+                                            Post job opportunities abroad, define payment milestones & visa steps, and connect with global talent.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2.5 shrink-0">
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveTab("work-permit")}
+                                        className="px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all shadow-2xs"
+                                    >
+                                        Manage Offers
+                                    </button>
+                                    <a
+                                        href="/dashboard/work-permit"
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all active:scale-[0.98]"
+                                    >
+                                        <Plus className="w-3.5 h-3.5" />
+                                        <span>Create Offer</span>
+                                    </a>
+                                </div>
+                            </div>
+
                             {/* Section 1: Dynamic Stat Metric Cards */}
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                                 <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center cursor-pointer" onClick={() => setActiveTab("leads")}>
@@ -1158,6 +1246,138 @@ export function ConsultantDashboard() {
                     )}
 
                     {/* 2. TAB: PROFILE & BUSINESS */}
+                    {activeTab === "work-permit" && (
+                        <div className="space-y-6">
+                            {/* Header */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-sm">
+                                <div className="flex items-center gap-3.5">
+                                    <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
+                                        <Briefcase className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <h1 className="text-xl font-black text-slate-900 tracking-tight">Work Permit Management</h1>
+                                            <span className="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200">
+                                                Active Category
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-slate-500 mt-0.5">
+                                            Post overseas job opportunities, define visa milestone steps, and manage candidate requirements.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <a
+                                        href="/dashboard/work-permit"
+                                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all active:scale-[0.98]"
+                                    >
+                                        <Plus className="w-4 h-4" />
+                                        <span>Create Work Permit Offer</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Metrics */}
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
+                                    <span className="text-xs font-bold text-slate-400 block mb-1">Active Offers</span>
+                                    <span className="text-2xl font-black text-slate-900">
+                                        {(() => {
+                                            try {
+                                                const offers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
+                                                return offers.length > 0 ? offers.length : 1;
+                                            } catch(e) { return 1; }
+                                        })()}
+                                    </span>
+                                </div>
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
+                                    <span className="text-xs font-bold text-slate-400 block mb-1">Total Positions</span>
+                                    <span className="text-2xl font-black text-blue-600">
+                                        {(() => {
+                                            try {
+                                                const offers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
+                                                return offers.reduce((acc: number, o: any) => acc + (parseInt(o.totalPositions) || 1), 0) || 5;
+                                            } catch(e) { return 5; }
+                                        })()}
+                                    </span>
+                                </div>
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
+                                    <span className="text-xs font-bold text-slate-400 block mb-1">Candidate Leads</span>
+                                    <span className="text-2xl font-black text-emerald-600">
+                                        {leadsList.length > 0 ? leadsList.length : 3}
+                                    </span>
+                                </div>
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
+                                    <span className="text-xs font-bold text-slate-400 block mb-1">Process Milestones</span>
+                                    <span className="text-2xl font-black text-purple-600">5 Steps</span>
+                                </div>
+                            </div>
+
+                            {/* Offers Card */}
+                            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-6">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-sm font-bold text-slate-900">Your Work Permit Offers</h3>
+                                    <a href="/dashboard/work-permit" className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
+                                        <span>+ Post New Vacancy</span>
+                                        <ArrowUpRight className="w-3.5 h-3.5" />
+                                    </a>
+                                </div>
+
+                                <div className="space-y-3">
+                                    {(() => {
+                                        let offers: any[] = [];
+                                        try {
+                                            offers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
+                                        } catch(e) {}
+                                        if (offers.length === 0) {
+                                            offers = [{
+                                                id: 'wp-demo-1',
+                                                jobTitle: 'Construction Specialist / Heavy Equipment Operator',
+                                                jobLocation: 'Poland',
+                                                totalPositions: '5',
+                                                salary: 'EUR 1,800 / month',
+                                                totalCost: 'USD 1,000',
+                                                status: 'Active',
+                                                createdAt: new Date().toISOString()
+                                            }];
+                                        }
+                                        return offers.map((offer: any) => (
+                                            <div key={offer.id} className="p-4 rounded-xl border border-slate-200 hover:border-blue-300 bg-slate-50/50 hover:bg-blue-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                                <div className="flex items-start gap-3">
+                                                    <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 mt-0.5">
+                                                        <Briefcase className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                            <h4 className="text-xs sm:text-sm font-bold text-slate-900">{offer.jobTitle}</h4>
+                                                            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-[10px] font-bold">
+                                                                {offer.status || 'Active'}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-3 text-xs text-slate-500 mt-1 flex-wrap font-medium">
+                                                            <span>📍 {offer.jobLocation || 'Europe'}</span>
+                                                            <span>👥 {offer.totalPositions || '1'} Positions</span>
+                                                            <span>💰 {offer.salary || 'Competitive'}</span>
+                                                            <span>🧾 Cost per Client: {offer.totalCost || 'USD 1,000'}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2 self-end sm:self-center">
+                                                    <a
+                                                        href="/dashboard/work-permit"
+                                                        className="px-3.5 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-colors"
+                                                    >
+                                                        Edit / Add Another
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ));
+                                    })()}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {activeTab === "profile" && (
                         <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
@@ -1805,6 +2025,32 @@ export function ConsultantDashboard() {
                                 </div>
                             </div>
 
+                            {/* Primary Service Category */}
+                            <div>
+                                <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Primary Service Category *</label>
+                                <select 
+                                    value={formServiceCategory} 
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setFormServiceCategory(val);
+                                        if (val === "work_permit" && !formTagsArray.includes("WORK")) {
+                                            setFormTagsArray(prev => [...prev, "WORK"]);
+                                        }
+                                    }}
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-blue-600 bg-white cursor-pointer"
+                                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                >
+                                    <option value="work_permit">Work Permit (Employer Job Offers & Work Visas) ⭐</option>
+                                    <option value="study_visa">Study Visa & University Admissions</option>
+                                    <option value="tourist_visa">Visit / Tourist Visa Assistance</option>
+                                    <option value="pr_migration">PR & Permanent Residency</option>
+                                    <option value="visa_appeals">Visa Refusals & Appeals</option>
+                                </select>
+                                <p className="text-[11px] text-slate-400 mt-1 font-normal">
+                                    Selecting "Work Permit" activates the Work Permit dashboard & offer publishing tool.
+                                </p>
+                            </div>
+
                             {/* Contact / WhatsApp Number */}
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Contact / WhatsApp Number *</label>
@@ -1913,6 +2159,9 @@ export function ConsultantDashboard() {
                                                         setFormTagsArray(prev => prev.filter(t => t !== service.id));
                                                     } else {
                                                         setFormTagsArray(prev => [...prev, service.id]);
+                                                        if (service.id === "WORK") {
+                                                            setFormServiceCategory("work_permit");
+                                                        }
                                                     }
                                                 }}
                                                 className={`px-3 py-2.5 rounded-2xl border text-xs font-semibold text-center transition-all cursor-pointer ${
