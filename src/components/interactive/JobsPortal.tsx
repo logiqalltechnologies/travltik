@@ -160,6 +160,67 @@ const countryCards = [
 const categoriesList = ["All Categories", "IT & Tech", "Healthcare", "Engineering", "Hospitality", "Education"];
 const countriesList   = ["All Countries", "Canada", "UAE", "UK", "Australia", "Germany", "New Zealand", "Greece", "USA", "Ireland", "Singapore"];
 
+function JobCompanyLogo({
+  src,
+  alt,
+  companyName,
+  className = "w-12 h-12 rounded-xl object-contain p-1 border border-slate-100 shrink-0 shadow-sm bg-white",
+  fallbackSize = "w-12 h-12",
+  icon: FallbackIcon,
+  iconColor,
+}: {
+  src?: string;
+  alt?: string;
+  companyName?: string;
+  className?: string;
+  fallbackSize?: string;
+  icon?: any;
+  iconColor?: string;
+}) {
+  const [hasError, setHasError] = useState(false);
+
+  // If there's an image src and it hasn't failed to load
+  if (src && !hasError) {
+    return (
+      <img
+        src={src}
+        alt={alt || companyName || "logo"}
+        className={className}
+        onError={() => setHasError(true)}
+      />
+    );
+  }
+
+  // Fallback: If custom icon was defined
+  if (FallbackIcon) {
+    return (
+      <div className={`${fallbackSize} rounded-xl bg-gradient-to-br ${iconColor || 'from-emerald-500 to-teal-600'} flex items-center justify-center shrink-0 shadow-md`}>
+        <FallbackIcon className="w-5 h-5 text-white" />
+      </div>
+    );
+  }
+
+  // Fallback: Elegant initials avatar
+  const initials = (companyName || "SP")
+    .replace(/[^a-zA-Z0-9\s]/g, "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(w => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase() || "SP";
+
+  return (
+    <div
+      className={`${fallbackSize} rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-md border border-emerald-500/30 uppercase tracking-tight`}
+      title={companyName}
+    >
+      {initials}
+    </div>
+  );
+}
+
 export function JobsPortal() {
   const [jobs, setJobs]                   = useState(initialJobs);
   const [allLoadedJobs, setAllLoadedJobs] = useState(initialJobs);
@@ -355,14 +416,36 @@ export function JobsPortal() {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const formatted = parsed.map((p: any) => ({
-            ...p,
-            icon: HardHat,
-            iconColor: "from-blue-600 to-indigo-600",
-            sponsorship: true,
-            featured: true,
-            urgent: p.urgent !== undefined ? p.urgent : true,
-          }));
+          const currentExpertPhoto =
+            localStorage.getItem("expert_profilePhoto") ||
+            localStorage.getItem("expert_profilePhotoUrl") ||
+            localStorage.getItem("expert_logo") ||
+            localStorage.getItem("expert_avatar") ||
+            (() => {
+              try {
+                const u = JSON.parse(localStorage.getItem("travltik_user") || "{}");
+                return u.photoURL || u.profile_photo || "";
+              } catch(e) { return ""; }
+            })();
+
+          const currentExpertName = localStorage.getItem("expert_businessName") || localStorage.getItem("expert_name") || "";
+
+          const formatted = parsed.map((p: any) => {
+            const resolvedLogo =
+              (currentExpertPhoto && (!p.logo || p.logo === "/images/construction_worker.jpg" || (currentExpertName && p.company === currentExpertName)))
+                ? currentExpertPhoto
+                : (p.logo || currentExpertPhoto || "");
+
+            return {
+              ...p,
+              logo: resolvedLogo,
+              icon: HardHat,
+              iconColor: "from-blue-600 to-indigo-600",
+              sponsorship: true,
+              featured: true,
+              urgent: p.urgent !== undefined ? p.urgent : true,
+            };
+          });
           combined = [...formatted, ...initialJobs];
         }
       }
@@ -529,7 +612,15 @@ export function JobsPortal() {
 
           <div className="bg-white border border-red-100 rounded-2xl p-8 shadow-sm">
             <div className="flex gap-4 items-start mb-6">
-              <img src={activeJob.logo} alt={activeJob.company} className="w-16 h-16 rounded-2xl object-cover border border-red-100 bg-white shrink-0 shadow-sm" />
+              <JobCompanyLogo
+                src={activeJob.logo}
+                alt={activeJob.company}
+                companyName={activeJob.company}
+                className="w-16 h-16 rounded-2xl object-cover border border-red-100 bg-white shrink-0 shadow-sm"
+                fallbackSize="w-16 h-16"
+                icon={activeJob.icon}
+                iconColor={activeJob.iconColor}
+              />
               <div>
                 <h2 className="font-sans text-2xl font-extrabold text-[#0c1a2e] mb-1.5">{activeJob.title}</h2>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-[#475569]">
@@ -996,13 +1087,15 @@ export function JobsPortal() {
 
                     <div className="p-5">
                       <div className="flex gap-4 items-start mb-3 pr-4">
-                        {job.logo ? (
-                          <img src={job.logo} className="w-12 h-12 rounded-xl object-contain p-1 border border-slate-100 shrink-0 shadow-sm bg-white" alt="logo" />
-                        ) : (
-                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${job.iconColor} flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform`}>
-                            <JobIcon className="w-5 h-5 text-white" />
-                          </div>
-                        )}
+                        <JobCompanyLogo
+                          src={job.logo}
+                          alt={job.company}
+                          companyName={job.company}
+                          className="w-12 h-12 rounded-xl object-contain p-1 border border-slate-100 shrink-0 shadow-sm bg-white"
+                          fallbackSize="w-12 h-12"
+                          icon={job.icon}
+                          iconColor={job.iconColor}
+                        />
 
                         <div className="flex-1 min-w-0">
                           <h3 className="font-sans font-semibold text-base text-[#0c1a2e] leading-snug group-hover:text-[#ef4444] transition-colors mb-1">

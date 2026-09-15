@@ -384,7 +384,18 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
       setIsPublishedModalOpen(true);
       try {
         const expertName = localStorage.getItem("expert_businessName") || localStorage.getItem("expert_name") || "Verified Immigration Agency";
-        const expertPhoto = localStorage.getItem("expert_profilePhoto") || localStorage.getItem("expert_profilePhotoUrl") || "/images/construction_worker.jpg";
+        const expertPhoto =
+          localStorage.getItem("expert_profilePhoto") ||
+          localStorage.getItem("expert_profilePhotoUrl") ||
+          localStorage.getItem("expert_logo") ||
+          localStorage.getItem("expert_avatar") ||
+          (() => {
+            try {
+              const u = JSON.parse(localStorage.getItem("travltik_user") || "{}");
+              return u.photoURL || u.profile_photo || "";
+            } catch(e) { return ""; }
+          })() ||
+          "";
         const expertEmail = localStorage.getItem("expert_email") || "";
 
         const locLower = (jobLocation || '').toLowerCase();
