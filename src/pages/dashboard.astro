@@ -2,6 +2,18 @@
 // src/pages/dashboard.astro
 import Layout from '../layouts/Layout.astro';
 import { DashboardClient } from '../components/dashboard/DashboardClient';
+import { verifySession } from '../backend/auth';
+
+const token = Astro.cookies.get('travltik_sid')?.value;
+if (token) {
+  const authResult = await verifySession(token);
+  if (authResult?.type === 'expert') {
+    const category = authResult.user.service_category || authResult.user.advisor_type || '';
+    if (category === 'work_permit') {
+      return Astro.redirect('/dashboard/work-permit');
+    }
+  }
+}
 ---
 
 <Layout 

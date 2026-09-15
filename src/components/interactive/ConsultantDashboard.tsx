@@ -35,11 +35,20 @@ export function ConsultantDashboard() {
             if (savedEmail) setProviderEmail(savedEmail);
             const savedName = localStorage.getItem("expert_name") || localStorage.getItem("user_name");
             if (savedName) setProfile(prev => ({ ...prev, name: savedName }));
+            const savedCat = localStorage.getItem("expert_serviceCategory") || localStorage.getItem("service_category");
+            if (savedCat === "work_permit") {
+                window.location.href = "/dashboard/work-permit";
+                return;
+            }
         } catch(e) {}
 
         fetch('/api/auth/me')
             .then(r => r.json())
             .then(authRes => {
+                if (authRes?.user?.serviceCategory === 'work_permit') {
+                    window.location.href = "/dashboard/work-permit";
+                    return;
+                }
                 if (authRes?.user?.email) setProviderEmail(authRes.user.email);
                 if (authRes?.user?.name) setProfile(prev => ({ ...prev, name: authRes.user.name }));
             })

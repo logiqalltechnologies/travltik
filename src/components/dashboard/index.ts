@@ -5,3 +5,4 @@ export { UpcomingAppointment } from './UpcomingAppointment';
 export { QuickAccessGrid } from './QuickAccessGrid';
 export { MyApplications } from './MyApplications';
 export { Reminders } from './Reminders';
+export { WorkPermitOrderForm } from './WorkPermitOrderForm';\n

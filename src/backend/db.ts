@@ -182,6 +182,7 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS experience_years VARCHAR(50);`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS languages_spoken TEXT;`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS is_google_verified BOOLEAN DEFAULT FALSE;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS service_category VARCHAR(100);`);
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_experts_email_lower ON experts (LOWER(email));`);
 
 

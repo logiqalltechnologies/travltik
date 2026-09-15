@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { WorkPermitOrderForm } from '../../components/dashboard/WorkPermitOrderForm';
+---
+
+<Layout 
+  title="Work Permit Dashboard | TravlTik" 
+  description="Create and manage your work permit job offers, candidate requirements, and milestone steps."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <WorkPermitOrderForm client:only="react" />
+</Layout>

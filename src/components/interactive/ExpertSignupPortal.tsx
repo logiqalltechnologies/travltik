@@ -9,8 +9,9 @@ import {
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
 
-// ─── Available Services for 3x3 Grid (Step 3) ─────────────────────────────────
+// ─── Available Services for Grid (Step 3) ─────────────────────────────────
 const AVAILABLE_SERVICES = [
+  { id: "work_permit", name: "Work Permit", icon: Briefcase },
   { id: "visa_consultant", name: "Visa Consultant", icon: Shield },
   { id: "immigration_consultant", name: "Immigration Consultant", icon: Building },
   { id: "travel_agent", name: "Travel Agent", icon: Plane },
@@ -608,6 +609,8 @@ function ExpertSignupPortalContent() {
         experience_years: experience,
         languages_spoken: JSON.stringify(selectedLanguages),
         turnstileToken,
+        service_category: selectedServices.includes("work_permit") ? "work_permit" : (selectedServices[0] || "work_permit"),
+        serviceCategory: selectedServices.includes("work_permit") ? "work_permit" : (selectedServices[0] || "work_permit"),
       };
 
       const resp = await fetch("/api/register/expert", {
@@ -629,11 +632,14 @@ function ExpertSignupPortalContent() {
       }
 
       // Save user session in localStorage
+      const primaryCategory = selectedServices.includes("work_permit") ? "work_permit" : (selectedServices[0] || "work_permit");
       if (typeof window !== "undefined") {
         if (data.user) {
-          localStorage.setItem("travltik_user", JSON.stringify(data.user));
+          localStorage.setItem("travltik_user", JSON.stringify({ ...data.user, serviceCategory: primaryCategory }));
         }
         localStorage.setItem("expert_isLoggedIn", "true");
+        localStorage.setItem("expert_serviceCategory", primaryCategory);
+        localStorage.setItem("service_category", primaryCategory);
         localStorage.setItem("expert_email", targetEmail);
         localStorage.setItem("expert_businessName", businessName || fullName);
         localStorage.setItem("expert_fullName", fullName);
@@ -657,9 +663,13 @@ function ExpertSignupPortalContent() {
 
       setOtpSuccessMsg("✓ Email verified! Redirecting to Service Provider Dashboard...");
 
-      // Redirect directly to Service Provider Dashboard
+      // Redirect based on service category
       setTimeout(() => {
-        window.location.href = "/service-provider/dashboard";
+        if (primaryCategory === "work_permit") {
+          window.location.href = "/dashboard/work-permit";
+        } else {
+          window.location.href = "/service-provider/dashboard";
+        }
       }, 1000);
     } catch (err: any) {
       setOtpError(err?.message || "Failed to verify. Please check your code and try again.");

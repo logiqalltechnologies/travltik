@@ -85,6 +85,7 @@ export const POST: APIRoute = async ({ request }) => {
     const resolvedServices = expertise_tags || services || [];
     const resolvedCountries = typeof countries_expertise === 'string' ? countries_expertise : JSON.stringify(countries_expertise || []);
     const resolvedLanguages = typeof languages_spoken === 'string' ? languages_spoken : JSON.stringify(languages_spoken || []);
+    const resolvedServiceCategory = body.service_category || body.serviceCategory || (Array.isArray(resolvedServices) && resolvedServices.includes('work_permit') ? 'work_permit' : 'work_permit');
 
     // ── Step 3: Insert Expert Record with Race Condition Protection ───
     try {
@@ -95,9 +96,9 @@ export const POST: APIRoute = async ({ request }) => {
           license_document_url, expertise_tags, countries_expertise,
           business_type, year_established, business_email, business_phone,
           website, city, state, country, pin_code, full_name,
-          experience_years, languages_spoken, is_google_verified
+          experience_years, languages_spoken, is_google_verified, service_category
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25);
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26);
       `, [
         resolvedBusinessName,
         cleanEmail,
@@ -123,7 +124,8 @@ export const POST: APIRoute = async ({ request }) => {
         full_name || '',
         experience_years || '',
         resolvedLanguages,
-        !!is_google_verified
+        !!is_google_verified,
+        resolvedServiceCategory
       ]);
     } catch (insertErr: any) {
       // PostgreSQL unique constraint error code 23505

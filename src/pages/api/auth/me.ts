@@ -35,7 +35,8 @@ export const GET: APIRoute = async ({ request }) => {
         uid: `${type}_${user.id}`,
         email: user.email,
         displayName: displayName || 'User',
-        type
+        type,
+        serviceCategory: user.service_category || user.advisor_type || ''
       }
     }), {
       status: 200,
