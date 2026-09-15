@@ -821,6 +821,42 @@ export async function runMigrations() {
     CREATE UNIQUE INDEX IF NOT EXISTS idx_sr_exact_hostname ON source_registry (exact_hostname);
     CREATE INDEX IF NOT EXISTS idx_sr_dest_country ON source_registry (destination_country);
 
+    -- ── WORK PERMIT JOBS TABLE ──
+    CREATE TABLE IF NOT EXISTS work_permit_jobs (
+      id SERIAL PRIMARY KEY,
+      offer_id VARCHAR(100) UNIQUE,
+      title VARCHAR(255) NOT NULL,
+      company VARCHAR(255) NOT NULL,
+      location VARCHAR(255),
+      country VARCHAR(100),
+      country_code VARCHAR(10),
+      category VARCHAR(100) DEFAULT 'Engineering',
+      salary VARCHAR(100),
+      salary_note VARCHAR(100),
+      salary_amount NUMERIC,
+      salary_currency VARCHAR(20),
+      salary_period VARCHAR(50),
+      posted VARCHAR(50) DEFAULT 'Just now',
+      employment_type VARCHAR(100),
+      slots INTEGER DEFAULT 1,
+      sponsorship BOOLEAN DEFAULT TRUE,
+      relocation BOOLEAN DEFAULT TRUE,
+      featured BOOLEAN DEFAULT TRUE,
+      urgent BOOLEAN DEFAULT TRUE,
+      logo TEXT,
+      hero_img TEXT,
+      tags JSONB,
+      description TEXT,
+      process_steps JSONB,
+      benefits JSONB,
+      costs JSONB,
+      expert_email VARCHAR(255),
+      status VARCHAR(50) DEFAULT 'active',
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_wp_jobs_created ON work_permit_jobs (created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_wp_jobs_status ON work_permit_jobs (status);
+
     -- V3 Column Migrations & Alignment
     ALTER TABLE visa_verified_records ADD COLUMN IF NOT EXISTS field_status JSONB;
     ALTER TABLE visa_verified_records ALTER COLUMN route_hash DROP NOT NULL;

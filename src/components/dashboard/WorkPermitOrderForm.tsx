@@ -458,7 +458,27 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
         const existingOffers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
         localStorage.setItem('travltik_published_offers', JSON.stringify([publishedJob, ...existingOffers]));
 
-        // Sync with backend ads API
+        // Sync with backend jobs API so it is visible to everyone across the platform
+        fetch('/api/jobs/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...publishedJob,
+            salaryAmount,
+            salaryCurrency,
+            salaryPeriod,
+            slots: totalPositions || 1,
+            costs: {
+              totalCost: `${salaryCurrency} ${totalCost.toLocaleString()}`,
+              govFee,
+              embassyFee,
+              courierFee,
+              travltikFee,
+            }
+          })
+        }).catch(err => console.warn('Could not sync job offer to backend DB:', err));
+
+        // Also sync with backend ads API
         fetch('/api/ads/create', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

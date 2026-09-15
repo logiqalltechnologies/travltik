@@ -447,6 +447,15 @@ export function JobsPortal() {
             };
           });
           combined = [...formatted, ...initialJobs];
+
+          // Backfill any local jobs to server DB so other users can see them
+          formatted.forEach((localJob: any) => {
+            fetch('/api/jobs/create', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(localJob)
+            }).catch(() => {});
+          });
         }
       }
     } catch (e) {
@@ -454,6 +463,43 @@ export function JobsPortal() {
     }
     setAllLoadedJobs(combined);
     setJobs(combined);
+
+    // Fetch live jobs from the platform database so all users across the world see newly published jobs
+    fetch('/api/jobs')
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success' && Array.isArray(data.jobs) && data.jobs.length > 0) {
+          const serverJobs = data.jobs.map((p: any) => ({
+            ...p,
+            icon: HardHat,
+            iconColor: "from-blue-600 to-indigo-600",
+            sponsorship: true,
+            featured: true,
+            urgent: p.urgent !== undefined ? p.urgent : true,
+            isProviderOffer: true,
+          }));
+
+          const seen = new Set();
+          const merged: any[] = [];
+          
+          for (const sj of serverJobs) {
+            if (!seen.has(sj.id)) {
+              seen.add(sj.id);
+              merged.push(sj);
+            }
+          }
+          for (const ij of initialJobs) {
+            if (!seen.has(ij.id)) {
+              seen.add(ij.id);
+              merged.push(ij);
+            }
+          }
+
+          setAllLoadedJobs(merged);
+          setJobs(merged);
+        }
+      })
+      .catch(err => console.warn('Could not fetch server jobs:', err));
 
     const params = new URLSearchParams(window.location.search);
     const qParam = params.get("q") || params.get("query") || params.get("role") || "";
