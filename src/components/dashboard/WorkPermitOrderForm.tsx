@@ -106,7 +106,7 @@ const EMPLOYMENT_TYPES = [
 
 const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'AED', 'PLN', 'INR'];
 
-export function WorkPermitOrderForm() {
+export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedded?: boolean; onCancel?: () => void } = {}) {
   const [activeStepTab, setActiveStepTab] = useState<number>(1);
 
   // Section 1: Job Details
@@ -275,7 +275,7 @@ export function WorkPermitOrderForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 pb-24 font-sans antialiased">
+    <div className={`${isEmbedded ? "w-full" : "min-h-screen bg-[#F8FAFC]"} text-slate-800 pb-20 font-sans antialiased`}>
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-5 right-5 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
@@ -295,15 +295,19 @@ export function WorkPermitOrderForm() {
       )}
 
       {/* Main Container */}
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <div className={`${isEmbedded ? "w-full" : "max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-6"}`}>
 
         {/* Top Breadcrumb & Actions Bar */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-1.5">
-              <a href="/service-provider/dashboard" className="hover:text-blue-600 transition-colors">
+              <button 
+                type="button" 
+                onClick={() => onCancel ? onCancel() : (window.location.href = "/service-provider/dashboard")} 
+                className="hover:text-blue-600 transition-colors cursor-pointer"
+              >
                 Work Permits
-              </a>
+              </button>
               <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
               <span className="text-slate-600">Create Work Permit Offer</span>
             </div>
@@ -1033,12 +1037,13 @@ export function WorkPermitOrderForm() {
 
             {/* Bottom Actions Bar */}
             <div id="section-bottom" className="flex items-center justify-between pt-2">
-              <a
-                href="/service-provider/dashboard"
-                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold shadow-sm transition-all"
+              <button
+                type="button"
+                onClick={() => onCancel ? onCancel() : (window.location.href = "/service-provider/dashboard")}
+                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold shadow-sm transition-all cursor-pointer"
               >
                 Cancel
-              </a>
+              </button>
               <button
                 type="button"
                 onClick={handlePublish}
@@ -1211,13 +1216,14 @@ export function WorkPermitOrderForm() {
               >
                 Create Another
               </button>
-              <a
-                href="/service-provider/dashboard"
-                className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-1.5"
+              <button
+                type="button"
+                onClick={() => onCancel ? onCancel() : (window.location.href = "/service-provider/dashboard")}
+                className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Go to Dashboard</span>
                 <ChevronRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
           </div>
         </div>

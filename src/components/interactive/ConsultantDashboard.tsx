@@ -6,6 +6,7 @@ import {
     FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw, BadgeCheck
 } from "lucide-react";
 import { ProviderVerificationModal } from "./ProviderVerificationModal";
+import { WorkPermitOrderForm } from "../dashboard/WorkPermitOrderForm";
 
 export function ConsultantDashboard() {
     const [consultantSearch, setConsultantSearch] = useState("");
@@ -662,14 +663,15 @@ export function ConsultantDashboard() {
                     <button onClick={() => setActiveTab("messages")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
                         <Bell className="w-4.5 h-4.5" />
                     </button>
-                    <a
-                        href="/dashboard/work-permit"
+                    <button
+                        type="button"
+                        onClick={() => setActiveTab("work-permit")}
                         title="Create & Manage Work Permit Offers"
-                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-2xs"
+                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-2xs cursor-pointer"
                     >
                         <Briefcase className="w-3.5 h-3.5 text-blue-600" />
                         <span>Work Permits</span>
-                    </a>
+                    </button>
                     <button
                         type="button"
                         onClick={() => setIsVerificationModalOpen(true)}
@@ -915,7 +917,8 @@ export function ConsultantDashboard() {
                 <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden">
 
                     {/* Live Profile Listing Status Banners */}
-                    {isProfileIncomplete ? (
+                    {activeTab !== "work-permit" && (
+                        isProfileIncomplete ? (
                         <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs w-full animate-fade-up">
                             <div className="flex items-start gap-3.5">
                                 <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-800 shrink-0 font-black text-lg border border-slate-200">
@@ -962,7 +965,7 @@ export function ConsultantDashboard() {
                                 <ChevronRight className="w-4 h-4" />
                             </a>
                         </div>
-                    )}
+                    ))}
 
                     {/* 1. TAB: OVERVIEW */}
                     {activeTab === "overview" && (
@@ -1021,13 +1024,14 @@ export function ConsultantDashboard() {
                                     >
                                         Manage Offers
                                     </button>
-                                    <a
-                                        href="/dashboard/work-permit"
-                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all active:scale-[0.98]"
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveTab("work-permit")}
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all active:scale-[0.98] cursor-pointer"
                                     >
                                         <Plus className="w-3.5 h-3.5" />
                                         <span>Create Offer</span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
 
@@ -1247,134 +1251,8 @@ export function ConsultantDashboard() {
 
                     {/* 2. TAB: PROFILE & BUSINESS */}
                     {activeTab === "work-permit" && (
-                        <div className="space-y-6">
-                            {/* Header */}
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-sm">
-                                <div className="flex items-center gap-3.5">
-                                    <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
-                                        <Briefcase className="w-6 h-6" />
-                                    </div>
-                                    <div>
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <h1 className="text-xl font-black text-slate-900 tracking-tight">Work Permit Management</h1>
-                                            <span className="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200">
-                                                Active Category
-                                            </span>
-                                        </div>
-                                        <p className="text-xs text-slate-500 mt-0.5">
-                                            Post overseas job opportunities, define visa milestone steps, and manage candidate requirements.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <a
-                                        href="/dashboard/work-permit"
-                                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all active:scale-[0.98]"
-                                    >
-                                        <Plus className="w-4 h-4" />
-                                        <span>Create Work Permit Offer</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            {/* Metrics */}
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
-                                    <span className="text-xs font-bold text-slate-400 block mb-1">Active Offers</span>
-                                    <span className="text-2xl font-black text-slate-900">
-                                        {(() => {
-                                            try {
-                                                const offers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
-                                                return offers.length > 0 ? offers.length : 1;
-                                            } catch(e) { return 1; }
-                                        })()}
-                                    </span>
-                                </div>
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
-                                    <span className="text-xs font-bold text-slate-400 block mb-1">Total Positions</span>
-                                    <span className="text-2xl font-black text-blue-600">
-                                        {(() => {
-                                            try {
-                                                const offers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
-                                                return offers.reduce((acc: number, o: any) => acc + (parseInt(o.totalPositions) || 1), 0) || 5;
-                                            } catch(e) { return 5; }
-                                        })()}
-                                    </span>
-                                </div>
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
-                                    <span className="text-xs font-bold text-slate-400 block mb-1">Candidate Leads</span>
-                                    <span className="text-2xl font-black text-emerald-600">
-                                        {leadsList.length > 0 ? leadsList.length : 3}
-                                    </span>
-                                </div>
-                                <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-2xs">
-                                    <span className="text-xs font-bold text-slate-400 block mb-1">Process Milestones</span>
-                                    <span className="text-2xl font-black text-purple-600">5 Steps</span>
-                                </div>
-                            </div>
-
-                            {/* Offers Card */}
-                            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-sm font-bold text-slate-900">Your Work Permit Offers</h3>
-                                    <a href="/dashboard/work-permit" className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
-                                        <span>+ Post New Vacancy</span>
-                                        <ArrowUpRight className="w-3.5 h-3.5" />
-                                    </a>
-                                </div>
-
-                                <div className="space-y-3">
-                                    {(() => {
-                                        let offers: any[] = [];
-                                        try {
-                                            offers = JSON.parse(localStorage.getItem('travltik_published_offers') || '[]');
-                                        } catch(e) {}
-                                        if (offers.length === 0) {
-                                            offers = [{
-                                                id: 'wp-demo-1',
-                                                jobTitle: 'Construction Specialist / Heavy Equipment Operator',
-                                                jobLocation: 'Poland',
-                                                totalPositions: '5',
-                                                salary: 'EUR 1,800 / month',
-                                                totalCost: 'USD 1,000',
-                                                status: 'Active',
-                                                createdAt: new Date().toISOString()
-                                            }];
-                                        }
-                                        return offers.map((offer: any) => (
-                                            <div key={offer.id} className="p-4 rounded-xl border border-slate-200 hover:border-blue-300 bg-slate-50/50 hover:bg-blue-50/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                                <div className="flex items-start gap-3">
-                                                    <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 mt-0.5">
-                                                        <Briefcase className="w-5 h-5" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="flex items-center gap-2 flex-wrap">
-                                                            <h4 className="text-xs sm:text-sm font-bold text-slate-900">{offer.jobTitle}</h4>
-                                                            <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md text-[10px] font-bold">
-                                                                {offer.status || 'Active'}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-center gap-3 text-xs text-slate-500 mt-1 flex-wrap font-medium">
-                                                            <span>📍 {offer.jobLocation || 'Europe'}</span>
-                                                            <span>👥 {offer.totalPositions || '1'} Positions</span>
-                                                            <span>💰 {offer.salary || 'Competitive'}</span>
-                                                            <span>🧾 Cost per Client: {offer.totalCost || 'USD 1,000'}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center gap-2 self-end sm:self-center">
-                                                    <a
-                                                        href="/dashboard/work-permit"
-                                                        className="px-3.5 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-colors"
-                                                    >
-                                                        Edit / Add Another
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        ));
-                                    })()}
-                                </div>
-                            </div>
+                        <div className="w-full animate-fade-up">
+                            <WorkPermitOrderForm isEmbedded={true} onCancel={() => setActiveTab("overview")} />
                         </div>
                     )}
 
