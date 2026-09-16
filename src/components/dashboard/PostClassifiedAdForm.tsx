@@ -4,7 +4,8 @@ import {
     Trash2, Calendar, Phone, Crown, Tag, Briefcase, MapPin, User, 
     Sparkles, ShieldCheck, Globe, Building2, Bold, Italic, Underline, 
     Link, List, ListOrdered, AlignLeft, Maximize2, Megaphone, 
-    AlertCircle, FileText, CheckCircle
+    AlertCircle, FileText, CheckCircle, CreditCard, Lock, RefreshCw, 
+    Smartphone, QrCode
 } from "lucide-react";
 
 interface PostClassifiedAdFormProps {
@@ -40,47 +41,47 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
     // 1. Classified Type: free vs premium
     const [classifiedType, setClassifiedType] = useState<"free" | "premium">("free");
 
-    // 2. Basic Information
-    const [adTitle, setAdTitle] = useState(initialData?.title || "UAE Work Visa – Special Offer for Skilled Professionals");
+    // 2. Basic Information (Fresh & clean state - no dummy data)
+    const [adTitle, setAdTitle] = useState(initialData?.title || "");
     const [destinationCountry, setDestinationCountry] = useState(initialData?.country || "UAE");
     const [category, setCategory] = useState(initialData?.category || "Work Permit / Employment");
 
-    // 3. Add Details
-    const [hashtags, setHashtags] = useState<string[]>([
-        "#UAEWorkVisa",
-        "#SkilledProfessionals",
-        "#DubaiJobs",
-        "#WorkPermit"
-    ]);
+    // 3. Add Details (Fresh - empty hashtags & description)
+    const [hashtags, setHashtags] = useState<string[]>(initialData?.hashtags || []);
     const [newTagInput, setNewTagInput] = useState("");
     const [isAddingTag, setIsAddingTag] = useState(false);
-    const [description, setDescription] = useState(
-        initialData?.description || 
-        "We are offering limited time support for UAE work visas for skilled professionals in IT, healthcare, engineering and more. Fast processing, end-to-end assistance and expert guidance. Get in touch today to check your eligibility and start your global career!"
-    );
+    const [description, setDescription] = useState(initialData?.description || "");
 
-    // 4. Images / Media (Max 5)
-    const [images, setImages] = useState<string[]>([
-        "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&auto=format&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1526495124232-a04e1849168c?w=600&auto=format&fit=crop&q=80",
-    ]);
+    // 4. Images / Media (Fresh - empty array, max 5)
+    const [images, setImages] = useState<string[]>(initialData?.images || []);
 
     // 5. Additional Information
-    const [validFrom, setValidFrom] = useState("2025-09-01");
-    const [validTo, setValidTo] = useState("2025-09-30");
+    const todayStr = new Date().toISOString().split("T")[0];
+    const thirtyDaysLaterStr = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    const [validFrom, setValidFrom] = useState(initialData?.validFrom || todayStr);
+    const [validTo, setValidTo] = useState(initialData?.validTo || thirtyDaysLaterStr);
     const [contactPhone, setContactPhone] = useState(() => {
         if (typeof window !== "undefined") {
-            return localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone") || "+91 98765-43210";
+            return localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone") || "";
         }
-        return "+91 98765-43210";
+        return "";
     });
 
     // UI & Publishing States
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [toastMessage, setToastMessage] = useState<string | null>(null);
-    const [activeImageIndex, setActiveImageIndex] = useState(0);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Razorpay Checkout Modal States
+    const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
+    const [razorpayStep, setRazorpayStep] = useState<"select_method" | "processing" | "success">("select_method");
+    const [paymentMethod, setPaymentMethod] = useState<"upi" | "card" | "netbanking" | "qr">("upi");
+    const [upiId, setUpiId] = useState("");
+    const [cardNumber, setCardNumber] = useState("");
+    const [cardExpiry, setCardExpiry] = useState("");
+    const [cardCvv, setCardCvv] = useState("");
+    const [selectedBank, setSelectedBank] = useState("HDFC Bank");
+    const [confirmedPaymentId, setConfirmedPaymentId] = useState("");
 
     const showToast = (msg: string) => {
         setToastMessage(msg);
@@ -157,17 +158,56 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
         }
     };
 
-    // Publish Ad
-    const handlePublishAd = async () => {
+    // Primary Click on Publish Ad button
+    const handlePublishButtonClick = () => {
         if (!adTitle.trim()) {
             showToast("Please enter an Ad Title");
             return;
         }
         if (!description.trim()) {
-            showToast("Please enter a description");
+            showToast("Please enter a description for your ad");
             return;
         }
 
+        // If Premium Ad selected -> Open Razorpay Checkout Page
+        if (classifiedType === "premium") {
+            setRazorpayStep("select_method");
+            setIsRazorpayOpen(true);
+            return;
+        }
+
+        // If Free Ad -> Publish immediately
+        executePublishAd({ paymentStatus: "free", paymentId: "free_tier" });
+    };
+
+    // Razorpay Payment Simulation & Confirmation
+    const handlePayRazorpay = async () => {
+        setRazorpayStep("processing");
+
+        // Simulate Razorpay Gateway Verification handshake
+        await new Promise(r => setTimeout(r, 1600));
+
+        const generatedPaymentId = `pay_rzp_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        setConfirmedPaymentId(generatedPaymentId);
+        setRazorpayStep("success");
+
+        // Execute ad creation with payment record
+        await executePublishAd({
+            paymentStatus: "paid",
+            paymentId: generatedPaymentId,
+            paymentMethod: paymentMethod,
+            amountPaid: 499,
+            currency: "INR"
+        });
+
+        setTimeout(() => {
+            setIsRazorpayOpen(false);
+            if (onBack) onBack();
+        }, 1800);
+    };
+
+    // Execute actual publish
+    const executePublishAd = async (paymentDetails: any) => {
         setIsSubmitting(true);
 
         const expertEmail = typeof window !== "undefined" ? (localStorage.getItem("expert_email") || "") : "";
@@ -180,10 +220,10 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
             category: category,
             country: destinationCountry,
             type: classifiedType,
-            price: classifiedType === "premium" ? "₹499 (Premium)" : "FREE",
+            price: classifiedType === "premium" ? "₹499 (Premium Verified)" : "FREE",
             hashtags: hashtags,
             description: description,
-            cover_photo: images[0] || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600",
+            cover_photo: images[0] || "",
             images: images,
             validFrom,
             validTo,
@@ -191,6 +231,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
             expert_email: expertEmail,
             views: 0,
             status: "active",
+            payment: paymentDetails,
             created_at: new Date().toISOString(),
         };
 
@@ -213,15 +254,17 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
             const existing = JSON.parse(localStorage.getItem("expert_classifieds") || "[]");
             localStorage.setItem("expert_classifieds", JSON.stringify([newAd, ...existing]));
 
-            showToast("🎉 Classified Ad Published Successfully!");
+            showToast(classifiedType === "premium" ? "🎉 Premium Ad Paid & Published Successfully!" : "🎉 Free Classified Ad Published Successfully!");
 
             if (onAdCreated) {
                 onAdCreated(newAd);
             }
 
-            setTimeout(() => {
-                if (onBack) onBack();
-            }, 1200);
+            if (classifiedType === "free") {
+                setTimeout(() => {
+                    if (onBack) onBack();
+                }, 1200);
+            }
         } catch(err) {
             console.error("Publish error:", err);
             showToast("Failed to publish ad. Saved locally.");
@@ -336,8 +379,9 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                         <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
                                             Get higher visibility, featured placement and more reach. Valid for 30 days.
                                         </p>
-                                        <div className="mt-2 text-sm font-black text-slate-900">
-                                            ₹499
+                                        <div className="mt-2 text-sm font-black text-slate-900 flex items-center gap-1.5">
+                                            <span>₹499</span>
+                                            <span className="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-100">Via Razorpay</span>
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +406,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                 value={adTitle}
                                 onChange={(e) => setAdTitle(e.target.value)}
                                 placeholder="e.g. UAE Work Visa – Special Offer for Skilled Professionals"
-                                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-white outline-none focus:border-slate-900 transition-colors shadow-2xs"
+                                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-white outline-none focus:border-slate-900 transition-colors shadow-2xs placeholder:text-slate-400 placeholder:font-normal"
                             />
                             <div className="text-right text-[10px] text-slate-400 font-semibold mt-1">
                                 {adTitle.length}/100
@@ -424,7 +468,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                             <label className="block text-xs font-bold text-slate-700 mb-1.5">
                                 Hashtags <span className="text-slate-400 font-normal">(optional)</span>
                             </label>
-                            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                            <div className="flex flex-wrap items-center gap-2 mb-1.5 min-h-[34px]">
                                 {hashtags.map(tag => (
                                     <span 
                                         key={tag} 
@@ -507,8 +551,8 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                     maxLength={1000}
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Write a clear, detailed overview of your offer..."
-                                    className="w-full p-3 text-xs sm:text-sm font-medium text-slate-800 bg-white outline-none resize-none leading-relaxed"
+                                    placeholder="Write a clear, detailed overview of your offer, requirements, and benefits..."
+                                    className="w-full p-3 text-xs sm:text-sm font-medium text-slate-800 bg-white outline-none resize-none leading-relaxed placeholder:text-slate-400 placeholder:font-normal"
                                 />
                             </div>
                             <div className="text-right text-[10px] text-slate-400 font-semibold mt-1">
@@ -558,7 +602,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                 >
                                     <Plus className="w-6 h-6 text-teal-600 group-hover:scale-110 transition-transform mb-1" />
                                     <span className="text-xs font-bold text-slate-800">Add Images</span>
-                                    <span className="text-[10px] text-slate-400 font-medium mt-0.5">(Max 5)</span>
+                                    <span className="text-[10px] text-slate-400 font-medium mt-0.5">({5 - images.length} remaining)</span>
                                 </div>
                             )}
                         </div>
@@ -652,10 +696,22 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                 <button
                                     type="button"
                                     disabled={isSubmitting}
-                                    onClick={handlePublishAd}
-                                    className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                                    onClick={handlePublishButtonClick}
+                                    className={`text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer ${
+                                        classifiedType === "premium"
+                                            ? "bg-indigo-600 hover:bg-indigo-700"
+                                            : "bg-slate-900 hover:bg-slate-800"
+                                    }`}
                                 >
-                                    <Send className="w-4 h-4" /> {isSubmitting ? "Publishing..." : "Publish Ad"}
+                                    {classifiedType === "premium" ? (
+                                        <>
+                                            <Crown className="w-4 h-4 text-amber-300" /> Pay ₹499 & Publish
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-4 h-4" /> {isSubmitting ? "Publishing..." : "Publish Free Ad"}
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -675,32 +731,42 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                 <Eye className="w-4 h-4 text-teal-600" /> Ad Preview
                             </div>
                             <span className="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-black px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                                <Crown className="w-3 h-3 text-indigo-600" /> {classifiedType === "premium" ? "Premium Ad" : "Free Ad"}
+                                <Crown className="w-3 h-3 text-indigo-600" /> {classifiedType === "premium" ? "Premium Ad (₹499)" : "Free Ad"}
                             </span>
                         </div>
 
                         {/* Banner Image with Title Overlay */}
                         <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
-                            <img
-                                src={images[0] || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop&q=80"}
-                                alt="Banner preview"
-                                className="w-full h-full object-cover brightness-[0.75] contrast-[1.05]"
-                            />
+                            {images.length > 0 ? (
+                                <img
+                                    src={images[0]}
+                                    alt="Banner preview"
+                                    className="w-full h-full object-cover brightness-[0.75] contrast-[1.05]"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-slate-800 via-slate-900 to-indigo-950 flex flex-col items-center justify-center text-center p-6 text-slate-400">
+                                    <Upload className="w-8 h-8 text-slate-500 mb-2 opacity-60" />
+                                    <span className="text-xs font-bold text-slate-300">No Banner Uploaded</span>
+                                    <span className="text-[10px] text-slate-500 mt-0.5">Upload images above to feature here</span>
+                                </div>
+                            )}
                             
-                            {/* Premium Badge */}
+                            {/* Premium / Free Badge */}
                             <div className="absolute top-3 left-3">
-                                <span className="bg-teal-500/90 backdrop-blur-xs text-white text-[10px] font-black px-2.5 py-1 rounded-md shadow-xs uppercase tracking-wider">
+                                <span className={`text-white text-[10px] font-black px-2.5 py-1 rounded-md shadow-xs uppercase tracking-wider backdrop-blur-xs ${
+                                    classifiedType === "premium" ? "bg-indigo-600/90" : "bg-teal-600/90"
+                                }`}>
                                     {classifiedType === "premium" ? "Premium" : "Active"}
                                 </span>
                             </div>
 
                             {/* Banner Center/Bottom Titles */}
                             <div className="absolute bottom-4 left-4 right-4 text-white">
-                                <h3 className="text-xl font-black leading-tight drop-shadow-md">
-                                    {adTitle.split("–")[0]?.trim() || "UAE Work Visa"}
+                                <h3 className="text-xl font-black leading-tight drop-shadow-md line-clamp-1">
+                                    {adTitle ? (adTitle.split("–")[0]?.trim() || adTitle) : "Your Ad Title"}
                                 </h3>
-                                <p className="text-xs text-slate-200 font-medium mt-0.5 drop-shadow">
-                                    {adTitle.split("–")[1]?.trim() || "Special Offer for Skilled Professionals"}
+                                <p className="text-xs text-slate-200 font-medium mt-0.5 drop-shadow line-clamp-1">
+                                    {adTitle ? (adTitle.split("–")[1]?.trim() || "Special Offer for Skilled Professionals") : "Headline or special offer details"}
                                 </p>
                             </div>
 
@@ -732,22 +798,26 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                             {/* Main Title */}
                             <div>
                                 <h4 className="text-base font-black text-slate-900 leading-snug">
-                                    {adTitle}
+                                    {adTitle || "Ad Title will appear here once entered"}
                                 </h4>
                             </div>
 
                             {/* Hashtags */}
-                            <div className="flex flex-wrap gap-1.5">
-                                {hashtags.map(t => (
-                                    <span key={t} className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md">
-                                        {t}
-                                    </span>
-                                ))}
-                            </div>
+                            {hashtags.length > 0 ? (
+                                <div className="flex flex-wrap gap-1.5">
+                                    {hashtags.map(t => (
+                                        <span key={t} className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md">
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-[11px] text-slate-400 italic">No hashtags added yet</p>
+                            )}
 
                             {/* Description text */}
                             <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                                {description}
+                                {description || "Your detailed ad description will appear here as you type. Highlight requirements, process details, and visa terms."}
                             </p>
 
                             {/* Image Thumbnails Gallery */}
@@ -773,7 +843,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                         <MapPin className="w-3.5 h-3.5 text-slate-400" /> {destinationCountry}
                                     </span>
                                     <span className="flex items-center gap-1">
-                                        <Calendar className="w-3.5 h-3.5 text-slate-400" /> Valid till 30 Sep 2025
+                                        <Calendar className="w-3.5 h-3.5 text-slate-400" /> Valid till {validTo}
                                     </span>
                                 </div>
                                 <button 
@@ -855,6 +925,279 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                 </div>
 
             </div>
+
+            {/* ── RAZORPAY CHECKOUT MODAL ── */}
+            {isRazorpayOpen && (
+                <div 
+                    data-lenis-prevent="true"
+                    className="fixed inset-0 z-[99999] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+                >
+                    <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 my-auto animate-in fade-in zoom-in-95 duration-200">
+                        
+                        {/* Razorpay Header */}
+                        <div className="bg-[#0C2340] text-white px-6 py-4 flex items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 font-black text-sm">
+                                    ₹
+                                </div>
+                                <div>
+                                    <div className="text-[10px] uppercase font-extrabold tracking-widest text-blue-300">
+                                        RAZORPAY SECURE
+                                    </div>
+                                    <h3 className="text-sm font-bold text-white">TravlTik Merchant Gateway</h3>
+                                </div>
+                            </div>
+
+                            {razorpayStep !== "processing" && (
+                                <button
+                                    onClick={() => setIsRazorpayOpen(false)}
+                                    className="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-white/10 transition-colors"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Razorpay Body */}
+                        {razorpayStep === "select_method" && (
+                            <div className="p-6 space-y-5">
+                                
+                                {/* Order Summary Card */}
+                                <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 flex items-center justify-between">
+                                    <div>
+                                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">
+                                            Premium Ad Placement
+                                        </span>
+                                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 line-clamp-1">
+                                            {adTitle || "Work Visa Classified Ad"}
+                                        </h4>
+                                        <p className="text-[11px] text-slate-500 font-medium">
+                                            30-Day Featured Top Position
+                                        </p>
+                                    </div>
+                                    <div className="text-right shrink-0">
+                                        <div className="text-xl font-black text-slate-900">₹499.00</div>
+                                        <div className="text-[10px] text-slate-400 font-semibold">Incl. All Taxes</div>
+                                    </div>
+                                </div>
+
+                                {/* Payment Methods Selector */}
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-700 mb-2">
+                                        Select Payment Method
+                                    </label>
+                                    <div className="grid grid-cols-4 gap-2">
+                                        {[
+                                            { id: "upi", label: "UPI", icon: Smartphone },
+                                            { id: "qr", label: "QR Code", icon: QrCode },
+                                            { id: "card", label: "Card", icon: CreditCard },
+                                            { id: "netbanking", label: "NetBanking", icon: Building2 },
+                                        ].map(m => {
+                                            const isSelected = paymentMethod === m.id;
+                                            const Icon = m.icon;
+                                            return (
+                                                <button
+                                                    key={m.id}
+                                                    type="button"
+                                                    onClick={() => setPaymentMethod(m.id as any)}
+                                                    className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
+                                                        isSelected
+                                                            ? "border-blue-600 bg-blue-50/50 text-blue-700 shadow-xs"
+                                                            : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                                                    }`}
+                                                >
+                                                    <Icon className={`w-4 h-4 mx-auto mb-1 ${isSelected ? "text-blue-600" : "text-slate-400"}`} />
+                                                    <span className="text-xs font-bold block">{m.label}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Method Specific Inputs */}
+                                <div className="border border-slate-200 rounded-2xl p-4 bg-slate-50/60 space-y-3">
+                                    {paymentMethod === "upi" && (
+                                        <div className="space-y-3">
+                                            <div>
+                                                <label className="block text-xs font-bold text-slate-700 mb-1">
+                                                    Enter UPI ID / VPA
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={upiId}
+                                                    onChange={(e) => setUpiId(e.target.value)}
+                                                    placeholder="username@okhdfcbank or phone@paytm"
+                                                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                />
+                                            </div>
+                                            <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                                                <span>Supported:</span>
+                                                <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-[10px]">Google Pay</span>
+                                                <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-[10px]">PhonePe</span>
+                                                <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-[10px]">Paytm</span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {paymentMethod === "qr" && (
+                                        <div className="text-center py-2 space-y-2">
+                                            <p className="text-xs font-bold text-slate-700">Scan QR code using any UPI App</p>
+                                            <div className="w-36 h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-slate-200 shadow-sm flex items-center justify-center">
+                                                <img 
+                                                    src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi://pay?pa=razorpay@icici&pn=TravlTik&am=499" 
+                                                    alt="Razorpay QR" 
+                                                    className="w-full h-full object-contain"
+                                                />
+                                            </div>
+                                            <span className="text-[10px] text-slate-400 font-semibold block">Scan & Pay ₹499.00</span>
+                                        </div>
+                                    )}
+
+                                    {paymentMethod === "card" && (
+                                        <div className="space-y-2.5">
+                                            <div>
+                                                <label className="block text-[11px] font-bold text-slate-700 mb-1">Card Number</label>
+                                                <input
+                                                    type="text"
+                                                    maxLength={19}
+                                                    value={cardNumber}
+                                                    onChange={(e) => setCardNumber(e.target.value)}
+                                                    placeholder="4532 •••• •••• ••••"
+                                                    className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div>
+                                                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Expiry (MM/YY)</label>
+                                                    <input
+                                                        type="text"
+                                                        maxLength={5}
+                                                        value={cardExpiry}
+                                                        onChange={(e) => setCardExpiry(e.target.value)}
+                                                        placeholder="12/28"
+                                                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-[11px] font-bold text-slate-700 mb-1">CVV</label>
+                                                    <input
+                                                        type="password"
+                                                        maxLength={4}
+                                                        value={cardCvv}
+                                                        onChange={(e) => setCardCvv(e.target.value)}
+                                                        placeholder="•••"
+                                                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {paymentMethod === "netbanking" && (
+                                        <div>
+                                            <label className="block text-xs font-bold text-slate-700 mb-1.5">Select Bank</label>
+                                            <select
+                                                value={selectedBank}
+                                                onChange={(e) => setSelectedBank(e.target.value)}
+                                                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                            >
+                                                <option value="HDFC Bank">HDFC Bank</option>
+                                                <option value="ICICI Bank">ICICI Bank</option>
+                                                <option value="State Bank of India">State Bank of India</option>
+                                                <option value="Axis Bank">Axis Bank</option>
+                                                <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                                                <option value="Punjab National Bank">Punjab National Bank</option>
+                                            </select>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Security Badge */}
+                                <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium px-1">
+                                    <span className="flex items-center gap-1">
+                                        <Lock className="w-3.5 h-3.5 text-blue-600" /> 256-bit SSL Bank Grade Security
+                                    </span>
+                                    <span>PCI-DSS Certified</span>
+                                </div>
+
+                                {/* Actions */}
+                                <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsRazorpayOpen(false)}
+                                        className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handlePayRazorpay}
+                                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
+                                    >
+                                        Pay ₹499.00 Securely
+                                    </button>
+                                </div>
+
+                            </div>
+                        )}
+
+                        {/* Razorpay Processing State */}
+                        {razorpayStep === "processing" && (
+                            <div className="p-12 text-center space-y-4">
+                                <div className="w-16 h-16 rounded-full bg-blue-50 border-2 border-blue-200 text-blue-600 flex items-center justify-center mx-auto shadow-inner">
+                                    <RefreshCw className="w-8 h-8 animate-spin" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                                        Connecting to Razorpay Gateway...
+                                    </h3>
+                                    <p className="text-xs text-slate-500 font-medium mt-1">
+                                        Please do not close or refresh this tab while we verify your transaction.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Razorpay Success State */}
+                        {razorpayStep === "success" && (
+                            <div className="p-8 text-center space-y-4 animate-in fade-in zoom-in-95">
+                                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-3xl font-black shadow-inner animate-bounce">
+                                    <Check className="w-8 h-8 stroke-[3]" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-black text-slate-900 tracking-tight">
+                                        Payment Successful! 🎉
+                                    </h3>
+                                    <p className="text-xs text-slate-600 font-medium mt-1">
+                                        Your <strong>Premium Classified Ad</strong> has been activated for 30 days.
+                                    </p>
+                                </div>
+
+                                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 text-xs text-slate-600 space-y-1.5 text-left max-w-xs mx-auto">
+                                    <div className="flex justify-between">
+                                        <span className="text-slate-400 font-bold">Transaction ID:</span>
+                                        <span className="font-mono font-bold text-slate-900">{confirmedPaymentId}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-slate-400 font-bold">Amount Paid:</span>
+                                        <span className="font-black text-emerald-600">₹499.00</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-slate-400 font-bold">Status:</span>
+                                        <span className="font-bold text-blue-600">Verified & Active</span>
+                                    </div>
+                                </div>
+
+                                <div className="text-[11px] font-bold text-slate-400">
+                                    Redirecting to your Classifieds list...
+                                </div>
+                            </div>
+                        )}
+
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
