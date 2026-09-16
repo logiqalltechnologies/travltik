@@ -3938,7 +3938,7 @@ return (
             <div className="flex items-center justify-between mb-4 sm:mb-5">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Explore Classifieds</h3>
+                  <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Latest Offer</h3>
                   {publishedClassifiedAds.length > 0 && (
                     <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-emerald-200">
                       LIVE
