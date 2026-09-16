@@ -270,27 +270,7 @@ export function DesktopHomeSection() {
     <div className="w-full bg-[#f3f4f6] text-slate-800 font-sans antialiased py-3">
       <div className="max-w-[1240px] mx-auto px-4 space-y-4">
 
-        {/* ======================================================= */}
-        {/* 1. FLIGHT AD BANNER */}
-        {/* ======================================================= */}
-        <div className="relative rounded-2xl overflow-hidden flex items-center justify-between px-6 py-4 min-h-[86px] shadow-sm text-white"
-          style={{ background: 'linear-gradient(90deg, #0c1a2e 0%, #172b4d 55%, #1e3a66 100%)' }}
-        >
-          <div className="relative z-10">
-            <p className="text-[10px] font-bold text-teal-300 tracking-wider uppercase mb-0.5">✈ SPONSORED TRAVEL DEALS</p>
-            <h3 className="text-white font-bold text-xl leading-tight">Fly High with Your Global Dreams</h3>
-            <p className="text-slate-300 text-xs font-medium mt-0.5">Best Student & Immigrant Flight Fares with Extra Baggage Allowance</p>
-          </div>
-
-          <div className="relative z-10 hidden md:block">
-            <div className="w-24 h-14 rounded-xl overflow-hidden border border-white/20 shadow">
-              <img
-                src="https://images.unsplash.com/photo-1542296332-2e4473faf563?w=400&auto=format&fit=crop&q=80"
-                alt="Airplane"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
+        
 
           <div className="relative z-10 flex items-center gap-5">
             <a href="/find-experts?category=flight" className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow transition whitespace-nowrap">

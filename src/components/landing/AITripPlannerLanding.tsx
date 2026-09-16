@@ -1502,6 +1502,27 @@ const originCityOptions = [
 export function AITripPlannerLanding() {
   // Current user email for persistence
   const [currentUserEmail, setCurrentUserEmail] = useState('');
+  const [publishedClassifiedAds, setPublishedClassifiedAds] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchActiveAds = () => {
+      try {
+        const stored = localStorage.getItem("active_classified_ads");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            setPublishedClassifiedAds(parsed);
+          }
+        }
+      } catch (e) {
+        console.error("Error reading active_classified_ads:", e);
+      }
+    };
+    fetchActiveAds();
+    window.addEventListener("storage", fetchActiveAds);
+    return () => window.removeEventListener("storage", fetchActiveAds);
+  }, []);
+
     const [isGeneratingDomestic, setIsGeneratingDomestic] = useState(false);
   const [showDomesticItinerary, setShowDomesticItinerary] = useState(false);
   const [expandedDay, setExpandedDay] = useState<number | null>(0);
@@ -3916,21 +3937,68 @@ return (
           <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-0 text-left">
             <div className="flex items-center justify-between mb-4 sm:mb-5">
               <div>
-                <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Explore Classifieds</h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">Find great offers from trusted providers</p>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">Explore Classifieds</h3>
+                  {publishedClassifiedAds.length > 0 && (
+                    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-0.5 rounded-full border border-emerald-200">
+                      LIVE
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">Verified offers, student accommodation, jobs and relocation assistance</p>
               </div>
               <a
                 href="/classifieds"
-                className="text-xs sm:text-sm font-semibold text-[#16a34a] hover:underline"
+                className="text-xs sm:text-sm font-semibold text-[#16a34a] hover:underline flex items-center gap-1"
               >
-                View All
+                View All Listings →
               </a>
             </div>
 
-            {/* 5 Offer Cards */}
+            {/* Dynamic Grid of Classified Ads (User published ads + verified listings) */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
               
-              {/* Card 1: Study in Canada */}
+              {/* Dynamic User-Published Ads First */}
+              {publishedClassifiedAds.map((ad: any) => (
+                <a
+                  key={ad.id}
+                  href={`/classifieds/${ad.id}`}
+                  className="bg-white rounded-2xl border-2 border-indigo-200/90 hover:border-indigo-500 shadow-[0_4px_20px_rgba(99,102,241,0.12)] hover:shadow-xl overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer relative animate-in fade-in"
+                >
+                  <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-900">
+                    <span className={`absolute top-2 left-2 z-10 px-2 py-0.5 rounded text-white text-[9px] font-black uppercase tracking-wider shadow-xs backdrop-blur-xs ${
+                      ad.type === "premium" ? "bg-indigo-600" : "bg-teal-600"
+                    }`}>
+                      {ad.type === "premium" ? "👑 PREMIUM" : "NEW AD"}
+                    </span>
+                    <img
+                      src={ad.cover_photo || (ad.images && ad.images[0]) || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop"}
+                      alt={ad.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+                        {ad.title}
+                      </h4>
+                      <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
+                        {ad.company || ad.category}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
+                      <div className="flex items-center gap-1 text-teal-600 font-bold">
+                        <span className="text-xs">📍</span>
+                        <span className="text-slate-800 text-[11px] font-semibold truncate max-w-[70px]">{ad.country || "Global"}</span>
+                      </div>
+                      <span className="text-indigo-600 font-extrabold text-[11px]">{ad.type === "premium" ? "Verified" : "Free"}</span>
+                    </div>
+                  </div>
+                </a>
+              ))}
+
+              {/* Verified Listing 1: Study in Canada */}
               <a
                 href="/universities?country=Canada"
                 className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
@@ -3952,7 +4020,7 @@ return (
                       Study in Canada
                     </h4>
                     <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Get admission in top universities
+                      Get admission in top Canadian universities
                     </p>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
@@ -3965,18 +4033,18 @@ return (
                 </div>
               </a>
 
-              {/* Card 2: Flight Tickets */}
+              {/* Verified Listing 2: Caregiver & Healthcare Jobs */}
               <a
-                href="/find-experts?category=flight"
+                href="/classifieds/caregiver-jobs-canada"
                 className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
-                    OFFER
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-teal-700 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
+                    JOBS ABROAD
                   </span>
                   <img
-                    src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800&auto=format&fit=crop"
-                    alt="Flight Tickets"
+                    src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop"
+                    alt="Caregiver Jobs Canada"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
@@ -3984,31 +4052,34 @@ return (
                 <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Flight Tickets
+                      Caregiver Jobs Canada
                     </h4>
                     <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Domestic &amp; International flight deals
+                      Work permit & PR pathway support
                     </p>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
                     <div className="flex items-center gap-1 text-amber-500 font-bold">
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.6</span>
+                      <span className="text-slate-800">4.9</span>
                     </div>
-                    <span className="text-slate-500 font-medium">All Routes</span>
+                    <span className="text-slate-500 font-medium">Employment</span>
                   </div>
                 </div>
               </a>
 
-              {/* Card 3: Hotel Stays */}
+              {/* Verified Listing 3: Student Housing & Accommodation */}
               <a
-                href="/classifieds?category=hotels"
+                href="/classifieds/shared-room-humber-college"
                 className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-indigo-700 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
+                    ACCOMMODATION
+                  </span>
                   <img
-                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=85"
-                    alt="Hotel Stays"
+                    src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop"
+                    alt="Student Housing"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
@@ -4016,10 +4087,10 @@ return (
                 <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Hotel Stays
+                      Student Shared Rooms
                     </h4>
                     <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Best hotel deals across India
+                      Furnished rooms near top colleges
                     </p>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
@@ -4027,49 +4098,20 @@ return (
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                       <span className="text-slate-800">4.7</span>
                     </div>
-                    <span className="text-slate-500 font-medium">1000+ Hotels</span>
+                    <span className="text-slate-500 font-medium">Housing</span>
                   </div>
                 </div>
               </a>
 
-              {/* Card 4: Outstation Cabs */}
-              <a
-                href="/classifieds?category=cabs"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=85"
-                    alt="Outstation Cabs"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Outstation Cabs
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Safe &amp; reliable cabs at best prices
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.5</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">All India</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Card 5: Holiday Packages */}
+              {/* Verified Listing 4: Holiday Packages */}
               <a
                 href="/tours"
                 className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer col-span-2 sm:col-span-1"
               >
                 <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-amber-600 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
+                    PACKAGES
+                  </span>
                   <img
                     src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&auto=format&fit=crop&q=85"
                     alt="Holiday Packages"
@@ -4080,10 +4122,10 @@ return (
                 <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Holiday Packages
+                      Holiday Tour Packages
                     </h4>
                     <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Amazing holiday packages
+                      Escrow-protected international tours
                     </p>
                   </div>
                   <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
@@ -4091,7 +4133,7 @@ return (
                       <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                       <span className="text-slate-800">4.6</span>
                     </div>
-                    <span className="text-slate-500 font-medium">All India</span>
+                    <span className="text-slate-500 font-medium">Worldwide</span>
                   </div>
                 </div>
               </a>

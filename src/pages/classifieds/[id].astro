@@ -300,6 +300,7 @@ const classified = Astro.props?.classified || allClassifieds.find(c => c.id === 
   </div>
 </Layout>
 
+
 <script>
   // Close modal when clicking dark backdrop outside card
   const backdrop = document.getElementById('classified-modal-backdrop');
@@ -309,5 +310,42 @@ const classified = Astro.props?.classified || allClassifieds.find(c => c.id === 
         window.location.href = '/';
       }
     });
+  }
+
+  // Hydrate with newly published classified ad details if dynamic id
+  try {
+    const currentId = window.location.pathname.split('/').filter(Boolean).pop();
+    const stored = localStorage.getItem('active_classified_ads');
+    if (stored && currentId) {
+      const ads = JSON.parse(stored);
+      const match = ads.find((a: any) => a.id === currentId);
+      if (match) {
+        const titleEl = document.querySelector('h1');
+        if (titleEl && match.title) titleEl.textContent = match.title;
+
+        const imgEl = document.querySelector('#classified-modal-backdrop img[alt]') as HTMLImageElement;
+        if (imgEl && (match.cover_photo || (match.images && match.images[0]))) {
+          imgEl.src = match.cover_photo || match.images[0];
+        }
+
+        const descEl = document.querySelector('.leading-relaxed');
+        if (descEl && match.description) descEl.textContent = match.description;
+
+        const posterEl = document.querySelector('h3.text-slate-900');
+        if (posterEl && match.company) posterEl.textContent = match.company;
+
+        if (match.contactPhone) {
+          const callBtn = document.querySelector('a[href^="tel:"]') as HTMLAnchorElement;
+          if (callBtn) callBtn.href = `tel:${match.contactPhone}`;
+
+          const waBtn = document.querySelector('a[href*="wa.me"]') as HTMLAnchorElement;
+          if (waBtn) {
+            waBtn.href = `https://wa.me/${match.contactPhone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hi! I am interested in your classified listing: ' + match.title)}`;
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.error('Failed to hydrate ad details:', e);
   }
 </script>

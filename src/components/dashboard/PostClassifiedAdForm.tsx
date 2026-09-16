@@ -1,11 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { 
     ArrowLeft, Check, CheckCircle2, Eye, Send, Save, Upload, X, Plus, 
     Trash2, Calendar, Phone, Crown, Tag, Briefcase, MapPin, User, 
     Sparkles, ShieldCheck, Globe, Building2, Bold, Italic, Underline, 
     Link, List, ListOrdered, AlignLeft, Maximize2, Megaphone, 
     AlertCircle, FileText, CheckCircle, CreditCard, Lock, RefreshCw, 
-    Smartphone, QrCode
+    Smartphone, QrCode, ChevronDown, Search
 } from "lucide-react";
 
 interface PostClassifiedAdFormProps {
@@ -14,27 +14,50 @@ interface PostClassifiedAdFormProps {
     initialData?: any;
 }
 
-const countryOptions = [
-    { code: "ae", name: "UAE", flag: "🇦🇪" },
-    { code: "ca", name: "Canada", flag: "🇨🇦" },
-    { code: "gb", name: "United Kingdom", flag: "🇬🇧" },
-    { code: "au", name: "Australia", flag: "🇦🇺" },
-    { code: "de", name: "Germany", flag: "🇩🇪" },
-    { code: "us", name: "United States", flag: "🇺🇸" },
-    { code: "nz", name: "New Zealand", flag: "🇳🇿" },
-    { code: "sg", name: "Singapore", flag: "🇸🇬" },
-    { code: "ie", name: "Ireland", flag: "🇮🇪" },
-    { code: "pl", name: "Poland", flag: "🇵🇱" },
-    { code: "gr", name: "Greece", flag: "🇬🇷" },
+interface CountryOption {
+    code: string;
+    name: string;
+    flag: string;
+    region?: string;
+}
+
+const countryOptions: CountryOption[] = [
+    { code: "ae", name: "UAE", flag: "🇦🇪", region: "Middle East" },
+    { code: "ca", name: "Canada", flag: "🇨🇦", region: "North America" },
+    { code: "gb", name: "United Kingdom", flag: "🇬🇧", region: "Europe" },
+    { code: "au", name: "Australia", flag: "🇦🇺", region: "Oceania" },
+    { code: "de", name: "Germany", flag: "🇩🇪", region: "Europe" },
+    { code: "us", name: "United States", flag: "🇺🇸", region: "North America" },
+    { code: "nz", name: "New Zealand", flag: "🇳🇿", region: "Oceania" },
+    { code: "sg", name: "Singapore", flag: "🇸🇬", region: "Asia" },
+    { code: "ie", name: "Ireland", flag: "🇮🇪", region: "Europe" },
+    { code: "pl", name: "Poland", flag: "🇵🇱", region: "Europe" },
+    { code: "gr", name: "Greece", flag: "🇬🇷", region: "Europe" },
+    { code: "sa", name: "Saudi Arabia", flag: "🇸🇦", region: "Middle East" },
+    { code: "qa", name: "Qatar", flag: "🇶🇦", region: "Middle East" },
+    { code: "fr", name: "France", flag: "🇫🇷", region: "Europe" },
+    { code: "it", name: "Italy", flag: "🇮🇹", region: "Europe" },
+    { code: "es", name: "Spain", flag: "🇪🇸", region: "Europe" },
+    { code: "pt", name: "Portugal", flag: "🇵🇹", region: "Europe" },
+    { code: "mt", name: "Malta", flag: "🇲🇹", region: "Europe" },
+    { code: "jp", name: "Japan", flag: "🇯🇵", region: "Asia" },
 ];
 
-const categoryOptions = [
-    { id: "work_permit", label: "Work Permit / Employment", icon: Briefcase },
-    { id: "study_abroad", label: "Study Abroad & Admissions", icon: Globe },
-    { id: "immigration_pr", label: "Immigration & PR Visas", icon: Building2 },
-    { id: "tourist_visa", label: "Tourist & Visitor Visas", icon: Globe },
-    { id: "business_investor", label: "Business & Investor Visas", icon: Briefcase },
-    { id: "accommodation", label: "Accommodation & Housing", icon: Building2 },
+interface CategoryOption {
+    id: string;
+    label: string;
+    icon: any;
+    color: string;
+    badgeBg: string;
+}
+
+const categoryOptions: CategoryOption[] = [
+    { id: "work_permit", label: "Work Permit / Employment", icon: Briefcase, color: "text-amber-700", badgeBg: "bg-amber-50 border-amber-200" },
+    { id: "study_abroad", label: "Study Abroad & Admissions", icon: Globe, color: "text-blue-700", badgeBg: "bg-blue-50 border-blue-200" },
+    { id: "immigration_pr", label: "Immigration & PR Visas", icon: Building2, color: "text-purple-700", badgeBg: "bg-purple-50 border-purple-200" },
+    { id: "tourist_visa", label: "Tourist & Visitor Visas", icon: Globe, color: "text-emerald-700", badgeBg: "bg-emerald-50 border-emerald-200" },
+    { id: "business_investor", label: "Business & Investor Visas", icon: Briefcase, color: "text-indigo-700", badgeBg: "bg-indigo-50 border-indigo-200" },
+    { id: "accommodation", label: "Accommodation & Housing", icon: Building2, color: "text-rose-700", badgeBg: "bg-rose-50 border-rose-200" },
 ];
 
 export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostClassifiedAdFormProps) {
@@ -46,6 +69,28 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
     const [destinationCountry, setDestinationCountry] = useState(initialData?.country || "UAE");
     const [category, setCategory] = useState(initialData?.category || "Work Permit / Employment");
 
+    // Custom Dropdown Open & Search States
+    const [isCountryOpen, setIsCountryOpen] = useState(false);
+    const [countrySearch, setCountrySearch] = useState("");
+    const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+
+    const countryDropdownRef = useRef<HTMLDivElement>(null);
+    const categoryDropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdowns on outside click
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+                setIsCountryOpen(false);
+            }
+            if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target as Node)) {
+                setIsCategoryOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     // 3. Add Details (Fresh - empty hashtags & description)
     const [hashtags, setHashtags] = useState<string[]>(initialData?.hashtags || []);
     const [newTagInput, setNewTagInput] = useState("");
@@ -55,17 +100,10 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
     // 4. Images / Media (Fresh - empty array, max 5)
     const [images, setImages] = useState<string[]>(initialData?.images || []);
 
-    // 5. Additional Information
-    const todayStr = new Date().toISOString().split("T")[0];
-    const thirtyDaysLaterStr = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
-    const [validFrom, setValidFrom] = useState(initialData?.validFrom || todayStr);
-    const [validTo, setValidTo] = useState(initialData?.validTo || thirtyDaysLaterStr);
-    const [contactPhone, setContactPhone] = useState(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone") || "";
-        }
-        return "";
-    });
+    // 5. Additional Information (Completely Fresh - NO dummy prefilled dates or phone)
+    const [validFrom, setValidFrom] = useState(initialData?.validFrom || "");
+    const [validTo, setValidTo] = useState(initialData?.validTo || "");
+    const [contactPhone, setContactPhone] = useState(initialData?.contactPhone || "");
 
     // UI & Publishing States
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -110,38 +148,47 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
         const files = e.target.files;
         if (!files || files.length === 0) return;
 
-        if (images.length + files.length > 5) {
+        const remainingSlots = 5 - images.length;
+        if (remainingSlots <= 0) {
             showToast("Maximum 5 images allowed");
             return;
         }
 
-        Array.from(files).forEach(file => {
+        const filesToProcess = Array.from(files).slice(0, remainingSlots);
+        filesToProcess.forEach(file => {
             if (file.size > 2 * 1024 * 1024) {
                 showToast(`File ${file.name} exceeds 2MB limit`);
                 return;
             }
             const reader = new FileReader();
-            reader.onload = (event) => {
-                if (event.target?.result) {
-                    setImages(prev => [...prev.slice(0, 4), event.target!.result as string]);
+            reader.onload = (uploadEvent) => {
+                if (uploadEvent.target?.result) {
+                    setImages(prev => {
+                        if (prev.length >= 5) return prev;
+                        return [...prev, uploadEvent.target!.result as string];
+                    });
                 }
             };
             reader.readAsDataURL(file);
         });
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     // Remove Image
-    const handleRemoveImage = (index: number) => {
-        setImages(images.filter((_, i) => i !== index));
+    const handleRemoveImage = (indexToRemove: number) => {
+        setImages(images.filter((_, idx) => idx !== indexToRemove));
     };
 
-    // Save Draft
+    // Save as draft
     const handleSaveDraft = () => {
         const draft = {
-            classifiedType,
             title: adTitle,
             country: destinationCountry,
             category,
+            type: classifiedType,
             hashtags,
             description,
             images,
@@ -248,55 +295,65 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                     description: description,
                     expert_email: expertEmail,
                 })
-            }).catch(() => {});
+            });
 
-            // Save to local storage for instant dashboard reflection
-            const existing = JSON.parse(localStorage.getItem("expert_classifieds") || "[]");
-            localStorage.setItem("expert_classifieds", JSON.stringify([newAd, ...existing]));
+            // Save to localStorage for instant reactivity across portals
+            const existingAds = JSON.parse(localStorage.getItem("active_classified_ads") || "[]");
+            localStorage.setItem("active_classified_ads", JSON.stringify([newAd, ...existingAds]));
 
-            showToast(classifiedType === "premium" ? "🎉 Premium Ad Paid & Published Successfully!" : "🎉 Free Classified Ad Published Successfully!");
+            showToast(classifiedType === "premium" ? "Premium Ad successfully activated & published!" : "Classified Ad published successfully!");
+            if (onAdCreated) onAdCreated(newAd);
 
-            if (onAdCreated) {
-                onAdCreated(newAd);
-            }
-
-            if (classifiedType === "free") {
+            if (classifiedType !== "premium") {
                 setTimeout(() => {
                     if (onBack) onBack();
                 }, 1200);
             }
-        } catch(err) {
-            console.error("Publish error:", err);
-            showToast("Failed to publish ad. Saved locally.");
+        } catch (err) {
+            console.error("Failed to publish ad:", err);
+            showToast("Failed to publish ad. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    // Filtered countries for custom dropdown
+    const filteredCountries = countryOptions.filter(c => 
+        c.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
+        c.code.toLowerCase().includes(countrySearch.toLowerCase()) ||
+        (c.region && c.region.toLowerCase().includes(countrySearch.toLowerCase()))
+    );
+
     const selectedCountryObj = countryOptions.find(c => c.name === destinationCountry) || countryOptions[0];
+    const selectedCategoryObj = categoryOptions.find(cat => cat.label === category) || categoryOptions[0];
+    const CategoryIcon = selectedCategoryObj.icon;
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 font-sans text-slate-800">
-            {/* Toast */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-6 pb-24 relative">
+            
+            {/* TOAST NOTIFICATION */}
             {toastMessage && (
-                <div className="fixed top-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold flex items-center gap-2 border border-slate-700 animate-in fade-in slide-in-from-top-4 duration-200">
-                    <Sparkles className="w-4 h-4 text-emerald-400" />
-                    {toastMessage}
+                <div className="fixed bottom-8 right-8 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in fade-in slide-in-from-bottom-5">
+                    <CheckCircle2 className="w-5 h-5 text-teal-400 shrink-0" />
+                    <span className="text-sm font-semibold">{toastMessage}</span>
                 </div>
             )}
 
-            {/* Back Button */}
-            <div className="mb-4">
-                <button
-                    onClick={onBack}
-                    className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
-                >
-                    <ArrowLeft className="w-4 h-4" /> Back to My Ads
-                </button>
-            </div>
-
-            {/* Header */}
-            <div className="mb-8">
+            {/* TOP BREADCRUMB / HEADER */}
+            <div className="mb-6">
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-2">
+                    {onBack && (
+                        <button 
+                            type="button" 
+                            onClick={onBack} 
+                            className="hover:text-slate-900 transition-colors flex items-center gap-1 cursor-pointer"
+                        >
+                            <ArrowLeft className="w-3.5 h-3.5" /> Back to Classifieds
+                        </button>
+                    )}
+                    {onBack && <span>/</span>}
+                    <span className="text-slate-900 font-bold">New Classified Ad</span>
+                </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                     Post a Classified Ad
                 </h1>
@@ -402,57 +459,195 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                             </label>
                             <input
                                 type="text"
-                                maxLength={100}
                                 value={adTitle}
-                                onChange={(e) => setAdTitle(e.target.value)}
+                                onChange={(e) => setAdTitle(e.target.value.slice(0, 100))}
                                 placeholder="e.g. UAE Work Visa – Special Offer for Skilled Professionals"
-                                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-white outline-none focus:border-slate-900 transition-colors shadow-2xs placeholder:text-slate-400 placeholder:font-normal"
+                                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/5 transition-all shadow-2xs"
                             />
-                            <div className="text-right text-[10px] text-slate-400 font-semibold mt-1">
-                                {adTitle.length}/100
+                            <div className="flex justify-end mt-1">
+                                <span className="text-[11px] text-slate-400 font-medium">
+                                    {adTitle.length}/100
+                                </span>
                             </div>
                         </div>
 
-                        {/* Destination Country & Category Row */}
+                        {/* Destination Country & Category Row with CUSTOM MODERN DROPDOWNS */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
+                            
+                            {/* CUSTOM DESTINATION COUNTRY DROPDOWN */}
+                            <div className="relative" ref={countryDropdownRef}>
                                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
                                     Destination Country <span className="text-rose-500">*</span>
                                 </label>
-                                <div className="relative">
-                                    <select
-                                        value={destinationCountry}
-                                        onChange={(e) => setDestinationCountry(e.target.value)}
-                                        className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-white outline-none focus:border-slate-900 transition-colors shadow-2xs appearance-none pr-8 cursor-pointer"
-                                    >
-                                        {countryOptions.map(c => (
-                                            <option key={c.code} value={c.name}>
-                                                {c.flag} {c.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-xs">▼</span>
-                                </div>
+                                
+                                {/* Trigger Button */}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsCountryOpen(!isCountryOpen);
+                                        setIsCategoryOpen(false);
+                                    }}
+                                    className={`w-full px-3.5 py-2.5 bg-white border rounded-xl flex items-center justify-between text-left transition-all shadow-2xs cursor-pointer ${
+                                        isCountryOpen 
+                                            ? "border-slate-900 ring-2 ring-slate-900/10" 
+                                            : "border-slate-200 hover:border-slate-300"
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2.5 truncate">
+                                        <img 
+                                            src={`https://flagcdn.com/w40/${selectedCountryObj.code.toLowerCase()}.png`} 
+                                            alt={selectedCountryObj.name}
+                                            className="w-5 h-3.5 object-cover rounded-xs shadow-2xs border border-slate-200 shrink-0"
+                                            onError={(e) => {
+                                                (e.currentTarget as HTMLElement).style.display = 'none';
+                                            }}
+                                        />
+                                        <span className="text-xs font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-sm shrink-0">
+                                            {selectedCountryObj.code.toUpperCase()}
+                                        </span>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                                            {selectedCountryObj.name}
+                                        </span>
+                                    </div>
+                                    <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 shrink-0 ml-2 ${isCountryOpen ? "rotate-180 text-slate-900" : ""}`} />
+                                </button>
+
+                                {/* Dropdown Menu Popover */}
+                                {isCountryOpen && (
+                                    <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl shadow-2xl border border-slate-200/95 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                                        {/* Search Filter Header */}
+                                        <div className="p-2.5 border-b border-slate-100 bg-slate-50/80">
+                                            <div className="relative">
+                                                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                                                <input
+                                                    type="text"
+                                                    value={countrySearch}
+                                                    onChange={(e) => setCountrySearch(e.target.value)}
+                                                    placeholder="Search country or code..."
+                                                    className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg outline-none focus:border-slate-900 transition-all font-medium text-slate-900 placeholder:text-slate-400"
+                                                    autoFocus
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Options List */}
+                                        <div className="max-h-60 overflow-y-auto py-1.5 divide-y divide-slate-50">
+                                            {filteredCountries.length > 0 ? (
+                                                filteredCountries.map(c => {
+                                                    const isSelected = c.name === destinationCountry;
+                                                    return (
+                                                        <div
+                                                            key={c.code}
+                                                            onClick={() => {
+                                                                setDestinationCountry(c.name);
+                                                                setIsCountryOpen(false);
+                                                                setCountrySearch("");
+                                                            }}
+                                                            className={`px-3.5 py-2.5 flex items-center justify-between transition-colors cursor-pointer ${
+                                                                isSelected 
+                                                                    ? "bg-teal-50/60 text-teal-900 font-bold" 
+                                                                    : "hover:bg-slate-50 text-slate-800 font-medium"
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-center gap-2.5 truncate">
+                                                                <img 
+                                                                    src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`} 
+                                                                    alt={c.name}
+                                                                    className="w-5 h-3.5 object-cover rounded-xs shadow-2xs border border-slate-200 shrink-0"
+                                                                    onError={(e) => {
+                                                                        (e.currentTarget as HTMLElement).style.display = 'none';
+                                                                    }}
+                                                                />
+                                                                <span className="text-[11px] font-mono font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-sm">
+                                                                    {c.code.toUpperCase()}
+                                                                </span>
+                                                                <span className="text-xs sm:text-sm truncate">
+                                                                    {c.name}
+                                                                </span>
+                                                            </div>
+                                                            {isSelected && (
+                                                                <Check className="w-4 h-4 text-teal-600 shrink-0 ml-2" />
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })
+                                            ) : (
+                                                <div className="px-4 py-6 text-center text-xs text-slate-400">
+                                                    No countries match "{countrySearch}"
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            <div>
+                            {/* CUSTOM CATEGORY DROPDOWN */}
+                            <div className="relative" ref={categoryDropdownRef}>
                                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
                                     Category <span className="text-rose-500">*</span>
                                 </label>
-                                <div className="relative">
-                                    <select
-                                        value={category}
-                                        onChange={(e) => setCategory(e.target.value)}
-                                        className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-white outline-none focus:border-slate-900 transition-colors shadow-2xs appearance-none pr-8 cursor-pointer"
-                                    >
-                                        {categoryOptions.map(cat => (
-                                            <option key={cat.id} value={cat.label}>
-                                                💼 {cat.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-xs">▼</span>
-                                </div>
+                                
+                                {/* Trigger Button */}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsCategoryOpen(!isCategoryOpen);
+                                        setIsCountryOpen(false);
+                                    }}
+                                    className={`w-full px-3.5 py-2.5 bg-white border rounded-xl flex items-center justify-between text-left transition-all shadow-2xs cursor-pointer ${
+                                        isCategoryOpen 
+                                            ? "border-slate-900 ring-2 ring-slate-900/10" 
+                                            : "border-slate-200 hover:border-slate-300"
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2 truncate">
+                                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center border shrink-0 ${selectedCategoryObj.badgeBg}`}>
+                                            <CategoryIcon className={`w-3.5 h-3.5 ${selectedCategoryObj.color}`} />
+                                        </div>
+                                        <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                                            {selectedCategoryObj.label}
+                                        </span>
+                                    </div>
+                                    <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 shrink-0 ml-2 ${isCategoryOpen ? "rotate-180 text-slate-900" : ""}`} />
+                                </button>
+
+                                {/* Dropdown Menu Popover */}
+                                {isCategoryOpen && (
+                                    <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-white rounded-2xl shadow-2xl border border-slate-200/95 overflow-hidden py-1.5 animate-in fade-in zoom-in-95 duration-150">
+                                        <div className="max-h-60 overflow-y-auto divide-y divide-slate-50">
+                                            {categoryOptions.map(cat => {
+                                                const isSelected = cat.label === category;
+                                                const IconComponent = cat.icon;
+                                                return (
+                                                    <div
+                                                        key={cat.id}
+                                                        onClick={() => {
+                                                            setCategory(cat.label);
+                                                            setIsCategoryOpen(false);
+                                                        }}
+                                                        className={`px-3.5 py-2.5 flex items-center justify-between transition-colors cursor-pointer ${
+                                                            isSelected 
+                                                                ? "bg-slate-50 text-slate-950 font-bold" 
+                                                                : "hover:bg-slate-50 text-slate-700 font-medium"
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-center gap-2.5 truncate">
+                                                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center border shrink-0 ${cat.badgeBg}`}>
+                                                                <IconComponent className={`w-3.5 h-3.5 ${cat.color}`} />
+                                                            </div>
+                                                            <span className="text-xs sm:text-sm truncate">
+                                                                {cat.label}
+                                                            </span>
+                                                        </div>
+                                                        {isSelected && (
+                                                            <Check className="w-4 h-4 text-teal-600 shrink-0 ml-2" />
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -489,7 +684,6 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                     <div className="inline-flex items-center gap-1">
                                         <input
                                             type="text"
-                                            autoFocus
                                             value={newTagInput}
                                             onChange={(e) => setNewTagInput(e.target.value)}
                                             onKeyDown={(e) => {
@@ -501,68 +695,85 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                                 }
                                             }}
                                             placeholder="#tag"
-                                            className="px-2 py-1 text-xs font-semibold border border-teal-500 rounded-lg outline-none w-24"
+                                            className="px-2.5 py-1 text-xs border border-slate-300 rounded-lg outline-none focus:border-slate-900 w-24"
+                                            autoFocus
                                         />
                                         <button
                                             type="button"
                                             onClick={handleAddTag}
-                                            className="text-xs font-bold text-teal-600 hover:text-teal-800 px-1"
+                                            className="text-xs bg-slate-900 text-white px-2 py-1 rounded-lg font-bold hover:bg-slate-800"
                                         >
                                             Add
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsAddingTag(false)}
+                                            className="text-slate-400 hover:text-slate-700 p-1"
+                                        >
+                                            <X className="w-3 h-3" />
                                         </button>
                                     </div>
                                 ) : (
                                     <button
                                         type="button"
                                         onClick={() => setIsAddingTag(true)}
-                                        className="inline-flex items-center gap-1 text-xs font-bold text-teal-600 hover:text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                                        className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 px-3 py-1 rounded-lg transition-colors cursor-pointer"
                                     >
-                                        <Plus className="w-3 h-3" /> Add Hashtag
+                                        <Plus className="w-3 h-3" /> Add Tag
                                     </button>
                                 )}
                             </div>
-                            <p className="text-[11px] text-slate-400">
-                                Add relevant hashtags (e.g. #workpermit, #skilledjobs, #immigration)
+                            <p className="text-[11px] text-slate-400 font-medium">
+                                Press Enter to add tags. Tags help travellers discover your ad faster.
                             </p>
                         </div>
 
-                        {/* Description */}
+                        {/* Rich Description */}
                         <div>
                             <label className="block text-xs font-bold text-slate-700 mb-1.5">
                                 Description <span className="text-rose-500">*</span>
                             </label>
-
-                            {/* Rich Text Toolbar Mock */}
-                            <div className="border border-slate-200 rounded-xl overflow-hidden shadow-2xs focus-within:border-slate-900 transition-colors">
-                                <div className="bg-slate-50 border-b border-slate-200 px-3 py-1.5 flex items-center gap-3 text-slate-500 text-xs">
-                                    <button type="button" className="hover:text-slate-900 font-black"><Bold className="w-3.5 h-3.5" /></button>
-                                    <button type="button" className="hover:text-slate-900 italic font-serif"><Italic className="w-3.5 h-3.5" /></button>
-                                    <button type="button" className="hover:text-slate-900 underline"><Underline className="w-3.5 h-3.5" /></button>
-                                    <span className="w-px h-3.5 bg-slate-200" />
-                                    <button type="button" className="hover:text-slate-900"><Link className="w-3.5 h-3.5" /></button>
-                                    <button type="button" className="hover:text-slate-900"><List className="w-3.5 h-3.5" /></button>
-                                    <button type="button" className="hover:text-slate-900"><ListOrdered className="w-3.5 h-3.5" /></button>
-                                    <span className="w-px h-3.5 bg-slate-200" />
-                                    <button type="button" className="hover:text-slate-900"><AlignLeft className="w-3.5 h-3.5" /></button>
-                                    <button type="button" className="hover:text-slate-900"><Maximize2 className="w-3.5 h-3.5" /></button>
-                                </div>
-                                <textarea
-                                    rows={4}
-                                    maxLength={1000}
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Write a clear, detailed overview of your offer, requirements, and benefits..."
-                                    className="w-full p-3 text-xs sm:text-sm font-medium text-slate-800 bg-white outline-none resize-none leading-relaxed placeholder:text-slate-400 placeholder:font-normal"
-                                />
+                            
+                            {/* Simple rich text toolbar styling */}
+                            <div className="border border-slate-200 rounded-t-xl bg-slate-50/80 px-3 py-2 flex flex-wrap items-center gap-1 border-b-0">
+                                <button type="button" className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded transition-colors" title="Bold">
+                                    <Bold className="w-3.5 h-3.5" />
+                                </button>
+                                <button type="button" className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded transition-colors" title="Italic">
+                                    <Italic className="w-3.5 h-3.5" />
+                                </button>
+                                <button type="button" className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded transition-colors" title="Underline">
+                                    <Underline className="w-3.5 h-3.5" />
+                                </button>
+                                <span className="w-px h-4 bg-slate-200 mx-1" />
+                                <button type="button" className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded transition-colors" title="Bullet List">
+                                    <List className="w-3.5 h-3.5" />
+                                </button>
+                                <button type="button" className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded transition-colors" title="Numbered List">
+                                    <ListOrdered className="w-3.5 h-3.5" />
+                                </button>
+                                <span className="w-px h-4 bg-slate-200 mx-1" />
+                                <button type="button" className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded transition-colors" title="Insert Link">
+                                    <Link className="w-3.5 h-3.5" />
+                                </button>
                             </div>
-                            <div className="text-right text-[10px] text-slate-400 font-semibold mt-1">
-                                {description.length}/1000
+
+                            <textarea
+                                rows={6}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value.slice(0, 1000))}
+                                placeholder="Describe your offer, requirements, process details, and benefits..."
+                                className="w-full px-3.5 py-3 border border-slate-200 rounded-b-xl text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/5 transition-all resize-y shadow-2xs"
+                            />
+                            <div className="flex justify-between items-center mt-1 text-[11px] text-slate-400">
+                                <span>Be descriptive to improve conversion and inquiries.</span>
+                                <span>{description.length}/1000</span>
                             </div>
                         </div>
                     </div>
 
                     {/* 4. ADD IMAGES / MEDIA */}
-                    <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-3">
+                    <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
                         <div>
                             <h2 className="text-xs font-black uppercase tracking-wider text-slate-900">
                                 4. Add Images / Media
@@ -608,7 +819,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                         </div>
                     </div>
 
-                    {/* 5. ADDITIONAL INFORMATION (OPTIONAL) */}
+                    {/* 5. ADDITIONAL INFORMATION (OPTIONAL) - ALL DUMMY PRE-FILLED DETAILS REMOVED */}
                     <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
                         <h2 className="text-xs font-black uppercase tracking-wider text-slate-900">
                             5. Additional Information <span className="text-slate-400 font-normal lowercase">(Optional)</span>
@@ -640,7 +851,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                 </div>
                             </div>
 
-                            {/* Contact Details */}
+                            {/* Contact Details (Clean empty state, no dummy number) */}
                             <div>
                                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
                                     Contact Details
@@ -651,8 +862,8 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                         type="tel"
                                         value={contactPhone}
                                         onChange={(e) => setContactPhone(e.target.value)}
-                                        placeholder="+91 98765-43210"
-                                        className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-slate-900 shadow-2xs"
+                                        placeholder="e.g. +91 98765 43210"
+                                        className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-slate-900 shadow-2xs placeholder:text-slate-400"
                                     />
                                 </div>
                             </div>
@@ -664,19 +875,19 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                         <h2 className="text-xs font-black uppercase tracking-wider text-slate-900">
                             6. Preview & Publish
                         </h2>
+                        
+                        <p className="text-xs text-slate-500 font-medium">
+                            Review your ad before publishing. You can edit or deactivate it anytime from your dashboard.
+                        </p>
 
-                        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                        <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100">
                             {/* Save Draft */}
                             <button
                                 type="button"
                                 onClick={handleSaveDraft}
-                                className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-colors cursor-pointer text-left"
+                                className="border border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-bold px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
                             >
-                                <Save className="w-4 h-4 text-slate-400" />
-                                <div>
-                                    <div>Save Draft</div>
-                                    <div className="text-[9px] text-slate-400 font-normal">Your ad will be saved, but not published.</div>
-                                </div>
+                                <Save className="w-4 h-4 text-slate-500" /> Save Draft
                             </button>
 
                             {/* Preview & Publish Action Group */}
@@ -772,8 +983,15 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
 
                             {/* Country Flag Pill */}
                             <div className="absolute bottom-3 right-3">
-                                <span className="bg-white/90 backdrop-blur-xs text-slate-900 text-[11px] font-bold px-2.5 py-1 rounded-lg shadow flex items-center gap-1.5 border border-white/40">
-                                    <span>{selectedCountryObj.flag}</span>
+                                <span className="bg-white/95 backdrop-blur-xs text-slate-900 text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1.5 border border-white/60">
+                                    <img 
+                                        src={`https://flagcdn.com/w40/${selectedCountryObj.code.toLowerCase()}.png`} 
+                                        alt={selectedCountryObj.name}
+                                        className="w-4 h-3 object-cover rounded-xs border border-slate-200"
+                                        onError={(e) => {
+                                            (e.currentTarget as HTMLElement).style.display = 'none';
+                                        }}
+                                    />
                                     <span>{selectedCountryObj.name}</span>
                                 </span>
                             </div>
@@ -784,14 +1002,14 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                             
                             {/* Feature Pills */}
                             <div className="flex flex-wrap gap-2 text-[11px] font-bold text-slate-600">
-                                <span className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">
-                                    <Briefcase className="w-3.5 h-3.5 text-slate-400" /> Work Permit
+                                <span className="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">
+                                    <CategoryIcon className="w-3.5 h-3.5 text-slate-500" /> {category}
                                 </span>
                                 <span className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">
-                                    <Building2 className="w-3.5 h-3.5 text-slate-400" /> Employment
+                                    <MapPin className="w-3.5 h-3.5 text-slate-400" /> {destinationCountry}
                                 </span>
                                 <span className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-lg">
-                                    <User className="w-3.5 h-3.5 text-slate-400" /> Skilled Professionals
+                                    <ShieldCheck className="w-3.5 h-3.5 text-teal-600" /> Verified Agency
                                 </span>
                             </div>
 
@@ -843,7 +1061,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                         <MapPin className="w-3.5 h-3.5 text-slate-400" /> {destinationCountry}
                                     </span>
                                     <span className="flex items-center gap-1">
-                                        <Calendar className="w-3.5 h-3.5 text-slate-400" /> Valid till {validTo}
+                                        <Calendar className="w-3.5 h-3.5 text-slate-400" /> {validTo ? `Valid till ${validTo}` : "Flexible validity"}
                                     </span>
                                 </div>
                                 <button 
@@ -858,67 +1076,44 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                     </div>
 
                     {/* WHY POST A CLASSIFIED AD? WIDGET */}
-                    <div className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-sm space-y-4">
-                        <h3 className="text-sm font-black text-slate-900">
-                            Why Post a Classified Ad?
-                        </h3>
-
-                        <div className="space-y-3.5">
-                            <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5 border border-purple-100">
-                                    <Sparkles className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <h4 className="text-xs font-black text-slate-900">Reach more travellers</h4>
-                                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                                        Get discovered by people looking for visa, travel and immigration services.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5 border border-purple-100">
-                                    <Building2 className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <h4 className="text-xs font-black text-slate-900">Showcase your latest offers</h4>
-                                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                                        Promote seasonal deals, special packages or new services.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5 border border-purple-100">
-                                    <ShieldCheck className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <h4 className="text-xs font-black text-slate-900">Build credibility</h4>
-                                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                                        Increase your visibility and grow your professional network.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5 border border-purple-100">
-                                    <Tag className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <h4 className="text-xs font-black text-slate-900">Flexible options</h4>
-                                    <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                                        Choose free or premium based on your reach and goals.
-                                    </p>
-                                </div>
+                    <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-3xl p-6 text-white shadow-xl space-y-4">
+                        <div className="flex items-center gap-2">
+                            <span className="p-2 rounded-xl bg-white/10 text-amber-300">
+                                <Sparkles className="w-5 h-5" />
+                            </span>
+                            <div>
+                                <h4 className="text-sm font-black">Why Post a Classified Ad?</h4>
+                                <p className="text-[11px] text-slate-300 font-medium">Maximize your lead conversion</p>
                             </div>
                         </div>
 
-                        {/* Verified Guarantee note */}
-                        <div className="pt-2 border-t border-slate-100 flex items-start gap-2 text-[11px] text-slate-600">
-                            <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                            <span>
-                                All ads are reviewed for authenticity and compliance <a href="#" className="text-teal-600 font-bold hover:underline">with our community guidelines</a>.
-                            </span>
+                        <div className="space-y-3 pt-2">
+                            <div className="flex items-start gap-3">
+                                <div className="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Check className="w-3 h-3" />
+                                </div>
+                                <p className="text-xs text-slate-200 leading-relaxed">
+                                    <strong className="text-white">Direct Reach:</strong> Your ad appears on the public classified feed seen by over 25,000+ monthly travellers.
+                                </p>
+                            </div>
+
+                            <div className="flex items-start gap-3">
+                                <div className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <Crown className="w-3 h-3" />
+                                </div>
+                                <p className="text-xs text-slate-200 leading-relaxed">
+                                    <strong className="text-white">Premium Tier Boost:</strong> Unlock top banner pinning, verified badges, and 3x more phone & WhatsApp inquiries.
+                                </p>
+                            </div>
+
+                            <div className="flex items-start gap-3">
+                                <div className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
+                                    <ShieldCheck className="w-3 h-3" />
+                                </div>
+                                <p className="text-xs text-slate-200 leading-relaxed">
+                                    <strong className="text-white">Fraud Protection:</strong> Leads are pre-verified with phone and passport checks for maximum serious intent.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -926,167 +1121,185 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
 
             </div>
 
-            {/* ── RAZORPAY CHECKOUT MODAL ── */}
+            {/* RAZORPAY CHECKOUT MODAL OVERLAY */}
             {isRazorpayOpen && (
-                <div 
-                    data-lenis-prevent="true"
-                    className="fixed inset-0 z-[99999] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
-                >
-                    <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 my-auto animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+                    <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
                         
-                        {/* Razorpay Header */}
-                        <div className="bg-[#0C2340] text-white px-6 py-4 flex items-center justify-between">
-                            <div className="flex items-center gap-2.5">
-                                <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 font-black text-sm">
-                                    ₹
+                        {/* Razorpay Header Bar */}
+                        <div className="bg-[#0C2340] px-6 py-4 text-white flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white text-lg tracking-wider shadow-inner">
+                                    R
                                 </div>
                                 <div>
-                                    <div className="text-[10px] uppercase font-extrabold tracking-widest text-blue-300">
-                                        RAZORPAY SECURE
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="text-base font-black tracking-tight">Razorpay</span>
+                                        <span className="text-[10px] bg-blue-500/30 text-blue-200 px-1.5 py-0.5 rounded font-bold uppercase tracking-widest">
+                                            SECURE
+                                        </span>
                                     </div>
-                                    <h3 className="text-sm font-bold text-white">TravlTik Merchant Gateway</h3>
+                                    <p className="text-[11px] text-slate-300">Trusted by 10M+ businesses across India</p>
                                 </div>
                             </div>
-
+                            
                             {razorpayStep !== "processing" && (
                                 <button
+                                    type="button"
                                     onClick={() => setIsRazorpayOpen(false)}
-                                    className="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-white/10 transition-colors"
+                                    className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
                             )}
                         </div>
 
-                        {/* Razorpay Body */}
-                        {razorpayStep === "select_method" && (
-                            <div className="p-6 space-y-5">
-                                
-                                {/* Order Summary Card */}
-                                <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 flex items-center justify-between">
-                                    <div>
-                                        <span className="text-[10px] font-black uppercase text-indigo-600 tracking-wider">
-                                            Premium Ad Placement
-                                        </span>
-                                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 line-clamp-1">
-                                            {adTitle || "Work Visa Classified Ad"}
-                                        </h4>
-                                        <p className="text-[11px] text-slate-500 font-medium">
-                                            30-Day Featured Top Position
-                                        </p>
-                                    </div>
-                                    <div className="text-right shrink-0">
-                                        <div className="text-xl font-black text-slate-900">₹499.00</div>
-                                        <div className="text-[10px] text-slate-400 font-semibold">Incl. All Taxes</div>
-                                    </div>
-                                </div>
+                        {/* Order Summary Strip */}
+                        <div className="bg-slate-50 px-6 py-3 border-b border-slate-200/80 flex items-center justify-between">
+                            <div>
+                                <span className="text-xs font-bold text-slate-800">Classified Ad • Premium Slot</span>
+                                <p className="text-[11px] text-slate-500">30-day top placement boost & verified lead badge</p>
+                            </div>
+                            <div className="text-right">
+                                <span className="text-base font-black text-slate-900">₹499.00</span>
+                                <span className="block text-[10px] text-emerald-600 font-bold">Inclusive of taxes</span>
+                            </div>
+                        </div>
 
-                                {/* Payment Methods Selector */}
-                                <div>
-                                    <label className="block text-xs font-bold text-slate-700 mb-2">
+                        {/* Modal Body Based on Step */}
+                        <div className="p-6">
+                            
+                            {/* STEP 1: SELECT METHOD */}
+                            {razorpayStep === "select_method" && (
+                                <div className="space-y-4">
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                                         Select Payment Method
                                     </label>
-                                    <div className="grid grid-cols-4 gap-2">
-                                        {[
-                                            { id: "upi", label: "UPI", icon: Smartphone },
-                                            { id: "qr", label: "QR Code", icon: QrCode },
-                                            { id: "card", label: "Card", icon: CreditCard },
-                                            { id: "netbanking", label: "NetBanking", icon: Building2 },
-                                        ].map(m => {
-                                            const isSelected = paymentMethod === m.id;
-                                            const Icon = m.icon;
-                                            return (
-                                                <button
-                                                    key={m.id}
-                                                    type="button"
-                                                    onClick={() => setPaymentMethod(m.id as any)}
-                                                    className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
-                                                        isSelected
-                                                            ? "border-blue-600 bg-blue-50/50 text-blue-700 shadow-xs"
-                                                            : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-                                                    }`}
-                                                >
-                                                    <Icon className={`w-4 h-4 mx-auto mb-1 ${isSelected ? "text-blue-600" : "text-slate-400"}`} />
-                                                    <span className="text-xs font-bold block">{m.label}</span>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
 
-                                {/* Method Specific Inputs */}
-                                <div className="border border-slate-200 rounded-2xl p-4 bg-slate-50/60 space-y-3">
+                                    {/* Tabs */}
+                                    <div className="grid grid-cols-4 gap-2 border-b border-slate-100 pb-3">
+                                        <button
+                                            type="button"
+                                            onClick={() => setPaymentMethod("upi")}
+                                            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                                                paymentMethod === "upi"
+                                                    ? "border-blue-600 bg-blue-50/40 text-blue-800 font-bold shadow-2xs"
+                                                    : "border-slate-200 text-slate-600 hover:bg-slate-50 font-medium"
+                                            }`}
+                                        >
+                                            <Smartphone className="w-4 h-4" />
+                                            <span className="text-[11px]">UPI</span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setPaymentMethod("qr")}
+                                            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                                                paymentMethod === "qr"
+                                                    ? "border-blue-600 bg-blue-50/40 text-blue-800 font-bold shadow-2xs"
+                                                    : "border-slate-200 text-slate-600 hover:bg-slate-50 font-medium"
+                                            }`}
+                                        >
+                                            <QrCode className="w-4 h-4" />
+                                            <span className="text-[11px]">QR Code</span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setPaymentMethod("card")}
+                                            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                                                paymentMethod === "card"
+                                                    ? "border-blue-600 bg-blue-50/40 text-blue-800 font-bold shadow-2xs"
+                                                    : "border-slate-200 text-slate-600 hover:bg-slate-50 font-medium"
+                                            }`}
+                                        >
+                                            <CreditCard className="w-4 h-4" />
+                                            <span className="text-[11px]">Cards</span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setPaymentMethod("netbanking")}
+                                            className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                                                paymentMethod === "netbanking"
+                                                    ? "border-blue-600 bg-blue-50/40 text-blue-800 font-bold shadow-2xs"
+                                                    : "border-slate-200 text-slate-600 hover:bg-slate-50 font-medium"
+                                            }`}
+                                        >
+                                            <Building2 className="w-4 h-4" />
+                                            <span className="text-[11px]">Netbanking</span>
+                                        </button>
+                                    </div>
+
+                                    {/* Method Specific Inputs */}
                                     {paymentMethod === "upi" && (
-                                        <div className="space-y-3">
+                                        <div className="space-y-3 pt-1">
+                                            <div className="flex items-center gap-2 pb-1">
+                                                <span className="text-xs font-bold text-slate-700">Supported UPI Apps:</span>
+                                                <span className="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">GPay</span>
+                                                <span className="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">PhonePe</span>
+                                                <span className="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">Paytm</span>
+                                            </div>
                                             <div>
-                                                <label className="block text-xs font-bold text-slate-700 mb-1">
-                                                    Enter UPI ID / VPA
+                                                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                                                    Enter Virtual Payment Address (VPA / UPI ID)
                                                 </label>
                                                 <input
                                                     type="text"
                                                     value={upiId}
                                                     onChange={(e) => setUpiId(e.target.value)}
-                                                    placeholder="username@okhdfcbank or phone@paytm"
-                                                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                    placeholder="e.g. mobile@okhdfcbank or yourname@upi"
+                                                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10"
                                                 />
-                                            </div>
-                                            <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
-                                                <span>Supported:</span>
-                                                <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-[10px]">Google Pay</span>
-                                                <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-[10px]">PhonePe</span>
-                                                <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-[10px]">Paytm</span>
                                             </div>
                                         </div>
                                     )}
 
                                     {paymentMethod === "qr" && (
-                                        <div className="text-center py-2 space-y-2">
-                                            <p className="text-xs font-bold text-slate-700">Scan QR code using any UPI App</p>
-                                            <div className="w-36 h-36 mx-auto bg-white p-2 rounded-2xl border-2 border-slate-200 shadow-sm flex items-center justify-center">
+                                        <div className="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+                                            <div className="p-3 bg-white rounded-2xl shadow-sm border border-slate-200 mb-2">
                                                 <img 
-                                                    src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi://pay?pa=razorpay@icici&pn=TravlTik&am=499" 
-                                                    alt="Razorpay QR" 
-                                                    className="w-full h-full object-contain"
+                                                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=visahub@icici&pn=VisaHub%20Premium&am=499.00&cu=INR" 
+                                                    alt="Razorpay UPI QR"
+                                                    className="w-32 h-32 object-contain"
                                                 />
                                             </div>
-                                            <span className="text-[10px] text-slate-400 font-semibold block">Scan & Pay ₹499.00</span>
+                                            <span className="text-xs font-bold text-slate-800">Scan QR using any UPI app</span>
+                                            <span className="text-[11px] text-slate-500">Google Pay, PhonePe, Paytm, BHIM</span>
                                         </div>
                                     )}
 
                                     {paymentMethod === "card" && (
-                                        <div className="space-y-2.5">
+                                        <div className="space-y-3 pt-1">
                                             <div>
-                                                <label className="block text-[11px] font-bold text-slate-700 mb-1">Card Number</label>
+                                                <label className="block text-xs font-semibold text-slate-600 mb-1">Card Number</label>
                                                 <input
                                                     type="text"
-                                                    maxLength={19}
                                                     value={cardNumber}
-                                                    onChange={(e) => setCardNumber(e.target.value)}
-                                                    placeholder="4532 •••• •••• ••••"
-                                                    className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                    onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
+                                                    placeholder="4000 1234 5678 9010"
+                                                    className="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono font-semibold text-slate-900 outline-none focus:border-blue-600"
                                                 />
                                             </div>
-                                            <div className="grid grid-cols-2 gap-2">
+                                            <div className="grid grid-cols-2 gap-3">
                                                 <div>
-                                                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Expiry (MM/YY)</label>
+                                                    <label className="block text-xs font-semibold text-slate-600 mb-1">Valid Thru</label>
                                                     <input
                                                         type="text"
-                                                        maxLength={5}
                                                         value={cardExpiry}
                                                         onChange={(e) => setCardExpiry(e.target.value)}
-                                                        placeholder="12/28"
-                                                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                        placeholder="MM/YY"
+                                                        className="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 text-center"
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-[11px] font-bold text-slate-700 mb-1">CVV</label>
+                                                    <label className="block text-xs font-semibold text-slate-600 mb-1">CVV</label>
                                                     <input
                                                         type="password"
-                                                        maxLength={4}
                                                         value={cardCvv}
-                                                        onChange={(e) => setCardCvv(e.target.value)}
+                                                        onChange={(e) => setCardCvv(e.target.value.slice(0, 4))}
                                                         placeholder="•••"
-                                                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
+                                                        className="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 text-center"
                                                     />
                                                 </div>
                                             </div>
@@ -1094,105 +1307,72 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                     )}
 
                                     {paymentMethod === "netbanking" && (
-                                        <div>
-                                            <label className="block text-xs font-bold text-slate-700 mb-1.5">Select Bank</label>
-                                            <select
-                                                value={selectedBank}
-                                                onChange={(e) => setSelectedBank(e.target.value)}
-                                                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 outline-none focus:border-blue-600 shadow-2xs"
-                                            >
-                                                <option value="HDFC Bank">HDFC Bank</option>
-                                                <option value="ICICI Bank">ICICI Bank</option>
-                                                <option value="State Bank of India">State Bank of India</option>
-                                                <option value="Axis Bank">Axis Bank</option>
-                                                <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
-                                                <option value="Punjab National Bank">Punjab National Bank</option>
-                                            </select>
+                                        <div className="space-y-3 pt-1">
+                                            <label className="block text-xs font-semibold text-slate-600">Select Bank</label>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {["HDFC Bank", "State Bank of India", "ICICI Bank", "Axis Bank"].map(b => (
+                                                    <button
+                                                        key={b}
+                                                        type="button"
+                                                        onClick={() => setSelectedBank(b)}
+                                                        className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all ${
+                                                            selectedBank === b
+                                                                ? "border-blue-600 bg-blue-50/50 text-blue-900"
+                                                                : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                                                        }`}
+                                                    >
+                                                        {b}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
                                     )}
-                                </div>
 
-                                {/* Security Badge */}
-                                <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium px-1">
-                                    <span className="flex items-center gap-1">
-                                        <Lock className="w-3.5 h-3.5 text-blue-600" /> 256-bit SSL Bank Grade Security
-                                    </span>
-                                    <span>PCI-DSS Certified</span>
-                                </div>
-
-                                {/* Actions */}
-                                <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsRazorpayOpen(false)}
-                                        className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={handlePayRazorpay}
-                                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
-                                    >
-                                        Pay ₹499.00 Securely
-                                    </button>
-                                </div>
-
-                            </div>
-                        )}
-
-                        {/* Razorpay Processing State */}
-                        {razorpayStep === "processing" && (
-                            <div className="p-12 text-center space-y-4">
-                                <div className="w-16 h-16 rounded-full bg-blue-50 border-2 border-blue-200 text-blue-600 flex items-center justify-center mx-auto shadow-inner">
-                                    <RefreshCw className="w-8 h-8 animate-spin" />
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-black text-slate-900 tracking-tight">
-                                        Connecting to Razorpay Gateway...
-                                    </h3>
-                                    <p className="text-xs text-slate-500 font-medium mt-1">
-                                        Please do not close or refresh this tab while we verify your transaction.
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Razorpay Success State */}
-                        {razorpayStep === "success" && (
-                            <div className="p-8 text-center space-y-4 animate-in fade-in zoom-in-95">
-                                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-3xl font-black shadow-inner animate-bounce">
-                                    <Check className="w-8 h-8 stroke-[3]" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-black text-slate-900 tracking-tight">
-                                        Payment Successful! 🎉
-                                    </h3>
-                                    <p className="text-xs text-slate-600 font-medium mt-1">
-                                        Your <strong>Premium Classified Ad</strong> has been activated for 30 days.
-                                    </p>
-                                </div>
-
-                                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 text-xs text-slate-600 space-y-1.5 text-left max-w-xs mx-auto">
-                                    <div className="flex justify-between">
-                                        <span className="text-slate-400 font-bold">Transaction ID:</span>
-                                        <span className="font-mono font-bold text-slate-900">{confirmedPaymentId}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-slate-400 font-bold">Amount Paid:</span>
-                                        <span className="font-black text-emerald-600">₹499.00</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-slate-400 font-bold">Status:</span>
-                                        <span className="font-bold text-blue-600">Verified & Active</span>
+                                    {/* Pay CTA Button */}
+                                    <div className="pt-2">
+                                        <button
+                                            type="button"
+                                            onClick={handlePayRazorpay}
+                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                        >
+                                            <Lock className="w-4 h-4" /> Pay ₹499.00 Securely
+                                        </button>
+                                        <div className="flex items-center justify-center gap-1.5 mt-2 text-[10px] text-slate-400 font-semibold">
+                                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                            <span>256-Bit SSL Encryption • Razorpay Certified Partner</span>
+                                        </div>
                                     </div>
                                 </div>
+                            )}
 
-                                <div className="text-[11px] font-bold text-slate-400">
-                                    Redirecting to your Classifieds list...
+                            {/* STEP 2: PROCESSING */}
+                            {razorpayStep === "processing" && (
+                                <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
+                                    <div className="w-14 h-14 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
+                                    <div>
+                                        <h4 className="text-base font-black text-slate-900">Connecting to Razorpay Gateway...</h4>
+                                        <p className="text-xs text-slate-500 mt-1">Please do not refresh or close this browser window.</p>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+
+                            {/* STEP 3: SUCCESS */}
+                            {razorpayStep === "success" && (
+                                <div className="py-8 flex flex-col items-center justify-center text-center space-y-3">
+                                    <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center animate-bounce">
+                                        <Check className="w-8 h-8 stroke-[3]" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-lg font-black text-slate-900">Payment Successful!</h4>
+                                        <p className="text-xs text-slate-500 mt-1">Transaction ID: <span className="font-mono font-bold text-slate-700">{confirmedPaymentId}</span></p>
+                                    </div>
+                                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold px-4 py-2 rounded-xl">
+                                        Premium Classified Ad Activated! Redirecting...
+                                    </div>
+                                </div>
+                            )}
+
+                        </div>
 
                     </div>
                 </div>
