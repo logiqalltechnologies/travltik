@@ -7,12 +7,14 @@ import {
 } from "lucide-react";
 import { ProviderVerificationModal } from "./ProviderVerificationModal";
 import { WorkPermitOrderForm } from "../dashboard/WorkPermitOrderForm";
+import { PostClassifiedAdForm } from "../dashboard/PostClassifiedAdForm";
 
 export function ConsultantDashboard() {
     const [consultantSearch, setConsultantSearch] = useState("");
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("overview");
+    const [classifiedsViewMode, setClassifiedsViewMode] = useState<"form" | "list">("form");
     const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
     const [verificationStatus, setVerificationStatus] = useState("pending");
     const [timePeriod, setTimePeriod] = useState("This Month");
@@ -592,7 +594,7 @@ export function ConsultantDashboard() {
             title: "TOOLS",
             items: [
                 { id: "services", label: "My Services", icon: Briefcase },
-                { id: "classifieds", label: "Classifieds", icon: LayoutGrid },
+                { id: "classifieds", label: "Post Classified Ad", icon: LayoutGrid },
                 { id: "analytics", label: "Analytics", icon: BarChart3 },
                 { id: "promotions", label: "Promotions", icon: Sparkles, badge: "BOOST", badgeColor: "bg-indigo-50 text-indigo-700 border border-indigo-200/60" },
                 { id: "reviews", label: "Reviews", icon: Star },
@@ -805,7 +807,12 @@ export function ConsultantDashboard() {
                                             return (
                                                 <button
                                                     key={item.id}
-                                                    onClick={() => setActiveTab(item.id)}
+                                                    onClick={() => {
+                                                        setActiveTab(item.id);
+                                                        if (item.id === "classifieds") {
+                                                            setClassifiedsViewMode("form");
+                                                        }
+                                                    }}
                                                     title={item.label}
                                                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                                                         isActive
@@ -886,6 +893,9 @@ export function ConsultantDashboard() {
                                             key={item.id}
                                             onClick={() => {
                                                 setActiveTab(item.id);
+                                                if (item.id === "classifieds") {
+                                                    setClassifiedsViewMode("form");
+                                                }
                                                 setIsMobileSidebarOpen(false);
                                             }}
                                             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
@@ -1425,44 +1435,68 @@ export function ConsultantDashboard() {
                         </div>
                     )}
 
-                    {/* 6. TAB: CLASSIFIEDS / OFFERS */}
+                    {/* 6. TAB: POST CLASSIFIED AD / OFFERS */}
                     {activeTab === "classifieds" && (
-                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
-                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                                <div>
-                                    <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Manage public listings shown on TravlTik homepage</p>
-                                </div>
-                                <button onClick={() => setIsPostingAd(true)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
-                                    <Plus className="w-4 h-4" /> Post New Ad
-                                </button>
-                            </div>
-
-                            {classifiedsList.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {classifiedsList.map(ad => (
-                                        <div key={ad.id} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs p-4 space-y-3">
-                                            <span className="bg-slate-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">{ad.category}</span>
-                                            <h4 className="text-sm font-extrabold text-slate-900">{ad.title}</h4>
-                                            <p className="text-xs font-bold text-[#00a896]">Price: {ad.price}</p>
-                                            <div className="flex justify-between items-center text-xs text-slate-500 font-bold border-t pt-2">
-                                                <span>👁 {ad.views || 0} Views</span>
-                                                <button onClick={() => handleDeleteAd(ad.id)} className="text-rose-600 hover:underline">Delete</button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
-                                    <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
-                                    <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on TravlTik.</p>
-                                    <button onClick={() => setIsPostingAd(true)} className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md">
-                                        + Post New Classified / Offer
+                        classifiedsViewMode === "form" ? (
+                            <PostClassifiedAdForm
+                                onBack={() => setClassifiedsViewMode("list")}
+                                onAdCreated={(newAd) => {
+                                    setClassifiedsList(prev => [newAd, ...prev]);
+                                    setShowSuccessToast(true);
+                                    setTimeout(() => setShowSuccessToast(false), 4000);
+                                }}
+                            />
+                        ) : (
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                    <div>
+                                        <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
+                                        <p className="text-xs font-medium text-slate-500">Manage public listings shown on TravlTik homepage</p>
+                                    </div>
+                                    <button 
+                                        onClick={() => setClassifiedsViewMode("form")} 
+                                        className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                                    >
+                                        <Plus className="w-4 h-4" /> Post New Classified Ad
                                     </button>
                                 </div>
-                            )}
-                        </div>
+
+                                {classifiedsList.length > 0 ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {classifiedsList.map(ad => (
+                                            <div key={ad.id} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs p-4 space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="bg-slate-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full">{ad.category}</span>
+                                                    {ad.type === "premium" && (
+                                                        <span className="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-extrabold px-2 py-0.5 rounded-md">
+                                                            👑 Premium
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <h4 className="text-sm font-extrabold text-slate-900 line-clamp-2">{ad.title}</h4>
+                                                <p className="text-xs font-bold text-[#00a896]">Price: {ad.price}</p>
+                                                <div className="flex justify-between items-center text-xs text-slate-500 font-bold border-t pt-2">
+                                                    <span>👁 {ad.views || 0} Views</span>
+                                                    <button onClick={() => handleDeleteAd(ad.id)} className="text-rose-600 hover:underline cursor-pointer">Delete</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
+                                        <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
+                                        <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
+                                        <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on TravlTik.</p>
+                                        <button 
+                                            onClick={() => setClassifiedsViewMode("form")} 
+                                            className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md transition-all cursor-pointer"
+                                        >
+                                            + Post New Classified Ad
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )
                     )}
 
                     {/* 7. TAB: REVIEWS & RATINGS */}
