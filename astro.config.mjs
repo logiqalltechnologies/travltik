@@ -33,7 +33,7 @@ export default defineConfig({
         clientPort: 4321,
       },
       headers: {
-        'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+        'Cross-Origin-Opener-Policy': 'unsafe-none',
       },
     },
     envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_', 'RESEND_', 'EMAIL_', 'DATABASE_', 'TURNSTILE_'],

@@ -116,9 +116,15 @@ export async function loginWithGooglePopupWithFallback(returnPath: string = '/tr
       throw error;
     }
 
-    // Only if popup was strictly blocked by browser, fallback to redirect
-    if (code === 'auth/popup-blocked' || msg.includes('popup-blocked')) {
-      console.warn('[Firebase] Popup blocked by browser, falling back to redirect...');
+    // If popup was blocked or blocked by browser COOP policy, fallback to redirect
+    if (
+      code === 'auth/popup-blocked' || 
+      msg.includes('popup-blocked') || 
+      msg.includes('Cross-Origin-Opener-Policy') || 
+      msg.includes('window.closed') ||
+      msg.includes('opener')
+    ) {
+      console.warn('[Firebase] Popup blocked or restricted by browser COOP, falling back to redirect...');
       await loginWithGoogleRedirect(returnPath);
       return { status: 'redirecting' };
     }

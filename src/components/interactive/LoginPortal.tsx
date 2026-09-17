@@ -102,7 +102,16 @@ function LoginPortalContent() {
             if (typeof window !== "undefined") {
                 sessionStorage.setItem("google_auth_return", targetDestination);
             }
-            const res = await signInWithGoogle('seeker', 'login', turnstileToken);
+            const res = await Promise.race([
+                signInWithGoogle('seeker', 'login', turnstileToken),
+                new Promise((_, reject) => setTimeout(() => reject(new Error("Google sign-in timed out. Please try again.")), 30000))
+            ]) as any;
+
+            if (res?.status === 'redirecting') {
+                setGoogleLoadingText("Redirecting to Google...");
+                return;
+            }
+
             setGoogleLoadingText("Authenticated! Redirecting...");
             if (res?.redirect) {
                 window.location.href = res.redirect;
@@ -119,7 +128,7 @@ function LoginPortalContent() {
             if (cleanErr && cleanErr.toLowerCase() !== "internal error") {
                 setError(cleanErr);
             } else {
-                setError("");
+                setError("Google sign-in could not complete. Please try again or sign in with your email.");
             }
         } finally {
             setGoogleLoading(false);
