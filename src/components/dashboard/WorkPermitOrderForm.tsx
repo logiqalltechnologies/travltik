@@ -233,6 +233,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
   // Section 3: Total Cost (Empty by default so service provider enters custom pricing)
   const [govFee, setGovFee] = useState<string>('');
   const [embassyFee, setEmbassyFee] = useState<string>('');
+  const [processingFee, setProcessingFee] = useState<string>('');
   const [courierFee, setCourierFee] = useState<string>('');
   const [travltikFee, setTravltikFee] = useState<string>('');
   const [isCostCardExpanded, setIsCostCardExpanded] = useState<boolean>(true);
@@ -280,8 +281,8 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
 
   const totalCost = useMemo(() => {
-    return (Number(govFee) || 0) + (Number(embassyFee) || 0) + (Number(courierFee) || 0) + (Number(travltikFee) || 0);
-  }, [govFee, embassyFee, courierFee, travltikFee]);
+    return (Number(govFee) || 0) + (Number(embassyFee) || 0) + (Number(processingFee) || 0) + (Number(courierFee) || 0) + (Number(travltikFee) || 0);
+  }, [govFee, embassyFee, processingFee, courierFee, travltikFee]);
 
   const showToast = (text: string, type: 'success' | 'info' | 'error' = 'success') => {
     setToastMessage({ type, text });
@@ -352,6 +353,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
       benefitNotes,
       govFee,
       embassyFee,
+      processingFee,
       courierFee,
       travltikFee,
       totalCost,
@@ -444,6 +446,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
           totalCost: `${salaryCurrency} ${totalCost.toLocaleString()}`,
           govFee: govFee || '0',
           embassyFee: embassyFee || '0',
+          processingFee: processingFee || '0',
           courierFee: courierFee || '0',
           travltikFee: travltikFee || '0',
           expertEmail: expertEmail,
@@ -472,6 +475,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               totalCost: `${salaryCurrency} ${totalCost.toLocaleString()}`,
               govFee,
               embassyFee,
+              processingFee,
               courierFee,
               travltikFee,
             }
@@ -1010,6 +1014,29 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
 
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Processing Fee <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20">
+                        <span className="pl-3 pr-2 py-2 text-xs font-semibold text-slate-600 self-center">
+                          USD
+                        </span>
+                        <input
+                          type="number"
+                          value={processingFee}
+                          onChange={(e) => setProcessingFee(e.target.value)}
+                          placeholder="500"
+                          className="w-full pr-3 py-2 bg-transparent text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-slate-400 mt-1 font-normal">
+                      e.g. Visa application handling &amp; document processing fee
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Courier Fee <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
@@ -1092,6 +1119,10 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       <div className="flex items-center justify-between text-slate-600">
                         <span>Embassy Fees</span>
                         <span className="font-semibold text-slate-900">USD {embassyFee ? Number(embassyFee).toLocaleString() : '0'}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-slate-600">
+                        <span>Processing Fee</span>
+                        <span className="font-semibold text-slate-900">USD {processingFee ? Number(processingFee).toLocaleString() : '0'}</span>
                       </div>
                       <div className="flex items-center justify-between text-slate-600">
                         <span>Courier Fee</span>
