@@ -834,8 +834,8 @@ export function ConsultantDashboard() {
 
             <div className="flex flex-1 min-h-[calc(100vh-61px)]">
                 {/* Desktop Sticky Sidebar (Nexus Style) */}
-                <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
-                    <div className="p-3.5 space-y-5 overflow-y-auto max-h-[calc(100vh-120px)] no-scrollbar">
+                <aside className={`hidden lg:flex sticky top-[61px] h-[calc(100vh-61px)] bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none overflow-hidden ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
+                    <div className="flex-1 overflow-y-auto p-3.5 space-y-5 no-scrollbar min-h-0">
                         <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
                             {!isSidebarCollapsed ? (
                                 <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Menu</span>
@@ -901,35 +901,36 @@ export function ConsultantDashboard() {
                                 </div>
                             ))}
                         </nav>
+
+                        {!isSidebarCollapsed && (
+                            <div className="p-4 bg-[#f0fdfa] border border-[#ccfbf1] rounded-2xl space-y-3">
+                                <h4 className="text-xs font-extrabold text-slate-900">Upgrade to Premium</h4>
+                                <ul className="text-[11px] font-semibold text-slate-600 space-y-1">
+                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> More leads</li>
+                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Featured listing</li>
+                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Advanced analytics</li>
+                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Priority support</li>
+                                </ul>
+                                <button 
+                                    onClick={() => setActiveTab("subscriptions")}
+                                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
+                                >
+                                    Upgrade Now
+                                </button>
+                            </div>
+                        )}
                     </div>
 
-                    <div className="p-3 border-t border-slate-100 space-y-1">
+                    {/* Pinned Bottom Actions */}
+                    <div className="p-3 border-t border-slate-100 bg-white shrink-0">
                         <button
                             onClick={handleLogout}
-                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl font-semibold text-xs text-rose-600 hover:bg-rose-50 transition-all cursor-pointer"
+                            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50/80 transition-all cursor-pointer group"
                         >
-                            <LogOut className="w-4 h-4 shrink-0" />
+                            <LogOut className="w-4 h-4 shrink-0 transition-transform group-hover:-translate-x-0.5" />
                             {!isSidebarCollapsed && <span>Logout</span>}
                         </button>
                     </div>
-
-                    {!isSidebarCollapsed && (
-                        <div className="p-4 m-3 bg-[#f0fdfa] border border-[#ccfbf1] rounded-2xl space-y-3">
-                            <h4 className="text-xs font-extrabold text-slate-900">Upgrade to Premium</h4>
-                            <ul className="text-[11px] font-semibold text-slate-600 space-y-1">
-                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> More leads</li>
-                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Featured listing</li>
-                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Advanced analytics</li>
-                                <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Priority support</li>
-                            </ul>
-                            <button 
-                                onClick={() => setActiveTab("subscriptions")}
-                                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
-                            >
-                                Upgrade Now
-                            </button>
-                        </div>
-                    )}
                 </aside>
 
                 {/* Mobile Drawer Navigation */}
