@@ -888,26 +888,26 @@ export function ConsultantDashboard() {
                                                             }
                                                         }}
                                                         title={item.label}
-                                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer ${
+                                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-bold transition-all cursor-pointer ${
                                                             isActive
-                                                                ? "bg-slate-900 text-white font-bold shadow-xs"
+                                                                ? "bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black shadow-sm shadow-emerald-500/20"
                                                                 : "text-slate-600 hover:text-slate-950 hover:bg-slate-100/80"
                                                         }`}
                                                     >
                                                         <div className="flex items-center gap-3 min-w-0">
-                                                            <IconComp className={`w-4.5 h-4.5 shrink-0 ${isActive ? "text-white stroke-[2.2]" : "text-slate-500 stroke-[1.8]"}`} />
+                                                            <IconComp className={`w-4.5 h-4.5 shrink-0 ${isActive ? "text-slate-950 stroke-[2.4]" : "text-slate-500 stroke-[1.8]"}`} />
                                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                                         </div>
                                                         {!isSidebarCollapsed && (
                                                             item.count !== undefined ? (
-                                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md min-w-[20px] text-center ${
-                                                                    isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                                                                <span className={`text-[10px] font-black px-2 py-0.5 rounded-md min-w-[20px] text-center ${
+                                                                    isActive ? "bg-slate-950/15 text-slate-950" : "bg-slate-100 text-slate-600"
                                                                 }`}>
                                                                     {item.count}
                                                                 </span>
                                                             ) : item.badge ? (
                                                                 <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${
-                                                                    isActive ? "bg-white/20 text-white" : (item.badgeColor || 'bg-slate-100 text-slate-700')
+                                                                    isActive ? "bg-slate-950/15 text-slate-950" : (item.badgeColor || 'bg-slate-100 text-slate-700')
                                                                 }`}>
                                                                     {item.badge}
                                                                 </span>
@@ -982,12 +982,12 @@ export function ConsultantDashboard() {
                                             }}
                                             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-slate-900 text-white shadow-md"
+                                                    ? "bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black shadow-sm"
                                                     : "text-slate-600 hover:bg-slate-100"
                                             }`}
                                         >
                                             <div className="flex items-center gap-3">
-                                                <IconComp className="w-4 h-4" />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-slate-950 stroke-[2.4]" : ""}`} />
                                                 <span>{item.label}</span>
                                             </div>
                                         </button>
@@ -1253,52 +1253,7 @@ export function ConsultantDashboard() {
                                 </div>
                             </div>
 
-                            {/* Section 3: My Classifieds / Offers Card */}
-                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-base font-black text-slate-900">My Classifieds / Offers ({classifiedsList.length})</h3>
-                                    <button onClick={() => setActiveTab("classifieds")} className="text-xs font-bold text-[#00a896] hover:underline">Manage Ads</button>
-                                </div>
 
-                                {classifiedsList.length > 0 ? (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        {classifiedsList.map(ad => (
-                                            <div key={ad.id} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
-                                                <div>
-                                                    <div className="h-32 w-full relative overflow-hidden bg-slate-100">
-                                                        <img src={ad.img || "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=400&auto=format&fit=crop"} alt={ad.title} className="w-full h-full object-cover" />
-                                                        <span className="absolute top-2 left-2 bg-slate-900 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
-                                                            {ad.category}
-                                                        </span>
-                                                    </div>
-                                                    <div className="p-3.5 space-y-1.5">
-                                                        <h4 className="text-xs font-extrabold text-slate-900 leading-snug line-clamp-2">{ad.title}</h4>
-                                                        <p className="text-xs font-black text-[#00a896]">{ad.price}</p>
-                                                    </div>
-                                                </div>
-                                                <div className="p-3.5 pt-0 flex items-center justify-between border-t border-slate-100 text-[11px] font-bold text-slate-500">
-                                                    <span className="text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">Active</span>
-                                                    <button onClick={() => handleDeleteAd(ad.id)} className="text-rose-600 hover:underline">Delete</button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-2">
-                                        <LayoutGrid className="w-8 h-8 text-slate-300 mx-auto" />
-                                        <h4 className="text-sm font-extrabold text-slate-800">No Active Classified Ads Yet</h4>
-                                        <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">Create and publish promotional ads or study/work offers to reach thousands of travellers on TravlTik.</p>
-                                    </div>
-                                )}
-
-                                <button 
-                                    onClick={() => setIsPostingAd(true)} 
-                                    className="w-full py-3 bg-[#f0fdfa] hover:bg-[#e6fffa] border border-[#00a896] text-[#00a896] rounded-xl text-xs font-extrabold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
-                                >
-                                    <Plus className="w-4 h-4" />
-                                    <span>Post New Classified / Offer</span>
-                                </button>
-                            </div>
 
                             {/* Section 4: Business Details Footer Card */}
                             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">

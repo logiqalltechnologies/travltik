@@ -206,7 +206,7 @@ export function TalkToUs() {
       <button
         onClick={() => { setOpen(!open); setView("options"); }}
         aria-label="Talk to Us"
-        className="fixed bottom-[88px] md:bottom-6 right-3.5 md:right-6 z-50 w-11 h-11 md:w-14 md:h-14 rounded-2xl md:rounded-[22px] bg-slate-900 hover:bg-black text-white shadow-[0_10px_25px_-4px_rgba(0,0,0,0.5),0_4px_10px_-2px_rgba(0,0,0,0.2),inset_0_1.5px_0_rgba(255,255,255,0.25)] hover:shadow-[0_14px_30px_-4px_rgba(0,0,0,0.65),0_6px_12px_-2px_rgba(0,0,0,0.25),inset_0_2px_0_rgba(255,255,255,0.4)] hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 flex items-center justify-center border border-white/20 cursor-pointer group backdrop-blur-sm"
+        className="fixed bottom-[70px] md:bottom-6 right-3 md:right-6 z-40 w-10 h-10 md:w-14 md:h-14 rounded-2xl md:rounded-[22px] bg-slate-900 hover:bg-black text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 active:scale-95 flex items-center justify-center border border-white/20 cursor-pointer group backdrop-blur-sm"
       >
         <span className="relative flex items-center justify-center drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
           {open ? (

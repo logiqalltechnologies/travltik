@@ -2918,8 +2918,8 @@ return (
                         >
                           <div className="flex items-center gap-2 min-w-0">
                             <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                            <span className={`text-xs sm:text-sm truncate ${serviceLookingFor ? 'font-normal text-slate-700' : 'font-normal text-slate-400'}`}>
-                              {serviceLookingFor || 'Select Purpose...'}
+                            <span className={`text-xs sm:text-sm truncate ${serviceLookingFor ? 'font-medium text-slate-800' : 'font-normal text-slate-400'}`}>
+                              {serviceLookingFor || 'Purpose / Visa Type'}
                             </span>
                           </div>
                           <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isLookingForOpen ? 'rotate-180 text-blue-600' : ''}`} />
@@ -2978,21 +2978,21 @@ return (
                             }}
                             className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none text-left"
                           >
-                            <div className="flex items-center gap-2 min-w-0">
+                            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                               {journeyDestination ? (
                                 <img
                                   src={`https://flagcdn.com/w40/${getCountryCodeByName(journeyDestination)}.png`}
                                   alt={journeyDestination}
-                                  className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                  className="w-4 h-4 sm:w-5 sm:h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
                                   onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
                                 />
                               ) : (
-                                <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
+                                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
                                   🌐
                                 </div>
                               )}
-                              <span className={`text-xs sm:text-sm truncate ${journeyDestination ? 'font-normal text-slate-700' : 'font-normal text-slate-400'}`}>
-                                {journeyDestination || 'Select Destination'}
+                              <span className={`text-xs sm:text-sm truncate ${journeyDestination ? 'font-medium text-slate-800' : 'font-normal text-slate-400'}`}>
+                                {journeyDestination || 'Destination'}
                               </span>
                             </div>
                             <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
@@ -3437,7 +3437,7 @@ return (
         <div className="grid grid-cols-5 gap-1 items-center max-w-md mx-auto">
           
           {/* Home */}
-          <a href="/" className="flex flex-col items-center justify-center py-1 text-blue-600 group">
+          <a href="/" className="flex flex-col items-center justify-center py-1 text-[#00A86B] group">
             <div className="w-5 h-5 flex items-center justify-center">
               <Home className="w-5 h-5 stroke-[2.4]" />
             </div>

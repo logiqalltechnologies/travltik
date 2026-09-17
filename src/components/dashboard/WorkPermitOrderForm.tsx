@@ -58,7 +58,7 @@ function CustomDropdown({
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl border transition-all text-left text-xs sm:text-sm cursor-pointer ${
           isOpen
-            ? "border-blue-600 bg-white ring-2 ring-blue-500/20 shadow-xs"
+            ? "border-emerald-500 bg-white ring-2 ring-emerald-500/20 shadow-xs"
             : "border-slate-200 bg-slate-50/70 hover:bg-white hover:border-slate-300"
         } ${buttonClassName}`}
       >
@@ -70,7 +70,7 @@ function CustomDropdown({
         </div>
         <ChevronDown
           className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${
-            isOpen ? "rotate-180 text-blue-600" : ""
+            isOpen ? "rotate-180 text-emerald-600" : ""
           }`}
         />
       </button>
@@ -92,12 +92,12 @@ function CustomDropdown({
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-blue-50 text-blue-700 font-bold"
+                    ? "bg-emerald-50 text-emerald-800 font-bold"
                     : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-medium"
                 }`}
               >
                 <span className="truncate">{opt.label}</span>
-                {isSelected && <Check className="w-3.5 h-3.5 text-blue-600 shrink-0 ml-2" />}
+                {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 ml-2" />}
               </button>
             );
           })}
@@ -121,9 +121,9 @@ const DEFAULT_STEPS: ProcessStep[] = [
   {
     id: 'step-1',
     number: 1,
-    badgeColor: 'bg-blue-600 text-white',
+    badgeColor: 'bg-emerald-600 text-white',
     title: 'Initial Documentation & Job Offer',
-    description: 'Collect required documents from candidate (passport, CV, qualifications, experience, etc.) and issue job offer letter.',
+    description: 'Collect candidate documents (passport, CV, qualifications) and issue official job offer letter.',
     estimatedTime: 'Max 5 days',
     milestone: '10% (on offer)'
   },
@@ -132,7 +132,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     number: 2,
     badgeColor: 'bg-emerald-600 text-white',
     title: 'Work Permit Application',
-    description: 'Submit application directly with government authority with all documents and signed forms.',
+    description: 'Submit work permit application directly to government authorities with all verified documents.',
     estimatedTime: 'Max 10 days',
     milestone: '30% (on submission)'
   },
@@ -141,7 +141,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     number: 3,
     badgeColor: 'bg-purple-600 text-white',
     title: 'Government Approval',
-    description: 'Receive work permit approval from the government.',
+    description: 'Receive official government work permit approval and employment authorization.',
     estimatedTime: 'Max 15 days',
     milestone: '30% (on approval)'
   },
@@ -150,7 +150,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     number: 4,
     badgeColor: 'bg-amber-600 text-white',
     title: 'Visa Processing (Embassy)',
-    description: 'Submit visa forms to embassy/consulate and complete visa stamping.',
+    description: 'Submit visa dossier to embassy/consulate and complete candidate visa stamping.',
     estimatedTime: 'Max 10 days',
     milestone: '20% (on visa issue)'
   },
@@ -159,7 +159,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     number: 5,
     badgeColor: 'bg-teal-600 text-white',
     title: 'Travel & Onboarding',
-    description: 'Book flights, arrange accommodation (if required) and provide pre-departure briefing.',
+    description: 'Coordinate flight booking, accommodation setup, and conduct pre-departure briefing.',
     estimatedTime: 'Max 5 days',
     milestone: '10% (on travel)'
   }
@@ -274,14 +274,9 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
   const [adBannerSize, setAdBannerSize] = useState<string>('');
 
   // Section 7: Refund Policies & Assurances
-  const [refundPolicy, setRefundPolicy] = useState<string>('100% Full Refund if Work Permit Rejected by Government');
-  const [refundTimeline, setRefundTimeline] = useState<string>('Within 7-14 business days');
-  const [selectedAssurances, setSelectedAssurances] = useState<string[]>([
-    'Official Government Filing Receipt Guarantee',
-    '100% Genuine Employer Contract Guarantee',
-    'No Hidden Charges Guarantee',
-    'Free Replacement Guarantee if Job Withdrawn'
-  ]);
+  const [refundPolicy, setRefundPolicy] = useState<string>('');
+  const [refundTimeline, setRefundTimeline] = useState<string>('');
+  const [selectedAssurances, setSelectedAssurances] = useState<string[]>([]);
   const [refundNotes, setRefundNotes] = useState<string>('');
 
   // Section 8: Terms & Conditions Agreement
@@ -335,7 +330,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
   const handleAddStep = () => {
     const nextNum = processSteps.length + 1;
     const colors = [
-      'bg-blue-600 text-white',
+      'bg-emerald-600 text-white',
       'bg-emerald-600 text-white',
       'bg-purple-600 text-white',
       'bg-amber-600 text-white',
@@ -570,11 +565,11 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               ? 'bg-emerald-50 text-emerald-800 border-emerald-200 shadow-emerald-500/10'
               : toastMessage.type === 'error'
               ? 'bg-rose-50 text-rose-800 border-rose-200 shadow-rose-500/10'
-              : 'bg-blue-50 text-blue-800 border-blue-200 shadow-blue-500/10'
+              : 'bg-emerald-50 text-emerald-800 border-emerald-200 shadow-emerald-500/10'
           }`}>
             {toastMessage.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />}
             {toastMessage.type === 'error' && <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />}
-            {toastMessage.type === 'info' && <Info className="w-5 h-5 text-blue-600 shrink-0" />}
+            {toastMessage.type === 'info' && <Info className="w-5 h-5 text-emerald-600 shrink-0" />}
             <span>{toastMessage.text}</span>
           </div>
         </div>
@@ -590,7 +585,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               <button 
                 type="button" 
                 onClick={() => onCancel ? onCancel() : (window.location.href = "/service-provider/dashboard")} 
-                className="hover:text-blue-600 transition-colors cursor-pointer"
+                className="hover:text-emerald-600 transition-colors cursor-pointer"
               >
                 Work Permits
               </button>
@@ -599,7 +594,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm">
                 <Briefcase className="w-5 h-5" />
               </div>
               <div>
@@ -627,9 +622,9 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               onClick={handlePublish}
               disabled={isPublishing}
               type="button"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-sm shadow-blue-500/20 transition-all active:scale-[0.98] disabled:opacity-75"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 text-sm font-bold shadow-md shadow-emerald-500/20 transition-all active:scale-[0.98] disabled:opacity-75 cursor-pointer"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 text-slate-950" />
               <span>{isPublishing ? 'Publishing...' : 'Publish Offer'}</span>
             </button>
           </div>
@@ -658,13 +653,13 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   >
                     <span className={`w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center transition-all ${
                       isActive 
-                        ? 'bg-blue-600 text-white ring-4 ring-blue-50 shadow-sm' 
+                        ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black ring-4 ring-emerald-100 shadow-sm' 
                         : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'
                     }`}>
                       {step.num}
                     </span>
                     <span className={`text-xs font-semibold whitespace-nowrap transition-colors ${
-                      isActive ? 'text-blue-700 font-bold' : 'text-slate-600 group-hover:text-slate-900'
+                      isActive ? 'text-emerald-800 font-bold' : 'text-slate-600 group-hover:text-slate-900'
                     }`}>
                       {step.label}
                     </span>
@@ -687,7 +682,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 1: Job Details */}
             <div id="section-job-details" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
               <div className="flex items-start gap-3.5 mb-6">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   1
                 </div>
                 <div>
@@ -730,7 +725,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       value={jobTitle}
                       onChange={(e) => setJobTitle(e.target.value)}
                       placeholder="Enter job title"
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                     />
                   </div>
                   <p className="text-[11px] text-slate-400 mt-1.5 font-normal">
@@ -752,7 +747,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       value={totalPositions}
                       onChange={(e) => setTotalPositions(e.target.value)}
                       placeholder="Enter number of positions"
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                     />
                   </div>
                   <p className="text-[11px] text-slate-400 mt-1.5 font-normal">
@@ -781,7 +776,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                     Salary <span className="text-rose-500">*</span>
                   </label>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                    <div className="flex flex-1 rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:bg-white transition-all">
+                    <div className="flex flex-1 rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:bg-white transition-all">
                       <select
                         value={salaryCurrency}
                         onChange={(e) => setSalaryCurrency(e.target.value)}
@@ -807,7 +802,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                           name="salaryPeriod"
                           checked={salaryPeriod === 'hour'}
                           onChange={() => setSalaryPeriod('hour')}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300"
+                          className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300 accent-emerald-600 cursor-pointer"
                         />
                         <span>Per Hour</span>
                       </label>
@@ -817,7 +812,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                           name="salaryPeriod"
                           checked={salaryPeriod === 'month'}
                           onChange={() => setSalaryPeriod('month')}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300"
+                          className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 border-slate-300 accent-emerald-600 cursor-pointer"
                         />
                         <span>Per Month</span>
                       </label>
@@ -833,7 +828,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 2: Benefits Provided by Employer */}
             <div id="section-benefits" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
               <div className="flex items-start gap-3.5 mb-6">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   2
                 </div>
                 <div>
@@ -852,17 +847,17 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   onClick={() => toggleBenefit('accommodation')}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all ${
                     benefits.accommodation
-                      ? 'border-blue-500/80 bg-blue-50/50 shadow-sm'
+                      ? 'border-emerald-500/80 bg-emerald-50/50 shadow-sm'
                       : 'border-slate-200 bg-slate-50/30 hover:bg-slate-50'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${
-                    benefits.accommodation ? 'bg-blue-600 text-white' : 'border border-slate-300 bg-white'
+                    benefits.accommodation ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white'
                   }`}>
                     {benefits.accommodation && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
                   </div>
-                  <Home className={`w-4 h-4 ${benefits.accommodation ? 'text-blue-600' : 'text-slate-400'}`} />
-                  <span className={`text-xs font-semibold ${benefits.accommodation ? 'text-blue-900' : 'text-slate-700'}`}>
+                  <Home className={`w-4 h-4 ${benefits.accommodation ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <span className={`text-xs font-semibold ${benefits.accommodation ? 'text-emerald-950' : 'text-slate-700'}`}>
                     Accommodation
                   </span>
                 </button>
@@ -872,17 +867,17 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   onClick={() => toggleBenefit('meals')}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all ${
                     benefits.meals
-                      ? 'border-blue-500/80 bg-blue-50/50 shadow-sm'
+                      ? 'border-emerald-500/80 bg-emerald-50/50 shadow-sm'
                       : 'border-slate-200 bg-slate-50/30 hover:bg-slate-50'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${
-                    benefits.meals ? 'bg-blue-600 text-white' : 'border border-slate-300 bg-white'
+                    benefits.meals ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white'
                   }`}>
                     {benefits.meals && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
                   </div>
-                  <UtensilsCrossed className={`w-4 h-4 ${benefits.meals ? 'text-blue-600' : 'text-slate-400'}`} />
-                  <span className={`text-xs font-semibold ${benefits.meals ? 'text-blue-900' : 'text-slate-700'}`}>
+                  <UtensilsCrossed className={`w-4 h-4 ${benefits.meals ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <span className={`text-xs font-semibold ${benefits.meals ? 'text-emerald-950' : 'text-slate-700'}`}>
                     Meals
                   </span>
                 </button>
@@ -892,17 +887,17 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   onClick={() => toggleBenefit('transport')}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all ${
                     benefits.transport
-                      ? 'border-blue-500/80 bg-blue-50/50 shadow-sm'
+                      ? 'border-emerald-500/80 bg-emerald-50/50 shadow-sm'
                       : 'border-slate-200 bg-slate-50/30 hover:bg-slate-50'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${
-                    benefits.transport ? 'bg-blue-600 text-white' : 'border border-slate-300 bg-white'
+                    benefits.transport ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white'
                   }`}>
                     {benefits.transport && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
                   </div>
-                  <Car className={`w-4 h-4 ${benefits.transport ? 'text-blue-600' : 'text-slate-400'}`} />
-                  <span className={`text-xs font-semibold ${benefits.transport ? 'text-blue-900' : 'text-slate-700'}`}>
+                  <Car className={`w-4 h-4 ${benefits.transport ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <span className={`text-xs font-semibold ${benefits.transport ? 'text-emerald-950' : 'text-slate-700'}`}>
                     Transport
                   </span>
                 </button>
@@ -912,17 +907,17 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   onClick={() => toggleBenefit('healthInsurance')}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all ${
                     benefits.healthInsurance
-                      ? 'border-blue-500/80 bg-blue-50/50 shadow-sm'
+                      ? 'border-emerald-500/80 bg-emerald-50/50 shadow-sm'
                       : 'border-slate-200 bg-slate-50/30 hover:bg-slate-50'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${
-                    benefits.healthInsurance ? 'bg-blue-600 text-white' : 'border border-slate-300 bg-white'
+                    benefits.healthInsurance ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white'
                   }`}>
                     {benefits.healthInsurance && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
                   </div>
-                  <HeartPulse className={`w-4 h-4 ${benefits.healthInsurance ? 'text-blue-600' : 'text-slate-400'}`} />
-                  <span className={`text-xs font-semibold ${benefits.healthInsurance ? 'text-blue-900' : 'text-slate-700'}`}>
+                  <HeartPulse className={`w-4 h-4 ${benefits.healthInsurance ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <span className={`text-xs font-semibold ${benefits.healthInsurance ? 'text-emerald-950' : 'text-slate-700'}`}>
                     Health Insurance
                   </span>
                 </button>
@@ -932,17 +927,17 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   onClick={() => toggleBenefit('lifeInsurance')}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all ${
                     benefits.lifeInsurance
-                      ? 'border-blue-500/80 bg-blue-50/50 shadow-sm'
+                      ? 'border-emerald-500/80 bg-emerald-50/50 shadow-sm'
                       : 'border-slate-200 bg-slate-50/30 hover:bg-slate-50'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${
-                    benefits.lifeInsurance ? 'bg-blue-600 text-white' : 'border border-slate-300 bg-white'
+                    benefits.lifeInsurance ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white'
                   }`}>
                     {benefits.lifeInsurance && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
                   </div>
-                  <ShieldCheck className={`w-4 h-4 ${benefits.lifeInsurance ? 'text-blue-600' : 'text-slate-400'}`} />
-                  <span className={`text-xs font-semibold ${benefits.lifeInsurance ? 'text-blue-900' : 'text-slate-700'}`}>
+                  <ShieldCheck className={`w-4 h-4 ${benefits.lifeInsurance ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <span className={`text-xs font-semibold ${benefits.lifeInsurance ? 'text-emerald-950' : 'text-slate-700'}`}>
                     Life Insurance
                   </span>
                 </button>
@@ -952,17 +947,17 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   onClick={() => toggleBenefit('other')}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all ${
                     benefits.other
-                      ? 'border-blue-500/80 bg-blue-50/50 shadow-sm'
+                      ? 'border-emerald-500/80 bg-emerald-50/50 shadow-sm'
                       : 'border-slate-200 bg-slate-50/30 hover:bg-slate-50'
                   }`}
                 >
                   <div className={`w-5 h-5 rounded-md flex items-center justify-center transition-all ${
-                    benefits.other ? 'bg-blue-600 text-white' : 'border border-slate-300 bg-white'
+                    benefits.other ? 'bg-emerald-600 text-white' : 'border border-slate-300 bg-white'
                   }`}>
                     {benefits.other && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
                   </div>
-                  <Sparkles className={`w-4 h-4 ${benefits.other ? 'text-blue-600' : 'text-slate-400'}`} />
-                  <span className={`text-xs font-semibold ${benefits.other ? 'text-blue-900' : 'text-slate-700'}`}>
+                  <Sparkles className={`w-4 h-4 ${benefits.other ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <span className={`text-xs font-semibold ${benefits.other ? 'text-emerald-950' : 'text-slate-700'}`}>
                     Other Benefits
                   </span>
                 </button>
@@ -975,7 +970,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                     value={otherBenefitText}
                     onChange={(e) => setOtherBenefitText(e.target.value)}
                     placeholder="Enter other benefits (e.g. Annual flight tickets, gym membership, visa sponsorship for family)"
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
                   />
                 </div>
               )}
@@ -991,7 +986,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                     value={benefitNotes}
                     onChange={(e) => setBenefitNotes(e.target.value)}
                     placeholder="Any additional benefits or special arrangements..."
-                    className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all resize-none"
+                    className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all resize-none"
                   />
                   <span className="absolute bottom-2.5 right-3 text-[11px] text-slate-400">
                     {benefitNotes.length}/500
@@ -1003,7 +998,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 3: Total Cost per Client */}
             <div id="section-benefits-cost" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
               <div className="flex items-start gap-3.5 mb-6">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   3
                 </div>
                 <div>
@@ -1023,7 +1018,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       Government Fees <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
-                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20">
+                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/20">
                         <span className="pl-3 pr-2 py-2 text-xs font-semibold text-slate-600 self-center">
                           USD
                         </span>
@@ -1046,7 +1041,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       Embassy Fees <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
-                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20">
+                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/20">
                         <span className="pl-3 pr-2 py-2 text-xs font-semibold text-slate-600 self-center">
                           USD
                         </span>
@@ -1069,7 +1064,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       Processing Fee <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
-                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20">
+                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/20">
                         <span className="pl-3 pr-2 py-2 text-xs font-semibold text-slate-600 self-center">
                           USD
                         </span>
@@ -1092,7 +1087,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       Courier Fee <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
-                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20">
+                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/20">
                         <span className="pl-3 pr-2 py-2 text-xs font-semibold text-slate-600 self-center">
                           USD
                         </span>
@@ -1115,7 +1110,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                       TravlTik Service Fee <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
-                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20">
+                      <div className="flex rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/20">
                         <span className="pl-3 pr-2 py-2 text-xs font-semibold text-slate-600 self-center">
                           USD
                         </span>
@@ -1193,7 +1188,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 4: Custom Process Steps */}
             <div id="section-steps" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
               <div className="flex items-start gap-3.5 mb-6">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   4
                 </div>
                 <div>
@@ -1230,13 +1225,15 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                               type="text"
                               value={step.title}
                               onChange={(e) => handleUpdateStep(idx, 'title', e.target.value)}
-                              className="w-full text-xs sm:text-sm font-bold text-slate-900 bg-transparent border-b border-transparent hover:border-slate-200 focus:border-blue-600 focus:outline-none transition-colors"
+                              placeholder="Step Title"
+                              className="w-full text-xs sm:text-sm font-bold text-slate-900 bg-transparent border-b border-transparent hover:border-slate-200 focus:border-emerald-500 focus:outline-none transition-colors py-0.5"
                             />
                             <textarea
                               rows={2}
                               value={step.description}
                               onChange={(e) => handleUpdateStep(idx, 'description', e.target.value)}
-                              className="w-full text-[11px] text-slate-500 bg-transparent border-b border-transparent hover:border-slate-200 focus:border-blue-600 focus:outline-none transition-colors resize-none mt-0.5 leading-relaxed"
+                              placeholder="Describe this process step..."
+                              className="w-full text-xs text-slate-600 font-medium bg-transparent border-b border-transparent hover:border-slate-200 focus:border-emerald-500 focus:outline-none transition-colors resize-none mt-1 py-1 leading-relaxed overflow-hidden"
                             />
                           </div>
                         </div>
@@ -1255,7 +1252,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                                 handleUpdateStep(idx, 'estimatedTime', num ? `Max ${num} days` : '');
                               }}
                               placeholder="e.g. 5"
-                              className="w-full pl-8 pr-12 py-2 text-xs font-bold text-slate-900 bg-slate-50/80 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs"
+                              className="w-full pl-8 pr-12 py-2 text-xs font-bold text-slate-900 bg-slate-50/80 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-2xs"
                             />
                             <span className="text-[11px] font-bold text-slate-500 absolute right-3 pointer-events-none">
                               Days
@@ -1292,7 +1289,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               <button
                 type="button"
                 onClick={handleAddStep}
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-blue-200 bg-blue-50/60 hover:bg-blue-100/60 text-blue-700 text-xs font-bold transition-colors"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/60 text-emerald-800 text-xs font-bold transition-colors cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add Another Step</span>
@@ -1302,7 +1299,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 5: Additional Information */}
             <div id="section-additional" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
               <div className="flex items-start gap-3.5 mb-6">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   5
                 </div>
                 <div>
@@ -1322,7 +1319,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   value={additionalNotes}
                   onChange={(e) => setAdditionalNotes(e.target.value)}
                   placeholder="Enter additional notes / terms and conditions..."
-                  className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all resize-none"
+                  className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all resize-none"
                 />
                 <span className="absolute bottom-2.5 right-3 text-[11px] text-slate-400">
                   {additionalNotes.length}/500
@@ -1333,7 +1330,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 6: Upload Ad Banner / Promotional Poster */}
             <div id="section-banner" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7">
               <div className="flex items-start gap-3.5 mb-6">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   6
                 </div>
                 <div>
@@ -1417,14 +1414,14 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                         reader.readAsDataURL(file);
                       }
                     }}
-                    className="border-2 border-dashed border-slate-300 hover:border-blue-500 bg-slate-50/70 hover:bg-blue-50/20 rounded-2xl p-8 sm:p-10 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group"
+                    className="border-2 border-dashed border-slate-300 hover:border-emerald-500 bg-slate-50/70 hover:bg-emerald-50/20 rounded-2xl p-8 sm:p-10 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group"
                   >
-                    <div className="w-14 h-14 rounded-2xl bg-blue-50 group-hover:bg-blue-100 text-blue-600 flex items-center justify-center transition-all shadow-xs group-hover:scale-105">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-50 group-hover:bg-emerald-100 text-emerald-600 flex items-center justify-center transition-all shadow-xs group-hover:scale-105">
                       <ImagePlus className="w-7 h-7" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-                        Drag & Drop your Ad Banner here, or <span className="text-blue-600 underline">Browse Files</span>
+                      <h4 className="text-sm font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">
+                        Drag & Drop your Ad Banner here, or <span className="text-emerald-600 underline">Browse Files</span>
                       </h4>
                       <p className="text-xs text-slate-400 mt-1 font-normal">
                         Supports PNG, JPG, WEBP, SVG (Landscape banner, Recommended: 1200 × 630 px, Max 10MB)
@@ -1456,7 +1453,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                             setAdBannerSize('Pre-designed');
                             showToast(`Selected ${tmpl.label} banner`, 'info');
                           }}
-                          className="group relative rounded-xl overflow-hidden border border-slate-200 hover:border-blue-600 transition-all text-left p-1.5 hover:shadow-md cursor-pointer bg-slate-50"
+                          className="group relative rounded-xl overflow-hidden border border-slate-200 hover:border-emerald-500 transition-all text-left p-1.5 hover:shadow-md cursor-pointer bg-slate-50"
                         >
                           <div className="h-16 rounded-lg overflow-hidden relative mb-1.5">
                             <img src={tmpl.img} alt={tmpl.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
@@ -1476,7 +1473,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 7: Refund Policies and Assurances */}
             <div id="section-refund" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-6">
               <div className="flex items-start gap-3.5 mb-2">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   7
                 </div>
                 <div>
@@ -1564,7 +1561,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   value={refundNotes}
                   onChange={(e) => setRefundNotes(e.target.value)}
                   placeholder="e.g. 100% refund of professional fees if visa rejected on grounds not attributable to candidate fraud. Embassy refusal letter must be submitted within 14 days."
-                  className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all resize-none leading-relaxed"
+                  className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all resize-none leading-relaxed"
                 />
               </div>
             </div>
@@ -1572,7 +1569,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* SECTION 8: Agree to All Terms and Conditions & Submit Query */}
             <div id="section-terms" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5">
               <div className="flex items-start gap-3.5 mb-2">
-                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
                   8
                 </div>
                 <div>
@@ -1592,10 +1589,10 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                     type="checkbox"
                     checked={agreeTerms}
                     onChange={(e) => setAgreeTerms(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500 cursor-pointer"
+                    className="mt-1 w-4 h-4 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500 accent-emerald-600 cursor-pointer"
                   />
                   <div className="text-xs text-slate-700 leading-relaxed font-medium">
-                    <span className="font-bold text-slate-900 block group-hover:text-blue-600 transition-colors">
+                    <span className="font-bold text-slate-900 block group-hover:text-emerald-600 transition-colors">
                       I agree to all TravlTik Terms & Conditions, Platform Policies, and Escrow Milestone Rules *
                     </span>
                     I understand that milestone payments are released according to documented stages and verified work permit approvals.
@@ -1610,10 +1607,10 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                     type="checkbox"
                     checked={agreeAuthenticity}
                     onChange={(e) => setAgreeAuthenticity(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500 cursor-pointer"
+                    className="mt-1 w-4 h-4 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500 accent-emerald-600 cursor-pointer"
                   />
                   <div className="text-xs text-slate-700 leading-relaxed font-medium">
-                    <span className="font-bold text-slate-900 block group-hover:text-blue-600 transition-colors">
+                    <span className="font-bold text-slate-900 block group-hover:text-emerald-600 transition-colors">
                       I legally declare that this Work Permit & Job Offer is 100% genuine and authentic *
                     </span>
                     I guarantee that the employer sponsorship, stated process milestones, and refund policies declared in this offer will be strictly honored.
@@ -1637,7 +1634,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                   disabled={isPublishing || !agreeTerms || !agreeAuthenticity}
                   className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl text-xs font-extrabold shadow-md transition-all active:scale-[0.98] cursor-pointer ${
                     agreeTerms && agreeAuthenticity && !isPublishing
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/25'
+                      ? 'bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 shadow-emerald-500/25'
                       : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                   }`}
                 >
@@ -1655,20 +1652,20 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* WIDGET 1: Hero Banner Card */}
             <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 text-center">
               <div className="w-24 h-24 mx-auto mb-4 relative flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-indigo-50 rounded-full scale-110 opacity-70" />
-                <div className="relative w-16 h-12 bg-white rounded-lg border-2 border-blue-500 shadow-sm p-1.5 flex flex-col justify-between -translate-x-2 -translate-y-1">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-100 to-teal-50 rounded-full scale-110 opacity-70" />
+                <div className="relative w-16 h-12 bg-white rounded-lg border-2 border-emerald-400 shadow-sm p-1.5 flex flex-col justify-between -translate-x-2 -translate-y-1">
                   <div className="flex items-center gap-1">
-                    <div className="w-3.5 h-3.5 rounded-full bg-blue-600 flex items-center justify-center text-[7px] text-white font-bold">
+                    <div className="w-3.5 h-3.5 rounded-full bg-emerald-600 flex items-center justify-center text-[7px] text-white font-bold">
                       👤
                     </div>
                     <div className="space-y-0.5 flex-1">
-                      <div className="h-1 bg-blue-400 rounded-full w-full" />
-                      <div className="h-1 bg-blue-200 rounded-full w-2/3" />
+                      <div className="h-1 bg-emerald-400 rounded-full w-full" />
+                      <div className="h-1 bg-emerald-200 rounded-full w-2/3" />
                     </div>
                   </div>
                   <div className="h-0.5 bg-slate-100 rounded-full w-full" />
                 </div>
-                <div className="absolute right-0 bottom-0 w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center shadow-md border-2 border-white">
+                <div className="absolute right-0 bottom-0 w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 flex items-center justify-center shadow-md border-2 border-white">
                   <span className="text-sm">🌐</span>
                 </div>
               </div>
@@ -1684,7 +1681,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* WIDGET 2: Reach Global Talent */}
             <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
                   <Info className="w-3.5 h-3.5" />
                 </div>
                 <h4 className="text-xs sm:text-sm font-bold text-slate-900">
@@ -1694,15 +1691,15 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
 
               <div className="space-y-2.5">
                 <div className="flex items-center gap-2.5 text-xs text-slate-600 font-medium">
-                  <Check className="w-4 h-4 text-blue-600 shrink-0 stroke-[2.5]" />
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
                   <span>Access qualified professionals</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-slate-600 font-medium">
-                  <Check className="w-4 h-4 text-blue-600 shrink-0 stroke-[2.5]" />
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
                   <span>Manage applications easily</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-slate-600 font-medium">
-                  <Check className="w-4 h-4 text-blue-600 shrink-0 stroke-[2.5]" />
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
                   <span>Track leads and responses</span>
                 </div>
               </div>
@@ -1742,7 +1739,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
             {/* WIDGET 4: Need Help? */}
             <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5">
               <div className="flex items-center gap-2.5 mb-2">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
+                <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
                   <Headphones className="w-4 h-4" />
                 </div>
                 <div>
@@ -1758,7 +1755,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               <button
                 type="button"
                 onClick={() => showToast('Connecting you with TravlTik Support representative...', 'info')}
-                className="w-full mt-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-blue-600 text-xs font-bold transition-colors shadow-sm"
+                className="w-full mt-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-emerald-700 hover:bg-emerald-50 text-xs font-bold transition-colors shadow-sm"
               >
                 Chat with Support
               </button>
@@ -1812,7 +1809,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               <button
                 type="button"
                 onClick={() => onCancel ? onCancel() : (window.location.href = "/service-provider/dashboard")}
-                className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 text-xs sm:text-sm font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Go to Dashboard</span>
                 <ChevronRight className="w-4 h-4" />
