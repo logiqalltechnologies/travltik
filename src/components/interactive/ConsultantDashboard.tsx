@@ -685,7 +685,7 @@ export function ConsultantDashboard() {
             )}
 
             {/* Top Fixed Header Navbar */}
-            <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-2xs">
+            <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 px-4 h-[65px] flex items-center justify-between shadow-2xs">
                 <div className="flex items-center gap-2.5 sm:gap-3">
                     <button 
                         type="button"
@@ -706,7 +706,7 @@ export function ConsultantDashboard() {
                         <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
                         <input 
                             type="text" 
-                            placeholder="Search"
+                            placeholder="Search" 
                             value={consultantSearch}
                             onChange={(e) => setConsultantSearch(e.target.value)}
                             className="w-full pl-9 pr-14 py-2 bg-slate-50/70 hover:bg-slate-100/70 focus:bg-white border border-slate-200 focus:border-slate-400 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 transition-all outline-none"
@@ -717,36 +717,50 @@ export function ConsultantDashboard() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 sm:gap-4">
-                    <button onClick={() => setActiveTab("help")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
-                        <HelpCircle className="w-4.5 h-4.5" />
-                    </button>
-                    <button onClick={() => setActiveTab("messages")} className="w-9 h-9 rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative">
-                        <Bell className="w-4.5 h-4.5" />
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => setActiveTab("work-permit")}
-                        title="Create & Manage Work Permit Offers"
-                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                {/* Right Topbar Navigation Actions */}
+                <div className="flex items-center gap-2 sm:gap-3">
+                    {/* View Public Directory Profile */}
+                    <a 
+                        href={`/consultant/${profile.id || 'expert'}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200/80 rounded-xl transition-colors cursor-pointer"
+                        title="View your public profile as seen by clients"
                     >
-                        <Briefcase className="w-3.5 h-3.5 text-blue-600" />
-                        <span>Work Permits</span>
-                    </button>
-                    <button
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>Public View</span>
+                    </a>
+
+                    {/* Quick Notifications Button */}
+                    <button 
                         type="button"
-                        onClick={() => setIsVerificationModalOpen(true)}
-                        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-[#00a896] hover:bg-teal-100 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                        onClick={() => setActiveTab("messages")}
+                        className="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+                        aria-label="Notifications"
                     >
-                        <ShieldCheck className="w-3.5 h-3.5" />
-                        <span>Verify Account</span>
+                        <Bell className="w-4 h-4" />
+                        <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white animate-pulse" />
                     </button>
 
-                    {/* Profile Avatar & Dropdown */}
-                    <div className="relative" ref={profileMenuRef}>
+                    {/* Quick Help Link */}
+                    <button 
+                        type="button"
+                        onClick={() => setActiveTab("help")}
+                        className="hidden md:flex p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+                        aria-label="Help &amp; Support"
+                    >
+                        <HelpCircle className="w-4 h-4" />
+                    </button>
+
+                    <div className="h-5 w-px bg-slate-200 hidden sm:block" />
+
+                    {/* Profile Dropdown Trigger */}
+                    <div className="relative" ref={profileDropdownRef}>
                         <div 
-                            className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200 cursor-pointer select-none" 
-                            onClick={() => setIsProfileMenuOpen(prev => !prev)}
+                            onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                            className="flex items-center gap-2.5 p-1 sm:p-1.5 hover:bg-slate-100 rounded-2xl cursor-pointer transition-all border border-transparent hover:border-slate-200/80"
+                            role="button"
+                            tabIndex={0}
                             aria-haspopup="true"
                             aria-expanded={isProfileMenuOpen}
                         >
@@ -782,7 +796,7 @@ export function ConsultantDashboard() {
                                     </div>
                                 </div>
                                 <div className="p-1 space-y-0.5 text-xs font-semibold text-slate-700">
-                                    <button
+                                    <button 
                                         type="button"
                                         onClick={() => { setActiveTab("profile"); setIsProfileMenuOpen(false); }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
@@ -790,7 +804,7 @@ export function ConsultantDashboard() {
                                         <User className="w-4 h-4 text-slate-400" />
                                         <span>My Profile</span>
                                     </button>
-                                    <button
+                                    <button 
                                         type="button"
                                         onClick={() => { setActiveTab("services"); setIsProfileMenuOpen(false); }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
@@ -798,7 +812,7 @@ export function ConsultantDashboard() {
                                         <Briefcase className="w-4 h-4 text-slate-400" />
                                         <span>My Services &amp; Packages</span>
                                     </button>
-                                    <button
+                                    <button 
                                         type="button"
                                         onClick={() => { setActiveTab("leads"); setIsProfileMenuOpen(false); }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
@@ -806,7 +820,7 @@ export function ConsultantDashboard() {
                                         <Users className="w-4 h-4 text-slate-400" />
                                         <span>Client Leads &amp; Cases</span>
                                     </button>
-                                    <button
+                                    <button 
                                         type="button"
                                         onClick={() => { setActiveTab("settings"); setIsProfileMenuOpen(false); }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors text-left cursor-pointer"
@@ -817,7 +831,7 @@ export function ConsultantDashboard() {
                                 </div>
                                 <div className="border-t border-slate-100 my-1"></div>
                                 <div className="p-1">
-                                    <button
+                                    <button 
                                         type="button"
                                         onClick={() => { setIsProfileMenuOpen(false); handleLogout(); }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 transition-colors text-left font-bold cursor-pointer"
@@ -832,10 +846,18 @@ export function ConsultantDashboard() {
                 </div>
             </header>
 
-            <div className="flex flex-1 min-h-[calc(100vh-61px)]">
+            <div className="flex flex-1 min-h-[calc(100vh-65px)] w-full">
                 {/* Desktop Sticky Sidebar (Nexus Style) */}
-                <aside className={`hidden lg:flex sticky top-[61px] h-[calc(100vh-61px)] bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none overflow-hidden ${isSidebarCollapsed ? "w-20" : "w-64"}`}>
-                    <div className="flex-1 overflow-y-auto p-3.5 space-y-5 no-scrollbar min-h-0">
+                <aside 
+                    style={{
+                        height: 'calc(100vh - 65px)',
+                        minHeight: 'calc(100vh - 65px)',
+                        position: 'sticky',
+                        top: '65px',
+                    }}
+                    className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none overflow-hidden ${isSidebarCollapsed ? "w-20" : "w-64"}`}
+                >
+                    <div className="flex-1 overflow-y-auto p-3.5 space-y-4 no-scrollbar min-h-0">
                         <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
                             {!isSidebarCollapsed ? (
                                 <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Menu</span>
@@ -903,17 +925,18 @@ export function ConsultantDashboard() {
                         </nav>
 
                         {!isSidebarCollapsed && (
-                            <div className="p-4 bg-[#f0fdfa] border border-[#ccfbf1] rounded-2xl space-y-3">
-                                <h4 className="text-xs font-extrabold text-slate-900">Upgrade to Premium</h4>
-                                <ul className="text-[11px] font-semibold text-slate-600 space-y-1">
-                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> More leads</li>
-                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Featured listing</li>
-                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Advanced analytics</li>
-                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Priority support</li>
+                            <div className="p-3.5 bg-gradient-to-br from-emerald-50/80 to-teal-50/80 border border-teal-200/70 rounded-2xl space-y-2.5">
+                                <div className="flex items-center justify-between">
+                                    <h4 className="text-xs font-black text-slate-900">Upgrade to Premium</h4>
+                                    <span className="text-[9px] font-black uppercase bg-[#00a896] text-white px-1.5 py-0.5 rounded">Pro</span>
+                                </div>
+                                <ul className="text-[11px] font-medium text-slate-600 space-y-1">
+                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> More leads &amp; featured listing</li>
+                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Advanced analytics &amp; priority support</li>
                                 </ul>
                                 <button 
                                     onClick={() => setActiveTab("subscriptions")}
-                                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-3 rounded-xl text-xs shadow-sm transition-all cursor-pointer"
+                                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow-xs transition-all cursor-pointer"
                                 >
                                     Upgrade Now
                                 </button>
