@@ -755,7 +755,7 @@ export function ConsultantDashboard() {
                     <div className="h-5 w-px bg-slate-200 hidden sm:block" />
 
                     {/* Profile Dropdown Trigger */}
-                    <div className="relative" ref={profileDropdownRef}>
+                    <div className="relative" ref={profileMenuRef}>
                         <div 
                             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                             className="flex items-center gap-2.5 p-1 sm:p-1.5 hover:bg-slate-100 rounded-2xl cursor-pointer transition-all border border-transparent hover:border-slate-200/80"
