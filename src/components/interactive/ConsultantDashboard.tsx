@@ -1025,24 +1025,24 @@ export function ConsultantDashboard() {
                             </div>
                             <button 
                                 onClick={() => setIsEditingProfile(true)}
-                                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                                className="bg-[#420f79] hover:bg-[#340b61] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-[#420f79]/20 active:scale-95 shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
                             >
                                 <span>Complete Profile to Get Listed</span>
                                 <ChevronRight className="w-4 h-4" />
                             </button>
                         </div>
                     ) : (
-                        <div className="bg-emerald-50 border border-emerald-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
+                        <div className="bg-gradient-to-r from-purple-50/90 via-[#420f79]/[0.05] to-purple-50/60 border border-[#420f79]/20 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs w-full animate-fade-up">
                             <div className="flex items-start gap-3.5">
-                                <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 font-black text-lg shadow-sm">
+                                <div className="w-10 h-10 rounded-2xl bg-[#420f79] text-white flex items-center justify-center shrink-0 font-black text-lg shadow-md shadow-[#420f79]/25">
                                     ✓
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h4 className="text-sm font-extrabold text-emerald-950 leading-tight">Your Agency Profile is Active & Listed Live!</h4>
-                                        <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">🟢 LIVE LISTING</span>
+                                        <h4 className="text-sm font-extrabold text-[#2a0850] leading-tight">Your Agency Profile is Active & Listed Live!</h4>
+                                        <span className="bg-[#420f79] text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse shadow-2xs">🟣 LIVE LISTING</span>
                                     </div>
-                                    <p className="text-xs font-semibold text-emerald-800 mt-1 leading-relaxed">
+                                    <p className="text-xs font-semibold text-[#420f79]/80 mt-1 leading-relaxed">
                                         Your profile is published and publicly discoverable by travellers across the Find Experts directory.
                                     </p>
                                 </div>
@@ -1051,7 +1051,7 @@ export function ConsultantDashboard() {
                                 href="/find-experts"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                                className="bg-[#420f79] hover:bg-[#340b61] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-[#420f79]/20 shrink-0 flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
                             >
                                 <span>View Live Listing</span>
                                 <ChevronRight className="w-4 h-4" />
