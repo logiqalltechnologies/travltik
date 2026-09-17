@@ -848,111 +848,110 @@ export function ConsultantDashboard() {
 
             <div className="flex flex-1 min-h-[calc(100vh-65px)] w-full">
                 {/* Desktop Sticky Sidebar (Nexus Style) */}
-                <aside 
-                    style={{
-                        height: 'calc(100vh - 65px)',
-                        minHeight: 'calc(100vh - 65px)',
-                        position: 'sticky',
-                        top: '65px',
-                    }}
-                    className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col justify-between transition-all duration-300 z-30 shrink-0 select-none overflow-hidden ${isSidebarCollapsed ? "w-20" : "w-64"}`}
-                >
-                    <div className="flex-1 overflow-y-auto p-3.5 space-y-4 no-scrollbar min-h-0">
-                        <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
-                            {!isSidebarCollapsed ? (
-                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Menu</span>
-                            ) : <div className="w-3" />}
-                            <button 
-                                type="button"
-                                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                                title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-                                className="p-1 rounded-lg border border-slate-200/80 hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer"
-                            >
-                                <ChevronLeft className={`w-3.5 h-3.5 transition-transform ${isSidebarCollapsed ? "rotate-180" : ""}`} />
-                            </button>
-                        </div>
-
-                        {/* Grouped Navigation Sections */}
-                        <nav className="space-y-4">
-                            {navSections.map((section, sIdx) => (
-                                <div key={sIdx} className="space-y-1">
-                                    {!isSidebarCollapsed && (
-                                        <h5 className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1">
-                                            {section.title}
-                                        </h5>
-                                    )}
-                                    <div className="space-y-0.5">
-                                        {section.items.map(item => {
-                                            const isActive = activeTab === item.id;
-                                            const IconComp = item.icon;
-                                            return (
-                                                <button
-                                                    key={item.id}
-                                                    onClick={() => {
-                                                        setActiveTab(item.id);
-                                                        if (item.id === "classifieds") {
-                                                            setClassifiedsViewMode("form");
-                                                        }
-                                                    }}
-                                                    title={item.label}
-                                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                                                        isActive
-                                                            ? "bg-slate-100 text-slate-950 font-bold shadow-2xs"
-                                                            : "text-slate-600 hover:text-slate-950 hover:bg-slate-50"
-                                                    }`}
-                                                >
-                                                    <div className="flex items-center gap-2.5 min-w-0">
-                                                        <IconComp className={`w-4 h-4 shrink-0 ${isActive ? "text-slate-950 stroke-[2.2]" : "text-slate-500 stroke-[1.8]"}`} />
-                                                        {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
-                                                    </div>
-                                                    {!isSidebarCollapsed && (
-                                                        item.count !== undefined ? (
-                                                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 min-w-[20px] text-center">
-                                                                {item.count}
-                                                            </span>
-                                                        ) : item.badge ? (
-                                                            <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${item.badgeColor || 'bg-slate-100 text-slate-700'}`}>
-                                                                {item.badge}
-                                                            </span>
-                                                        ) : null
-                                                    )}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            ))}
-                        </nav>
-
-                        {!isSidebarCollapsed && (
-                            <div className="p-3.5 bg-gradient-to-br from-emerald-50/80 to-teal-50/80 border border-teal-200/70 rounded-2xl space-y-2.5">
-                                <div className="flex items-center justify-between">
-                                    <h4 className="text-xs font-black text-slate-900">Upgrade to Premium</h4>
-                                    <span className="text-[9px] font-black uppercase bg-[#00a896] text-white px-1.5 py-0.5 rounded">Pro</span>
-                                </div>
-                                <ul className="text-[11px] font-medium text-slate-600 space-y-1">
-                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> More leads &amp; featured listing</li>
-                                    <li className="flex items-center gap-1.5"><span className="text-[#00a896] font-bold">•</span> Advanced analytics &amp; priority support</li>
-                                </ul>
+                <aside className={`hidden lg:flex bg-white border-r border-slate-200/80 flex-col shrink-0 select-none self-stretch min-h-[calc(100vh-65px)] transition-all duration-300 z-30 ${isSidebarCollapsed ? "w-20" : "w-72"}`}>
+                    <div className="sticky top-[65px] h-[calc(100vh-65px)] flex flex-col justify-between w-full">
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar min-h-0">
+                            <div className="flex items-center justify-between px-2 pb-1 border-b border-slate-100">
+                                {!isSidebarCollapsed ? (
+                                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-400">Navigation</span>
+                                ) : <div className="w-3" />}
                                 <button 
-                                    onClick={() => setActiveTab("subscriptions")}
-                                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow-xs transition-all cursor-pointer"
+                                    type="button"
+                                    onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                                    title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                                    className="p-1.5 rounded-lg border border-slate-200/80 hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer"
                                 >
-                                    Upgrade Now
+                                    <ChevronLeft className={`w-4 h-4 transition-transform ${isSidebarCollapsed ? "rotate-180" : ""}`} />
                                 </button>
                             </div>
-                        )}
-                    </div>
 
-                    {/* Pinned Bottom Actions */}
-                    <div className="p-3 border-t border-slate-100 bg-white shrink-0">
-                        <button
-                            onClick={handleLogout}
-                            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50/80 transition-all cursor-pointer group"
-                        >
-                            <LogOut className="w-4 h-4 shrink-0 transition-transform group-hover:-translate-x-0.5" />
-                            {!isSidebarCollapsed && <span>Logout</span>}
-                        </button>
+                            {/* Grouped Navigation Sections */}
+                            <nav className="space-y-4">
+                                {navSections.map((section, sIdx) => (
+                                    <div key={sIdx} className="space-y-1">
+                                        {!isSidebarCollapsed && (
+                                            <h5 className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 px-3.5 py-1">
+                                                {section.title}
+                                            </h5>
+                                        )}
+                                        <div className="space-y-0.5">
+                                            {section.items.map(item => {
+                                                const isActive = activeTab === item.id;
+                                                const IconComp = item.icon;
+                                                return (
+                                                    <button
+                                                        key={item.id}
+                                                        onClick={() => {
+                                                            setActiveTab(item.id);
+                                                            if (item.id === "classifieds") {
+                                                                setClassifiedsViewMode("form");
+                                                            }
+                                                        }}
+                                                        title={item.label}
+                                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer ${
+                                                            isActive
+                                                                ? "bg-slate-900 text-white font-bold shadow-xs"
+                                                                : "text-slate-600 hover:text-slate-950 hover:bg-slate-100/80"
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-center gap-3 min-w-0">
+                                                            <IconComp className={`w-4.5 h-4.5 shrink-0 ${isActive ? "text-white stroke-[2.2]" : "text-slate-500 stroke-[1.8]"}`} />
+                                                            {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                                                        </div>
+                                                        {!isSidebarCollapsed && (
+                                                            item.count !== undefined ? (
+                                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md min-w-[20px] text-center ${
+                                                                    isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                                                                }`}>
+                                                                    {item.count}
+                                                                </span>
+                                                            ) : item.badge ? (
+                                                                <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${
+                                                                    isActive ? "bg-white/20 text-white" : (item.badgeColor || 'bg-slate-100 text-slate-700')
+                                                                }`}>
+                                                                    {item.badge}
+                                                                </span>
+                                                            ) : null
+                                                        )}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </nav>
+
+                            {!isSidebarCollapsed && (
+                                <div className="p-3 bg-gradient-to-br from-emerald-50/90 to-teal-50/90 border border-teal-200/80 rounded-2xl flex items-center justify-between gap-2 shadow-2xs">
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                        <div className="w-8 h-8 rounded-xl bg-[#00a896]/10 flex items-center justify-center shrink-0">
+                                            <Sparkles className="w-4 h-4 text-[#00a896]" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <h5 className="text-xs font-black text-slate-900 truncate">Upgrade to Pro</h5>
+                                            <p className="text-[10px] font-medium text-slate-500 truncate">Unlimited leads &amp; boost</p>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        onClick={() => setActiveTab("subscriptions")}
+                                        className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-1.5 px-3 rounded-xl text-[11px] shadow-2xs transition-all cursor-pointer shrink-0"
+                                    >
+                                        Upgrade
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Pinned Bottom Actions */}
+                        <div className="p-4 border-t border-slate-100 bg-white shrink-0">
+                            <button
+                                onClick={handleLogout}
+                                className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-all cursor-pointer group"
+                            >
+                                <LogOut className="w-4.5 h-4.5 shrink-0 transition-transform group-hover:-translate-x-0.5" />
+                                {!isSidebarCollapsed && <span className="text-[13px]">Logout</span>}
+                            </button>
+                        </div>
                     </div>
                 </aside>
 
