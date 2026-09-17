@@ -62,7 +62,6 @@ export default defineConfig({
         'firebase/auth',
         '@marsidev/react-turnstile',
       ],
-      force: true,
     },
   },
 });
