@@ -1,766 +1,996 @@
 // src/components/community/CommunityHub.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Hash, Search, Paperclip, Smile, Star, Users,
-  Bell, MoreVertical, X, Check, ArrowRight,
-  FileText, MessageSquare, Send, LogIn, LogOut,
-  Megaphone, GraduationCap, Heart, Building2, Luggage, Plane, Menu, MessageCircle, User as UserIcon, UserPlus
+  Search, Bell, Mail, ChevronDown, Plus, Download, CheckCheck,
+  Smile, Paperclip, Image as ImageIcon, Send, MoreVertical,
+  UserPlus, Users, X, FileText, ArrowLeft, Check, LogOut,
+  ExternalLink, MessageSquare, Shield, CheckCircle2
 } from 'lucide-react';
 
-interface Channel {
-  id: number;
-  slug: string;
+interface GroupMember {
+  id: string;
   name: string;
-  category: string;
-  badge_icon?: string;
-  unread_count?: number;
-  description?: string;
+  avatar: string;
+  role?: 'Admin' | 'Moderator' | 'Member';
 }
 
-interface Reaction {
-  emoji: string;
-  count: number;
+interface ChatAttachment {
+  name: string;
+  size: string;
+  type: string;
+  url?: string;
+  dataUrl?: string;
 }
 
 interface ChatMessage {
-  id: number;
-  channel_slug: string;
-  user_id?: string;
-  sender_name: string;
-  sender_avatar: string;
-  is_verified_senior: boolean;
-  is_self?: boolean;
-  content: string;
-  reactions: Reaction[];
-  created_at: string;
+  id: string;
+  senderName: string;
+  senderAvatar: string;
+  isSelf: boolean;
+  text?: string;
+  timestamp: string;
+  attachment?: ChatAttachment;
+  image?: string;
 }
 
-interface SeniorMember {
-  id: number;
-  name: string;
-  avatar_url: string;
-  university?: string;
-  status: 'Online' | 'Offline';
-}
-
-interface PinnedFile {
-  id: number;
+interface ChatRoom {
+  id: string;
   title: string;
-  file_size: string;
-  file_type: string;
-  download_url?: string;
+  type: 'group' | 'direct';
+  countryCode?: string;
+  flagComponent?: React.ReactNode;
+  iconType?: 'flag' | 'plane' | 'food' | 'avatar';
+  avatar?: string;
+  memberCount: string;
+  activeStatus: string;
+  lastMessageSnippet: string;
+  lastMessageTime: string;
+  unreadCount: number;
+  bannerImage: string;
+  description: string;
+  isJoined: boolean;
+  members: GroupMember[];
+  memberAvatars: string[];
+  totalMembersCountText: string;
 }
 
-interface AuthUser {
-  uid: string;
-  displayName: string;
-  email: string;
-  photoURL?: string;
-}
+// Country Roundel Flag Components
+const CanadaRoundel = () => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    <circle cx="50" cy="50" r="50" fill="#FF0000" />
+    <rect x="25" y="0" width="50" height="100" fill="#FFFFFF" />
+    <path
+      d="M50 20 L53 35 L62 30 L59 40 L69 43 L63 50 L72 58 L57 56 L55 68 L50 63 L45 68 L43 56 L28 58 L37 50 L31 43 L41 40 L38 30 L47 35 Z M49 63 L49 76 L51 76 L51 63 Z"
+      fill="#FF0000"
+    />
+  </svg>
+);
 
-interface CommunityStats {
-  online_seniors: number;
-  total_members: number;
-}
+const GermanyRoundel = () => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    <clipPath id="germany-clip"><circle cx="50" cy="50" r="50" /></clipPath>
+    <g clipPath="url(#germany-clip)">
+      <rect x="0" y="0" width="100" height="33.3" fill="#000000" />
+      <rect x="0" y="33.3" width="100" height="33.3" fill="#DD0000" />
+      <rect x="0" y="66.6" width="100" height="33.4" fill="#FFCE00" />
+    </g>
+  </svg>
+);
 
-const CATEGORIES = [
-  { id: 'announcements', name: 'Announcements', icon: Megaphone },
-  { id: 'visa', name: 'Visa & Documents', icon: FileText },
-  { id: 'mbbs', name: 'MBBS Abroad Guide', icon: GraduationCap },
-  { id: 'travel', name: 'Travel & Accommodation', icon: Luggage },
-  { id: 'offtopic', name: 'Off-Topic', icon: MessageCircle },
-  { id: 'student', name: 'Student Life', icon: Heart },
-];
+const UKRoundel = () => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    <clipPath id="uk-clip"><circle cx="50" cy="50" r="50" /></clipPath>
+    <g clipPath="url(#uk-clip)">
+      <rect x="0" y="0" width="100" height="100" fill="#012169" />
+      <path d="M0 0 L100 100 M100 0 L0 100" stroke="#FFFFFF" strokeWidth="16" />
+      <path d="M0 0 L100 100 M100 0 L0 100" stroke="#C8102E" strokeWidth="8" />
+      <path d="M50 0 L50 100 M0 50 L100 50" stroke="#FFFFFF" strokeWidth="24" />
+      <path d="M50 0 L50 100 M0 50 L100 50" stroke="#C8102E" strokeWidth="14" />
+    </g>
+  </svg>
+);
 
-const EMOJI_OPTIONS = ['❤️', '👍', '🔥', '💯', '👏', '🎉', '👋', '🚀'];
+const AustraliaRoundel = () => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    <clipPath id="aus-clip"><circle cx="50" cy="50" r="50" /></clipPath>
+    <g clipPath="url(#aus-clip)">
+      <rect x="0" y="0" width="100" height="100" fill="#00008B" />
+      <rect x="0" y="0" width="50" height="50" fill="#012169" />
+      <path d="M0 0 L50 50 M50 0 L0 50" stroke="#FFFFFF" strokeWidth="8" />
+      <path d="M0 0 L50 50 M50 0 L0 50" stroke="#C8102E" strokeWidth="4" />
+      <path d="M25 0 L25 50 M0 25 L50 25" stroke="#FFFFFF" strokeWidth="12" />
+      <path d="M25 0 L25 50 M0 25 L50 25" stroke="#C8102E" strokeWidth="7" />
+      <circle cx="25" cy="72" r="9" fill="#FFFFFF" />
+      <circle cx="78" cy="24" r="4.5" fill="#FFFFFF" />
+      <circle cx="66" cy="46" r="4.5" fill="#FFFFFF" />
+      <circle cx="86" cy="56" r="4.5" fill="#FFFFFF" />
+      <circle cx="75" cy="78" r="4.5" fill="#FFFFFF" />
+      <circle cx="73" cy="54" r="2.5" fill="#FFFFFF" />
+    </g>
+  </svg>
+);
+
+const UAERoundel = () => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    <clipPath id="uae-clip"><circle cx="50" cy="50" r="50" /></clipPath>
+    <g clipPath="url(#uae-clip)">
+      <rect x="0" y="0" width="100" height="33.3" fill="#00732F" />
+      <rect x="0" y="33.3" width="100" height="33.3" fill="#FFFFFF" />
+      <rect x="0" y="66.6" width="100" height="33.4" fill="#000000" />
+      <rect x="0" y="0" width="28" height="100" fill="#FF0000" />
+    </g>
+  </svg>
+);
+
+const TravelRoundel = () => (
+  <div className="w-full h-full rounded-full bg-sky-500 flex items-center justify-center text-white shadow-xs">
+    <span className="text-xl">✈️</span>
+  </div>
+);
+
+const FoodRoundel = () => (
+  <div className="w-full h-full rounded-full bg-amber-500 flex items-center justify-center text-white shadow-xs">
+    <span className="text-xl">🍱</span>
+  </div>
+);
 
 export default function CommunityHub() {
-  const [activeChannel, setActiveChannel] = useState('russia-mbbs-2026');
-  const [channels, setChannels] = useState<Channel[]>([]);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [seniors, setSeniors] = useState<SeniorMember[]>([]);
-  const [resources, setResources] = useState<PinnedFile[]>([]);
-  const [stats, setStats] = useState<CommunityStats>({ online_seniors: 8, total_members: 480 });
-  const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<{ name: string; avatar: string }>({
+    name: 'Lellwyn',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+  });
 
-  // Search & Filter
-  const [channelSearch, setChannelSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeRoomId, setActiveRoomId] = useState<string>('canada');
+  const [roomSearchQuery, setRoomSearchQuery] = useState('');
+  const [activeCategoryTab, setActiveCategoryTab] = useState<'All' | 'Direct' | 'Groups'>('All');
+  const [globalSearch, setGlobalSearch] = useState('');
 
-  // User Auth State
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showLeftSidebarMobile, setShowLeftSidebarMobile] = useState(false);
+  const [showRightDetailsMobile, setShowRightDetailsMobile] = useState(false);
 
-  // Composer
+  const [showNewChatModal, setShowNewChatModal] = useState(false);
+  const [newChatTitle, setNewChatTitle] = useState('');
+  const [newChatDescription, setNewChatDescription] = useState('');
+  const [newChatType, setNewChatType] = useState<'group' | 'direct'>('group');
+
   const [inputText, setInputText] = useState('');
-  const [sending, setSending] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [msgEmojiPickerId, setMsgEmojiPickerId] = useState<number | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const chatBottomRef = useRef<HTMLDivElement>(null);
 
-  // UI state
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [rooms, setRooms] = useState<ChatRoom[]>([
+    {
+      id: 'canada',
+      title: 'Canada - PR & Life',
+      type: 'group',
+      countryCode: 'CA',
+      flagComponent: <CanadaRoundel />,
+      iconType: 'flag',
+      memberCount: '1.2K members',
+      activeStatus: 'Active 12m ago',
+      lastMessageSnippet: "Priya: That's great! I'll share the link...",
+      lastMessageTime: '10:24 AM',
+      unreadCount: 12,
+      bannerImage: 'https://images.unsplash.com/photo-1517935703635-2719079c221a?q=80&w=800&auto=format&fit=crop',
+      description: 'Discuss Canada PR, work permits, study, accommodation, jobs and daily life. Share experiences and get real advice from fellow expats.',
+      isJoined: true,
+      totalMembersCountText: 'Group Members (1.2K)',
+      memberAvatars: [
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+      ],
+      members: [
+        { id: 'm1', name: 'Priya Sharma', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
+        { id: 'm2', name: 'Rohit Verma', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', role: 'Moderator' },
+        { id: 'm3', name: 'Anita Singh', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', role: 'Moderator' },
+      ]
+    },
+    {
+      id: 'germany',
+      title: 'Germany Job Seekers',
+      type: 'group',
+      countryCode: 'DE',
+      flagComponent: <GermanyRoundel />,
+      iconType: 'flag',
+      memberCount: '850 members',
+      activeStatus: 'Active 24m ago',
+      lastMessageSnippet: 'Rohit: I got an interview call today!',
+      lastMessageTime: '09:45 AM',
+      unreadCount: 5,
+      bannerImage: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=800&auto=format&fit=crop',
+      description: 'Community for professionals moving to Germany on Opportunity Card (Chancenkarte), EU Blue Card, and job search visas.',
+      isJoined: true,
+      totalMembersCountText: 'Group Members (850)',
+      memberAvatars: [
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80',
+      ],
+      members: [
+        { id: 'g1', name: 'Rohit Verma', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
+        { id: 'g2', name: 'Klaus Meier', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80', role: 'Moderator' },
+      ]
+    },
+    {
+      id: 'uk',
+      title: 'UK Expats',
+      type: 'group',
+      countryCode: 'GB',
+      flagComponent: <UKRoundel />,
+      iconType: 'flag',
+      memberCount: '2.1K members',
+      activeStatus: 'Active 5m ago',
+      lastMessageSnippet: 'Sarah: Anyone here from Manchester?',
+      lastMessageTime: '08:12 AM',
+      unreadCount: 3,
+      bannerImage: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800&auto=format&fit=crop',
+      description: 'Everything about moving and living in the United Kingdom. Skilled worker visas, graduate route, ILR, and housing.',
+      isJoined: false,
+      totalMembersCountText: 'Group Members (2.1K)',
+      memberAvatars: [
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80',
+      ],
+      members: [
+        { id: 'uk1', name: 'Sarah Jenkins', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
+        { id: 'uk2', name: 'David Miller', avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80', role: 'Moderator' }
+      ]
+    },
+    {
+      id: 'australia',
+      title: 'Australia Life & Migration',
+      type: 'group',
+      countryCode: 'AU',
+      flagComponent: <AustraliaRoundel />,
+      iconType: 'flag',
+      memberCount: '1.5K members',
+      activeStatus: 'Active 1h ago',
+      lastMessageSnippet: 'Anita: The weather is amazing here!',
+      lastMessageTime: 'Yesterday',
+      unreadCount: 8,
+      bannerImage: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop',
+      description: 'PR subclasses (189, 190, 491), student visa transitions, skills assessments, and expat lifestyle down under.',
+      isJoined: true,
+      totalMembersCountText: 'Group Members (1.5K)',
+      memberAvatars: [
+        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+      ],
+      members: [
+        { id: 'au1', name: 'Anita Singh', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
+      ]
+    },
+    {
+      id: 'uae',
+      title: 'UAE Expats',
+      type: 'group',
+      countryCode: 'AE',
+      flagComponent: <UAERoundel />,
+      iconType: 'flag',
+      memberCount: '3.4K members',
+      activeStatus: 'Active 15m ago',
+      lastMessageSnippet: 'Faisal: Best place to find affordable...',
+      lastMessageTime: 'Yesterday',
+      unreadCount: 4,
+      bannerImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop',
+      description: 'Dubai and Abu Dhabi Golden Visas, company setup, freelance permits, banking, and accommodation.',
+      isJoined: false,
+      totalMembersCountText: 'Group Members (3.4K)',
+      memberAvatars: [
+        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80',
+      ],
+      members: [
+        { id: 'ae1', name: 'Faisal Al-Mansoor', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
+      ]
+    },
+    {
+      id: 'travel',
+      title: 'Travel & Adventure',
+      type: 'group',
+      iconType: 'plane',
+      flagComponent: <TravelRoundel />,
+      memberCount: '920 members',
+      activeStatus: 'Active 2h ago',
+      lastMessageSnippet: 'Karan: Planning a trip to Japan next month.',
+      lastMessageTime: 'Mon',
+      unreadCount: 2,
+      bannerImage: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
+      description: 'Backpacking, travel hacks, visa-free destinations, budget flight deals, and meetups around the world.',
+      isJoined: true,
+      totalMembersCountText: 'Group Members (920)',
+      memberAvatars: [
+        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80',
+      ],
+      members: [
+        { id: 'tr1', name: 'Karan Malhotra', avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80', role: 'Admin' }
+      ]
+    },
+    {
+      id: 'lifestyle',
+      title: 'Food, Culture & Lifestyle',
+      type: 'group',
+      iconType: 'food',
+      flagComponent: <FoodRoundel />,
+      memberCount: '640 members',
+      activeStatus: 'Active 3h ago',
+      lastMessageSnippet: 'Neha: Tried the local food - amazing!',
+      lastMessageTime: 'Mon',
+      unreadCount: 1,
+      bannerImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
+      description: 'Share expat cooking tips, grocery stores with international ingredients, cultural adjustments, and food guides.',
+      isJoined: false,
+      totalMembersCountText: 'Group Members (640)',
+      memberAvatars: [
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+      ],
+      members: [
+        { id: 'fd1', name: 'Neha Kapoor', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', role: 'Admin' }
+      ]
+    }
+  ]);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [messagesMap, setMessagesMap] = useState<{ [roomId: string]: ChatMessage[] }>({
+    canada: [
+      {
+        id: 'msg-1',
+        senderName: 'Priya Sharma',
+        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        isSelf: false,
+        text: 'Hi everyone! I just got my ITA for Canada PR 🎉 The process was smoother than I expected. Happy to share my timeline and documents if anyone needs help.',
+        timestamp: '10:05 AM'
+      },
+      {
+        id: 'msg-2',
+        senderName: 'You',
+        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        isSelf: true,
+        text: "That's great! Congratulations! 🎉\nCould you share the list of documents you submitted?",
+        timestamp: '10:12 AM'
+      },
+      {
+        id: 'msg-3',
+        senderName: 'Rahul Mehta',
+        senderAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+        isSelf: false,
+        text: "Sure, I'll DM you. Also, for those looking at Express Entry, there's a new draw this week. CRS 525+.",
+        timestamp: '10:16 AM'
+      },
+      {
+        id: 'msg-4',
+        senderName: 'Priya Sharma',
+        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        isSelf: false,
+        attachment: {
+          name: 'Canada_PR_Documents_Checklist.pdf',
+          size: '245 KB',
+          type: 'PDF',
+          url: '#'
+        },
+        timestamp: '10:18 AM'
+      },
+      {
+        id: 'msg-5',
+        senderName: 'You',
+        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        isSelf: true,
+        text: 'Thanks a lot! This is super helpful 🙏',
+        timestamp: '10:24 AM'
+      }
+    ],
+    germany: [
+      {
+        id: 'g-1',
+        senderName: 'Rohit Verma',
+        senderAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+        isSelf: false,
+        text: 'I got an interview call today for a Software Architect role in Munich! Make sure your CV is strictly in Europass format.',
+        timestamp: '09:45 AM'
+      }
+    ],
+    uk: [
+      {
+        id: 'uk-1',
+        senderName: 'Sarah Jenkins',
+        senderAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+        isSelf: false,
+        text: 'Anyone here from Manchester? Recommended flat-hunting apps besides Rightmove and Zoopla?',
+        timestamp: '08:12 AM'
+      }
+    ]
+  });
 
-  const showToast = (msg: string) => {
-    setToastMsg(msg);
-    setTimeout(() => setToastMsg(null), 3000);
-  };
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  // 1. Fetch Auth State from real Session / LocalStorage
-  const checkAuth = async () => {
-    try {
-      if (typeof window !== 'undefined') {
-        const stored = (localStorage.getItem("travltik_user"));
-        if (stored && stored !== 'null') {
-          const parsed = JSON.parse(stored);
-          if (parsed && (parsed.displayName || parsed.email || parsed.first_name)) {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const storedUser = localStorage.getItem('travltik_user');
+        if (storedUser) {
+          const parsed = JSON.parse(storedUser);
+          if (parsed && (parsed.name || parsed.first_name || parsed.email)) {
             setCurrentUser({
-              uid: parsed.uid || `user_${parsed.id || 'current'}`,
-              displayName: parsed.displayName || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || parsed.email?.split('@')[0] || 'Member',
-              email: parsed.email,
-              photoURL: parsed.photoURL || parsed.profile_photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+              name: parsed.name || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || parsed.email.split('@')[0],
+              avatar: parsed.avatar || parsed.profile_photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
             });
           }
         }
-      }
-
-      const res = await fetch('/api/auth/me');
-      const data = await res.json();
-      if (data.status === 'success' && data.user) {
-        setCurrentUser({
-          uid: data.user.uid,
-          displayName: data.user.displayName || 'Member',
-          email: data.user.email,
-          photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
-        });
-      }
-    } catch (err) {
-      console.warn('[Community Auth Check]', err);
+        const localSavedMessages = localStorage.getItem('travltik_expat_community_messages');
+        if (localSavedMessages) {
+          const parsedSaved = JSON.parse(localSavedMessages);
+          if (parsedSaved && typeof parsedSaved === 'object') {
+            setMessagesMap(prev => ({ ...prev, ...parsedSaved }));
+          }
+        }
+      } catch (e) {}
     }
-  };
-
-  // 2. Fetch Live Feed from PostgreSQL Backend
-  const fetchFeed = async (channelSlug: string, isPolling = false) => {
-    try {
-      if (!isPolling) setLoading(true);
-      const res = await fetch(`/api/community/messages?channel=${channelSlug}`);
-      const data = await res.json();
-
-      if (data.success) {
-        if (data.channels && data.channels.length > 0) {
-          setChannels(data.channels);
-        }
-        if (data.seniors && data.seniors.length > 0) {
-          setSeniors(data.seniors);
-        }
-        if (data.resources && data.resources.length > 0) {
-          setResources(data.resources);
-        }
-        if (data.messages) {
-          setMessages(data.messages);
-        }
-        if (data.stats) {
-          setStats(data.stats);
-        }
-      }
-    } catch (err) {
-      console.error('[Community Feed Error]', err);
-    } finally {
-      if (!isPolling) setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkAuth();
   }, []);
 
-  useEffect(() => {
-    fetchFeed(activeChannel);
-
-    // Live background polling every 4 seconds
-    const interval = setInterval(() => {
-      fetchFeed(activeChannel, true);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [activeChannel]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  // 3. Send Message to PostgreSQL Backend
-  const handleSendMessage = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!inputText.trim() || sending) return;
-
-    const senderDisplayName = currentUser
-      ? currentUser.displayName
-      : 'Guest Member';
-    const senderAvatar = currentUser?.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
-    const userId = currentUser ? currentUser.uid : 'guest-user';
-
-    const messageContent = inputText.trim();
-    setInputText('');
-    setSending(true);
-
-    // Optimistic UI update
-    const tempId = Date.now();
-    const optimisticMsg: ChatMessage = {
-      id: tempId,
-      channel_slug: activeChannel,
-      user_id: userId,
-      sender_name: senderDisplayName,
-      sender_avatar: senderAvatar,
-      is_verified_senior: false,
-      is_self: true,
-      content: messageContent,
-      reactions: [],
-      created_at: new Date().toISOString()
-    };
-
-    setMessages((prev) => [...prev, optimisticMsg]);
-
+  const saveMessagesToLocal = (newMap: typeof messagesMap) => {
     try {
-      const res = await fetch('/api/community/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          channel_slug: activeChannel,
-          content: messageContent,
-          sender_name: senderDisplayName,
-          sender_avatar: senderAvatar,
-          user_id: userId,
-          is_verified_senior: false
-        })
-      });
-      const data = await res.json();
-      if (data.success && data.message) {
-        setMessages((prev) =>
-          prev.map((msg) => (msg.id === tempId ? { ...data.message, is_self: true } : msg))
-        );
-      }
-    } catch (err) {
-      console.error('[Send Message Error]', err);
-      showToast('Failed to send message. Please retry.');
-    } finally {
-      setSending(false);
-    }
+      localStorage.setItem('travltik_expat_community_messages', JSON.stringify(newMap));
+    } catch (e) {}
   };
 
-  // 4. Emoji Reaction Action (Persisted to Database)
-  const handleReaction = async (messageId: number, emoji: string) => {
-    setMessages((prev) =>
-      prev.map((msg) => {
-        if (msg.id !== messageId) return msg;
-        const reactions = Array.isArray(msg.reactions) ? [...msg.reactions] : [];
-        const idx = reactions.findIndex((r) => r.emoji === emoji);
-        if (idx >= 0) {
-          reactions[idx] = { ...reactions[idx], count: reactions[idx].count + 1 };
-        } else {
-          reactions.push({ emoji, count: 1 });
-        }
-        return { ...msg, reactions };
-      })
-    );
-    setMsgEmojiPickerId(null);
+  useEffect(() => {
+    chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messagesMap, activeRoomId]);
 
-    try {
-      await fetch('/api/community/messages/react', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message_id: messageId, emoji })
-      });
-    } catch (err) {
-      console.error('[React Error]', err);
-    }
-  };
+  const activeRoom = rooms.find(r => r.id === activeRoomId) || rooms[0];
+  const activeMessages = messagesMap[activeRoomId] || [];
 
-  // Filter Channels
-  const filteredChannels = channels.filter((ch) => {
-    const matchesSearch = ch.name.toLowerCase().includes(channelSearch.toLowerCase());
-    const matchesCategory = selectedCategory ? ch.category.toLowerCase().includes(selectedCategory.toLowerCase()) : true;
-    return matchesSearch && matchesCategory;
+  const filteredRooms = rooms.filter(room => {
+    const matchesSearch = room.title.toLowerCase().includes(roomSearchQuery.toLowerCase()) ||
+                          room.lastMessageSnippet.toLowerCase().includes(roomSearchQuery.toLowerCase());
+    if (!matchesSearch) return false;
+    if (activeCategoryTab === 'Direct') return room.type === 'direct';
+    if (activeCategoryTab === 'Groups') return room.type === 'group';
+    return true;
   });
 
-  const currentChannelObj = channels.find((c) => c.slug === activeChannel) || {
-    id: 1,
-    slug: 'russia-mbbs-2026',
-    name: 'russia-mbbs-2026',
-    category: 'MBBS Abroad Guide'
+  const handleSelectRoom = (roomId: string) => {
+    setActiveRoomId(roomId);
+    setShowLeftSidebarMobile(false);
+    setRooms(prev => prev.map(r => r.id === roomId ? { ...r, unreadCount: 0 } : r));
   };
 
+  const handleToggleJoin = () => {
+    setRooms(prev => prev.map(r => {
+      if (r.id === activeRoomId) {
+        return { ...r, isJoined: !r.isJoined };
+      }
+      return r;
+    }));
+  };
+
+  const handleSendMessage = () => {
+    if (!inputText.trim()) return;
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const newMsg: ChatMessage = {
+      id: 'msg-' + Date.now(),
+      senderName: currentUser.name || 'You',
+      senderAvatar: currentUser.avatar,
+      isSelf: true,
+      text: inputText.trim(),
+      timestamp: timeString
+    };
+
+    const updatedList = [...activeMessages, newMsg];
+    const newMap = { ...messagesMap, [activeRoomId]: updatedList };
+    setMessagesMap(newMap);
+    saveMessagesToLocal(newMap);
+
+    setRooms(prev => prev.map(r => {
+      if (r.id === activeRoomId) {
+        return {
+          ...r,
+          lastMessageSnippet: `You: ${inputText.trim()}`,
+          lastMessageTime: timeString
+        };
+      }
+      return r;
+    }));
+
+    setInputText('');
+    setShowEmojiPicker(false);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const sizeKB = (file.size / 1024).toFixed(0) + ' KB';
+    const ext = file.name.split('.').pop()?.toUpperCase() || 'FILE';
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const newMsg: ChatMessage = {
+        id: 'msg-' + Date.now(),
+        senderName: currentUser.name || 'You',
+        senderAvatar: currentUser.avatar,
+        isSelf: true,
+        timestamp: timeString,
+        attachment: {
+          name: file.name,
+          size: sizeKB,
+          type: ext,
+          dataUrl: reader.result as string
+        }
+      };
+
+      const updatedList = [...activeMessages, newMsg];
+      const newMap = { ...messagesMap, [activeRoomId]: updatedList };
+      setMessagesMap(newMap);
+      saveMessagesToLocal(newMap);
+
+      setRooms(prev => prev.map(r => {
+        if (r.id === activeRoomId) {
+          return {
+            ...r,
+            lastMessageSnippet: `You sent a file: ${file.name}`,
+            lastMessageTime: timeString
+          };
+        }
+        return r;
+      }));
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const newMsg: ChatMessage = {
+        id: 'msg-' + Date.now(),
+        senderName: currentUser.name || 'You',
+        senderAvatar: currentUser.avatar,
+        isSelf: true,
+        timestamp: timeString,
+        image: reader.result as string
+      };
+
+      const updatedList = [...activeMessages, newMsg];
+      const newMap = { ...messagesMap, [activeRoomId]: updatedList };
+      setMessagesMap(newMap);
+      saveMessagesToLocal(newMap);
+
+      setRooms(prev => prev.map(r => {
+        if (r.id === activeRoomId) {
+          return {
+            ...r,
+            lastMessageSnippet: `You sent a photo`,
+            lastMessageTime: timeString
+          };
+        }
+        return r;
+      }));
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleCreateNewChat = () => {
+    if (!newChatTitle.trim()) return;
+    const newId = 'room-' + Date.now();
+    const newRoom: ChatRoom = {
+      id: newId,
+      title: newChatTitle.trim(),
+      type: newChatType,
+      memberCount: '1 member',
+      activeStatus: 'Active just now',
+      lastMessageSnippet: 'Chat room created.',
+      lastMessageTime: 'Just now',
+      unreadCount: 0,
+      bannerImage: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
+      description: newChatDescription.trim() || 'New expat community conversation room.',
+      isJoined: true,
+      totalMembersCountText: 'Group Members (1)',
+      memberAvatars: [currentUser.avatar],
+      members: [
+        { id: 'owner', name: currentUser.name, avatar: currentUser.avatar, role: 'Admin' }
+      ]
+    };
+
+    setRooms(prev => [newRoom, ...prev]);
+    setActiveRoomId(newId);
+    setShowNewChatModal(false);
+    setNewChatTitle('');
+    setNewChatDescription('');
+  };
+
+  const EMOJIS = ['👍', '❤️', '🎉', '🔥', '👏', '🙏', '💯', '✨', '🇨🇦', '🇩🇪', '🇬🇧', '🇦🇺'];
+
   return (
-    <div
-      className="min-h-screen w-full bg-[#edf2f7] p-2.5 sm:p-4 lg:p-6 flex items-center justify-center font-plus-jakarta antialiased text-slate-900 select-none overflow-x-hidden"
-    >
-      {/* ═════════════════════════════════════════════════════════════════
-          MAIN APP CONTAINER (3-COLUMN EXACT PIXEL-PERFECT LAYOUT)
-         ═════════════════════════════════════════════════════════════════ */}
-      <div className="w-full max-w-[1600px] h-[calc(100vh-1.25rem)] sm:h-[calc(100vh-2rem)] lg:h-[94vh] grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 overflow-hidden">
+    <div className="h-screen w-screen flex flex-col bg-[#F8FAFC] text-slate-900 font-sans overflow-hidden select-none">
 
-        {/* ─────────────────────────────────────────────────────────────
-            COLUMN 1: LEFT SIDEBAR (CHANNELS & PROFILE) - 3 COLS
-           ───────────────────────────────────────────────────────────── */}
-        <aside className={`lg:col-span-3 xl:col-span-3 bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 flex flex-col justify-between overflow-hidden shrink-0 z-30 transition-all ${
-          mobileMenuOpen ? 'fixed inset-4 z-50 shadow-2xl flex' : 'hidden lg:flex'
-        }`}>
-          
-          <div className="space-y-4 overflow-y-auto no-scrollbar pr-1">
-            
-            {/* Top Row: macOS Traffic Lights + Brand Logo */}
-            <div className="space-y-3.5 pb-1">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] cursor-pointer" />
-                  <span className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123] cursor-pointer" />
-                  <span className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29] cursor-pointer" />
-                </div>
-                {mobileMenuOpen && (
-                  <button onClick={() => setMobileMenuOpen(false)} className="lg:hidden p-1 rounded-lg text-slate-400">
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
+      {/* ── TOP HEADER (EXACT MOCKUP) ── */}
+      <header className="h-14 sm:h-16 bg-white border-b border-slate-200/90 px-4 sm:px-6 flex items-center justify-between shrink-0 z-30">
+        
+        {/* Left Mobile Drawer Toggle + Global Search */}
+        <div className="flex items-center gap-3 flex-1 max-w-xl">
+          <button
+            type="button"
+            onClick={() => setShowLeftSidebarMobile(!showLeftSidebarMobile)}
+            className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100"
+            title="Toggle chat rooms"
+          >
+            <Users className="w-5 h-5" />
+          </button>
 
-              {/* Exact Brand Logo matching Screenshot */}
-              <a href="/" className="flex items-center gap-2.5 pt-0.5 group">
-                <img
-                  src="/logo.png?v=8"
-                  alt="TravlTik Logo"
-                  className="h-10 sm:h-11 w-auto max-w-[170px] object-contain transition-transform group-hover:scale-[1.02]"
-                />
-              </a>
+          {/* Search Pill Input */}
+          <div className="relative w-full max-w-md">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={globalSearch}
+              onChange={(e) => setGlobalSearch(e.target.value)}
+              placeholder="Search chats, people, or topics..."
+              className="w-full pl-9 pr-4 py-2 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] rounded-full text-xs text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+            />
+          </div>
+        </div>
+
+        {/* Right Actions: Notifications, Messages, User Profile */}
+        <div className="flex items-center gap-2 sm:gap-3.5">
+          {/* Notification Bell */}
+          <button
+            type="button"
+            className="relative p-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors"
+            title="Notifications"
+          >
+            <Bell className="w-5 h-5 stroke-[1.8]" />
+            <span className="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs">
+              3
+            </span>
+          </button>
+
+          {/* Mail Envelope */}
+          <button
+            type="button"
+            className="p-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors"
+            title="Direct Messages"
+          >
+            <Mail className="w-5 h-5 stroke-[1.8]" />
+          </button>
+
+          {/* User Profile Pill */}
+          <div className="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-slate-200/80 cursor-pointer">
+            <div className="relative">
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-8 h-8 rounded-full object-cover border border-slate-200"
+              />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />
             </div>
+            <span className="text-xs font-bold text-slate-800 hidden sm:inline-block">
+              {currentUser.name}
+            </span>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:inline-block" />
+          </div>
 
-            {/* Search channels input with ⌘K */}
-            <div className="relative flex items-center">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+          {/* Right Sidebar Toggle for Mobile */}
+          <button
+            type="button"
+            onClick={() => setShowRightDetailsMobile(!showRightDetailsMobile)}
+            className="xl:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100"
+            title="Group info"
+          >
+            <MoreVertical className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
+
+      {/* ── 3-COLUMN MAIN LAYOUT ── */}
+      <div className="flex-1 flex overflow-hidden relative">
+
+        {/* COLUMN 1: LEFT SIDEBAR (Chat Rooms & Conversations) */}
+        <aside
+          className={`
+            fixed md:relative inset-y-0 left-0 z-40 w-[300px] sm:w-[320px] bg-white border-r border-slate-200/90
+            flex flex-col shrink-0 transition-transform duration-300 md:translate-x-0
+            ${showLeftSidebarMobile ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'}
+          `}
+        >
+          {/* Header: Chat Rooms & + New Chat */}
+          <div className="p-4 flex items-center justify-between border-b border-slate-100">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+              Chat Rooms
+            </h2>
+            <button
+              type="button"
+              onClick={() => setShowNewChatModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00A86B] hover:bg-[#00925d] text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>New Chat</span>
+            </button>
+          </div>
+
+          {/* Search conversations input */}
+          <div className="px-3.5 py-2.5 border-b border-slate-100">
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
-                value={channelSearch}
-                onChange={(e) => setChannelSearch(e.target.value)}
-                placeholder="Search channels..."
-                className="w-full h-10 pl-10 pr-12 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#00A86B]/20 focus:border-[#00A86B] text-slate-800 placeholder:text-slate-400 transition-all"
+                value={roomSearchQuery}
+                onChange={(e) => setRoomSearchQuery(e.target.value)}
+                placeholder="Search conversations..."
+                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/90 focus:border-[#00A86B] focus:bg-white rounded-xl text-xs text-slate-800 placeholder-slate-400 outline-none transition-all"
               />
-              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded-md pointer-events-none">
-                ⌘K
-              </kbd>
             </div>
-
-            {/* Section: CHANNELS (Dynamic from PostgreSQL) */}
-            <div className="space-y-1.5 pt-1">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1 block">
-                Channels
-              </span>
-
-              <div className="space-y-1">
-                {filteredChannels.length > 0 ? (
-                  filteredChannels.map((ch, idx) => {
-                    const isActive = activeChannel === ch.slug;
-                    return (
-                      <button
-                        key={`channel-${ch.id}-${ch.slug}-${idx}`}
-                        type="button"
-                        onClick={() => {
-                          setActiveChannel(ch.slug);
-                          setMobileMenuOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                          isActive
-                            ? 'bg-[#00A86B] text-white shadow-sm shadow-emerald-600/30'
-                            : 'text-slate-700 hover:bg-slate-100/80'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2 truncate">
-                          <Hash className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                          <span className="truncate">{ch.name}</span>
-                        </div>
-
-                        {ch.slug.includes('russia') && (
-                          <Users className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                        )}
-                        {ch.slug.includes('flight') && (
-                          <Plane className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                        )}
-                        {ch.slug.includes('dorm') && (
-                          <Building2 className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                        )}
-                      </button>
-                    );
-                  })
-                ) : (
-                  <div className="text-[11px] text-slate-400 p-2">No channels found</div>
-                )}
-              </div>
-            </div>
-
-            {/* Section: CATEGORIES */}
-            <div className="space-y-1 pt-1.5">
-              <div className="flex items-center justify-between px-1">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                  Categories
-                </span>
-                {selectedCategory && (
-                  <button
-                    onClick={() => setSelectedCategory(null)}
-                    className="text-[10px] text-[#00A86B] font-bold hover:underline"
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
-              <div className="space-y-0.5">
-                {CATEGORIES.map((cat, idx) => {
-                  const Icon = cat.icon;
-                  const isSelected = selectedCategory === cat.name;
-                  return (
-                    <button
-                      key={`cat-${cat.id}-${idx}`}
-                      type="button"
-                      onClick={() => setSelectedCategory(isSelected ? null : cat.name)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer text-left ${
-                        isSelected ? 'bg-emerald-50 text-[#00A86B] font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                      }`}
-                    >
-                      <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#00A86B]' : 'text-slate-400'}`} />
-                      <span className="truncate">{cat.name}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
           </div>
 
-          {/* Bottom User Profile Card (Dynamic Real Logged-in User or Guest) */}
-          <div className="relative pt-3 mt-2 border-t border-slate-100">
-            <div className="flex items-center justify-between">
-              <div
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2.5 min-w-0 cursor-pointer group"
-              >
-                <div className="relative shrink-0">
-                  {currentUser?.photoURL ? (
-                    <img
-                      src={currentUser.photoURL}
-                      alt={currentUser.displayName}
-                      className="w-9 h-9 rounded-full object-cover border border-slate-200 group-hover:ring-2 group-hover:ring-[#00A86B]/40 transition-all"
-                    />
-                  ) : (
-                    <div className="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-xs border border-slate-200 group-hover:ring-2 group-hover:ring-[#00A86B]/40 transition-all">
-                      {currentUser ? currentUser.displayName.slice(0, 2).toUpperCase() : <UserIcon className="w-4 h-4 text-slate-400" />}
-                    </div>
+          {/* Category Tabs: All | Direct | Groups */}
+          <div className="flex items-center border-b border-slate-200/80 px-4 text-xs font-semibold text-slate-500">
+            {(['All', 'Direct', 'Groups'] as const).map((tab) => {
+              const isActive = activeCategoryTab === tab;
+              return (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveCategoryTab(tab)}
+                  className={`py-2 px-3 transition-colors relative cursor-pointer ${
+                    isActive ? 'text-slate-900 font-bold' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  <span>{tab}</span>
+                  {isActive && (
+                    <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#00A86B] rounded-full" />
                   )}
-                  <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ring-2 ring-white ${currentUser ? 'bg-[#00A86B]' : 'bg-slate-400'}`} />
-                </div>
-                <div className="min-w-0 truncate">
-                  <div className="text-xs font-bold text-slate-900 truncate">
-                    {currentUser ? currentUser.displayName : 'Guest Visitor'}
-                  </div>
-                  <div className="text-[10px] text-slate-400 font-semibold flex items-center gap-1">
-                    <span className={`w-1.5 h-1.5 rounded-full ${currentUser ? 'bg-[#00A86B]' : 'bg-slate-400'}`} />
-                    <span>{currentUser ? 'Online (Verified)' : 'Click to Log In'}</span>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-                title="Account Settings"
-              >
-                <MoreVertical className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Profile Popup Menu */}
-            {showProfileMenu && (
-              <div className="absolute bottom-14 left-0 w-full bg-white border border-slate-200 rounded-2xl shadow-xl p-2 space-y-1 animate-fadeIn z-50">
-                {currentUser ? (
-                  <>
-                    <div className="px-3 py-1.5 text-[11px] font-medium text-slate-400 border-b border-slate-100">
-                      Logged in as <strong className="text-slate-700">{currentUser.email}</strong>
-                    </div>
-                    <a
-                      href="/dashboard"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
-                    >
-                      <UserIcon className="w-4 h-4 text-slate-400" />
-                      <span>My User Dashboard</span>
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        localStorage.removeItem("travltik_user"); window.location.href = '/login';
-                      }}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 text-left"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span>Log Out</span>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <a
-                      href="/login?redirect=/community"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-[#00A86B] bg-emerald-50 hover:bg-emerald-100"
-                    >
-                      <LogIn className="w-4 h-4" />
-                      <span>Log In to Account</span>
-                    </a>
-                    <a
-                      href="/signup"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100"
-                    >
-                      <UserPlus className="w-4 h-4 text-slate-400" />
-                      <span>Create Free Account</span>
-                    </a>
-                  </>
-                )}
-              </div>
-            )}
+                </button>
+              );
+            })}
           </div>
 
+          {/* Conversations List */}
+          <div className="flex-1 overflow-y-auto divide-y divide-slate-100/80 no-scrollbar">
+            {filteredRooms.map((room) => {
+              const isSelected = room.id === activeRoomId;
+              return (
+                <div
+                  key={room.id}
+                  onClick={() => handleSelectRoom(room.id)}
+                  className={`
+                    px-3.5 py-3 flex items-center gap-3 cursor-pointer transition-colors relative
+                    ${isSelected ? 'bg-slate-50/90' : 'hover:bg-slate-50/60 bg-white'}
+                  `}
+                >
+                  {/* Flag Roundel / Icon */}
+                  <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200/70 shadow-2xs flex items-center justify-center">
+                    {room.flagComponent ? (
+                      room.flagComponent
+                    ) : (
+                      <img src={room.avatar || room.bannerImage} alt={room.title} className="w-full h-full object-cover" />
+                    )}
+                  </div>
+
+                  {/* Title & Snippet */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1 mb-0.5">
+                      <h3 className="text-xs font-bold text-slate-900 truncate">
+                        {room.title}
+                      </h3>
+                      <span className="text-[10px] text-slate-400 font-medium shrink-0">
+                        {room.lastMessageTime}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 truncate leading-snug">
+                      {room.lastMessageSnippet}
+                    </p>
+                  </div>
+
+                  {/* Unread Badge (Green circle matching mockup) */}
+                  {room.unreadCount > 0 && (
+                    <span className="w-5 h-5 rounded-full bg-[#00A86B] text-white text-[10px] font-black flex items-center justify-center shrink-0 shadow-2xs">
+                      {room.unreadCount}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </aside>
 
-        {/* ─────────────────────────────────────────────────────────────
-            COLUMN 2: CENTER CHAT STREAM (6 COLS) - REAL DATABASE FEED
-           ───────────────────────────────────────────────────────────── */}
-        <main className="lg:col-span-6 xl:col-span-6 flex flex-col justify-between overflow-hidden gap-3.5 min-w-0">
-          
-          {/* Top Channel Header Pill Card */}
-          <div className="bg-white rounded-[24px] sm:rounded-[28px] border border-slate-200/80 shadow-[0_6px_20px_rgba(0,0,0,0.02)] px-4 sm:px-6 py-3 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-2.5">
-              <button
-                onClick={() => setMobileMenuOpen(true)}
-                className="lg:hidden p-1.5 rounded-xl bg-slate-100 text-slate-700 mr-1"
-              >
-                <Menu className="w-4 h-4" />
-              </button>
+        {/* COLUMN 2: CENTER (Live Chat Messages & Input Composer) */}
+        <main className="flex-1 flex flex-col bg-white min-w-0 border-r border-slate-200/90 relative">
 
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-50 border border-slate-200/70">
-                <Hash className="w-4 h-4 text-[#00A86B]" />
-                <span className="text-xs sm:text-sm font-bold text-slate-900">
-                  {currentChannelObj.name}
-                </span>
-                <span className="text-slate-300">|</span>
-                <span className="flex items-center gap-1.5 text-xs font-bold text-slate-600">
-                  <span className="w-2 h-2 rounded-full bg-[#00A86B]" />
-                  {stats.online_seniors || seniors.length || 8} Seniors Online
-                </span>
+          {/* Active Room Header */}
+          <div className="h-14 sm:h-16 px-4 sm:px-6 border-b border-slate-200/90 flex items-center justify-between bg-white shrink-0">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 border border-slate-200/80 shadow-2xs flex items-center justify-center">
+                {activeRoom.flagComponent ? (
+                  activeRoom.flagComponent
+                ) : (
+                  <img src={activeRoom.avatar || activeRoom.bannerImage} alt={activeRoom.title} className="w-full h-full object-cover" />
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <h1 className="text-sm sm:text-base font-bold text-slate-900 truncate">
+                  {activeRoom.title}
+                </h1>
+                <p className="text-[11px] text-slate-500 font-normal">
+                  {activeRoom.memberCount} • <span className="text-slate-400">{activeRoom.activeStatus}</span>
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 text-slate-500">
               <button
-                onClick={() => showToast('Search messages in this channel')}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
-                title="Search"
+                type="button"
+                className="p-1.5 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                title="Search messages"
               >
                 <Search className="w-4 h-4" />
               </button>
-
               <button
-                onClick={() => showToast('Channel notifications active')}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors relative"
-                title="Notifications"
+                type="button"
+                onClick={() => setShowNewChatModal(true)}
+                className="p-1.5 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                title="Add members"
               >
-                <Bell className="w-4 h-4" />
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#00A86B] text-white text-[9px] font-bold flex items-center justify-center">
-                  {seniors.length > 0 ? seniors.length : 3}
-                </span>
+                <UserPlus className="w-4 h-4" />
               </button>
-
               <button
-                onClick={() => showToast('Channel settings')}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                type="button"
+                className="p-1.5 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                title="More options"
               >
                 <MoreVertical className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Floating Chat Messages Area (Live DB rows) */}
-          <div className="flex-1 overflow-y-auto p-1 sm:p-2 space-y-4 no-scrollbar">
-            {messages.length > 0 ? (
-              messages.map((msg, idx) => {
-                const isSelf = msg.is_self || (currentUser && msg.user_id === currentUser.uid) || msg.sender_name === (currentUser?.displayName || 'Aman Verma');
-                const timeFormatted = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          {/* Messages Feed Stream */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fdfdfd]">
+            
+            {/* Centered Date Badge */}
+            <div className="flex items-center justify-center my-1">
+              <span className="px-3 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold shadow-2xs">
+                Today
+              </span>
+            </div>
 
+            {activeMessages.map((msg) => {
+              if (msg.isSelf) {
                 return (
-                  <div
-                    key={`msg-${msg.id || idx}-${idx}`}
-                    className={`flex items-start gap-3 w-full ${
-                      isSelf ? 'justify-end' : 'justify-start'
-                    }`}
-                  >
-                    {/* Avatar Left (if not self) */}
-                    {!isSelf && (
-                      <img
-                        src={msg.sender_avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'}
-                        alt={msg.sender_name}
-                        className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
-                      />
-                    )}
-
-                    {/* Message Bubble Card */}
-                    <div
-                      className={`relative rounded-[26px] p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border transition-all max-w-[85%] sm:max-w-[78%] ${
-                        isSelf
-                          ? 'bg-[#edfbf6] border-emerald-100/90 text-slate-900 rounded-tr-sm'
-                          : 'bg-white border-slate-200/80 text-slate-900 rounded-tl-sm'
-                      }`}
-                    >
-                      {/* Header: Name + Verified Senior Badge */}
-                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="text-xs sm:text-[13px] font-bold text-slate-900">
-                          {msg.sender_name}
-                        </span>
-                        {msg.is_verified_senior && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.2 rounded-full">
-                            <Star className="w-2.5 h-2.5 fill-current" />
-                            <span>Verified Senior</span>
-                          </span>
+                  <div key={msg.id} className="flex items-end justify-end gap-2.5 pl-8 sm:pl-16">
+                    <div className="flex flex-col items-end max-w-[85%] sm:max-w-md">
+                      <div className="bg-[#E8F8F2] border border-[#d1f2e4] text-slate-900 rounded-2xl rounded-tr-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed whitespace-pre-wrap">
+                        {msg.text && <p>{msg.text}</p>}
+                        {msg.image && (
+                          <img src={msg.image} alt="Uploaded attachment" className="rounded-xl max-h-60 object-cover mt-1.5" />
+                        )}
+                        {msg.attachment && (
+                          <div className="flex items-center justify-between gap-3 p-2 bg-white/80 rounded-xl border border-emerald-200 mt-1">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <div className="w-7 h-7 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                                A
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-xs font-bold text-slate-900 truncate">{msg.attachment.name}</p>
+                                <span className="text-[10px] text-slate-500">{msg.attachment.size} • {msg.attachment.type}</span>
+                              </div>
+                            </div>
+                            <Download className="w-4 h-4 text-slate-500 hover:text-slate-800 shrink-0 cursor-pointer" />
+                          </div>
                         )}
                       </div>
-
-                      {/* Content Text */}
-                      <p className="text-xs sm:text-[13px] font-medium text-slate-700 leading-relaxed whitespace-pre-line">
-                        {msg.content}
-                      </p>
-
-                      {/* Timestamp */}
-                      <div className="text-[10px] font-semibold text-slate-400 mt-2">
-                        {timeFormatted}
-                      </div>
-
-                      {/* Floating Reaction Pill (Bottom Right) */}
-                      <div className="absolute -bottom-3 right-4 flex items-center gap-1">
-                        {msg.reactions && msg.reactions.map((r, i) => (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={() => handleReaction(msg.id, r.emoji)}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-slate-200 shadow-sm text-xs font-bold text-slate-800 hover:scale-105 transition-transform cursor-pointer"
-                          >
-                            <span>{r.emoji}</span>
-                            <span className="text-[11px] font-bold text-slate-600">{r.count}</span>
-                          </button>
-                        ))}
-
-                        {/* Reaction Picker Button */}
-                        <div className="relative">
-                          <button
-                            type="button"
-                            onClick={() => setMsgEmojiPickerId(msgEmojiPickerId === msg.id ? null : msg.id)}
-                            className="w-6 h-6 rounded-full bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center text-xs shadow-xs cursor-pointer"
-                            title="Add Reaction"
-                          >
-                            <Smile className="w-3 h-3" />
-                          </button>
-
-                          {msgEmojiPickerId === msg.id && (
-                            <div className="absolute bottom-8 right-0 z-50 bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 flex gap-1 animate-fadeIn">
-                              {EMOJI_OPTIONS.map((emoji) => (
-                                <button
-                                  key={emoji}
-                                  type="button"
-                                  onClick={() => handleReaction(msg.id, emoji)}
-                                  className="w-7 h-7 rounded-xl hover:bg-slate-100 flex items-center justify-center text-sm cursor-pointer"
-                                >
-                                  {emoji}
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
+                      
+                      <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-medium">
+                        <span>{msg.timestamp}</span>
+                        <CheckCheck className="w-3.5 h-3.5 text-[#00A86B] stroke-[2.2]" />
                       </div>
                     </div>
 
-                    {/* Avatar Right (if self) */}
-                    {isSelf && (
-                      <img
-                        src={msg.sender_avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'}
-                        alt={msg.sender_name}
-                        className="w-10 h-10 rounded-full object-cover border border-slate-200/80 shrink-0 shadow-xs"
-                      />
-                    )}
+                    <img
+                      src={currentUser.avatar}
+                      alt="You"
+                      className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mb-4"
+                    />
                   </div>
                 );
-              })
-            ) : (
-              <div className="h-full min-h-[320px] flex flex-col items-center justify-center text-center p-6 space-y-3">
-                <div className="w-14 h-14 rounded-3xl bg-emerald-50 text-[#00A86B] flex items-center justify-center border border-emerald-100/80 shadow-xs">
-                  <MessageSquare className="w-7 h-7" />
+              }
+
+              return (
+                <div key={msg.id} className="flex items-start gap-2.5 pr-8 sm:pr-16">
+                  <img
+                    src={msg.senderAvatar}
+                    alt={msg.senderName}
+                    className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mt-0.5"
+                  />
+
+                  <div className="flex flex-col items-start max-w-[85%] sm:max-w-md">
+                    <span className="text-[11px] font-bold text-slate-700 mb-1">
+                      {msg.senderName}
+                    </span>
+
+                    {msg.text && (
+                      <div className="bg-white border border-slate-200/90 text-slate-800 rounded-2xl rounded-tl-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed">
+                        <p>{msg.text}</p>
+                      </div>
+                    )}
+
+                    {msg.attachment && (
+                      <div className="bg-white border border-slate-200/90 rounded-2xl rounded-tl-xs p-3 shadow-2xs w-full max-w-sm flex items-center justify-between gap-3 hover:border-slate-300 transition-all">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-8 h-8 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                            A
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="text-xs font-bold text-slate-900 truncate">
+                              {msg.attachment.name}
+                            </h4>
+                            <p className="text-[10px] text-slate-500 font-medium">
+                              {msg.attachment.size} • {msg.attachment.type}
+                            </p>
+                          </div>
+                        </div>
+
+                        <a
+                          href={msg.attachment.dataUrl || msg.attachment.url || '#'}
+                          download={msg.attachment.name}
+                          className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                          title="Download document"
+                        >
+                          <Download className="w-4 h-4 stroke-[2]" />
+                        </a>
+                      </div>
+                    )}
+
+                    {msg.image && (
+                      <img src={msg.image} alt="Shared preview" className="rounded-xl max-h-60 object-cover mt-1 border border-slate-200" />
+                    )}
+
+                    <span className="text-[10px] text-slate-400 font-medium mt-1">
+                      {msg.timestamp}
+                    </span>
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-slate-800">
-                    No messages in #{currentChannelObj.name} yet
-                  </h4>
-                  <p className="text-xs text-slate-400 max-w-xs mx-auto font-medium">
-                    Send a message below to start the peer discussion with seniors & batchmates!
-                  </p>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
+              );
+            })}
+
+            <div ref={chatBottomRef} />
           </div>
 
-          {/* Bottom Floating Composer Card with Real Send DB Action */}
-          <form
-            onSubmit={handleSendMessage}
-            className="bg-white rounded-[26px] sm:rounded-[30px] border border-slate-200/80 shadow-[0_6px_25px_rgba(0,0,0,0.03)] p-2 sm:p-2.5 flex items-center gap-2 shrink-0"
-          >
-            <button
-              type="button"
-              onClick={() => showToast('Select PDF checklist or image to upload')}
-              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
-              title="Attach File"
-            >
-              <Paperclip className="w-4 h-4" />
-            </button>
-
-            <input
-              ref={inputRef}
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 bg-transparent border-none text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none px-2"
-            />
-
-            {/* Composer Emoji Picker */}
+          {/* Bottom Message Composer */}
+          <div className="p-3 sm:p-4 bg-white border-t border-slate-200/90 flex items-center gap-2 sm:gap-3 relative">
+            
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors shrink-0"
-                title="Emoji"
+                className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+                title="Add Emoji"
               >
-                <Smile className="w-4 h-4" />
+                <Smile className="w-5 h-5 stroke-[1.8]" />
               </button>
 
               {showEmojiPicker && (
-                <div className="absolute bottom-11 right-0 z-50 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 grid grid-cols-4 gap-1 animate-fadeIn">
-                  {EMOJI_OPTIONS.map((emoji) => (
+                <div className="absolute bottom-12 left-0 bg-white rounded-2xl border border-slate-200 shadow-xl p-2.5 grid grid-cols-4 gap-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  {EMOJIS.map(emoji => (
                     <button
                       key={emoji}
                       type="button"
                       onClick={() => {
-                        setInputText((prev) => prev + emoji);
+                        setInputText(prev => prev + emoji);
                         setShowEmojiPicker(false);
-                        inputRef.current?.focus();
                       }}
-                      className="w-8 h-8 rounded-xl hover:bg-slate-100 flex items-center justify-center text-sm cursor-pointer"
+                      className="w-8 h-8 flex items-center justify-center text-lg hover:bg-slate-100 rounded-lg cursor-pointer"
                     >
                       {emoji}
                     </button>
@@ -769,160 +999,263 @@ export default function CommunityHub() {
               )}
             </div>
 
-            {/* Solid Dark Slate Send Button */}
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSendMessage();
+                }
+              }}
+              placeholder="Type a message..."
+              className="flex-1 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] rounded-full px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+            />
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              className="hidden"
+              accept=".pdf,.doc,.docx,.txt"
+            />
+            <input
+              type="file"
+              ref={imageInputRef}
+              onChange={handleImageUpload}
+              className="hidden"
+              accept="image/*"
+            />
+
             <button
-              type="submit"
-              disabled={!inputText.trim() || sending}
-              className="w-10 h-10 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white flex items-center justify-center cursor-pointer disabled:opacity-40 transition-all shrink-0 shadow-md active:scale-95"
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+              title="Attach Document"
+            >
+              <Paperclip className="w-5 h-5 stroke-[1.8]" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => imageInputRef.current?.click()}
+              className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+              title="Attach Image"
+            >
+              <ImageIcon className="w-5 h-5 stroke-[1.8]" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSendMessage}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#00A86B] hover:bg-[#00925d] text-white flex items-center justify-center shadow-md shadow-[#00A86B]/20 transition-all active:scale-95 cursor-pointer shrink-0"
               title="Send Message"
             >
-              <Send className="w-4 h-4 -rotate-45 -translate-y-0.5 translate-x-0.5 text-white" />
+              <Send className="w-4 h-4 translate-x-0.5" />
             </button>
-          </form>
-
+          </div>
         </main>
 
-        {/* ─────────────────────────────────────────────────────────────
-            COLUMN 3: RIGHT SIDEBAR (ONLINE MEMBERS & PINNED RESOURCES)
-           ───────────────────────────────────────────────────────────── */}
-        <aside className="lg:col-span-3 xl:col-span-3 flex flex-col gap-3.5 overflow-y-auto no-scrollbar shrink-0">
-          
-          {/* Card 1: Online Members - Real from PostgreSQL */}
-          <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5">
-            <div className="flex items-center justify-between pb-1">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#00A86B]" />
-                <h3 className="text-xs sm:text-sm font-bold text-slate-900">
-                  Online Members
-                </h3>
-              </div>
-              <span className="text-[11px] font-bold text-[#00A86B] bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
-                {stats.online_seniors || seniors.length || 8}
-              </span>
+        {/* COLUMN 3: RIGHT SIDEBAR (Group Details & Members Roster) */}
+        <aside
+          className={`
+            fixed xl:relative inset-y-0 right-0 z-40 w-[300px] sm:w-[320px] lg:w-[340px] bg-white border-l border-slate-200/90
+            flex flex-col shrink-0 overflow-y-auto transition-transform duration-300 xl:translate-x-0 no-scrollbar
+            ${showRightDetailsMobile ? 'translate-x-0 shadow-2xl' : 'translate-x-full xl:translate-x-0'}
+          `}
+        >
+          <div className="relative w-full h-36 sm:h-40 bg-slate-900 overflow-hidden shrink-0">
+            <img
+              src={activeRoom.bannerImage}
+              alt={activeRoom.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            
+            <button
+              type="button"
+              onClick={() => setShowRightDetailsMobile(false)}
+              className="xl:hidden absolute top-3 right-3 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="px-5 relative">
+            <div className="w-14 h-14 rounded-full border-4 border-white shadow-md -mt-7 bg-white overflow-hidden flex items-center justify-center">
+              {activeRoom.flagComponent ? (
+                activeRoom.flagComponent
+              ) : (
+                <img src={activeRoom.avatar || activeRoom.bannerImage} alt={activeRoom.title} className="w-full h-full object-cover" />
+              )}
             </div>
 
-            <div className="flex items-center justify-between text-xs font-bold text-slate-400">
-              <span>Verified Experts & Members</span>
+            <div className="mt-3">
+              <h2 className="text-base font-bold text-slate-900 leading-tight">
+                {activeRoom.title}
+              </h2>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">
+                {activeRoom.memberCount} • Public Group
+              </p>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed mt-2.5">
+              {activeRoom.description}
+            </p>
+
+            <button
+              type="button"
+              onClick={handleToggleJoin}
+              className={`
+                w-full mt-3.5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-98 cursor-pointer
+                ${activeRoom.isJoined
+                  ? 'bg-[#00A86B] hover:bg-[#00925d] text-white'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                }
+              `}
+            >
+              {activeRoom.isJoined ? 'Join/Leave' : 'Join Group'}
+            </button>
+          </div>
+
+          <div className="h-px bg-slate-100 my-4 mx-5" />
+
+          {/* Group Members Section */}
+          <div className="px-5 pb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-bold text-slate-900">
+                {activeRoom.totalMembersCountText}
+              </h3>
               <button
                 type="button"
-                onClick={() => showToast('Viewing all verified members directory')}
-                className="text-[#00A86B] text-[11px] font-bold hover:underline cursor-pointer"
+                className="text-[11px] font-bold text-slate-500 hover:text-slate-800 transition-colors"
               >
-                See all
+                See all &gt;
               </button>
             </div>
 
-            {/* Seniors List from PostgreSQL */}
-            <div className="space-y-2 pt-1">
-              {seniors.map((s, idx) => (
-                <div
-                  key={`senior-${s.id || idx}-${idx}`}
-                  onClick={() => {
-                    setInputText(`@${s.name} `);
-                    inputRef.current?.focus();
-                    showToast(`Mentioning @${s.name} in chat`);
-                  }}
-                  className="p-2 rounded-2xl bg-slate-50/70 hover:bg-emerald-50/50 border border-slate-200/60 flex items-center justify-between transition-colors group cursor-pointer"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0 pr-1">
-                    <div className="relative shrink-0">
-                      <img
-                        src={s.avatar_url}
-                        alt={s.name}
-                        className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                      />
-                      <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-[#00A86B] ring-1 ring-white" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-xs font-bold text-slate-900 truncate">
-                        {s.name}
-                      </div>
-                      <div className="flex items-center gap-1 text-[10px] font-bold text-[#00A86B]">
-                        <Star className="w-2.5 h-2.5 fill-current" />
-                        <span>{s.university || 'Verified Advisor'}</span>
-                      </div>
-                    </div>
+            <div className="flex items-center -space-x-1.5 mb-4">
+              {activeRoom.memberAvatars.map((ava, i) => (
+                <img
+                  key={i}
+                  src={ava}
+                  alt="Group Member"
+                  className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
+                />
+              ))}
+              <div className="w-7 h-7 rounded-full bg-slate-100 border-2 border-white text-slate-600 text-[9px] font-black flex items-center justify-center shadow-2xs">
+                +1.1K
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {activeRoom.members.map((mem) => (
+                <div key={mem.id} className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <img
+                      src={mem.avatar}
+                      alt={mem.name}
+                      className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                    />
+                    <span className="text-xs font-bold text-slate-800 truncate">
+                      {mem.name}
+                    </span>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      showToast(`Options for ${s.name}`);
-                    }}
-                    className="p-1 rounded-lg text-slate-300 group-hover:text-slate-600 transition-colors"
-                  >
-                    <MoreVertical className="w-3.5 h-3.5" />
-                  </button>
+                  {mem.role && (
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70 shrink-0">
+                      {mem.role}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Card 2: Pinned Resources - Deduplicated from PostgreSQL */}
-          <div className="bg-white rounded-[28px] sm:rounded-[32px] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.03)] p-4 sm:p-5 space-y-3.5 flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between pb-1">
-                <h3 className="text-xs sm:text-sm font-bold text-slate-900">
-                  Pinned Resources
-                </h3>
-                <button
-                  type="button"
-                  onClick={() => showToast('Viewing all pinned files')}
-                  className="text-[#00A86B] text-[11px] font-bold hover:underline cursor-pointer"
-                >
-                  See all
-                </button>
-              </div>
-
-              {/* Resource items */}
-              <div className="space-y-2">
-                {resources.map((r, idx) => (
-                  <div
-                    key={`res-${r.id || idx}-${idx}`}
-                    className="p-2.5 rounded-2xl bg-slate-50/70 hover:bg-slate-100/80 border border-slate-200/60 flex items-center justify-between gap-2.5 transition-colors group cursor-pointer"
-                    onClick={() => showToast(`Downloading ${r.title}...`)}
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-8 h-8 rounded-xl bg-red-50 text-red-600 border border-red-200/60 flex items-center justify-center shrink-0">
-                        <FileText className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-xs font-bold text-slate-900 truncate">
-                          {r.title}
-                        </div>
-                        <div className="text-[10px] text-slate-400 font-semibold">
-                          {r.file_size} • {r.file_type.toUpperCase()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom Full-Width Button */}
-            <button
-              type="button"
-              onClick={() => showToast('Opening Resource Vault...')}
-              className="w-full py-3 bg-[#00A86B] hover:bg-[#008f5a] text-white text-xs font-black rounded-2xl shadow-sm shadow-emerald-600/30 transition-all cursor-pointer active:scale-98 mt-2 flex items-center justify-center gap-2"
-            >
-              <span>View All Resources</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
         </aside>
 
       </div>
 
-      {/* Floating Toast Notification */}
-      {toastMsg && (
-        <div className="fixed bottom-5 right-5 z-[9999] bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2.5 animate-fadeIn border border-white/10">
-          <div className="w-5 h-5 rounded-full bg-[#00A86B] text-white flex items-center justify-center shrink-0">
-            <Check className="w-3 h-3 stroke-[3]" />
+      {/* CREATE NEW CHAT MODAL */}
+      {showNewChatModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-bold text-slate-900">Create New Expat Chat Room</h3>
+              <button
+                type="button"
+                onClick={() => setShowNewChatModal(false)}
+                className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">Channel / Group Name *</label>
+                <input
+                  type="text"
+                  value={newChatTitle}
+                  onChange={(e) => setNewChatTitle(e.target.value)}
+                  placeholder="e.g. Ireland Stamp 4 & Tech Expats"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#00A86B] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">Description (Optional)</label>
+                <textarea
+                  rows={3}
+                  value={newChatDescription}
+                  onChange={(e) => setNewChatDescription(e.target.value)}
+                  placeholder="Describe what members will discuss in this room..."
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#00A86B] outline-none resize-none"
+                />
+              </div>
+
+              <div className="flex items-center gap-4 pt-1">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="chatType"
+                    checked={newChatType === 'group'}
+                    onChange={() => setNewChatType('group')}
+                    className="accent-[#00A86B]"
+                  />
+                  <span className="font-semibold text-slate-700">Community Group</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="chatType"
+                    checked={newChatType === 'direct'}
+                    onChange={() => setNewChatType('direct')}
+                    className="accent-[#00A86B]"
+                  />
+                  <span className="font-semibold text-slate-700">Direct 1-on-1 Chat</span>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowNewChatModal(false)}
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCreateNewChat}
+                  disabled={!newChatTitle.trim()}
+                  className="px-5 py-2 rounded-xl bg-[#00A86B] hover:bg-[#00925d] text-white font-bold transition-all disabled:opacity-50"
+                >
+                  Create Channel
+                </button>
+              </div>
+            </div>
           </div>
-          <span className="text-xs font-bold">{toastMsg}</span>
         </div>
       )}
 
