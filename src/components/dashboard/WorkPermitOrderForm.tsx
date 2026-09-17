@@ -124,7 +124,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     badgeColor: 'bg-blue-600 text-white',
     title: 'Initial Documentation & Job Offer',
     description: 'Collect required documents from candidate (passport, CV, qualifications, experience, etc.) and issue job offer letter.',
-    estimatedTime: '1-5 days',
+    estimatedTime: 'Max 5 days',
     milestone: '10% (on offer)'
   },
   {
@@ -133,7 +133,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     badgeColor: 'bg-emerald-600 text-white',
     title: 'Work Permit Application',
     description: 'Submit application directly with government authority with all documents and signed forms.',
-    estimatedTime: '5-10 days',
+    estimatedTime: 'Max 10 days',
     milestone: '30% (on submission)'
   },
   {
@@ -142,7 +142,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     badgeColor: 'bg-purple-600 text-white',
     title: 'Government Approval',
     description: 'Receive work permit approval from the government.',
-    estimatedTime: '7-15 days',
+    estimatedTime: 'Max 15 days',
     milestone: '30% (on approval)'
   },
   {
@@ -151,7 +151,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     badgeColor: 'bg-amber-600 text-white',
     title: 'Visa Processing (Embassy)',
     description: 'Submit visa forms to embassy/consulate and complete visa stamping.',
-    estimatedTime: '5-10 days',
+    estimatedTime: 'Max 10 days',
     milestone: '20% (on visa issue)'
   },
   {
@@ -160,7 +160,7 @@ const DEFAULT_STEPS: ProcessStep[] = [
     badgeColor: 'bg-teal-600 text-white',
     title: 'Travel & Onboarding',
     description: 'Book flights, arrange accommodation (if required) and provide pre-departure briefing.',
-    estimatedTime: '3-5 days',
+    estimatedTime: 'Max 5 days',
     milestone: '10% (on travel)'
   }
 ];
@@ -206,6 +206,30 @@ const EMPLOYMENT_TYPES = [
 
 const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'AED', 'PLN', 'INR'];
 
+const REFUND_POLICY_OPTIONS = [
+  '100% Full Refund if Work Permit Rejected by Government',
+  'Partial Refund (Full fee minus verified government processing fees)',
+  'Milestone-Based Refund (Pro-rated by completed process stages)',
+  'Free Re-application Guarantee (Re-file or alternate offer at zero cost)',
+  'Service Fee Retainer (Non-refundable once processing initiated)'
+];
+
+const REFUND_TIMELINE_OPTIONS = [
+  'Within 3-5 business days',
+  'Within 7-14 business days',
+  'Within 15-30 business days',
+  'Immediate upon rejection proof submission'
+];
+
+const ASSURANCE_OPTIONS = [
+  { id: 'gov_receipt', label: 'Official Government Filing Receipt Guarantee' },
+  { id: 'contract', label: '100% Genuine Employer Contract Guarantee' },
+  { id: 'interview', label: 'Direct Employer Interview Coordination' },
+  { id: 'no_hidden', label: 'No Hidden Charges Guarantee' },
+  { id: 'replacement', label: 'Free Replacement Guarantee if Job Withdrawn' },
+  { id: 'support', label: 'Dedicated Visa Case Officer Support' }
+];
+
 export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedded?: boolean; onCancel?: () => void } = {}) {
   const [activeStepTab, setActiveStepTab] = useState<number>(1);
 
@@ -248,6 +272,21 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
   const [adBanner, setAdBanner] = useState<string>('');
   const [adBannerName, setAdBannerName] = useState<string>('');
   const [adBannerSize, setAdBannerSize] = useState<string>('');
+
+  // Section 7: Refund Policies & Assurances
+  const [refundPolicy, setRefundPolicy] = useState<string>('100% Full Refund if Work Permit Rejected by Government');
+  const [refundTimeline, setRefundTimeline] = useState<string>('Within 7-14 business days');
+  const [selectedAssurances, setSelectedAssurances] = useState<string[]>([
+    'Official Government Filing Receipt Guarantee',
+    '100% Genuine Employer Contract Guarantee',
+    'No Hidden Charges Guarantee',
+    'Free Replacement Guarantee if Job Withdrawn'
+  ]);
+  const [refundNotes, setRefundNotes] = useState<string>('');
+
+  // Section 8: Terms & Conditions Agreement
+  const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
+  const [agreeAuthenticity, setAgreeAuthenticity] = useState<boolean>(false);
   const bannerInputRef = useRef<HTMLInputElement>(null);
 
   const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -310,7 +349,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
       badgeColor: colors[(nextNum - 1) % colors.length],
       title: 'New Process Milestone',
       description: 'Describe the milestone requirements and required actions.',
-      estimatedTime: '5-10 days',
+      estimatedTime: 'Max 7 days',
       milestone: 'None'
     };
     setProcessSteps(prev => [...prev, newStep]);
@@ -376,6 +415,13 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
     if (!jobTitle.trim()) {
       showToast('Please enter a Job Title before publishing.', 'error');
       const el = document.getElementById('section-job-details');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    if (!agreeTerms || !agreeAuthenticity) {
+      showToast('Please agree to all Terms & Conditions and assurances in Step 8 before submitting.', 'error');
+      const el = document.getElementById('section-terms');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
       return;
     }
@@ -449,6 +495,10 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
           processingFee: processingFee || '0',
           courierFee: courierFee || '0',
           travltikFee: travltikFee || '0',
+          refundPolicy: refundPolicy,
+          refundTimeline: refundTimeline,
+          refundNotes: refundNotes,
+          assurances: selectedAssurances,
           expertEmail: expertEmail,
           isProviderOffer: true,
           createdAt: new Date().toISOString()
@@ -585,16 +635,18 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
           </div>
         </div>
 
-        {/* 6-Step Stepper Bar */}
+        {/* 8-Step Stepper Bar */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-3 mb-6 overflow-x-auto scrollbar-none">
-          <div className="flex items-center justify-between min-w-[760px] px-2 sm:px-4">
+          <div className="flex items-center justify-between min-w-[980px] px-2 sm:px-4">
             {[
-              { num: 1, label: 'Basic Details', id: 'section-job-details' },
-              { num: 2, label: 'Benefits & Costs', id: 'section-benefits' },
-              { num: 3, label: 'Process & Steps', id: 'section-steps' },
-              { num: 4, label: 'Additional Info', id: 'section-additional' },
-              { num: 5, label: 'Upload Ad Banner', id: 'section-banner' },
-              { num: 6, label: 'Review & Publish', id: 'section-bottom' },
+              { num: 1, label: 'Job Details', id: 'section-job-details' },
+              { num: 2, label: 'Benefits', id: 'section-benefits' },
+              { num: 3, label: 'Total Cost', id: 'section-benefits-cost' },
+              { num: 4, label: 'Process Steps', id: 'section-steps' },
+              { num: 5, label: 'Additional Info', id: 'section-additional' },
+              { num: 6, label: 'Ad Banner', id: 'section-banner' },
+              { num: 7, label: 'Refund & Assurances', id: 'section-refund' },
+              { num: 8, label: 'Terms & Submit', id: 'section-terms' },
             ].map((step, idx, arr) => {
               const isActive = activeStepTab === step.num;
               return (
@@ -1157,7 +1209,7 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               <div className="border border-slate-200 rounded-xl bg-white mb-4">
                 <div className="hidden sm:grid sm:grid-cols-12 gap-3 px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider rounded-t-xl">
                   <div className="sm:col-span-6">Step / Description</div>
-                  <div className="sm:col-span-3">Estimated Time</div>
+                  <div className="sm:col-span-3">Estimated Max Days</div>
                   <div className="sm:col-span-3">Payment Milestone (Optional)</div>
                 </div>
 
@@ -1190,14 +1242,25 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
                         </div>
 
                         <div className="sm:col-span-3">
-                          <CustomDropdown
-                            value={step.estimatedTime}
-                            onChange={(val) => handleUpdateStep(idx, 'estimatedTime', val)}
-                            options={TIME_OPTIONS}
-                            placeholder="Select time"
-                            icon={<Clock className="w-3.5 h-3.5" />}
-                            buttonClassName="py-1.5 text-xs bg-slate-50/80 border-slate-200"
-                          />
+                          <label className="sm:hidden text-[10px] font-bold text-slate-500 uppercase mb-1 block">Estimated Max Days</label>
+                          <div className="relative flex items-center">
+                            <Clock className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none" />
+                            <input
+                              type="number"
+                              min="1"
+                              max="365"
+                              value={step.estimatedTime ? (step.estimatedTime.match(/\d+/)?.[0] || '') : ''}
+                              onChange={(e) => {
+                                const num = e.target.value.trim();
+                                handleUpdateStep(idx, 'estimatedTime', num ? `Max ${num} days` : '');
+                              }}
+                              placeholder="e.g. 5"
+                              className="w-full pl-8 pr-12 py-2 text-xs font-bold text-slate-900 bg-slate-50/80 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs"
+                            />
+                            <span className="text-[11px] font-bold text-slate-500 absolute right-3 pointer-events-none">
+                              Days
+                            </span>
+                          </div>
                         </div>
 
                         <div className="sm:col-span-3 flex items-center gap-2">
@@ -1410,24 +1473,178 @@ export function WorkPermitOrderForm({ isEmbedded = false, onCancel }: { isEmbedd
               )}
             </div>
 
-            {/* Bottom Actions Bar */}
-            <div id="section-bottom" className="flex items-center justify-between pt-2">
-              <button
-                type="button"
-                onClick={() => onCancel ? onCancel() : (window.location.href = "/service-provider/dashboard")}
-                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold shadow-sm transition-all cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handlePublish}
-                disabled={isPublishing}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-md shadow-blue-500/25 transition-all active:scale-[0.98] disabled:opacity-75"
-              >
-                <Send className="w-4 h-4" />
-                <span>{isPublishing ? 'Publishing...' : 'Publish Work Permit Offer'}</span>
-              </button>
+            {/* SECTION 7: Refund Policies and Assurances */}
+            <div id="section-refund" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-6">
+              <div className="flex items-start gap-3.5 mb-2">
+                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                  7
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                    Refund Policies and Assurances
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    Specify your candidate refund policy, money-back guarantees, and client protection assurances.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    Refund Policy Model *
+                  </label>
+                  <CustomDropdown
+                    value={refundPolicy}
+                    onChange={(val) => setRefundPolicy(val)}
+                    options={REFUND_POLICY_OPTIONS}
+                    placeholder="Select refund policy"
+                    buttonClassName="py-2.5 text-xs bg-slate-50/70 border-slate-200"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    Refund Processing Timeline *
+                  </label>
+                  <CustomDropdown
+                    value={refundTimeline}
+                    onChange={(val) => setRefundTimeline(val)}
+                    options={REFUND_TIMELINE_OPTIONS}
+                    placeholder="Select timeline"
+                    buttonClassName="py-2.5 text-xs bg-slate-50/70 border-slate-200"
+                  />
+                </div>
+              </div>
+
+              {/* Service Assurances & Guarantees */}
+              <div>
+                <label className="text-xs font-bold text-slate-700 block mb-2">
+                  Service Assurances & Client Guarantees (Select all that apply)
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {ASSURANCE_OPTIONS.map((item) => {
+                    const isSelected = selectedAssurances.includes(item.label);
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => {
+                          if (isSelected) {
+                            setSelectedAssurances(prev => prev.filter(x => x !== item.label));
+                          } else {
+                            setSelectedAssurances(prev => [...prev, item.label]);
+                          }
+                        }}
+                        className={`p-3 rounded-xl border text-left flex items-center gap-2.5 transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-emerald-50/70 border-emerald-300 text-emerald-900 shadow-2xs font-semibold'
+                            : 'bg-slate-50/50 border-slate-200 text-slate-600 hover:bg-slate-100/60'
+                        }`}
+                      >
+                        <div className={`w-4 h-4 rounded-md flex items-center justify-center shrink-0 border ${
+                          isSelected ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300 bg-white'
+                        }`}>
+                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        </div>
+                        <span className="text-xs">{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Specific Refund Terms or Exceptions */}
+              <div>
+                <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                  Detailed Refund Policies & Exceptions (Optional)
+                </label>
+                <textarea
+                  rows={3}
+                  value={refundNotes}
+                  onChange={(e) => setRefundNotes(e.target.value)}
+                  placeholder="e.g. 100% refund of professional fees if visa rejected on grounds not attributable to candidate fraud. Embassy refusal letter must be submitted within 14 days."
+                  className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all resize-none leading-relaxed"
+                />
+              </div>
+            </div>
+
+            {/* SECTION 8: Agree to All Terms and Conditions & Submit Query */}
+            <div id="section-terms" className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5">
+              <div className="flex items-start gap-3.5 mb-2">
+                <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-blue-500/30">
+                  8
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                    Agree to All Terms and Conditions & Submit Query
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-500">
+                    Review and confirm all commitments, refund policies, and verification warranties before submitting your work permit offer.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3.5">
+                {/* Checkbox 1 */}
+                <label className="flex items-start gap-3 cursor-pointer select-none group">
+                  <input
+                    type="checkbox"
+                    checked={agreeTerms}
+                    onChange={(e) => setAgreeTerms(e.target.checked)}
+                    className="mt-1 w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500 cursor-pointer"
+                  />
+                  <div className="text-xs text-slate-700 leading-relaxed font-medium">
+                    <span className="font-bold text-slate-900 block group-hover:text-blue-600 transition-colors">
+                      I agree to all TravlTik Terms & Conditions, Platform Policies, and Escrow Milestone Rules *
+                    </span>
+                    I understand that milestone payments are released according to documented stages and verified work permit approvals.
+                  </div>
+                </label>
+
+                <div className="h-px bg-slate-200/70" />
+
+                {/* Checkbox 2 */}
+                <label className="flex items-start gap-3 cursor-pointer select-none group">
+                  <input
+                    type="checkbox"
+                    checked={agreeAuthenticity}
+                    onChange={(e) => setAgreeAuthenticity(e.target.checked)}
+                    className="mt-1 w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500 cursor-pointer"
+                  />
+                  <div className="text-xs text-slate-700 leading-relaxed font-medium">
+                    <span className="font-bold text-slate-900 block group-hover:text-blue-600 transition-colors">
+                      I legally declare that this Work Permit & Job Offer is 100% genuine and authentic *
+                    </span>
+                    I guarantee that the employer sponsorship, stated process milestones, and refund policies declared in this offer will be strictly honored.
+                  </div>
+                </label>
+              </div>
+
+              {/* Submit Query CTA */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => onCancel ? onCancel() : (window.location.href = "/service-provider/dashboard")}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-sm transition-all cursor-pointer text-center"
+                >
+                  Cancel & Return
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handlePublish}
+                  disabled={isPublishing || !agreeTerms || !agreeAuthenticity}
+                  className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl text-xs font-extrabold shadow-md transition-all active:scale-[0.98] cursor-pointer ${
+                    agreeTerms && agreeAuthenticity && !isPublishing
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/25'
+                      : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                  }`}
+                >
+                  <Send className="w-4 h-4" />
+                  <span>{isPublishing ? 'Submitting & Publishing...' : 'Submit Query & Publish Offer'}</span>
+                </button>
+              </div>
             </div>
 
           </div>

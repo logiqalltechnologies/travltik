@@ -172,16 +172,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         } else if (data.user.type === "expert") {
                             localStorage.setItem("expert_businessName", raw.business_name || "Expert");
                             localStorage.setItem("expert_email", raw.email);
-                            localStorage.setItem("expert_contactNumber", raw.contact_number || "");
-                            localStorage.setItem("expert_advisorType", raw.advisor_type || "Freelancer");
+                            const phoneVal = raw.contact_number || raw.business_phone || "";
+                            if (phoneVal) {
+                                localStorage.setItem("expert_contactNumber", phoneVal);
+                                localStorage.setItem("expert_phone", phoneVal);
+                            }
+                            localStorage.setItem("expert_advisorType", raw.advisor_type || raw.business_type || "Registered Consultant");
                             localStorage.setItem("expert_aboutMe", raw.about_me || "");
-                            localStorage.setItem("expert_portfolioLink", raw.portfolio_link || "");
-                            localStorage.setItem("expert_officeAddress", raw.office_address || "");
+                            localStorage.setItem("expert_portfolioLink", raw.portfolio_link || raw.website || "");
+                            if (raw.city) localStorage.setItem("expert_city", raw.city);
+                            if (raw.state) localStorage.setItem("expert_state", raw.state);
+                            if (raw.country) localStorage.setItem("expert_country", raw.country);
+                            if (raw.pin_code) localStorage.setItem("expert_zip", raw.pin_code);
+                            const fullAddr = raw.office_address || [raw.city, raw.state, raw.country, raw.pin_code].filter(Boolean).join(", ");
+                            if (fullAddr) localStorage.setItem("expert_officeAddress", fullAddr);
+
                             localStorage.setItem("expert_govRegNumber", raw.gov_registration_number || "");
-                            localStorage.setItem("expert_expertiseTags", typeof raw.expertise_tags === "string" ? raw.expertise_tags : JSON.stringify(raw.expertise_tags || []));
-                            localStorage.setItem("expert_countriesExpertise", typeof raw.countries_expertise === "string" ? raw.countries_expertise : JSON.stringify(raw.countries_expertise || []));
+                            if (raw.expertise_tags) localStorage.setItem("expert_expertiseTags", typeof raw.expertise_tags === "string" ? raw.expertise_tags : JSON.stringify(raw.expertise_tags || []));
+                            if (raw.countries_expertise) localStorage.setItem("expert_countriesExpertise", typeof raw.countries_expertise === "string" ? raw.countries_expertise : (Array.isArray(raw.countries_expertise) ? raw.countries_expertise.join(", ") : JSON.stringify(raw.countries_expertise || [])));
                             localStorage.setItem("expert_profilePhoto", raw.profile_photo || "");
+                            if (raw.service_category) {
+                                localStorage.setItem("expert_serviceCategory", raw.service_category);
+                                localStorage.setItem("service_category", raw.service_category);
+                            }
                             localStorage.setItem("expert_isLoggedIn", "true");
+                            localStorage.setItem("expert_signup_method", "normal");
+                            localStorage.setItem("expert_profile_completed", "true");
                         }
                     }
                 }
@@ -342,7 +358,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (realUser.type === 'expert') {
                 localStorage.setItem('expert_isLoggedIn', 'true');
                 localStorage.setItem('expert_email', realUser.email);
-                localStorage.setItem('expert_businessName', realUser.displayName || (realUser as any).rawUser?.business_name || '');
+                const raw = (realUser as any).rawUser || {};
+                const hasExistingProfile = Boolean(raw.contact_number || raw.business_phone || raw.office_address || raw.city);
+                
+                if (hasExistingProfile) {
+                    localStorage.setItem('expert_businessName', raw.business_name || realUser.displayName || '');
+                    const phoneVal = raw.contact_number || raw.business_phone || '';
+                    if (phoneVal) {
+                        localStorage.setItem('expert_contactNumber', phoneVal);
+                        localStorage.setItem('expert_phone', phoneVal);
+                    }
+                    localStorage.setItem('expert_advisorType', raw.advisor_type || raw.business_type || 'Registered Consultant');
+                    localStorage.setItem('expert_officeAddress', raw.office_address || [raw.city, raw.state, raw.country].filter(Boolean).join(', ') || '');
+                    if (raw.city) localStorage.setItem('expert_city', raw.city);
+                    if (raw.state) localStorage.setItem('expert_state', raw.state);
+                    if (raw.country) localStorage.setItem('expert_country', raw.country);
+                    if (raw.pin_code) localStorage.setItem('expert_zip', raw.pin_code);
+                    localStorage.setItem('expert_govRegNumber', raw.gov_registration_number || '');
+                    localStorage.setItem('expert_portfolioLink', raw.portfolio_link || raw.website || '');
+                    localStorage.setItem('expert_aboutMe', raw.about_me || '');
+                    if (raw.expertise_tags) localStorage.setItem('expert_expertiseTags', typeof raw.expertise_tags === 'string' ? raw.expertise_tags : JSON.stringify(raw.expertise_tags));
+                    if (raw.countries_expertise) localStorage.setItem('expert_countriesExpertise', typeof raw.countries_expertise === 'string' ? raw.countries_expertise : (Array.isArray(raw.countries_expertise) ? raw.countries_expertise.join(', ') : raw.countries_expertise));
+                    if (raw.service_category) {
+                        localStorage.setItem('expert_serviceCategory', raw.service_category);
+                        localStorage.setItem('service_category', raw.service_category);
+                    }
+                    localStorage.setItem('expert_profile_completed', 'true');
+                    localStorage.setItem('expert_signup_method', 'normal');
+                } else {
+                    // Fresh Google sign-in without completed business profile details
+                    localStorage.setItem('expert_businessName', realUser.displayName || '');
+                    localStorage.setItem('expert_signup_method', 'google');
+                    localStorage.setItem('expert_profile_completed', 'false');
+                }
                 if (googlePhoto) localStorage.setItem('expert_profilePhoto', googlePhoto);
             } else {
                 const names = (realUser.displayName || googleName || '').trim().split(' ');

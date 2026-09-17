@@ -638,6 +638,8 @@ function ExpertSignupPortalContent() {
           localStorage.setItem("travltik_user", JSON.stringify({ ...data.user, serviceCategory: primaryCategory }));
         }
         localStorage.setItem("expert_isLoggedIn", "true");
+        localStorage.setItem("expert_signup_method", "normal");
+        localStorage.setItem("expert_profile_completed", "true");
         localStorage.setItem("expert_serviceCategory", primaryCategory);
         localStorage.setItem("service_category", primaryCategory);
         localStorage.setItem("expert_email", targetEmail);
@@ -649,12 +651,24 @@ function ExpertSignupPortalContent() {
           localStorage.setItem("expert_lastName", parts.slice(1).join(" ") || "");
         }
         if (businessType) localStorage.setItem("expert_advisorType", businessType);
+        if (businessAddress) localStorage.setItem("expert_area", businessAddress);
         if (city) localStorage.setItem("expert_city", city);
         if (state) localStorage.setItem("expert_state", state);
         if (country) localStorage.setItem("expert_country", country);
+        if (pinCode) localStorage.setItem("expert_zip", pinCode);
+        
+        const fullAddr = [businessAddress, city, state, country, pinCode].filter(Boolean).join(", ");
+        if (fullAddr) localStorage.setItem("expert_officeAddress", fullAddr);
+
         const contactPhone = businessPhone || (mobileNumber ? `${mobileCode} ${mobileNumber}` : "");
-        if (contactPhone) localStorage.setItem("expert_phone", contactPhone);
-        if (website) localStorage.setItem("expert_website", website);
+        if (contactPhone) {
+          localStorage.setItem("expert_phone", contactPhone);
+          localStorage.setItem("expert_contactNumber", contactPhone);
+        }
+        if (website) {
+          localStorage.setItem("expert_website", website);
+          localStorage.setItem("expert_portfolioLink", website);
+        }
         if (selectedServices.length > 0) localStorage.setItem("expert_expertiseTags", JSON.stringify(selectedServices));
         if (selectedDestinations.length > 0) localStorage.setItem("expert_countriesExpertise", selectedDestinations.join(", "));
         if (experience) localStorage.setItem("expert_experience", experience);

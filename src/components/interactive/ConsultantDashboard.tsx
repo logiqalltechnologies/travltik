@@ -3,7 +3,7 @@ import {
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
     Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronLeft, ChevronDown, Bell, Search, Lock, 
-    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw, BadgeCheck
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw, BadgeCheck, Phone, Mail, MapPin, Building2
 } from "lucide-react";
 import { ProviderVerificationModal } from "./ProviderVerificationModal";
 import { WorkPermitOrderForm } from "../dashboard/WorkPermitOrderForm";
@@ -67,11 +67,23 @@ export function ConsultantDashboard() {
         name: "Immigration Expert",
         role: "Registered Consultant",
         city: "Location Not Specified",
+        area: "",
+        cityName: "",
+        state: "",
+        country: "India",
+        zip: "",
+        officeAddress: "",
+        phone: "",
+        email: "",
+        govReg: "",
+        portfolio: "",
         experience: 5,
         bio: "Licensed immigration & visa consultant helping clients with study, work, and migration visas.",
         specializations: "",
+        tags: [] as string[],
         countries: "",
-        image: ""
+        image: "",
+        serviceCategory: ""
     });
 
     const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -210,15 +222,64 @@ export function ConsultantDashboard() {
             }
             const loadedCountries = rawStoredCountries;
 
+            // Populate granular registration states for Edit Profile modal
+            const savedPhone = localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone") || "";
+            const savedArea = localStorage.getItem("expert_area") || "";
+            const savedCityName = localStorage.getItem("expert_city") || "";
+            const savedState = localStorage.getItem("expert_state") || "";
+            const savedCountry = localStorage.getItem("expert_country") || "India";
+            const savedZip = localStorage.getItem("expert_zip") || "";
+            const savedOfficeAddress = localStorage.getItem("expert_officeAddress") || [savedArea, savedCityName, savedState, savedCountry, savedZip].filter(Boolean).join(", ") || city;
+            const savedGovReg = localStorage.getItem("expert_govRegNumber") || "";
+            const savedPortfolio = localStorage.getItem("expert_portfolioLink") || localStorage.getItem("expert_website") || "";
+            let savedTags: string[] = [];
+            try {
+                const tagsStr = localStorage.getItem("expert_expertiseTags");
+                if (tagsStr) {
+                    const parsed = JSON.parse(tagsStr);
+                    if (Array.isArray(parsed)) {
+                        savedTags = parsed;
+                        setFormTagsArray(parsed);
+                    }
+                }
+            } catch(e) {}
+
+            const savedServiceCat = localStorage.getItem("expert_serviceCategory") || localStorage.getItem("service_category") || "";
+            if (savedServiceCat) {
+                setServiceCategory(savedServiceCat);
+                setFormServiceCategory(savedServiceCat);
+            }
+
+            setFormPhone(savedPhone);
+            setFormArea(savedArea);
+            setFormCityName(savedCityName);
+            setFormState(savedState);
+            setFormCountry(savedCountry);
+            setFormZip(savedZip);
+            setFormGovReg(savedGovReg);
+            setFormPortfolio(savedPortfolio);
+
             const activeProfile = {
                 name: finalName,
                 role: role,
-                city: city,
+                city: savedCityName || city,
+                area: savedArea,
+                cityName: savedCityName,
+                state: savedState,
+                country: savedCountry,
+                zip: savedZip,
+                officeAddress: savedOfficeAddress,
+                phone: savedPhone,
+                email: savedEmail,
+                govReg: savedGovReg,
+                portfolio: savedPortfolio,
                 experience: 5,
                 bio: bio,
                 specializations: loadedSpecs,
+                tags: savedTags,
                 countries: loadedCountries,
-                image: image
+                image: image,
+                serviceCategory: savedServiceCat
             };
 
             setProfile(activeProfile);
@@ -230,38 +291,22 @@ export function ConsultantDashboard() {
             setFormCountries(loadedCountries);
             setFormImage(image);
 
-            // Populate granular registration states for Edit Profile modal
-            setFormPhone(localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone") || "");
-            setFormArea(localStorage.getItem("expert_area") || "");
-            setFormCityName(localStorage.getItem("expert_city") || "");
-            setFormState(localStorage.getItem("expert_state") || "");
-            setFormCountry(localStorage.getItem("expert_country") || "India");
-            setFormZip(localStorage.getItem("expert_zip") || "");
-            setFormGovReg(localStorage.getItem("expert_govRegNumber") || "");
-            setFormPortfolio(localStorage.getItem("expert_portfolioLink") || "");
-            try {
-                const tagsStr = localStorage.getItem("expert_expertiseTags");
-                if (tagsStr) {
-                    const parsed = JSON.parse(tagsStr);
-                    if (Array.isArray(parsed)) setFormTagsArray(parsed);
-                }
-            } catch(e) {}
+            // Check if Expert profile needs initial setup
+            // User requirement:
+            // "AGAR BHAI USNE NORMAL SIGN UP KIYA HAI REGISTERED KIYA HAI TOH VOH SAARI DETAILS USKE PROFILE ME SAVE HO JAYEGI , AGAR GOOGLE SIGN UP HAI TOH HAMARE PAAS USKI DETAILS NHI HAI TABHI PUCHO ."
+            const signupMethod = localStorage.getItem("expert_signup_method");
+            const isProfileCompleted = localStorage.getItem("expert_profile_completed") === "true";
+            const hasPhone = Boolean(savedPhone);
+            const hasAddress = Boolean(savedOfficeAddress && savedOfficeAddress !== "Location Not Specified");
 
-            const savedServiceCat = localStorage.getItem("expert_serviceCategory") || localStorage.getItem("service_category") || "";
-            if (savedServiceCat) {
-                setServiceCategory(savedServiceCat);
-                setFormServiceCategory(savedServiceCat);
-            }
+            // Normal registered users have completed registration, or users with phone/address already saved
+            const isNormalRegistered = signupMethod === "normal" || isProfileCompleted || (!signupMethod && (hasPhone || hasAddress));
+            
+            // Only auto-open modal if Google signup user lacking essential profile details
+            const isGooglePendingDetails = (signupMethod === "google" || (!hasPhone && !hasAddress)) && !isNormalRegistered;
 
-            // Check if Expert profile is incomplete based on registration starting details
-            const hasBizName = Boolean(localStorage.getItem("expert_businessName") || localStorage.getItem("expert_firstName"));
-            const hasOfficeAddress = Boolean(localStorage.getItem("expert_officeAddress")) && localStorage.getItem("expert_officeAddress") !== "Location Not Specified";
-            const hasPhone = Boolean(localStorage.getItem("expert_contactNumber") || localStorage.getItem("expert_phone"));
-            const hasCountries = Boolean(loadedCountries);
-
-            const isIncomplete = !hasBizName || !hasOfficeAddress || !hasPhone;
-            setIsProfileIncomplete(isIncomplete);
-            if (isIncomplete) {
+            setIsProfileIncomplete(isGooglePendingDetails);
+            if (isGooglePendingDetails) {
                 setIsEditingProfile(true);
             }
 
@@ -372,15 +417,29 @@ export function ConsultantDashboard() {
             name: formName,
             role: formRole,
             city: formCityName || formCity || finalFullAddress,
+            area: formArea,
+            cityName: formCityName,
+            state: formState,
+            country: formCountry,
+            zip: formZip,
+            officeAddress: finalFullAddress,
+            phone: formPhone,
+            email: localStorage.getItem("expert_email") || providerEmail || "",
+            govReg: formGovReg,
+            portfolio: formPortfolio,
             experience: 5,
             bio: formBio,
             specializations: formTagsArray.length > 0 ? formTagsArray.join(", ") : formSpecs,
+            tags: formTagsArray,
             countries: formCountries,
-            image: formImage
+            image: formImage,
+            serviceCategory: resolvedCategory
         };
         setProfile(updatedProfile);
         setServiceCategory(resolvedCategory);
 
+        localStorage.setItem("expert_profile_completed", "true");
+        localStorage.setItem("expert_signup_method", "normal");
         localStorage.setItem("expert_serviceCategory", resolvedCategory);
         localStorage.setItem("service_category", resolvedCategory);
         localStorage.setItem("expert_businessName", formName);
@@ -1267,44 +1326,187 @@ export function ConsultantDashboard() {
                     )}
 
                     {activeTab === "profile" && (
-                        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-6">
-                            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                        <div className="space-y-6">
+                            {/* Header Bar */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Profile & Business Details</h2>
-                                    <p className="text-xs font-medium text-slate-500">Manage public profile, business verification, and consultation background</p>
+                                    <p className="text-xs font-medium text-slate-500 mt-0.5">Review and manage your registered agency profile, contact information, office address, and service categories</p>
                                 </div>
-                                <button onClick={() => setIsEditingProfile(true)} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5">
-                                    <Edit2 className="w-3.5 h-3.5" /> Edit Profile
+                                <button 
+                                    onClick={() => setIsEditingProfile(true)} 
+                                    className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-sm flex items-center gap-2 shrink-0 cursor-pointer transition-all active:scale-95"
+                                >
+                                    <Edit2 className="w-3.5 h-3.5" /> 
+                                    <span>Edit Profile & Business</span>
                                 </button>
                             </div>
 
-                            <div className="flex flex-col md:flex-row gap-6 items-start">
-                                {profile.image && !profile.image.includes("unsplash.com") ? (
-                                    <img src={profile.image} alt={profile.name} className="w-24 h-24 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
-                                ) : (
-                                    <div className="w-24 h-24 rounded-2xl bg-[#00A86B] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
-                                        {(profile.name || "E").charAt(0).toUpperCase()}
+                            {/* Main Agency Profile Card */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-2xs space-y-5">
+                                <div className="flex flex-col sm:flex-row gap-5 items-start">
+                                    {profile.image && !profile.image.includes("unsplash.com") ? (
+                                        <img src={profile.image} alt={profile.name} className="w-20 h-20 rounded-2xl object-cover border-2 border-slate-200 shadow-sm shrink-0" />
+                                    ) : (
+                                        <div className="w-20 h-20 rounded-2xl bg-[#00A86B] text-white text-3xl font-black flex items-center justify-center border-2 border-teal-200 shadow-sm shrink-0">
+                                            {(profile.name || "E").charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
+                                    <div className="space-y-2 flex-1">
+                                        <div className="flex flex-wrap items-center gap-2.5">
+                                            <h3 className="text-lg sm:text-xl font-black text-slate-900">{profile.name}</h3>
+                                            <span className="bg-emerald-50 text-emerald-700 text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">✔ Verified Agency</span>
+                                            {profile.serviceCategory && (
+                                                <span className="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-blue-200 capitalize">
+                                                    {profile.serviceCategory.replace(/_/g, " ")}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-xs font-bold text-[#00a896]">{profile.role} • {profile.cityName || profile.city}</p>
+                                        <p className="text-xs text-slate-600 leading-relaxed font-medium pt-1">
+                                            {profile.bio || "Licensed immigration & visa consultant helping clients with study, work, and migration visas."}
+                                        </p>
                                     </div>
-                                )}
-                                <div className="space-y-2 flex-1">
-                                    <div className="flex items-center gap-2">
-                                        <h3 className="text-lg font-black text-slate-900">{profile.name}</h3>
-                                        <span className="bg-emerald-50 text-emerald-700 text-xs font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200">✔ Verified Agency</span>
-                                    </div>
-                                    <p className="text-xs font-bold text-[#00a896]">{profile.role} • {profile.city}</p>
-                                    <p className="text-xs text-slate-600 leading-relaxed font-medium pt-1">{profile.bio}</p>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-xs">
-                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
-                                    <span className="font-bold text-slate-500 block">Areas of Expertise:</span>
-                                    <span className="font-black text-slate-900 block">{profile.specializations}</span>
+                            {/* Official Contact & Business Details Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                {/* Contact Details */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                        <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                                            <Phone className="w-3.5 h-3.5 text-[#00a896]" /> Contact & Communication
+                                        </h4>
+                                        <button onClick={() => setIsEditingProfile(true)} className="text-[11px] font-bold text-[#00a896] hover:underline">Edit</button>
+                                    </div>
+
+                                    <div className="space-y-3 text-xs">
+                                        <div className="flex items-center justify-between py-1.5 border-b border-slate-50">
+                                            <span className="text-slate-500 font-semibold">Contact / WhatsApp:</span>
+                                            <span className="font-bold text-slate-900">{profile.phone || formPhone || "Not Specified"}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between py-1.5 border-b border-slate-50">
+                                            <span className="text-slate-500 font-semibold">Business Email:</span>
+                                            <span className="font-bold text-slate-900">{profile.email || providerEmail || "Not Specified"}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between py-1.5 border-b border-slate-50">
+                                            <span className="text-slate-500 font-semibold">Government Reg / License:</span>
+                                            <span className="font-bold text-slate-900">{profile.govReg || formGovReg || "Not Specified"}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between py-1.5">
+                                            <span className="text-slate-500 font-semibold">Website / Portfolio:</span>
+                                            {profile.portfolio || formPortfolio ? (
+                                                <a 
+                                                    href={profile.portfolio || formPortfolio} 
+                                                    target="_blank" 
+                                                    rel="noreferrer" 
+                                                    className="font-bold text-blue-600 hover:underline flex items-center gap-1 max-w-[200px] truncate"
+                                                >
+                                                    {profile.portfolio || formPortfolio} <ExternalLink className="w-3 h-3 shrink-0" />
+                                                </a>
+                                            ) : (
+                                                <span className="font-bold text-slate-400">Not Specified</span>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="p-4 bg-slate-50 rounded-xl space-y-1">
-                                    <span className="font-bold text-slate-500 block">Countries Covered:</span>
-                                    <span className="font-black text-slate-900 block">{profile.countries}</span>
+
+                                {/* Office Address */}
+                                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-4">
+                                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                                        <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                                            <MapPin className="w-3.5 h-3.5 text-[#00a896]" /> Office / Practice Location
+                                        </h4>
+                                        <button onClick={() => setIsEditingProfile(true)} className="text-[11px] font-bold text-[#00a896] hover:underline">Edit</button>
+                                    </div>
+
+                                    <div className="space-y-3 text-xs">
+                                        <div className="py-1.5 border-b border-slate-50">
+                                            <span className="text-slate-500 font-semibold block mb-0.5">Full Office Address:</span>
+                                            <span className="font-bold text-slate-900 block leading-snug">{profile.officeAddress || "Location Not Specified"}</span>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3 py-1.5 border-b border-slate-50">
+                                            <div>
+                                                <span className="text-slate-500 font-semibold block mb-0.5">Area / Street:</span>
+                                                <span className="font-bold text-slate-900 block">{profile.area || formArea || "Not Specified"}</span>
+                                            </div>
+                                            <div>
+                                                <span className="text-slate-500 font-semibold block mb-0.5">City / District:</span>
+                                                <span className="font-bold text-slate-900 block">{profile.cityName || formCityName || profile.city || "Not Specified"}</span>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-2 py-1.5">
+                                            <div>
+                                                <span className="text-slate-500 font-semibold block mb-0.5">State:</span>
+                                                <span className="font-bold text-slate-900 block">{profile.state || formState || "Not Specified"}</span>
+                                            </div>
+                                            <div>
+                                                <span className="text-slate-500 font-semibold block mb-0.5">Country:</span>
+                                                <span className="font-bold text-slate-900 block">{profile.country || formCountry || "India"}</span>
+                                            </div>
+                                            <div>
+                                                <span className="text-slate-500 font-semibold block mb-0.5">ZIP Code:</span>
+                                                <span className="font-bold text-slate-900 block">{profile.zip || formZip || "Not Specified"}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+
+                            {/* Specializations & Global Coverage */}
+                            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-2xs space-y-5">
+                                <div>
+                                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider mb-2.5 flex items-center gap-2">
+                                        <Briefcase className="w-3.5 h-3.5 text-[#00a896]" /> Field of Expertise & Services
+                                    </h4>
+                                    {profile.tags && profile.tags.length > 0 ? (
+                                        <div className="flex flex-wrap gap-2">
+                                            {profile.tags.map((tag: string, idx: number) => (
+                                                <span key={idx} className="bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs">
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-xs font-bold text-slate-700 bg-slate-50 p-3 rounded-xl">
+                                            {profile.specializations || "No specific tags added yet."}
+                                        </p>
+                                    )}
+                                </div>
+
+                                <div className="border-t border-slate-100 pt-4">
+                                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider mb-2.5 flex items-center gap-2">
+                                        <Globe className="w-3.5 h-3.5 text-[#00a896]" /> Countries Covered
+                                    </h4>
+                                    {profile.countries ? (
+                                        <div className="flex flex-wrap gap-2">
+                                            {profile.countries.split(",").map((c: string) => c.trim()).filter(Boolean).map((ctry: string, idx: number) => (
+                                                <span key={idx} className="bg-teal-50 text-[#00a896] text-xs font-extrabold px-3 py-1.5 rounded-xl border border-teal-200">
+                                                    {ctry}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-xs text-slate-400 font-semibold bg-slate-50 p-3 rounded-xl">
+                                            Worldwide / All Countries
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Bottom Helper / Update Callout */}
+                            <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div>
+                                    <h4 className="text-sm font-extrabold">Need to update your agency details or add licenses?</h4>
+                                    <p className="text-xs text-slate-300 mt-1">All changes made to your business profile sync instantly across client inquiries and directories.</p>
+                                </div>
+                                <button 
+                                    onClick={() => setIsEditingProfile(true)}
+                                    className="bg-white hover:bg-slate-100 text-slate-900 px-5 py-2.5 rounded-xl text-xs font-extrabold shrink-0 shadow-sm transition-all cursor-pointer"
+                                >
+                                    Update Details Now
+                                </button>
                             </div>
                         </div>
                     )}
