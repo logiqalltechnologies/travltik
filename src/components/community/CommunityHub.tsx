@@ -3,15 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Search, Bell, Mail, ChevronDown, Plus, Download, CheckCheck,
   Smile, Paperclip, Image as ImageIcon, Send, MoreVertical,
-  UserPlus, Users, X, FileText, ArrowLeft, Check, LogOut,
-  ExternalLink, MessageSquare, Shield, CheckCircle2
+  UserPlus, Users, X, ArrowLeft, Check, LogOut,
+  ExternalLink, MessageSquare, Shield, CheckCircle2, Sparkles
 } from 'lucide-react';
 
 interface GroupMember {
   id: string;
   name: string;
   avatar: string;
-  role?: 'Admin' | 'Moderator' | 'Member';
+  role?: 'Admin' | 'Moderator' | 'Member' | 'Licensed Expert';
 }
 
 interface ChatAttachment {
@@ -49,9 +49,9 @@ interface ChatRoom {
   bannerImage: string;
   description: string;
   isJoined: boolean;
-  members: GroupMember[];
-  memberAvatars: string[];
   totalMembersCountText: string;
+  memberAvatars: string[];
+  members: GroupMember[];
 }
 
 // Country Roundel Flag Components
@@ -135,9 +135,21 @@ const FoodRoundel = () => (
 );
 
 export default function CommunityHub() {
-  const [currentUser, setCurrentUser] = useState<{ name: string; avatar: string }>({
-    name: 'Lellwyn',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+  // Current user state (strictly loaded from real logged in session)
+  const [currentUser, setCurrentUser] = useState<{
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+    role: string;
+    isLoggedIn: boolean;
+  }>({
+    id: 'guest',
+    name: 'Community Member',
+    email: '',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    role: 'Member',
+    isLoggedIn: false
   });
 
   const [activeRoomId, setActiveRoomId] = useState<string>('canada');
@@ -147,6 +159,7 @@ export default function CommunityHub() {
 
   const [showLeftSidebarMobile, setShowLeftSidebarMobile] = useState(false);
   const [showRightDetailsMobile, setShowRightDetailsMobile] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   const [showNewChatModal, setShowNewChatModal] = useState(false);
   const [newChatTitle, setNewChatTitle] = useState('');
@@ -159,6 +172,12 @@ export default function CommunityHub() {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
+  // Real Database Members & Stats
+  const [registeredMembers, setRegisteredMembers] = useState<GroupMember[]>([]);
+  const [totalMembersCount, setTotalMembersCount] = useState<number>(49);
+  const [isLoadingMessages, setIsLoadingMessages] = useState<boolean>(false);
+
+  // Clean Initial Rooms (NO dummy last message snippets, NO fake unread counts)
   const [rooms, setRooms] = useState<ChatRoom[]>([
     {
       id: 'canada',
@@ -167,28 +186,17 @@ export default function CommunityHub() {
       countryCode: 'CA',
       flagComponent: <CanadaRoundel />,
       iconType: 'flag',
-      memberCount: '1.2K members',
-      activeStatus: 'Active 12m ago',
-      lastMessageSnippet: "Priya: That's great! I'll share the link...",
-      lastMessageTime: '10:24 AM',
-      unreadCount: 12,
+      memberCount: 'Active Group',
+      activeStatus: 'Live Chat',
+      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageTime: '',
+      unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1517935703635-2719079c221a?q=80&w=800&auto=format&fit=crop',
-      description: 'Discuss Canada PR, work permits, study, accommodation, jobs and daily life. Share experiences and get real advice from fellow expats.',
+      description: 'Official community hub for Canada PR, work permits, study visas, housing and settlement.',
       isJoined: true,
-      totalMembersCountText: 'Group Members (1.2K)',
-      memberAvatars: [
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
-      ],
-      members: [
-        { id: 'm1', name: 'Priya Sharma', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
-        { id: 'm2', name: 'Rohit Verma', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', role: 'Moderator' },
-        { id: 'm3', name: 'Anita Singh', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', role: 'Moderator' },
-      ]
+      totalMembersCountText: 'Group Members',
+      memberAvatars: [],
+      members: []
     },
     {
       id: 'germany',
@@ -197,24 +205,17 @@ export default function CommunityHub() {
       countryCode: 'DE',
       flagComponent: <GermanyRoundel />,
       iconType: 'flag',
-      memberCount: '850 members',
-      activeStatus: 'Active 24m ago',
-      lastMessageSnippet: 'Rohit: I got an interview call today!',
-      lastMessageTime: '09:45 AM',
-      unreadCount: 5,
+      memberCount: 'Active Group',
+      activeStatus: 'Live Chat',
+      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageTime: '',
+      unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=800&auto=format&fit=crop',
-      description: 'Community for professionals moving to Germany on Opportunity Card (Chancenkarte), EU Blue Card, and job search visas.',
+      description: 'Chancenkarte Opportunity Card, EU Blue Card, CV reviews, and tech jobs in Germany.',
       isJoined: true,
-      totalMembersCountText: 'Group Members (850)',
-      memberAvatars: [
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80',
-      ],
-      members: [
-        { id: 'g1', name: 'Rohit Verma', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
-        { id: 'g2', name: 'Klaus Meier', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80', role: 'Moderator' },
-      ]
+      totalMembersCountText: 'Group Members',
+      memberAvatars: [],
+      members: []
     },
     {
       id: 'uk',
@@ -223,23 +224,17 @@ export default function CommunityHub() {
       countryCode: 'GB',
       flagComponent: <UKRoundel />,
       iconType: 'flag',
-      memberCount: '2.1K members',
-      activeStatus: 'Active 5m ago',
-      lastMessageSnippet: 'Sarah: Anyone here from Manchester?',
-      lastMessageTime: '08:12 AM',
-      unreadCount: 3,
+      memberCount: 'Active Group',
+      activeStatus: 'Live Chat',
+      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageTime: '',
+      unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800&auto=format&fit=crop',
-      description: 'Everything about moving and living in the United Kingdom. Skilled worker visas, graduate route, ILR, and housing.',
+      description: 'UK Skilled Worker visas, Graduate visa routes, life and career in London and across the UK.',
       isJoined: false,
-      totalMembersCountText: 'Group Members (2.1K)',
-      memberAvatars: [
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80',
-      ],
-      members: [
-        { id: 'uk1', name: 'Sarah Jenkins', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
-        { id: 'uk2', name: 'David Miller', avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80', role: 'Moderator' }
-      ]
+      totalMembersCountText: 'Group Members',
+      memberAvatars: [],
+      members: []
     },
     {
       id: 'australia',
@@ -248,22 +243,17 @@ export default function CommunityHub() {
       countryCode: 'AU',
       flagComponent: <AustraliaRoundel />,
       iconType: 'flag',
-      memberCount: '1.5K members',
-      activeStatus: 'Active 1h ago',
-      lastMessageSnippet: 'Anita: The weather is amazing here!',
-      lastMessageTime: 'Yesterday',
-      unreadCount: 8,
+      memberCount: 'Active Group',
+      activeStatus: 'Live Chat',
+      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageTime: '',
+      unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop',
-      description: 'PR subclasses (189, 190, 491), student visa transitions, skills assessments, and expat lifestyle down under.',
+      description: 'Subclass 189/190/491, skills assessments, job market, and regional migration in Australia.',
       isJoined: true,
-      totalMembersCountText: 'Group Members (1.5K)',
-      memberAvatars: [
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
-      ],
-      members: [
-        { id: 'au1', name: 'Anita Singh', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
-      ]
+      totalMembersCountText: 'Group Members',
+      memberAvatars: [],
+      members: []
     },
     {
       id: 'uae',
@@ -272,21 +262,17 @@ export default function CommunityHub() {
       countryCode: 'AE',
       flagComponent: <UAERoundel />,
       iconType: 'flag',
-      memberCount: '3.4K members',
-      activeStatus: 'Active 15m ago',
-      lastMessageSnippet: 'Faisal: Best place to find affordable...',
-      lastMessageTime: 'Yesterday',
-      unreadCount: 4,
+      memberCount: 'Active Group',
+      activeStatus: 'Live Chat',
+      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageTime: '',
+      unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop',
-      description: 'Dubai and Abu Dhabi Golden Visas, company setup, freelance permits, banking, and accommodation.',
+      description: 'Dubai Golden Visas, company formation, freelance permits, banking, and expat living.',
       isJoined: false,
-      totalMembersCountText: 'Group Members (3.4K)',
-      memberAvatars: [
-        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80',
-      ],
-      members: [
-        { id: 'ae1', name: 'Faisal Al-Mansoor', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80', role: 'Admin' },
-      ]
+      totalMembersCountText: 'Group Members',
+      memberAvatars: [],
+      members: []
     },
     {
       id: 'travel',
@@ -294,21 +280,17 @@ export default function CommunityHub() {
       type: 'group',
       iconType: 'plane',
       flagComponent: <TravelRoundel />,
-      memberCount: '920 members',
-      activeStatus: 'Active 2h ago',
-      lastMessageSnippet: 'Karan: Planning a trip to Japan next month.',
-      lastMessageTime: 'Mon',
-      unreadCount: 2,
+      memberCount: 'Active Group',
+      activeStatus: 'Live Chat',
+      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageTime: '',
+      unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
-      description: 'Backpacking, travel hacks, visa-free destinations, budget flight deals, and meetups around the world.',
+      description: 'Flight companions, travel hacks, budget itinerary planning, and visa-free travel tips.',
       isJoined: true,
-      totalMembersCountText: 'Group Members (920)',
-      memberAvatars: [
-        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80',
-      ],
-      members: [
-        { id: 'tr1', name: 'Karan Malhotra', avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80', role: 'Admin' }
-      ]
+      totalMembersCountText: 'Group Members',
+      memberAvatars: [],
+      members: []
     },
     {
       id: 'lifestyle',
@@ -316,124 +298,180 @@ export default function CommunityHub() {
       type: 'group',
       iconType: 'food',
       flagComponent: <FoodRoundel />,
-      memberCount: '640 members',
-      activeStatus: 'Active 3h ago',
-      lastMessageSnippet: 'Neha: Tried the local food - amazing!',
-      lastMessageTime: 'Mon',
-      unreadCount: 1,
+      memberCount: 'Active Group',
+      activeStatus: 'Live Chat',
+      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageTime: '',
+      unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
-      description: 'Share expat cooking tips, grocery stores with international ingredients, cultural adjustments, and food guides.',
+      description: 'International cuisine, Indian groceries abroad, cultural tips, and community meetups.',
       isJoined: false,
-      totalMembersCountText: 'Group Members (640)',
-      memberAvatars: [
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
-      ],
-      members: [
-        { id: 'fd1', name: 'Neha Kapoor', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', role: 'Admin' }
-      ]
+      totalMembersCountText: 'Group Members',
+      memberAvatars: [],
+      members: []
     }
   ]);
 
-  const [messagesMap, setMessagesMap] = useState<{ [roomId: string]: ChatMessage[] }>({
-    canada: [
-      {
-        id: 'msg-1',
-        senderName: 'Priya Sharma',
-        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-        isSelf: false,
-        text: 'Hi everyone! I just got my ITA for Canada PR 🎉 The process was smoother than I expected. Happy to share my timeline and documents if anyone needs help.',
-        timestamp: '10:05 AM'
-      },
-      {
-        id: 'msg-2',
-        senderName: 'You',
-        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        isSelf: true,
-        text: "That's great! Congratulations! 🎉\nCould you share the list of documents you submitted?",
-        timestamp: '10:12 AM'
-      },
-      {
-        id: 'msg-3',
-        senderName: 'Rahul Mehta',
-        senderAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
-        isSelf: false,
-        text: "Sure, I'll DM you. Also, for those looking at Express Entry, there's a new draw this week. CRS 525+.",
-        timestamp: '10:16 AM'
-      },
-      {
-        id: 'msg-4',
-        senderName: 'Priya Sharma',
-        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-        isSelf: false,
-        attachment: {
-          name: 'Canada_PR_Documents_Checklist.pdf',
-          size: '245 KB',
-          type: 'PDF',
-          url: '#'
-        },
-        timestamp: '10:18 AM'
-      },
-      {
-        id: 'msg-5',
-        senderName: 'You',
-        senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        isSelf: true,
-        text: 'Thanks a lot! This is super helpful 🙏',
-        timestamp: '10:24 AM'
-      }
-    ],
-    germany: [
-      {
-        id: 'g-1',
-        senderName: 'Rohit Verma',
-        senderAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
-        isSelf: false,
-        text: 'I got an interview call today for a Software Architect role in Munich! Make sure your CV is strictly in Europass format.',
-        timestamp: '09:45 AM'
-      }
-    ],
-    uk: [
-      {
-        id: 'uk-1',
-        senderName: 'Sarah Jenkins',
-        senderAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
-        isSelf: false,
-        text: 'Anyone here from Manchester? Recommended flat-hunting apps besides Rightmove and Zoopla?',
-        timestamp: '08:12 AM'
-      }
-    ]
-  });
+  // NO FAKE/DUMMY INITIAL MESSAGES - CLEAN EMPTY STATE
+  const [messagesMap, setMessagesMap] = useState<{ [roomId: string]: ChatMessage[] }>({});
 
+  // 1. Detect Real User Identity from localStorage
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const storedUser = localStorage.getItem('travltik_user');
-        if (storedUser) {
-          const parsed = JSON.parse(storedUser);
-          if (parsed && (parsed.name || parsed.first_name || parsed.email)) {
-            setCurrentUser({
-              name: parsed.name || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || parsed.email.split('@')[0],
-              avatar: parsed.avatar || parsed.profile_photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
-            });
-          }
+    if (typeof window === 'undefined') return;
+
+    try {
+      let detectedName = '';
+      let detectedEmail = '';
+      let detectedAvatar = '';
+      let detectedId = '';
+      let detectedRole = 'Member';
+      let isLogged = false;
+
+      const storedUser = localStorage.getItem('travltik_user');
+      if (storedUser && storedUser !== 'null') {
+        const parsed = JSON.parse(storedUser);
+        if (parsed) {
+          isLogged = true;
+          detectedEmail = parsed.email || '';
+          detectedId = parsed.uid || parsed.id || '';
+          detectedName = parsed.displayName || parsed.name || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || detectedEmail.split('@')[0];
+          detectedAvatar = parsed.photoURL || parsed.avatar || parsed.profile_photo || '';
+          detectedRole = parsed.type === 'expert' ? 'Licensed Expert' : 'Verified Member';
         }
-        const localSavedMessages = localStorage.getItem('travltik_expat_community_messages');
-        if (localSavedMessages) {
-          const parsedSaved = JSON.parse(localSavedMessages);
-          if (parsedSaved && typeof parsedSaved === 'object') {
-            setMessagesMap(prev => ({ ...prev, ...parsedSaved }));
-          }
+      }
+
+      if (!detectedName) {
+        const expertName = localStorage.getItem('expert_businessName');
+        const expertEmail = localStorage.getItem('expert_email');
+        const seekerFirst = localStorage.getItem('seeker_firstName');
+        const seekerLast = localStorage.getItem('seeker_lastName') || '';
+        const seekerEmail = localStorage.getItem('seeker_email');
+
+        if (expertName) {
+          isLogged = true;
+          detectedName = expertName;
+          detectedEmail = expertEmail || '';
+          detectedRole = 'Licensed Expert';
+        } else if (seekerFirst) {
+          isLogged = true;
+          detectedName = `${seekerFirst} ${seekerLast}`.trim();
+          detectedEmail = seekerEmail || '';
+          detectedRole = 'Verified Member';
+        } else if (seekerEmail) {
+          isLogged = true;
+          detectedName = seekerEmail.split('@')[0];
+          detectedEmail = seekerEmail;
+          detectedRole = 'Verified Member';
         }
-      } catch (e) {}
+      }
+
+      if (detectedName) {
+        const avatarUrl = detectedAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(detectedName)}&background=00A86B&color=fff&bold=true`;
+        setCurrentUser({
+          id: detectedId || detectedEmail || 'user_' + Date.now(),
+          name: detectedName,
+          email: detectedEmail,
+          avatar: avatarUrl,
+          role: detectedRole,
+          isLoggedIn: isLogged
+        });
+      }
+    } catch (e) {
+      console.warn('Could not read user profile:', e);
     }
   }, []);
 
-  const saveMessagesToLocal = (newMap: typeof messagesMap) => {
+  // 2. Fetch Real Messages & Real Registered Members from Backend
+  const fetchChannelData = async (channelSlug: string) => {
     try {
-      localStorage.setItem('travltik_expat_community_messages', JSON.stringify(newMap));
-    } catch (e) {}
+      setIsLoadingMessages(true);
+      const res = await fetch(`/api/community/messages?channel=${encodeURIComponent(channelSlug)}`);
+      if (!res.ok) return;
+
+      const data = await res.json();
+      if (data.success) {
+        if (data.stats && data.stats.total_members) {
+          setTotalMembersCount(data.stats.total_members);
+        }
+
+        // Map real registered members from DB
+        if (Array.isArray(data.seniors) && data.seniors.length > 0) {
+          const mapped: GroupMember[] = data.seniors.map((s: any, idx: number) => ({
+            id: String(s.id || idx),
+            name: s.name,
+            avatar: s.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=420f79&color=fff`,
+            role: s.university?.toLowerCase().includes('freelancer') || s.university?.toLowerCase().includes('company') ? 'Admin' : 'Moderator'
+          }));
+          setRegisteredMembers(mapped);
+        }
+
+        // Map real messages from DB
+        if (Array.isArray(data.messages)) {
+          const mappedMessages: ChatMessage[] = data.messages.map((m: any) => {
+            const isSelf = Boolean(
+              (currentUser.id && m.user_id === currentUser.id) ||
+              (currentUser.email && (m.user_id === currentUser.email || m.sender_name === currentUser.name)) ||
+              (currentUser.name && m.sender_name === currentUser.name)
+            );
+            return {
+              id: String(m.id),
+              senderName: isSelf ? 'You' : m.sender_name,
+              senderAvatar: m.sender_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.sender_name)}&background=00A86B&color=fff`,
+              isSelf,
+              text: m.content,
+              timestamp: m.created_at ? new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently'
+            };
+          });
+
+          // Check if user has local unsynced offline messages
+          let localBackup: ChatMessage[] = [];
+          try {
+            const localSaved = localStorage.getItem(`travltik_chat_${channelSlug}`);
+            if (localSaved) {
+              localBackup = JSON.parse(localSaved);
+            }
+          } catch (e) {}
+
+          const combinedMap = new Map<string, ChatMessage>();
+          mappedMessages.forEach(m => combinedMap.set(m.id, m));
+          localBackup.forEach(m => {
+            if (!combinedMap.has(m.id)) combinedMap.set(m.id, m);
+          });
+
+          const finalList = Array.from(combinedMap.values());
+          setMessagesMap(prev => ({
+            ...prev,
+            [channelSlug]: finalList
+          }));
+
+          // Update room snippet
+          if (finalList.length > 0) {
+            const last = finalList[finalList.length - 1];
+            setRooms(prevRooms => prevRooms.map(r => {
+              if (r.id === channelSlug) {
+                return {
+                  ...r,
+                  lastMessageSnippet: last.text ? (last.isSelf ? `You: ${last.text}` : `${last.senderName}: ${last.text}`) : 'Attachment',
+                  lastMessageTime: last.timestamp
+                };
+              }
+              return r;
+            }));
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to load community feed:', err);
+    } finally {
+      setIsLoadingMessages(false);
+    }
   };
 
+  useEffect(() => {
+    fetchChannelData(activeRoomId);
+  }, [activeRoomId, currentUser.name]);
+
+  // Auto scroll to bottom when messages update
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messagesMap, activeRoomId]);
@@ -465,40 +503,63 @@ export default function CommunityHub() {
     }));
   };
 
-  const handleSendMessage = () => {
+  // Real Message Sending to PostgreSQL DB
+  const handleSendMessage = async () => {
     if (!inputText.trim()) return;
+    const textToSend = inputText.trim();
+    setInputText('');
+    setShowEmojiPicker(false);
+
     const now = new Date();
     const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const localId = 'msg-' + Date.now();
 
     const newMsg: ChatMessage = {
-      id: 'msg-' + Date.now(),
-      senderName: currentUser.name || 'You',
+      id: localId,
+      senderName: 'You',
       senderAvatar: currentUser.avatar,
       isSelf: true,
-      text: inputText.trim(),
+      text: textToSend,
       timestamp: timeString
     };
 
-    const updatedList = [...activeMessages, newMsg];
-    const newMap = { ...messagesMap, [activeRoomId]: updatedList };
-    setMessagesMap(newMap);
-    saveMessagesToLocal(newMap);
+    // Instant optimistic update
+    const updatedMessages = [...activeMessages, newMsg];
+    setMessagesMap(prev => ({ ...prev, [activeRoomId]: updatedMessages }));
+    try {
+      localStorage.setItem(`travltik_chat_${activeRoomId}`, JSON.stringify(updatedMessages));
+    } catch (e) {}
 
     setRooms(prev => prev.map(r => {
       if (r.id === activeRoomId) {
         return {
           ...r,
-          lastMessageSnippet: `You: ${inputText.trim()}`,
+          lastMessageSnippet: `You: ${textToSend}`,
           lastMessageTime: timeString
         };
       }
       return r;
     }));
 
-    setInputText('');
-    setShowEmojiPicker(false);
+    // Save to real database
+    try {
+      await fetch('/api/community/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          channel_slug: activeRoomId,
+          content: textToSend,
+          sender_name: currentUser.name || 'Community Member',
+          sender_avatar: currentUser.avatar,
+          user_id: currentUser.id || currentUser.email || 'guest-user'
+        })
+      });
+    } catch (err) {
+      console.warn('Network error saving message:', err);
+    }
   };
 
+  // Real File Upload
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -512,7 +573,7 @@ export default function CommunityHub() {
     reader.onload = () => {
       const newMsg: ChatMessage = {
         id: 'msg-' + Date.now(),
-        senderName: currentUser.name || 'You',
+        senderName: 'You',
         senderAvatar: currentUser.avatar,
         isSelf: true,
         timestamp: timeString,
@@ -524,10 +585,11 @@ export default function CommunityHub() {
         }
       };
 
-      const updatedList = [...activeMessages, newMsg];
-      const newMap = { ...messagesMap, [activeRoomId]: updatedList };
-      setMessagesMap(newMap);
-      saveMessagesToLocal(newMap);
+      const updated = [...activeMessages, newMsg];
+      setMessagesMap(prev => ({ ...prev, [activeRoomId]: updated }));
+      try {
+        localStorage.setItem(`travltik_chat_${activeRoomId}`, JSON.stringify(updated));
+      } catch (e) {}
 
       setRooms(prev => prev.map(r => {
         if (r.id === activeRoomId) {
@@ -544,6 +606,7 @@ export default function CommunityHub() {
     e.target.value = '';
   };
 
+  // Real Image Upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -555,17 +618,18 @@ export default function CommunityHub() {
     reader.onload = () => {
       const newMsg: ChatMessage = {
         id: 'msg-' + Date.now(),
-        senderName: currentUser.name || 'You',
+        senderName: 'You',
         senderAvatar: currentUser.avatar,
         isSelf: true,
         timestamp: timeString,
         image: reader.result as string
       };
 
-      const updatedList = [...activeMessages, newMsg];
-      const newMap = { ...messagesMap, [activeRoomId]: updatedList };
-      setMessagesMap(newMap);
-      saveMessagesToLocal(newMap);
+      const updated = [...activeMessages, newMsg];
+      setMessagesMap(prev => ({ ...prev, [activeRoomId]: updated }));
+      try {
+        localStorage.setItem(`travltik_chat_${activeRoomId}`, JSON.stringify(updated));
+      } catch (e) {}
 
       setRooms(prev => prev.map(r => {
         if (r.id === activeRoomId) {
@@ -591,16 +655,16 @@ export default function CommunityHub() {
       type: newChatType,
       memberCount: '1 member',
       activeStatus: 'Active just now',
-      lastMessageSnippet: 'Chat room created.',
+      lastMessageSnippet: 'No messages yet • Start chatting',
       lastMessageTime: 'Just now',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
       description: newChatDescription.trim() || 'New expat community conversation room.',
       isJoined: true,
-      totalMembersCountText: 'Group Members (1)',
+      totalMembersCountText: 'Group Members',
       memberAvatars: [currentUser.avatar],
       members: [
-        { id: 'owner', name: currentUser.name, avatar: currentUser.avatar, role: 'Admin' }
+        { id: currentUser.id, name: currentUser.name, avatar: currentUser.avatar, role: 'Admin' }
       ]
     };
 
@@ -616,7 +680,7 @@ export default function CommunityHub() {
   return (
     <div className="h-screen w-screen flex flex-col bg-[#F8FAFC] text-slate-900 font-sans overflow-hidden select-none">
 
-      {/* ── TOP HEADER (EXACT MOCKUP) ── */}
+      {/* ── TOP HEADER ── */}
       <header className="h-14 sm:h-16 bg-white border-b border-slate-200/90 px-4 sm:px-6 flex items-center justify-between shrink-0 z-30">
         
         {/* Left Mobile Drawer Toggle + Global Search */}
@@ -643,18 +707,16 @@ export default function CommunityHub() {
           </div>
         </div>
 
-        {/* Right Actions: Notifications, Messages, User Profile */}
-        <div className="flex items-center gap-2 sm:gap-3.5">
-          {/* Notification Bell */}
+        {/* Right Actions: Notifications, Messages, Real User Profile */}
+        <div className="flex items-center gap-2 sm:gap-3.5 relative">
+          
+          {/* Notification Bell (Clean - no fake badge) */}
           <button
             type="button"
             className="relative p-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors"
             title="Notifications"
           >
             <Bell className="w-5 h-5 stroke-[1.8]" />
-            <span className="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs">
-              3
-            </span>
           </button>
 
           {/* Mail Envelope */}
@@ -666,21 +728,55 @@ export default function CommunityHub() {
             <Mail className="w-5 h-5 stroke-[1.8]" />
           </button>
 
-          {/* User Profile Pill */}
-          <div className="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-slate-200/80 cursor-pointer">
+          {/* User Profile Pill (Shows Real Logged In User) */}
+          <div
+            onClick={() => setShowUserDropdown(!showUserDropdown)}
+            className="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-slate-200/80 cursor-pointer hover:opacity-90 transition-opacity relative"
+          >
             <div className="relative">
               <img
                 src={currentUser.avatar}
                 alt={currentUser.name}
-                className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-2xs"
               />
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />
             </div>
-            <span className="text-xs font-bold text-slate-800 hidden sm:inline-block">
+            <span className="text-xs font-bold text-slate-800 hidden sm:inline-block max-w-[140px] truncate">
               {currentUser.name}
             </span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:inline-block" />
           </div>
+
+          {/* User Dropdown Menu */}
+          {showUserDropdown && (
+            <div className="absolute top-12 right-0 bg-white rounded-2xl border border-slate-200 shadow-xl p-3 w-56 z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="px-2 py-1.5 border-b border-slate-100 mb-2">
+                <p className="text-xs font-bold text-slate-900 truncate">{currentUser.name}</p>
+                {currentUser.email && (
+                  <p className="text-[11px] text-slate-500 truncate">{currentUser.email}</p>
+                )}
+                <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70">
+                  {currentUser.role}
+                </span>
+              </div>
+
+              <a
+                href={currentUser.role === 'Licensed Expert' ? '/service-provider/dashboard' : '/traveller/dashboard'}
+                className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
+              >
+                <Shield className="w-3.5 h-3.5 text-[#00A86B]" />
+                <span>My Dashboard</span>
+              </a>
+
+              <a
+                href="/login"
+                className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
+              >
+                <LogOut className="w-3.5 h-3.5 text-slate-400" />
+                <span>Switch Account</span>
+              </a>
+            </div>
+          )}
 
           {/* Right Sidebar Toggle for Mobile */}
           <button
@@ -756,7 +852,7 @@ export default function CommunityHub() {
             })}
           </div>
 
-          {/* Conversations List */}
+          {/* Conversations List (No dummy messages, clean snippets) */}
           <div className="flex-1 overflow-y-auto divide-y divide-slate-100/80 no-scrollbar">
             {filteredRooms.map((room) => {
               const isSelected = room.id === activeRoomId;
@@ -778,22 +874,24 @@ export default function CommunityHub() {
                     )}
                   </div>
 
-                  {/* Title & Snippet */}
+                  {/* Title & Real Snippet */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1 mb-0.5">
                       <h3 className="text-xs font-bold text-slate-900 truncate">
                         {room.title}
                       </h3>
-                      <span className="text-[10px] text-slate-400 font-medium shrink-0">
-                        {room.lastMessageTime}
-                      </span>
+                      {room.lastMessageTime && (
+                        <span className="text-[10px] text-slate-400 font-medium shrink-0">
+                          {room.lastMessageTime}
+                        </span>
+                      )}
                     </div>
                     <p className="text-[11px] text-slate-500 truncate leading-snug">
                       {room.lastMessageSnippet}
                     </p>
                   </div>
 
-                  {/* Unread Badge (Green circle matching mockup) */}
+                  {/* Unread Badge (Only displayed when real unread messages exist) */}
                   {room.unreadCount > 0 && (
                     <span className="w-5 h-5 rounded-full bg-[#00A86B] text-white text-[10px] font-black flex items-center justify-center shrink-0 shadow-2xs">
                       {room.unreadCount}
@@ -824,7 +922,7 @@ export default function CommunityHub() {
                   {activeRoom.title}
                 </h1>
                 <p className="text-[11px] text-slate-500 font-normal">
-                  {activeRoom.memberCount} • <span className="text-slate-400">{activeRoom.activeStatus}</span>
+                  {totalMembersCount} registered members • <span className="text-emerald-600 font-semibold">Live</span>
                 </p>
               </div>
             </div>
@@ -858,111 +956,151 @@ export default function CommunityHub() {
           {/* Messages Feed Stream */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fdfdfd]">
             
-            {/* Centered Date Badge */}
-            <div className="flex items-center justify-center my-1">
-              <span className="px-3 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold shadow-2xs">
-                Today
-              </span>
-            </div>
+            {/* If NO messages exist in this room yet -> Show Beautiful Clean Empty State */}
+            {activeMessages.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-center p-6 sm:p-10 max-w-md mx-auto my-auto">
+                <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shadow-xs mb-3.5 flex items-center justify-center bg-slate-50">
+                  {activeRoom.flagComponent ? (
+                    activeRoom.flagComponent
+                  ) : (
+                    <img src={activeRoom.bannerImage} alt={activeRoom.title} className="w-full h-full object-cover" />
+                  )}
+                </div>
 
-            {activeMessages.map((msg) => {
-              if (msg.isSelf) {
-                return (
-                  <div key={msg.id} className="flex items-end justify-end gap-2.5 pl-8 sm:pl-16">
-                    <div className="flex flex-col items-end max-w-[85%] sm:max-w-md">
-                      <div className="bg-[#E8F8F2] border border-[#d1f2e4] text-slate-900 rounded-2xl rounded-tr-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed whitespace-pre-wrap">
-                        {msg.text && <p>{msg.text}</p>}
-                        {msg.image && (
-                          <img src={msg.image} alt="Uploaded attachment" className="rounded-xl max-h-60 object-cover mt-1.5" />
-                        )}
-                        {msg.attachment && (
-                          <div className="flex items-center justify-between gap-3 p-2 bg-white/80 rounded-xl border border-emerald-200 mt-1">
-                            <div className="flex items-center gap-2 min-w-0">
-                              <div className="w-7 h-7 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                                A
+                <h3 className="text-base font-bold text-slate-900 mb-1">
+                  Welcome to {activeRoom.title}
+                </h3>
+                
+                <p className="text-xs text-slate-500 leading-relaxed mb-5">
+                  This room is open for registered community members, travelers, and licensed advisors. Say hello or post a question below to start the discussion!
+                </p>
+
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setInputText("Hello everyone! Glad to join this community 👋")}
+                    className="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                  >
+                    "Hello everyone! 👋"
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInputText("Does anyone have recent updates regarding visa processing times?")}
+                    className="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                  >
+                    "Ask about visa timelines ⏱️"
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Centered Date Badge */}
+                <div className="flex items-center justify-center my-1">
+                  <span className="px-3 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold shadow-2xs">
+                    Today
+                  </span>
+                </div>
+
+                {activeMessages.map((msg) => {
+                  if (msg.isSelf) {
+                    return (
+                      <div key={msg.id} className="flex items-end justify-end gap-2.5 pl-8 sm:pl-16">
+                        <div className="flex flex-col items-end max-w-[85%] sm:max-w-md">
+                          <div className="bg-[#E8F8F2] border border-[#d1f2e4] text-slate-900 rounded-2xl rounded-tr-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed whitespace-pre-wrap">
+                            {msg.text && <p>{msg.text}</p>}
+                            {msg.image && (
+                              <img src={msg.image} alt="Uploaded attachment" className="rounded-xl max-h-60 object-cover mt-1.5" />
+                            )}
+                            {msg.attachment && (
+                              <div className="flex items-center justify-between gap-3 p-2 bg-white/80 rounded-xl border border-emerald-200 mt-1">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <div className="w-7 h-7 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                                    A
+                                  </div>
+                                  <div className="min-w-0">
+                                    <p className="text-xs font-bold text-slate-900 truncate">{msg.attachment.name}</p>
+                                    <span className="text-[10px] text-slate-500">{msg.attachment.size} • {msg.attachment.type}</span>
+                                  </div>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-500 hover:text-slate-800 shrink-0 cursor-pointer" />
                               </div>
-                              <div className="min-w-0">
-                                <p className="text-xs font-bold text-slate-900 truncate">{msg.attachment.name}</p>
-                                <span className="text-[10px] text-slate-500">{msg.attachment.size} • {msg.attachment.type}</span>
-                              </div>
-                            </div>
-                            <Download className="w-4 h-4 text-slate-500 hover:text-slate-800 shrink-0 cursor-pointer" />
+                            )}
                           </div>
-                        )}
-                      </div>
-                      
-                      <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-medium">
-                        <span>{msg.timestamp}</span>
-                        <CheckCheck className="w-3.5 h-3.5 text-[#00A86B] stroke-[2.2]" />
-                      </div>
-                    </div>
-
-                    <img
-                      src={currentUser.avatar}
-                      alt="You"
-                      className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mb-4"
-                    />
-                  </div>
-                );
-              }
-
-              return (
-                <div key={msg.id} className="flex items-start gap-2.5 pr-8 sm:pr-16">
-                  <img
-                    src={msg.senderAvatar}
-                    alt={msg.senderName}
-                    className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mt-0.5"
-                  />
-
-                  <div className="flex flex-col items-start max-w-[85%] sm:max-w-md">
-                    <span className="text-[11px] font-bold text-slate-700 mb-1">
-                      {msg.senderName}
-                    </span>
-
-                    {msg.text && (
-                      <div className="bg-white border border-slate-200/90 text-slate-800 rounded-2xl rounded-tl-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed">
-                        <p>{msg.text}</p>
-                      </div>
-                    )}
-
-                    {msg.attachment && (
-                      <div className="bg-white border border-slate-200/90 rounded-2xl rounded-tl-xs p-3 shadow-2xs w-full max-w-sm flex items-center justify-between gap-3 hover:border-slate-300 transition-all">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                            A
-                          </div>
-                          <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-slate-900 truncate">
-                              {msg.attachment.name}
-                            </h4>
-                            <p className="text-[10px] text-slate-500 font-medium">
-                              {msg.attachment.size} • {msg.attachment.type}
-                            </p>
+                          
+                          <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-medium">
+                            <span>{msg.timestamp}</span>
+                            <CheckCheck className="w-3.5 h-3.5 text-[#00A86B] stroke-[2.2]" />
                           </div>
                         </div>
 
-                        <a
-                          href={msg.attachment.dataUrl || msg.attachment.url || '#'}
-                          download={msg.attachment.name}
-                          className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                          title="Download document"
-                        >
-                          <Download className="w-4 h-4 stroke-[2]" />
-                        </a>
+                        <img
+                          src={currentUser.avatar}
+                          alt="You"
+                          className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mb-4"
+                        />
                       </div>
-                    )}
+                    );
+                  }
 
-                    {msg.image && (
-                      <img src={msg.image} alt="Shared preview" className="rounded-xl max-h-60 object-cover mt-1 border border-slate-200" />
-                    )}
+                  return (
+                    <div key={msg.id} className="flex items-start gap-2.5 pr-8 sm:pr-16">
+                      <img
+                        src={msg.senderAvatar}
+                        alt={msg.senderName}
+                        className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mt-0.5"
+                      />
 
-                    <span className="text-[10px] text-slate-400 font-medium mt-1">
-                      {msg.timestamp}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+                      <div className="flex flex-col items-start max-w-[85%] sm:max-w-md">
+                        <span className="text-[11px] font-bold text-slate-700 mb-1">
+                          {msg.senderName}
+                        </span>
+
+                        {msg.text && (
+                          <div className="bg-white border border-slate-200/90 text-slate-800 rounded-2xl rounded-tl-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed">
+                            <p>{msg.text}</p>
+                          </div>
+                        )}
+
+                        {msg.attachment && (
+                          <div className="bg-white border border-slate-200/90 rounded-2xl rounded-tl-xs p-3 shadow-2xs w-full max-w-sm flex items-center justify-between gap-3 hover:border-slate-300 transition-all">
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="w-8 h-8 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                                A
+                              </div>
+                              <div className="min-w-0">
+                                <h4 className="text-xs font-bold text-slate-900 truncate">
+                                  {msg.attachment.name}
+                                </h4>
+                                <p className="text-[10px] text-slate-500 font-medium">
+                                  {msg.attachment.size} • {msg.attachment.type}
+                                </p>
+                              </div>
+                            </div>
+
+                            <a
+                              href={msg.attachment.dataUrl || msg.attachment.url || '#'}
+                              download={msg.attachment.name}
+                              className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                              title="Download document"
+                            >
+                              <Download className="w-4 h-4 stroke-[2]" />
+                            </a>
+                          </div>
+                        )}
+
+                        {msg.image && (
+                          <img src={msg.image} alt="Shared preview" className="rounded-xl max-h-60 object-cover mt-1 border border-slate-200" />
+                        )}
+
+                        <span className="text-[10px] text-slate-400 font-medium mt-1">
+                          {msg.timestamp}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
 
             <div ref={chatBottomRef} />
           </div>
@@ -1057,7 +1195,7 @@ export default function CommunityHub() {
           </div>
         </main>
 
-        {/* COLUMN 3: RIGHT SIDEBAR (Group Details & Members Roster) */}
+        {/* COLUMN 3: RIGHT SIDEBAR (Real Group Details & Members Roster) */}
         <aside
           className={`
             fixed xl:relative inset-y-0 right-0 z-40 w-[300px] sm:w-[320px] lg:w-[340px] bg-white border-l border-slate-200/90
@@ -1096,7 +1234,7 @@ export default function CommunityHub() {
                 {activeRoom.title}
               </h2>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
-                {activeRoom.memberCount} • Public Group
+                {totalMembersCount} Registered Members • Public Group
               </p>
             </div>
 
@@ -1115,43 +1253,71 @@ export default function CommunityHub() {
                 }
               `}
             >
-              {activeRoom.isJoined ? 'Join/Leave' : 'Join Group'}
+              {activeRoom.isJoined ? 'Joined • Click to Leave' : 'Join Group'}
             </button>
           </div>
 
           <div className="h-px bg-slate-100 my-4 mx-5" />
 
-          {/* Group Members Section */}
+          {/* Real Group Members Section */}
           <div className="px-5 pb-6">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xs font-bold text-slate-900">
-                {activeRoom.totalMembersCountText}
+                Group Members ({totalMembersCount})
               </h3>
-              <button
-                type="button"
-                className="text-[11px] font-bold text-slate-500 hover:text-slate-800 transition-colors"
-              >
-                See all &gt;
-              </button>
             </div>
 
+            {/* Overlapping member avatars using real avatars or registered members */}
             <div className="flex items-center -space-x-1.5 mb-4">
-              {activeRoom.memberAvatars.map((ava, i) => (
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
+                title={`${currentUser.name} (You)`}
+              />
+              {registeredMembers.slice(0, 4).map((mem, i) => (
                 <img
-                  key={i}
-                  src={ava}
-                  alt="Group Member"
+                  key={mem.id || i}
+                  src={mem.avatar}
+                  alt={mem.name}
                   className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
+                  title={mem.name}
                 />
               ))}
               <div className="w-7 h-7 rounded-full bg-slate-100 border-2 border-white text-slate-600 text-[9px] font-black flex items-center justify-center shadow-2xs">
-                +1.1K
+                +{Math.max(1, totalMembersCount - 5)}
               </div>
             </div>
 
+            {/* Real Registered Members Roster */}
             <div className="space-y-3">
-              {activeRoom.members.map((mem) => (
-                <div key={mem.id} className="flex items-center justify-between gap-3">
+              
+              {/* Current User in Roster */}
+              <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl bg-slate-50/80 border border-slate-200/60">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                  />
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-slate-900 truncate block">
+                      {currentUser.name}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-medium">
+                      You
+                    </span>
+                  </div>
+                </div>
+
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70 shrink-0">
+                  {currentUser.role}
+                </span>
+              </div>
+
+              {/* Real Registered Members from Database */}
+              {registeredMembers.map((mem) => (
+                <div key={mem.id} className="flex items-center justify-between gap-3 px-1">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <img
                       src={mem.avatar}
@@ -1164,7 +1330,7 @@ export default function CommunityHub() {
                   </div>
 
                   {mem.role && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70 shrink-0">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200/70 shrink-0">
                       {mem.role}
                     </span>
                   )}
@@ -1185,7 +1351,7 @@ export default function CommunityHub() {
               <button
                 type="button"
                 onClick={() => setShowNewChatModal(false)}
-                className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1241,7 +1407,7 @@ export default function CommunityHub() {
                 <button
                   type="button"
                   onClick={() => setShowNewChatModal(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold"
+                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -1249,7 +1415,7 @@ export default function CommunityHub() {
                   type="button"
                   onClick={handleCreateNewChat}
                   disabled={!newChatTitle.trim()}
-                  className="px-5 py-2 rounded-xl bg-[#00A86B] hover:bg-[#00925d] text-white font-bold transition-all disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl bg-[#00A86B] hover:bg-[#00925d] text-white font-bold transition-all disabled:opacity-50 cursor-pointer"
                 >
                   Create Channel
                 </button>

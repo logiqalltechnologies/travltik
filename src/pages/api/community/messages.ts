@@ -151,7 +151,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   } catch (err: any) {
     console.error('[Community POST /messages]', err);
-    return new Response(JSON.stringify({ success: false, message: 'Failed to send message.' }), {
+    return new Response(JSON.stringify({ success: false, message: err?.message || 'Failed to send message.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
