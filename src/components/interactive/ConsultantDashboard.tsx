@@ -641,7 +641,7 @@ export function ConsultantDashboard() {
                     icon: Briefcase, 
                     badge: hasWorkPermit ? "ACTIVE" : "OFFERS", 
                     badgeColor: hasWorkPermit 
-                        ? "bg-blue-50 text-blue-700 border border-blue-200/80 font-bold" 
+                        ? "bg-[#420f79]/10 text-[#420f79] border border-[#420f79]/20 font-bold" 
                         : "bg-slate-100 text-slate-600 border border-slate-200" 
                 },
                 { id: "leads", label: "Leads", icon: Users, count: leadsList.length > 0 ? leadsList.length : undefined },
@@ -890,24 +890,24 @@ export function ConsultantDashboard() {
                                                         title={item.label}
                                                         className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-bold transition-all cursor-pointer ${
                                                             isActive
-                                                                ? "bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black shadow-sm shadow-emerald-500/20"
+                                                                ? "bg-emerald-50 text-emerald-900 font-bold border border-emerald-200/80 shadow-2xs"
                                                                 : "text-slate-600 hover:text-slate-950 hover:bg-slate-100/80"
                                                         }`}
                                                     >
                                                         <div className="flex items-center gap-3 min-w-0">
-                                                            <IconComp className={`w-4.5 h-4.5 shrink-0 ${isActive ? "text-slate-950 stroke-[2.4]" : "text-slate-500 stroke-[1.8]"}`} />
+                                                            <IconComp className={`w-4.5 h-4.5 shrink-0 ${isActive ? "text-emerald-700 stroke-[2.2]" : "text-slate-500 stroke-[1.8]"}`} />
                                                             {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
                                                         </div>
                                                         {!isSidebarCollapsed && (
                                                             item.count !== undefined ? (
                                                                 <span className={`text-[10px] font-black px-2 py-0.5 rounded-md min-w-[20px] text-center ${
-                                                                    isActive ? "bg-slate-950/15 text-slate-950" : "bg-slate-100 text-slate-600"
+                                                                    isActive ? "bg-emerald-100/90 text-emerald-800" : "bg-slate-100 text-slate-600"
                                                                 }`}>
                                                                     {item.count}
                                                                 </span>
                                                             ) : item.badge ? (
                                                                 <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-md ${
-                                                                    isActive ? "bg-slate-950/15 text-slate-950" : (item.badgeColor || 'bg-slate-100 text-slate-700')
+                                                                    isActive ? "bg-emerald-100/90 text-emerald-800" : (item.badgeColor || 'bg-slate-100 text-slate-700')
                                                                 }`}>
                                                                     {item.badge}
                                                                 </span>
@@ -982,12 +982,12 @@ export function ConsultantDashboard() {
                                             }}
                                             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
                                                 isActive
-                                                    ? "bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 text-slate-950 font-black shadow-sm"
+                                                    ? "bg-emerald-50 text-emerald-900 font-bold border border-emerald-200/80"
                                                     : "text-slate-600 hover:bg-slate-100"
                                             }`}
                                         >
                                             <div className="flex items-center gap-3">
-                                                <IconComp className={`w-4 h-4 ${isActive ? "text-slate-950 stroke-[2.4]" : ""}`} />
+                                                <IconComp className={`w-4 h-4 ${isActive ? "text-emerald-700 stroke-[2.2]" : ""}`} />
                                                 <span>{item.label}</span>
                                             </div>
                                         </button>
@@ -1091,15 +1091,15 @@ export function ConsultantDashboard() {
                             </div>
 
                             {/* Work Permit Quick Portal Banner Card */}
-                            <div className="bg-gradient-to-r from-blue-50 via-indigo-50/40 to-blue-50/20 border border-blue-200/90 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div className="bg-gradient-to-r from-[#420f79]/[0.05] via-purple-50/40 to-[#420f79]/[0.03] border border-[#420f79]/20 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div className="flex items-center gap-3.5">
-                                    <div className="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
+                                    <div className="w-11 h-11 rounded-xl bg-[#420f79] text-white flex items-center justify-center shadow-md shadow-[#420f79]/20 shrink-0">
                                         <Briefcase className="w-5 h-5" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2 flex-wrap mb-0.5">
                                             <h3 className="text-sm sm:text-base font-bold text-slate-900">Work Permit Job Offers & Processing</h3>
-                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${hasWorkPermit ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-blue-50 text-blue-700 border-blue-200'}`}>
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${hasWorkPermit ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-[#420f79]/10 text-[#420f79] border-[#420f79]/20'}`}>
                                                 {hasWorkPermit ? 'Category Active' : 'Available Service'}
                                             </span>
                                         </div>
@@ -1119,7 +1119,7 @@ export function ConsultantDashboard() {
                                     <button
                                         type="button"
                                         onClick={() => setActiveTab("work-permit")}
-                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all active:scale-[0.98] cursor-pointer"
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#420f79] hover:bg-[#340b61] text-white text-xs font-bold shadow-md shadow-[#420f79]/20 transition-all active:scale-[0.98] cursor-pointer"
                                     >
                                         <Plus className="w-3.5 h-3.5" />
                                         <span>Create Offer</span>
