@@ -5094,123 +5094,83 @@ return (
             {/* Top Gradient Accent Bar */}
             <div className="h-2 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600" />
 
-            <div className="p-5 sm:p-7">
+            <div className="p-5 sm:p-6">
               {/* Close Button */}
               <button
                 type="button"
                 onClick={() => setShowPaidPlanModal(false)}
-                className="absolute top-5 right-5 p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Top Badge */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-extrabold uppercase tracking-wider mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                <span>AI Visa Pathway & Roadmap</span>
+              {/* Title & Badge */}
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  AI Visa Pathway
+                </span>
+                <span className="text-xs text-slate-500 font-medium truncate">
+                  {pendingSearchData.targetCountry} • {pendingSearchData.selectedPurpose.toUpperCase()}
+                </span>
               </div>
 
-              {/* Title & Headline */}
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Get Your Visa Done
               </h3>
-              <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-                Unlock the complete, official AI requirements dossier, consular approval blueprint, and checklist for your journey.
+              <p className="text-xs text-slate-500 mt-0.5">
+                Consular requirements & filing checklist for your journey.
               </p>
 
-              {/* Target Country & Criteria Tag */}
-              <div className="mt-4 p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-sm shadow-2xs shrink-0">
-                    🌍
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 truncate block">
-                      {pendingSearchData.targetCountry} ({pendingSearchData.selectedPurpose.toUpperCase()})
-                    </span>
-                    <span className="text-[11px] text-slate-500 truncate block">
-                      Passport: {pendingSearchData.passport}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="text-right shrink-0">
-                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full uppercase">
-                    Consular Ready
-                  </span>
-                </div>
-              </div>
-
-              {/* Pricing Hero Card */}
-              <div className="mt-4 p-4 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-200/80 flex items-baseline justify-between">
+              {/* Compact Price Card */}
+              <div className="mt-3.5 p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
                 <div>
-                  <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                    $5
-                  </span>
-                  <span className="text-xs font-bold text-slate-600 ml-1.5">
-                    USD (~₹420 INR)
-                  </span>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    One-time payment • Lifetime access for this visa application
-                  </p>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-2xl font-black text-slate-900">$5</span>
+                    <span className="text-xs font-bold text-slate-500">USD (~₹420 INR)</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-medium">One-time fee • Lifetime access</span>
                 </div>
-                <div className="text-right">
-                  <span className="text-[11px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
-                    Save $45 vs Agents
-                  </span>
-                </div>
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded-full">
+                  Instant Unlock
+                </span>
               </div>
 
-              {/* Value Proposition Items */}
-              <div className="mt-4 space-y-2.5 text-xs text-slate-700 font-medium">
-                <div className="flex items-start gap-2.5">
-                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+              {/* Short, Clean 3-Item Bullet List */}
+              <div className="mt-3.5 space-y-2 text-xs text-slate-700 font-medium">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span>
-                    <strong className="font-bold text-slate-900">Instant AI Visa Pathway:</strong> Full consular filing checklist customized for your {pendingSearchData.passport} passport.
-                  </span>
+                  <span>Complete Embassy Checklist & Document Dossier</span>
                 </div>
-                <div className="flex items-start gap-2.5">
-                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span>
-                    <strong className="font-bold text-slate-900">Personalized Document Dossier:</strong> Exact financial thresholds, affidavit templates & photo specifications for {pendingSearchData.targetCountry}.
-                  </span>
+                  <span>VFS & Consular Slot Booking Roadmap</span>
                 </div>
-                <div className="flex items-start gap-2.5">
-                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span>
-                    <strong className="font-bold text-slate-900">VFS & Consular Slot Roadmap:</strong> Step-by-step biometric and interview slot booking instructions.
-                  </span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-3 h-3 stroke-[3]" />
-                  </div>
-                  <span>
-                    <strong className="font-bold text-slate-900">Zero-Risk Escrow Guarantee:</strong> 100% money-back guarantee if requirements are not current.
-                  </span>
+                  <span>100% Money-Back & Zero-Risk Escrow Guarantee</span>
                 </div>
               </div>
 
               {/* Proceed to Payment CTA */}
-              <div className="mt-6 space-y-2">
+              <div className="mt-5 space-y-2">
                 <button
                   type="button"
                   onClick={handleProceedToPayment}
-                  className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
                 >
-                  <span>Proceed to Pay $5 (₹420) • Get Your Visa Done</span>
+                  <span>Proceed to Pay $5 (₹420)</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                 </button>
 
-                <div className="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-semibold pt-1">
+                <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 font-medium">
                   <Shield className="w-3 h-3 text-emerald-600" />
-                  <span>Secured by Razorpay 256-Bit Encryption • Instant Access</span>
+                  <span>Secured by Razorpay • Instant Activation</span>
                 </div>
               </div>
 
