@@ -1,10 +1,11 @@
 // src/components/community/CommunityHub.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Search, Bell, Mail, ChevronDown, Plus, Download, CheckCheck,
+  Search, Bell, Mail, ChevronDown, CheckCheck,
   Smile, Send, MoreVertical,
-  UserPlus, Users, X, ArrowLeft, Check, LogOut,
-  ExternalLink, MessageSquare, Shield, ShieldAlert, CheckCircle2, Sparkles
+  Users, X, ArrowLeft, Check, LogOut,
+  ExternalLink, MessageSquare, Shield, ShieldAlert, CheckCircle2, Sparkles,
+  Info, Globe, Compass, FileText, Share2, HelpCircle
 } from 'lucide-react';
 
 interface GroupMember {
@@ -14,14 +15,6 @@ interface GroupMember {
   role?: 'Admin' | 'Moderator' | 'Member' | 'Licensed Expert';
 }
 
-interface ChatAttachment {
-  name: string;
-  size: string;
-  type: string;
-  url?: string;
-  dataUrl?: string;
-}
-
 interface ChatMessage {
   id: string;
   senderName: string;
@@ -29,8 +22,6 @@ interface ChatMessage {
   isSelf: boolean;
   text?: string;
   timestamp: string;
-  attachment?: ChatAttachment;
-  image?: string;
 }
 
 interface ChatRoom {
@@ -123,16 +114,40 @@ const UAERoundel = () => (
 );
 
 const TravelRoundel = () => (
-  <div className="w-full h-full rounded-full bg-sky-500 flex items-center justify-center text-white shadow-xs">
+  <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white shadow-xs">
     <span className="text-xl">✈️</span>
   </div>
 );
 
 const FoodRoundel = () => (
-  <div className="w-full h-full rounded-full bg-amber-500 flex items-center justify-center text-white shadow-xs">
+  <div className="w-full h-full rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-xs">
     <span className="text-xl">🍱</span>
   </div>
 );
+
+// High-quality vibrant initial helper
+const getAvatarGradient = (name: string) => {
+  const gradients = [
+    'from-emerald-500 to-teal-600',
+    'from-blue-500 to-indigo-600',
+    'from-purple-500 to-pink-600',
+    'from-amber-500 to-rose-600',
+    'from-cyan-500 to-blue-600',
+    'from-teal-500 to-emerald-600',
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return gradients[Math.abs(hash) % gradients.length];
+};
+
+const getInitials = (name: string) => {
+  if (!name) return 'EX';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+};
 
 export default function CommunityHub() {
   // Current user state (strictly loaded from real logged in session)
@@ -168,11 +183,6 @@ export default function CommunityHub() {
   const [showRightDetailsMobile, setShowRightDetailsMobile] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
-  const [showNewChatModal, setShowNewChatModal] = useState(false);
-  const [newChatTitle, setNewChatTitle] = useState('');
-  const [newChatDescription, setNewChatDescription] = useState('');
-  const [newChatType, setNewChatType] = useState<'group' | 'direct'>('group');
-
   const [inputText, setInputText] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const chatBottomRef = useRef<HTMLDivElement>(null);
@@ -182,7 +192,7 @@ export default function CommunityHub() {
   const [totalMembersCount, setTotalMembersCount] = useState<number>(49);
   const [isLoadingMessages, setIsLoadingMessages] = useState<boolean>(false);
 
-  // Clean Initial Rooms (NO dummy last message snippets, NO fake unread counts)
+  // Clean Curated Rooms (NO dummy last message snippets, NO fake unread counts)
   const [rooms, setRooms] = useState<ChatRoom[]>([
     {
       id: 'canada',
@@ -191,13 +201,13 @@ export default function CommunityHub() {
       countryCode: 'CA',
       flagComponent: <CanadaRoundel />,
       iconType: 'flag',
-      memberCount: 'Active Group',
+      memberCount: 'Active Hub',
       activeStatus: 'Live Chat',
-      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageSnippet: 'Official Canada immigration & expat room',
       lastMessageTime: '',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1517935703635-2719079c221a?q=80&w=800&auto=format&fit=crop',
-      description: 'Official community hub for Canada PR, work permits, study visas, housing and settlement.',
+      description: 'Official community hub for Canada PR, Express Entry, work permits, study visas, housing, and provincial nominee programs.',
       isJoined: true,
       totalMembersCountText: 'Group Members',
       memberAvatars: [],
@@ -210,13 +220,13 @@ export default function CommunityHub() {
       countryCode: 'DE',
       flagComponent: <GermanyRoundel />,
       iconType: 'flag',
-      memberCount: 'Active Group',
+      memberCount: 'Active Hub',
       activeStatus: 'Live Chat',
-      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageSnippet: 'Chancenkarte, Blue Card & IT careers',
       lastMessageTime: '',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=800&auto=format&fit=crop',
-      description: 'Chancenkarte Opportunity Card, EU Blue Card, CV reviews, and tech jobs in Germany.',
+      description: 'Opportunity Card (Chancenkarte), EU Blue Card, CV translation, German language learning, and tech recruitment in Germany.',
       isJoined: true,
       totalMembersCountText: 'Group Members',
       memberAvatars: [],
@@ -224,18 +234,18 @@ export default function CommunityHub() {
     },
     {
       id: 'uk',
-      title: 'UK Expats',
+      title: 'UK Expats & Skilled Workers',
       type: 'group',
       countryCode: 'GB',
       flagComponent: <UKRoundel />,
       iconType: 'flag',
-      memberCount: 'Active Group',
+      memberCount: 'Active Hub',
       activeStatus: 'Live Chat',
-      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageSnippet: 'UK Skilled Worker & Graduate routes',
       lastMessageTime: '',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800&auto=format&fit=crop',
-      description: 'UK Skilled Worker visas, Graduate visa routes, life and career in London and across the UK.',
+      description: 'UK Skilled Worker visas, Graduate visa routes, NHS sponsorships, housing in London, Manchester, and career discussions.',
       isJoined: false,
       totalMembersCountText: 'Group Members',
       memberAvatars: [],
@@ -248,13 +258,13 @@ export default function CommunityHub() {
       countryCode: 'AU',
       flagComponent: <AustraliaRoundel />,
       iconType: 'flag',
-      memberCount: 'Active Group',
+      memberCount: 'Active Hub',
       activeStatus: 'Live Chat',
-      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageSnippet: 'Subclass 189/190/491 & skills updates',
       lastMessageTime: '',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=800&auto=format&fit=crop',
-      description: 'Subclass 189/190/491, skills assessments, job market, and regional migration in Australia.',
+      description: 'Subclass 189/190/491 points-tested visas, ACS/Engineers Australia assessments, job search, and settlement in Sydney/Melbourne.',
       isJoined: true,
       totalMembersCountText: 'Group Members',
       memberAvatars: [],
@@ -262,18 +272,18 @@ export default function CommunityHub() {
     },
     {
       id: 'uae',
-      title: 'UAE Expats',
+      title: 'UAE Expats & Golden Visa',
       type: 'group',
       countryCode: 'AE',
       flagComponent: <UAERoundel />,
       iconType: 'flag',
-      memberCount: 'Active Group',
+      memberCount: 'Active Hub',
       activeStatus: 'Live Chat',
-      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageSnippet: 'Dubai Golden Visas & freelance permits',
       lastMessageTime: '',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop',
-      description: 'Dubai Golden Visas, company formation, freelance permits, banking, and expat living.',
+      description: 'Dubai Golden Visas, freezone company formation, freelance permits, banking setup, and tax-friendly living in UAE.',
       isJoined: false,
       totalMembersCountText: 'Group Members',
       memberAvatars: [],
@@ -281,17 +291,17 @@ export default function CommunityHub() {
     },
     {
       id: 'travel',
-      title: 'Travel & Adventure',
+      title: 'Travel, Flights & Visas',
       type: 'group',
       iconType: 'plane',
       flagComponent: <TravelRoundel />,
-      memberCount: 'Active Group',
+      memberCount: 'Active Hub',
       activeStatus: 'Live Chat',
-      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageSnippet: 'Flight deals, transit visas & travel tips',
       lastMessageTime: '',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
-      description: 'Flight companions, travel hacks, budget itinerary planning, and visa-free travel tips.',
+      description: 'Flight companions, stopovers, visa-free destinations for Indian passport holders, and budget itinerary hacks.',
       isJoined: true,
       totalMembersCountText: 'Group Members',
       memberAvatars: [],
@@ -299,17 +309,17 @@ export default function CommunityHub() {
     },
     {
       id: 'lifestyle',
-      title: 'Food, Culture & Lifestyle',
+      title: 'Food, Culture & Settlement',
       type: 'group',
       iconType: 'food',
       flagComponent: <FoodRoundel />,
-      memberCount: 'Active Group',
+      memberCount: 'Active Hub',
       activeStatus: 'Live Chat',
-      lastMessageSnippet: 'No messages yet • Start chatting',
+      lastMessageSnippet: 'Indian groceries, culture & community meetups',
       lastMessageTime: '',
       unreadCount: 0,
       bannerImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
-      description: 'International cuisine, Indian groceries abroad, cultural tips, and community meetups.',
+      description: 'Finding Indian groceries abroad, vegetarian food, cultural festivals, healthcare registration, and expat meetups.',
       isJoined: false,
       totalMembersCountText: 'Group Members',
       memberAvatars: [],
@@ -317,7 +327,7 @@ export default function CommunityHub() {
     }
   ]);
 
-  // NO FAKE/DUMMY INITIAL MESSAGES - CLEAN EMPTY STATE
+  // Messages Map
   const [messagesMap, setMessagesMap] = useState<{ [roomId: string]: ChatMessage[] }>({});
 
   // 1. Detect Real User Identity from Server Session & localStorage
@@ -396,7 +406,6 @@ export default function CommunityHub() {
       if (loggedUser) {
         setCurrentUser(loggedUser);
       } else {
-        // Not logged in -> clean logged-out state (NO dummy accounts)
         setCurrentUser({
           id: '',
           name: '',
@@ -436,6 +445,8 @@ export default function CommunityHub() {
       email: '',
       avatar: '',
       role: 'Member',
+      userType: 'guest',
+      isExpert: false,
       isLoggedIn: false
     });
     setShowUserDropdown(false);
@@ -448,54 +459,36 @@ export default function CommunityHub() {
         setIsLoadingMessages(true);
       }
       const res = await fetch(`/api/community/messages?channel=${encodeURIComponent(channelSlug)}`);
-      if (!res.ok) return;
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          if (data.stats && data.stats.total_members) {
+            setTotalMembersCount(data.stats.total_members);
+          }
 
-      const data = await res.json();
-      if (data.success) {
-        if (data.stats && data.stats.total_members) {
-          setTotalMembersCount(data.stats.total_members);
-        }
+          // Populate real registered members (Travellers only)
+          if (data.seniors && Array.isArray(data.seniors)) {
+            const cleanMembers: GroupMember[] = data.seniors.map((s: any) => ({
+              id: String(s.id),
+              name: s.name,
+              avatar: s.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=random&color=fff&bold=true`,
+              role: s.role || 'Member'
+            }));
+            setRegisteredMembers(cleanMembers);
+          }
 
-        // Map real registered members from DB
-        if (Array.isArray(data.seniors) && data.seniors.length > 0) {
-          const mapped: GroupMember[] = data.seniors.map((s: any, idx: number) => ({
-            id: String(s.id || idx),
-            name: s.name,
-            avatar: s.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=420f79&color=fff`,
-            role: s.role || 'Member'
-          }));
-          setRegisteredMembers(mapped);
-        }
+          // Map database messages
+          const mappedMessages: ChatMessage[] = (data.messages || []).map((m: any) => {
+            const isMe = (currentUser.isLoggedIn && (
+              (currentUser.id && String(m.user_id) === String(currentUser.id)) ||
+              (currentUser.name && m.sender_name && m.sender_name.toLowerCase().trim() === currentUser.name.toLowerCase().trim())
+            ));
 
-        // Map real snippets from DB across all channels
-        if (Array.isArray(data.snippets) && data.snippets.length > 0) {
-          setRooms(prevRooms => prevRooms.map(room => {
-            const snip = data.snippets.find((s: any) => s.channel_slug === room.id);
-            if (snip) {
-              const snipTime = snip.created_at ? new Date(snip.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-              return {
-                ...room,
-                lastMessageSnippet: `${snip.sender_name}: ${snip.content}`,
-                lastMessageTime: snipTime
-              };
-            }
-            return room;
-          }));
-        }
-
-        // Map real messages from DB
-        if (Array.isArray(data.messages)) {
-          const mappedMessages: ChatMessage[] = data.messages.map((m: any) => {
-            const isSelf = Boolean(
-              (currentUser.id && m.user_id === currentUser.id) ||
-              (currentUser.email && (m.user_id === currentUser.email || m.sender_name === currentUser.name)) ||
-              (currentUser.name && m.sender_name === currentUser.name)
-            );
             return {
               id: String(m.id),
-              senderName: isSelf ? 'You' : m.sender_name,
-              senderAvatar: m.sender_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.sender_name)}&background=00A86B&color=fff`,
-              isSelf,
+              senderName: isMe ? 'You' : (m.sender_name || 'Community Member'),
+              senderAvatar: m.sender_avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.sender_name || 'User')}&background=random&color=fff&bold=true`,
+              isSelf: isMe,
               text: m.content,
               timestamp: m.created_at ? new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently'
             };
@@ -503,11 +496,9 @@ export default function CommunityHub() {
 
           setMessagesMap(prev => {
             const currentList = prev[channelSlug] || [];
-            // Preserve pending optimistic messages that haven't saved to DB yet
             const pendingOptimistic = currentList.filter(m => m.id.startsWith('temp-'));
             const combined = [...mappedMessages, ...pendingOptimistic];
 
-            // Don't re-render if messages haven't changed
             if (
               currentList.length === combined.length &&
               currentList.every((item, idx) => item.id === combined[idx].id && item.text === combined[idx].text)
@@ -527,7 +518,7 @@ export default function CommunityHub() {
               if (r.id === channelSlug) {
                 return {
                   ...r,
-                  lastMessageSnippet: last.text ? (last.isSelf ? `You: ${last.text}` : `${last.senderName}: ${last.text}`) : 'Attachment',
+                  lastMessageSnippet: last.text ? (last.isSelf ? `You: ${last.text}` : `${last.senderName}: ${last.text}`) : 'Active discussion',
                   lastMessageTime: last.timestamp
                 };
               }
@@ -545,7 +536,7 @@ export default function CommunityHub() {
     }
   };
 
-  // Real-time synchronization: Initial fetch + live polling every 2.5 seconds
+  // Real-time synchronization
   useEffect(() => {
     fetchChannelData(activeRoomId, true);
 
@@ -556,7 +547,7 @@ export default function CommunityHub() {
     return () => clearInterval(pollInterval);
   }, [activeRoomId, currentUser.id, currentUser.name]);
 
-  // Auto scroll to bottom when messages update
+  // Auto scroll to bottom
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messagesMap, activeRoomId]);
@@ -655,7 +646,6 @@ export default function CommunityHub() {
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.message) {
-          // Replace temp id with real server database id
           setMessagesMap(prev => {
             const list = prev[activeRoomId] || [];
             return {
@@ -673,53 +663,35 @@ export default function CommunityHub() {
     }
   };
 
-  const handleCreateNewChat = () => {
-    if (!newChatTitle.trim()) return;
-    const newId = 'room-' + Date.now();
-    const newRoom: ChatRoom = {
-      id: newId,
-      title: newChatTitle.trim(),
-      type: newChatType,
-      memberCount: '1 member',
-      activeStatus: 'Active just now',
-      lastMessageSnippet: 'No messages yet • Start chatting',
-      lastMessageTime: 'Just now',
-      unreadCount: 0,
-      bannerImage: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop',
-      description: newChatDescription.trim() || 'New expat community conversation room.',
-      isJoined: true,
-      totalMembersCountText: 'Group Members',
-      memberAvatars: [currentUser.avatar],
-      members: [
-        { id: currentUser.id, name: currentUser.name, avatar: currentUser.avatar, role: 'Admin' }
-      ]
-    };
-
-    setRooms(prev => [newRoom, ...prev]);
-    setActiveRoomId(newId);
-    setShowNewChatModal(false);
-    setNewChatTitle('');
-    setNewChatDescription('');
-  };
-
-  const EMOJIS = ['👍', '❤️', '🎉', '🔥', '👏', '🙏', '💯', '✨', '🇨🇦', '🇩🇪', '🇬🇧', '🇦🇺'];
+  const EMOJIS = ['👍', '❤️', '🎉', '🔥', '👏', '🙏', '💯', '✨', '🇨🇦', '🇩🇪', '🇬🇧', '🇦🇺', '✈️', '💼', '🏡', '🤝'];
 
   return (
     <div className="h-screen w-screen flex flex-col bg-[#F8FAFC] text-slate-900 font-sans overflow-hidden select-none">
 
-      {/* ── TOP HEADER ── */}
-      <header className="h-14 sm:h-16 bg-white border-b border-slate-200/90 px-4 sm:px-6 flex items-center justify-between shrink-0 z-30">
+      {/* ── TOP HEADER (Clean, Polished, Modern) ── */}
+      <header className="h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between shrink-0 z-30 shadow-xs">
         
-        {/* Left Mobile Drawer Toggle + Global Search */}
-        <div className="flex items-center gap-3 flex-1 max-w-xl">
+        {/* Left: Brand Badge + Mobile Drawer Toggle + Global Search */}
+        <div className="flex items-center gap-3 sm:gap-4 flex-1 max-w-xl">
           <button
             type="button"
             onClick={() => setShowLeftSidebarMobile(!showLeftSidebarMobile)}
-            className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100"
-            title="Toggle chat rooms"
+            className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
+            title="Toggle chat channels"
           >
             <Users className="w-5 h-5" />
           </button>
+
+          {/* Travltik Brand Tag */}
+          <a href="/" className="flex items-center gap-2 mr-1 sm:mr-3 shrink-0 group">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-black text-sm shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+              T
+            </div>
+            <div className="hidden lg:flex flex-col">
+              <span className="text-xs font-black tracking-wider text-slate-900 uppercase">Travltik</span>
+              <span className="text-[10px] font-semibold text-emerald-600 -mt-0.5">Expat Community</span>
+            </div>
+          </a>
 
           {/* Search Pill Input */}
           <div className="relative w-full max-w-md">
@@ -728,31 +700,32 @@ export default function CommunityHub() {
               type="text"
               value={globalSearch}
               onChange={(e) => setGlobalSearch(e.target.value)}
-              placeholder="Search chats, people, or topics..."
-              className="w-full pl-9 pr-4 py-2 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] rounded-full text-xs text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+              placeholder="Search discussions, visa topics, members..."
+              className="w-full pl-9 pr-8 py-2 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/10 rounded-full text-xs text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
             />
+            {globalSearch && (
+              <button
+                type="button"
+                onClick={() => setGlobalSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Right Actions: Notifications, Messages, Real User Profile */}
+        {/* Right Actions: Notifications, Live Status, Real User Profile */}
         <div className="flex items-center gap-2 sm:gap-3.5 relative">
           
-          {/* Notification Bell (Clean - no fake badge) */}
+          {/* Notification Bell */}
           <button
             type="button"
-            className="relative p-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors"
+            className="relative p-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
             title="Notifications"
           >
             <Bell className="w-5 h-5 stroke-[1.8]" />
-          </button>
-
-          {/* Mail Envelope */}
-          <button
-            type="button"
-            className="p-2 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-100 transition-colors"
-            title="Direct Messages"
-          >
-            <Mail className="w-5 h-5 stroke-[1.8]" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 rounded-full ring-2 ring-white" />
           </button>
 
           {/* User Profile Pill OR Login Buttons */}
@@ -762,14 +735,20 @@ export default function CommunityHub() {
             <div className="relative">
               <div
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
-                className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-200/80 cursor-pointer hover:opacity-90 transition-opacity select-none"
+                className="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-slate-200/80 cursor-pointer hover:opacity-90 transition-opacity select-none"
               >
                 <div className="relative">
-                  <img
-                    src={currentUser.avatar}
-                    alt={currentUser.name}
-                    className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-2xs"
-                  />
+                  {currentUser.avatar ? (
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
+                      className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-2xs"
+                    />
+                  ) : (
+                    <div className={`w-8 h-8 rounded-full bg-gradient-to-tr ${getAvatarGradient(currentUser.name)} text-white font-bold text-xs flex items-center justify-center shadow-2xs`}>
+                      {getInitials(currentUser.name)}
+                    </div>
+                  )}
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />
                 </div>
                 <div className="hidden sm:flex flex-col text-left leading-tight max-w-[130px]">
@@ -794,13 +773,17 @@ export default function CommunityHub() {
                     {currentUser.email && (
                       <p className="text-[11px] text-slate-500 truncate">{currentUser.email}</p>
                     )}
-                    <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70">
+                    <span className={`inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      currentUser.isExpert
+                        ? 'bg-amber-50 text-amber-800 border-amber-200'
+                        : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    }`}>
                       {currentUser.role}
                     </span>
                   </div>
 
                   <a
-                    href={currentUser.role === 'Licensed Expert' ? '/service-provider/dashboard' : '/traveller/dashboard'}
+                    href={currentUser.isExpert ? '/service-provider/dashboard' : '/traveller/dashboard'}
                     className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
                   >
                     <Shield className="w-3.5 h-3.5 text-[#00A86B]" />
@@ -822,13 +805,13 @@ export default function CommunityHub() {
             <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-200/80">
               <a
                 href="/login?return=/community"
-                className="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-950 border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 rounded-xl transition-all shadow-2xs whitespace-nowrap cursor-pointer"
+                className="px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-950 border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 rounded-xl transition-all shadow-2xs whitespace-nowrap cursor-pointer"
               >
                 Log in
               </a>
               <a
                 href="/signup?return=/community"
-                className="px-3.5 py-1.5 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl transition-all shadow-xs hover:shadow-emerald-500/20 whitespace-nowrap cursor-pointer"
+                className="px-4 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl transition-all shadow-sm hover:shadow-emerald-500/20 whitespace-nowrap cursor-pointer"
               >
                 Sign Up
               </a>
@@ -839,7 +822,7 @@ export default function CommunityHub() {
           <button
             type="button"
             onClick={() => setShowRightDetailsMobile(!showRightDetailsMobile)}
-            className="xl:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100"
+            className="xl:hidden p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-colors"
             title="Group info"
           >
             <MoreVertical className="w-5 h-5" />
@@ -850,27 +833,32 @@ export default function CommunityHub() {
       {/* ── 3-COLUMN MAIN LAYOUT ── */}
       <div className="flex-1 flex overflow-hidden relative">
 
-        {/* COLUMN 1: LEFT SIDEBAR (Chat Rooms & Conversations) */}
+        {/* COLUMN 1: LEFT SIDEBAR (Official Curated Chat Channels) */}
         <aside
           className={`
-            fixed md:relative inset-y-0 left-0 z-40 w-[300px] sm:w-[320px] bg-white border-r border-slate-200/90
-            flex flex-col shrink-0 transition-transform duration-300 md:translate-x-0
+            fixed md:relative inset-y-0 left-0 z-40 w-[300px] sm:w-[320px] bg-white border-r border-slate-200/80
+            flex flex-col shrink-0 transition-transform duration-300 md:translate-x-0 shadow-xs md:shadow-none
             ${showLeftSidebarMobile ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'}
           `}
         >
-          {/* Header: Chat Rooms & + New Chat */}
+          {/* Header: Clean Channel Title with Active Counter (NO Create Button) */}
           <div className="p-4 flex items-center justify-between border-b border-slate-100">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-              Chat Rooms
-            </h2>
-            <button
-              type="button"
-              onClick={() => setShowNewChatModal(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00A86B] hover:bg-[#00925d] text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
-            >
-              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>New Chat</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-bold text-slate-900 tracking-tight">
+                Expat Channels
+              </h2>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                {rooms.length} Active
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-1.5 text-slate-400">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-semibold text-emerald-600">Live Hub</span>
+            </div>
           </div>
 
           {/* Search conversations input */}
@@ -881,14 +869,14 @@ export default function CommunityHub() {
                 type="text"
                 value={roomSearchQuery}
                 onChange={(e) => setRoomSearchQuery(e.target.value)}
-                placeholder="Search conversations..."
+                placeholder="Search channels..."
                 className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/90 focus:border-[#00A86B] focus:bg-white rounded-xl text-xs text-slate-800 placeholder-slate-400 outline-none transition-all"
               />
             </div>
           </div>
 
           {/* Category Tabs: All | Direct | Groups */}
-          <div className="flex items-center border-b border-slate-200/80 px-4 text-xs font-semibold text-slate-500">
+          <div className="flex items-center border-b border-slate-100 px-4 text-xs font-semibold text-slate-500">
             {(['All', 'Direct', 'Groups'] as const).map((tab) => {
               const isActive = activeCategoryTab === tab;
               return (
@@ -909,7 +897,7 @@ export default function CommunityHub() {
             })}
           </div>
 
-          {/* Conversations List (No dummy messages, clean snippets) */}
+          {/* Official Channel List */}
           <div className="flex-1 overflow-y-auto divide-y divide-slate-100/80 no-scrollbar">
             {filteredRooms.map((room) => {
               const isSelected = room.id === activeRoomId;
@@ -918,12 +906,15 @@ export default function CommunityHub() {
                   key={room.id}
                   onClick={() => handleSelectRoom(room.id)}
                   className={`
-                    px-3.5 py-3 flex items-center gap-3 cursor-pointer transition-colors relative
-                    ${isSelected ? 'bg-slate-50/90' : 'hover:bg-slate-50/60 bg-white'}
+                    px-3.5 py-3 flex items-center gap-3 cursor-pointer transition-all relative
+                    ${isSelected 
+                      ? 'bg-emerald-50/60 border-l-[3px] border-[#00A86B]' 
+                      : 'hover:bg-slate-50/80 bg-white border-l-[3px] border-transparent'
+                    }
                   `}
                 >
                   {/* Flag Roundel / Icon */}
-                  <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200/70 shadow-2xs flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200/80 shadow-2xs flex items-center justify-center">
                     {room.flagComponent ? (
                       room.flagComponent
                     ) : (
@@ -934,7 +925,7 @@ export default function CommunityHub() {
                   {/* Title & Real Snippet */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1 mb-0.5">
-                      <h3 className="text-xs font-bold text-slate-900 truncate">
+                      <h3 className={`text-xs truncate ${isSelected ? 'font-black text-slate-900' : 'font-bold text-slate-800'}`}>
                         {room.title}
                       </h3>
                       {room.lastMessageTime && (
@@ -948,11 +939,9 @@ export default function CommunityHub() {
                     </p>
                   </div>
 
-                  {/* Unread Badge (Only displayed when real unread messages exist) */}
-                  {room.unreadCount > 0 && (
-                    <span className="w-5 h-5 rounded-full bg-[#00A86B] text-white text-[10px] font-black flex items-center justify-center shrink-0 shadow-2xs">
-                      {room.unreadCount}
-                    </span>
+                  {/* Active Indicator Dot */}
+                  {isSelected && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#00A86B] shrink-0" />
                   )}
                 </div>
               );
@@ -961,12 +950,12 @@ export default function CommunityHub() {
         </aside>
 
         {/* COLUMN 2: CENTER (Live Chat Messages & Input Composer) */}
-        <main className="flex-1 flex flex-col bg-white min-w-0 border-r border-slate-200/90 relative">
+        <main className="flex-1 flex flex-col bg-[#FAFBFD] min-w-0 border-r border-slate-200/80 relative">
 
           {/* Active Room Header */}
-          <div className="h-14 sm:h-16 px-4 sm:px-6 border-b border-slate-200/90 flex items-center justify-between bg-white shrink-0">
+          <div className="h-16 px-4 sm:px-6 border-b border-slate-200/80 flex items-center justify-between bg-white shrink-0 shadow-2xs">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 border border-slate-200/80 shadow-2xs flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-slate-200 shadow-2xs flex items-center justify-center">
                 {activeRoom.flagComponent ? (
                   activeRoom.flagComponent
                 ) : (
@@ -975,48 +964,40 @@ export default function CommunityHub() {
               </div>
 
               <div className="min-w-0">
-                <h1 className="text-sm sm:text-base font-bold text-slate-900 truncate">
-                  {activeRoom.title}
-                </h1>
-                <p className="text-[11px] text-slate-500 font-normal">
-                  {totalMembersCount} registered members • <span className="text-emerald-600 font-semibold">Live</span>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-sm sm:text-base font-bold text-slate-900 truncate">
+                    {activeRoom.title}
+                  </h1>
+                  <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>Verified</span>
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+                  {totalMembersCount} registered expats • <span className="text-emerald-600 font-semibold">Active Community</span>
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-3 text-slate-500">
+            <div className="flex items-center gap-1 sm:gap-2 text-slate-500">
               <button
                 type="button"
-                className="p-1.5 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                title="Search messages"
+                onClick={() => setShowRightDetailsMobile(!showRightDetailsMobile)}
+                className="p-2 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+                title="View Channel Details & Members"
               >
-                <Search className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowNewChatModal(true)}
-                className="p-1.5 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                title="Add members"
-              >
-                <UserPlus className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                className="p-1.5 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                title="More options"
-              >
-                <MoreVertical className="w-4 h-4" />
+                <Info className="w-4 h-4" />
               </button>
             </div>
           </div>
 
           {/* Messages Feed Stream */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#fdfdfd]">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
             
             {/* If NO messages exist in this room yet -> Show Beautiful Clean Empty State */}
             {activeMessages.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-6 sm:p-10 max-w-md mx-auto my-auto">
-                <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 shadow-xs mb-3.5 flex items-center justify-center bg-slate-50">
+                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md mb-4 flex items-center justify-center bg-slate-50 ring-4 ring-emerald-500/10">
                   {activeRoom.flagComponent ? (
                     activeRoom.flagComponent
                   ) : (
@@ -1024,36 +1005,36 @@ export default function CommunityHub() {
                   )}
                 </div>
 
-                <h3 className="text-base font-bold text-slate-900 mb-1">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1.5">
                   Welcome to {activeRoom.title}
                 </h3>
                 
-                <p className="text-xs text-slate-500 leading-relaxed mb-5">
-                  This room is open for registered community members, travelers, and licensed advisors. Say hello or post a question below to start the discussion!
+                <p className="text-xs text-slate-500 leading-relaxed mb-6">
+                  Official community discussion hub for verified expats and travellers. Ask visa queries, share timeline experiences, or discuss settlement advice below!
                 </p>
 
-                <div className="flex flex-wrap items-center justify-center gap-2">
+                <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2">
                   <button
                     type="button"
                     onClick={() => setInputText("Hello everyone! Glad to join this community 👋")}
-                    className="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                    className="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200/80 hover:border-emerald-300 text-slate-700 hover:text-emerald-800 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
                   >
-                    "Hello everyone! 👋"
+                    👋 "Hello everyone! Glad to join"
                   </button>
                   <button
                     type="button"
-                    onClick={() => setInputText("Does anyone have recent updates regarding visa processing times?")}
-                    className="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
+                    onClick={() => setInputText("What are current visa processing times?")}
+                    className="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200/80 hover:border-emerald-300 text-slate-700 hover:text-emerald-800 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
                   >
-                    "Ask about visa timelines ⏱️"
+                    ⏱️ "What are current visa processing times?"
                   </button>
                 </div>
               </div>
             ) : (
               <>
                 {/* Centered Date Badge */}
-                <div className="flex items-center justify-center my-1">
-                  <span className="px-3 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold shadow-2xs">
+                <div className="flex items-center justify-center my-2">
+                  <span className="px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 text-slate-500 text-[11px] font-semibold shadow-2xs">
                     Today
                   </span>
                 </div>
@@ -1061,51 +1042,46 @@ export default function CommunityHub() {
                 {activeMessages.map((msg) => {
                   if (msg.isSelf) {
                     return (
-                      <div key={msg.id} className="flex items-end justify-end gap-2.5 pl-8 sm:pl-16">
+                      <div key={msg.id} className="flex items-end justify-end gap-2.5 pl-8 sm:pl-16 animate-in fade-in duration-150">
                         <div className="flex flex-col items-end max-w-[85%] sm:max-w-md">
-                          <div className="bg-[#E8F8F2] border border-[#d1f2e4] text-slate-900 rounded-2xl rounded-tr-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed whitespace-pre-wrap">
-                            {msg.text && <p>{msg.text}</p>}
-                            {msg.image && (
-                              <img src={msg.image} alt="Uploaded attachment" className="rounded-xl max-h-60 object-cover mt-1.5" />
-                            )}
-                            {msg.attachment && (
-                              <div className="flex items-center justify-between gap-3 p-2 bg-white/80 rounded-xl border border-emerald-200 mt-1">
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <div className="w-7 h-7 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                                    A
-                                  </div>
-                                  <div className="min-w-0">
-                                    <p className="text-xs font-bold text-slate-900 truncate">{msg.attachment.name}</p>
-                                    <span className="text-[10px] text-slate-500">{msg.attachment.size} • {msg.attachment.type}</span>
-                                  </div>
-                                </div>
-                                <Download className="w-4 h-4 text-slate-500 hover:text-slate-800 shrink-0 cursor-pointer" />
-                              </div>
-                            )}
+                          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-2xl rounded-tr-xs px-4 py-2.5 text-xs sm:text-sm shadow-xs leading-relaxed whitespace-pre-wrap">
+                            {msg.text}
                           </div>
                           
                           <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-medium">
                             <span>{msg.timestamp}</span>
-                            <CheckCheck className="w-3.5 h-3.5 text-[#00A86B] stroke-[2.2]" />
+                            <CheckCheck className="w-3.5 h-3.5 text-emerald-600 stroke-[2.2]" />
                           </div>
                         </div>
 
-                        <img
-                          src={currentUser.avatar}
-                          alt="You"
-                          className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mb-4"
-                        />
+                        {currentUser.avatar ? (
+                          <img
+                            src={currentUser.avatar}
+                            alt="You"
+                            className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mb-4"
+                          />
+                        ) : (
+                          <div className={`w-7 h-7 rounded-full bg-gradient-to-tr ${getAvatarGradient('You')} text-white font-bold text-[10px] flex items-center justify-center mb-4 shadow-2xs`}>
+                            Y
+                          </div>
+                        )}
                       </div>
                     );
                   }
 
                   return (
-                    <div key={msg.id} className="flex items-start gap-2.5 pr-8 sm:pr-16">
-                      <img
-                        src={msg.senderAvatar}
-                        alt={msg.senderName}
-                        className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mt-0.5"
-                      />
+                    <div key={msg.id} className="flex items-start gap-2.5 pr-8 sm:pr-16 animate-in fade-in duration-150">
+                      {msg.senderAvatar ? (
+                        <img
+                          src={msg.senderAvatar}
+                          alt={msg.senderName}
+                          className="w-7 h-7 rounded-full object-cover shrink-0 border border-slate-200 mt-0.5"
+                        />
+                      ) : (
+                        <div className={`w-7 h-7 rounded-full bg-gradient-to-tr ${getAvatarGradient(msg.senderName)} text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5 shadow-2xs`}>
+                          {getInitials(msg.senderName)}
+                        </div>
+                      )}
 
                       <div className="flex flex-col items-start max-w-[85%] sm:max-w-md">
                         <span className="text-[11px] font-bold text-slate-700 mb-1">
@@ -1113,40 +1089,9 @@ export default function CommunityHub() {
                         </span>
 
                         {msg.text && (
-                          <div className="bg-white border border-slate-200/90 text-slate-800 rounded-2xl rounded-tl-xs px-4 py-2.5 text-xs sm:text-sm shadow-2xs leading-relaxed">
+                          <div className="bg-white border border-slate-200/80 text-slate-800 rounded-2xl rounded-tl-xs px-4 py-2.5 text-xs sm:text-sm shadow-xs leading-relaxed">
                             <p>{msg.text}</p>
                           </div>
-                        )}
-
-                        {msg.attachment && (
-                          <div className="bg-white border border-slate-200/90 rounded-2xl rounded-tl-xs p-3 shadow-2xs w-full max-w-sm flex items-center justify-between gap-3 hover:border-slate-300 transition-all">
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="w-8 h-8 rounded-lg bg-rose-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                                A
-                              </div>
-                              <div className="min-w-0">
-                                <h4 className="text-xs font-bold text-slate-900 truncate">
-                                  {msg.attachment.name}
-                                </h4>
-                                <p className="text-[10px] text-slate-500 font-medium">
-                                  {msg.attachment.size} • {msg.attachment.type}
-                                </p>
-                              </div>
-                            </div>
-
-                            <a
-                              href={msg.attachment.dataUrl || msg.attachment.url || '#'}
-                              download={msg.attachment.name}
-                              className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                              title="Download document"
-                            >
-                              <Download className="w-4 h-4 stroke-[2]" />
-                            </a>
-                          </div>
-                        )}
-
-                        {msg.image && (
-                          <img src={msg.image} alt="Shared preview" className="rounded-xl max-h-60 object-cover mt-1 border border-slate-200" />
                         )}
 
                         <span className="text-[10px] text-slate-400 font-medium mt-1">
@@ -1156,19 +1101,20 @@ export default function CommunityHub() {
                     </div>
                   );
                 })}
+
+                <div ref={chatBottomRef} />
               </>
             )}
-
-            <div ref={chatBottomRef} />
           </div>
 
-          {/* Bottom Message Composer */}
-          {currentUser.isLoggedIn && currentUser.isExpert ? (
-            <div className="p-3 sm:p-4 bg-amber-50/90 border-t border-amber-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-amber-900">
-              <div className="flex items-center gap-2.5 min-w-0">
+          {/* ── CHAT COMPOSER (Text & Emoji Only • Modern Floating Style) ── */}
+          {currentUser.isExpert ? (
+            /* Warning banner if logged in as expert */
+            <div className="mx-4 sm:mx-6 mb-4 p-3 sm:p-4 bg-amber-50/95 border border-amber-200/90 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-amber-900 shadow-xs">
+              <div className="flex items-center gap-2.5 text-left">
                 <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0" />
                 <p className="text-xs sm:text-sm font-medium">
-                  <strong className="font-semibold">Expat Community Chat is for Travellers only.</strong> Service Providers and Experts cannot participate in community chats.
+                  <strong className="font-bold">Expat Community Chat is for Travellers only.</strong> Service Providers and Experts cannot participate in community chats.
                 </p>
               </div>
               <a
@@ -1179,7 +1125,7 @@ export default function CommunityHub() {
               </a>
             </div>
           ) : (
-            <div className="p-3 sm:p-4 bg-white border-t border-slate-200/90 flex items-center gap-2 sm:gap-3 relative">
+            <div className="p-3 sm:p-4 bg-white border-t border-slate-200/80 flex items-center gap-2 sm:gap-3 relative">
               <div className="relative">
                 <button
                   type="button"
@@ -1220,13 +1166,13 @@ export default function CommunityHub() {
                   }
                 }}
                 placeholder={currentUser.isLoggedIn ? "Type a message..." : "Type a message... (Sign in to chat)"}
-                className="flex-1 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] rounded-full px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+                className="flex-1 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] focus:ring-2 focus:ring-emerald-500/10 rounded-full px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
               />
 
               <button
                 type="button"
                 onClick={handleSendMessage}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#00A86B] hover:bg-[#00925d] text-white flex items-center justify-center shadow-md shadow-[#00A86B]/20 transition-all active:scale-95 cursor-pointer shrink-0"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 transition-all active:scale-95 cursor-pointer shrink-0"
                 title="Send Message"
               >
                 <Send className="w-4 h-4 translate-x-0.5" />
@@ -1235,26 +1181,27 @@ export default function CommunityHub() {
           )}
         </main>
 
-        {/* COLUMN 3: RIGHT SIDEBAR (Real Group Details & Members Roster) */}
+        {/* COLUMN 3: RIGHT SIDEBAR (Real Group Details & Verified Travellers) */}
         <aside
           className={`
-            fixed xl:relative inset-y-0 right-0 z-40 w-[300px] sm:w-[320px] lg:w-[340px] bg-white border-l border-slate-200/90
-            flex flex-col shrink-0 overflow-y-auto transition-transform duration-300 xl:translate-x-0 no-scrollbar
+            fixed xl:relative inset-y-0 right-0 z-40 w-[300px] sm:w-[320px] lg:w-[340px] bg-white border-l border-slate-200/80
+            flex flex-col shrink-0 overflow-y-auto transition-transform duration-300 xl:translate-x-0 no-scrollbar shadow-xs xl:shadow-none
             ${showRightDetailsMobile ? 'translate-x-0 shadow-2xl' : 'translate-x-full xl:translate-x-0'}
           `}
         >
+          {/* Banner Hero */}
           <div className="relative w-full h-36 sm:h-40 bg-slate-900 overflow-hidden shrink-0">
             <img
               src={activeRoom.bannerImage}
               alt={activeRoom.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             
             <button
               type="button"
               onClick={() => setShowRightDetailsMobile(false)}
-              className="xl:hidden absolute top-3 right-3 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70"
+              className="xl:hidden absolute top-3 right-3 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70 cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -1270,11 +1217,14 @@ export default function CommunityHub() {
             </div>
 
             <div className="mt-3">
-              <h2 className="text-base font-bold text-slate-900 leading-tight">
-                {activeRoom.title}
-              </h2>
+              <div className="flex items-center gap-1.5">
+                <h2 className="text-base font-bold text-slate-900 leading-tight">
+                  {activeRoom.title}
+                </h2>
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              </div>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
-                {totalMembersCount} Registered Members • Public Group
+                {totalMembersCount} Registered Expats • Public Group
               </p>
             </div>
 
@@ -1286,7 +1236,7 @@ export default function CommunityHub() {
               type="button"
               onClick={handleToggleJoin}
               className={`
-                w-full mt-3.5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-98 cursor-pointer
+                w-full mt-3.5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs active:scale-98 cursor-pointer
                 ${currentUser.isExpert
                   ? 'bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100'
                   : activeRoom.isJoined
@@ -1303,6 +1253,17 @@ export default function CommunityHub() {
 
           <div className="h-px bg-slate-100 my-4 mx-5" />
 
+          {/* Guidelines Mini Card */}
+          <div className="mx-5 p-3 rounded-2xl bg-slate-50/80 border border-slate-200/70 text-slate-700 text-xs space-y-2 mb-2">
+            <div className="flex items-center gap-1.5 text-slate-900 font-bold text-[11px]">
+              <Shield className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Community Guidelines</span>
+            </div>
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              100% peer-to-peer discussions for visa applicants and expats. Commercial promotions and expert solicitations are strictly prohibited.
+            </p>
+          </div>
+
           {/* Real Group Members Section */}
           <div className="px-5 pb-6">
             <div className="flex items-center justify-between mb-3">
@@ -1314,21 +1275,37 @@ export default function CommunityHub() {
             {/* Overlapping member avatars using real avatars or registered members */}
             <div className="flex items-center -space-x-1.5 mb-4">
               {currentUser.isLoggedIn && !currentUser.isExpert && (
-                <img
-                  src={currentUser.avatar}
-                  alt={currentUser.name}
-                  className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
-                  title={`${currentUser.name} (You)`}
-                />
+                currentUser.avatar ? (
+                  <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
+                    title={`${currentUser.name} (You)`}
+                  />
+                ) : (
+                  <div className={`w-7 h-7 rounded-full bg-gradient-to-tr ${getAvatarGradient(currentUser.name)} border-2 border-white text-white font-bold text-[9px] flex items-center justify-center shadow-2xs`}>
+                    {getInitials(currentUser.name)}
+                  </div>
+                )
               )}
               {registeredMembers.slice(0, currentUser.isLoggedIn && !currentUser.isExpert ? 4 : 5).map((mem, i) => (
-                <img
-                  key={mem.id || i}
-                  src={mem.avatar}
-                  alt={mem.name}
-                  className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
-                  title={mem.name}
-                />
+                mem.avatar ? (
+                  <img
+                    key={mem.id || i}
+                    src={mem.avatar}
+                    alt={mem.name}
+                    className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
+                    title={mem.name}
+                  />
+                ) : (
+                  <div
+                    key={mem.id || i}
+                    className={`w-7 h-7 rounded-full bg-gradient-to-tr ${getAvatarGradient(mem.name)} border-2 border-white text-white font-bold text-[9px] flex items-center justify-center shadow-2xs`}
+                    title={mem.name}
+                  >
+                    {getInitials(mem.name)}
+                  </div>
+                )
               ))}
               <div className="w-7 h-7 rounded-full bg-slate-100 border-2 border-white text-slate-600 text-[9px] font-black flex items-center justify-center shadow-2xs">
                 +{Math.max(1, totalMembersCount - 5)}
@@ -1336,7 +1313,7 @@ export default function CommunityHub() {
             </div>
 
             {/* Real Registered Members Roster */}
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               
               {/* Current User in Roster (Only if logged in) */}
               {currentUser.isLoggedIn ? (
@@ -1357,19 +1334,25 @@ export default function CommunityHub() {
                     </a>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl bg-slate-50/80 border border-slate-200/60">
+                  <div className="flex items-center justify-between gap-3 p-2 rounded-xl bg-emerald-50/50 border border-emerald-200/60">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <img
-                        src={currentUser.avatar}
-                        alt={currentUser.name}
-                        className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                      />
+                      {currentUser.avatar ? (
+                        <img
+                          src={currentUser.avatar}
+                          alt={currentUser.name}
+                          className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                        />
+                      ) : (
+                        <div className={`w-8 h-8 rounded-full bg-gradient-to-tr ${getAvatarGradient(currentUser.name)} text-white font-bold text-xs flex items-center justify-center shadow-2xs`}>
+                          {getInitials(currentUser.name)}
+                        </div>
+                      )}
                       <div className="min-w-0">
                         <span className="text-xs font-bold text-slate-900 truncate block">
                           {currentUser.name}
                         </span>
-                        <span className="text-[10px] text-slate-400 font-medium">
-                          You
+                        <span className="text-[10px] text-emerald-700 font-medium">
+                          You (Traveller)
                         </span>
                       </div>
                     </div>
@@ -1384,11 +1367,11 @@ export default function CommunityHub() {
                   </div>
                 )
               ) : (
-                <div className="p-2.5 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center">
+                <div className="p-3 rounded-2xl bg-slate-50 border border-dashed border-slate-200 text-center">
                   <p className="text-[11px] font-medium text-slate-600">Want to join the conversation?</p>
                   <a
                     href="/login?return=/community"
-                    className="inline-block mt-1 text-[11px] font-bold text-[#00A86B] hover:underline"
+                    className="inline-block mt-1.5 text-xs font-bold text-[#00A86B] hover:underline"
                   >
                     Log in or Sign Up →
                   </a>
@@ -1399,13 +1382,19 @@ export default function CommunityHub() {
               {registeredMembers
                 .filter(mem => !currentUser.isLoggedIn || mem.name !== currentUser.name)
                 .map((mem) => (
-                  <div key={mem.id} className="flex items-center justify-between gap-3 px-1">
+                  <div key={mem.id} className="flex items-center justify-between gap-3 p-1.5 rounded-xl hover:bg-slate-50 transition-colors">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <img
-                        src={mem.avatar}
-                        alt={mem.name}
-                        className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                      />
+                      {mem.avatar ? (
+                        <img
+                          src={mem.avatar}
+                          alt={mem.name}
+                          className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                        />
+                      ) : (
+                        <div className={`w-8 h-8 rounded-full bg-gradient-to-tr ${getAvatarGradient(mem.name)} text-white font-bold text-xs flex items-center justify-center shadow-2xs`}>
+                          {getInitials(mem.name)}
+                        </div>
+                      )}
                       <span className="text-xs font-bold text-slate-800 truncate">
                         {mem.name}
                       </span>
@@ -1415,7 +1404,6 @@ export default function CommunityHub() {
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border ${
                         mem.role === 'Admin' ? 'bg-purple-50 text-[#420f79] border-purple-200' :
                         mem.role === 'Moderator' ? 'bg-sky-50 text-sky-700 border-sky-200' :
-                        mem.role === 'Licensed Expert' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                         'bg-slate-100 text-slate-700 border-slate-200/70'
                       }`}>
                         {mem.role}
@@ -1429,90 +1417,7 @@ export default function CommunityHub() {
 
       </div>
 
-      {/* CREATE NEW CHAT MODAL */}
-      {showNewChatModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-slate-900">Create New Expat Chat Room</h3>
-              <button
-                type="button"
-                onClick={() => setShowNewChatModal(false)}
-                className="p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4 text-xs">
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">Channel / Group Name *</label>
-                <input
-                  type="text"
-                  value={newChatTitle}
-                  onChange={(e) => setNewChatTitle(e.target.value)}
-                  placeholder="e.g. Ireland Stamp 4 & Tech Expats"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#00A86B] outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">Description (Optional)</label>
-                <textarea
-                  rows={3}
-                  value={newChatDescription}
-                  onChange={(e) => setNewChatDescription(e.target.value)}
-                  placeholder="Describe what members will discuss in this room..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#00A86B] outline-none resize-none"
-                />
-              </div>
-
-              <div className="flex items-center gap-4 pt-1">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="chatType"
-                    checked={newChatType === 'group'}
-                    onChange={() => setNewChatType('group')}
-                    className="accent-[#00A86B]"
-                  />
-                  <span className="font-semibold text-slate-700">Community Group</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="chatType"
-                    checked={newChatType === 'direct'}
-                    onChange={() => setNewChatType('direct')}
-                    className="accent-[#00A86B]"
-                  />
-                  <span className="font-semibold text-slate-700">Direct 1-on-1 Chat</span>
-                </label>
-              </div>
-
-              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setShowNewChatModal(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleCreateNewChat}
-                  disabled={!newChatTitle.trim()}
-                  className="px-5 py-2 rounded-xl bg-[#00A86B] hover:bg-[#00925d] text-white font-bold transition-all disabled:opacity-50 cursor-pointer"
-                >
-                  Create Channel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* AUTH REQUIRED MODAL */}
+      {/* ── AUTH REQUIRED MODAL ── */}
       {showAuthModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center relative animate-in zoom-in-95 duration-150">
@@ -1532,7 +1437,7 @@ export default function CommunityHub() {
               Join the Expat Community
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-              Log in or create a free account to join live discussions, ask questions, and connect directly with verified expats and visa experts worldwide.
+              Log in or create a free account to join live discussions, ask questions, and connect directly with verified expats and visa holders worldwide.
             </p>
 
             <div className="mt-6 flex flex-col gap-2.5">
@@ -1553,7 +1458,7 @@ export default function CommunityHub() {
         </div>
       )}
 
-      {/* EXPERT RESTRICTION MODAL */}
+      {/* ── EXPERT RESTRICTION ALERT MODAL ── */}
       {showExpertAlertModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center relative animate-in zoom-in-95 duration-150">
