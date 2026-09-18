@@ -682,14 +682,17 @@ export default function CommunityHub() {
             <Users className="w-5 h-5" />
           </button>
 
-          {/* Travltik Brand Tag */}
-          <a href="/" className="flex items-center gap-2 mr-1 sm:mr-3 shrink-0 group">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-black text-sm shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-              T
-            </div>
-            <div className="hidden lg:flex flex-col">
-              <span className="text-xs font-black tracking-wider text-slate-900 uppercase">Travltik</span>
-              <span className="text-[10px] font-semibold text-emerald-600 -mt-0.5">Expat Community</span>
+          {/* Travltik Official Brand Logo */}
+          <a href="/" className="flex items-center gap-2.5 mr-2 sm:mr-4 shrink-0 group" title="Return to Travltik Home">
+            <img
+              src="/logo.png?v=8"
+              alt="TravlTik"
+              className="h-8 sm:h-9 w-auto max-h-[38px] object-contain transition-transform duration-200 group-hover:scale-105"
+            />
+            <div className="hidden sm:flex items-center pl-2.5 border-l border-slate-200/90">
+              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50/90 border border-emerald-200/80 px-2 py-0.5 rounded-full shadow-2xs">
+                Community
+              </span>
             </div>
           </a>
 
