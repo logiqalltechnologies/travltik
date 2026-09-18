@@ -1554,8 +1554,8 @@ export function AITripPlannerLanding() {
       try {
         const rzp = new (window as any).Razorpay({
           key: 'rzp_test_travltik_live',
-          amount: 42000, // ₹420 (approx $5 USD)
-          currency: 'INR',
+          amount: 500, // $5 USD
+          currency: 'USD',
           name: 'Travltik',
           description: `Get Your Visa Done - ${pendingSearchData?.targetCountry || 'Visa'} Pathway`,
           image: '/logo.png?v=8',
@@ -5126,7 +5126,7 @@ return (
                 <div>
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-2xl font-black text-slate-900">$5</span>
-                    <span className="text-xs font-bold text-slate-500">USD (~₹420 INR)</span>
+                    <span className="text-xs font-bold text-slate-500">USD</span>
                   </div>
                   <span className="text-[10px] text-slate-400 font-medium">One-time fee • Lifetime access</span>
                 </div>
@@ -5162,9 +5162,9 @@ return (
                 <button
                   type="button"
                   onClick={handleProceedToPayment}
-                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
                 >
-                  <span>Proceed to Pay $5 (₹420)</span>
+                  <span>Proceed to Pay $5</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                 </button>
 
@@ -5221,8 +5221,8 @@ return (
                 <p className="text-[10px] text-slate-500">AI Requirements Dossier & Consular Roadmap</p>
               </div>
               <div className="text-right">
-                <span className="text-base font-black text-slate-900">₹420.00</span>
-                <span className="block text-[10px] text-emerald-600 font-bold">$5 USD • Inclusive of taxes</span>
+                <span className="text-base font-black text-slate-900">$5.00 USD</span>
+                <span className="block text-[10px] text-emerald-600 font-bold">Inclusive of all taxes</span>
               </div>
             </div>
 
@@ -5383,7 +5383,7 @@ return (
                       className="w-full py-3 px-4 rounded-xl bg-[#0C2340] hover:bg-[#123159] text-white font-bold text-sm shadow-md transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
                     >
                       <Shield className="w-4 h-4 text-emerald-400" />
-                      <span>Pay ₹420.00 Securely</span>
+                      <span>Pay $5.00 Securely</span>
                     </button>
 
                     <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 font-semibold mt-2.5">
