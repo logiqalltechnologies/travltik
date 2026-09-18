@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDashboardState } from "./hooks/useDashboardState";
 import { DashboardHeader } from "./components/DashboardHeader";
 import { SidebarNavigation } from "./components/SidebarNavigation";
@@ -14,11 +14,11 @@ import { DocumentVault } from "./sections/DocumentVault";
 import { ProfileSettings } from "./sections/ProfileSettings";
 import { Consultations } from "./sections/Consultations";
 
-export const UserDashboard: React.FC = () => {
+export function UserDashboard() {
     const state = useDashboardState();
-    const [isServiceProvider, setIsServiceProvider] = React.useState<boolean>(false);
+    const [isServiceProvider, setIsServiceProvider] = useState<boolean>(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (typeof window !== 'undefined') {
             try {
                 const expertLoggedIn = localStorage.getItem('expert_isLoggedIn') === 'true';
