@@ -26,18 +26,6 @@ export const GET: APIRoute = async ({ request }) => {
          FROM (
            SELECT 
              id, 
-             business_name as name, 
-             COALESCE(profile_photo, '') as avatar_url, 
-             CASE 
-               WHEN business_name ILIKE '%admin%' OR business_name ILIKE '%travltik%' OR business_name ILIKE '%team 7z%' THEN 'Admin'
-               ELSE 'Licensed Expert'
-             END as role,
-             'Online' as status 
-           FROM experts 
-           WHERE business_name IS NOT NULL AND TRIM(business_name) != ''
-           UNION ALL
-           SELECT 
-             id, 
              TRIM(first_name || ' ' || COALESCE(last_name, '')) as name, 
              '' as avatar_url, 
              CASE 
@@ -53,9 +41,7 @@ export const GET: APIRoute = async ({ request }) => {
          LIMIT 12`
       ),
       pool.query(
-        `SELECT 
-          (SELECT COUNT(*) FROM seekers) as seeker_count,
-          (SELECT COUNT(*) FROM experts) as expert_count`
+        `SELECT COUNT(*) as seeker_count FROM seekers`
       ),
       pool.query(
         `SELECT DISTINCT ON (channel_slug) channel_slug, content, sender_name, created_at
@@ -65,7 +51,6 @@ export const GET: APIRoute = async ({ request }) => {
     ]);
 
     const seekerCount = parseInt(statsRes.rows[0]?.seeker_count || '0', 10);
-    const expertCount = parseInt(statsRes.rows[0]?.expert_count || '0', 10);
 
     return new Response(JSON.stringify({
       success: true,
@@ -74,8 +59,8 @@ export const GET: APIRoute = async ({ request }) => {
       seniors: membersRes.rows,
       snippets: snippetsRes.rows,
       stats: {
-        online_seniors: expertCount > 0 ? expertCount : membersRes.rows.length,
-        total_members: (seekerCount + expertCount) > 0 ? (seekerCount + expertCount) : 49
+        online_seniors: membersRes.rows.length,
+        total_members: seekerCount > 0 ? seekerCount : 49
       }
     }), {
       status: 200,
@@ -106,13 +91,25 @@ export const POST: APIRoute = async ({ request }) => {
 
     const body = await request.json();
     const {
-      channel_slug = 'russia-mbbs-2026',
+      channel_slug = 'canada',
       content,
       sender_name,
       sender_avatar,
       is_verified_senior = false,
-      user_id
+      user_id,
+      user_type
     } = body;
+
+    // Strict Rule: Experts / Service Providers CANNOT chat in Expat Community
+    if ((authUser && authUser.type === 'expert') || user_type === 'expert') {
+      return new Response(JSON.stringify({
+        success: false,
+        message: 'Experts and service providers cannot participate in community chat. A Traveller account is required.'
+      }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     if (!content || !content.trim()) {
       return new Response(JSON.stringify({ success: false, message: 'Message content cannot be empty.' }), {

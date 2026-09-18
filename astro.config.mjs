@@ -51,7 +51,16 @@ export default defineConfig({
       },
     },
     optimizeDeps: {
+      holdUntilCrawlEnd: true,
       include: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        'gsap',
+        'gsap/ScrollTrigger',
+        'lenis',
+        'split-type',
         'lucide-react',
         'firebase/app',
         'firebase/auth',

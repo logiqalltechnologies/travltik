@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Search, Bell, Mail, ChevronDown, Plus, Download, CheckCheck,
-  Smile, Paperclip, Image as ImageIcon, Send, MoreVertical,
+  Smile, Send, MoreVertical,
   UserPlus, Users, X, ArrowLeft, Check, LogOut,
-  ExternalLink, MessageSquare, Shield, CheckCircle2, Sparkles
+  ExternalLink, MessageSquare, Shield, ShieldAlert, CheckCircle2, Sparkles
 } from 'lucide-react';
 
 interface GroupMember {
@@ -142,6 +142,8 @@ export default function CommunityHub() {
     email: string;
     avatar: string;
     role: string;
+    userType: 'seeker' | 'expert' | 'guest';
+    isExpert: boolean;
     isLoggedIn: boolean;
   }>({
     id: '',
@@ -149,10 +151,13 @@ export default function CommunityHub() {
     email: '',
     avatar: '',
     role: 'Member',
+    userType: 'guest',
+    isExpert: false,
     isLoggedIn: false
   });
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showExpertAlertModal, setShowExpertAlertModal] = useState(false);
 
   const [activeRoomId, setActiveRoomId] = useState<string>('canada');
   const [roomSearchQuery, setRoomSearchQuery] = useState('');
@@ -170,8 +175,6 @@ export default function CommunityHub() {
 
   const [inputText, setInputText] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const imageInputRef = useRef<HTMLInputElement>(null);
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
   // Real Database Members & Stats
@@ -345,12 +348,15 @@ export default function CommunityHub() {
           const data = await res.json();
           if (data.status === 'success' && data.user && data.user.email) {
             const displayName = data.user.displayName || data.user.email.split('@')[0];
+            const isExp = data.user.type === 'expert';
             loggedUser = {
               id: data.user.uid,
               name: displayName,
               email: data.user.email,
               avatar: data.user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=00A86B&color=fff&bold=true`,
-              role: data.user.type === 'expert' ? 'Licensed Expert' : 'Verified Member',
+              role: isExp ? 'Licensed Expert' : 'Member',
+              userType: isExp ? 'expert' : 'seeker',
+              isExpert: isExp,
               isLoggedIn: true
             };
           }
@@ -368,12 +374,15 @@ export default function CommunityHub() {
             if (parsed && parsed.email && !parsed.email.toLowerCase().includes('dummy')) {
               const name = parsed.displayName || parsed.name || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || parsed.email.split('@')[0];
               if (!name.toLowerCase().includes('team 7z')) {
+                const isExp = parsed.type === 'expert';
                 loggedUser = {
                   id: parsed.uid || parsed.id || parsed.email,
                   name: name,
                   email: parsed.email,
                   avatar: parsed.photoURL || parsed.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00A86B&color=fff&bold=true`,
-                  role: parsed.type === 'expert' ? 'Licensed Expert' : 'Verified Member',
+                  role: isExp ? 'Licensed Expert' : 'Member',
+                  userType: isExp ? 'expert' : 'seeker',
+                  isExpert: isExp,
                   isLoggedIn: true
                 };
               }
@@ -394,6 +403,8 @@ export default function CommunityHub() {
           email: '',
           avatar: '',
           role: 'Member',
+          userType: 'guest',
+          isExpert: false,
           isLoggedIn: false
         });
       }
@@ -569,6 +580,10 @@ export default function CommunityHub() {
   };
 
   const handleToggleJoin = () => {
+    if (currentUser.isExpert) {
+      setShowExpertAlertModal(true);
+      return;
+    }
     setRooms(prev => prev.map(r => {
       if (r.id === activeRoomId) {
         return { ...r, isJoined: !r.isJoined };
@@ -577,10 +592,14 @@ export default function CommunityHub() {
     }));
   };
 
-  // Real Message Sending to PostgreSQL DB
+  // Real Message Sending to PostgreSQL DB (Travellers Only)
   const handleSendMessage = async () => {
     if (!currentUser.isLoggedIn) {
       setShowAuthModal(true);
+      return;
+    }
+    if (currentUser.isExpert) {
+      setShowExpertAlertModal(true);
       return;
     }
     if (!inputText.trim()) return;
@@ -628,7 +647,8 @@ export default function CommunityHub() {
           content: textToSend,
           sender_name: currentUser.name || 'Community Member',
           sender_avatar: currentUser.avatar,
-          user_id: currentUser.id || currentUser.email || 'user_' + Date.now()
+          user_id: currentUser.id || currentUser.email || 'user_' + Date.now(),
+          user_type: currentUser.userType
         })
       });
 
@@ -651,93 +671,6 @@ export default function CommunityHub() {
     } catch (err) {
       console.warn('Network error saving message:', err);
     }
-  };
-
-  // Real File Upload
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const now = new Date();
-    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const sizeKB = (file.size / 1024).toFixed(0) + ' KB';
-    const ext = file.name.split('.').pop()?.toUpperCase() || 'FILE';
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const newMsg: ChatMessage = {
-        id: 'msg-' + Date.now(),
-        senderName: 'You',
-        senderAvatar: currentUser.avatar,
-        isSelf: true,
-        timestamp: timeString,
-        attachment: {
-          name: file.name,
-          size: sizeKB,
-          type: ext,
-          dataUrl: reader.result as string
-        }
-      };
-
-      const updated = [...activeMessages, newMsg];
-      setMessagesMap(prev => ({ ...prev, [activeRoomId]: updated }));
-      try {
-        localStorage.setItem(`travltik_chat_${activeRoomId}`, JSON.stringify(updated));
-      } catch (e) {}
-
-      setRooms(prev => prev.map(r => {
-        if (r.id === activeRoomId) {
-          return {
-            ...r,
-            lastMessageSnippet: `You sent a file: ${file.name}`,
-            lastMessageTime: timeString
-          };
-        }
-        return r;
-      }));
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  };
-
-  // Real Image Upload
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const now = new Date();
-    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const newMsg: ChatMessage = {
-        id: 'msg-' + Date.now(),
-        senderName: 'You',
-        senderAvatar: currentUser.avatar,
-        isSelf: true,
-        timestamp: timeString,
-        image: reader.result as string
-      };
-
-      const updated = [...activeMessages, newMsg];
-      setMessagesMap(prev => ({ ...prev, [activeRoomId]: updated }));
-      try {
-        localStorage.setItem(`travltik_chat_${activeRoomId}`, JSON.stringify(updated));
-      } catch (e) {}
-
-      setRooms(prev => prev.map(r => {
-        if (r.id === activeRoomId) {
-          return {
-            ...r,
-            lastMessageSnippet: `You sent a photo`,
-            lastMessageTime: timeString
-          };
-        }
-        return r;
-      }));
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
   };
 
   const handleCreateNewChat = () => {
@@ -1230,93 +1163,76 @@ export default function CommunityHub() {
           </div>
 
           {/* Bottom Message Composer */}
-          <div className="p-3 sm:p-4 bg-white border-t border-slate-200/90 flex items-center gap-2 sm:gap-3 relative">
-            
-            <div className="relative">
+          {currentUser.isLoggedIn && currentUser.isExpert ? (
+            <div className="p-3 sm:p-4 bg-amber-50/90 border-t border-amber-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-amber-900">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0" />
+                <p className="text-xs sm:text-sm font-medium">
+                  <strong className="font-semibold">Expat Community Chat is for Travellers only.</strong> Service Providers and Experts cannot participate in community chats.
+                </p>
+              </div>
+              <a
+                href="/login?return=/community"
+                className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold whitespace-nowrap transition-colors shadow-2xs cursor-pointer"
+              >
+                Switch to Traveller Account
+              </a>
+            </div>
+          ) : (
+            <div className="p-3 sm:p-4 bg-white border-t border-slate-200/90 flex items-center gap-2 sm:gap-3 relative">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+                  title="Add Emoji"
+                >
+                  <Smile className="w-5 h-5 stroke-[1.8]" />
+                </button>
+
+                {showEmojiPicker && (
+                  <div className="absolute bottom-12 left-0 bg-white rounded-2xl border border-slate-200 shadow-xl p-2.5 grid grid-cols-4 gap-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    {EMOJIS.map(emoji => (
+                      <button
+                        key={emoji}
+                        type="button"
+                        onClick={() => {
+                          setInputText(prev => prev + emoji);
+                          setShowEmojiPicker(false);
+                        }}
+                        className="w-8 h-8 flex items-center justify-center text-lg hover:bg-slate-100 rounded-lg cursor-pointer"
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                placeholder={currentUser.isLoggedIn ? "Type a message..." : "Type a message... (Sign in to chat)"}
+                className="flex-1 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] rounded-full px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+              />
+
               <button
                 type="button"
-                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
-                title="Add Emoji"
+                onClick={handleSendMessage}
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#00A86B] hover:bg-[#00925d] text-white flex items-center justify-center shadow-md shadow-[#00A86B]/20 transition-all active:scale-95 cursor-pointer shrink-0"
+                title="Send Message"
               >
-                <Smile className="w-5 h-5 stroke-[1.8]" />
+                <Send className="w-4 h-4 translate-x-0.5" />
               </button>
-
-              {showEmojiPicker && (
-                <div className="absolute bottom-12 left-0 bg-white rounded-2xl border border-slate-200 shadow-xl p-2.5 grid grid-cols-4 gap-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                  {EMOJIS.map(emoji => (
-                    <button
-                      key={emoji}
-                      type="button"
-                      onClick={() => {
-                        setInputText(prev => prev + emoji);
-                        setShowEmojiPicker(false);
-                      }}
-                      className="w-8 h-8 flex items-center justify-center text-lg hover:bg-slate-100 rounded-lg cursor-pointer"
-                    >
-                      {emoji}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
-
-            <input
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-              placeholder="Type a message..."
-              className="flex-1 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200/90 focus:border-[#00A86B] rounded-full px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
-            />
-
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileUpload}
-              className="hidden"
-              accept=".pdf,.doc,.docx,.txt"
-            />
-            <input
-              type="file"
-              ref={imageInputRef}
-              onChange={handleImageUpload}
-              className="hidden"
-              accept="image/*"
-            />
-
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
-              title="Attach Document"
-            >
-              <Paperclip className="w-5 h-5 stroke-[1.8]" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => imageInputRef.current?.click()}
-              className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
-              title="Attach Image"
-            >
-              <ImageIcon className="w-5 h-5 stroke-[1.8]" />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleSendMessage}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#00A86B] hover:bg-[#00925d] text-white flex items-center justify-center shadow-md shadow-[#00A86B]/20 transition-all active:scale-95 cursor-pointer shrink-0"
-              title="Send Message"
-            >
-              <Send className="w-4 h-4 translate-x-0.5" />
-            </button>
-          </div>
+          )}
         </main>
 
         {/* COLUMN 3: RIGHT SIDEBAR (Real Group Details & Members Roster) */}
@@ -1371,13 +1287,17 @@ export default function CommunityHub() {
               onClick={handleToggleJoin}
               className={`
                 w-full mt-3.5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-98 cursor-pointer
-                ${activeRoom.isJoined
+                ${currentUser.isExpert
+                  ? 'bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100'
+                  : activeRoom.isJoined
                   ? 'bg-[#00A86B] hover:bg-[#00925d] text-white'
                   : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                 }
               `}
             >
-              {activeRoom.isJoined ? 'Joined • Click to Leave' : 'Join Group'}
+              {currentUser.isExpert
+                ? 'Travellers Only • Cannot Join'
+                : activeRoom.isJoined ? 'Joined • Click to Leave' : 'Join Group'}
             </button>
           </div>
 
@@ -1393,13 +1313,15 @@ export default function CommunityHub() {
 
             {/* Overlapping member avatars using real avatars or registered members */}
             <div className="flex items-center -space-x-1.5 mb-4">
-              <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
-                title={`${currentUser.name} (You)`}
-              />
-              {registeredMembers.slice(0, 4).map((mem, i) => (
+              {currentUser.isLoggedIn && !currentUser.isExpert && (
+                <img
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  className="w-7 h-7 rounded-full object-cover border-2 border-white shadow-2xs"
+                  title={`${currentUser.name} (You)`}
+                />
+              )}
+              {registeredMembers.slice(0, currentUser.isLoggedIn && !currentUser.isExpert ? 4 : 5).map((mem, i) => (
                 <img
                   key={mem.id || i}
                   src={mem.avatar}
@@ -1418,32 +1340,49 @@ export default function CommunityHub() {
               
               {/* Current User in Roster (Only if logged in) */}
               {currentUser.isLoggedIn ? (
-                <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl bg-slate-50/80 border border-slate-200/60">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <img
-                      src={currentUser.avatar}
-                      alt={currentUser.name}
-                      className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                    />
-                    <div className="min-w-0">
-                      <span className="text-xs font-bold text-slate-900 truncate block">
-                        {currentUser.name}
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-medium">
-                        You
-                      </span>
+                currentUser.isExpert ? (
+                  <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/80">
+                    <div className="flex items-center gap-2 text-amber-900 font-bold text-xs mb-1">
+                      <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
+                      <span>Service Provider Notice</span>
                     </div>
+                    <p className="text-[11px] text-amber-800 leading-snug">
+                      You are logged in as an Expert. Expat community groups and chats are reserved for Travellers.
+                    </p>
+                    <a
+                      href="/login?return=/community"
+                      className="inline-block mt-2 text-[11px] font-bold text-amber-900 underline hover:text-amber-950"
+                    >
+                      Switch to Traveller Account →
+                    </a>
                   </div>
+                ) : (
+                  <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl bg-slate-50/80 border border-slate-200/60">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <img
+                        src={currentUser.avatar}
+                        alt={currentUser.name}
+                        className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                      />
+                      <div className="min-w-0">
+                        <span className="text-xs font-bold text-slate-900 truncate block">
+                          {currentUser.name}
+                        </span>
+                        <span className="text-[10px] text-slate-400 font-medium">
+                          You
+                        </span>
+                      </div>
+                    </div>
 
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border ${
-                    currentUser.role === 'Admin' ? 'bg-purple-50 text-[#420f79] border-purple-200' :
-                    currentUser.role === 'Licensed Expert' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                    currentUser.role === 'Moderator' ? 'bg-sky-50 text-sky-700 border-sky-200' :
-                    'bg-slate-100 text-slate-700 border-slate-200'
-                  }`}>
-                    {currentUser.role}
-                  </span>
-                </div>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border ${
+                      currentUser.role === 'Admin' ? 'bg-purple-50 text-[#420f79] border-purple-200' :
+                      currentUser.role === 'Moderator' ? 'bg-sky-50 text-sky-700 border-sky-200' :
+                      'bg-slate-100 text-slate-700 border-slate-200'
+                    }`}>
+                      {currentUser.role}
+                    </span>
+                  </div>
+                )
               ) : (
                 <div className="p-2.5 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center">
                   <p className="text-[11px] font-medium text-slate-600">Want to join the conversation?</p>
@@ -1609,6 +1548,48 @@ export default function CommunityHub() {
               >
                 Create Free Account
               </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* EXPERT RESTRICTION MODAL */}
+      {showExpertAlertModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center relative animate-in zoom-in-95 duration-150">
+            <button
+              type="button"
+              onClick={() => setShowExpertAlertModal(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-inner">
+              <ShieldAlert className="w-7 h-7" />
+            </div>
+
+            <h3 className="text-xl font-bold text-slate-900">
+              Traveller Account Required
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Expat Community chat and groups are strictly reserved for Travellers and Expats. Service providers and Visa Experts cannot join community groups or post messages.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-2.5">
+              <a
+                href="/login?return=/community"
+                className="w-full py-3 px-4 bg-[#00A86B] hover:bg-[#00925d] text-white font-bold rounded-xl text-sm transition-all shadow-md shadow-[#00A86B]/25 active:scale-98 text-center"
+              >
+                Switch to a Traveller Account
+              </a>
+              <button
+                type="button"
+                onClick={() => setShowExpertAlertModal(false)}
+                className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200/80 text-slate-700 font-semibold rounded-xl text-xs transition-all cursor-pointer"
+              >
+                Continue Viewing (Read Only)
+              </button>
             </div>
           </div>
         </div>
