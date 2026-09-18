@@ -7,53 +7,60 @@ export const prerender = false;
 
 export const GET: APIRoute = async ({ request }) => {
   try {
-    await runMigrations();
     const url = new URL(request.url);
     const channelSlug = url.searchParams.get('channel') || 'russia-mbbs-2026';
 
     const pool = getPool();
-    const [messagesRes, channelsRes, membersRes, resourcesRes, statsRes] = await Promise.all([
+    const messagesRes = await pool.query(
+      `SELECT id, channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at
+       FROM chat_messages
+       WHERE channel_slug = $1
+       ORDER BY created_at ASC
+       LIMIT 100`,
+      [channelSlug]
+    );
+
+    const [membersRes, statsRes, snippetsRes] = await Promise.all([
       pool.query(
-        `SELECT id, channel_slug, user_id, sender_name, sender_avatar, is_verified_senior, content, reactions, created_at
-         FROM chat_messages
-         WHERE channel_slug = $1
-         ORDER BY created_at ASC
-         LIMIT 100`,
-        [channelSlug]
-      ),
-      pool.query(
-        `SELECT id, slug, name, category, icon, unread_count, description
-         FROM community_channels
-         ORDER BY category ASC, id ASC`
-      ),
-      pool.query(
-        `SELECT DISTINCT ON (name) id, name, avatar_url, university, status
+        `SELECT DISTINCT ON (name) id, name, avatar_url, role, status
          FROM (
-           SELECT id, business_name as name, COALESCE(profile_photo, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80') as avatar_url, COALESCE(advisor_type, 'Licensed Visa Expert') as university, 'Online' as status 
+           SELECT 
+             id, 
+             business_name as name, 
+             COALESCE(profile_photo, '') as avatar_url, 
+             CASE 
+               WHEN business_name ILIKE '%admin%' OR business_name ILIKE '%travltik%' OR business_name ILIKE '%team 7z%' THEN 'Admin'
+               ELSE 'Licensed Expert'
+             END as role,
+             'Online' as status 
            FROM experts 
            WHERE business_name IS NOT NULL AND TRIM(business_name) != ''
            UNION ALL
-           SELECT id, TRIM(first_name || ' ' || COALESCE(last_name, '')) as name, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80' as avatar_url, 'Verified Member' as university, 'Online' as status 
+           SELECT 
+             id, 
+             TRIM(first_name || ' ' || COALESCE(last_name, '')) as name, 
+             '' as avatar_url, 
+             CASE 
+               WHEN first_name ILIKE '%prashant%' OR first_name ILIKE '%lellwyn%' THEN 'Admin'
+               WHEN first_name ILIKE '%tejas%' THEN 'Moderator'
+               ELSE 'Member'
+             END as role,
+             'Online' as status 
            FROM seekers 
            WHERE first_name IS NOT NULL AND TRIM(first_name) != ''
          ) members
          ORDER BY name ASC
-         LIMIT 8`
-      ),
-      pool.query(
-        `SELECT DISTINCT ON (title) id, channel_slug, title, file_size, file_type, download_url
-         FROM pinned_resources
-         WHERE channel_slug = $1 OR channel_slug IS NULL
-         ORDER BY title ASC, id ASC
-         LIMIT 6`,
-        [channelSlug]
+         LIMIT 12`
       ),
       pool.query(
         `SELECT 
           (SELECT COUNT(*) FROM seekers) as seeker_count,
-          (SELECT COUNT(*) FROM experts) as expert_count,
-          (SELECT COUNT(*) FROM chat_messages WHERE channel_slug = $1) as channel_messages_count`,
-        [channelSlug]
+          (SELECT COUNT(*) FROM experts) as expert_count`
+      ),
+      pool.query(
+        `SELECT DISTINCT ON (channel_slug) channel_slug, content, sender_name, created_at
+         FROM chat_messages
+         ORDER BY channel_slug, created_at DESC`
       )
     ]);
 
@@ -64,12 +71,11 @@ export const GET: APIRoute = async ({ request }) => {
       success: true,
       channel: channelSlug,
       messages: messagesRes.rows,
-      channels: channelsRes.rows,
       seniors: membersRes.rows,
-      resources: resourcesRes.rows,
+      snippets: snippetsRes.rows,
       stats: {
         online_seniors: expertCount > 0 ? expertCount : membersRes.rows.length,
-        total_members: (seekerCount + expertCount) > 0 ? (seekerCount + expertCount) : 480
+        total_members: (seekerCount + expertCount) > 0 ? (seekerCount + expertCount) : 49
       }
     }), {
       status: 200,

@@ -16,12 +16,14 @@ function getDatabaseUrl(): string {
       const match = content.match(/^DATABASE_URL\s*=\s*(.*)$/m);
       if (match) {
         connStr = match[1].trim().replace(/^["']|["']$/g, '');
-        if (connStr) return connStr;
       }
     }
   } catch (e) {}
 
-  return '';
+  if (connStr && connStr.includes('.neon.tech') && !connStr.includes('-pooler')) {
+    connStr = connStr.replace('.neon.tech', '-pooler.neon.tech');
+  }
+  return connStr;
 }
 
 function createPoolInstance(forceNoSSL = false) {
@@ -37,17 +39,17 @@ function createPoolInstance(forceNoSSL = false) {
     pool = new pg.Pool({
       connectionString: connStr,
       ssl: false,
-      max: 30,
+      max: 10,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 5000
+      connectionTimeoutMillis: 10000
     });
   } else {
     pool = new pg.Pool({
       connectionString: connStr,
       ssl: { rejectUnauthorized: false },
-      max: 30,
+      max: 10,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 5000
+      connectionTimeoutMillis: 10000
     });
   }
 

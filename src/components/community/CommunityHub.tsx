@@ -144,13 +144,15 @@ export default function CommunityHub() {
     role: string;
     isLoggedIn: boolean;
   }>({
-    id: 'guest',
-    name: 'Community Member',
+    id: '',
+    name: '',
     email: '',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     role: 'Member',
     isLoggedIn: false
   });
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const [activeRoomId, setActiveRoomId] = useState<string>('canada');
   const [roomSearchQuery, setRoomSearchQuery] = useState('');
@@ -315,76 +317,125 @@ export default function CommunityHub() {
   // NO FAKE/DUMMY INITIAL MESSAGES - CLEAN EMPTY STATE
   const [messagesMap, setMessagesMap] = useState<{ [roomId: string]: ChatMessage[] }>({});
 
-  // 1. Detect Real User Identity from localStorage
+  // 1. Detect Real User Identity from Server Session & localStorage
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
+    // Purge any rogue test data left in localStorage
     try {
-      let detectedName = '';
-      let detectedEmail = '';
-      let detectedAvatar = '';
-      let detectedId = '';
-      let detectedRole = 'Member';
-      let isLogged = false;
+      const expBiz = localStorage.getItem('expert_businessName');
+      if (expBiz && (expBiz.toLowerCase().includes('team 7z') || expBiz.toLowerCase().includes('dummy') || expBiz.toLowerCase().includes('test'))) {
+        localStorage.removeItem('expert_businessName');
+      }
+      ['canada', 'germany', 'uk', 'australia', 'uae', 'travel', 'lifestyle'].forEach(slug => {
+        const saved = localStorage.getItem(`travltik_chat_${slug}`);
+        if (saved && (saved.includes('dummy') || saved.includes('Alex Morgan') || saved.includes('John Doe') || saved.includes('Elena Rostova'))) {
+          localStorage.removeItem(`travltik_chat_${slug}`);
+        }
+      });
+    } catch (e) {}
 
-      const storedUser = localStorage.getItem('travltik_user');
-      if (storedUser && storedUser !== 'null') {
-        const parsed = JSON.parse(storedUser);
-        if (parsed) {
-          isLogged = true;
-          detectedEmail = parsed.email || '';
-          detectedId = parsed.uid || parsed.id || '';
-          detectedName = parsed.displayName || parsed.name || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || detectedEmail.split('@')[0];
-          detectedAvatar = parsed.photoURL || parsed.avatar || parsed.profile_photo || '';
-          detectedRole = parsed.type === 'expert' ? 'Licensed Expert' : 'Verified Member';
+    const detectRealUser = async () => {
+      let loggedUser: any = null;
+
+      // Check verified server session from /api/auth/me
+      try {
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === 'success' && data.user && data.user.email) {
+            const displayName = data.user.displayName || data.user.email.split('@')[0];
+            loggedUser = {
+              id: data.user.uid,
+              name: displayName,
+              email: data.user.email,
+              avatar: data.user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=00A86B&color=fff&bold=true`,
+              role: data.user.type === 'expert' ? 'Licensed Expert' : 'Verified Member',
+              isLoggedIn: true
+            };
+          }
+        }
+      } catch (e) {
+        console.warn('Could not check server session:', e);
+      }
+
+      // Check client-side valid travltik_user in localStorage
+      if (!loggedUser) {
+        try {
+          const stored = localStorage.getItem('travltik_user');
+          if (stored && stored !== 'null' && stored !== 'undefined') {
+            const parsed = JSON.parse(stored);
+            if (parsed && parsed.email && !parsed.email.toLowerCase().includes('dummy')) {
+              const name = parsed.displayName || parsed.name || `${parsed.first_name || ''} ${parsed.last_name || ''}`.trim() || parsed.email.split('@')[0];
+              if (!name.toLowerCase().includes('team 7z')) {
+                loggedUser = {
+                  id: parsed.uid || parsed.id || parsed.email,
+                  name: name,
+                  email: parsed.email,
+                  avatar: parsed.photoURL || parsed.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00A86B&color=fff&bold=true`,
+                  role: parsed.type === 'expert' ? 'Licensed Expert' : 'Verified Member',
+                  isLoggedIn: true
+                };
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Could not parse travltik_user:', e);
         }
       }
 
-      if (!detectedName) {
-        const expertName = localStorage.getItem('expert_businessName');
-        const expertEmail = localStorage.getItem('expert_email');
-        const seekerFirst = localStorage.getItem('seeker_firstName');
-        const seekerLast = localStorage.getItem('seeker_lastName') || '';
-        const seekerEmail = localStorage.getItem('seeker_email');
-
-        if (expertName) {
-          isLogged = true;
-          detectedName = expertName;
-          detectedEmail = expertEmail || '';
-          detectedRole = 'Licensed Expert';
-        } else if (seekerFirst) {
-          isLogged = true;
-          detectedName = `${seekerFirst} ${seekerLast}`.trim();
-          detectedEmail = seekerEmail || '';
-          detectedRole = 'Verified Member';
-        } else if (seekerEmail) {
-          isLogged = true;
-          detectedName = seekerEmail.split('@')[0];
-          detectedEmail = seekerEmail;
-          detectedRole = 'Verified Member';
-        }
-      }
-
-      if (detectedName) {
-        const avatarUrl = detectedAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(detectedName)}&background=00A86B&color=fff&bold=true`;
+      if (loggedUser) {
+        setCurrentUser(loggedUser);
+      } else {
+        // Not logged in -> clean logged-out state (NO dummy accounts)
         setCurrentUser({
-          id: detectedId || detectedEmail || 'user_' + Date.now(),
-          name: detectedName,
-          email: detectedEmail,
-          avatar: avatarUrl,
-          role: detectedRole,
-          isLoggedIn: isLogged
+          id: '',
+          name: '',
+          email: '',
+          avatar: '',
+          role: 'Member',
+          isLoggedIn: false
         });
       }
-    } catch (e) {
-      console.warn('Could not read user profile:', e);
-    }
+      setIsAuthLoading(false);
+    };
+
+    detectRealUser();
   }, []);
 
-  // 2. Fetch Real Messages & Real Registered Members from Backend
-  const fetchChannelData = async (channelSlug: string) => {
+  // Handle Logout / Switch Account
+  const handleLogout = async () => {
     try {
-      setIsLoadingMessages(true);
+      await fetch('/api/logout', { method: 'POST' });
+    } catch (e) {}
+    try {
+      localStorage.removeItem('travltik_user');
+      localStorage.removeItem('expert_businessName');
+      localStorage.removeItem('expert_email');
+      localStorage.removeItem('expert_fullName');
+      localStorage.removeItem('expert_isLoggedIn');
+      localStorage.removeItem('seeker_firstName');
+      localStorage.removeItem('seeker_lastName');
+      localStorage.removeItem('seeker_email');
+      localStorage.removeItem('seeker_phone');
+    } catch (e) {}
+    setCurrentUser({
+      id: '',
+      name: '',
+      email: '',
+      avatar: '',
+      role: 'Member',
+      isLoggedIn: false
+    });
+    setShowUserDropdown(false);
+  };
+
+  // 2. Fetch Real Messages & Real Registered Members from Backend
+  const fetchChannelData = async (channelSlug: string, isInitialLoad: boolean = false) => {
+    try {
+      if (isInitialLoad) {
+        setIsLoadingMessages(true);
+      }
       const res = await fetch(`/api/community/messages?channel=${encodeURIComponent(channelSlug)}`);
       if (!res.ok) return;
 
@@ -400,9 +451,25 @@ export default function CommunityHub() {
             id: String(s.id || idx),
             name: s.name,
             avatar: s.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=420f79&color=fff`,
-            role: s.university?.toLowerCase().includes('freelancer') || s.university?.toLowerCase().includes('company') ? 'Admin' : 'Moderator'
+            role: s.role || 'Member'
           }));
           setRegisteredMembers(mapped);
+        }
+
+        // Map real snippets from DB across all channels
+        if (Array.isArray(data.snippets) && data.snippets.length > 0) {
+          setRooms(prevRooms => prevRooms.map(room => {
+            const snip = data.snippets.find((s: any) => s.channel_slug === room.id);
+            if (snip) {
+              const snipTime = snip.created_at ? new Date(snip.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+              return {
+                ...room,
+                lastMessageSnippet: `${snip.sender_name}: ${snip.content}`,
+                lastMessageTime: snipTime
+              };
+            }
+            return room;
+          }));
         }
 
         // Map real messages from DB
@@ -423,30 +490,28 @@ export default function CommunityHub() {
             };
           });
 
-          // Check if user has local unsynced offline messages
-          let localBackup: ChatMessage[] = [];
-          try {
-            const localSaved = localStorage.getItem(`travltik_chat_${channelSlug}`);
-            if (localSaved) {
-              localBackup = JSON.parse(localSaved);
-            }
-          } catch (e) {}
+          setMessagesMap(prev => {
+            const currentList = prev[channelSlug] || [];
+            // Preserve pending optimistic messages that haven't saved to DB yet
+            const pendingOptimistic = currentList.filter(m => m.id.startsWith('temp-'));
+            const combined = [...mappedMessages, ...pendingOptimistic];
 
-          const combinedMap = new Map<string, ChatMessage>();
-          mappedMessages.forEach(m => combinedMap.set(m.id, m));
-          localBackup.forEach(m => {
-            if (!combinedMap.has(m.id)) combinedMap.set(m.id, m);
+            // Don't re-render if messages haven't changed
+            if (
+              currentList.length === combined.length &&
+              currentList.every((item, idx) => item.id === combined[idx].id && item.text === combined[idx].text)
+            ) {
+              return prev;
+            }
+            return {
+              ...prev,
+              [channelSlug]: combined
+            };
           });
 
-          const finalList = Array.from(combinedMap.values());
-          setMessagesMap(prev => ({
-            ...prev,
-            [channelSlug]: finalList
-          }));
-
-          // Update room snippet
-          if (finalList.length > 0) {
-            const last = finalList[finalList.length - 1];
+          // Update active room snippet
+          if (mappedMessages.length > 0) {
+            const last = mappedMessages[mappedMessages.length - 1];
             setRooms(prevRooms => prevRooms.map(r => {
               if (r.id === channelSlug) {
                 return {
@@ -463,13 +528,22 @@ export default function CommunityHub() {
     } catch (err) {
       console.warn('Failed to load community feed:', err);
     } finally {
-      setIsLoadingMessages(false);
+      if (isInitialLoad) {
+        setIsLoadingMessages(false);
+      }
     }
   };
 
+  // Real-time synchronization: Initial fetch + live polling every 2.5 seconds
   useEffect(() => {
-    fetchChannelData(activeRoomId);
-  }, [activeRoomId, currentUser.name]);
+    fetchChannelData(activeRoomId, true);
+
+    const pollInterval = setInterval(() => {
+      fetchChannelData(activeRoomId, false);
+    }, 2500);
+
+    return () => clearInterval(pollInterval);
+  }, [activeRoomId, currentUser.id, currentUser.name]);
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
@@ -505,6 +579,10 @@ export default function CommunityHub() {
 
   // Real Message Sending to PostgreSQL DB
   const handleSendMessage = async () => {
+    if (!currentUser.isLoggedIn) {
+      setShowAuthModal(true);
+      return;
+    }
     if (!inputText.trim()) return;
     const textToSend = inputText.trim();
     setInputText('');
@@ -512,10 +590,10 @@ export default function CommunityHub() {
 
     const now = new Date();
     const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const localId = 'msg-' + Date.now();
+    const tempId = 'temp-' + Date.now();
 
-    const newMsg: ChatMessage = {
-      id: localId,
+    const optimisticMsg: ChatMessage = {
+      id: tempId,
       senderName: 'You',
       senderAvatar: currentUser.avatar,
       isSelf: true,
@@ -524,11 +602,10 @@ export default function CommunityHub() {
     };
 
     // Instant optimistic update
-    const updatedMessages = [...activeMessages, newMsg];
-    setMessagesMap(prev => ({ ...prev, [activeRoomId]: updatedMessages }));
-    try {
-      localStorage.setItem(`travltik_chat_${activeRoomId}`, JSON.stringify(updatedMessages));
-    } catch (e) {}
+    setMessagesMap(prev => ({
+      ...prev,
+      [activeRoomId]: [...(prev[activeRoomId] || []), optimisticMsg]
+    }));
 
     setRooms(prev => prev.map(r => {
       if (r.id === activeRoomId) {
@@ -543,7 +620,7 @@ export default function CommunityHub() {
 
     // Save to real database
     try {
-      await fetch('/api/community/messages', {
+      const res = await fetch('/api/community/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -551,9 +628,26 @@ export default function CommunityHub() {
           content: textToSend,
           sender_name: currentUser.name || 'Community Member',
           sender_avatar: currentUser.avatar,
-          user_id: currentUser.id || currentUser.email || 'guest-user'
+          user_id: currentUser.id || currentUser.email || 'user_' + Date.now()
         })
       });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.message) {
+          // Replace temp id with real server database id
+          setMessagesMap(prev => {
+            const list = prev[activeRoomId] || [];
+            return {
+              ...prev,
+              [activeRoomId]: list.map(m => m.id === tempId ? {
+                ...m,
+                id: String(data.message.id)
+              } : m)
+            };
+          });
+        }
+      }
     } catch (err) {
       console.warn('Network error saving message:', err);
     }
@@ -728,52 +822,82 @@ export default function CommunityHub() {
             <Mail className="w-5 h-5 stroke-[1.8]" />
           </button>
 
-          {/* User Profile Pill (Shows Real Logged In User) */}
-          <div
-            onClick={() => setShowUserDropdown(!showUserDropdown)}
-            className="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-slate-200/80 cursor-pointer hover:opacity-90 transition-opacity relative"
-          >
+          {/* User Profile Pill OR Login Buttons */}
+          {isAuthLoading ? (
+            <div className="w-20 sm:w-28 h-8 bg-slate-100 rounded-full animate-pulse ml-1" />
+          ) : currentUser.isLoggedIn ? (
             <div className="relative">
-              <img
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-2xs"
-              />
-              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />
-            </div>
-            <span className="text-xs font-bold text-slate-800 hidden sm:inline-block max-w-[140px] truncate">
-              {currentUser.name}
-            </span>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:inline-block" />
-          </div>
-
-          {/* User Dropdown Menu */}
-          {showUserDropdown && (
-            <div className="absolute top-12 right-0 bg-white rounded-2xl border border-slate-200 shadow-xl p-3 w-56 z-50 animate-in fade-in zoom-in-95 duration-150">
-              <div className="px-2 py-1.5 border-b border-slate-100 mb-2">
-                <p className="text-xs font-bold text-slate-900 truncate">{currentUser.name}</p>
-                {currentUser.email && (
-                  <p className="text-[11px] text-slate-500 truncate">{currentUser.email}</p>
-                )}
-                <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70">
-                  {currentUser.role}
-                </span>
+              <div
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-200/80 cursor-pointer hover:opacity-90 transition-opacity select-none"
+              >
+                <div className="relative">
+                  <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-2xs"
+                  />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white" />
+                </div>
+                <div className="hidden sm:flex flex-col text-left leading-tight max-w-[130px]">
+                  <span className="text-xs font-bold text-slate-800 truncate">
+                    {currentUser.name}
+                  </span>
+                  <span className="text-[10px] text-slate-400 truncate">
+                    {currentUser.role}
+                  </span>
+                </div>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:inline-block" />
               </div>
 
-              <a
-                href={currentUser.role === 'Licensed Expert' ? '/service-provider/dashboard' : '/traveller/dashboard'}
-                className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
-              >
-                <Shield className="w-3.5 h-3.5 text-[#00A86B]" />
-                <span>My Dashboard</span>
-              </a>
+              {/* User Dropdown Menu */}
+              {showUserDropdown && (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-12 right-0 bg-white rounded-2xl border border-slate-200 shadow-xl p-3 w-60 z-50 animate-in fade-in zoom-in-95 duration-150 text-left"
+                >
+                  <div className="px-2 py-1.5 border-b border-slate-100 mb-2">
+                    <p className="text-xs font-bold text-slate-900 truncate">{currentUser.name}</p>
+                    {currentUser.email && (
+                      <p className="text-[11px] text-slate-500 truncate">{currentUser.email}</p>
+                    )}
+                    <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70">
+                      {currentUser.role}
+                    </span>
+                  </div>
 
+                  <a
+                    href={currentUser.role === 'Licensed Expert' ? '/service-provider/dashboard' : '/traveller/dashboard'}
+                    className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-[#00A86B]" />
+                    <span>My Dashboard</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-2 px-2.5 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded-xl transition-colors text-left cursor-pointer"
+                  >
+                    <LogOut className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Log Out / Switch Account</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-200/80">
               <a
-                href="/login"
-                className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
+                href="/login?return=/community"
+                className="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-950 border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 rounded-xl transition-all shadow-2xs whitespace-nowrap cursor-pointer"
               >
-                <LogOut className="w-3.5 h-3.5 text-slate-400" />
-                <span>Switch Account</span>
+                Log in
+              </a>
+              <a
+                href="/signup?return=/community"
+                className="px-3.5 py-1.5 text-xs font-bold text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 rounded-xl transition-all shadow-xs hover:shadow-emerald-500/20 whitespace-nowrap cursor-pointer"
+              >
+                Sign Up
               </a>
             </div>
           )}
@@ -1292,50 +1416,74 @@ export default function CommunityHub() {
             {/* Real Registered Members Roster */}
             <div className="space-y-3">
               
-              {/* Current User in Roster */}
-              <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl bg-slate-50/80 border border-slate-200/60">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <img
-                    src={currentUser.avatar}
-                    alt={currentUser.name}
-                    className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                  />
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 truncate block">
-                      {currentUser.name}
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-medium">
-                      You
-                    </span>
-                  </div>
-                </div>
-
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/70 shrink-0">
-                  {currentUser.role}
-                </span>
-              </div>
-
-              {/* Real Registered Members from Database */}
-              {registeredMembers.map((mem) => (
-                <div key={mem.id} className="flex items-center justify-between gap-3 px-1">
+              {/* Current User in Roster (Only if logged in) */}
+              {currentUser.isLoggedIn ? (
+                <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl bg-slate-50/80 border border-slate-200/60">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <img
-                      src={mem.avatar}
-                      alt={mem.name}
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
                       className="w-8 h-8 rounded-full object-cover border border-slate-200"
                     />
-                    <span className="text-xs font-bold text-slate-800 truncate">
-                      {mem.name}
-                    </span>
+                    <div className="min-w-0">
+                      <span className="text-xs font-bold text-slate-900 truncate block">
+                        {currentUser.name}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-medium">
+                        You
+                      </span>
+                    </div>
                   </div>
 
-                  {mem.role && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200/70 shrink-0">
-                      {mem.role}
-                    </span>
-                  )}
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border ${
+                    currentUser.role === 'Admin' ? 'bg-purple-50 text-[#420f79] border-purple-200' :
+                    currentUser.role === 'Licensed Expert' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                    currentUser.role === 'Moderator' ? 'bg-sky-50 text-sky-700 border-sky-200' :
+                    'bg-slate-100 text-slate-700 border-slate-200'
+                  }`}>
+                    {currentUser.role}
+                  </span>
                 </div>
-              ))}
+              ) : (
+                <div className="p-2.5 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center">
+                  <p className="text-[11px] font-medium text-slate-600">Want to join the conversation?</p>
+                  <a
+                    href="/login?return=/community"
+                    className="inline-block mt-1 text-[11px] font-bold text-[#00A86B] hover:underline"
+                  >
+                    Log in or Sign Up →
+                  </a>
+                </div>
+              )}
+
+              {/* Real Registered Members from Database */}
+              {registeredMembers
+                .filter(mem => !currentUser.isLoggedIn || mem.name !== currentUser.name)
+                .map((mem) => (
+                  <div key={mem.id} className="flex items-center justify-between gap-3 px-1">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <img
+                        src={mem.avatar}
+                        alt={mem.name}
+                        className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                      />
+                      <span className="text-xs font-bold text-slate-800 truncate">
+                        {mem.name}
+                      </span>
+                    </div>
+
+                    {mem.role && (
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 border ${
+                        mem.role === 'Admin' ? 'bg-purple-50 text-[#420f79] border-purple-200' :
+                        mem.role === 'Moderator' ? 'bg-sky-50 text-sky-700 border-sky-200' :
+                        mem.role === 'Licensed Expert' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                        'bg-slate-100 text-slate-700 border-slate-200/70'
+                      }`}>
+                        {mem.role}
+                      </span>
+                    )}
+                  </div>
+                ))}
             </div>
           </div>
         </aside>
@@ -1420,6 +1568,47 @@ export default function CommunityHub() {
                   Create Channel
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* AUTH REQUIRED MODAL */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center relative animate-in zoom-in-95 duration-150">
+            <button
+              type="button"
+              onClick={() => setShowAuthModal(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00A86B] shadow-inner">
+              <MessageSquare className="w-7 h-7" />
+            </div>
+
+            <h3 className="text-xl font-bold text-slate-900">
+              Join the Expat Community
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Log in or create a free account to join live discussions, ask questions, and connect directly with verified expats and visa experts worldwide.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-2.5">
+              <a
+                href="/login?return=/community"
+                className="w-full py-3 px-4 bg-[#00A86B] hover:bg-[#00925d] text-white font-bold rounded-xl text-sm transition-all shadow-md shadow-[#00A86B]/25 active:scale-98 text-center"
+              >
+                Log In to Chat
+              </a>
+              <a
+                href="/signup?return=/community"
+                className="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200/80 text-slate-800 font-bold rounded-xl text-sm transition-all active:scale-98 text-center"
+              >
+                Create Free Account
+              </a>
             </div>
           </div>
         </div>
