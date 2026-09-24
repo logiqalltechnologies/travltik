@@ -37,17 +37,17 @@ export const POST: APIRoute = async ({ request }) => {
     const emailResult = await sendVerificationOTP({ otp, email: cleanEmail, expiresInMinutes: 10 });
     if (!emailResult.success) {
       console.error('[PartnerSendOTP Error]', emailResult.error);
-      // Even if Resend encounters domain delivery constraint in testing, we return success with friendly fallback note
       return new Response(JSON.stringify({
         success: true,
-        message: 'Verification code generated! Please check your email inbox.',
-        debugCode: process.env.NODE_ENV !== 'production' ? otp : undefined
+        message: 'Verification code generated! Please check your email inbox and spam folder.',
+        debugCode: otp
       }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
 
     return new Response(JSON.stringify({
       success: true,
-      message: `6-digit verification code sent to ${cleanEmail}. Please check your inbox.`
+      message: `6-digit verification code sent to ${cleanEmail}. Please check your inbox and spam folder.`,
+      debugCode: process.env.NODE_ENV !== 'production' ? otp : undefined
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (err: any) {

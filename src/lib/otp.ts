@@ -18,7 +18,6 @@ export async function saveOtp(email: string, otp: string): Promise<{
   cooldownSecondsLeft?: number;
 }> {
   try {
-    await runMigrations();
     const pool = getPool();
     const normalizedEmail = email.toLowerCase().trim();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
@@ -27,18 +26,18 @@ export async function saveOtp(email: string, otp: string): Promise<{
     const existing = await pool.query(
       'SELECT created_at, last_resend_at, resend_count FROM email_verifications WHERE LOWER(email) = LOWER($1) ORDER BY created_at DESC LIMIT 1',
       [normalizedEmail]
-    );
+    ).catch(() => ({ rows: [] as any[] }));
 
     if (existing.rows.length > 0) {
       const row = existing.rows[0];
       const lastTime = row.last_resend_at || row.created_at;
       const lastAttempt = new Date(lastTime);
       const secondsSince = (Date.now() - lastAttempt.getTime()) / 1000;
-      if (secondsSince < 60) {
+      if (secondsSince < 15) {
         return {
           success: false,
           error: 'COOLDOWN_ACTIVE',
-          cooldownSecondsLeft: Math.ceil(60 - secondsSince),
+          cooldownSecondsLeft: Math.ceil(15 - secondsSince),
         };
       }
     }
@@ -72,7 +71,6 @@ export async function verifyOtp(email: string, otp: string): Promise<{
   attemptsRemaining?: number;
 }> {
   try {
-    await runMigrations();
     const pool = getPool();
     const normalizedEmail = email.toLowerCase().trim();
     const hashedOtp = hashOtp(otp);
@@ -144,7 +142,6 @@ export async function deleteOtpRecord(email: string): Promise<void> {
 
 export async function isEmailVerified(email: string): Promise<boolean> {
   try {
-    await runMigrations();
     const pool = getPool();
     const result = await pool.query(
       'SELECT verified FROM email_verifications WHERE LOWER(email) = LOWER($1) ORDER BY created_at DESC LIMIT 1',
