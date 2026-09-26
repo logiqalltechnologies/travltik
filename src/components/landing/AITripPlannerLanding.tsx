@@ -1513,6 +1513,17 @@ export function AITripPlannerLanding() {
     destinationUrl: string;
   } | null>(null);
 
+  const [paidPlanRemainingQueries, setPaidPlanRemainingQueries] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('travltik_paid_plan_queries_left');
+      if (stored !== null) {
+        const val = parseInt(stored, 10);
+        return isNaN(val) ? 0 : Math.max(0, val);
+      }
+    }
+    return 0;
+  });
+
   const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
   const [razorpayStep, setRazorpayStep] = useState<'select_method' | 'processing' | 'success'>('select_method');
   const [razorpayMethod, setRazorpayMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
@@ -1534,8 +1545,12 @@ export function AITripPlannerLanding() {
       try {
         localStorage.setItem(paidKey, 'true');
         localStorage.setItem('last_payment_tx', txId);
-        localStorage.setItem('last_payment_plan', 'Get Your Visa Done ($5)');
+        localStorage.setItem('last_payment_plan', 'Get Your Visa Done ($5 - 3 Queries)');
         localStorage.setItem('travltik_paid_visa_unlocked', 'true');
+        // Grant 3 queries total (1 used now + 2 remaining)
+        const updatedCredits = 2; // current destination unlocked now, 2 more searches remaining
+        localStorage.setItem('travltik_paid_plan_queries_left', updatedCredits.toString());
+        setPaidPlanRemainingQueries(updatedCredits);
       } catch (e) {}
     }
     setPaymentTxId(txId);
@@ -1557,7 +1572,7 @@ export function AITripPlannerLanding() {
           amount: 500, // $5 USD
           currency: 'USD',
           name: 'Travltik',
-          description: `Get Your Visa Done - ${pendingSearchData?.targetCountry || 'Visa'} Pathway`,
+          description: `Get Your Visa Done (3 AI Queries) - ${pendingSearchData?.targetCountry || 'Visa'} Pathway`,
           image: '/logo.png?v=8',
           handler: function (response: any) {
             finishPaymentSuccess(response.razorpay_payment_id || generatedTxId);
@@ -2599,19 +2614,34 @@ export function AITripPlannerLanding() {
         } catch(e) {}
       }
 
-      // Check if user already unlocked this destination
+      // Check if user already unlocked this specific destination or has queries left from $5 plan
       const paidKey = `paid_visa_plan_${destSlug}_${passport.toLowerCase()}`;
-      const isAlreadyPaid = typeof window !== 'undefined' && (
+      const isDestinationUnlocked = typeof window !== 'undefined' && (
         localStorage.getItem(paidKey) === 'true' ||
         localStorage.getItem('travltik_vip_access') === 'true'
       );
 
-      if (isAlreadyPaid) {
+      const queriesLeft = typeof window !== 'undefined'
+        ? parseInt(localStorage.getItem('travltik_paid_plan_queries_left') || '0', 10)
+        : 0;
+
+      if (isDestinationUnlocked) {
         if (typeof window !== 'undefined') {
           window.location.href = destinationUrl;
         }
+      } else if (queriesLeft > 0) {
+        // User has remaining queries from their $5 (3 Queries) plan!
+        if (typeof window !== 'undefined') {
+          try {
+            const nextQueries = queriesLeft - 1;
+            localStorage.setItem('travltik_paid_plan_queries_left', nextQueries.toString());
+            localStorage.setItem(paidKey, 'true'); // lock this destination as unlocked
+            setPaidPlanRemainingQueries(nextQueries);
+          } catch(e) {}
+          window.location.href = `${destinationUrl}&plan=visa-done&paid=true`;
+        }
       } else {
-        // Intercept: Show $5 Plan Modal ("Get Your Visa Done")
+        // Intercept: Show $5 Plan Modal ("Get Your Visa Done - 3 Queries Included")
         setPendingSearchData({
           targetCountry,
           passport,
@@ -5118,7 +5148,7 @@ return (
                 Get Your Visa Done
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Consular requirements & filing checklist for your journey.
+                Full consular requirements, AI document dossier & slot roadmap.
               </p>
 
               {/* Compact Price Card */}
@@ -5127,8 +5157,11 @@ return (
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-2xl font-black text-slate-900">$5</span>
                     <span className="text-xs font-bold text-slate-500">USD</span>
+                    <span className="ml-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      3 Queries Included
+                    </span>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-medium">One-time fee • Lifetime access</span>
+                  <span className="text-[10px] text-slate-400 font-medium">Use across any 3 destination visas</span>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded-full">
                   Instant Unlock
@@ -5141,13 +5174,13 @@ return (
                   <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span>Complete Embassy Checklist & Document Dossier</span>
+                  <span><strong>3 Full Visa Queries:</strong> Search any 3 countries or visa routes</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span>VFS & Consular Slot Booking Roadmap</span>
+                  <span>Complete Embassy Checklist, Document Dossier & VFS Guide</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
@@ -5164,7 +5197,7 @@ return (
                   onClick={handleProceedToPayment}
                   className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
                 >
-                  <span>Proceed to Pay $5</span>
+                  <span>Proceed to Pay $5 (Unlock 3 Queries)</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                 </button>
 
@@ -5216,9 +5249,9 @@ return (
             <div className="bg-slate-50 px-5 sm:px-6 py-3 border-b border-slate-200/80 flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-slate-800">
-                  Get Your Visa Done • {pendingSearchData.targetCountry}
+                  Get Your Visa Done • 3 AI Queries
                 </span>
-                <p className="text-[10px] text-slate-500">AI Requirements Dossier & Consular Roadmap</p>
+                <p className="text-[10px] text-slate-500">Unlocks {pendingSearchData.targetCountry} + 2 more destination queries</p>
               </div>
               <div className="text-right">
                 <span className="text-base font-black text-slate-900">$5.00 USD</span>
@@ -5421,7 +5454,10 @@ return (
                       Payment Successful!
                     </h4>
                     <p className="text-xs text-slate-600 mt-1">
-                      Your <strong>$5 "Get Your Visa Done"</strong> plan for {pendingSearchData.targetCountry} is now active.
+                      Your <strong>$5 "Get Your Visa Done" (3 AI Queries)</strong> plan is now active!
+                    </p>
+                    <p className="text-[11px] text-emerald-700 font-semibold mt-1">
+                      {pendingSearchData.targetCountry} unlocked + 2 more queries available.
                     </p>
                     <p className="text-[11px] text-slate-400 font-mono mt-1">
                       Ref: {paymentTxId}
