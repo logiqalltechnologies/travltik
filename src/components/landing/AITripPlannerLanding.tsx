@@ -5161,7 +5161,7 @@ return (
                       3 Queries Included
                     </span>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-medium">Use across any 3 destination visas</span>
+                  <span className="text-[10px] text-slate-400 font-medium">One-time fee • 3 AI Visa Queries</span>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded-full">
                   Instant Unlock
