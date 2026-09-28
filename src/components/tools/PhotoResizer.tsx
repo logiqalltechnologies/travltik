@@ -1,5 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, Upload, Download, CheckCircle2, AlertTriangle, RefreshCw, ZoomIn, ZoomOut, Move, ShieldCheck, Sparkles } from 'lucide-react';
+import { CustomSelect, type SelectOption } from '../ui/CustomSelect';
+
+const PHOTO_COUNTRY_OPTIONS: SelectOption[] = [
+  { value: 'us', label: 'United States (DS-160 / US Visa)', subtitle: '2x2 inches (51x51mm) • 600x600 px', badge: '2x2 in' },
+  { value: 'schengen', label: 'Schengen Area (Europe)', subtitle: '35x45 mm (Standard EU) • 413x531 px', badge: '35x45mm' },
+  { value: 'india', label: 'India (e-Visa / Passport)', subtitle: '35x35 mm / 2x2 in • 600x600 px', badge: '35x35mm' },
+  { value: 'uk', label: 'United Kingdom (UKVI)', subtitle: '35x45 mm • 413x531 px', badge: '35x45mm' },
+  { value: 'canada', label: 'Canada (IRCC / Visa)', subtitle: '35x45 mm / 50x70 mm • 420x540 px', badge: '50x70mm' }
+];
 
 interface PhotoSpec {
   id: string;
@@ -233,20 +242,12 @@ export function PhotoResizer() {
         <div className="lg:col-span-5 space-y-6">
           {/* Country Spec Selector */}
           <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-              1. Select Destination / Consular Standard
-            </label>
-            <select
+            <CustomSelect
+              label="1. Select Destination / Consular Standard"
               value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] focus:border-transparent transition-all outline-none"
-            >
-              {Object.values(PHOTO_SPECS).map((spec) => (
-                <option key={spec.id} value={spec.id}>
-                  {spec.country} — {spec.label}
-                </option>
-              ))}
-            </select>
+              onChange={(val) => setSelectedCountry(val)}
+              options={PHOTO_COUNTRY_OPTIONS}
+            />
 
             {/* Spec Details Card */}
             <div className="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1.5 text-slate-600">

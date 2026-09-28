@@ -3,6 +3,25 @@ import {
   FileText, Sparkles, Copy, Download, Check, AlertCircle, 
   BookOpen, ShieldCheck, RefreshCw, Send, CheckCircle2
 } from 'lucide-react';
+import { CustomSelect, type SelectOption } from '../ui/CustomSelect';
+
+const SOP_COUNTRY_OPTIONS: SelectOption[] = [
+  { value: "Canada", label: "Canada", subtitle: "IRCC / Section 216 IRPR Intent Standard", badge: "IRCC" },
+  { value: "United States", label: "United States", subtitle: "USCIS & State Dept / Section 214(b) INA", badge: "DS-160" },
+  { value: "United Kingdom", label: "United Kingdom", subtitle: "UKVI Points-Based Immigration", badge: "UKVI" },
+  { value: "Australia", label: "Australia", subtitle: "Home Affairs / Genuine Student (GS) Standard", badge: "GS / GTE" },
+  { value: "Germany", label: "Germany / Schengen", subtitle: "Federal Foreign Office Consular Standard", badge: "Schengen" },
+  { value: "Ireland", label: "Ireland", subtitle: "Irish Immigration Service Delivery (ISD)", badge: "ISD" },
+  { value: "New Zealand", label: "New Zealand", subtitle: "Immigration New Zealand (INZ)", badge: "INZ" }
+];
+
+const SOP_PURPOSE_OPTIONS: SelectOption[] = [
+  { value: "Student Visa / Study Permit", label: "Student Visa / Study Permit", subtitle: "Academic justification & return career path" },
+  { value: "Tourist / Visitor Visa", label: "Tourist / Visitor Visa", subtitle: "Temporary leisure & travel itinerary details" },
+  { value: "Work Permit / Skilled Employment", label: "Work Permit / Skilled Employment", subtitle: "Employer sponsorship & specialized expertise" },
+  { value: "Business Visitor Visa", label: "Business Visitor Visa", subtitle: "Corporate meetings, trade deals, and conferences" },
+  { value: "Conference / Seminar Visa", label: "Conference / Event Visa", subtitle: "Academic presentation or corporate summit" }
+];
 
 export function SOPGenerator() {
   const [formData, setFormData] = useState({
@@ -116,42 +135,20 @@ export function SOPGenerator() {
             </div>
 
             {/* Target Country */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                Destination Country *
-              </label>
-              <select
-                value={formData.targetCountry}
-                onChange={(e) => setFormData({ ...formData, targetCountry: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none text-sm"
-              >
-                <option value="Canada">Canada</option>
-                <option value="United States">United States</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Australia">Australia</option>
-                <option value="Germany">Germany / Schengen</option>
-                <option value="Ireland">Ireland</option>
-                <option value="New Zealand">New Zealand</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Destination Country *"
+              value={formData.targetCountry}
+              onChange={(val) => setFormData({ ...formData, targetCountry: val })}
+              options={SOP_COUNTRY_OPTIONS}
+            />
 
             {/* Visa Purpose */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                Visa Category &amp; Purpose *
-              </label>
-              <select
-                value={formData.purpose}
-                onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none text-sm"
-              >
-                <option value="Student Visa / Study Permit">Student Visa / Study Permit</option>
-                <option value="Tourist / Visitor Visa">Tourist / Visitor Visa</option>
-                <option value="Work Permit / Skilled Employment">Work Permit / Skilled Employment</option>
-                <option value="Business Visitor Visa">Business Visitor Visa</option>
-                <option value="Conference / Seminar Visa">Conference / Event Visa</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Visa Category & Purpose *"
+              value={formData.purpose}
+              onChange={(val) => setFormData({ ...formData, purpose: val })}
+              options={SOP_PURPOSE_OPTIONS}
+            />
 
             {/* Target Institution / Organization */}
             <div>

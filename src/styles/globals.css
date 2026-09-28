@@ -163,7 +163,40 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "ss02", "tnum";
+  }
+
+  /* ── 8. Form Select & Dropdown Value Styling ── */
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem 1rem;
+    padding-right: 2.5rem !important;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: #00a896 !important;
+    box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.15) !important;
+  }
+
+  select option {
+    background-color: #ffffff;
+    color: #0f172a;
+    padding: 10px 14px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  select option:checked {
+    background-color: #e6f7f5 !important;
+    color: #00a896 !important;
+    font-weight: 700;
   }
 
   /* iOS Native Spring Touch Targets & Tactile Feedback */

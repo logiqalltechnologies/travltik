@@ -3,6 +3,31 @@ import {
   FileCheck2, Sparkles, AlertCircle, ArrowRight, Printer, 
   CheckCircle2, Compass, ShieldAlert, BookOpen, Layers, Award
 } from 'lucide-react';
+import { CustomSelect, type SelectOption } from '../ui/CustomSelect';
+
+const COUNTRY_OPTIONS: SelectOption[] = [
+  { value: "Canada", label: "Canada", subtitle: "Express Entry / Provincial Nominee (PNP)", badge: "EE / PNP" },
+  { value: "Australia", label: "Australia", subtitle: "SkillSelect Subclass 189 / 190 / 491", badge: "Points 65+" },
+  { value: "United Kingdom", label: "United Kingdom", subtitle: "Skilled Worker Route / Global Talent", badge: "70 Pts" },
+  { value: "Germany", label: "Germany", subtitle: "Opportunity Card / EU Blue Card", badge: "Chancenkarte" },
+  { value: "New Zealand", label: "New Zealand", subtitle: "Skilled Migrant Category (SMC)", badge: "SMC 6 Pts" },
+];
+
+const EDUCATION_OPTIONS: SelectOption[] = [
+  { value: "Doctoral / Ph.D.", label: "Doctoral Degree (Ph.D.)", subtitle: "Highest academic credential tier" },
+  { value: "Master's Degree", label: "Master's Degree / Professional Degree", subtitle: "High CRS tier (126-135 human capital pts)" },
+  { value: "Two or more Post-Secondary Degrees", label: "Two or More Post-Secondary Degrees", subtitle: "One program must be 3+ years in duration" },
+  { value: "Bachelor's Degree", label: "Bachelor's Degree (3-4 Years)", subtitle: "Standard university degree level" },
+  { value: "Post-Secondary Diploma", label: "1-2 Year College Diploma / Certificate", subtitle: "Technical or vocational diploma" },
+];
+
+const LANGUAGE_OPTIONS: SelectOption[] = [
+  { value: "CLB 10 (IELTS 8.5+)", label: "CLB 10 (IELTS 8.5+ / Fluent)", subtitle: "Maximum available language points (32-34 pts/band)" },
+  { value: "CLB 9 (IELTS 8777)", label: "CLB 9 (IELTS 8777 - Optimal CRS)", subtitle: "Unlocks maximum skill transferability bonus" },
+  { value: "CLB 8 (IELTS 7.5)", label: "CLB 8 (IELTS 7.5)", subtitle: "Competitive score for skilled migration" },
+  { value: "CLB 7 (IELTS 6.0)", label: "CLB 7 (IELTS 6.0 - Minimum Threshold)", subtitle: "Minimum threshold for Express Entry FSW" },
+  { value: "Below CLB 7", label: "Below CLB 7", subtitle: "May require retake before profile submission" },
+];
 
 interface AuditReport {
   profileSummary: string;
@@ -92,22 +117,12 @@ export function PDFAudit() {
         <form onSubmit={handleAudit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {/* Target Country */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                Target Country
-              </label>
-              <select
-                value={formData.targetCountry}
-                onChange={(e) => setFormData({ ...formData, targetCountry: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none"
-              >
-                <option value="Canada">Canada (Express Entry / PNP)</option>
-                <option value="Australia">Australia (SkillSelect 189/190)</option>
-                <option value="United Kingdom">United Kingdom (Skilled Worker)</option>
-                <option value="Germany">Germany (Opportunity Card / Blue Card)</option>
-                <option value="New Zealand">New Zealand (SMC)</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Target Country"
+              value={formData.targetCountry}
+              onChange={(val) => setFormData({ ...formData, targetCountry: val })}
+              options={COUNTRY_OPTIONS}
+            />
 
             {/* Age */}
             <div>
@@ -126,40 +141,20 @@ export function PDFAudit() {
             </div>
 
             {/* Highest Education */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                Highest Education
-              </label>
-              <select
-                value={formData.education}
-                onChange={(e) => setFormData({ ...formData, education: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none"
-              >
-                <option value="Doctoral / Ph.D.">Doctoral degree (Ph.D.)</option>
-                <option value="Master's Degree">Master's Degree / Professional Degree</option>
-                <option value="Two or more Post-Secondary Degrees">Two or more certificates/degrees</option>
-                <option value="Bachelor's Degree">Bachelor's Degree (3-4 years)</option>
-                <option value="Post-Secondary Diploma">1-2 Year College Diploma</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Highest Education"
+              value={formData.education}
+              onChange={(val) => setFormData({ ...formData, education: val })}
+              options={EDUCATION_OPTIONS}
+            />
 
             {/* Language Test Score */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                Language Test Competency
-              </label>
-              <select
-                value={formData.language}
-                onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none"
-              >
-                <option value="CLB 10 (IELTS 8.5+)">CLB 10 (IELTS 8.5+ / Fluent)</option>
-                <option value="CLB 9 (IELTS 8777)">CLB 9 (IELTS 8777 - Optimal CRS)</option>
-                <option value="CLB 8 (IELTS 7.5)">CLB 8 (IELTS 7.5)</option>
-                <option value="CLB 7 (IELTS 6.0)">CLB 7 (IELTS 6.0 - Minimum Threshold)</option>
-                <option value="Below CLB 7">Below CLB 7 (Requires Improvement)</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Language Test Competency"
+              value={formData.language}
+              onChange={(val) => setFormData({ ...formData, language: val })}
+              options={LANGUAGE_OPTIONS}
+            />
 
             {/* Skilled Work Experience */}
             <div>
