@@ -97,11 +97,25 @@ export function DocumentCategory({ category, documents, onUpload, onViewDoc }: P
                       <p className="text-[11px] text-slate-500 truncate mt-0.5">
                         {doc.description || doc.hint || (isVerified ? (doc.docNumber || 'Verified on file') : 'Pending upload')}
                       </p>
+                      {doc.validationFeedback && (
+                        <div className={`mt-1 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md border ${
+                          doc.validationFeedback.type === 'warning'
+                            ? 'bg-amber-50 text-amber-800 border-amber-200'
+                            : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                        }`}>
+                          <span>{doc.validationFeedback.type === 'warning' ? '⚠️' : '✓'}</span>
+                          <span>{doc.validationFeedback.text}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2.5 shrink-0">
-                    {isVerified ? (
+                    {doc.validationFeedback?.type === 'warning' ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold">
+                        <span>Check Required</span>
+                      </span>
+                    ) : isVerified ? (
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-xs font-bold">
                         <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
                         <span>Verified</span>

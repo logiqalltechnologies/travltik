@@ -2991,10 +2991,10 @@ return (
             {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
             <div className="w-full max-w-full mt-2.5 sm:mt-4">
               
-              {/* 2 Tabs attached seamlessly to the top of the search card */}
-              <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar">
+              {/* 2 Tabs attached seamlessly to the top of the search card (Task 4: Mode Toggle) */}
+              <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar mode-toggle">
                 
-                {/* Tab 1: International Services */}
+                {/* Tab 1: Immigration & Global Visas */}
                 <button
                   type="button"
                   onClick={() => {
@@ -3002,17 +3002,17 @@ return (
                   }}
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-medium transition-all cursor-pointer select-none border-t border-x relative shrink-0 ${
                     travelScopeTab === 'international'
-                      ? 'bg-white text-blue-950 font-semibold border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      ? 'bg-white text-blue-950 font-semibold border-slate-200/90 shadow-xs -mb-[1px] z-20 active'
                       : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-600 border-transparent'
                   }`}
                 >
-                  <span className="relative z-10">International Services</span>
+                  <span className="relative z-10">Immigration &amp; Global Visas</span>
                   {travelScopeTab === 'international' && (
                     <div className="absolute top-0 left-3 right-3 h-[3px] bg-blue-600 rounded-full" />
                   )}
                 </button>
 
-                {/* Tab 2: Domestic Trip Planner */}
+                {/* Tab 2: Relocation Logistics */}
                 <button
                   type="button"
                   onClick={() => {
@@ -3020,11 +3020,11 @@ return (
                   }}
                   className={`px-3.5 sm:px-7 py-2 sm:py-3.5 rounded-t-2xl text-[11px] sm:text-[15px] font-medium transition-all cursor-pointer select-none border-t border-x relative flex items-center gap-1.5 shrink-0 ${
                     travelScopeTab === 'domestic'
-                      ? 'bg-white text-slate-900 font-semibold border-slate-200/90 shadow-xs -mb-[1px] z-20'
+                      ? 'bg-white text-slate-900 font-semibold border-slate-200/90 shadow-xs -mb-[1px] z-20 active'
                       : 'bg-slate-100/90 hover:bg-slate-200/80 text-slate-600 border-transparent'
                   }`}
                 >
-                  <span>Domestic Trip</span>
+                  <span>Relocation &amp; Travel Logistics</span>
                   {travelScopeTab === 'domestic' && (
                     <div className="absolute top-0 left-3 right-3 h-[3px] bg-[#00A86B] rounded-full" />
                   )}
@@ -3038,15 +3038,216 @@ return (
                 
                 {/* TAB 1: INTERNATIONAL SERVICES FIELDS */}
                 {travelScopeTab === 'international' && (
-                  <div className="space-y-2.5 sm:space-y-4 animate-fadeIn">
+                  <div className="space-y-2.5 sm:space-y-4 animate-fadeIn hero-search">
                     
-                    {/* Desktop & Mobile Responsive Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-3.5 items-end">
+                    {/* 3-Field Sequential Bar Grid (Step 9) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-3.5 items-end">
                       
-                      {/* Field 1: Purpose (Full width on mobile, 4 cols on desktop) */}
+                      {/* Field 1: Passport Country (3 cols) */}
+                      <div ref={originCityRef} className="lg:col-span-3 relative">
+                        <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
+                          1. I hold a passport from...
+                        </label>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsOriginCityOpen(!isOriginCityOpen);
+                            setIsLookingForOpen(false);
+                            setIsJourneyDestOpen(false);
+                          }}
+                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none text-left"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            {passportCountry ? (
+                              <img
+                                src={`https://flagcdn.com/w40/${getCountryCodeByName(passportCountry)}.png`}
+                                alt={passportCountry}
+                                className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                              />
+                            ) : (
+                              <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
+                                🛂
+                              </div>
+                            )}
+                            <span className={`text-xs sm:text-sm truncate ${passportCountry ? 'font-medium text-slate-800' : 'font-normal text-slate-400'}`}>
+                              {passportCountry || 'Select Passport'}
+                            </span>
+                          </div>
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                        </button>
+
+                        {isOriginCityOpen && (
+                          <div
+                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {/* Search Input */}
+                            <div className="relative mb-2 shrink-0">
+                              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <input
+                                type="text"
+                                value={passportSearchQuery}
+                                onChange={(e) => setPassportSearchQuery(e.target.value)}
+                                placeholder="Type passport country..."
+                                autoFocus
+                                className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
+                              />
+                            </div>
+
+                            {/* Dynamic Filtered Countries List */}
+                            <div className="space-y-0.5 overflow-y-auto no-scrollbar flex-1 max-h-[240px]">
+                              {filteredPassportCountries.length === 0 ? (
+                                <div className="py-4 text-center text-xs text-slate-400 font-medium">
+                                  No country found for "{passportSearchQuery}"
+                                </div>
+                              ) : (
+                                filteredPassportCountries.map((opt) => (
+                                  <button
+                                    key={opt.name}
+                                    type="button"
+                                    onMouseDown={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                    }}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      setPassportCountry(opt.name);
+                                      setOriginCity(opt.name);
+                                      setIsOriginCityOpen(false);
+                                      setPassportSearchQuery('');
+                                      autoSaveJourney({ passport_country: opt.name });
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-left cursor-pointer transition-colors ${
+                                      passportCountry === opt.name
+                                        ? 'bg-emerald-50 text-emerald-900'
+                                        : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                      <img
+                                        src={`https://flagcdn.com/w40/${opt.code}.png`}
+                                        alt={opt.name}
+                                        className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                      />
+                                      <span className="truncate">{opt.name}</span>
+                                    </div>
+                                    {passportCountry === opt.name && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                  </button>
+                                ))
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Field 2: Destination (I want to travel to...) (3 cols) */}
+                      <div ref={journeyDestRef} className="lg:col-span-3 relative">
+                        <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
+                          2. I want to travel to...
+                        </label>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsJourneyDestOpen(!isJourneyDestOpen);
+                            setIsLookingForOpen(false);
+                            setIsOriginCityOpen(false);
+                          }}
+                          className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none text-left"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            {journeyDestination ? (
+                              <img
+                                src={`https://flagcdn.com/w40/${getCountryCodeByName(journeyDestination)}.png`}
+                                alt={journeyDestination}
+                                className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                              />
+                            ) : (
+                              <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
+                                🌐
+                              </div>
+                            )}
+                            <span className={`text-xs sm:text-sm truncate ${journeyDestination ? 'font-medium text-slate-800' : 'font-normal text-slate-400'}`}>
+                              {journeyDestination || 'Destination Country'}
+                            </span>
+                          </div>
+                          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
+                        </button>
+
+                        {isJourneyDestOpen && (
+                          <div
+                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {/* Search Input */}
+                            <div className="relative mb-2 shrink-0">
+                              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <input
+                                type="text"
+                                value={destSearchQuery}
+                                onChange={(e) => setDestSearchQuery(e.target.value)}
+                                placeholder="Type destination country..."
+                                autoFocus
+                                className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
+                              />
+                            </div>
+
+                            {/* Dynamic Filtered Countries List */}
+                            <div className="space-y-0.5 overflow-y-auto no-scrollbar flex-1 max-h-[240px]">
+                              {filteredDestCountries.length === 0 ? (
+                                <div className="py-4 text-center text-xs text-slate-400 font-medium">
+                                  No country found for "{destSearchQuery}"
+                                </div>
+                              ) : (
+                                filteredDestCountries.map((opt) => (
+                                  <button
+                                    key={opt.name}
+                                    type="button"
+                                    onMouseDown={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                    }}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      setJourneyDestination(opt.name);
+                                      setIsJourneyDestOpen(false);
+                                      setDestSearchQuery('');
+                                      autoSaveJourney({ destination: opt.name });
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-left cursor-pointer transition-colors ${
+                                      journeyDestination === opt.name
+                                        ? 'bg-emerald-50 text-emerald-900'
+                                        : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                      <img
+                                        src={`https://flagcdn.com/w40/${opt.code}.png`}
+                                        alt={opt.name}
+                                        className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
+                                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
+                                      />
+                                      <span className="truncate">{opt.name}</span>
+                                    </div>
+                                    {journeyDestination === opt.name && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
+                                  </button>
+                                ))
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Field 3: Primary Purpose (4 cols) */}
                       <div ref={lookingForRef} className="lg:col-span-4 relative">
-                        <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">
-                          Purpose
+                        <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">
+                          3. Primary Purpose
                         </label>
                         <button
                           type="button"
@@ -3061,7 +3262,7 @@ return (
                           <div className="flex items-center gap-2 min-w-0">
                             <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
                             <span className={`text-xs sm:text-sm truncate ${serviceLookingFor ? 'font-medium text-slate-800' : 'font-normal text-slate-400'}`}>
-                              {serviceLookingFor || 'Purpose / Visa Type'}
+                              {serviceLookingFor || 'Select Purpose (Education, Work, Tourist...)'}
                             </span>
                           </div>
                           <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1.5 transition-transform duration-200 ${isLookingForOpen ? 'rotate-180 text-blue-600' : ''}`} />
@@ -3102,219 +3303,13 @@ return (
                         )}
                       </div>
 
-                      {/* Sub-row with 2 fields: Going to & Passport Country */}
-                      <div className="grid grid-cols-2 lg:col-span-6 gap-2 sm:gap-3">
-                        
-                        {/* Field 2: Going to (Country) */}
-                        <div ref={journeyDestRef} className="relative">
-                          <label className="block text-[10px] sm:text-xs font-normal text-slate-500 mb-1 truncate">
-                            Going to
-                          </label>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsJourneyDestOpen(!isJourneyDestOpen);
-                              setIsLookingForOpen(false);
-                              setIsOriginCityOpen(false);
-                            }}
-                            className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none text-left"
-                          >
-                            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                              {journeyDestination ? (
-                                <img
-                                  src={`https://flagcdn.com/w40/${getCountryCodeByName(journeyDestination)}.png`}
-                                  alt={journeyDestination}
-                                  className="w-4 h-4 sm:w-5 sm:h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
-                                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                                />
-                              ) : (
-                                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
-                                  🌐
-                                </div>
-                              )}
-                              <span className={`text-xs sm:text-sm truncate ${journeyDestination ? 'font-medium text-slate-800' : 'font-normal text-slate-400'}`}>
-                                {journeyDestination || 'Destination'}
-                              </span>
-                            </div>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isJourneyDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
-                          </button>
-
-                          {isJourneyDestOpen && (
-                            <div
-                              className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {/* Search Input */}
-                              <div className="relative mb-2 shrink-0">
-                                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <input
-                                  type="text"
-                                  value={destSearchQuery}
-                                  onChange={(e) => setDestSearchQuery(e.target.value)}
-                                  placeholder="Type country (e.g. Br, Brazil)..."
-                                  autoFocus
-                                  className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
-                                />
-                              </div>
-
-                              {/* Dynamic Filtered 240+ Countries List */}
-                              <div className="space-y-0.5 overflow-y-auto no-scrollbar flex-1 max-h-[240px]">
-                                {filteredDestCountries.length === 0 ? (
-                                  <div className="py-4 text-center text-xs text-slate-400 font-medium">
-                                    No country found for "{destSearchQuery}"
-                                  </div>
-                                ) : (
-                                  filteredDestCountries.map((opt) => (
-                                    <button
-                                      key={opt.name}
-                                      type="button"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                      }}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        setJourneyDestination(opt.name);
-                                        setIsJourneyDestOpen(false);
-                                        setDestSearchQuery('');
-                                        autoSaveJourney({ destination: opt.name });
-                                      }}
-                                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-left cursor-pointer transition-colors ${
-                                        journeyDestination === opt.name
-                                          ? 'bg-emerald-50 text-emerald-900'
-                                          : 'text-slate-700 hover:bg-slate-50'
-                                      }`}
-                                    >
-                                      <div className="flex items-center gap-2.5 min-w-0">
-                                        <img
-                                          src={`https://flagcdn.com/w40/${opt.code}.png`}
-                                          alt={opt.name}
-                                          className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
-                                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                                        />
-                                        <span className="truncate">{opt.name}</span>
-                                      </div>
-                                      {journeyDestination === opt.name && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
-                                    </button>
-                                  ))
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Field 3: Passport Country */}
-                        <div ref={originCityRef} className="relative">
-                          <label className="block text-[10px] sm:text-xs font-normal text-slate-500 mb-1 truncate">
-                            Passport Country
-                          </label>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsOriginCityOpen(!isOriginCityOpen);
-                              setIsLookingForOpen(false);
-                              setIsJourneyDestOpen(false);
-                            }}
-                            className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-[#00A86B] rounded-xl sm:rounded-2xl h-[46px] sm:h-[54px] px-2 sm:px-3 flex items-center justify-between shadow-2xs transition-all cursor-pointer select-none text-left"
-                          >
-                            <div className="flex items-center gap-2 min-w-0">
-                              {passportCountry ? (
-                                <img
-                                  src={`https://flagcdn.com/w40/${getCountryCodeByName(passportCountry)}.png`}
-                                  alt={passportCountry}
-                                  className="w-5 h-5 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
-                                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                                />
-                              ) : (
-                                <div className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 shrink-0">
-                                  🛂
-                                </div>
-                              )}
-                              <span className={`text-xs sm:text-sm truncate ${passportCountry ? 'font-normal text-slate-700' : 'font-normal text-slate-400'}`}>
-                                {passportCountry || 'Select Passport'}
-                              </span>
-                            </div>
-                            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 shrink-0 ml-0.5 transition-transform duration-200 ${isOriginCityOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
-                          </button>
-
-                          {isOriginCityOpen && (
-                            <div
-                              className="absolute top-[calc(100%+8px)] right-0 sm:left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {/* Search Input */}
-                              <div className="relative mb-2 shrink-0">
-                                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <input
-                                  type="text"
-                                  value={passportSearchQuery}
-                                  onChange={(e) => setPassportSearchQuery(e.target.value)}
-                                  placeholder="Type passport (e.g. Br, Brazil)..."
-                                  autoFocus
-                                  className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
-                                />
-                              </div>
-
-                              {/* Dynamic Filtered 240+ Countries List */}
-                              <div className="space-y-0.5 overflow-y-auto no-scrollbar flex-1 max-h-[240px]">
-                                {filteredPassportCountries.length === 0 ? (
-                                  <div className="py-4 text-center text-xs text-slate-400 font-medium">
-                                    No country found for "{passportSearchQuery}"
-                                  </div>
-                                ) : (
-                                  filteredPassportCountries.map((opt) => (
-                                    <button
-                                      key={opt.name}
-                                      type="button"
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                      }}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        setPassportCountry(opt.name);
-                                        setOriginCity(opt.name);
-                                        setIsOriginCityOpen(false);
-                                        setPassportSearchQuery('');
-                                        autoSaveJourney({ passport_country: opt.name });
-                                      }}
-                                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-left cursor-pointer transition-colors ${
-                                        passportCountry === opt.name
-                                          ? 'bg-emerald-50 text-emerald-900'
-                                          : 'text-slate-700 hover:bg-slate-50'
-                                      }`}
-                                    >
-                                      <div className="flex items-center gap-2.5 min-w-0">
-                                        <img
-                                          src={`https://flagcdn.com/w40/${opt.code}.png`}
-                                          alt={opt.name}
-                                          className="w-4 h-4 rounded-full object-cover shrink-0 border border-slate-200 shadow-2xs"
-                                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://flagcdn.com/w40/un.png'; }}
-                                        />
-                                        <span className="truncate">{opt.name}</span>
-                                      </div>
-                                      {passportCountry === opt.name && <Check className="w-3.5 h-3.5 text-[#00A86B] shrink-0 ml-1" />}
-                                    </button>
-                                  ))
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                      </div>
-
-                      {/* Action Button: Search */}
+                      {/* Action Button: Search (2 cols) */}
                       <div className="lg:col-span-2 mt-1 sm:mt-0">
                         <button
                           type="button"
                           onClick={handleGeneratePathway}
                           disabled={isGenerating}
-                          className="w-full h-[44px] sm:h-[54px] rounded-xl sm:rounded-2xl font-bold text-xs sm:text-base bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 !text-slate-950 shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-bold text-xs sm:text-base bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 !text-slate-950 shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGenerating ? (
                             <>
@@ -5201,8 +5196,8 @@ return (
                   <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                 </button>
 
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 font-medium">
-                  <Shield className="w-3 h-3 text-emerald-600" />
+                <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-500 font-medium">
+                  <Lock className="w-3 h-3 text-slate-400" />
                   <span>Secured by Razorpay • Instant Activation</span>
                 </div>
               </div>
@@ -5419,8 +5414,9 @@ return (
                       <span>Pay $5.00 Securely</span>
                     </button>
 
-                    <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 font-semibold mt-2.5">
-                      <span>256-Bit SSL Encryption • Razorpay Certified Partner</span>
+                    <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-500 font-medium mt-2.5">
+                      <Lock className="w-3 h-3 text-slate-400" />
+                      <span>PCI-DSS Compliant • Razorpay Verified Partner</span>
                     </div>
                   </div>
 

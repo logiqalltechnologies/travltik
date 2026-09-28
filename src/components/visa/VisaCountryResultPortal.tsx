@@ -11157,9 +11157,9 @@ export function VisaCountryResultPortal({
 
                       {/* Primary Search CTA */}
                       <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div className="flex items-center gap-2 text-[11px] text-slate-500 font-semibold">
-                          <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
-                          <span>100% Escrow Protected • OISC &amp; Bar Licensed Counsel Only</span>
+                        <div className="flex items-center gap-2 text-[11px] text-slate-600 font-semibold">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>OISC, MARA &amp; Bar Licensed Counsel Registry</span>
                         </div>
 
                         <a
@@ -11824,10 +11824,10 @@ export function VisaCountryResultPortal({
                 </div>
               </div>
 
-              {/* Trust Badge */}
-              <div className="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3 flex items-center gap-2.5 text-xs text-emerald-800 font-bold">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Your passport &amp; payment are 100% protected under TravlTik Escrow &amp; Buyer Protection.</span>
+              {/* Security Note */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 text-xs text-slate-700 font-medium">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Verified Client Protection &amp; Milestone Sign-off</span>
               </div>
 
               {/* Submit to Razorpay Button */}
@@ -12080,8 +12080,8 @@ export function VisaCountryResultPortal({
               </a>
             </div>
 
-            <p className="text-[11px] text-slate-400">
-              🔒 256-bit encrypted • Official Embassy &amp; Consular Document Security
+            <p className="text-[11px] text-slate-500 font-medium">
+              TLS Encrypted • Official Embassy &amp; Consular Document Security
             </p>
           </div>
         </div>

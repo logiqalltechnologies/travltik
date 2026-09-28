@@ -43,100 +43,78 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 24px;
     font-weight: 400;
-    letter-spacing: 0.01em;
     color: #09090b;
   }
-  @media (min-width: 1024px) {
-    body {
-      font-size: 14.5px;
-    }
-  }
 
-  /* ── 1. Page Title (Razor-sharp Apple Heading with Luxury Spacing) ── */
+  /* ── 1. Page Title (Hero Display) ── */
   h1, .page-title, .tt-page-title {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-    font-size: 24px;
-    line-height: 1.25;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+    font-size: 48px;
+    line-height: 56px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
     color: #09090b;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-  @media (min-width: 640px) {
-    h1, .page-title, .tt-page-title {
-      font-size: 28px;
-    }
-  }
-  @media (min-width: 1024px) {
+  @media (max-width: 640px) {
     h1, .page-title, .tt-page-title {
       font-size: 32px;
-      line-height: 1.2;
+      line-height: 40px;
     }
   }
 
-  /* ── 2. Section Heading (Luxury Spacing) ── */
+  /* ── 2. Section Heading ── */
   h2, .section-heading, .tt-section-heading {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-    font-size: 18px;
-    line-height: 1.35;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.02em;
     font-weight: 600;
-    letter-spacing: 0.01em;
     color: #09090b;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-  @media (min-width: 640px) {
+  @media (max-width: 640px) {
     h2, .section-heading, .tt-section-heading {
-      font-size: 19px;
-    }
-  }
-  @media (min-width: 1024px) {
-    h2, .section-heading, .tt-section-heading {
-      font-size: 21px;
+      font-size: 24px;
+      line-height: 32px;
     }
   }
 
-  /* ── 3. Card Heading ── */
+  /* ── 3. Subheader Heading ── */
   h3, .card-heading, .tt-card-heading {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-    font-size: 15px;
-    line-height: 1.4;
-    font-weight: 550;
-    letter-spacing: 0.01em;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-  }
-  @media (min-width: 1024px) {
-    h3, .card-heading, .tt-card-heading {
-      font-size: 16px;
-    }
   }
 
   h4, h5, h6 {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-    font-weight: 550;
-    letter-spacing: 0.01em;
-    line-height: 1.4;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  /* ── 4. Body Text (Generous 1.6 Line-height & 0.01em Letter Spacing) ── */
+  /* ── 4. Body Text ── */
   p, .body-text, .tt-body {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 24px;
     font-weight: 400;
-    letter-spacing: 0.01em;
     color: #475569;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
