@@ -57,12 +57,12 @@ interface AuditReport {
 
 export function PDFAudit() {
   const [formData, setFormData] = useState({
-    age: '28',
-    education: "Master's Degree",
-    language: 'IELTS 7.5 (CLB 9)',
-    experience: '4',
-    targetCountry: 'Canada',
-    jobTitle: 'Software Engineer / Tech Professional'
+    age: '',
+    education: '',
+    language: '',
+    experience: '',
+    targetCountry: '',
+    jobTitle: ''
   });
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<AuditReport | null>(null);
@@ -70,6 +70,11 @@ export function PDFAudit() {
 
   const handleAudit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.targetCountry || !formData.age || !formData.education || !formData.language || !formData.experience || !formData.jobTitle.trim()) {
+      setErrorMsg('Please select and fill in all profile fields before generating your feasibility audit.');
+      return;
+    }
+
     setLoading(true);
     setErrorMsg(null);
 
@@ -122,6 +127,7 @@ export function PDFAudit() {
               value={formData.targetCountry}
               onChange={(val) => setFormData({ ...formData, targetCountry: val })}
               options={COUNTRY_OPTIONS}
+              placeholder="Select target destination..."
             />
 
             {/* Age */}
@@ -133,6 +139,7 @@ export function PDFAudit() {
                 type="number"
                 min="18"
                 max="65"
+                placeholder="e.g. 28"
                 value={formData.age}
                 onChange={(e) => setFormData({ ...formData, age: e.target.value })}
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none"
@@ -146,6 +153,7 @@ export function PDFAudit() {
               value={formData.education}
               onChange={(val) => setFormData({ ...formData, education: val })}
               options={EDUCATION_OPTIONS}
+              placeholder="Select highest credential..."
             />
 
             {/* Language Test Score */}
@@ -154,6 +162,7 @@ export function PDFAudit() {
               value={formData.language}
               onChange={(val) => setFormData({ ...formData, language: val })}
               options={LANGUAGE_OPTIONS}
+              placeholder="Select test score / CLB level..."
             />
 
             {/* Skilled Work Experience */}
@@ -165,6 +174,7 @@ export function PDFAudit() {
                 type="number"
                 min="0"
                 max="30"
+                placeholder="e.g. 4"
                 value={formData.experience}
                 onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none"

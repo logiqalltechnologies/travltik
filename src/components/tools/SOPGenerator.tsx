@@ -26,12 +26,12 @@ const SOP_PURPOSE_OPTIONS: SelectOption[] = [
 export function SOPGenerator() {
   const [formData, setFormData] = useState({
     applicantName: '',
-    targetCountry: 'Canada',
-    purpose: 'Student Visa / Study Permit',
+    targetCountry: '',
+    purpose: '',
     institution: '',
-    duration: '2 Years',
-    financial: 'Personal savings, parents support affidavit, and bank fixed deposits',
-    ties: 'Parents and family residing in home country, ancestral property, and return job prospects'
+    duration: '',
+    financial: '',
+    ties: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -46,6 +46,14 @@ export function SOPGenerator() {
     e.preventDefault();
     if (!formData.applicantName.trim()) {
       setErrorMsg('Please enter your full name as shown on your passport.');
+      return;
+    }
+    if (!formData.targetCountry) {
+      setErrorMsg('Please select your destination country.');
+      return;
+    }
+    if (!formData.purpose) {
+      setErrorMsg('Please select your visa category and purpose.');
       return;
     }
 
@@ -140,6 +148,7 @@ export function SOPGenerator() {
               value={formData.targetCountry}
               onChange={(val) => setFormData({ ...formData, targetCountry: val })}
               options={SOP_COUNTRY_OPTIONS}
+              placeholder="Select destination country..."
             />
 
             {/* Visa Purpose */}
@@ -148,6 +157,7 @@ export function SOPGenerator() {
               value={formData.purpose}
               onChange={(val) => setFormData({ ...formData, purpose: val })}
               options={SOP_PURPOSE_OPTIONS}
+              placeholder="Select visa purpose..."
             />
 
             {/* Target Institution / Organization */}
