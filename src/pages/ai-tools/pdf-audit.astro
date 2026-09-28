@@ -1,0 +1,12 @@
+---
+// src/pages/ai-tools/pdf-audit.astro
+import Layout from '../../layouts/Layout.astro';
+import { PDFAudit } from '../../components/tools/PDFAudit';
+---
+
+<Layout 
+  title="AI Immigration Profile & PDF Audit — TravlTik" 
+  description="Generate a personalized immigration feasibility report. Evaluate CRS score, identify critical document gaps, and explore verified consular pathways."
+>
+  <PDFAudit client:load />
+</Layout>

@@ -1,0 +1,12 @@
+---
+// src/pages/ai-tools/sop-generator.astro
+import Layout from '../../layouts/Layout.astro';
+import { SOPGenerator } from '../../components/tools/SOPGenerator';
+---
+
+<Layout 
+  title="AI Statement of Purpose (SOP) & Visa Cover Letter Generator — TravlTik" 
+  description="Generate a consulate-compliant Statement of Purpose (SOP) or Cover Letter for Student, Tourist, and Work permits with funding and home ties articulation."
+>
+  <SOPGenerator client:load />
+</Layout>

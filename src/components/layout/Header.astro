@@ -1,7 +1,7 @@
 ---
 // src/components/layout/Header.astro
 import { TripPlannerModal } from '../interactive/TripPlannerModal';
-import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare, Sparkles, Bell, Zap, Award } from 'lucide-react';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare, Sparkles, Bell, Zap, Award, Camera, FileCheck2 } from 'lucide-react';
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/' || pathname === '';
 ---
@@ -71,19 +71,32 @@ const isHome = pathname === '/' || pathname === '';
                     AI Tools
                     <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
                 </button>
-                <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
+                <div class="absolute top-full left-0 pt-2 w-[290px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                     <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/ai-tools" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Sparkles class="w-4 h-4 text-amber-500 group-hover/item:text-[#00a896] transition-colors" />
                             <span class="text-[14px] font-medium">All AI Migration Tools</span>
                         </a>
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">CRS Points Calculator</span>
+                        <a href="/ai-tools/photo-resizer" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                            <Camera class="w-4 h-4 text-emerald-600 group-hover/item:text-[#00a896] transition-colors" />
+                            <span class="text-[14px] font-medium">Visa Photo Resizer</span>
                         </a>
-                        <a href="/tools" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                        <a href="/ai-tools/pdf-audit" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                            <FileCheck2 class="w-4 h-4 text-[#00a896] group-hover/item:text-[#00a896] transition-colors" />
+                            <span class="text-[14px] font-medium">AI PDF Audit</span>
+                        </a>
+                        <a href="/ai-tools/sop-generator" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                            <FileText class="w-4 h-4 text-blue-600 group-hover/item:text-[#00a896] transition-colors" />
+                            <span class="text-[14px] font-medium">SOP Generator</span>
+                        </a>
+                        <div class="my-1 border-t border-slate-100"></div>
+                        <a href="/ai-tools/crs-calculator" class="flex items-center gap-2.5 py-1.5 px-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
+                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
+                            <span class="text-[13px] font-medium">CRS Points Calculator</span>
+                        </a>
+                        <a href="/ai-tools/eligibility" class="flex items-center gap-2.5 py-1.5 px-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
                             <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Immigration Eligibility Check</span>
+                            <span class="text-[13px] font-medium">Immigration Eligibility Check</span>
                         </a>
                     </div>
                 </div>
@@ -265,9 +278,12 @@ const isHome = pathname === '/' || pathname === '';
                     <ChevronDown id="mobile-tools-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
                 </button>
                 <div id="mobile-tools-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
-                    <a href="/tools" class="block py-1.5 text-xs text-slate-600 font-medium">All AI Migration Tools</a>
-                    <a href="/tools" class="block py-1.5 text-xs text-slate-600 font-medium">CRS Points Calculator</a>
-                    <a href="/tools" class="block py-1.5 text-xs text-slate-600 font-medium">Immigration Eligibility Check</a>
+                    <a href="/ai-tools" class="block py-1.5 text-xs text-slate-700 font-semibold">All AI Migration Tools</a>
+                    <a href="/ai-tools/photo-resizer" class="block py-1.5 text-xs text-slate-600 font-medium">Visa Photo Resizer</a>
+                    <a href="/ai-tools/pdf-audit" class="block py-1.5 text-xs text-slate-600 font-medium">AI PDF Audit</a>
+                    <a href="/ai-tools/sop-generator" class="block py-1.5 text-xs text-slate-600 font-medium">SOP Generator</a>
+                    <a href="/ai-tools/crs-calculator" class="block py-1.5 text-xs text-slate-600 font-medium">CRS Points Calculator</a>
+                    <a href="/ai-tools/eligibility" class="block py-1.5 text-xs text-slate-600 font-medium">Immigration Eligibility Check</a>
                 </div>
             </div>
 

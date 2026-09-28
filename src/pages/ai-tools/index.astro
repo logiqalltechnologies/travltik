@@ -1,0 +1,138 @@
+---
+// src/pages/ai-tools/index.astro
+import Layout from '../../layouts/Layout.astro';
+import { Camera, FileCheck2, FileText, Calculator, Scale, ArrowRight, Sparkles, ShieldCheck, CheckCircle2 } from 'lucide-react';
+
+const tools = [
+  {
+    title: "Visa Photo Resizer",
+    description: "Crop, resize, and align portrait photos to exact biometric consular specifications (US 2x2 in, Schengen 35x45mm, India, Canada).",
+    href: "/ai-tools/photo-resizer",
+    badge: "Instant Biometric Check",
+    badgeColor: "bg-emerald-50 text-emerald-800 border-emerald-200",
+    icon: Camera,
+    iconColor: "text-emerald-600 bg-emerald-50"
+  },
+  {
+    title: "AI PDF & Profile Audit",
+    description: "Personalized immigration feasibility assessment. Calculate CRS breakdown, uncover critical document gaps, and verify eligible pathways.",
+    href: "/ai-tools/pdf-audit",
+    badge: "Official Grounded Sources",
+    badgeColor: "bg-teal-50 text-teal-800 border-teal-200",
+    icon: FileCheck2,
+    iconColor: "text-[#00a896] bg-teal-50"
+  },
+  {
+    title: "SOP & Cover Letter Generator",
+    description: "Embassy-compliant Statement of Purpose generator. Emphasizes genuine temporary intent, funding clarity, and ties to home country.",
+    href: "/ai-tools/sop-generator",
+    badge: "Consular Safeguards",
+    badgeColor: "bg-blue-50 text-blue-800 border-blue-200",
+    icon: FileText,
+    iconColor: "text-blue-600 bg-blue-50"
+  },
+  {
+    title: "CRS Points Calculator",
+    description: "Simulate your Comprehensive Ranking System score for Canada Express Entry and Australia SkillSelect with age, language, and education weights.",
+    href: "/tools",
+    badge: "Points Simulation",
+    badgeColor: "bg-purple-50 text-purple-800 border-purple-200",
+    icon: Calculator,
+    iconColor: "text-purple-600 bg-purple-50"
+  },
+  {
+    title: "Immigration Eligibility Check",
+    description: "Evaluate your background against minimum work experience, language test thresholds, and high-demand occupation classifications.",
+    href: "/tools",
+    badge: "Pre-Assessment",
+    badgeColor: "bg-amber-50 text-amber-800 border-amber-200",
+    icon: Scale,
+    iconColor: "text-amber-600 bg-amber-50"
+  },
+  {
+    title: "Document Checklist & Cost Estimator",
+    description: "Consolidated consular document inventories and real-time consular application fee estimates for top 20 destination countries.",
+    href: "/tools",
+    badge: "Consular Checklists",
+    badgeColor: "bg-indigo-50 text-indigo-800 border-indigo-200",
+    icon: ShieldCheck,
+    iconColor: "text-indigo-600 bg-indigo-50"
+  }
+];
+---
+
+<Layout 
+  title="AI Migration Tools Suite — TravlTik" 
+  description="Explore TravlTik's suite of AI migration tools: Visa Photo Resizer, AI PDF Audit, SOP Generator, CRS Points Calculator, and Eligibility Checker."
+>
+  <div class="max-w-6xl mx-auto px-4 py-10 lg:py-16">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-semibold mb-3 border border-teal-200">
+        <Sparkles className="w-3.5 h-3.5 text-[#00a896]" />
+        <span>Next-Gen Consular Automation</span>
+      </div>
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+        AI Migration &amp; Travel Tools
+      </h1>
+      <p className="text-slate-600 text-sm sm:text-base mt-3 max-w-2xl mx-auto">
+        Empowering applicants and advisors with instant consular biometric formatting, regulatory profile audits, and statement of purpose generation.
+      </p>
+    </div>
+
+    <!-- Tools Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {tools.map((tool) => {
+        const Icon = tool.icon;
+        return (
+          <a
+            href={tool.href}
+            class="group bg-white rounded-2xl p-6 border border-slate-200/90 hover:border-[#00a896] hover:shadow-lg transition-all duration-200 flex flex-col justify-between"
+          >
+            <div>
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <div class={`w-12 h-12 rounded-xl flex items-center justify-center ${tool.iconColor}`}>
+                  <Icon className="w-6 h-6" />
+                </div>
+                <span class={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${tool.badgeColor}`}>
+                  {tool.badge}
+                </span>
+              </div>
+              <h2 class="text-lg font-bold text-slate-900 group-hover:text-[#00a896] transition-colors">
+                {tool.title}
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                {tool.description}
+              </p>
+            </div>
+
+            <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#00a896]">
+              <span>Launch Tool</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <!-- Assurance Banner -->
+    <div class="mt-12 p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0">
+          <ShieldCheck className="w-5 h-5 text-[#00a896]" />
+        </div>
+        <div>
+          <div class="text-sm font-bold text-slate-900">Grounded in Sovereign Consular Directives</div>
+          <p class="text-xs text-slate-500">Calculations and formats are kept up-to-date with latest ministerial instructions.</p>
+        </div>
+      </div>
+      <a
+        href="/find-experts"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shrink-0"
+      >
+        <span>Consult Licensed Counsel</span>
+        <ArrowRight className="w-3.5 h-3.5" />
+      </a>
+    </div>
+  </div>
+</Layout>

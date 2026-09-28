@@ -1,0 +1,12 @@
+---
+// src/pages/ai-tools/photo-resizer.astro
+import Layout from '../../layouts/Layout.astro';
+import { PhotoResizer } from '../../components/tools/PhotoResizer';
+---
+
+<Layout 
+  title="Visa & Passport Photo Resizer — Official Consular Dimensions" 
+  description="Crop and resize your visa and passport photos to exact dimensions for US (2x2 in), Schengen (35x45mm), UK, Canada, and India. Free instant compliance."
+>
+  <PhotoResizer client:load />
+</Layout>
