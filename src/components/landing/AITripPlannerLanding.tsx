@@ -3046,7 +3046,7 @@ return (
                       {/* Field 1: Passport Country (3 cols) */}
                       <div ref={originCityRef} className="lg:col-span-3 relative">
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
-                          1. I hold a passport from...
+                          Passport Country
                         </label>
                         <button
                           type="button"
@@ -3147,7 +3147,7 @@ return (
                       {/* Field 2: Destination (I want to travel to...) (3 cols) */}
                       <div ref={journeyDestRef} className="lg:col-span-3 relative">
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
-                          2. I want to travel to...
+                          Destination
                         </label>
                         <button
                           type="button"
@@ -3247,7 +3247,7 @@ return (
                       {/* Field 3: Primary Purpose (4 cols) */}
                       <div ref={lookingForRef} className="lg:col-span-4 relative">
                         <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">
-                          3. Primary Purpose
+                          Purpose
                         </label>
                         <button
                           type="button"
