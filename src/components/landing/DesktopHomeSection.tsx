@@ -1014,6 +1014,5 @@ export function DesktopHomeSection() {
         </div>
 
       </div>
-    </div>
-  );
+    );
 }
