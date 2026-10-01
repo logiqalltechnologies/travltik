@@ -210,39 +210,58 @@
   }
 
   /* ── 🎯 LOVABLE & BOLT.NEW 7 PILLARS (EXACT SPECIFICATION) ── */
-  /* 1. Spacing Badhao (80px sections, 24px cards & gaps) */
+  /* ── TASK 3: Generous Whitespace ── */
   .section, .luxury-section, .lovable-section {
-    padding: 48px 20px;
+    padding: 96px 24px;  /* was 48px or less */
   }
   @media (min-width: 768px) {
     .section, .luxury-section, .lovable-section {
-      padding: 80px 24px;
+      padding: 120px 32px;
     }
   }
 
+  .card-grid {
+    gap: 28px;  /* was 16px */
+  }
+
   .card, .luxury-card, .ios-card, .lovable-card {
+    padding: 28px;  /* was 16px */
     margin-bottom: 24px;
   }
 
   .gap, .gap-lovable {
-    gap: 24px;
+    gap: 28px;
   }
 
-  /* 2. Multi-Layer Shadows & 3. Consistent 14px Radius & 5. Smooth 60fps Animations */
+  /* ── TASK 4: Multi-Layer Shadows ── */
   .card, .luxury-card, .ios-card, .lovable-card {
     background: #ffffff;
     border-radius: var(--radius, 14px);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: var(--shadow-card, 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px -12px rgba(0,0,0,0.12));
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      0 4px 16px -2px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     transform: translateZ(0);
     will-change: transform, box-shadow;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
   .card:hover, .luxury-card:hover, .ios-card:hover, .lovable-card:hover {
-    transform: translateY(-4px) translateZ(0);
-    box-shadow: var(--shadow-float, 0 18px 40px -18px rgba(0,0,0,0.35));
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.04),
+      0 16px 32px -4px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+  }
+
+  .btn-primary {
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s ease;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.18);
+    transform: translateY(-2px);
   }
 
   .button, .luxury-btn, .btn, button.btn-interactive {
@@ -1118,6 +1137,118 @@ select {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
+}
+
+/* ── TASK 1: Hero Section — Cinematic Depth ── */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-section > * {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-image {
+  animation: kenBurns 25s ease-in-out infinite alternate;
+}
+
+@keyframes kenBurns {
+  from { transform: scale(1) translate(0, 0); }
+  to { transform: scale(1.08) translate(-1%, -1%); }
+}
+
+/* ── TASK 2: Typography Elevation (Same Font) ── */
+body {
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+h1 {
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+h2 {
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+h3, h4 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ── TASK 5: Subtle Glassmorphism (Hero & Nav only) ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ── TASK 7: Gold Accent (Only Primary CTAs) ── */
+:root {
+  --gold: #C9A961;
+  --gold-dark: #A88B4A;
+  --navy: #0F172A;
+}
+
+.btn-primary-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
+  color: var(--navy) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 16px -4px rgba(201, 169, 97, 0.4);
+}
+
+.btn-primary-gold:hover {
+  box-shadow: 0 12px 32px -8px rgba(201, 169, 97, 0.5);
+  transform: translateY(-2px);
+}
+
+/* ── TASK 8: Section Dividers (Subtle) ── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(0, 0, 0, 0.08) 50%,
+    transparent
+  );
+  margin: 0 auto;
+  max-width: 80%;
 }
 
 

@@ -73,6 +73,20 @@ import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload, Landmark, Locate
   TrendingUp,
   HelpCircle,
   ExternalLink as ExternalIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const scrollMotionContainer = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
+const scrollMotionItem = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
+};
 
 // Quick-Pill Intent Tags (8 Visa & Overseas Journey Categories)
 const categoryPills = [
@@ -2916,18 +2930,21 @@ return (
       />
 
       {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
-      <section id="hero-search" className="relative w-full overflow-visible bg-[#fbfbfd] pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
+      <section id="hero-search" className="hero-section relative w-full overflow-hidden bg-[#fbfbfd] pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
         <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
           
           {/* High-Resolution Generated Travel Photograph Background */}
           <div 
-            className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[180px] sm:h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
-            style={{
-              backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
-            }}
+            className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[180px] sm:h-full pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
           >
+            <div 
+              className="hero-image w-full h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center"
+              style={{
+                backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
+              }}
+            />
             {/* Soft, Transparent Gradient only on the left side of image (Pure White Blend) */}
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
           </div>
@@ -3309,7 +3326,7 @@ return (
                           type="button"
                           onClick={handleGeneratePathway}
                           disabled={isGenerating}
-                          className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-bold text-xs sm:text-base bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 !text-slate-950 shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-bold text-xs sm:text-base btn-primary-gold flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGenerating ? (
                             <>
@@ -4017,8 +4034,14 @@ return (
               </span>
             </div>
 
-            {/* 4 Squircle Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            {/* 4 Squircle Cards Grid with Framer Motion Stagger */}
+            <motion.div
+              variants={scrollMotionContainer}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.15 }}
+              className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+            >
               {[
                 {
                   step: "Step 1 • Discover",
@@ -4045,28 +4068,31 @@ return (
                   icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
                 }
               ].map((card, i) => (
-                <div 
-                  key={i}
-                  className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px]"
-                >
-                  <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                    {card.icon}
+                <motion.div key={i} variants={scrollMotionItem} className="h-full">
+                  <div 
+                    className="card bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px] h-full"
+                  >
+                    <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                      {card.icon}
+                    </div>
+                    <div className="mt-5">
+                      <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
+                        {card.step}
+                      </span>
+                      <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
+                        {card.title}
+                      </h4>
+                      <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                        {card.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-5">
-                    <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
-                      {card.step}
-                    </span>
-                    <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
-                      {card.title}
-                    </h4>
-                    <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                      {card.desc}
-                    </p>
-                  </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
+
+          <div className="section-divider my-8 sm:my-10" />
 
           {/* ======================================================= */}
           {/* ── 5. EXPLORE CLASSIFIEDS SECTION (ABOVE MAGIC SEARCH) ── */}
