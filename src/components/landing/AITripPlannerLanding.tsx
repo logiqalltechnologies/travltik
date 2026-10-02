@@ -2929,98 +2929,94 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (CINEMATIC LUXURY LAYERED DESIGN) ── */}
-      <section id="hero-search" className="hero-section relative w-full min-h-[650px] overflow-hidden bg-[#fbfbfd] pt-3.5 sm:pt-6 lg:pt-8 pb-6 sm:pb-8 px-2.5 sm:px-6 lg:px-8 flex flex-col justify-center">
+      {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
+      <section id="hero-search" className="hero-section relative w-full overflow-hidden bg-[#fbfbfd] pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
-        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-slate-950 border border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.15)] ring-1 ring-white/10 overflow-visible min-h-[580px] sm:min-h-[600px] flex flex-col justify-between">
+        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
           
           {/* High-Resolution Generated Travel Photograph Background */}
           <div 
-            className="absolute inset-0 w-full h-full pointer-events-none rounded-3xl sm:rounded-[36px] overflow-hidden z-0"
+            className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[180px] sm:h-full pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
           >
             <div 
-              className="hero-image w-full h-full bg-cover bg-right md:bg-center"
+              className="hero-image w-full h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center"
               style={{
                 backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
               }}
             />
-            {/* Cinematic Gradient Overlays: Dark base + Left-to-Right Fade */}
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+            {/* Soft, Transparent Gradient only on the left side of image (Pure White Blend) */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
           </div>
 
           {/* Floating Travel Readiness Card (Hidden on Mobile, Visible on Desktop/Tablet - Links to /readiness) */}
           <a
             href={`/readiness?from=${encodeURIComponent(passportCountry || 'India')}&to=${encodeURIComponent(journeyDestination || 'Canada')}&purpose=${encodeURIComponent(travelPurpose || serviceLookingFor || 'Student')}`}
-            className="hidden md:flex absolute top-4 sm:top-5 md:top-6 right-4 sm:right-6 md:right-8 lg:right-10 z-30 bg-slate-900/80 backdrop-blur-xl border border-white/20 rounded-2xl p-2.5 sm:p-3 shadow-[0_12px_32px_rgba(0,0,0,0.35)] hover:shadow-2xl hover:scale-105 transition-all group flex-col items-center justify-center cursor-pointer pointer-events-auto min-w-[105px] sm:min-w-[120px]"
+            className="hidden md:flex absolute top-4 sm:top-5 md:top-6 right-4 sm:right-6 md:right-8 lg:right-10 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl px-3.5 py-3 shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:shadow-xl hover:scale-105 transition-all group flex-col items-center justify-center cursor-pointer pointer-events-auto"
             title="Check Travel Readiness Score"
           >
-            {/* SVG Circular Ring Gauge (TASK 5) */}
-            <div className="relative w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center mb-1">
-              <svg className="w-full h-full -rotate-90 drop-shadow-[0_2px_10px_rgba(16,185,129,0.3)]" viewBox="0 0 100 100">
-                {/* Background Ring Track */}
-                <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="8" />
-                {/* Progress Ring Track (78%) */}
+            {/* Circular Progress Gauge */}
+            <div className="relative w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#F1F5F9" strokeWidth="6" />
                 <circle
                   cx="50"
                   cy="50"
-                  r="38"
+                  r="40"
                   fill="none"
-                  stroke="url(#heroLuxuryReadinessGrad)"
-                  strokeWidth="8"
-                  strokeDasharray="238.76"
-                  strokeDashoffset="52.53"
+                  stroke="url(#heroGirlReadinessGrad)"
+                  strokeWidth="6.5"
+                  strokeDasharray="251.33"
+                  strokeDashoffset="55.3"
                   strokeLinecap="round"
                 />
                 <defs>
-                  <linearGradient id="heroLuxuryReadinessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#34D399" />
-                    <stop offset="100%" stopColor="#059669" />
+                  <linearGradient id="heroGirlReadinessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#00A86B" />
+                    <stop offset="100%" stopColor="#008060" />
                   </linearGradient>
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="text-xs sm:text-[13px] font-bold text-white leading-none tracking-tight">78%</span>
-                <span className="text-[7px] sm:text-[8px] font-semibold text-emerald-400 mt-0.5 tracking-wider uppercase">Ready</span>
+                <span className="text-[13px] sm:text-[15px] font-black text-slate-900 leading-none tracking-tight">78%</span>
+                <span className="text-[7.5px] sm:text-[8px] font-bold text-[#00A86B] uppercase tracking-wider leading-none mt-1">Ready</span>
               </div>
             </div>
 
             {/* Bottom Label: Travel Readiness > */}
-            <div className="flex items-center gap-0.5 text-[9px] sm:text-[10px] font-medium text-slate-200 group-hover:text-emerald-400 transition-colors whitespace-nowrap">
+            <div className="flex items-center gap-1 mt-2 text-[10px] sm:text-[11px] font-semibold text-slate-700 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
               <span>Travel Readiness</span>
-              <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2] text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight className="w-3 h-3 stroke-[2.2] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
             </div>
           </a>
 
           {/* Hero Content Container */}
-          <div className="relative z-10 w-full p-4 sm:p-6 lg:pt-8 lg:pb-8 lg:px-10 text-left flex flex-col justify-between flex-1">
+          <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left">
             
-            {/* Clean Hero Heading Section (TASK 2: Legibility & TASK 3: Spacing) */}
-            <div className="max-w-2xl text-left mb-8 sm:mb-12 relative z-10">
+            {/* Clean Hero Heading Section */}
+            <div className="max-w-2xl text-left mb-3 sm:mb-4">
               {/* Top Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/20 shadow-xs mb-3 sm:mb-4">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs sm:text-sm md:text-[15px] font-medium text-white tracking-tight">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2.5 sm:mb-3.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
+                <span className="text-xs sm:text-sm md:text-[15px] font-medium text-blue-700 tracking-tight">
                   Your Journey, Our Expertise
                 </span>
               </div>
 
               {/* Main H1 Headline */}
-              <h1 className="text-[20px] sm:text-3xl lg:text-[40px] font-semibold text-white drop-shadow-lg leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[280px] sm:max-w-none">
+              <h1 className="text-[19px] sm:text-3xl lg:text-[38px] font-semibold text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
                 Everything you need for <br className="hidden sm:inline" />
-                <span className="text-white drop-shadow-lg">Visas, Immigration &amp; Travel</span>
+                <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
               </h1>
 
               {/* Subheading */}
-              <p className="mt-1 sm:mt-2 text-slate-100 text-[11px] sm:text-sm lg:text-[14px] font-normal max-w-[260px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-3">
+              <p className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-normal max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-3">
                 Find trusted consultants, plan your trip, compare services and make your journey seamless.
               </p>
             </div>
 
-            {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD (TASK 3: mt-8) ── */}
-            <div className="w-full max-w-full mt-6 sm:mt-8 relative z-20">
+            {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
+            <div className="w-full max-w-full mt-2.5 sm:mt-4">
               
               {/* 2 Tabs attached seamlessly to the top of the search card (Task 4: Mode Toggle) */}
               <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar mode-toggle">
@@ -3340,7 +3336,7 @@ return (
                           type="button"
                           onClick={handleGeneratePathway}
                           disabled={isGenerating}
-                          className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-bold text-xs sm:text-base btn-primary-gold flex items-center justify-center gap-2 shadow-lg shadow-amber-500/30 hover:scale-[1.02] transition-transform active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                          className="w-full h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-bold text-xs sm:text-base bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 !text-slate-950 shadow-md hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                         >
                           {isGenerating ? (
                             <>
@@ -3571,7 +3567,7 @@ return (
                           }, 600);
                         }}
                         disabled={isGeneratingDomestic}
-                        className="w-full sm:w-auto px-8 h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/25 hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer disabled:opacity-75"
+                        className="w-full sm:w-auto px-8 h-[46px] sm:h-[54px] rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-sm bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75"
                       >
                         {isGeneratingDomestic ? (
                           <>
