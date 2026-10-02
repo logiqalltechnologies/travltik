@@ -2952,11 +2952,11 @@ return (
           {/* Floating Travel Readiness Card (Hidden on Mobile, Visible on Desktop/Tablet - Links to /readiness) */}
           <a
             href={`/readiness?from=${encodeURIComponent(passportCountry || 'India')}&to=${encodeURIComponent(journeyDestination || 'Canada')}&purpose=${encodeURIComponent(travelPurpose || serviceLookingFor || 'Student')}`}
-            className="hidden md:flex absolute top-4 sm:top-5 md:top-6 right-4 sm:right-6 md:right-8 lg:right-10 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-2xl px-3.5 py-3 shadow-[0_10px_25px_rgba(0,0,0,0.08)] hover:shadow-xl hover:scale-105 transition-all group flex-col items-center justify-center cursor-pointer pointer-events-auto"
+            className="hidden md:flex absolute top-3 sm:top-3.5 md:top-4 right-3 sm:right-3.5 md:right-4 lg:right-5 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-xl sm:rounded-2xl px-2.5 py-2 sm:px-3 sm:py-2.5 shadow-[0_6px_20px_rgba(0,0,0,0.06)] hover:shadow-xl hover:scale-105 transition-all group flex-col items-center justify-center cursor-pointer pointer-events-auto"
             title="Check Travel Readiness Score"
           >
             {/* Circular Progress Gauge */}
-            <div className="relative w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#F1F5F9" strokeWidth="6" />
                 <circle
@@ -2978,15 +2978,15 @@ return (
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="text-[13px] sm:text-[15px] font-black text-slate-900 leading-none tracking-tight">78%</span>
-                <span className="text-[7.5px] sm:text-[8px] font-bold text-[#00A86B] uppercase tracking-wider leading-none mt-1">Ready</span>
+                <span className="text-[11px] sm:text-xs font-black text-slate-900 leading-none tracking-tight">78%</span>
+                <span className="text-[6.5px] sm:text-[7px] font-bold text-[#00A86B] uppercase tracking-wider leading-none mt-0.5">Ready</span>
               </div>
             </div>
 
             {/* Bottom Label: Travel Readiness > */}
-            <div className="flex items-center gap-1 mt-2 text-[10px] sm:text-[11px] font-semibold text-slate-700 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
+            <div className="flex items-center gap-0.5 mt-1 text-[9px] sm:text-[9.5px] font-semibold text-slate-700 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
               <span>Travel Readiness</span>
-              <ChevronRight className="w-3 h-3 stroke-[2.2] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight className="w-2.5 h-2.5 stroke-[2] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
             </div>
           </a>
 
