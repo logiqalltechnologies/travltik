@@ -22,7 +22,7 @@ export function AIAssistantPortal() {
             sender: "bot",
             text: "Hello! I am your TravlTik Digital Diplomat. I can help you evaluate your eligibility for study permits, skilled worker visas, and permanent residency. Which destination country are you planning to relocate to?",
             type: "choices",
-            choices: ["???? Canada", "???? United Kingdom", "???? Australia", "???? United States"]
+            choices: ["🇨🇦 Canada", "🇬🇧 United Kingdom", "🇦🇺 Australia", "🇺🇸 United States"]
         }
     ]);
     const chatEndRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ export function AIAssistantPortal() {
                     sender: "bot",
                     text: "Great choice! Canada has several popular immigration and study routes. What is your primary purpose for going to Canada?",
                     type: "choices",
-                    choices: ["?? Higher Education (Study Permit)", "?? Overseas Employment (Express Entry)", "?? Family Sponsorship"]
+                    choices: ["🎓 Higher Education (Study Permit)", "💼 Overseas Employment (Express Entry)", "👨‍👩‍👧 Family Sponsorship"]
                 };
             } else if (normText.includes("education") || normText.includes("study")) {
                 botMsg = {
@@ -87,7 +87,7 @@ export function AIAssistantPortal() {
                     sender: "bot",
                     text: "I understand. I recommend speaking with one of our certified immigration lawyers or academic consultants to get a detailed appraisal of your case. Would you like me to connect you?",
                     type: "choices",
-                    choices: ["?? Connect with an Advisor", "?? Start Over"]
+                    choices: ["🤝 Connect with an Advisor", "🔄 Start Over"]
                 };
             }
 
@@ -198,14 +198,14 @@ export function AIAssistantPortal() {
 
                                     {/* Insight text */}
                                     <div className="bg-purple-50/50 border border-purple-100 rounded-2xl p-4 text-[11px] text-gray-500 leading-relaxed font-semibold">
-                                        ?? {msg.cardData.insight}
+                                        💡 {msg.cardData.insight}
                                     </div>
 
                                     {/* Action button */}
                                     <div className="flex justify-end pt-2 border-t border-yellow-50">
                                         <button 
-                                            onClick={() => handleChoiceClick("?? Connect with an Advisor", idx)}
-                                            className="bg-purple-600 text-white font-bold text-xs px-4 py-2 rounded-xl hover:bg-purple-700 transition-all flex items-center gap-1 active:scale-95 shadow-sm"
+                                            onClick={() => handleChoiceClick("🤝 Connect with an Advisor", idx)}
+                                            className="bg-purple-600 text-white font-bold text-xs px-4 py-2 rounded-xl hover:bg-purple-700 transition-all flex items-center gap-1 active:scale-95 shadow-sm cursor-pointer"
                                         >
                                             Consult Certified Advisor <ArrowRight className="w-3.5 h-3.5" />
                                         </button>

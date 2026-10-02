@@ -25,7 +25,31 @@ const OCCUPATIONS: Occupation[] = [
 ];
 
 export function MigrationToolsPortal() {
-    const [activeTool, setActiveTool] = useState<string>("eligibility"); // eligibility, points, cost, docs, occupation
+    const [activeTool, setActiveTool] = useState<string>(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const tool = params.get("tool");
+            if (tool && ["eligibility", "points", "cost", "docs", "occupation"].includes(tool)) {
+                return tool;
+            }
+        }
+        return "eligibility";
+    });
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const checkUrlTool = () => {
+                const params = new URLSearchParams(window.location.search);
+                const tool = params.get("tool");
+                if (tool && ["eligibility", "points", "cost", "docs", "occupation"].includes(tool)) {
+                    setActiveTool(tool);
+                }
+            };
+            checkUrlTool();
+            window.addEventListener("popstate", checkUrlTool);
+            return () => window.removeEventListener("popstate", checkUrlTool);
+        }
+    }, []);
 
     // 1. Eligibility states
     const [eligCountry, setEligCountry] = useState("Canada");
