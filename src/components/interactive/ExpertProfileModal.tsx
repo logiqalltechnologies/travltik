@@ -187,17 +187,20 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
               {/* Profile Avatar Ring */}
               <div className="relative group shrink-0">
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-tr from-slate-800 via-amber-400 to-slate-900 shadow-xl">
-                  {expert.image ? (
+                  {expert.image && !expert.image.includes('unsplash') ? (
                     <img 
                       src={expert.image} 
                       alt={expert.name} 
                       className="w-full h-full object-cover rounded-full border-2 border-white bg-slate-100" 
+                      onError={(ev) => {
+                        (ev.target as HTMLImageElement).style.display = 'none';
+                        (ev.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                      }}
                     />
-                  ) : (
-                    <div className="w-full h-full rounded-full bg-slate-900 text-white font-black text-3xl flex items-center justify-center border-2 border-white">
-                      {(expert.name || "E").charAt(0).toUpperCase()}
-                    </div>
-                  )}
+                  ) : null}
+                  <div className={`w-full h-full rounded-full bg-slate-900 text-white font-black text-3xl flex items-center justify-center border-2 border-white ${expert.image && !expert.image.includes('unsplash') ? 'hidden' : ''}`}>
+                    {(expert.businessName || expert.name || expert.fullName || "E").split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('') || "E"}
+                  </div>
                 </div>
                 <div className="absolute bottom-1 right-1 bg-emerald-500 text-white p-1 rounded-full border-2 border-white shadow-md" title="Online & Available">
                   <UserCheck className="w-3.5 h-3.5" />
@@ -211,7 +214,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
                   onClick={handleBookingClick}
                   className="flex-1 sm:flex-none bg-slate-900 hover:bg-slate-700 active:scale-95 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-sans"
                 >
-                  <Calendar className="w-4 h-4" /> Book Consultation
+                  <Calendar className="w-4 h-4" /> Contact Now
                 </button>
               </div>
 
@@ -372,7 +375,7 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
             onClick={handleBookingClick}
             className="bg-slate-900 hover:bg-slate-700 active:scale-95 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-sans"
           >
-            <Calendar className="w-4 h-4" /> Book Consultation
+            <Calendar className="w-4 h-4" /> Contact Now
           </button>
         </div>
       </div>

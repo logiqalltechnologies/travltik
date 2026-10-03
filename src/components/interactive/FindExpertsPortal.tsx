@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2, Users, Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Globe, Building2, GraduationCap, Briefcase, Flag, MessageSquare, CreditCard, Lock } from "lucide-react";
 import { useAuth } from "../providers/auth-provider";
 import { ExpertProfileModal } from "./ExpertProfileModal";
@@ -130,6 +130,8 @@ export function FindExpertsPortal() {
     const [consultantMode, setConsultantMode] = useState("All");
     const [sortOpen, setSortOpen] = useState(false);
     const [selectedProfileExpert, setSelectedProfileExpert] = useState<any>(null);
+    const debounceTimerRef = useRef<any>(null);
+    const allExpertsCacheRef = useRef<any[]>([]);
 
     // New Production Modals State
     const [quoteModalOpen, setQuoteModalOpen] = useState(false);
@@ -290,7 +292,7 @@ export function FindExpertsPortal() {
                         role: updateObj.role || e.role,
                         city: updateObj.city || e.city,
                         bio: updateObj.bio || e.bio,
-                        image: updateObj.image || updateObj.profile_photo || e.image,
+                        image: (updateObj.image || updateObj.profile_photo || e.image || '').includes('unsplash.com') ? '' : (updateObj.image || updateObj.profile_photo || e.image || ''),
                         tags: updateObj.tags || e.tags,
                         countries: updateObj.countries || e.countries,
                         phone: updateObj.phone || e.phone
@@ -308,8 +310,11 @@ export function FindExpertsPortal() {
                 filtered = filtered.filter(e => {
                     const text = [
                         e.name || e.business_name || '',
+                        e.fullName || e.full_name || '',
                         e.role || e.advisor_type || '',
                         e.city || e.office_address || '',
+                        e.state || '',
+                        e.country || '',
                         e.bio || e.about_me || '',
                         e.email || '',
                         e.phone || e.contact_number || '',
@@ -336,16 +341,19 @@ export function FindExpertsPortal() {
                 });
             }
 
-            // 7. Deduplicate by name/email — keep first occurrence (DB experts are first so they win)
+            // 7. Deduplicate by email — keep first occurrence (DB experts are first so they win)
             const seenIdentifiers = new Set<string>();
             const deduplicated = filtered.filter(e => {
-                const identifier = (e.name || e.business_name || e.email || String(e.id) || '').toLowerCase().trim();
+                const identifier = (e.email || String(e.id) || '').toLowerCase().trim();
                 if (!identifier) return true; // keep records even with no identifier
                 if (seenIdentifiers.has(identifier)) return false;
                 seenIdentifiers.add(identifier);
                 return true;
             });
 
+            if (!q && (!country || country === "All")) {
+                allExpertsCacheRef.current = deduplicated;
+            }
             setExperts(deduplicated);
         } catch (err: any) {
             setExperts(dummyExperts);
@@ -473,12 +481,13 @@ export function FindExpertsPortal() {
             }
         }
 
-        fetchExperts(initQ, initCountry, initPurpose, initCity);
+        fetchExperts(initQ, initCountry, "", initCity);
     }, [fetchExperts]);
 
 
-    // Filter Logic
-    const filtered = experts.filter(expert => {
+    // Filter Logic: use allExpertsCacheRef if available so instant live search has full dataset
+    const baseSource = (allExpertsCacheRef.current && allExpertsCacheRef.current.length > 0) ? allExpertsCacheRef.current : experts;
+    const filtered = baseSource.filter(expert => {
         if (!expert) return false;
 
         const tags = Array.isArray(expert.tags) ? expert.tags : [expert.tags || ''];
@@ -486,18 +495,20 @@ export function FindExpertsPortal() {
         const role = String(expert.role || expert.advisor_type || '');
         const cityStr = String(expert.city || expert.office_address || '');
         const name = String(expert.name || expert.business_name || '');
+        const fullName = String(expert.fullName || expert.full_name || '');
         const bio = String(expert.bio || expert.about_me || '');
         const advisorType = String(expert.advisor_type || expert.role || '').toLowerCase();
 
-        // Check if query is matching name directly
+        // Check if query is active
+        const isSearchActive = Boolean(searchText && searchText.trim() !== "");
         let isDirectNameMatch = false;
-        if (searchText && searchText.trim() !== "") {
+        if (isSearchActive) {
             const qLower = searchText.toLowerCase().trim();
-            isDirectNameMatch = name.toLowerCase().includes(qLower);
+            isDirectNameMatch = name.toLowerCase().includes(qLower) || fullName.toLowerCase().includes(qLower);
         }
 
-        // If not matching directly by name, enforce Category filter
-        if (!isDirectNameMatch && category !== "All") {
+        // If user is actively typing a search query, do not let old category lock hide matching experts
+        if (!isSearchActive && !isDirectNameMatch && category !== "All") {
             const catLower = category.toLowerCase();
             const hasCategoryMatch = expert.category?.toLowerCase() === catLower ||
                 role.toLowerCase().includes(catLower) ||
@@ -611,7 +622,7 @@ export function FindExpertsPortal() {
                             onClick={() => setCategory(cat)}
                             className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 category === cat
-                                    ? "bg-[#00a896] text-white shadow-xs"
+                                    ? "bg-[#420f79] text-white shadow-xs font-bold"
                                     : "text-slate-600 hover:bg-slate-100"
                             }`}
                         >
@@ -627,7 +638,7 @@ export function FindExpertsPortal() {
                 <select
                     value={selectedCountry}
                     onChange={(e) => setSelectedCountry(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-[#00a896] cursor-pointer"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-[#420f79] cursor-pointer"
                 >
                     {countryFilters.map(c => (
                         <option key={c} value={c}>{c === "All" ? "All Countries" : c}</option>
@@ -645,7 +656,7 @@ export function FindExpertsPortal() {
                             onClick={() => setConsultantType(t)}
                             className={`py-1.5 rounded-lg text-[11px] font-bold text-center transition-all cursor-pointer ${
                                 consultantType === t
-                                    ? "bg-white text-[#00a896] shadow-xs"
+                                    ? "bg-white text-[#420f79] shadow-xs font-bold"
                                     : "text-slate-600 hover:text-slate-900"
                             }`}
                         >
@@ -665,7 +676,7 @@ export function FindExpertsPortal() {
                             onClick={() => setConsultantMode(m)}
                             className={`py-1.5 rounded-lg text-[11px] font-bold text-center transition-all cursor-pointer ${
                                 consultantMode === m
-                                    ? "bg-white text-[#00a896] shadow-xs"
+                                    ? "bg-white text-[#420f79] shadow-xs font-bold"
                                     : "text-slate-600 hover:text-slate-900"
                             }`}
                         >
@@ -685,7 +696,7 @@ export function FindExpertsPortal() {
                             onClick={() => setCity(c)}
                             className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 city === c
-                                    ? "bg-slate-900 text-white shadow-xs"
+                                    ? "bg-[#420f79] text-white shadow-xs font-bold"
                                     : "text-slate-600 hover:bg-slate-100"
                             }`}
                         >
@@ -705,7 +716,7 @@ export function FindExpertsPortal() {
                             onClick={() => setRating(r)}
                             className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 rating === r
-                                    ? "bg-slate-900 text-white shadow-xs"
+                                    ? "bg-[#420f79] text-white shadow-xs font-bold"
                                     : "text-slate-600 hover:bg-slate-100"
                             }`}
                         >
@@ -716,7 +727,7 @@ export function FindExpertsPortal() {
             </div>
 
             <button onClick={() => { setCategory("All"); setSelectedCountry("All"); setConsultantType("All"); setConsultantMode("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); setSearchText(""); }}
-                className="w-full text-xs font-black tracking-wider text-[#00a896] hover:underline mt-2 cursor-pointer text-center">Reset All Filters</button>
+                className="w-full text-xs font-black tracking-wider text-[#420f79] hover:underline mt-2 cursor-pointer text-center">Reset All Filters</button>
         </div>
     );
 
@@ -735,7 +746,7 @@ export function FindExpertsPortal() {
                 <button onClick={() => setShowMobileFilters(true)} className="lg:hidden flex items-center gap-2 bg-white border border-slate-200 rounded-2xl px-4 py-3.5 font-bold text-xs tracking-wider text-navy shadow-md">
                     <Filter className="w-4 h-4 text-slate-900" /> Filters
                     {(category !== "All" || city !== "All Cities" || rating !== "Any" || avail !== "Anytime") && (
-                        <span className="bg-slate-900 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1">●</span>
+                        <span className="bg-[#420f79] text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-1">●</span>
                     )}
                 </button>
 
@@ -746,10 +757,10 @@ export function FindExpertsPortal() {
                         <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6 max-h-[80vh] overflow-auto shadow-2xl">
                             <div className="flex justify-between items-center mb-4">
                                 <h3 className="font-sans font-bold text-navy">Filters</h3>
-<button onClick={() => setShowMobileFilters(false)}><X className="w-5 h-5 text-gray-400" /></button>
+                                <button onClick={() => setShowMobileFilters(false)}><X className="w-5 h-5 text-gray-400" /></button>
                             </div>
                             <FilterSidebar />
-                            <button onClick={() => setShowMobileFilters(false)} className="w-full mt-6 bg-slate-900 text-white py-3.5 rounded-xl font-bold text-xs tracking-wider">Apply Filters</button>
+                            <button onClick={() => setShowMobileFilters(false)} className="w-full mt-6 bg-[#420f79] hover:bg-[#350b64] text-white py-3.5 rounded-xl font-bold text-xs tracking-wider">Apply Filters</button>
                         </div>
                     </div>
                 )}
@@ -765,20 +776,50 @@ export function FindExpertsPortal() {
                             <Search className="w-4 h-4 text-gray-400 shrink-0" />
                             <input
                                 value={searchText}
-                                onChange={e => setSearchText(e.target.value)}
-                                onKeyDown={e => { if (e.key === 'Enter') { if (searchText.trim()) setSortBy("relevance"); fetchExperts(searchText, selectedCountry); } }}
+                                onChange={e => {
+                                    const val = e.target.value;
+                                    setSearchText(val);
+                                    if (val.trim()) {
+                                        setCategory("All");
+                                    }
+                                    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+                                    debounceTimerRef.current = setTimeout(() => {
+                                        fetchExperts(val, selectedCountry);
+                                    }, 250);
+                                }}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+                                        if (searchText.trim()) {
+                                            setSortBy("relevance");
+                                            setCategory("All");
+                                        }
+                                        fetchExperts(searchText, selectedCountry);
+                                    }
+                                }}
                                 placeholder="Search by name, country, specialty..."
                                 className="bg-transparent outline-none text-xs w-full font-medium"
                             />
                             {searchText && (
-                                <button onClick={() => { setSearchText(''); fetchExperts('', selectedCountry); }} className="text-gray-400 hover:text-gray-600">
+                                <button onClick={() => { 
+                                    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+                                    setSearchText(''); 
+                                    fetchExperts('', selectedCountry); 
+                                }} className="text-gray-400 hover:text-gray-600">
                                     <X className="w-3.5 h-3.5" />
                                 </button>
                             )}
                         </div>
                         <button
-                            onClick={() => { if (searchText.trim()) setSortBy("relevance"); fetchExperts(searchText, selectedCountry); }}
-                            className="shrink-0 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5"
+                            onClick={() => {
+                                if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+                                if (searchText.trim()) {
+                                    setSortBy("relevance");
+                                    setCategory("All");
+                                }
+                                fetchExperts(searchText, selectedCountry);
+                            }}
+                            className="shrink-0 bg-[#420f79] hover:bg-[#350b64] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5"
                         >
                             <Search className="w-3.5 h-3.5" /> Search
                         </button>
@@ -853,25 +894,25 @@ export function FindExpertsPortal() {
                         {/* Active Filter Chips / Pills */}
                         <div className="flex flex-wrap items-center gap-2">
                             {selectedCountry !== "All" && (
-                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                <span className="text-[11px] bg-[#420f79] text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
                                     🌍 Country: {selectedCountry}
                                     <button onClick={() => { setSelectedCountry("All"); fetchExperts(searchText, "All"); }} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
                                 </span>
                             )}
                             {category !== "All" && (
-                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                <span className="text-[11px] bg-[#420f79] text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
                                     📂 Category: {category}
                                     <button onClick={() => setCategory("All")} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
                                 </span>
                             )}
                             {city !== "All Cities" && (
-                                <span className="text-[11px] bg-slate-900 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                <span className="text-[11px] bg-[#420f79] text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
                                     📍 Location: {city}
                                     <button onClick={() => setCity("All Cities")} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
                                 </span>
                             )}
                             {searchText.trim() !== "" && (
-                                <span className="text-[11px] bg-teal-800 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
+                                <span className="text-[11px] bg-[#420f79] text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs font-sans">
                                     🔍 "{searchText}"
                                     <button onClick={() => { setSearchText(""); fetchExperts("", selectedCountry); }} className="hover:text-red-300 font-extrabold text-[13px] ml-1 cursor-pointer">×</button>
                                 </span>
@@ -960,7 +1001,7 @@ export function FindExpertsPortal() {
                                     setSelectedCountry("All");
                                     fetchExperts("", "All");
                                 }}
-                                className="inline-block mt-2 bg-[#00a896] hover:bg-[#008f80] active:scale-95 text-white text-xs font-bold px-6 py-3 rounded-2xl shadow-md transition-all cursor-pointer font-sans"
+                                className="inline-block mt-2 bg-[#420f79] hover:bg-[#350b64] active:scale-95 text-white text-xs font-bold px-6 py-3 rounded-2xl shadow-md transition-all cursor-pointer font-sans"
                             >
                                 🔄 Reset Filters & Show All {experts.length} Experts
                             </button>
@@ -978,7 +1019,7 @@ export function FindExpertsPortal() {
 
                                         {/* Avatar */}
                                         <div className="relative w-20 h-20 sm:w-22 sm:h-22 shrink-0 mx-auto md:mx-0">
-                                            {e.image ? (
+                                            {e.image && !e.image.includes('unsplash') ? (
                                                 <img
                                                     src={e.image}
                                                     alt={e.name}
@@ -986,8 +1027,8 @@ export function FindExpertsPortal() {
                                                     onError={(ev) => { (ev.target as HTMLImageElement).style.display = 'none'; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden'); }}
                                                 />
                                             ) : null}
-                                            <div className={`w-full h-full rounded-2xl bg-gradient-to-br from-[#0B0F17] via-slate-800 to-teal-900 text-white font-semibold text-xl flex items-center justify-center border border-slate-700 shadow-xs tracking-tight select-none font-sans ${e.image ? 'hidden' : ''}`}>
-                                                {(e.name || 'TT').split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('')}
+                                            <div className={`w-full h-full rounded-2xl bg-gradient-to-br from-[#0B0F17] via-slate-800 to-teal-900 text-white font-semibold text-xl flex items-center justify-center border border-slate-700 shadow-xs tracking-tight select-none font-sans ${e.image && !e.image.includes('unsplash') ? 'hidden' : ''}`}>
+                                                {(e.businessName || e.name || e.fullName || 'TT').split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('')}
                                             </div>
                                             {e.isVerified && (
                                                 <span className="absolute -top-1.5 -right-1.5 bg-slate-950 text-teal-300 text-[9px] font-medium tracking-wider px-2 py-0.5 rounded-full border border-teal-400/30 shadow-xs flex items-center gap-1">
@@ -1069,28 +1110,13 @@ export function FindExpertsPortal() {
                                                                 window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
                                                                 return;
                                                             }
-                                                            setQuoteExpert(e);
-                                                            setQuoteModalOpen(true);
-                                                        }}
-                                                        className="flex-1 sm:flex-initial text-center bg-slate-50 hover:bg-slate-100 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer border border-slate-200 hover-spring"
-                                                    >
-                                                        Get Free Quote
-                                                    </button>
-
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            if (!isUserLoggedIn()) {
-                                                                window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-                                                                return;
-                                                            }
                                                             setReviewExpert(e);
                                                             setReviewModalOpen(true);
                                                         }}
                                                         className="flex-1 sm:flex-initial text-center bg-slate-50 hover:bg-slate-100 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer border border-slate-200 flex items-center justify-center gap-1 hover-spring"
                                                     >
                                                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                                                        <span>Review</span>
+                                                        <span>Read Review</span>
                                                     </button>
 
                                                     <button 
@@ -1105,7 +1131,7 @@ export function FindExpertsPortal() {
                                                         }} 
                                                         className="flex-1 sm:flex-initial text-center bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs shadow-md hover:shadow-lg hover:shadow-emerald-500/25 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap"
                                                     >
-                                                        <span>Book Session</span>
+                                                        <span>Contact Now</span>
                                                     </button>
                                                 </div>
                                             </div>

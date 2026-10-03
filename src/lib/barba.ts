@@ -18,6 +18,7 @@ export function initBarba() {
 
     barba.init({
       preventRunning: true,
+      prevent: () => true, // Do not intercept native Astro island routes so hydration stays 100% stable
       transitions: [
         {
           name: 'default-transition',

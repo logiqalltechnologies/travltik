@@ -1,0 +1,12 @@
+---
+// src/pages/anti-fraud-policy.astro
+import Layout from '../layouts/Layout.astro';
+import { EscrowPortal } from '../components/interactive/EscrowPortal';
+---
+
+<Layout 
+  title="Anti-Fraud Policy & Escrow Protection" 
+  description="TravlTik strict anti-fraud policy and 100% milestone-based escrow protection for visa applicants."
+>
+  <EscrowPortal client:only="react" />
+</Layout>

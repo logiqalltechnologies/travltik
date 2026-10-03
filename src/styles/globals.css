@@ -1142,7 +1142,7 @@ select {
 /* ── TASK 1: Hero Section ── */
 .hero-section {
   position: relative;
-  overflow: hidden;
+  overflow: visible !important;
   background-color: #ffffff;
 }
 
@@ -1232,5 +1232,27 @@ h3, h4 {
   margin: 0 auto;
   max-width: 80%;
 }
+
+/* ── Luxury Card Hover Lift ── */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.06),
+    0 24px 60px -20px rgba(0, 0, 0, 0.24);
+}
+
+/* ── GPU-Accelerated Animations (Fix 4) ── */
+.animate-on-scroll {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+
 
 

@@ -74,6 +74,7 @@ import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload, Landmark, Locate
   HelpCircle,
   ExternalLink as ExternalIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ScrollReveal } from '../ui/ScrollReveal';
 
 const scrollMotionContainer = {
   hidden: { opacity: 0 },
@@ -86,6 +87,29 @@ const scrollMotionContainer = {
 const scrollMotionItem = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
+};
+
+const heroVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
 };
 
 // Quick-Pill Intent Tags (8 Visa & Overseas Journey Categories)
@@ -1699,6 +1723,36 @@ export function AITripPlannerLanding() {
   const passportRef = useRef<HTMLDivElement>(null);
   const journeyDestRef = useRef<HTMLDivElement>(null);
   const purposeRef = useRef<HTMLDivElement>(null);
+  const heroParallaxRef = useRef<HTMLDivElement>(null);
+  const heroImageParallaxRef = useRef<HTMLDivElement>(null);
+
+  // Animation 4: Hero Image Parallax (GSAP ScrollTrigger)
+  useEffect(() => {
+    let ctx: any;
+    if (typeof window !== 'undefined' && heroParallaxRef.current && heroImageParallaxRef.current) {
+      import('gsap').then(({ gsap }) => {
+        import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+          gsap.registerPlugin(ScrollTrigger);
+          ctx = gsap.context(() => {
+            gsap.to(heroImageParallaxRef.current, {
+              yPercent: 20,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: heroParallaxRef.current,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true,
+              },
+            });
+          }, heroParallaxRef);
+        });
+      });
+    }
+    return () => {
+      if (ctx) ctx.revert();
+    };
+  }, []);
+
   const [travelTiming, setTravelTiming] = useState('');
 
   // FLOW 1: "VISA APPROVED & READY" Real Dynamic State
@@ -2930,17 +2984,18 @@ return (
       />
 
       {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
-      <section id="hero-search" className="relative z-30 w-full overflow-visible bg-white pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
+      <section id="hero-search" className="relative z-30 w-full overflow-visible bg-white pt-3.5 sm:pt-5 lg:pt-6 pb-2 sm:pb-3 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
-        <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
+        <div ref={heroParallaxRef} className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
           
           {/* High-Resolution Generated Travel Photograph Background */}
           <div 
             className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[180px] sm:h-full pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
           >
             <div 
-              className="hero-image w-full h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center"
+              ref={heroImageParallaxRef}
+              className="hero-image w-full h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center will-change-transform"
               style={{
                 backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
               }}
@@ -2991,32 +3046,37 @@ return (
           </a>
 
           {/* Hero Content Container */}
-          <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left">
+          <motion.div
+            variants={heroVariants}
+            initial="hidden"
+            animate="show"
+            className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left"
+          >
             
             {/* Clean Hero Heading Section */}
             <div className="max-w-2xl text-left mb-3 sm:mb-4">
               {/* Top Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2.5 sm:mb-3.5">
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2.5 sm:mb-3.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
                 <span className="text-xs sm:text-sm md:text-[15px] font-medium text-blue-700 tracking-tight">
                   Your Journey, Our Expertise
                 </span>
-              </div>
+              </motion.div>
 
               {/* Main H1 Headline */}
-              <h1 className="text-[19px] sm:text-3xl lg:text-[38px] font-semibold text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
+              <motion.h1 suppressHydrationWarning variants={itemVariants} className="text-[19px] sm:text-3xl lg:text-[38px] font-semibold text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
                 Everything you need for <br className="hidden sm:inline" />
                 <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
-              </h1>
+              </motion.h1>
 
               {/* Subheading */}
-              <p className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-normal max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-3">
+              <motion.p variants={itemVariants} className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-normal max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-3">
                 Find trusted consultants, plan your trip, compare services and make your journey seamless.
-              </p>
+              </motion.p>
             </div>
 
             {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
-            <div className="w-full max-w-full mt-2.5 sm:mt-4">
+            <motion.div variants={itemVariants} className="w-full max-w-full mt-2.5 sm:mt-4">
               
               {/* 2 Tabs attached seamlessly to the top of the search card (Task 4: Mode Toggle) */}
               <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar mode-toggle">
@@ -3060,18 +3120,18 @@ return (
 
               {/* Large Premium Search Card (Exact Mobile & Desktop Layout) */}
               <div 
-                className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-3.5 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-20"
+                className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-[32px] sm:rounded-tl-none p-3.5 sm:p-6 md:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] relative z-30 overflow-visible"
               >
                 
                 {/* TAB 1: INTERNATIONAL SERVICES FIELDS */}
                 {travelScopeTab === 'international' && (
-                  <div className="space-y-2.5 sm:space-y-4 animate-fadeIn hero-search">
+                  <div className="space-y-2.5 sm:space-y-4 overflow-visible relative z-30">
                     
                     {/* 3-Field Sequential Bar Grid (Step 9) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-3.5 items-end">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-3.5 items-end overflow-visible relative z-30">
                       
                       {/* Field 1: Passport Country (3 cols) */}
-                      <div ref={originCityRef} className="lg:col-span-3 relative">
+                      <div ref={originCityRef} className="lg:col-span-3 relative z-40 overflow-visible">
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
                           Passport Country
                         </label>
@@ -3175,7 +3235,7 @@ return (
                       </div>
 
                       {/* Field 2: Destination (I want to travel to...) (3 cols) */}
-                      <div ref={journeyDestRef} className="lg:col-span-3 relative">
+                      <div ref={journeyDestRef} className="lg:col-span-3 relative z-40 overflow-visible">
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
                           Destination
                         </label>
@@ -3278,7 +3338,7 @@ return (
                       </div>
 
                       {/* Field 3: Primary Purpose (4 cols) */}
-                      <div ref={lookingForRef} className="lg:col-span-4 relative">
+                      <div ref={lookingForRef} className="lg:col-span-4 relative z-40 overflow-visible">
                         <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">
                           Purpose
                         </label>
@@ -3373,10 +3433,10 @@ return (
 
                 {/* TAB 2: DOMESTIC TRIP SEARCH FIELDS (CITY / ORIGIN BEFORE DESTINATION WITH DIRECT TYPING) */}
                 {travelScopeTab === 'domestic' && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn overflow-visible relative z-30">
                     
                     {/* 1. Country (2 Cols) */}
-                    <div className="lg:col-span-2 relative">
+                    <div className="lg:col-span-2 relative z-40 overflow-visible">
                       <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">Country</label>
                       <div
                         ref={domesticCountryRef}
@@ -3428,7 +3488,7 @@ return (
                     </div>
 
                     {/* 2. State / Region (2 Cols) */}
-                    <div className="lg:col-span-2 relative">
+                    <div className="lg:col-span-2 relative z-40 overflow-visible">
                       <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">State / Region</label>
                       <div
                         ref={domesticStateRef}
@@ -3492,7 +3552,7 @@ return (
                     </div>
 
                     {/* 4. Destination Package (3 Cols) */}
-                    <div className="lg:col-span-3 relative">
+                    <div className="lg:col-span-3 relative z-40 overflow-visible">
                       <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">Destination Package</label>
                       <div
                         ref={domesticDestRef}
@@ -3602,9 +3662,9 @@ return (
 
               </div>
 
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
 
         </div>
 
@@ -3670,12 +3730,12 @@ return (
       
       {/* ── OVERSEAS JOURNEY & AI VISA ENGINE FLOW (ONLY SHOWN FOR INTERNATIONAL SERVICES) ── */}
       {travelScopeTab === 'international' && (
-        <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 text-center animate-fadeIn">
+        <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-1 sm:pt-2 pb-2 text-center animate-fadeIn">
           
           
 
           {/* TOP TRAVEL CATEGORIES HEADING & QUICK-PILL INTENT TAGS */}
-          <div className="mt-3 sm:mt-4 max-w-6xl mx-auto w-full px-2 sm:px-0">
+          <div className="mt-1 sm:mt-2 max-w-6xl mx-auto w-full px-2 sm:px-0">
             <div className="flex items-center justify-center sm:justify-start gap-2 mb-2 px-1">
               <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
@@ -4041,80 +4101,82 @@ return (
           {/* ======================================================= */}
           {/* ── 4. HOW TRAVLTIK WORKS SECTION (ABOVE MAGIC SEARCH) ── */}
           {/* ======================================================= */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
-            
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                  How TravlTik Works?
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  End-to-end verified visa &amp; travel pathways in 4 easy steps.
-                </p>
+          <ScrollReveal direction="up">
+            <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
+              
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                <div>
+                  <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                    How TravlTik Works?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                    End-to-end verified visa &amp; travel pathways in 4 easy steps.
+                  </p>
+                </div>
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                  Simple 4-Step Process
+                </span>
               </div>
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                Simple 4-Step Process
-              </span>
-            </div>
 
-            {/* 4 Squircle Cards Grid with Framer Motion Stagger */}
-            <motion.div
-              variants={scrollMotionContainer}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.15 }}
-              className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
-            >
-              {[
-                {
-                  step: "Step 1 • Discover",
-                  title: "Search",
-                  desc: "Find services, destinations or trusted global experts",
-                  icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 2 • Evaluate",
-                  title: "Compare",
-                  desc: "Compare verified options, ratings & transparent fees",
-                  icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 3 • Escrow Protection",
-                  title: "Connect",
-                  desc: "Connect with licensed consultants with 100% escrow safety",
-                  icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                },
-                {
-                  step: "Step 4 • Fly Confident",
-                  title: "Travel",
-                  desc: "Instant official e-Visa delivery & real-time border journey alerts",
-                  icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                }
-              ].map((card, i) => (
-                <motion.div key={i} variants={scrollMotionItem} className="h-full">
-                  <div 
-                    className="card bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group min-h-[175px] h-full"
-                  >
-                    <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                      {card.icon}
+              {/* 4 Squircle Cards Grid with Framer Motion Stagger */}
+              <motion.div
+                variants={scrollMotionContainer}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.15 }}
+                className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+              >
+                {[
+                  {
+                    step: "Step 1 • Discover",
+                    title: "Search",
+                    desc: "Find services, destinations or trusted global experts",
+                    icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  },
+                  {
+                    step: "Step 2 • Evaluate",
+                    title: "Compare",
+                    desc: "Compare verified options, ratings & transparent fees",
+                    icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  },
+                  {
+                    step: "Step 3 • Escrow Protection",
+                    title: "Connect",
+                    desc: "Connect with licensed consultants with 100% escrow safety",
+                    icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  },
+                  {
+                    step: "Step 4 • Fly Confident",
+                    title: "Travel",
+                    desc: "Instant official e-Visa delivery & real-time border journey alerts",
+                    icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  }
+                ].map((card, i) => (
+                  <motion.div key={i} variants={scrollMotionItem} className="h-full">
+                    <div 
+                      className="card card-hover bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full"
+                    >
+                      <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                        {card.icon}
+                      </div>
+                      <div className="mt-5">
+                        <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
+                          {card.step}
+                        </span>
+                        <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
+                          {card.title}
+                        </h4>
+                        <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                          {card.desc}
+                        </p>
+                      </div>
                     </div>
-                    <div className="mt-5">
-                      <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
-                        {card.step}
-                      </span>
-                      <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
-                        {card.title}
-                      </h4>
-                      <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                        {card.desc}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </ScrollReveal>
 
           <div className="section-divider my-8 sm:my-10" />
 

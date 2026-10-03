@@ -14,15 +14,15 @@ export function ScrollReveal({
   children, 
   delay = 0, 
   direction = 'up',
-  duration = 0.5,
+  duration = 0.6,
   className = '',
-  viewportMargin = '-40px'
+  viewportMargin = '-20px'
 }: Props) {
   const directions = {
-    up: { y: 30, x: 0 },
-    down: { y: -30, x: 0 },
-    left: { x: 30, y: 0 },
-    right: { x: -30, y: 0 },
+    up: { y: 40, x: 0 },
+    down: { y: -40, x: 0 },
+    left: { x: 40, y: 0 },
+    right: { x: -40, y: 0 },
     none: { x: 0, y: 0 },
   };
 

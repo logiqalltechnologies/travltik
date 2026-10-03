@@ -6,6 +6,7 @@ import MobileNav from '../components/layout/MobileNav.astro';
 
 import { TalkToUs } from '../components/shared/talk-to-us';
 import { VisaMatchWidget } from '../components/shared/VisaMatchWidget';
+import { CustomCursor } from '../components/ui/CustomCursor';
 import '../styles/globals.css';
 
 export interface Props {
@@ -93,7 +94,7 @@ const defaultSchema = {
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth overflow-x-hidden">
+<html lang="en" class="overflow-x-hidden">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
@@ -156,6 +157,7 @@ const defaultSchema = {
 
   {!shouldHideWidgets && <VisaMatchWidget client:only="react" />}
   {!shouldHideWidgets && <TalkToUs client:only="react" />}
+  <CustomCursor client:load />
 
   <!-- Lenis Smooth Scroll, GSAP, SplitType Text Shine & Magnetic Interactions -->
   <script>
@@ -164,6 +166,7 @@ const defaultSchema = {
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
     import { initTextShine } from '../lib/textShine';
     import { initMagneticElements, initTiltCards } from '../lib/magnetic';
+    import { initBarba } from '../lib/barba';
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -173,6 +176,17 @@ const defaultSchema = {
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
+      infinite: false,
+      prevent: (node: any) => {
+        return (
+          node.hasAttribute?.('data-lenis-prevent') ||
+          !!node.closest?.('[data-lenis-prevent]') ||
+          node.classList?.contains?.('overflow-y-auto') ||
+          !!node.closest?.('.overflow-y-auto') ||
+          node.classList?.contains?.('overflow-auto') ||
+          !!node.closest?.('.overflow-auto')
+        );
+      },
     });
 
     // Lenis ko ScrollTrigger se sync karo
@@ -184,11 +198,20 @@ const defaultSchema = {
 
     gsap.ticker.lagSmoothing(0);
 
+    // Window pe expose karo (debugging ke liye)
+    (window as any).__lenis = lenis;
+
+    // Passive listeners for better performance
+    document.addEventListener('wheel', () => {}, { passive: true });
+    document.addEventListener('touchstart', () => {}, { passive: true });
+    document.addEventListener('touchmove', () => {}, { passive: true });
+
     function initInteractiveEffects() {
       ScrollTrigger.refresh();
       initTextShine('.animate-heading');
       initMagneticElements('.magnetic-btn');
       initTiltCards('.tilt-card');
+      initBarba();
     }
 
     if (document.readyState === 'loading') {

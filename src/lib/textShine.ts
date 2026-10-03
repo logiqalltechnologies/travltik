@@ -78,3 +78,37 @@ export function initTextShine(target: string | HTMLElement = '.animate-heading')
     instances.forEach((inst) => inst.cleanup());
   };
 }
+
+export function animateHeading(selector: string = '.animate-heading') {
+  if (typeof window === 'undefined') return;
+  const elements = document.querySelectorAll(selector);
+  
+  elements.forEach((el) => {
+    const htmlEl = el as HTMLElement;
+    if (htmlEl.dataset.splitInitialized === 'true') return;
+    htmlEl.dataset.splitInitialized = 'true';
+
+    try {
+      const text = new SplitType(htmlEl, { types: 'words,chars' });
+      
+      if (text.chars && text.chars.length > 0) {
+        gsap.from(text.chars, {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+          },
+          opacity: 0,
+          y: 20,
+          filter: 'blur(8px)',
+          stagger: 0.02,
+          duration: 0.8,
+          ease: 'power3.out',
+        });
+      }
+    } catch (e) {
+      console.warn('animateHeading error:', e);
+    }
+  });
+}
+
+

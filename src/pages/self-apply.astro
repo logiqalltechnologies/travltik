@@ -890,7 +890,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
   <div class="toast" id="toast">Message</div>
 
   <!-- Self Apply Registration Wizard Modal Box -->
-  <div class="fixed inset-0 z-30 overflow-y-auto pointer-events-auto">
+  <div data-lenis-prevent="true" class="fixed inset-0 z-30 overflow-y-auto overscroll-contain pointer-events-auto">
     <div class="flex min-h-full items-center justify-center px-3 py-6 sm:px-4 sm:py-12">
       <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden relative font-plus-jakarta my-auto">
 
