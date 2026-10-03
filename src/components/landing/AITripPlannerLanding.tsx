@@ -2930,7 +2930,7 @@ return (
       />
 
       {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
-      <section id="hero-search" className="relative w-full overflow-hidden bg-white pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
+      <section id="hero-search" className="relative z-30 w-full overflow-visible bg-white pt-3.5 sm:pt-5 lg:pt-6 pb-3 sm:pb-5 px-2.5 sm:px-6 lg:px-8">
         
         {/* Full-width Scenic Travel Background Card */}
         <div className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
@@ -3107,7 +3107,10 @@ return (
 
                         {isOriginCityOpen && (
                           <div
-                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
+                            data-lenis-prevent="true"
+                            onWheel={(e) => e.stopPropagation()}
+                            onTouchMove={(e) => e.stopPropagation()}
+                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left overscroll-contain select-none"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {/* Search Input */}
@@ -3208,7 +3211,10 @@ return (
 
                         {isJourneyDestOpen && (
                           <div
-                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left"
+                            data-lenis-prevent="true"
+                            onWheel={(e) => e.stopPropagation()}
+                            onTouchMove={(e) => e.stopPropagation()}
+                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left overscroll-contain select-none"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {/* Search Input */}
@@ -3297,7 +3303,10 @@ return (
 
                         {isLookingForOpen && (
                           <div
-                            className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[260px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10"
+                            data-lenis-prevent="true"
+                            onWheel={(e) => e.stopPropagation()}
+                            onTouchMove={(e) => e.stopPropagation()}
+                            className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[280px] sm:min-w-[320px] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2 max-h-[320px] overflow-y-auto overscroll-contain ring-1 ring-black/10 select-none [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <div className="space-y-1">
@@ -3317,12 +3326,17 @@ return (
                                     setIsLookingForOpen(false);
                                     autoSaveJourney({ purpose: opt.value });
                                   }}
-                                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-normal text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left cursor-pointer transition-colors"
+                                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-colors cursor-pointer text-left ${
+                                    serviceLookingFor === opt.label
+                                      ? 'bg-blue-50 text-blue-900 font-semibold'
+                                      : 'text-slate-700 hover:bg-blue-50/70 hover:text-blue-900'
+                                  }`}
                                 >
                                   <div className="flex items-center gap-2.5 min-w-0">
                                     <span className="text-base">{opt.icon}</span>
                                     <span className="truncate">{opt.label}</span>
                                   </div>
+                                  {serviceLookingFor === opt.label && <Check className="w-4 h-4 text-blue-600 shrink-0" />}
                                 </button>
                               ))}
                             </div>
