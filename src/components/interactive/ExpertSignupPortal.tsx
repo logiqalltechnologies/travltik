@@ -38,6 +38,7 @@ const POPULAR_LANGUAGES = [
 
 // ─── Business Types ───────────────────────────────────────────────────────────
 const BUSINESS_TYPES = [
+  "Universities / Higher Education Institutions",
   "Private Limited Company",
   "Public Limited Company",
   "Partnership Firm",
@@ -143,7 +144,12 @@ function CustomDropdown({ value, onChange, options, placeholder = "Select option
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 left-0 right-0 mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-xl py-1.5 max-h-60 overflow-y-auto scrollbar-thin">
+        <div
+          data-lenis-prevent="true"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          className="absolute z-[9999] left-0 right-0 mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-[0_15px_35px_rgba(0,0,0,0.12)] p-1.5 max-h-56 overflow-y-auto overscroll-contain select-none [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+        >
           {normalizedOptions.map(option => {
             const isSelected = option.value === value;
             return (
@@ -154,7 +160,7 @@ function CustomDropdown({ value, onChange, options, placeholder = "Select option
                   onChange(option.value);
                   setIsOpen(false);
                 }}
-                className={`w-full text-left px-3.5 py-2.5 text-xs sm:text-sm flex items-center justify-between gap-2 transition-colors cursor-pointer ${
+                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-between gap-2 transition-colors cursor-pointer ${
                   isSelected
                     ? "bg-purple-50 text-[#481268] font-bold"
                     : "text-slate-700 hover:bg-purple-50/40 hover:text-slate-900 font-medium"
