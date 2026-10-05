@@ -3050,41 +3050,36 @@ return (
           </div>
 
           {/* Hero Content Container */}
-          <motion.div
-            variants={heroVariants}
-            initial="hidden"
-            animate="show"
-            className="relative z-10 w-full p-3 sm:p-5 lg:pt-8 lg:pb-6 lg:px-8 text-left"
-          >
+          <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-8 lg:pb-6 lg:px-8 text-left">
             
             {/* Clean Hero Heading Section */}
             <div className="max-w-2xl text-left mb-4 sm:mb-6 pr-[42%] xs:pr-[45%] sm:pr-0">
               {/* Top Pill Badge */}
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-2xs mb-2 sm:mb-3.5 max-w-full">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-2xs mb-2 sm:mb-3.5 max-w-full">
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#00A86B] animate-pulse shrink-0" />
                 <span className="text-[10px] xs:text-xs sm:text-[13px] font-semibold text-slate-800 tracking-tight truncate">
                   Global Immigration &amp; Mobility Platform
                 </span>
-              </motion.div>
+              </div>
 
               {/* Main H1 Headline */}
-              <motion.h1 suppressHydrationWarning variants={itemVariants} className="text-2xl xs:text-3xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.15] sm:leading-[1.08] tracking-tight">
+              <h1 className="text-2xl xs:text-3xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.15] sm:leading-[1.08] tracking-tight">
                 Your journey, simplified
-              </motion.h1>
+              </h1>
 
               {/* Subheading */}
-              <motion.p variants={itemVariants} className="mt-1.5 sm:mt-3 text-slate-600 text-xs sm:text-base font-normal max-w-xl leading-relaxed">
+              <p className="mt-1.5 sm:mt-3 text-slate-600 text-xs sm:text-base font-normal max-w-xl leading-relaxed">
                 <span className="sm:hidden">
                   Everything you need for visas, immigration, and global mobility.
                 </span>
                 <span className="hidden sm:inline">
                   Everything you need for visas, immigration, and global mobility. Find trusted consultants, compare verified services, and secure every milestone with escrow.
                 </span>
-              </motion.p>
+              </p>
             </div>
 
             {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
-            <motion.div variants={itemVariants} className="w-full max-w-full mt-2.5 sm:mt-4">
+            <div className="w-full max-w-full mt-2.5 sm:mt-4">
               
               {/* 2 Tabs attached seamlessly to the top of the search card (Task 4: Mode Toggle) */}
               <div className="flex items-end gap-1 sm:gap-2 px-1 sm:px-4 overflow-x-auto no-scrollbar mode-toggle">
@@ -3706,9 +3701,9 @@ return (
                 </a>
               </div>
 
-            </motion.div>
+            </div>
 
-          </motion.div>
+          </div>
 
         </div>
 
