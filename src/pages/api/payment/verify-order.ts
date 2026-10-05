@@ -3,8 +3,31 @@
 import type { APIRoute } from 'astro';
 import { runMigrations, getPool } from '../../../backend/db';
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 
 export const prerender = false;
+
+function getEnvVar(name: string): string {
+  if (process.env[name]) return process.env[name]!;
+  if ((import.meta as any).env?.[name]) return (import.meta as any).env[name];
+  try {
+    const envPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(envPath)) {
+      const content = fs.readFileSync(envPath, 'utf-8');
+      for (const line of content.split('\n')) {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+          const [key, ...rest] = trimmed.split('=');
+          if (key.trim() === name) {
+            return rest.join('=').trim().replace(/^['"]|['"]$/g, '');
+          }
+        }
+      }
+    }
+  } catch (e) {}
+  return '';
+}
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -28,10 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const secret =
-      process.env.RAZORPAY_KEY_SECRET ||
-      (import.meta as any).env?.RAZORPAY_KEY_SECRET ||
-      '5bNJ35RwCJ3yUZIVdSNxrDoE';
+    const secret = getEnvVar('RAZORPAY_KEY_SECRET');
 
     if (secret && signature) {
       const generatedSignature = crypto

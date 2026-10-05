@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import {
   GraduationCap,
@@ -133,7 +133,7 @@ export default function VisaReadinessEngine() {
       // Origin / Residence / Passport
       const orig = params.get('from') || params.get('origin') || params.get('residence') || params.get('passport') || params.get('passportCountry');
       if (orig) {
-        setResidenceCountry(orig);
+        setResidenceCountry(orig.toLowerCase() === 'indian' ? 'India' : orig);
       }
 
       // Category / Purpose / Tab
@@ -284,16 +284,27 @@ export default function VisaReadinessEngine() {
   ];
 
   // Option definitions for CustomSelect
-  const targetCountryOptions = [
-    { value: "Canada", label: "🇨🇦 Canada" },
-    { value: "United States", label: "🇺🇸 United States" },
-    { value: "United Kingdom", label: "🇬🇧 United Kingdom" },
-    { value: "Australia", label: "🇦🇺 Australia" },
-    { value: "Germany", label: "🇩🇪 Germany" },
-    { value: "Schengen", label: "🇪🇺 Schengen Europe" },
-    { value: "UAE", label: "🇦🇪 United Arab Emirates" },
-    { value: "New Zealand", label: "🇳🇿 New Zealand" },
-  ];
+  const targetCountryOptions = useMemo(() => {
+    const defaultOptions = [
+      { value: "Canada", label: "🇨🇦 Canada" },
+      { value: "United States", label: "🇺🇸 United States" },
+      { value: "United Kingdom", label: "🇬🇧 United Kingdom" },
+      { value: "Australia", label: "🇦🇺 Australia" },
+      { value: "Germany", label: "🇩🇪 Germany" },
+      { value: "Schengen", label: "🇪🇺 Schengen Europe" },
+      { value: "UAE", label: "🇦🇪 United Arab Emirates" },
+      { value: "New Zealand", label: "🇳🇿 New Zealand" },
+    ];
+    if (targetCountry) {
+      const match = defaultOptions.find(o => o.value.toLowerCase() === targetCountry.toLowerCase());
+      if (match) {
+        return defaultOptions;
+      }
+      const formatted = targetCountry.charAt(0).toUpperCase() + targetCountry.slice(1);
+      return [{ value: targetCountry, label: `🌍 ${formatted}` }, ...defaultOptions];
+    }
+    return defaultOptions;
+  }, [targetCountry]);
 
   const passportValidityOptions = [
     { value: "6", label: "6 Months" },
