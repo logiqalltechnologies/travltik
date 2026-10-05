@@ -5,6 +5,21 @@ import { MAIN_NAV, FOOTER_NAV } from '../../../config/navigation';
 import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare, Sparkles, Bell, Zap, Award, Camera, FileCheck2, ShieldCheck, Users } from 'lucide-react';
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/' || pathname === '';
+
+const ICONS: Record<string, any> = {
+    GraduationCap,
+    Briefcase,
+    Compass,
+    Scale,
+    Sparkles,
+    Camera,
+    FileCheck2,
+    FileText,
+    Calendar,
+    HeartHandshake,
+    Plane,
+    Award,
+};
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
@@ -38,22 +53,27 @@ const isHome = pathname === '/' || pathname === '';
                             {item.label}
                             <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
                         </button>
-                        <div class="absolute top-full left-0 pt-2 w-[290px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
+                        <div class="absolute top-full left-0 pt-2 w-[280px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                             <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                                {item.children.map((child, cIdx) => (
-                                    <>
-                                        {cIdx === 4 && <div class="my-1 border-t border-slate-100" />}
-                                        <a href={child.href} class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                                            {child.href === "/ai-tools" && <Sparkles class="w-4 h-4 text-amber-500 group-hover/item:text-[#00a896] transition-colors shrink-0" />}
-                                            {child.href === "/ai-tools/photo-resizer" && <Camera class="w-4 h-4 text-emerald-600 group-hover/item:text-[#00a896] transition-colors shrink-0" />}
-                                            {child.href === "/ai-tools/pdf-audit" && <FileCheck2 class="w-4 h-4 text-[#00a896] group-hover/item:text-[#00a896] transition-colors shrink-0" />}
-                                            {child.href === "/ai-tools/sop-generator" && <FileText class="w-4 h-4 text-blue-600 group-hover/item:text-[#00a896] transition-colors shrink-0" />}
-                                            {child.href === "/ai-tools/crs-calculator" && <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors shrink-0" />}
-                                            {child.href === "/ai-tools/eligibility" && <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors shrink-0" />}
-                                            <span class={`${cIdx >= 4 ? "text-[13px]" : "text-[14px]"} font-medium`}>{child.label}</span>
-                                        </a>
-                                    </>
-                                ))}
+                                {item.children.map((child, cIdx) => {
+                                    const IconComponent = child.icon ? ICONS[child.icon] : null;
+                                    const isAiTools = item.label === "AI Tools";
+                                    const showDivider = isAiTools && cIdx === 4;
+                                    const iconColor = child.href === "/ai-tools" ? "text-amber-500" :
+                                                     child.href === "/ai-tools/photo-resizer" ? "text-emerald-600" :
+                                                     child.href === "/ai-tools/pdf-audit" ? "text-[#00a896]" :
+                                                     child.href === "/ai-tools/sop-generator" ? "text-blue-600" :
+                                                     "text-slate-400";
+                                    return (
+                                        <>
+                                            {showDivider && <div class="my-1 border-t border-slate-100" />}
+                                            <a href={child.href} class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                                                {IconComponent && <IconComponent class={`w-4 h-4 ${iconColor} group-hover/item:text-[#00a896] transition-colors shrink-0`} />}
+                                                <span class={`${isAiTools && cIdx >= 4 ? "text-[13px]" : "text-[14px]"} font-medium`}>{child.label}</span>
+                                            </a>
+                                        </>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>

@@ -6,16 +6,15 @@ import { Home, Compass, Sparkles, Users, Briefcase, ShieldCheck } from 'lucide-r
 const pathname = Astro.url.pathname;
 
 const ICON_MAP: Record<string, any> = {
-  "/ai-tools": Sparkles,
   "/find-experts": Users,
-  "/jobs": Briefcase,
-  "/escrow": ShieldCheck,
   "/self-apply": Compass,
+  "/ai-tools": Sparkles,
+  "/visa-services": Briefcase,
 };
 
 const mobileNavItems = [
   { href: "/", label: "Home", icon: Home },
-  ...MAIN_NAV.filter((item) => ["/ai-tools", "/find-experts", "/jobs"].includes(item.href)).map((item) => ({
+  ...MAIN_NAV.filter((item) => ["/find-experts", "/self-apply", "/ai-tools", "/visa-services"].includes(item.href)).map((item) => ({
     href: item.href,
     label: item.label,
     icon: ICON_MAP[item.href] || Compass,
