@@ -73,45 +73,7 @@ import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload, Landmark, Locate
   TrendingUp,
   HelpCircle,
   ExternalLink as ExternalIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { ScrollReveal } from '../ui/ScrollReveal';
 import { Testimonials } from './testimonials';
-
-const scrollMotionContainer = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 },
-  },
-};
-
-const scrollMotionItem = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
-};
-
-const heroVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  },
-};
 
 // Quick-Pill Intent Tags (8 Visa & Overseas Journey Categories)
 const categoryPills = [
@@ -4102,85 +4064,77 @@ return (
           )}
 
           {/* ======================================================= */}
-          {/* ── ZONE 2: VALUE & SAFETY (4-STEP ESCROW MODEL) ── */}
+          {/* ── ZONE 2: VALUE & SAFETY (4-STEP ESCROW MODEL / HOW IT WORKS) ── */}
           {/* ======================================================= */}
-          <section id="value-safety" className="w-full">
-            <ScrollReveal direction="up">
-              <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
-                
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                  <div>
-                    <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                      How TravlTik Works?
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                      End-to-end verified visa &amp; travel pathways in 4 easy steps.
-                    </p>
-                  </div>
-                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                    Simple 4-Step Process
-                  </span>
+          <section id="how-it-works" data-section="value-safety" className="w-full">
+            <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
+              
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                <div>
+                  <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                    How TravlTik Works?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                    End-to-end verified visa &amp; travel pathways in 4 easy steps.
+                  </p>
                 </div>
-
-                {/* 4 Squircle Cards Grid with Framer Motion Stagger */}
-                <motion.div
-                  variants={scrollMotionContainer}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.15 }}
-                  className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
-                >
-                  {[
-                    {
-                      step: "Step 1 • Discover",
-                      title: "Search",
-                      desc: "Find services, destinations or trusted global experts",
-                      icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                    },
-                    {
-                      step: "Step 2 • Evaluate",
-                      title: "Compare",
-                      desc: "Compare verified options, ratings & transparent fees",
-                      icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                    },
-                    {
-                      step: "Step 3 • Escrow Protection",
-                      title: "Connect",
-                      desc: "Connect with licensed consultants with 100% escrow safety",
-                      icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                    },
-                    {
-                      step: "Step 4 • Fly Confident",
-                      title: "Travel",
-                      desc: "Instant official e-Visa delivery & real-time border journey alerts",
-                      icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                    }
-                  ].map((card, i) => (
-                    <motion.div key={i} variants={scrollMotionItem} className="h-full">
-                      <div 
-                        className="card card-hover bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full"
-                      >
-                        <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                          {card.icon}
-                        </div>
-                        <div className="mt-5">
-                          <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
-                            {card.step}
-                          </span>
-                          <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
-                            {card.title}
-                          </h4>
-                          <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                            {card.desc}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                  Simple 4-Step Process
+                </span>
               </div>
-            </ScrollReveal>
+
+              {/* 4 Squircle Cards Grid */}
+              <div className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                {[
+                  {
+                    step: "Step 1 • Discover",
+                    title: "Search",
+                    desc: "Find services, destinations or trusted global experts",
+                    icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  },
+                  {
+                    step: "Step 2 • Evaluate",
+                    title: "Compare",
+                    desc: "Compare verified options, ratings & transparent fees",
+                    icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  },
+                  {
+                    step: "Step 3 • Escrow Protection",
+                    title: "Connect",
+                    desc: "Connect with licensed consultants with 100% escrow safety",
+                    icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  },
+                  {
+                    step: "Step 4 • Fly Confident",
+                    title: "Travel",
+                    desc: "Instant official e-Visa delivery & real-time border journey alerts",
+                    icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                  }
+                ].map((card, i) => (
+                  <div key={i} className="h-full">
+                    <div 
+                      className="card card-hover bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full"
+                    >
+                      <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                        {card.icon}
+                      </div>
+                      <div className="mt-5">
+                        <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
+                          {card.step}
+                        </span>
+                        <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
+                          {card.title}
+                        </h4>
+                        <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                          {card.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
 
           <div className="section-divider my-8 sm:my-10" />
