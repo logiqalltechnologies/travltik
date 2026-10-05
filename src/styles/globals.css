@@ -1253,6 +1253,30 @@ h3, h4 {
   backface-visibility: hidden;
 }
 
+/* ── CORRECTION 10: UNIFIED CARD DESIGN SYSTEM & TYPOGRAPHY ── */
+.card {
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.card-metadata {
+  font-size: 13px;
+  font-weight: 400;
+  color: #64748b;
+}
+
+
 
 
 
