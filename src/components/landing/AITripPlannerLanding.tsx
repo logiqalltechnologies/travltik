@@ -3034,7 +3034,7 @@ return (
           
           {/* High-Resolution Generated Travel Photograph Background */}
           <div 
-            className="absolute top-0 right-0 w-[48%] sm:w-3/5 lg:w-[58%] h-[180px] sm:h-full pointer-events-none opacity-100 rounded-tr-3xl rounded-bl-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
+            className="absolute top-0 right-0 w-[42%] xs:w-[45%] sm:w-3/5 lg:w-[58%] h-[200px] xs:h-[225px] sm:h-full pointer-events-none opacity-100 rounded-tr-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
           >
             <div 
               ref={heroImageParallaxRef}
@@ -3044,7 +3044,9 @@ return (
               }}
             />
             {/* Soft, Transparent Gradient only on the left side of image (Pure White Blend) */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent w-1/3 sm:w-1/2" />
+            {/* Subtle bottom fade to blend smoothly before the search tabs on mobile */}
+            <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-white to-transparent sm:hidden" />
           </div>
 
           {/* Hero Content Container */}
@@ -3056,22 +3058,22 @@ return (
           >
             
             {/* Clean Hero Heading Section */}
-            <div className="max-w-2xl text-left mb-4 sm:mb-6">
+            <div className="max-w-2xl text-left mb-4 sm:mb-6 pr-[42%] xs:pr-[45%] sm:pr-0">
               {/* Top Pill Badge */}
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-2xs mb-2.5 sm:mb-3.5">
-                <span className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse" />
-                <span className="text-xs sm:text-[13px] font-semibold text-slate-800 tracking-tight">
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-2xs mb-2 sm:mb-3.5 max-w-full">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#00A86B] animate-pulse shrink-0" />
+                <span className="text-[10px] xs:text-xs sm:text-[13px] font-semibold text-slate-800 tracking-tight truncate">
                   Global Immigration &amp; Mobility Platform
                 </span>
               </motion.div>
 
               {/* Main H1 Headline */}
-              <motion.h1 suppressHydrationWarning variants={itemVariants} className="text-3xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.1] sm:leading-[1.08] tracking-tight">
+              <motion.h1 suppressHydrationWarning variants={itemVariants} className="text-2xl xs:text-3xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.15] sm:leading-[1.08] tracking-tight">
                 Your journey, simplified
               </motion.h1>
 
               {/* Subheading */}
-              <motion.p variants={itemVariants} className="mt-2 sm:mt-3 text-slate-600 text-xs sm:text-base font-normal max-w-xl leading-relaxed">
+              <motion.p variants={itemVariants} className="mt-1.5 sm:mt-3 text-slate-600 text-[11px] xs:text-xs sm:text-base font-normal max-w-xl leading-relaxed">
                 Everything you need for visas, immigration, and global mobility. Find trusted consultants, compare verified services, and secure every milestone with escrow.
               </motion.p>
             </div>
