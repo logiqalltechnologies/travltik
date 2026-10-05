@@ -3073,8 +3073,13 @@ return (
               </motion.h1>
 
               {/* Subheading */}
-              <motion.p variants={itemVariants} className="mt-1.5 sm:mt-3 text-slate-600 text-[11px] xs:text-xs sm:text-base font-normal max-w-xl leading-relaxed">
-                Everything you need for visas, immigration, and global mobility. Find trusted consultants, compare verified services, and secure every milestone with escrow.
+              <motion.p variants={itemVariants} className="mt-1.5 sm:mt-3 text-slate-600 text-xs sm:text-base font-normal max-w-xl leading-relaxed">
+                <span className="sm:hidden">
+                  Everything you need for visas, immigration, and global mobility.
+                </span>
+                <span className="hidden sm:inline">
+                  Everything you need for visas, immigration, and global mobility. Find trusted consultants, compare verified services, and secure every milestone with escrow.
+                </span>
               </motion.p>
             </div>
 
