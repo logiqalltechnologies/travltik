@@ -149,7 +149,7 @@ const defaultSchema = {
 </head>
 <body class="font-sans antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden" data-barba="wrapper">
   {!hideHeader && <Header />}
-  <main class={`flex-grow ${hideHeader ? "" : "pt-16 lg:pt-20"} ${hideFooter ? "" : "pb-16 md:pb-0"}`} data-barba="container" data-barba-namespace="default">
+  <main class={`flex-grow ${hideHeader ? "" : "pt-14 lg:pt-20"} ${hideFooter ? "" : "pb-14 md:pb-0"}`} data-barba="container" data-barba-namespace="default">
     <slot />
   </main>
   {!hideFooter && <Footer />}
