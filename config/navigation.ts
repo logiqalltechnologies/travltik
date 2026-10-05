@@ -10,19 +10,17 @@ export const MAIN_NAV: NavItem[] = [
     label: "AI Tools",
     href: "/ai-tools",
     children: [
-      { label: "Photo Resizer", href: "/ai-tools/photo-resizer" },
-      { label: "PDF Audit", href: "/ai-tools/pdf-audit" },
+      { label: "All AI Migration Tools", href: "/ai-tools" },
+      { label: "Visa Photo Resizer", href: "/ai-tools/photo-resizer" },
+      { label: "AI PDF Audit", href: "/ai-tools/pdf-audit" },
       { label: "SOP Generator", href: "/ai-tools/sop-generator" },
-      { label: "CRS Calculator", href: "/ai-tools/crs-calculator" },
-      { label: "Eligibility Check", href: "/ai-tools/eligibility" },
+      { label: "CRS Points Calculator", href: "/ai-tools/crs-calculator" },
+      { label: "Immigration Eligibility Check", href: "/ai-tools/eligibility" },
     ],
   },
   { label: "Find Experts", href: "/find-experts" },
   { label: "Self Apply", href: "/self-apply" },
   { label: "Jobs", href: "/jobs" },
-  { label: "Escrow Protection", href: "/escrow" },
-  { label: "Visa Services", href: "/visa-services" },
-  { label: "Resources", href: "/resources" },
 ];
 
 export const FOOTER_NAV: NavItem[] = [

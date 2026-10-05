@@ -15,7 +15,7 @@ const ICON_MAP: Record<string, any> = {
 
 const mobileNavItems = [
   { href: "/", label: "Home", icon: Home },
-  ...MAIN_NAV.filter((item) => ["/ai-tools", "/find-experts", "/jobs", "/escrow"].includes(item.href)).map((item) => ({
+  ...MAIN_NAV.filter((item) => ["/ai-tools", "/find-experts", "/jobs"].includes(item.href)).map((item) => ({
     href: item.href,
     label: item.label,
     icon: ICON_MAP[item.href] || Compass,
