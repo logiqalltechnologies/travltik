@@ -75,6 +75,7 @@ import { Globe, Home, Building2, UserCheck, LayoutGrid, Upload, Landmark, Locate
   ExternalLink as ExternalIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ScrollReveal } from '../ui/ScrollReveal';
+import { Testimonials } from './testimonials';
 
 const scrollMotionContainer = {
   hidden: { opacity: 0 },
@@ -2983,8 +2984,9 @@ return (
         className="hidden"
       />
 
-      {/* ── 1. HERO SECTION (THIN & SLEEK PURE WHITE DESIGN) ── */}
-      <section id="hero-search" className="relative z-30 w-full overflow-visible bg-white pt-3.5 sm:pt-5 lg:pt-6 pb-2 sm:pb-3 px-2.5 sm:px-6 lg:px-8">
+      {/* ── ZONE 1: DISCOVERY (HERO SEARCH + POPULAR PATHWAYS) ── */}
+      <section id="discovery" className="relative z-30 w-full overflow-visible bg-white pt-3.5 sm:pt-5 lg:pt-6 pb-2 sm:pb-3 px-2.5 sm:px-6 lg:px-8">
+        <span id="hero-search" className="sr-only">Hero Search</span>
         
         {/* Full-width Scenic Travel Background Card */}
         <div ref={heroParallaxRef} className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
@@ -3685,62 +3687,6 @@ return (
         </div>
       </section>
 
-      {/* ── MOBILE STICKY BOTTOM NAVIGATION BAR (IPHONE & ANDROID NATIVE TAB BAR) ── */}
-      <div className="block md:hidden fixed bottom-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] py-1.5 px-3 pb-safe">
-        <div className="grid grid-cols-5 gap-1 items-center max-w-md mx-auto">
-          
-          {/* Home */}
-          <a href="/" className="flex flex-col items-center justify-center py-1 text-[#00A86B] group">
-            <div className="w-5 h-5 flex items-center justify-center">
-              <Home className="w-5 h-5 stroke-[2.4]" />
-            </div>
-            <span className="text-[9px] font-black tracking-tight mt-0.5">Home</span>
-          </a>
-
-          {/* Services */}
-          <a href="/find-experts" className="flex flex-col items-center justify-center py-1 text-slate-500 hover:text-slate-900 group">
-            <div className="w-5 h-5 flex items-center justify-center">
-              <LayoutGrid className="w-5 h-5 stroke-[2]" />
-            </div>
-            <span className="text-[9px] font-bold tracking-tight mt-0.5">Services</span>
-          </a>
-
-          {/* Trips */}
-          <button
-            type="button"
-            onClick={() => {
-              setTravelScopeTab('domestic');
-              setTimeout(() => {
-                const el = document.getElementById('domestic-itinerary-dashboard');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }, 100);
-            }}
-            className="flex flex-col items-center justify-center py-1 text-slate-500 hover:text-slate-900 group cursor-pointer"
-          >
-            <div className="w-5 h-5 flex items-center justify-center">
-              <Luggage className="w-5 h-5 stroke-[2]" />
-            </div>
-            <span className="text-[9px] font-bold tracking-tight mt-0.5">Trips</span>
-          </button>
-
-          {/* Consultants */}
-          <a href="/find-experts" className="flex flex-col items-center justify-center py-1 text-slate-500 hover:text-slate-900 group">
-            <div className="w-5 h-5 flex items-center justify-center">
-              <UserCheck className="w-5 h-5 stroke-[2]" />
-            </div>
-            <span className="text-[9px] font-bold tracking-tight mt-0.5">Consultants</span>
-          </a>
-
-          {/* Profile */}
-          <a href="/traveller/dashboard" className="flex flex-col items-center justify-center py-1 text-slate-500 hover:text-slate-900 group">
-            <div className="w-5 h-5 flex items-center justify-center">
-              <User className="w-5 h-5 stroke-[2]" />
-            </div>
-            <span className="text-[9px] font-bold tracking-tight mt-0.5">Profile</span>
-          </a>
-
-        </div>
-      </div>
 
       
       {/* ── OVERSEAS JOURNEY & AI VISA ENGINE FLOW (ONLY SHOWN FOR INTERNATIONAL SERVICES) ── */}
@@ -4114,91 +4060,94 @@ return (
           )}
 
           {/* ======================================================= */}
-          {/* ── 4. HOW TRAVLTIK WORKS SECTION (ABOVE MAGIC SEARCH) ── */}
+          {/* ── ZONE 2: VALUE & SAFETY (4-STEP ESCROW MODEL) ── */}
           {/* ======================================================= */}
-          <ScrollReveal direction="up">
-            <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
-              
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                <div>
-                  <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                    How TravlTik Works?
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                    End-to-end verified visa &amp; travel pathways in 4 easy steps.
-                  </p>
+          <section id="value-safety" className="w-full">
+            <ScrollReveal direction="up">
+              <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left animate-fadeIn">
+                
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                      How TravlTik Works?
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                      End-to-end verified visa &amp; travel pathways in 4 easy steps.
+                    </p>
+                  </div>
+                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
+                    Simple 4-Step Process
+                  </span>
                 </div>
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                  Simple 4-Step Process
-                </span>
-              </div>
 
-              {/* 4 Squircle Cards Grid with Framer Motion Stagger */}
-              <motion.div
-                variants={scrollMotionContainer}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.15 }}
-                className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
-              >
-                {[
-                  {
-                    step: "Step 1 • Discover",
-                    title: "Search",
-                    desc: "Find services, destinations or trusted global experts",
-                    icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  },
-                  {
-                    step: "Step 2 • Evaluate",
-                    title: "Compare",
-                    desc: "Compare verified options, ratings & transparent fees",
-                    icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  },
-                  {
-                    step: "Step 3 • Escrow Protection",
-                    title: "Connect",
-                    desc: "Connect with licensed consultants with 100% escrow safety",
-                    icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  },
-                  {
-                    step: "Step 4 • Fly Confident",
-                    title: "Travel",
-                    desc: "Instant official e-Visa delivery & real-time border journey alerts",
-                    icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  }
-                ].map((card, i) => (
-                  <motion.div key={i} variants={scrollMotionItem} className="h-full">
-                    <div 
-                      className="card card-hover bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full"
-                    >
-                      <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                        {card.icon}
+                {/* 4 Squircle Cards Grid with Framer Motion Stagger */}
+                <motion.div
+                  variants={scrollMotionContainer}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.15 }}
+                  className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+                >
+                  {[
+                    {
+                      step: "Step 1 • Discover",
+                      title: "Search",
+                      desc: "Find services, destinations or trusted global experts",
+                      icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                    },
+                    {
+                      step: "Step 2 • Evaluate",
+                      title: "Compare",
+                      desc: "Compare verified options, ratings & transparent fees",
+                      icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                    },
+                    {
+                      step: "Step 3 • Escrow Protection",
+                      title: "Connect",
+                      desc: "Connect with licensed consultants with 100% escrow safety",
+                      icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                    },
+                    {
+                      step: "Step 4 • Fly Confident",
+                      title: "Travel",
+                      desc: "Instant official e-Visa delivery & real-time border journey alerts",
+                      icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
+                    }
+                  ].map((card, i) => (
+                    <motion.div key={i} variants={scrollMotionItem} className="h-full">
+                      <div 
+                        className="card card-hover bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full"
+                      >
+                        <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
+                          {card.icon}
+                        </div>
+                        <div className="mt-5">
+                          <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
+                            {card.step}
+                          </span>
+                          <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
+                            {card.title}
+                          </h4>
+                          <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
+                            {card.desc}
+                          </p>
+                        </div>
                       </div>
-                      <div className="mt-5">
-                        <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
-                          {card.step}
-                        </span>
-                        <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
-                          {card.title}
-                        </h4>
-                        <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                          {card.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </ScrollReveal>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </ScrollReveal>
+          </section>
 
           <div className="section-divider my-8 sm:my-10" />
 
           {/* ======================================================= */}
-          {/* ── 5. EXPLORE CLASSIFIEDS SECTION (ABOVE MAGIC SEARCH) ── */}
+          {/* ── ZONE 3: MARKETPLACE (CLASSIFIEDS & QUICK SEARCH) ── */}
           {/* ======================================================= */}
-          <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-0 text-left">
+          <section id="marketplace" className="w-full">
+            <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-0 text-left">
             <div className="flex items-center justify-between mb-4 sm:mb-5">
               <div>
                 <div className="flex items-center gap-2">
@@ -4450,7 +4399,7 @@ return (
             </div>
 
             {/* Top Horizontal Tabs Row - Exact Match to media_1788574993846 */}
-            <div className="w-full flex items-center justify-start lg:justify-start gap-1.5 sm:gap-4 md:gap-6 pb-3 sm:pb-4 mb-5 sm:mb-6 border-b border-slate-100 overflow-x-auto scrollbar-none">
+            <div className="filter-tabs w-full flex items-center justify-start lg:justify-start gap-1.5 sm:gap-4 md:gap-6 pb-3 sm:pb-4 mb-5 sm:mb-6 border-b border-slate-100 overflow-x-auto scrollbar-none">
               {/* Tab 1: All Services */}
               <button
                 type="button"
@@ -5057,186 +5006,141 @@ return (
 
           </div>
 
+          </section>
+          {/* ── END ZONE 3: MARKETPLACE ── */}
+
           {/* ======================================================= */}
-          {/* ── 7. COMPACT CAPSULE: JOIN EXPAT & STUDENT COMMUNITY ── */}
+          {/* ── ZONE 4: PROOF & COMMUNITY (REVIEWS & DISCORD) ── */}
           {/* ======================================================= */}
-          <section className="max-w-6xl mx-auto mt-6 flex items-center justify-center animate-fadeIn px-3">
-            <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-4 sm:px-7 shadow-xs inline-flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-center gap-3 sm:gap-6 transition-all hover:shadow-md">
-              
-              {/* Left Side: Discord Icon & Title */}
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-[#5865F2]/10 text-[#5865F2] flex items-center justify-center shrink-0">
-                  <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 127.14 96.36">
-                    <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
-                  </svg>
-                </div>
-                <div className="text-left">
-                  <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight block">
-                    Join Global Expat Community
-                  </span>
-                  <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>1,420+ students &amp; expats online</span>
+          <section id="proof-community" className="w-full">
+            {/* ── COMPACT CAPSULE: JOIN EXPAT & STUDENT COMMUNITY ── */}
+            <div className="max-w-6xl mx-auto mt-6 flex items-center justify-center animate-fadeIn px-3">
+              <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full py-2.5 px-4 sm:px-7 shadow-xs inline-flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-center gap-3 sm:gap-6 transition-all hover:shadow-md">
+                
+                {/* Left Side: Discord Icon & Title */}
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-[#5865F2]/10 text-[#5865F2] flex items-center justify-center shrink-0">
+                    <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 127.14 96.36">
+                      <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight block">
+                      Join Global Expat Community
+                    </span>
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>1,420+ students &amp; expats online</span>
+                    </div>
                   </div>
                 </div>
+
+                {/* Right Side: Toggle Capsule Button */}
+                <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60">
+                  <a
+                    href="/community"
+                    className="px-4 py-1.5 rounded-full text-xs font-bold bg-[#0f172a] hover:bg-[#5865F2] text-white shadow-xs transition-all flex items-center gap-1.5 select-none active:scale-95"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 animate-ping" />
+                    <span className="tracking-wide">JOIN DISCORD</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />
+                  </a>
+
+                  <a
+                    href="/community"
+                    className="px-3 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors select-none hidden sm:inline-block"
+                  >
+                    CHANNELS
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
+            {/* ── POPULAR DESTINATIONS & EASY VISA SEARCH ── */}
+            <div id="easy-search" className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left scroll-mt-24">
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] text-[10px] font-bold uppercase tracking-wider mb-1">
+                    <Sparkles className="w-3 h-3 text-[#00A86B]" />
+                    <span>Easy Search &amp; Quick Explore</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                    Popular Destinations &amp; Easy Visa Search
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                    Tap any country to instantly check visa requirements, student pathways &amp; top consultants.
+                  </p>
+                </div>
+                <a
+                  href="/universities"
+                  className="text-xs font-bold text-[#00A86B] hover:underline flex items-center gap-1 shrink-0"
+                >
+                  <span>View All</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
               </div>
 
-              {/* Right Side: Toggle Capsule Button */}
-              <div className="bg-[#f0f4f8] rounded-full p-1 inline-flex items-center gap-1 border border-slate-200/60">
-                <a
-                  href="/community"
-                  className="px-4 py-1.5 rounded-full text-xs font-bold bg-[#0f172a] hover:bg-[#5865F2] text-white shadow-xs transition-all flex items-center gap-1.5 select-none active:scale-95"
-                >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 animate-ping" />
-                  <span className="tracking-wide">JOIN DISCORD</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />
-                </a>
-
-                <a
-                  href="/community"
-                  className="px-3 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors select-none hidden sm:inline-block"
-                >
-                  CHANNELS
-                </a>
+              {/* Quick Country Flag Cards */}
+              <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-x-auto no-scrollbar py-2 px-1 text-center">
+                {[
+                  { name: 'Canada', code: 'ca', country: 'Canada' },
+                  { name: 'UK', code: 'gb', country: 'United Kingdom' },
+                  { name: 'USA', code: 'us', country: 'United States' },
+                  { name: 'Australia', code: 'au', country: 'Australia' },
+                  { name: 'Germany', code: 'de', country: 'Germany' },
+                  { name: 'New Zealand', code: 'nz', country: 'New Zealand' },
+                  { name: 'UAE', code: 'ae', country: 'UAE' },
+                  { name: 'France', code: 'fr', country: 'France' },
+                  { name: 'Singapore', code: 'sg', country: 'Singapore' },
+                  { name: 'More', code: '', country: '' }
+                ].map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      if (item.country) {
+                        setJourneyDestination(item.country);
+                        const heroEl = document.getElementById('hero-search');
+                        if (heroEl) {
+                          heroEl.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      } else {
+                        window.location.href = '/universities';
+                      }
+                    }}
+                    className="flex flex-col items-center justify-center min-w-[68px] sm:min-w-[80px] p-2 hover:scale-105 transition-transform cursor-pointer group select-none"
+                  >
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-all flex items-center justify-center bg-white border border-slate-200/80">
+                      {item.code ? (
+                        <img
+                          src={`https://flagcdn.com/w160/${item.code}.png`}
+                          alt={item.name}
+                          className="w-full h-full object-cover rounded-full"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-black text-sm">
+                          •••
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-xs font-bold text-slate-800 group-hover:text-[#00A86B] truncate w-full text-center">
+                      {item.name}
+                    </span>
+                  </button>
+                ))}
               </div>
+            </div>
 
+            {/* ── VERIFIED REVIEWS & TESTIMONIALS ── */}
+            <div className="w-full max-w-6xl mx-auto mt-8 sm:mt-10">
+              <Testimonials />
             </div>
           </section>
-
-          {/* ======================================================= */}
-          {/* ── 8. EASY SEARCH & POPULAR DESTINATIONS SECTION ── */}
-          {/* ======================================================= */}
-          <div id="easy-search" className="w-full max-w-6xl mx-auto mt-8 sm:mt-10 bg-white border border-slate-200/90 rounded-2xl sm:rounded-[30px] p-5 sm:p-7 md:p-8 shadow-[0_14px_50px_rgba(0,0,0,0.05)] text-left scroll-mt-24">
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A86B] text-[10px] font-bold uppercase tracking-wider mb-1">
-                  <Sparkles className="w-3 h-3 text-[#00A86B]" />
-                  <span>Easy Search &amp; Quick Explore</span>
-                </div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                  Popular Destinations &amp; Easy Visa Search
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                  Tap any country to instantly check visa requirements, student pathways &amp; top consultants.
-                </p>
-              </div>
-              <a
-                href="/universities"
-                className="text-xs font-bold text-[#00A86B] hover:underline flex items-center gap-1 shrink-0"
-              >
-                <span>View All</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            {/* Quick Country Flag Cards */}
-            <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-x-auto no-scrollbar py-2 px-1 text-center">
-              {[
-                { name: 'Canada', code: 'ca', country: 'Canada' },
-                { name: 'UK', code: 'gb', country: 'United Kingdom' },
-                { name: 'USA', code: 'us', country: 'United States' },
-                { name: 'Australia', code: 'au', country: 'Australia' },
-                { name: 'Germany', code: 'de', country: 'Germany' },
-                { name: 'New Zealand', code: 'nz', country: 'New Zealand' },
-                { name: 'UAE', code: 'ae', country: 'UAE' },
-                { name: 'France', code: 'fr', country: 'France' },
-                { name: 'Singapore', code: 'sg', country: 'Singapore' },
-                { name: 'More', code: '', country: '' }
-              ].map((item, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => {
-                    if (item.country) {
-                      setJourneyDestination(item.country);
-                      const heroEl = document.getElementById('hero-search');
-                      if (heroEl) {
-                        heroEl.scrollIntoView({ behavior: 'smooth' });
-                      } else {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }
-                    } else {
-                      window.location.href = '/universities';
-                    }
-                  }}
-                  className="flex flex-col items-center justify-center min-w-[68px] sm:min-w-[80px] p-2 hover:scale-105 transition-transform cursor-pointer group select-none"
-                >
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-all flex items-center justify-center bg-white border border-slate-200/80">
-                    {item.code ? (
-                      <img
-                        src={`https://flagcdn.com/w160/${item.code}.png`}
-                        alt={item.name}
-                        className="w-full h-full object-cover rounded-full"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-black text-sm">
-                        •••
-                      </div>
-                    )}
-                  </div>
-                  <span className="text-xs font-bold text-slate-800 group-hover:text-[#00A86B] truncate w-full text-center">
-                    {item.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* ── 6. TRAVEL READINESS AUDIT FEATURE CARD ── */}
-          <div className="w-full max-w-6xl mx-auto mt-10 sm:mt-16 mb-12 sm:mb-20 text-left px-2 sm:px-0">
-            <a
-              href="/readiness"
-              className="max-w-2xl mx-auto bg-white border border-slate-200/90 hover:border-slate-300 rounded-2xl sm:rounded-[28px] p-5 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group block cursor-pointer active:scale-[0.99]"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                    Check Your Travel Readiness
-                  </h3>
-                  <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] sm:text-xs font-black uppercase tracking-wider group-hover:bg-emerald-100 transition-colors">
-                    Instant AI Audit
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-5 sm:gap-7 my-2">
-                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-50 border-4 border-emerald-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <div className="text-center">
-                      <span className="text-lg sm:text-2xl font-black text-slate-950 leading-none">8.5</span>
-                      <span className="text-[10px] sm:text-xs text-slate-400 block font-bold">/10</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs font-bold text-slate-700">
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
-                      <span>Passport Validity</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
-                      <span>Documents Verified</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
-                      <span>Finances Ready</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
-                      <span>Travel Insurance</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs text-slate-500 font-semibold">Ready for immediate consular assessment</span>
-                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 group-hover:translate-x-1 transition-transform">
-                  <span>Check Now</span>
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                </span>
-              </div>
-            </a>
-          </div>
+          {/* ── END ZONE 4: PROOF & COMMUNITY ── */}
 
       {/* ── 7. $5 PAID PLAN MODAL ("Get Your Visa Done") ── */}
       {showPaidPlanModal && pendingSearchData && (
