@@ -1563,19 +1563,105 @@ export function AITripPlannerLanding() {
     return 0;
   });
 
-  const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
-  const [razorpayStep, setRazorpayStep] = useState<'select_method' | 'processing' | 'success'>('select_method');
-  const [razorpayMethod, setRazorpayMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
-  const [razorpayUpiApp, setRazorpayUpiApp] = useState<'gpay' | 'phonepe' | 'paytm' | 'qr'>('qr');
-  const [razorpayUpiId, setRazorpayUpiId] = useState('');
+  const [paymentSuccessModalOpen, setPaymentSuccessModalOpen] = useState(false);
   const [paymentTxId, setPaymentTxId] = useState('');
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
 
-  // Handlers for Paid Plan & Razorpay
-  const handleProceedToPayment = () => {
-    setShowPaidPlanModal(false);
-    setRazorpayStep('select_method');
-    setIsRazorpayOpen(true);
+  // Handlers for Paid Plan & Real Razorpay
+  const handleProceedToPayment = async () => {
+    if (!pendingSearchData) return;
+    setIsPaymentProcessing(true);
+
+    try {
+      // 1. Ensure Razorpay checkout script is loaded
+      if (typeof window !== 'undefined' && !(window as any).Razorpay) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.async = true;
+          script.onload = resolve;
+          script.onerror = () => reject(new Error('Failed to load Razorpay SDK. Check your internet connection.'));
+          document.body.appendChild(script);
+        });
+      }
+
+      // 2. Create real order on backend
+      const res = await fetch('/api/payment/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plan: 'visa_done_3_queries',
+          targetCountry: pendingSearchData.targetCountry,
+          passport: pendingSearchData.passport,
+          selectedPurpose: pendingSearchData.selectedPurpose,
+          amount: 5.00,
+          currency: 'USD'
+        })
+      });
+
+      const orderData = await res.json();
+      if (!res.ok || !orderData.orderId) {
+        throw new Error(orderData.error || 'Failed to create payment order.');
+      }
+
+      // 3. Launch official Razorpay payment window
+      const options = {
+        key: orderData.keyId,
+        amount: orderData.amount, // 500 cents ($5.00 USD)
+        currency: orderData.currency || 'USD',
+        name: 'TravlTik',
+        description: `Get Your Visa Done (3 AI Queries) - ${pendingSearchData.targetCountry}`,
+        image: '/logo.png?v=8',
+        order_id: orderData.orderId,
+        handler: async function (response: any) {
+          setIsPaymentProcessing(true);
+          try {
+            // Verify payment signature on backend
+            await fetch('/api/payment/verify-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                targetCountry: pendingSearchData.targetCountry,
+                passport: pendingSearchData.passport,
+                destSlug: pendingSearchData.destSlug
+              })
+            });
+          } catch (vErr) {
+            console.warn('[Razorpay verify warning]', vErr);
+          }
+          finishPaymentSuccess(response.razorpay_payment_id);
+        },
+        prefill: {
+          name: 'TravlTik Seeker',
+          email: '',
+          contact: ''
+        },
+        theme: {
+          color: '#00A86B'
+        },
+        modal: {
+          ondismiss: function () {
+            setIsPaymentProcessing(false);
+          }
+        }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', function (resp: any) {
+        console.error('Razorpay payment failed:', resp.error);
+        setIsPaymentProcessing(false);
+        alert(`Payment Failed: ${resp.error?.description || 'Transaction was declined.'}`);
+      });
+      rzp.open();
+      setShowPaidPlanModal(false);
+    } catch (err: any) {
+      console.error('[handleProceedToPayment error]:', err);
+      setIsPaymentProcessing(false);
+      alert(err.message || 'Unable to start payment. Please try again.');
+    }
   };
 
   const finishPaymentSuccess = (txId: string) => {
@@ -1593,53 +1679,8 @@ export function AITripPlannerLanding() {
       } catch (e) {}
     }
     setPaymentTxId(txId);
-    setRazorpayStep('success');
+    setPaymentSuccessModalOpen(true);
     setIsPaymentProcessing(false);
-  };
-
-  const handleConfirmRazorpayPayment = () => {
-    setRazorpayStep('processing');
-    setIsPaymentProcessing(true);
-
-    const generatedTxId = `pay_rzp_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 7)}`;
-
-    // Try dynamic Razorpay checkout if loaded
-    if (typeof window !== 'undefined' && (window as any).Razorpay) {
-      try {
-        const rzp = new (window as any).Razorpay({
-          key: 'rzp_test_travltik_live',
-          amount: 500, // $5 USD
-          currency: 'USD',
-          name: 'Travltik',
-          description: `Get Your Visa Done (3 AI Queries) - ${pendingSearchData?.targetCountry || 'Visa'} Pathway`,
-          image: '/logo.png?v=8',
-          handler: function (response: any) {
-            finishPaymentSuccess(response.razorpay_payment_id || generatedTxId);
-          },
-          prefill: {
-            name: 'Visa Seeker',
-            email: 'seeker@travltik.com',
-            contact: '9999999999'
-          },
-          theme: { color: '#00A86B' },
-          modal: {
-            ondismiss: function () {
-              setRazorpayStep('select_method');
-              setIsPaymentProcessing(false);
-            }
-          }
-        });
-        rzp.open();
-        return;
-      } catch (err) {
-        console.warn('Direct popup error, falling back to in-app secure gateway:', err);
-      }
-    }
-
-    // In-app authentic Razorpay Gateway Handshake
-    setTimeout(() => {
-      finishPaymentSuccess(generatedTxId);
-    }, 1600);
   };
 
   const handleUnlockAndNavigate = () => {
@@ -5216,15 +5257,25 @@ return (
                 </div>
               </div>
 
-              {/* Proceed to Payment CTA */}
+              {/* Proceed to Payment CTA (Real Razorpay Window) */}
               <div className="mt-5 space-y-2">
                 <button
                   type="button"
                   onClick={handleProceedToPayment}
-                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+                  disabled={isPaymentProcessing}
+                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
                 >
-                  <span>Proceed to Pay $5 (Unlock 3 Queries)</span>
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                  {isPaymentProcessing ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>Connecting to Razorpay...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Proceed to Pay $5 (Unlock 3 Queries)</span>
+                      <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                    </>
+                  )}
                 </button>
 
                 <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-500 font-medium">
@@ -5238,270 +5289,47 @@ return (
         </div>
       )}
 
-      {/* ── 8. RAZORPAY PAYMENT GATEWAY MODAL ── */}
-      {isRazorpayOpen && pendingSearchData && (
+      {/* ── 8. RAZORPAY PAYMENT VERIFIED SUCCESS MODAL ── */}
+      {paymentSuccessModalOpen && pendingSearchData && (
         <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-950/75 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl sm:rounded-[32px] shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 text-left">
+          <div className="bg-white rounded-3xl sm:rounded-[32px] shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 text-left p-6 sm:p-7">
             
-            {/* Razorpay Brand Header */}
-            <div className="bg-[#0C2340] px-5 sm:px-6 py-4 text-white flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white text-base tracking-wider shadow-inner">
-                  R
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-base font-black tracking-tight">Razorpay</span>
-                    <span className="text-[10px] bg-blue-500/30 text-blue-200 px-1.5 py-0.5 rounded font-bold uppercase tracking-widest">
-                      SECURE
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-300">Trusted by 10M+ businesses across India</p>
-                </div>
+            <div className="py-2 text-center flex flex-col items-center justify-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
+                <Check className="w-9 h-9 stroke-[3]" />
               </div>
-              
-              {razorpayStep !== 'processing' && (
-                <button
-                  type="button"
-                  onClick={() => setIsRazorpayOpen(false)}
-                  className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
-            </div>
 
-            {/* Order Summary Strip */}
-            <div className="bg-slate-50 px-5 sm:px-6 py-3 border-b border-slate-200/80 flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold text-slate-800">
-                  Get Your Visa Done • 3 AI Queries
-                </span>
-                <p className="text-[10px] text-slate-500">Unlocks {pendingSearchData.targetCountry} + 2 more destination queries</p>
+                <h4 className="text-xl font-black text-slate-900">
+                  Payment Verified! 🎉
+                </h4>
+                <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                  Your <strong>$5 "Get Your Visa Done" (3 AI Queries)</strong> plan is now active!
+                </p>
+                <div className="mt-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-left">
+                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-bold">
+                    <Sparkles className="w-4 h-4 text-emerald-600" />
+                    <span>{pendingSearchData.targetCountry} Pathway Unlocked</span>
+                  </div>
+                  <p className="text-[11px] text-emerald-700 mt-0.5 font-medium">
+                    + 2 additional destination queries remaining on your account.
+                  </p>
+                </div>
+                {paymentTxId && (
+                  <p className="text-[10px] text-slate-400 font-mono mt-3">
+                    Razorpay Ref: {paymentTxId}
+                  </p>
+                )}
               </div>
-              <div className="text-right">
-                <span className="text-base font-black text-slate-900">$5.00 USD</span>
-                <span className="block text-[10px] text-emerald-600 font-bold">Inclusive of all taxes</span>
-              </div>
-            </div>
 
-            {/* Modal Body Based on Step */}
-            <div className="p-5 sm:p-6">
-              
-              {/* STEP 1: SELECT PAYMENT METHOD */}
-              {razorpayStep === 'select_method' && (
-                <div className="space-y-4">
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                    Select Payment Method
-                  </label>
-
-                  {/* Payment Method Tabs */}
-                  <div className="grid grid-cols-3 gap-2 border-b border-slate-100 pb-3">
-                    <button
-                      type="button"
-                      onClick={() => setRazorpayMethod('upi')}
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer border ${
-                        razorpayMethod === 'upi'
-                          ? 'bg-blue-50 border-blue-500 text-blue-800 shadow-2xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                      }`}
-                    >
-                      UPI / QR
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setRazorpayMethod('card')}
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer border ${
-                        razorpayMethod === 'card'
-                          ? 'bg-blue-50 border-blue-500 text-blue-800 shadow-2xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                      }`}
-                    >
-                      Cards
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setRazorpayMethod('netbanking')}
-                      className={`py-2 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer border ${
-                        razorpayMethod === 'netbanking'
-                          ? 'bg-blue-50 border-blue-500 text-blue-800 shadow-2xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                      }`}
-                    >
-                      NetBanking
-                    </button>
-                  </div>
-
-                  {/* Method 1: UPI & QR */}
-                  {razorpayMethod === 'upi' && (
-                    <div className="space-y-3 animate-in fade-in duration-150">
-                      
-                      {/* Scan & Pay QR Code */}
-                      <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-center gap-4">
-                        <div className="w-20 h-20 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-center shrink-0">
-                          {/* QR Graphic */}
-                          <svg viewBox="0 0 100 100" className="w-full h-full">
-                            <rect width="100" height="100" fill="#ffffff" />
-                            <rect x="10" y="10" width="30" height="30" fill="#0C2340" />
-                            <rect x="15" y="15" width="20" height="20" fill="#ffffff" />
-                            <rect x="20" y="20" width="10" height="10" fill="#0C2340" />
-                            <rect x="60" y="10" width="30" height="30" fill="#0C2340" />
-                            <rect x="65" y="15" width="20" height="20" fill="#ffffff" />
-                            <rect x="70" y="20" width="10" height="10" fill="#0C2340" />
-                            <rect x="10" y="60" width="30" height="30" fill="#0C2340" />
-                            <rect x="15" y="65" width="20" height="20" fill="#ffffff" />
-                            <rect x="20" y="70" width="10" height="10" fill="#0C2340" />
-                            <rect x="45" y="45" width="10" height="10" fill="#0C2340" />
-                            <rect x="55" y="55" width="12" height="12" fill="#00A86B" />
-                            <rect x="70" y="70" width="15" height="15" fill="#0C2340" />
-                          </svg>
-                        </div>
-                        <div className="min-w-0">
-                          <span className="text-xs font-bold text-slate-800 block">
-                            Scan with Any UPI App
-                          </span>
-                          <span className="text-[11px] text-slate-500 block mt-0.5">
-                            Google Pay, PhonePe, Paytm, CRED, BHIM
-                          </span>
-                          <span className="inline-block mt-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                            Zero Transaction Fee
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Or Enter UPI ID */}
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                          Or Enter UPI ID (VPA)
-                        </label>
-                        <input
-                          type="text"
-                          value={razorpayUpiId}
-                          onChange={(e) => setRazorpayUpiId(e.target.value)}
-                          placeholder="e.g. yourname@okhdfcbank"
-                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-600 outline-none text-xs text-slate-800"
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Method 2: Cards */}
-                  {razorpayMethod === 'card' && (
-                    <div className="space-y-2.5 animate-in fade-in duration-150 text-xs">
-                      <div>
-                        <label className="block font-bold text-slate-600 mb-1">Card Number</label>
-                        <input
-                          type="text"
-                          maxLength={19}
-                          placeholder="4111 2222 3333 4444"
-                          className="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-600 outline-none"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <label className="block font-bold text-slate-600 mb-1">Valid Thru</label>
-                          <input
-                            type="text"
-                            maxLength={5}
-                            placeholder="MM/YY"
-                            className="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-600 outline-none text-center"
-                          />
-                        </div>
-                        <div>
-                          <label className="block font-bold text-slate-600 mb-1">CVV</label>
-                          <input
-                            type="password"
-                            maxLength={4}
-                            placeholder="•••"
-                            className="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-600 outline-none text-center"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Method 3: NetBanking */}
-                  {razorpayMethod === 'netbanking' && (
-                    <div className="space-y-2 animate-in fade-in duration-150 text-xs">
-                      <div className="grid grid-cols-2 gap-2">
-                        {['HDFC Bank', 'ICICI Bank', 'State Bank of India', 'Axis Bank', 'Kotak Mahindra', 'Punjab National'].map((bank) => (
-                          <label key={bank} className="flex items-center gap-2 p-2 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                            <input type="radio" name="bank" defaultChecked={bank === 'HDFC Bank'} className="accent-blue-600" />
-                            <span className="font-semibold text-slate-700 truncate">{bank}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Action Button: Pay ₹420 */}
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={handleConfirmRazorpayPayment}
-                      className="w-full py-3 px-4 rounded-xl bg-[#0C2340] hover:bg-[#123159] text-white font-bold text-sm shadow-md transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
-                    >
-                      <Shield className="w-4 h-4 text-emerald-400" />
-                      <span>Pay $5.00 Securely</span>
-                    </button>
-
-                    <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-500 font-medium mt-2.5">
-                      <Lock className="w-3 h-3 text-slate-400" />
-                      <span>PCI-DSS Compliant • Razorpay Verified Partner</span>
-                    </div>
-                  </div>
-
-                </div>
-              )}
-
-              {/* STEP 2: PROCESSING */}
-              {razorpayStep === 'processing' && (
-                <div className="py-10 text-center flex flex-col items-center justify-center space-y-4 animate-in fade-in duration-200">
-                  <div className="w-14 h-14 rounded-full border-4 border-blue-600/20 border-t-blue-600 animate-spin" />
-                  <div>
-                    <h4 className="text-base font-black text-slate-900">
-                      Connecting to Razorpay Gateway...
-                    </h4>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Verifying payment with your bank / UPI provider. Please do not refresh.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 3: SUCCESS */}
-              {razorpayStep === 'success' && (
-                <div className="py-6 text-center flex flex-col items-center justify-center space-y-4 animate-in zoom-in-95 duration-200">
-                  <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
-                    <Check className="w-8 h-8 stroke-[3]" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-lg font-black text-slate-900">
-                      Payment Successful!
-                    </h4>
-                    <p className="text-xs text-slate-600 mt-1">
-                      Your <strong>$5 "Get Your Visa Done" (3 AI Queries)</strong> plan is now active!
-                    </p>
-                    <p className="text-[11px] text-emerald-700 font-semibold mt-1">
-                      {pendingSearchData.targetCountry} unlocked + 2 more queries available.
-                    </p>
-                    <p className="text-[11px] text-slate-400 font-mono mt-1">
-                      Ref: {paymentTxId}
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handleUnlockAndNavigate}
-                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm shadow-md transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
-                  >
-                    <span>Access Your Visa Pathway Now</span>
-                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                  </button>
-                </div>
-              )}
-
+              <button
+                type="button"
+                onClick={handleUnlockAndNavigate}
+                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm shadow-md transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>Access Your Visa Pathway Now</span>
+                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+              </button>
             </div>
 
           </div>

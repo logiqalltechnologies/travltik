@@ -146,6 +146,8 @@ const defaultSchema = {
   <!-- Structured Data (Schema.org) -->
   <script type="application/ld+json" set:html={JSON.stringify(schema || defaultSchema)} />
 
+  <!-- Official Razorpay Checkout Library -->
+  <script is:inline src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body class="font-sans antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden" data-barba="wrapper">
   {!hideHeader && <Header />}
