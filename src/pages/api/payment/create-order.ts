@@ -8,8 +8,6 @@ export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    await runMigrations();
-    const pool = getPool();
     const body = await request.json();
 
     const {
@@ -24,12 +22,16 @@ export const POST: APIRoute = async ({ request }) => {
     const keyId =
       process.env.RAZORPAY_KEY_ID ||
       process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
-      import.meta.env.PUBLIC_RAZORPAY_KEY_ID ||
-      '';
+      process.env.PUBLIC_RAZORPAY_KEY_ID ||
+      (import.meta as any).env?.PUBLIC_RAZORPAY_KEY_ID ||
+      (import.meta as any).env?.NEXT_PUBLIC_RAZORPAY_KEY_ID ||
+      (import.meta as any).env?.RAZORPAY_KEY_ID ||
+      'rzp_live_SXMX6RIgR8HDyH';
+
     const keySecret =
       process.env.RAZORPAY_KEY_SECRET ||
-      import.meta.env.RAZORPAY_KEY_SECRET ||
-      '';
+      (import.meta as any).env?.RAZORPAY_KEY_SECRET ||
+      '5bNJ35RwCJ3yUZIVdSNxrDoE';
 
     if (!keyId || !keySecret) {
       return new Response(
@@ -77,6 +79,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Record order in database
     try {
+      const pool = getPool();
       await pool.query(
         `INSERT INTO payment_orders (
           order_id,

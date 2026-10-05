@@ -3695,7 +3695,6 @@ return (
                   </div>
                   <div>
                     <div className="text-xs sm:text-sm font-bold text-slate-900">Check Your Travel Readiness Score</div>
-                    <div className="text-[11px] sm:text-xs text-slate-500">Instant AI audit of your consular eligibility, document checklist &amp; visa readiness before applying</div>
                   </div>
                 </div>
                 <a

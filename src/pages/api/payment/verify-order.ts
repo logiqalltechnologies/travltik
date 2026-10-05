@@ -30,8 +30,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     const secret =
       process.env.RAZORPAY_KEY_SECRET ||
-      import.meta.env.RAZORPAY_KEY_SECRET ||
-      '';
+      (import.meta as any).env?.RAZORPAY_KEY_SECRET ||
+      '5bNJ35RwCJ3yUZIVdSNxrDoE';
 
     if (secret && signature) {
       const generatedSignature = crypto
