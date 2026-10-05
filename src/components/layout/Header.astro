@@ -1,7 +1,8 @@
 ---
 // src/components/layout/Header.astro
 import { TripPlannerModal } from '../interactive/TripPlannerModal';
-import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare, Sparkles, Bell, Zap, Award, Camera, FileCheck2 } from 'lucide-react';
+import { MAIN_NAV, FOOTER_NAV } from '../../../config/navigation';
+import { Search, MapPin, Menu, X, Globe, ChevronDown, GraduationCap, Briefcase, Compass, Scale, FileText, Calendar, PenLine, HeartHandshake, Plane, DollarSign, LogOut, LayoutDashboard, MessageSquare, Sparkles, Bell, Zap, Award, Camera, FileCheck2, ShieldCheck, Users } from 'lucide-react';
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/' || pathname === '';
 ---
@@ -30,129 +31,31 @@ const isHome = pathname === '/' || pathname === '';
 
         <!-- Desktop Navigation Links (Centered) -->
         <nav aria-label="Main navigation" class="hidden lg:flex items-center gap-4 xl:gap-8 font-plus-jakarta">
-            <!-- 1. Find Experts -->
-            <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
-                    Find Experts
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
-                </button>
-                <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/find-experts?category=student" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <GraduationCap class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Study Visa & Admissions</span>
-                        </a>
-                        <a href="/find-experts?category=work" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Briefcase class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Work & Job Visa Counsel</span>
-                        </a>
-                        <a href="/find-experts?category=pr" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">PR & Immigration Agencies</span>
-                        </a>
-                        <a href="/emergency" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Licensed Lawyers & MARA</span>
+            {MAIN_NAV.map((item) => (
+                item.children && item.children.length > 0 ? (
+                    <div class="relative py-3 group">
+                        <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
+                            {item.label}
+                            <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
+                        </button>
+                        <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
+                            <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
+                                {item.children.map((child) => (
+                                    <a href={child.href} class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
+                                        <span class="text-[14px] font-medium">{child.label}</span>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div class="py-3">
+                        <a href={item.href} class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
+                            {item.label}
                         </a>
                     </div>
-                </div>
-            </div>
-
-            <!-- 2. Self Apply -->
-            <div class="py-3">
-                <a href="/self-apply" class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
-                    Self Apply
-                </a>
-            </div>
-
-            <!-- 3. AI Tools -->
-            <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
-                    AI Tools
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
-                </button>
-                <div class="absolute top-full left-0 pt-2 w-[290px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/ai-tools" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Sparkles class="w-4 h-4 text-amber-500 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">All AI Migration Tools</span>
-                        </a>
-                        <a href="/ai-tools/photo-resizer" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Camera class="w-4 h-4 text-emerald-600 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Visa Photo Resizer</span>
-                        </a>
-                        <a href="/ai-tools/pdf-audit" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <FileCheck2 class="w-4 h-4 text-[#00a896] group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">AI PDF Audit</span>
-                        </a>
-                        <a href="/ai-tools/sop-generator" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-blue-600 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">SOP Generator</span>
-                        </a>
-                        <div class="my-1 border-t border-slate-100"></div>
-                        <a href="/tools?tool=points" class="flex items-center gap-2.5 py-1.5 px-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Compass class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[13px] font-medium">CRS Points Calculator</span>
-                        </a>
-                        <a href="/tools?tool=eligibility" class="flex items-center gap-2.5 py-1.5 px-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Scale class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[13px] font-medium">Immigration Eligibility Check</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. Visa Services -->
-            <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
-                    Visa Services
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
-                </button>
-                <div class="absolute top-full left-0 pt-2 w-[270px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/visa-documentation" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Visa Documentation Filing</span>
-                        </a>
-                        <a href="/visa-form-filing" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Visa Form Filing Assistance</span>
-                        </a>
-                        <a href="/vfs-appointment" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Calendar class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">VFS Appointment Support</span>
-                        </a>
-                        <a href="/services/travel-insurance" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <HeartHandshake class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Travel Insurance</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Resources & Updates -->
-            <div class="relative py-3 group">
-                <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
-                    Resources
-                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
-                </button>
-                <div class="absolute top-full left-0 pt-2 w-[260px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
-                    <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
-                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <FileText class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Immigration News & Guides</span>
-                        </a>
-                        <a href="/visa-guide" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Plane class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Visa Policy Changes 2026</span>
-                        </a>
-                        <a href="/find-experts" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                            <Award class="w-4 h-4 text-slate-400 group-hover/item:text-[#00a896] transition-colors" />
-                            <span class="text-[14px] font-medium">Verified Visa Experts</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                )
+            ))}
         </nav>
 
         <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
@@ -222,74 +125,31 @@ const isHome = pathname === '/' || pathname === '';
     <!-- Mobile Drawer Menu -->
     <div id="mobile-menu-drawer" aria-label="Mobile navigation" aria-hidden="true" class="hidden lg:hidden w-full bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-64px)] overflow-y-auto z-40 transition-all duration-300">
         <div class="flex flex-col py-4 px-4 gap-1">
-            
-            <!-- Mobile Find Consultants Accordion -->
-            <div class="border-b border-gray-50 py-1.5">
-                <button id="mobile-find-expert-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
-                    <span>Find Experts</span>
-                    <ChevronDown id="mobile-find-expert-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
-                </button>
-                <div id="mobile-find-expert-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
-                    <a href="/find-experts?category=student" class="block py-1.5 text-xs text-slate-600 font-medium">Student Visa Experts</a>
-                    <a href="/find-experts?category=work" class="block py-1.5 text-xs text-slate-600 font-medium">Work & Job Visa Experts</a>
-                    <a href="/find-experts?category=pr" class="block py-1.5 text-xs text-slate-600 font-medium">PR Agencies</a>
-                    <a href="/emergency" class="block py-1.5 text-xs text-slate-600 font-medium">Migration Agents & Lawyers</a>
-                </div>
-            </div>
-
-            <!-- Mobile Self Apply Link -->
-            <div class="border-b border-gray-50 py-2.5">
-                <a href="/self-apply" class="block py-1 text-sm font-semibold text-navy hover:text-[#00A86B] transition-colors">
-                    Self Apply
-                </a>
-            </div>
-
-            <!-- Mobile Visa Services Accordion -->
-            <div class="border-b border-gray-50 py-1.5">
-                <button id="mobile-visa-services-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
-                    <span>Visa Services</span>
-                    <ChevronDown id="mobile-visa-services-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
-                </button>
-                <div id="mobile-visa-services-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
-                    <a href="/visa-documentation" class="block py-1.5 text-xs text-slate-600 font-medium">Visa Documentation Filing</a>
-                    <a href="/visa-form-filing" class="block py-1.5 text-xs text-slate-600 font-medium">Visa Form Filing Assistance</a>
-                    <a href="/vfs-appointment" class="block py-1.5 text-xs text-slate-600 font-medium">VFS Appointment Support</a>
-                    <a href="/services/travel-insurance" class="block py-1.5 text-xs text-slate-600 font-medium">Travel Insurance</a>
-                </div>
-            </div>
-
-            <!-- Mobile Resources & Guides Accordion -->
-            <div class="border-b border-gray-50 py-1.5">
-                <button id="mobile-latest-news-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
-                    <span>Resources</span>
-                    <ChevronDown id="mobile-latest-news-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
-                </button>
-                <div id="mobile-latest-news-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
-                    <a href="/visa-guide" class="block py-1.5 text-xs text-slate-600 font-medium">Immigration News & Guides</a>
-                    <a href="/visa-guide" class="block py-1.5 text-xs text-slate-600 font-medium">Visa Policy Changes 2026</a>
-                    <a href="/find-experts" class="block py-1.5 text-xs text-slate-600 font-medium">Verified Visa Experts</a>
-                </div>
-            </div>
-
-            <!-- Mobile Tools Accordion -->
-            <div class="border-b border-gray-50 py-1.5">
-                <button id="mobile-tools-btn" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg">
-                    <span>AI Tools</span>
-                    <ChevronDown id="mobile-tools-arrow" class="w-4 h-4 text-gray-400 transition-transform duration-300" />
-                </button>
-                <div id="mobile-tools-drawer" class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
-                    <a href="/ai-tools" class="block py-1.5 text-xs text-slate-700 font-semibold">All AI Migration Tools</a>
-                    <a href="/ai-tools/photo-resizer" class="block py-1.5 text-xs text-slate-600 font-medium">Visa Photo Resizer</a>
-                    <a href="/ai-tools/pdf-audit" class="block py-1.5 text-xs text-slate-600 font-medium">AI PDF Audit</a>
-                    <a href="/ai-tools/sop-generator" class="block py-1.5 text-xs text-slate-600 font-medium">SOP Generator</a>
-                    <a href="/tools?tool=points" class="block py-1.5 text-xs text-slate-600 font-medium">CRS Points Calculator</a>
-                    <a href="/tools?tool=eligibility" class="block py-1.5 text-xs text-slate-600 font-medium">Immigration Eligibility Check</a>
-                </div>
-            </div>
+            {MAIN_NAV.map((item, idx) => (
+                item.children && item.children.length > 0 ? (
+                    <div class="border-b border-gray-50 py-1.5">
+                        <button class="mobile-nav-accordion-btn w-full flex items-center justify-between py-2 text-sm font-semibold text-navy hover:bg-gray-50 rounded-lg cursor-pointer" data-target={`mobile-drawer-${idx}`}>
+                            <span>{item.label}</span>
+                            <ChevronDown class="mobile-nav-arrow w-4 h-4 text-gray-400 transition-transform duration-300" />
+                        </button>
+                        <div id={`mobile-drawer-${idx}`} class="hidden pl-4 py-1 flex flex-col gap-1.5 bg-slate-50/50 rounded-lg">
+                            {item.children.map((child) => (
+                                <a href={child.href} class="block py-1.5 text-xs text-slate-600 font-medium hover:text-[#00a896] transition-colors">{child.label}</a>
+                            ))}
+                        </div>
+                    </div>
+                ) : (
+                    <div class="border-b border-gray-50 py-2.5">
+                        <a href={item.href} class="block py-1 text-sm font-semibold text-navy hover:text-[#00a896] transition-colors">
+                            {item.label}
+                        </a>
+                    </div>
+                )
+            ))}
 
             <!-- Mobile Contact Link -->
             <div class="border-b border-gray-50 py-2.5">
-                <a href="/support" class="flex items-center gap-2 text-sm font-semibold text-navy hover:text-[#00A86B] transition-colors">
+                <a href="/support" class="flex items-center gap-2 text-sm font-semibold text-navy hover:text-[#00a896] transition-colors">
                     <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                     <span>Contact</span>
                 </a>
@@ -299,9 +159,9 @@ const isHome = pathname === '/' || pathname === '';
             <div class="border-b border-gray-50 py-2.5">
                 <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Legal Policies & Compliance</div>
                 <div class="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-slate-600">
-                    <a href="/privacy" class="hover:text-[#00a896] transition-colors">Privacy Policy</a>
-                    <a href="/terms" class="hover:text-[#00a896] transition-colors">Terms of Service</a>
-                    <a href="/about" class="hover:text-[#00a896] transition-colors">Trust & Advisory Standards</a>
+                    {FOOTER_NAV.map((footerItem) => (
+                        <a href={footerItem.href} class="hover:text-[#00a896] transition-colors">{footerItem.label}</a>
+                    ))}
                 </div>
             </div>
 
@@ -380,29 +240,22 @@ const isHome = pathname === '/' || pathname === '';
     }
 
     // Toggle Mobile Accordions
-    const accordions = [
-        { btn: 'mobile-find-expert-btn', drawer: 'mobile-find-expert-drawer', arrow: 'mobile-find-expert-arrow' },
-        { btn: 'mobile-visa-services-btn', drawer: 'mobile-visa-services-drawer', arrow: 'mobile-visa-services-arrow' },
-        { btn: 'mobile-latest-news-btn', drawer: 'mobile-latest-news-drawer', arrow: 'mobile-latest-news-arrow' },
-        { btn: 'mobile-tools-btn', drawer: 'mobile-tools-drawer', arrow: 'mobile-tools-arrow' },
-    ];
-
-    accordions.forEach(({ btn, drawer, arrow }) => {
-        const btnEl = document.getElementById(btn);
-        const drawerEl = document.getElementById(drawer);
-        const arrowEl = document.getElementById(arrow);
-        if (btnEl && drawerEl && arrowEl) {
-            btnEl.addEventListener('click', () => {
+    document.querySelectorAll('.mobile-nav-accordion-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            const drawerEl = targetId ? document.getElementById(targetId) : null;
+            const arrowEl = btn.querySelector('.mobile-nav-arrow');
+            if (drawerEl) {
                 const isHidden = drawerEl.classList.contains('hidden');
                 if (isHidden) {
                     drawerEl.classList.remove('hidden');
-                    arrowEl.classList.add('rotate-180');
+                    if (arrowEl) arrowEl.classList.add('rotate-180');
                 } else {
                     drawerEl.classList.add('hidden');
-                    arrowEl.classList.remove('rotate-180');
+                    if (arrowEl) arrowEl.classList.remove('rotate-180');
                 }
-            });
-        }
+            }
+        });
     });
 
     // Dynamic Scroll Header Background Transition on Homepage

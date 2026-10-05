@@ -23,6 +23,13 @@ const SOP_PURPOSE_OPTIONS: SelectOption[] = [
   { value: "Conference / Seminar Visa", label: "Conference / Event Visa", subtitle: "Academic presentation or corporate summit" }
 ];
 
+function sanitizeInput(input: string): string {
+  return input
+    .replace(/<[^>]*>/g, '') // Remove HTML
+    .replace(/[`*_{}[\]()#+\-.!]/g, '') // Remove markdown
+    .slice(0, 500); // Max 500 chars
+}
+
 export function SOPGenerator() {
   const [formData, setFormData] = useState({
     applicantName: '',
@@ -61,10 +68,20 @@ export function SOPGenerator() {
     setErrorMsg(null);
 
     try {
+      const sanitizedPayload = {
+        applicantName: sanitizeInput(formData.applicantName),
+        targetCountry: sanitizeInput(formData.targetCountry),
+        purpose: sanitizeInput(formData.purpose),
+        institution: sanitizeInput(formData.institution),
+        duration: sanitizeInput(formData.duration),
+        financial: sanitizeInput(formData.financial),
+        ties: sanitizeInput(formData.ties),
+      };
+
       const res = await fetch('/api/tools/sop-generator', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(sanitizedPayload)
       });
       const data = await res.json();
       if (data.success) {

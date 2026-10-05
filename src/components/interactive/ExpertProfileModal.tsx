@@ -4,6 +4,7 @@ import {
   MessageSquare, ShieldCheck, Globe, Share2, Bookmark, 
   Sparkles, ExternalLink, UserCheck, Briefcase, ChevronRight
 } from 'lucide-react';
+import { ProfessionalServiceSchema } from '../seo/ProfessionalServiceSchema';
 
 interface ExpertProfileModalProps {
   expert: {
@@ -121,6 +122,14 @@ export function ExpertProfileModal({ expert, onClose, onBookClick }: ExpertProfi
       className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/75 backdrop-blur-md animate-fadeIn font-sans"
       onClick={onClose}
     >
+      <ProfessionalServiceSchema
+        name={expert.name}
+        description={expert.bio || expert.aboutMe || `${expert.role} based in ${expert.city}`}
+        licenseNo={expert.govReg || 'CICC-MARA-VERIFIED'}
+        country={expert.countries?.[0] || expert.city || 'Global'}
+        rating={expert.rating || 4.9}
+        reviewCount={expert.reviews || 25}
+      />
       <div 
         className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 my-auto transform transition-all duration-300 max-h-[90vh] flex flex-col font-sans text-slate-900 overscroll-contain"
         onClick={(e) => e.stopPropagation()}

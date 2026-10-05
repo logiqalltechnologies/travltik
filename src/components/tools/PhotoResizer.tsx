@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, Upload, Download, CheckCircle2, AlertTriangle, RefreshCw, ZoomIn, ZoomOut, Move, ShieldCheck, Sparkles } from 'lucide-react';
 import { CustomSelect, type SelectOption } from '../ui/CustomSelect';
+import { CONSULAR_PRESETS, validateImageResolution } from '@/utils/photoResizer';
 
 const PHOTO_COUNTRY_OPTIONS: SelectOption[] = [
   { value: 'us', label: 'United States (DS-160 / US Visa)', subtitle: '2x2 inches (51x51mm) • 600x600 px', badge: '2x2 in' },
@@ -92,6 +93,7 @@ export function PhotoResizer() {
   const [showBiometricOverlay, setShowBiometricOverlay] = useState(true);
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   const [outputFileSizeKb, setOutputFileSizeKb] = useState<number>(0);
+  const [validationMessage, setValidationMessage] = useState<string>('');
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imageObjRef = useRef<HTMLImageElement | null>(null);
@@ -101,10 +103,39 @@ export function PhotoResizer() {
   const currentSpec = PHOTO_SPECS[selectedCountry] || PHOTO_SPECS.us;
 
   // Load image when file is picked
-  const handleFile = (file: File) => {
+  const handleFile = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       alert('Please upload a valid image file (JPEG, PNG, or WebP).');
       return;
+    }
+
+    try {
+      const img = new Image();
+      const objUrl = URL.createObjectURL(file);
+      img.src = objUrl;
+      await img.decode();
+
+      const presetMap: Record<string, string> = {
+        us: 'US_VISA',
+        schengen: 'SCHENGEN',
+        india: 'INDIA',
+        canada: 'CANADA',
+        uk: 'UK',
+      };
+      const presetKey = presetMap[selectedCountry] || 'US_VISA';
+      const preset = CONSULAR_PRESETS[presetKey];
+      if (preset) {
+        const validation = validateImageResolution(img, preset);
+        if (!validation.valid) {
+          setValidationMessage(validation.message);
+          URL.revokeObjectURL(objUrl);
+          return;
+        }
+        setValidationMessage(validation.message);
+      }
+      URL.revokeObjectURL(objUrl);
+    } catch (e) {
+      console.warn('Image decode error during validation:', e);
     }
 
     setFileName(file.name.replace(/\.[^/.]+$/, ''));
@@ -303,6 +334,20 @@ export function PhotoResizer() {
                 </p>
               </label>
             </div>
+            {validationMessage && (
+              <div className={`mt-3 p-3 rounded-xl text-xs flex items-center gap-2 ${
+                validationMessage.includes('too small')
+                  ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                  : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+              }`}>
+                {validationMessage.includes('too small') ? (
+                  <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600" />
+                ) : (
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                )}
+                <span>{validationMessage}</span>
+              </div>
+            )}
           </div>
 
           {/* Biometric Checklist */}

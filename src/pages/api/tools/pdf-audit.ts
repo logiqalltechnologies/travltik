@@ -1,6 +1,7 @@
 // src/pages/api/tools/pdf-audit.ts
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
+import { checkRateLimit, getClientIp } from '@/middleware/rateLimiter';
 import fs from 'fs';
 import path from 'path';
 
@@ -36,6 +37,18 @@ const getGeminiApiKey = (): string => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const ip = getClientIp(request);
+
+  if (!checkRateLimit(ip)) {
+    return new Response(
+      JSON.stringify({ 
+        success: false, 
+        error: 'Too many requests. Please try again in a minute.' 
+      }),
+      { status: 429, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   try {
     const body = await request.json();
     const {

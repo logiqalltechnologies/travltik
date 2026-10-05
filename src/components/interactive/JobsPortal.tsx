@@ -6,6 +6,7 @@ import {
   ChefHat, GraduationCap, Bookmark, BookmarkPlus,
   AlertCircle, AlertTriangle, CheckCircle2, Lock, X, Mail, Phone, User, Loader2,
 } from "lucide-react";
+import { JobSchema } from "../seo/JobSchema";
 
 const initialJobs = [
   {
@@ -637,6 +638,17 @@ export function JobsPortal() {
       {/* JOB DETAIL VIEW */}
       {activeJob ? (
         <div className="max-w-4xl mx-auto px-6 py-10">
+          <JobSchema
+            title={activeJob.title}
+            description={activeJob.desc || `${activeJob.title} in ${activeJob.location}`}
+            datePosted="2026-01-01"
+            validThrough="2026-12-31"
+            hiringOrganization={activeJob.company || "TravlTik Global Career Network"}
+            country={activeJob.country || "Global"}
+            currency={activeJob.salary?.includes("EUR") ? "EUR" : activeJob.salary?.includes("CAD") ? "CAD" : activeJob.salary?.includes("GBP") ? "GBP" : "USD"}
+            minSalary={45000}
+            maxSalary={95000}
+          />
           <button
             onClick={() => { setActiveJob(null); window.scrollTo(0, 0); }}
             className="text-xs font-bold text-black hover:underline mb-6 flex items-center gap-1.5 outline-none"

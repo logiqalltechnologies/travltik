@@ -55,6 +55,13 @@ interface AuditReport {
   disclaimer: string;
 }
 
+function sanitizeInput(input: string): string {
+  return input
+    .replace(/<[^>]*>/g, '') // Remove HTML
+    .replace(/[`*_{}[\]()#+\-.!]/g, '') // Remove markdown
+    .slice(0, 500); // Max 500 chars
+}
+
 export function PDFAudit() {
   const [formData, setFormData] = useState({
     age: '',
@@ -79,10 +86,19 @@ export function PDFAudit() {
     setErrorMsg(null);
 
     try {
+      const sanitizedPayload = {
+        age: sanitizeInput(String(formData.age)),
+        education: sanitizeInput(formData.education),
+        language: sanitizeInput(formData.language),
+        experience: sanitizeInput(String(formData.experience)),
+        targetCountry: sanitizeInput(formData.targetCountry),
+        jobTitle: sanitizeInput(formData.jobTitle),
+      };
+
       const res = await fetch('/api/tools/pdf-audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(sanitizedPayload)
       });
       const data = await res.json();
       if (data.success) {

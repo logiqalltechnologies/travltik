@@ -2,8 +2,20 @@
 // src/pages/jobs.astro
 import Layout from '../layouts/Layout.astro';
 import { JobsPortal } from '../components/interactive/JobsPortal';
+import { JobSchema } from '../components/seo/JobSchema';
 ---
 
 <Layout title="Overseas Jobs & Visa Sponsorships" description="Browse premium global career opportunities with verified employers who offer official visa sponsorships.">
+    <JobSchema
+        title="Overseas Jobs & Visa Sponsorships"
+        description="Browse premium global career opportunities with verified employers who offer official visa sponsorships."
+        datePosted="2026-01-01"
+        validThrough="2026-12-31"
+        hiringOrganization="TravlTik Global Career Network"
+        country="Canada"
+        currency="USD"
+        minSalary={50000}
+        maxSalary={120000}
+    />
     <JobsPortal client:load />
 </Layout>

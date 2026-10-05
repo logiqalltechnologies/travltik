@@ -1,15 +1,25 @@
 ---
 // src/components/layout/MobileNav.astro
-import { Home, Compass, Sparkles, MessageSquare, LayoutDashboard } from 'lucide-react';
+import { MAIN_NAV } from '../../../config/navigation';
+import { Home, Compass, Sparkles, Users, Briefcase, ShieldCheck } from 'lucide-react';
 
 const pathname = Astro.url.pathname;
 
+const ICON_MAP: Record<string, any> = {
+  "/ai-tools": Sparkles,
+  "/find-experts": Users,
+  "/jobs": Briefcase,
+  "/escrow": ShieldCheck,
+  "/self-apply": Compass,
+};
+
 const mobileNavItems = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "/visa-documentation", label: "Pathways", icon: Compass },
-    { href: "/ai-tools", label: "AI Tools", icon: Sparkles },
-    { href: "/community", label: "Messages", icon: MessageSquare },
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/", label: "Home", icon: Home },
+  ...MAIN_NAV.filter((item) => ["/ai-tools", "/find-experts", "/jobs", "/escrow"].includes(item.href)).map((item) => ({
+    href: item.href,
+    label: item.label,
+    icon: ICON_MAP[item.href] || Compass,
+  })),
 ];
 ---
 
