@@ -3,6 +3,37 @@ import crypto from 'crypto';
 import { getPool } from '../../../backend/db';
 
 export const prerender = false;
+export const config = { api: { bodyParser: false } };
+
+async function getRawBody(request: Request): Promise<Buffer> {
+  const arrayBuffer = await request.arrayBuffer();
+  return Buffer.from(arrayBuffer);
+}
+
+async function updateEscrowStatus(bookingId: string, status: string, txnId: string) {
+  try {
+    const pool = getPool();
+    // Atomic DB transaction: INITIATED → HELD_IN_ESCROW → RELEASED/DISPUTED
+    await pool.query('BEGIN');
+    if (bookingId) {
+      await pool.query(
+        `UPDATE bookings SET status = $1, payment_intent_id = $2, updated_at = NOW() WHERE id = $3`,
+        [status === 'HELD_IN_ESCROW' ? 'confirmed' : status, txnId, bookingId]
+      );
+      await pool.query(
+        `UPDATE payment_orders SET status = $1, updated_at = NOW() WHERE booking_id = $2 OR order_id = $2`,
+        [status, bookingId]
+      );
+    }
+    await pool.query('COMMIT');
+  } catch (err) {
+    try {
+      const pool = getPool();
+      await pool.query('ROLLBACK');
+    } catch (_) {}
+    console.error('[escrow webhook] DB transaction failed:', err);
+  }
+}
 
 export const POST: APIRoute = async ({ request }) => {
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET || process.env.RAZORPAY_KEY_SECRET;
@@ -13,15 +44,15 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const signature = request.headers.get('x-razorpay-signature');
+  const rawBody = await getRawBody(request);
+  const signature = request.headers.get('x-razorpay-signature') || '';
+
   if (!signature) {
     return new Response(
       JSON.stringify({ error: 'Missing signature' }),
       { status: 400, headers: { 'Content-Type': 'application/json' } }
     );
   }
-
-  const rawBody = await request.text();
 
   const expectedSignature = crypto
     .createHmac('sha256', secret)
@@ -31,47 +62,28 @@ export const POST: APIRoute = async ({ request }) => {
   if (signature !== expectedSignature) {
     return new Response(
       JSON.stringify({ error: 'Invalid signature' }),
-      { status: 401, headers: { 'Content-Type': 'application/json' } }
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
     );
   }
 
-  const event = JSON.parse(rawBody);
+  const payload = JSON.parse(rawBody.toString());
 
-  try {
-    const pool = getPool();
-    // Handle escrow events
-    switch (event.event) {
-      case 'payment.captured': {
-        // Update escrow status to 'funded'
-        const paymentEntity = event.payload?.payment?.entity;
-        const orderId = paymentEntity?.order_id;
-        if (orderId) {
-          await pool.query(
-            `UPDATE payment_orders SET status = 'funded', updated_at = NOW() WHERE order_id = $1`,
-            [orderId]
-          );
-        }
-        break;
-      }
-      case 'refund.processed': {
-        // Update escrow status to 'refunded'
-        const paymentEntity = event.payload?.payment?.entity;
-        const orderId = paymentEntity?.order_id;
-        if (orderId) {
-          await pool.query(
-            `UPDATE payment_orders SET status = 'refunded', updated_at = NOW() WHERE order_id = $1`,
-            [orderId]
-          );
-        }
-        break;
-      }
+  if (payload.event === 'payment.captured') {
+    const bookingId = payload.payload?.payment?.entity?.notes?.booking_id || payload.payload?.payment?.entity?.order_id;
+    const txnId = payload.payload?.payment?.entity?.id || '';
+    if (bookingId) {
+      await updateEscrowStatus(bookingId, 'HELD_IN_ESCROW', txnId);
     }
-  } catch (dbErr) {
-    console.warn('[escrow webhook] DB update skipped or logged:', dbErr);
+  } else if (payload.event === 'refund.processed') {
+    const bookingId = payload.payload?.payment?.entity?.notes?.booking_id || payload.payload?.payment?.entity?.order_id;
+    const txnId = payload.payload?.payment?.entity?.id || '';
+    if (bookingId) {
+      await updateEscrowStatus(bookingId, 'REFUNDED', txnId);
+    }
   }
 
-  return new Response(
-    JSON.stringify({ received: true }),
-    { status: 200, headers: { 'Content-Type': 'application/json' } }
-  );
+  return new Response(JSON.stringify({ status: 'ok', received: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
 };

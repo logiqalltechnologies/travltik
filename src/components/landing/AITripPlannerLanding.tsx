@@ -3004,74 +3004,32 @@ return (
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/45 to-transparent w-1/3 sm:w-1/2" />
           </div>
 
-          {/* Floating Travel Readiness Card (Hidden on Mobile, Visible on Desktop/Tablet - Links to /readiness) */}
-          <a
-            href={`/readiness?from=${encodeURIComponent(passportCountry || 'India')}&to=${encodeURIComponent(journeyDestination || 'Canada')}&purpose=${encodeURIComponent(travelPurpose || serviceLookingFor || 'Student')}`}
-            className="hidden md:flex absolute top-3 sm:top-3.5 md:top-4 right-3 sm:right-3.5 md:right-4 lg:right-5 z-30 bg-white/95 backdrop-blur-md border border-slate-100/90 rounded-xl sm:rounded-2xl px-2.5 py-2 sm:px-3 sm:py-2.5 shadow-[0_6px_20px_rgba(0,0,0,0.06)] hover:shadow-xl hover:scale-105 transition-all group flex-col items-center justify-center cursor-pointer pointer-events-auto"
-            title="Check Travel Readiness Score"
-          >
-            {/* Circular Progress Gauge */}
-            <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center">
-              <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#F1F5F9" strokeWidth="6" />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="none"
-                  stroke="url(#heroGirlReadinessGrad)"
-                  strokeWidth="6.5"
-                  strokeDasharray="251.33"
-                  strokeDashoffset="55.3"
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient id="heroGirlReadinessGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#00A86B" />
-                    <stop offset="100%" stopColor="#008060" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="text-[11px] sm:text-xs font-black text-slate-900 leading-none tracking-tight">78%</span>
-                <span className="text-[6.5px] sm:text-[7px] font-bold text-[#00A86B] uppercase tracking-wider leading-none mt-0.5">Ready</span>
-              </div>
-            </div>
-
-            {/* Bottom Label: Travel Readiness > */}
-            <div className="flex items-center gap-0.5 mt-1 text-[9px] sm:text-[9.5px] font-semibold text-slate-700 group-hover:text-[#00A86B] transition-colors whitespace-nowrap">
-              <span>Travel Readiness</span>
-              <ChevronRight className="w-2.5 h-2.5 stroke-[2] text-slate-400 group-hover:text-[#00A86B] group-hover:translate-x-0.5 transition-all" />
-            </div>
-          </a>
-
           {/* Hero Content Container */}
           <motion.div
             variants={heroVariants}
             initial="hidden"
             animate="show"
-            className="relative z-10 w-full p-3 sm:p-5 lg:pt-6 lg:pb-6 lg:px-8 text-left"
+            className="relative z-10 w-full p-3 sm:p-5 lg:pt-8 lg:pb-6 lg:px-8 text-left"
           >
             
             {/* Clean Hero Heading Section */}
-            <div className="max-w-2xl text-left mb-3 sm:mb-4">
+            <div className="max-w-2xl text-left mb-4 sm:mb-6">
               {/* Top Pill Badge */}
-              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 backdrop-blur-md border border-blue-200 shadow-xs mb-2.5 sm:mb-3.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-                <span className="text-xs sm:text-sm md:text-[15px] font-medium text-blue-700 tracking-tight">
-                  Your Journey, Our Expertise
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-2xs mb-2.5 sm:mb-3.5">
+                <span className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse" />
+                <span className="text-xs sm:text-[13px] font-semibold text-slate-800 tracking-tight">
+                  Global Immigration &amp; Mobility Platform
                 </span>
               </motion.div>
 
               {/* Main H1 Headline */}
-              <motion.h1 suppressHydrationWarning variants={itemVariants} className="text-[19px] sm:text-3xl lg:text-[38px] font-semibold text-slate-900 leading-[1.16] sm:leading-[1.12] tracking-tight max-w-[210px] sm:max-w-none">
-                Everything you need for <br className="hidden sm:inline" />
-                <span className="text-slate-900">Visas, Immigration &amp; Travel</span>
+              <motion.h1 suppressHydrationWarning variants={itemVariants} className="text-3xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.1] sm:leading-[1.08] tracking-tight">
+                Your journey, simplified
               </motion.h1>
 
               {/* Subheading */}
-              <motion.p variants={itemVariants} className="mt-1 sm:mt-2 text-slate-600 text-[11px] sm:text-sm lg:text-[14px] font-normal max-w-[210px] sm:max-w-xl leading-relaxed mb-2.5 sm:mb-3">
-                Find trusted consultants, plan your trip, compare services and make your journey seamless.
+              <motion.p variants={itemVariants} className="mt-2 sm:mt-3 text-slate-600 text-xs sm:text-base font-normal max-w-xl leading-relaxed">
+                Everything you need for visas, immigration, and global mobility. Find trusted consultants, compare verified services, and secure every milestone with escrow.
               </motion.p>
             </div>
 
@@ -3133,7 +3091,7 @@ return (
                       {/* Field 1: Passport Country (3 cols) */}
                       <div ref={originCityRef} className="lg:col-span-3 relative z-40 overflow-visible">
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
-                          Passport Country
+                          Where are you moving from?
                         </label>
                         <button
                           type="button"
@@ -3237,7 +3195,7 @@ return (
                       {/* Field 2: Destination (I want to travel to...) (3 cols) */}
                       <div ref={journeyDestRef} className="lg:col-span-3 relative z-40 overflow-visible">
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
-                          Destination
+                          Where do you want to go?
                         </label>
                         <button
                           type="button"
@@ -3662,12 +3620,69 @@ return (
 
               </div>
 
+              {/* Travel Readiness — Dedicated Secondary Teaser Section (Correction 6) */}
+              <div className="mt-4 sm:mt-5 w-full flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-white border border-emerald-100 shadow-2xs">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center">
+                    <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                      <circle cx="50" cy="50" r="40" fill="none" stroke="#E2E8F0" strokeWidth="6" />
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="40"
+                        fill="none"
+                        stroke="#00a896"
+                        strokeWidth="6.5"
+                        strokeDasharray="251.33"
+                        strokeDashoffset="55.3"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                      <span className="text-[11px] sm:text-xs font-black text-slate-900 leading-none">78%</span>
+                      <span className="text-[7px] font-bold text-[#00a896] uppercase leading-none mt-0.5">Ready</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs sm:text-sm font-bold text-slate-900">Check Your Travel Readiness Score</div>
+                    <div className="text-[11px] sm:text-xs text-slate-500">Instant AI audit of your consular eligibility, document checklist &amp; visa readiness before applying</div>
+                  </div>
+                </div>
+                <a
+                  href={`/readiness?from=${encodeURIComponent(passportCountry || 'India')}&to=${encodeURIComponent(journeyDestination || 'Canada')}&purpose=${encodeURIComponent(travelPurpose || serviceLookingFor || 'Student')}`}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs hover:shadow transition-all shrink-0 cursor-pointer"
+                >
+                  <span>Check Score</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
             </motion.div>
 
           </motion.div>
 
         </div>
 
+      </section>
+
+      {/* ── HIGH-CONTRAST TRUST STRIP (Correction 9) ── */}
+      <section className="w-full bg-slate-900 text-white py-3.5 sm:py-4 px-4 border-y border-slate-800 shadow-sm relative z-20">
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-around gap-3 sm:gap-6 text-xs sm:text-[13px] font-semibold tracking-wide">
+          <div className="flex items-center gap-2 text-emerald-400">
+            <span className="text-base sm:text-lg">🛡️</span>
+            <span className="text-slate-100">100% Escrow Protected Payments</span>
+          </div>
+          <div className="hidden sm:block w-px h-4 bg-slate-700" />
+          <div className="flex items-center gap-2 text-sky-400">
+            <span className="text-base sm:text-lg">⚖️</span>
+            <span className="text-slate-100">Licensed MARA &amp; RCIC Affiliates</span>
+          </div>
+          <div className="hidden sm:block w-px h-4 bg-slate-700" />
+          <div className="flex items-center gap-2 text-amber-400">
+            <span className="text-base sm:text-lg">🔒</span>
+            <span className="text-slate-100">Bank-Grade Data Privacy</span>
+          </div>
+        </div>
       </section>
 
       {/* ── MOBILE STICKY BOTTOM NAVIGATION BAR (IPHONE & ANDROID NATIVE TAB BAR) ── */}
