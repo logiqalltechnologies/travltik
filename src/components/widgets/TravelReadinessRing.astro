@@ -1,0 +1,35 @@
+---
+// src/components/widgets/TravelReadinessRing.astro
+// Reusable SVG Travel Readiness Ring Gauge (Step 5)
+interface Props {
+  percentage?: number;
+}
+const { percentage = 78 } = Astro.props;
+const circumference = 2 * Math.PI * 15.9155;
+const strokeDasharray = `${(percentage / 100) * circumference} ${circumference}`;
+---
+
+<div class="relative w-24 h-24 flex items-center justify-center">
+  <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+    <path
+      class="text-slate-200"
+      stroke-width="3.5"
+      stroke="currentColor"
+      fill="none"
+      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+    />
+    <path
+      class="text-emerald-500"
+      stroke-width="3.5"
+      stroke-dasharray={strokeDasharray}
+      stroke-linecap="round"
+      stroke="currentColor"
+      fill="none"
+      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+    />
+  </svg>
+  <div class="absolute text-center">
+    <span class="text-lg font-black text-slate-900 leading-none">{percentage}%</span>
+    <span class="block text-[8px] uppercase tracking-wider text-slate-400 font-bold mt-0.5">Ready</span>
+  </div>
+</div>

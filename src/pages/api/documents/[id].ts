@@ -1,7 +1,5 @@
-// src/pages/api/documents/[id].ts
-// Secure Document Fetch & Decryption Endpoint
 import type { APIRoute } from 'astro';
-import { runMigrations, getPool } from '../../../backend/db';
+import { runMigrations, getReadPool } from '../../../backend/db';
 import { decrypt } from '../../../lib/encryption';
 
 export const prerender = false;
@@ -9,7 +7,7 @@ export const prerender = false;
 export const GET: APIRoute = async ({ params }) => {
   try {
     await runMigrations();
-    const pool = getPool();
+    const pool = getReadPool();
     const docId = params.id;
 
     if (!docId) {
