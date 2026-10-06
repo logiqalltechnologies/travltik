@@ -1,5 +1,6 @@
 ---
 // src/components/cards/ListingCard.astro
+// Unified Card Design (Step 3 Elevation Blueprint)
 interface Props {
   href: string;
   image?: string;
@@ -7,87 +8,30 @@ interface Props {
   title: string;
   description?: string;
   price?: string;
-  metadata?: string[];
   badge?: string;
-  aspectRatio?: string;
 }
-
-const {
-  href,
-  image,
-  category,
-  title,
-  description,
-  price,
-  metadata = [],
-  badge,
-  aspectRatio = '16/9',
-} = Astro.props;
+const { href, image, category, title, description, price, badge } = Astro.props;
 ---
 
-<a
-  href={href}
-  class="group block h-full flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
->
-  <!-- Image -->
+<a href={href} class="group block h-full flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
   {image && (
-    <div class="relative w-full overflow-hidden bg-slate-100" style={`aspect-ratio: ${aspectRatio}`}>
-      <img
-        src={image}
-        alt={title}
-        width="400"
-        height="225"
-        loading="lazy"
-        decoding="async"
-        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-      />
+    <div class="relative w-full aspect-video overflow-hidden bg-slate-100">
+      <img src={image} alt={title} width="400" height="225" loading="lazy"
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
       {badge && (
-        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/90 text-white text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/90 text-white text-[10px] font-bold uppercase shadow-sm">
           {badge}
         </span>
       )}
     </div>
   )}
-
-  <!-- Content -->
   <div class="flex flex-col flex-1 p-4">
-    {category && (
-      <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 mb-1.5">
-        {category}
-      </span>
-    )}
-
-    <h3 class="text-base font-bold text-slate-900 line-clamp-1 leading-snug">
-      {title}
-    </h3>
-
-    {description && (
-      <p class="mt-1 text-xs text-slate-500 line-clamp-2 leading-relaxed">
-        {description}
-      </p>
-    )}
-
-    <!-- Metadata chips -->
-    {metadata.length > 0 && (
-      <div class="mt-2 flex flex-wrap gap-1.5">
-        {metadata.map((m) => (
-          <span class="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
-            {m}
-          </span>
-        ))}
-      </div>
-    )}
-
-    <!-- Price + Action -->
-    <div class="mt-auto pt-4 flex items-center justify-between">
-      {price ? (
-        <span class="text-sm font-black text-slate-900">{price}</span>
-      ) : (
-        <span class="text-xs text-slate-400">View details</span>
-      )}
-      <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold transition-colors group-hover:bg-[#00a896]">
-        View →
-      </span>
+    {category && <span class="text-[10px] font-bold uppercase text-emerald-700 tracking-wider mb-1.5">{category}</span>}
+    <h3 class="text-base font-bold text-slate-900 line-clamp-1 group-hover:text-[#00a896] transition-colors">{title}</h3>
+    {description && <p class="mt-1 text-xs text-slate-500 line-clamp-2 leading-relaxed">{description}</p>}
+    <div class="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
+      {price ? <span class="text-sm font-black text-slate-900">{price}</span> : <span class="text-xs text-slate-400">View details</span>}
+      <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold group-hover:bg-[#00a896] transition-colors">View →</span>
     </div>
   </div>
 </a>

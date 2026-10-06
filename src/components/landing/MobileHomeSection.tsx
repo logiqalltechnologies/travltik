@@ -53,15 +53,15 @@ const classifieds = [
   },
   {
     id: 'caregiver-jobs-canada',
-    badge: 'Jobs Abroad', badgeColor: '#00a896',
-    img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=200&auto=format&fit=crop',
-    title: 'Caregiver & Healthcare Jobs in Canada',
+    badge: 'Skilled Migration', badgeColor: '#059669',
+    img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=200&auto=format&fit=crop',
+    title: 'Healthcare Professionals & Skilled Migration',
     country: 'Canada',
-    category: 'Jobs Abroad',
-    postedBy: 'Apex Visa Consultancy',
+    category: 'Express Entry',
+    postedBy: 'Apex Licensed Immigration',
     location: 'Toronto, Canada',
-    time: '2 hours ago',
-    price: 'FREE', priceColor: '#00a896',
+    time: 'Verified Today',
+    price: 'VERIFIED', priceColor: '#059669',
   },
 ];
 
