@@ -75,22 +75,22 @@ export function Testimonials() {
           </h2>
         </div>
 
-        {/* 4 Pillars / Stats Grid (Exact match with reference image) */}
+        {/* 4 Pillars / Stats Grid (Exact specified numbers) */}
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
           <div className="text-center sm:border-r border-[#E8DEC8] last:border-none px-2">
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">140+</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">15+</div>
             <div className="text-xs sm:text-sm font-medium text-[#9A6B48] mt-1.5">Years of legacy</div>
           </div>
           <div className="text-center md:border-r border-[#E8DEC8] px-2">
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">4,000+</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">200+</div>
             <div className="text-xs sm:text-sm font-medium text-[#9A6B48] mt-1.5">Tours &amp; Packages</div>
           </div>
           <div className="text-center sm:border-r border-[#E8DEC8] px-2">
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">1M+</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">1K+</div>
             <div className="text-xs sm:text-sm font-medium text-[#9A6B48] mt-1.5">Happy Travelers</div>
           </div>
           <div className="text-center px-2">
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">50+</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#78350F] tracking-tight">5+</div>
             <div className="text-xs sm:text-sm font-medium text-[#9A6B48] mt-1.5">Industry Awards</div>
           </div>
         </div>
