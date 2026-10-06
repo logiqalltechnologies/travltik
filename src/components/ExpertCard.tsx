@@ -32,6 +32,36 @@ export function ExpertCard({ expert }: { expert: any }) {
                             <span className="text-xs text-gray-400">({expert.reviews})</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-0.5 truncate">{expert.role}</p>
+                        {(expert.licenseNo || expert.govReg) && (() => {
+                            const reg = String(expert.licenseNo || expert.govReg).trim();
+                            let registryUrl = "";
+                            if (/ICCRC|CICC|RCIC/i.test(reg)) {
+                              registryUrl = `https://college-ic.ca/protecting-the-public/find-an-immigration-consultant?q=${encodeURIComponent(reg)}`;
+                            } else if (/MARA/i.test(reg)) {
+                              registryUrl = `https://portal.mara.gov.au/search?q=${encodeURIComponent(reg)}`;
+                            } else if (/OISC/i.test(reg)) {
+                              registryUrl = `https://www.gov.uk/find-an-immigration-adviser?q=${encodeURIComponent(reg)}`;
+                            } else if (/BAR/i.test(reg)) {
+                              registryUrl = `https://www.barcouncilofindia.org/search?q=${encodeURIComponent(reg)}`;
+                            } else {
+                              registryUrl = `https://www.google.com/search?q=${encodeURIComponent(reg + " official registry verification")}`;
+                            }
+
+                            return (
+                              <a
+                                href={registryUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-1 mt-1 text-[10px] font-bold text-blue-600 hover:text-blue-800"
+                              >
+                                <span>Verify #{reg}</span>
+                                <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                              </a>
+                            );
+                        })()}
                     </div>
                 </div>
 

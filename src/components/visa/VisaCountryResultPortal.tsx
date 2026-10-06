@@ -1,7 +1,4 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { OfficialRequirementsCard } from './OfficialRequirementsCard';
-import { LiveVisaRequirementsWidget } from './LiveVisaRequirementsWidget';
-import { VisaStatusQuestion } from './VisaStatusQuestion';
 
 import {
   getStudentVisaSteps,
@@ -107,8 +104,6 @@ import {
   getFamilyOfficialSourceName
 } from '../../lib/family-visa';
 import { getStaticCountryHeroImage } from '../../lib/country-hero-images';
-import { motion } from 'framer-motion';
-import { ScrollReveal, StaggerContainer, StaggerItem } from '../ui/ScrollReveal';
 import { initTextShine } from '../../lib/textShine';
 
 // Custom sleek dropdown select component matching Atlys aesthetics
@@ -253,7 +248,6 @@ import {
   TrendingUp,
   AlertTriangle
 } from 'lucide-react';
-import { downloadVisaChecklistPDF, openPrintableChecklist, type VisaChecklistPDFData } from '../../utils/generateVisaChecklistPDF';
 
 // Custom sleek datepicker component matching Atlys / TravlTik aesthetics
 function PortalCustomDatePicker({

@@ -67,5 +67,20 @@ export default defineConfig({
         '@marsidev/react-turnstile',
       ],
     },
+    build: {
+      chunkSizeWarningLimit: 1200,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('firebase')) return 'vendor-firebase';
+              if (id.includes('gsap') || id.includes('lenis')) return 'vendor-anim';
+              if (id.includes('lucide-react')) return 'vendor-icons';
+              if (id.includes('react-dom') || id.includes('react/')) return 'vendor-react';
+            }
+          }
+        }
+      }
+    }
   },
 });

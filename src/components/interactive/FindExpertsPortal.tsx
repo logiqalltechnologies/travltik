@@ -1045,11 +1045,37 @@ export function FindExpertsPortal() {
                                                         <h3 className="text-lg font-semibold text-slate-950 group-hover:text-[#00a896] transition-colors flex items-center gap-1.5 leading-tight font-sans">
                                                             {e.name} <CheckCircle className="w-4 h-4 text-teal-600 shrink-0" />
                                                         </h3>
-                                                        {e.govReg && (
-                                                            <span className="text-[10px] font-medium text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">
-                                                                {e.govReg}
-                                                            </span>
-                                                        )}
+                                                        {e.govReg && (() => {
+                                                            const reg = String(e.govReg).trim();
+                                                            let registryUrl = "";
+                                                            if (/ICCRC|CICC|RCIC/i.test(reg)) {
+                                                              registryUrl = `https://college-ic.ca/protecting-the-public/find-an-immigration-consultant?q=${encodeURIComponent(reg)}`;
+                                                            } else if (/MARA/i.test(reg)) {
+                                                              registryUrl = `https://portal.mara.gov.au/search?q=${encodeURIComponent(reg)}`;
+                                                            } else if (/OISC/i.test(reg)) {
+                                                              registryUrl = `https://www.gov.uk/find-an-immigration-adviser?q=${encodeURIComponent(reg)}`;
+                                                            } else if (/BAR/i.test(reg)) {
+                                                              registryUrl = `https://www.barcouncilofindia.org/search?q=${encodeURIComponent(reg)}`;
+                                                            } else {
+                                                              registryUrl = `https://www.google.com/search?q=${encodeURIComponent(reg + " official registry verification")}`;
+                                                            }
+
+                                                            return (
+                                                              <a
+                                                                href={registryUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                onClick={(evt) => evt.stopPropagation()}
+                                                                className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 hover:text-teal-950 px-2 py-0.5 rounded-md border border-teal-200 transition-colors cursor-pointer group/reg"
+                                                                title="Verify with Official Regulatory Council"
+                                                              >
+                                                                <span>Verify #{reg}</span>
+                                                                <svg className="w-2.5 h-2.5 text-teal-600 group-hover/reg:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                  <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                                </svg>
+                                                              </a>
+                                                            );
+                                                        })()}
                                                     </div>
                                                     <p className="text-xs font-medium text-slate-600 mt-0.5">{e.role}</p>
                                                 </div>

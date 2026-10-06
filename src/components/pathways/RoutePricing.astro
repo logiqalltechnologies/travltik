@@ -32,6 +32,18 @@ const { country, purpose } = Astro.props;
           <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Biometric Photo Resizer Tool</span></li>
           <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Instant Digital Activation</span></li>
         </ul>
+
+        <!-- Govt vs Platform Fee Transparency Breakdown (Step 38) -->
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
+          <div class="flex justify-between items-center">
+            <span>Govt Embassy Fee:</span>
+            <span class="font-semibold text-slate-700">Paid direct to Govt</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>TravlTik Service Fee:</span>
+            <span class="font-semibold text-slate-900">$5 (Included)</span>
+          </div>
+        </div>
       </div>
       <a href={`/checkout?tier=starter&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
          class="block w-full mt-5 py-2.5 text-center border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
@@ -57,6 +69,18 @@ const { country, purpose } = Astro.props;
           <li class="flex items-start gap-2"><span class="text-[#00a896] font-bold">✓</span><span>Detailed Refusal Risk Audit Report</span></li>
           <li class="flex items-start gap-2"><span class="text-[#00a896] font-bold">✓</span><span>100% Escrow Milestone Protection</span></li>
         </ul>
+
+        <!-- Govt vs Platform Fee Transparency Breakdown (Step 38) -->
+        <div class="mt-4 pt-3 border-t border-teal-200/60 text-[11px] text-slate-600 space-y-1">
+          <div class="flex justify-between items-center">
+            <span>Govt Embassy Fee:</span>
+            <span class="font-semibold text-slate-700">Paid direct to Govt</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>TravlTik Service Fee:</span>
+            <span class="font-semibold text-teal-900">$10 (Included)</span>
+          </div>
+        </div>
       </div>
       <a href={`/checkout?tier=professional&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
          class="block w-full mt-5 py-2.5 text-center bg-[#00a896] hover:bg-[#028090] text-white rounded-lg text-sm font-semibold transition-colors shadow-sm">
@@ -79,6 +103,18 @@ const { country, purpose } = Astro.props;
           <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span><span>Consular Form Auto-Fill Guide</span></li>
           <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span><span>VFS Appointment Readiness Checklist</span></li>
         </ul>
+
+        <!-- Govt vs Platform Fee Transparency Breakdown (Step 38) -->
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
+          <div class="flex justify-between items-center">
+            <span>Govt Embassy Fee:</span>
+            <span class="font-semibold text-slate-700">Paid direct to Govt</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>TravlTik Service Fee:</span>
+            <span class="font-semibold text-slate-900">$15 (Included)</span>
+          </div>
+        </div>
       </div>
       <a href={`/checkout?tier=concierge&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
          class="block w-full mt-5 py-2.5 text-center border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
@@ -86,6 +122,28 @@ const { country, purpose } = Astro.props;
       </a>
     </div>
 
+  </div>
+
+  <!-- Transparent Fee Summary Card (Step 38) -->
+  <div class="mt-6 p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs text-xs">
+    <div class="font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+      <span class="text-emerald-600 font-black">ℹ️</span>
+      <span>Fee Transparency Breakdown</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-100">
+      <div>
+        <span class="text-slate-500 block text-[11px]">Government Embassy Fee:</span>
+        <span class="font-bold text-slate-800 text-xs">Direct to Embassy / VFS</span>
+      </div>
+      <div>
+        <span class="text-slate-500 block text-[11px]">TravlTik Platform Fee:</span>
+        <span class="font-bold text-[#00a896] text-xs">$5 / $10 / $15 (Milestone Escrow)</span>
+      </div>
+      <div>
+        <span class="text-slate-500 block text-[11px]">Hidden Charges:</span>
+        <span class="font-black text-emerald-700 text-xs">$0.00 — Zero Markup</span>
+      </div>
+    </div>
   </div>
 
   <div class="mt-5 flex items-center justify-center gap-4 text-xs text-slate-500 flex-wrap">

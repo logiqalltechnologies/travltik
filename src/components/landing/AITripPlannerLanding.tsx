@@ -4081,133 +4081,104 @@ return (
                     How TravlTik Works?
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-                    End-to-end verified visa &amp; travel pathways in 4 easy steps.
+                    100% Escrow protected visa &amp; immigration pathways in 3 milestone stages.
                   </p>
                 </div>
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] hidden sm:flex items-center gap-1.5 shrink-0 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B]" />
-                  Simple 4-Step Process
-                </span>
+                <div className="flex items-center gap-3 shrink-0">
+                  <a
+                    href="/dashboard"
+                    className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#00a896] hover:underline"
+                  >
+                    <span>Client Dashboard</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </a>
+                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00A86B] flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00A86B] animate-pulse" />
+                    3-Stage Escrow Protection
+                  </span>
+                </div>
               </div>
 
-              {/* 4 Squircle Cards Grid */}
-              <div className="card-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                {[
-                  {
-                    step: "Step 1 • Discover",
-                    title: "Search",
-                    desc: "Find services, destinations or trusted global experts",
-                    icon: <Search className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  },
-                  {
-                    step: "Step 2 • Evaluate",
-                    title: "Compare",
-                    desc: "Compare verified options, ratings & transparent fees",
-                    icon: <LayoutGrid className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  },
-                  {
-                    step: "Step 3 • Escrow Protection",
-                    title: "Connect",
-                    desc: "Connect with licensed consultants with 100% escrow safety",
-                    icon: <ShieldCheck className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  },
-                  {
-                    step: "Step 4 • Fly Confident",
-                    title: "Travel",
-                    desc: "Instant official e-Visa delivery & real-time border journey alerts",
-                    icon: <Plane className="w-5 h-5 text-slate-900 stroke-[1.8]" />
-                  }
-                ].map((card, i) => (
-                  <div key={i} className="h-full">
-                    <div 
-                      className="card card-hover bg-white border border-slate-200/90 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full"
-                    >
-                      <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200/80 flex items-center justify-center text-slate-900 shadow-2xs group-hover:scale-105 transition-transform">
-                        {card.icon}
-                      </div>
-                      <div className="mt-5">
-                        <span className="text-[11px] sm:text-xs text-slate-500 font-medium block">
-                          {card.step}
+              {/* 3 Milestone Cards Grid (Matching Squircle Styling) */}
+              <div className="card-grid grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+                {/* Milestone 1 */}
+                <div className="h-full">
+                  <div className="card card-hover bg-white border-2 border-emerald-300 hover:border-emerald-400 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full transition-all">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="w-11 h-11 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-700 shadow-2xs group-hover:scale-105 transition-transform">
+                          <CheckCircle2 className="w-5 h-5 stroke-[2]" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                          Unlocked
                         </span>
-                        <h4 className="text-base font-bold text-slate-900 mt-0.5 tracking-tight">
-                          {card.title}
+                      </div>
+                      <div className="mt-4">
+                        <span className="text-[11px] font-black uppercase tracking-wider text-emerald-700 block">
+                          Milestone 1 • 20% Release
+                        </span>
+                        <h4 className="text-base font-bold text-slate-900 mt-1 tracking-tight">
+                          Document Verification
                         </h4>
-                        <p className="text-xs text-slate-600 font-normal mt-1 leading-relaxed">
-                          {card.desc}
+                        <p className="text-xs text-slate-600 font-normal mt-1.5 leading-relaxed">
+                          Counsel cross-verifies passport, financial proofs &amp; eligibility checklist before any funds move.
                         </p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* ── STEP 14: ESCROW MILESTONE 3-STAGE VISUAL TRACKER (PIZZA TRACKER UI) ── */}
-              <div className="mt-8 pt-6 border-t border-slate-100">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider">
-                        Milestone Escrow Safety Engine
-                      </h4>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Consultant receives payout in 3 stages only after verified proof of work.
-                    </p>
-                  </div>
-                  <a
-                    href="/dashboard"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00a896] hover:underline shrink-0"
-                  >
-                    <span>View In Client Dashboard</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </a>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-50/70 border-2 border-emerald-300">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-black uppercase tracking-wider text-emerald-800">
-                        Milestone 1 • 20%
-                      </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900">
-                        Unlocked
-                      </span>
+                {/* Milestone 2 */}
+                <div className="h-full">
+                  <div className="card card-hover bg-white border-2 border-blue-300 hover:border-blue-400 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full transition-all">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-200/80 flex items-center justify-center text-blue-700 shadow-2xs group-hover:scale-105 transition-transform">
+                          <Clock className="w-5 h-5 stroke-[2]" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                          In Progress
+                        </span>
+                      </div>
+                      <div className="mt-4">
+                        <span className="text-[11px] font-black uppercase tracking-wider text-blue-700 block">
+                          Milestone 2 • 30% Release
+                        </span>
+                        <h4 className="text-base font-bold text-slate-900 mt-1 tracking-tight">
+                          Application Filing &amp; VFS
+                        </h4>
+                        <p className="text-xs text-slate-600 font-normal mt-1.5 leading-relaxed">
+                          Official portal filing completed, Statement of Purpose uploaded &amp; biometric appointment slot confirmed.
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-sm font-bold text-slate-900 mt-1.5">Document Verification</div>
-                    <p className="text-[11px] text-slate-600 mt-1 leading-snug">
-                      Counsel cross-verifies passport, financial proofs &amp; eligibility checklist.
-                    </p>
                   </div>
+                </div>
 
-                  <div className="p-3.5 sm:p-4 rounded-2xl bg-blue-50/70 border-2 border-blue-300">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-black uppercase tracking-wider text-blue-800">
-                        Milestone 2 • 30%
-                      </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-200 text-blue-900">
-                        In Progress
-                      </span>
+                {/* Milestone 3 */}
+                <div className="h-full">
+                  <div className="card card-hover bg-white border-2 border-slate-200 hover:border-slate-300 rounded-[24px] p-5 sm:p-6 shadow-xs flex flex-col justify-between group min-h-[175px] h-full transition-all">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="w-11 h-11 rounded-2xl bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-700 shadow-2xs group-hover:scale-105 transition-transform">
+                          <Lock className="w-5 h-5 stroke-[2]" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                          Locked in Escrow
+                        </span>
+                      </div>
+                      <div className="mt-4">
+                        <span className="text-[11px] font-black uppercase tracking-wider text-slate-600 block">
+                          Milestone 3 • 50% Release
+                        </span>
+                        <h4 className="text-base font-bold text-slate-900 mt-1 tracking-tight">
+                          Embassy Submission Receipt
+                        </h4>
+                        <p className="text-xs text-slate-600 font-normal mt-1.5 leading-relaxed">
+                          Final tranche disbursed strictly upon official consular submission receipt or visa outcome confirmation.
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-sm font-bold text-slate-900 mt-1.5">Application Filing &amp; VFS</div>
-                    <p className="text-[11px] text-slate-600 mt-1 leading-snug">
-                      Form filing, consular appointment slot confirmed &amp; SOP uploaded.
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border-2 border-slate-200">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-black uppercase tracking-wider text-slate-600">
-                        Milestone 3 • 50%
-                      </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
-                        Locked in Escrow
-                      </span>
-                    </div>
-                    <div className="text-sm font-bold text-slate-900 mt-1.5">Official Embassy Submission</div>
-                    <p className="text-[11px] text-slate-600 mt-1 leading-snug">
-                      Funds disbursed only upon official consular acknowledgment receipt.
-                    </p>
                   </div>
                 </div>
               </div>
