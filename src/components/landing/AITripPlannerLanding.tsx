@@ -1527,6 +1527,7 @@ export function AITripPlannerLanding() {
 
   const [paymentSuccessModalOpen, setPaymentSuccessModalOpen] = useState(false);
   const [paymentTxId, setPaymentTxId] = useState('');
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [selectedPlanTier, setSelectedPlanTier] = useState<5 | 10 | 15>(5);
 
   // Handlers for Paid Plan & Real Razorpay
