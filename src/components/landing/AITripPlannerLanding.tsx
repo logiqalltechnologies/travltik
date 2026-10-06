@@ -3677,22 +3677,74 @@ return (
 
       </section>
 
-      {/* ── HIGH-CONTRAST TRUST STRIP (Correction 9) ── */}
-      <section className="w-full bg-slate-900 text-white py-3.5 sm:py-4 px-4 border-y border-slate-800 shadow-sm relative z-20">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-around gap-3 sm:gap-6 text-xs sm:text-[13px] font-semibold tracking-wide">
-          <div className="flex items-center gap-2 text-emerald-400">
-            <span className="text-base sm:text-lg">🛡️</span>
-            <span className="text-slate-100">Milestone Escrow Protection</span>
+      {/* ── HIGH-CONTRAST TRUST STRIP (Moving Floating Marquee Line Right-to-Left) ── */}
+      <section className="w-full bg-slate-900 text-white py-3.5 sm:py-4 border-y border-slate-800 shadow-sm relative z-20 overflow-hidden group">
+        <style>{`
+          @keyframes trustMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-trust-marquee {
+            display: flex;
+            width: max-content;
+            animation: trustMarquee 32s linear infinite;
+          }
+          .animate-trust-marquee:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+        
+        {/* Left and right gradient fade masks for floating feel */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-slate-900 to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-slate-900 to-transparent z-10" />
+
+        <div className="animate-trust-marquee items-center text-xs sm:text-[13px] font-semibold tracking-wide">
+          {/* Track 1 */}
+          <div className="flex items-center shrink-0">
+            <div className="flex items-center gap-2 text-emerald-400 px-8">
+              <span className="text-base sm:text-lg">🛡️</span>
+              <span className="text-slate-100 whitespace-nowrap">Milestone Escrow Protection</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
+            <div className="flex items-center gap-2 text-sky-400 px-8">
+              <span className="text-base sm:text-lg">⚖️</span>
+              <span className="text-slate-100 whitespace-nowrap">Licensed MARA &amp; RCIC Affiliates</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
+            <div className="flex items-center gap-2 text-amber-400 px-8">
+              <span className="text-base sm:text-lg">🔒</span>
+              <span className="text-slate-100 whitespace-nowrap">ISO/IEC 27001 &amp; AES-256 Encrypted</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
+            <div className="flex items-center gap-2 text-teal-400 px-8">
+              <span className="text-base sm:text-lg">⚡</span>
+              <span className="text-slate-100 whitespace-nowrap">100% Verified Fast-Track Clearance</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
           </div>
-          <div className="hidden sm:block w-px h-4 bg-slate-700" />
-          <div className="flex items-center gap-2 text-sky-400">
-            <span className="text-base sm:text-lg">⚖️</span>
-            <span className="text-slate-100">Licensed MARA &amp; RCIC Affiliates</span>
-          </div>
-          <div className="hidden sm:block w-px h-4 bg-slate-700" />
-          <div className="flex items-center gap-2 text-amber-400">
-            <span className="text-base sm:text-lg">🔒</span>
-            <span className="text-slate-100">ISO/IEC 27001 &amp; AES-256 Encrypted</span>
+
+          {/* Track 2 (Seamless loop duplicate) */}
+          <div className="flex items-center shrink-0" aria-hidden="true">
+            <div className="flex items-center gap-2 text-emerald-400 px-8">
+              <span className="text-base sm:text-lg">🛡️</span>
+              <span className="text-slate-100 whitespace-nowrap">Milestone Escrow Protection</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
+            <div className="flex items-center gap-2 text-sky-400 px-8">
+              <span className="text-base sm:text-lg">⚖️</span>
+              <span className="text-slate-100 whitespace-nowrap">Licensed MARA &amp; RCIC Affiliates</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
+            <div className="flex items-center gap-2 text-amber-400 px-8">
+              <span className="text-base sm:text-lg">🔒</span>
+              <span className="text-slate-100 whitespace-nowrap">ISO/IEC 27001 &amp; AES-256 Encrypted</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
+            <div className="flex items-center gap-2 text-teal-400 px-8">
+              <span className="text-base sm:text-lg">⚡</span>
+              <span className="text-slate-100 whitespace-nowrap">100% Verified Fast-Track Clearance</span>
+            </div>
+            <div className="w-px h-4 bg-slate-700 shrink-0" />
           </div>
         </div>
       </section>
