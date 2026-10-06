@@ -985,6 +985,10 @@ export async function runMigrations() {
     END $$;
 
     ALTER TABLE experts ADD COLUMN IF NOT EXISTS license_type accreditation_type DEFAULT 'UNVERIFIED';
+
+    -- ── AES-256 COLUMN ENCRYPTION MIGRATION (Step 27) ──
+    ALTER TABLE documents ADD COLUMN IF NOT EXISTS passport_number_encrypted TEXT;
+    ALTER TABLE documents ADD COLUMN IF NOT EXISTS bank_account_encrypted TEXT;
   `);
   })();
   return migrationsPromise;
