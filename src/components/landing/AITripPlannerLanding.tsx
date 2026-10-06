@@ -4265,185 +4265,187 @@ return (
               </a>
             </div>
 
-            {/* Dynamic Grid of Classified Ads (User published ads + verified listings) */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+            {/* Dynamic Luxury Promotional Banner Cards Grid (Matching reference design) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
               
-              {/* Dynamic User-Published Ads First */}
-              {publishedClassifiedAds.map((ad: any) => (
-                <a
-                  key={ad.id}
-                  href={`/classifieds/${ad.id}`}
-                  className="bg-white rounded-2xl border-2 border-indigo-200/90 hover:border-indigo-500 shadow-[0_4px_20px_rgba(99,102,241,0.12)] hover:shadow-xl overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer relative animate-in fade-in"
-                >
-                  <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-900">
-                    <span className={`absolute top-2 left-2 z-10 px-2 py-0.5 rounded text-white text-[9px] font-black uppercase tracking-wider shadow-xs backdrop-blur-xs ${
-                      ad.type === "premium" ? "bg-indigo-600" : "bg-teal-600"
-                    }`}>
-                      {ad.type === "premium" ? "👑 PREMIUM" : "NEW AD"}
-                    </span>
-                    <img
-                      src={ad.cover_photo || (ad.images && ad.images[0]) || "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop"}
-                      alt={ad.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
-                        {ad.title}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
-                        {ad.company || ad.category}
-                      </p>
-                    </div>
-                    <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                      <div className="flex items-center gap-1 text-teal-600 font-bold">
-                        <span className="text-xs">📍</span>
-                        <span className="text-slate-800 text-[11px] font-semibold truncate max-w-[70px]">{ad.country || "Global"}</span>
-                      </div>
-                      <span className="text-indigo-600 font-extrabold text-[11px]">{ad.type === "premium" ? "Verified" : "Free"}</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-
-              {/* Verified Listing 1: Study in Canada */}
-              <a
-                href="/universities?country=Canada"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
-                    FEATURED
-                  </span>
-                  <img
-                    src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop"
-                    alt="Study in Canada"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Study in Canada
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Get admission in top Canadian universities
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.8</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">Canada</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Verified Listing 2: Skilled Migration — Healthcare Professionals Pathway (Step 35) */}
-              <a
-                href="/jobs?category=healthcare"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-emerald-700 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
-                    SKILLED MIGRATION
-                  </span>
-                  <img
-                    src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop"
-                    alt="Healthcare Professionals Pathway"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1 group-hover:text-emerald-700 transition-colors">
-                      Healthcare Professionals Pathway
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Official Express Entry &amp; PR categories for certified medical personnel
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-emerald-600 font-bold">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                      <span className="text-slate-800 font-semibold">Verified</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">Global / Canada</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Verified Listing 3: Student Housing & Accommodation */}
-              <a
-                href="/classifieds/shared-room-humber-college"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer"
-              >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-indigo-700 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
-                    ACCOMMODATION
-                  </span>
-                  <img
-                    src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop"
-                    alt="Student Housing"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Student Shared Rooms
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Furnished rooms near top colleges
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.7</span>
-                    </div>
-                    <span className="text-slate-500 font-medium">Housing</span>
-                  </div>
-                </div>
-              </a>
-
-              {/* Verified Listing 4: Holiday Packages */}
+              {/* Card 1: Escorted Tours by Partners (Venice Grand Canal / Europe) */}
               <a
                 href="/tours"
-                className="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-lg overflow-hidden flex flex-col justify-between transition-all duration-300 group cursor-pointer col-span-2 sm:col-span-1"
+                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
               >
-                <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
-                  <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded bg-amber-600 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
-                    PACKAGES
-                  </span>
-                  <img
-                    src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&auto=format&fit=crop&q=85"
-                    alt="Holiday Packages"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-3 sm:p-3.5 flex flex-col justify-between flex-1">
-                  <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-1">
-                      Holiday Tour Packages
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-2">
-                      Escrow-protected international tours
-                    </p>
+                <img
+                  src="https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=85&w=1200&auto=format&fit=crop"
+                  alt="Escorted Tour by Partners"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                {/* Subtle top-down gradient for ultra-crisp typography */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/40 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+                
+                <div className="relative z-10 max-w-[85%]">
+                  <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight">
+                    Escorted Tour By Partners
+                  </h4>
+                  <p className="mt-1 text-xs sm:text-[13px] font-semibold text-slate-700">
+                    Europamundo | Cosmos | Globus | Trafalgar &amp; More..
+                  </p>
+                  <div className="mt-4">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-md hover:bg-slate-50 transition-all border border-slate-100 group-hover:shadow-lg">
+                      View More <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
                   </div>
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                      <span className="text-slate-800">4.6</span>
+                </div>
+              </a>
+
+              {/* Card 2: Build Your Own Itinerary! (Happy Couple Travel Planning) */}
+              <a
+                href="/trip-planner"
+                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=85&w=1200&auto=format&fit=crop"
+                  alt="Build Your Own Itinerary"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/40 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight">
+                        Build Your Own Itinerary!
+                      </h4>
+                      <p className="mt-1 text-xs sm:text-[13px] font-semibold text-slate-700">
+                        Customize your flights, hotels &amp; sightseeing in just 10 minutes
+                      </p>
                     </div>
-                    <span className="text-slate-500 font-medium">Worldwide</span>
+                    <span className="w-10 h-10 rounded-full bg-[#0052cc] text-white flex items-center justify-center shadow-md shrink-0 group-hover:scale-110 group-hover:bg-[#0065ff] transition-all">
+                      <ArrowUpRight className="w-5 h-5 stroke-[2.5]" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 3: Buy Forex & Earn Travel Rewards (Paris Eiffel Tower Traveler) */}
+              <a
+                href="/checkout?service=forex"
+                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=85&w=1200&auto=format&fit=crop"
+                  alt="Buy Forex & Travel Rewards"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/40 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight">
+                        Buy Forex &amp; Earn Travel Rewards
+                      </h4>
+                      <p className="mt-1 text-xs sm:text-[13px] font-semibold text-slate-700">
+                        Up to ₹ 3000.00 worth of Loyalty Points
+                      </p>
+                    </div>
+                    <span className="w-10 h-10 rounded-full bg-[#0052cc] text-white flex items-center justify-center shadow-md shrink-0 group-hover:scale-110 group-hover:bg-[#0065ff] transition-all">
+                      <ArrowUpRight className="w-5 h-5 stroke-[2.5]" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 4: Looking for Flights? (Bright Luxury Jet Flying in Clouds) */}
+              <a
+                href="/flights"
+                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60 bg-gradient-to-b from-[#0b2545] to-[#134074]"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=85&w=1400&auto=format&fit=crop"
+                  alt="Looking for Flights"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                {/* Ultra-luxurious gradient overlay: crisp dark navy on top for high contrast, clear window onto the airliner below */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/35 to-transparent h-3/5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
+
+                <div className="relative z-10 max-w-[90%]">
+                  <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight drop-shadow-sm">
+                    Looking for Flights?
+                  </h4>
+                  <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-100 drop-shadow-sm">
+                    Find Your Best Fare Here!<br />
+                    Fly More, Pay Less — Book Your Flight Now ✈️
+                  </p>
+                  <div className="mt-4">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-lg hover:bg-slate-100 transition-all border border-white/80 group-hover:scale-105">
+                      View More <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 5: Order Forex Online (Home Delivery, Zero Convenience Fee) */}
+              <a
+                href="/forex"
+                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=85&w=1200&auto=format&fit=crop"
+                  alt="Order Forex Online"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-stone-900/80 via-stone-900/40 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
+
+                <div className="relative z-10 max-w-[90%]">
+                  <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
+                    Order Forex Online
+                  </h4>
+                  <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-200">
+                    Delivered Home with Zero Convenience Fee
+                  </p>
+                  <div className="mt-4">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-md hover:bg-slate-50 transition-all border border-slate-100 group-hover:shadow-lg">
+                      Buy Now <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+
+              {/* Card 6: Bali (Kelingking Beach / Perfect Island Escape) */}
+              <a
+                href="/tours?destination=Bali"
+                className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60 bg-sky-950"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=85&w=1200&auto=format&fit=crop"
+                  alt="Bali Perfect Beach Escape"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0b3c5d]/90 via-[#0b3c5d]/40 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
+
+                <div className="relative z-10 max-w-[90%]">
+                  <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
+                    Bali
+                  </h4>
+                  <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-200">
+                    Your Perfect Beach Escape<br />
+                    Starting at ₹ 21 000.00
+                  </p>
+                  <div className="mt-4">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-md hover:bg-slate-50 transition-all border border-slate-100 group-hover:shadow-lg">
+                      View More <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
                   </div>
                 </div>
               </a>
