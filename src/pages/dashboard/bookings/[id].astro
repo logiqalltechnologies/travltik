@@ -1,0 +1,20 @@
+---
+// src/pages/dashboard/bookings/[id].astro
+import Layout from '../../../layouts/Layout.astro';
+import { EscrowTracker } from '../../../components/dashboard/EscrowTracker';
+
+export const prerender = false;
+const { id } = Astro.params;
+---
+
+<Layout title={`Booking #${id} — Escrow Tracker`}>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="mb-6">
+      <a href="/dashboard" class="text-sm font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+        ← Back to Dashboard
+      </a>
+      <h1 class="text-2xl font-black text-slate-900 mt-2">Booking #{id}</h1>
+    </div>
+    <EscrowTracker bookingId={id || ''} client:load />
+  </div>
+</Layout>

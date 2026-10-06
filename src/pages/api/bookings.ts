@@ -2,6 +2,7 @@
 // Handles booking consultation requests and enquiries between Seekers and Experts
 import type { APIRoute } from 'astro';
 import { runMigrations, getPool } from '../../backend/db';
+import { createEscrowMilestones } from '../../lib/escrow';
 
 export const prerender = false;
 
@@ -59,6 +60,16 @@ export const POST: APIRoute = async ({ request }) => {
     );
 
     const inserted = result.rows[0];
+
+    // Auto-create Escrow Milestones for this booking
+    try {
+      const totalAmount = Number(body.totalAmount || body.amount || 299);
+      if (inserted?.id) {
+        await createEscrowMilestones(String(inserted.id), totalAmount);
+      }
+    } catch (escrowErr) {
+      console.warn('[Escrow Milestones Auto-Create Notice]:', escrowErr);
+    }
 
     // Trigger Automated Email Notification via Resend to Expert
     const resendKey = (import.meta?.env?.RESEND_API_KEY as string) || (process.env.RESEND_API_KEY as string) || '';
