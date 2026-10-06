@@ -78,6 +78,22 @@ const tools = [
       <p className="text-slate-600 text-sm sm:text-base mt-3 max-w-2xl mx-auto">
         Empowering applicants and advisors with instant consular biometric formatting, regulatory profile audits, and statement of purpose generation.
       </p>
+
+      <!-- Pricing Pill -->
+      <div class="mt-6 inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-amber-50 border-2 border-amber-300 shadow-sm">
+        <span class="text-2xl font-black text-amber-600">$5</span>
+        <div class="w-px h-6 bg-amber-300"></div>
+        <div class="text-left">
+          <div class="text-sm font-bold text-slate-900">3 AI Queries Included</div>
+          <div class="text-xs text-slate-500">One-time · No subscription · Instant access</div>
+        </div>
+        <a
+          href="/checkout?tier=starter"
+          class="ml-2 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-colors"
+        >
+          Get Started →
+        </a>
+      </div>
     </div>
 
     <!-- Tools Grid -->
@@ -106,9 +122,14 @@ const tools = [
               </p>
             </div>
 
-            <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#00a896]">
-              <span>Launch Tool</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">$5 / 3 queries</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-xs font-bold text-[#00a896]">
+                <span>Launch Tool</span>
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </div>
             </div>
           </a>
         );

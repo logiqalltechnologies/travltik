@@ -6,13 +6,14 @@ import StatutoryFeeCard from '../components/checkout/StatutoryFeeCard.astro';
 export const prerender = false;
 
 const tierParam = Astro.url.searchParams.get('tier') || 'starter';
-const countryParam = Astro.url.searchParams.get('country') || 'General';
+const countryParam = Astro.url.searchParams.get('country') || 'Canada';
 const purposeParam = Astro.url.searchParams.get('purpose') || 'Travel';
+const passportParam = Astro.url.searchParams.get('passport') || 'India';
 
 const TIERS: Record<string, { name: string; price: number; queries: number; desc: string }> = {
-  starter: { name: 'DIY Assisted', price: 29, queries: 10, desc: 'AI document validation, checklist, SOP builder & consular submission guide.' },
-  professional: { name: 'Legal Review', price: 199, queries: 25, desc: 'Official MARA / RCIC attorney review, refusal risk audit & 100% milestone escrow.' },
-  concierge: { name: 'Concierge Filing', price: 399, queries: -1, desc: 'End-to-end white-glove filing, dedicated legal case officer & VFS priority booking.' },
+  starter: { name: 'Starter Pathway', price: 5, queries: 3, desc: '3 AI Visa Queries, document checklist, photo resizer & consular submission guide.' },
+  professional: { name: 'Professional Pack', price: 10, queries: 10, desc: '10 AI Visa Queries, SOP & Cover Letter builder, refusal risk audit & escrow guarantee.' },
+  concierge: { name: 'Concierge Pack', price: 15, queries: 25, desc: '25 AI Visa Queries, priority form auto-fill guide, and end-to-end dossier checklist.' },
 };
 
 const selected = TIERS[tierParam.toLowerCase()] || TIERS.starter;
@@ -22,15 +23,15 @@ const platformFee = selected.price;
 const total = embassyFee + platformFee;
 ---
 
-<Layout title={`Checkout — ${selected.name} Plan`}>
+<Layout title={`Checkout — ${selected.name} ($${selected.price}) | TravlTik`}>
   <div class="max-w-2xl mx-auto px-4 py-12">
     <div class="mb-8">
-      <a href={`/visa/${encodeURIComponent(countryParam.toLowerCase())}`} class="text-xs font-bold text-slate-500 hover:text-slate-800">
+      <a href={`/visa/${encodeURIComponent(countryParam.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))}?passport=${encodeURIComponent(passportParam)}&purpose=${encodeURIComponent(purposeParam)}`} class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1">
         ← Back to Pathway
       </a>
       <h1 class="text-3xl font-black text-slate-900 mt-2">Complete Your Application</h1>
       <p class="text-sm text-slate-600 mt-1">
-        Selected Package: <span class="font-bold text-slate-900">{selected.name} Tier</span> for {countryParam} ({purposeParam})
+        Selected Package: <span class="font-bold text-slate-900">{selected.name} (${selected.price} USD)</span> for {countryParam} ({purposeParam})
       </p>
     </div>
 
@@ -48,28 +49,136 @@ const total = embassyFee + platformFee;
     <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm mb-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100">
         <div>
-          <div class="text-xs font-bold uppercase tracking-wider text-blue-600">{selected.name} Plan</div>
-          <div class="text-xl font-black text-slate-900 mt-0.5">${selected.price} USD</div>
+          <div class="text-xs font-bold uppercase tracking-wider text-[#00a896]">{selected.name}</div>
+          <div class="text-2xl font-black text-slate-900 mt-0.5">${selected.price} USD</div>
         </div>
         <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-bold">
-          100% Escrow Protected
+          {selected.queries} Queries Included
         </span>
       </div>
       <p class="text-xs text-slate-600 mt-3">{selected.desc}</p>
     </div>
 
-    <!-- Action Button -->
-    <button
-      id="payBtn"
-      class="w-full py-4 bg-[#00a896] hover:bg-[#028090] text-white font-black rounded-xl shadow-md transition-all text-sm uppercase tracking-wider"
-    >
-      Proceed to Escrow Checkout (${platformFee} USD)
-    </button>
+    <!-- Razorpay Checkout Trigger -->
+    <div class="space-y-3">
+      <button
+        id="payBtn"
+        type="button"
+        class="w-full py-4 bg-[#00a896] hover:bg-[#028090] text-white font-black rounded-xl shadow-md hover:shadow-lg transition-all text-sm uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
+      >
+        <span id="btnText">Proceed to Pay ${platformFee} USD</span>
+        <span id="btnSpinner" class="hidden animate-spin">⏳</span>
+      </button>
+
+      <div class="flex items-center justify-center gap-2 text-xs text-slate-500">
+        <span>🔒 100% Escrow Milestone Protected</span>
+        <span>•</span>
+        <span>⚡ Instant Razorpay Gateway</span>
+      </div>
+    </div>
   </div>
 </Layout>
 
-<script define:vars={{ selected, countryParam, platformFee }}>
-  document.getElementById('payBtn')?.addEventListener('click', () => {
-    alert(`Proceeding to secure checkout for ${selected.name} Plan ($${platformFee}). Razorpay escrow gateway loading...`);
-  });
+<script src="https://checkout.razorpay.com/v1/checkout.js" is:inline></script>
+<script define:vars={{ selected, countryParam, passportParam, purposeParam, platformFee }}>
+  const payBtn = document.getElementById('payBtn');
+  const btnText = document.getElementById('btnText');
+  const btnSpinner = document.getElementById('btnSpinner');
+
+  if (payBtn) {
+    payBtn.addEventListener('click', async () => {
+      try {
+        payBtn.setAttribute('disabled', 'true');
+        if (btnSpinner) btnSpinner.classList.remove('hidden');
+        if (btnText) btnText.textContent = 'Opening Secure Gateway...';
+
+        const destSlug = (countryParam || 'canada').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'canada';
+
+        const res = await fetch('/api/payment/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: platformFee,
+            plan: selected.name,
+            targetCountry: countryParam,
+            passport: passportParam,
+            selectedPurpose: purposeParam,
+            currency: 'USD'
+          })
+        });
+
+        const orderData = await res.json();
+        if (!res.ok || !orderData.orderId) {
+          throw new Error(orderData.error || 'Failed to initialize payment order');
+        }
+
+        const options = {
+          key: orderData.keyId,
+          amount: orderData.amount,
+          currency: orderData.currency || 'USD',
+          name: 'TravlTik',
+          description: `${selected.name} ($${platformFee}) - ${countryParam}`,
+          image: '/logo.png?v=8',
+          order_id: orderData.orderId,
+          handler: async function (response) {
+            try {
+              await fetch('/api/payment/verify-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  orderId: response.razorpay_order_id,
+                  paymentId: response.razorpay_payment_id,
+                  signature: response.razorpay_signature,
+                  targetCountry: countryParam,
+                  passport: passportParam,
+                  destSlug: destSlug
+                })
+              });
+            } catch(e) {}
+
+            try {
+              const paidKey = `paid_visa_plan_${destSlug}_${(passportParam || 'india').toLowerCase()}`;
+              localStorage.setItem(paidKey, 'true');
+              localStorage.setItem('travltik_paid_visa_unlocked', 'true');
+              localStorage.setItem('last_payment_tx', response.razorpay_payment_id);
+              const granted = selected.queries > 1 ? selected.queries - 1 : 0;
+              localStorage.setItem('travltik_paid_plan_queries_left', granted.toString());
+            } catch(e) {}
+
+            window.location.href = `/visa/${destSlug}?passport=${encodeURIComponent(passportParam)}&purpose=${encodeURIComponent(purposeParam)}&plan=visa-done&paid=true&payment_id=${response.razorpay_payment_id}&has_visa=no`;
+          },
+          prefill: {
+            name: 'TravlTik Seeker',
+            email: '',
+            contact: ''
+          },
+          theme: {
+            color: '#00a896'
+          },
+          modal: {
+            ondismiss: function () {
+              payBtn.removeAttribute('disabled');
+              if (btnSpinner) btnSpinner.classList.add('hidden');
+              if (btnText) btnText.textContent = `Proceed to Pay $${platformFee} USD`;
+            }
+          }
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.on('payment.failed', function (resp) {
+          alert(`Payment Failed: ${resp.error?.description || 'Declined'}`);
+          payBtn.removeAttribute('disabled');
+          if (btnSpinner) btnSpinner.classList.add('hidden');
+          if (btnText) btnText.textContent = `Proceed to Pay $${platformFee} USD`;
+        });
+        rzp.open();
+      } catch (err) {
+        console.error('Checkout error:', err);
+        alert(err.message || 'Payment initiation failed. Please try again.');
+        payBtn.removeAttribute('disabled');
+        if (btnSpinner) btnSpinner.classList.add('hidden');
+        if (btnText) btnText.textContent = `Proceed to Pay $${platformFee} USD`;
+      }
+    });
+  }
 </script>

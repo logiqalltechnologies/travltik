@@ -56,10 +56,15 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Call real Razorpay API to generate live Order ID ($5.00 USD = 500 cents)
+    // Support dynamic tier pricing ($5 for 3 queries, $10 for 10 queries, $15 for 25 queries)
+    const rawAmount = Number(body.amount);
+    const amountInDollars = (!isNaN(rawAmount) && rawAmount > 0) ? rawAmount : 5.00;
+    const amountInCents = Math.round(amountInDollars * 100);
+    const currency = (body.currency || 'USD').toUpperCase();
+    const planName = body.plan || (amountInDollars === 10 ? 'visa_expert_10_queries' : amountInDollars === 15 ? 'visa_concierge_25_queries' : 'visa_done_3_queries');
+
+    // Call real Razorpay API to generate live Order ID
     const receiptId = `rcpt_visa_${Date.now().toString(36)}_${crypto.randomBytes(3).toString('hex')}`;
-    const amountInCents = 500; // $5.00 USD
-    const currency = 'USD';
 
     const rzpResponse = await fetch('https://api.razorpay.com/v1/orders', {
       method: 'POST',
@@ -72,7 +77,7 @@ export const POST: APIRoute = async ({ request }) => {
         currency: currency,
         receipt: receiptId,
         notes: {
-          plan: 'visa_done_3_queries',
+          plan: planName,
           target_country: targetCountry,
           passport: passport,
           purpose: selectedPurpose
@@ -105,7 +110,7 @@ export const POST: APIRoute = async ({ request }) => {
           provider,
           status
         ) VALUES ($1, $2, $3, $4, 'razorpay', 'created')`,
-        [rzpData.id, 0, 5.00, currency]
+        [rzpData.id, 0, amountInDollars, currency]
       );
     } catch (dbErr) {
       console.warn('[payment/create-order] DB order record warning:', dbErr);

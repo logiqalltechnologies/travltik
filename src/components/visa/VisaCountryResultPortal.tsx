@@ -3344,17 +3344,19 @@ export function VisaCountryResultPortal({
       const hv = sp.get('has_visa') || sp.get('hasVisa');
       if (hv === 'no' || hv === 'false') return false;
       if (hv === 'yes' || hv === 'true') return true;
+      if (sp.get('paid') === 'true' || sp.get('plan') || sp.get('passport') || sp.get('purpose')) return false;
     }
-    return null;
+    return false;
   });
 
   const [showVisaInfo, setShowVisaInfo] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const sp = new URLSearchParams(window.location.search);
       const hv = sp.get('has_visa') || sp.get('hasVisa');
-      if (hv === 'no' || hv === 'false') return true;
+      if (hv === 'yes' || hv === 'true') return false;
+      return true; // Show visa info & requirements directly for searchers
     }
-    return false;
+    return true;
   });
 
   const [hasVisaAlready, setHasVisaAlready] = useState<'no' | 'yes'>('no');

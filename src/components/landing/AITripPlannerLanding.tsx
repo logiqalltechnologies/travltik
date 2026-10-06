@@ -1527,12 +1527,15 @@ export function AITripPlannerLanding() {
 
   const [paymentSuccessModalOpen, setPaymentSuccessModalOpen] = useState(false);
   const [paymentTxId, setPaymentTxId] = useState('');
-  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+  const [selectedPlanTier, setSelectedPlanTier] = useState<5 | 10 | 15>(5);
 
   // Handlers for Paid Plan & Real Razorpay
-  const handleProceedToPayment = async () => {
+  const handleProceedToPayment = async (overrideAmount?: 5 | 10 | 15) => {
     if (!pendingSearchData) return;
     setIsPaymentProcessing(true);
+
+    const payAmount = overrideAmount || selectedPlanTier || 5;
+    const planName = payAmount === 10 ? 'Professional Pack ($10 - 10 Queries)' : payAmount === 15 ? 'Concierge Pack ($15 - 25 Queries)' : 'Starter Pathway ($5 - 3 Queries)';
 
     try {
       // 1. Ensure Razorpay checkout script is loaded
@@ -1552,11 +1555,11 @@ export function AITripPlannerLanding() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          plan: 'visa_done_3_queries',
+          plan: planName,
           targetCountry: pendingSearchData.targetCountry,
           passport: pendingSearchData.passport,
           selectedPurpose: pendingSearchData.selectedPurpose,
-          amount: 5.00,
+          amount: payAmount,
           currency: 'USD'
         })
       });
@@ -1569,10 +1572,10 @@ export function AITripPlannerLanding() {
       // 3. Launch official Razorpay payment window
       const options = {
         key: orderData.keyId,
-        amount: orderData.amount, // 500 cents ($5.00 USD)
+        amount: orderData.amount,
         currency: orderData.currency || 'USD',
         name: 'TravlTik',
-        description: `Get Your Visa Done (3 AI Queries) - ${pendingSearchData.targetCountry}`,
+        description: `${planName} - ${pendingSearchData.targetCountry}`,
         image: '/logo.png?v=8',
         order_id: orderData.orderId,
         handler: async function (response: any) {
@@ -1594,7 +1597,7 @@ export function AITripPlannerLanding() {
           } catch (vErr) {
             console.warn('[Razorpay verify warning]', vErr);
           }
-          finishPaymentSuccess(response.razorpay_payment_id);
+          finishPaymentSuccess(response.razorpay_payment_id, payAmount);
         },
         prefill: {
           name: 'TravlTik Seeker',
@@ -1626,16 +1629,17 @@ export function AITripPlannerLanding() {
     }
   };
 
-  const finishPaymentSuccess = (txId: string) => {
+  const finishPaymentSuccess = (txId: string, paidAmount: number = 5) => {
     if (pendingSearchData && typeof window !== 'undefined') {
       const paidKey = `paid_visa_plan_${pendingSearchData.destSlug}_${pendingSearchData.passport.toLowerCase()}`;
       try {
         localStorage.setItem(paidKey, 'true');
         localStorage.setItem('last_payment_tx', txId);
-        localStorage.setItem('last_payment_plan', 'Get Your Visa Done ($5 - 3 Queries)');
+        localStorage.setItem('last_payment_plan', `TravlTik AI Visa ($${paidAmount})`);
         localStorage.setItem('travltik_paid_visa_unlocked', 'true');
-        // Grant 3 queries total (1 used now + 2 remaining)
-        const updatedCredits = 2; // current destination unlocked now, 2 more searches remaining
+        // Grant queries based on tier (3 for $5, 10 for $10, 25 for $15) minus 1 for current destination
+        const totalQueries = paidAmount === 10 ? 10 : paidAmount === 15 ? 25 : 3;
+        const updatedCredits = Math.max(0, totalQueries - 1);
         localStorage.setItem('travltik_paid_plan_queries_left', updatedCredits.toString());
         setPaidPlanRemainingQueries(updatedCredits);
       } catch (e) {}
@@ -2598,7 +2602,7 @@ export function AITripPlannerLanding() {
     else if (looking.includes('business') || serv.includes('business')) selectedPurpose = 'business';
 
     const destSlug = targetCountry.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'jordan';
-    const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent(selectedPurpose.toLowerCase())}`;
+    const destinationUrl = `/visa/${encodeURIComponent(destSlug)}?passport=${encodeURIComponent(passport.toLowerCase())}&purpose=${encodeURIComponent(selectedPurpose.toLowerCase())}&has_visa=no`;
 
     setIsGenerating(true);
 
@@ -5245,61 +5249,106 @@ return (
                 Full consular requirements, AI document dossier & slot roadmap.
               </p>
 
-              {/* Compact Price Card */}
-              <div className="mt-3.5 p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                <div>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-2xl font-black text-slate-900">$5</span>
-                    <span className="text-xs font-bold text-slate-500">USD</span>
-                    <span className="ml-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      3 Queries Included
-                    </span>
-                  </div>
-                  <span className="text-[10px] text-slate-400 font-medium">One-time fee • 3 AI Visa Queries</span>
-                </div>
-                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded-full">
-                  Instant Unlock
-                </span>
+              {/* 3 Selectable Tiers ($5, $10, $15) */}
+              <div className="mt-3.5 space-y-2">
+                {[
+                  {
+                    tier: 5 as const,
+                    name: 'Starter Plan',
+                    price: '$5',
+                    queries: '3 Queries Included',
+                    desc: 'Full consular requirements & 3 AI pathway queries',
+                    popular: false
+                  },
+                  {
+                    tier: 10 as const,
+                    name: 'Professional Pack',
+                    price: '$10',
+                    queries: '10 Queries Included',
+                    desc: '10 AI queries + SOP & Cover Letter builder',
+                    popular: true
+                  },
+                  {
+                    tier: 15 as const,
+                    name: 'Concierge Pack',
+                    price: '$15',
+                    queries: '25 Queries Included',
+                    desc: '25 AI queries + Comprehensive Dossier pre-audit',
+                    popular: false
+                  }
+                ].map((item) => {
+                  const isSelected = selectedPlanTier === item.tier;
+                  return (
+                    <div
+                      key={item.tier}
+                      onClick={() => setSelectedPlanTier(item.tier)}
+                      className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
+                        isSelected
+                          ? 'border-[#00a896] bg-teal-50/40 ring-2 ring-[#00a896]/20 shadow-sm'
+                          : 'border-slate-200 bg-white hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                            isSelected ? 'border-[#00a896] bg-[#00a896]' : 'border-slate-300'
+                          }`}
+                        >
+                          {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-slate-900">{item.name}</span>
+                            {item.popular && (
+                              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#00a896] text-white">
+                                Popular
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-slate-500">{item.desc}</div>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0 ml-2">
+                        <span className="text-base font-black text-slate-900">{item.price}</span>
+                        <div className="text-[10px] font-bold text-emerald-600">{item.queries}</div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Short, Clean 3-Item Bullet List */}
-              <div className="mt-3.5 space-y-2 text-xs text-slate-700 font-medium">
+              <div className="mt-3.5 space-y-1.5 text-xs text-slate-700 font-medium">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span><strong>3 Full Visa Queries:</strong> Search any 3 countries or visa routes</span>
+                  <span>Instant Consular Document Checklist &amp; Pre-audit</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span>Complete Embassy Checklist, Document Dossier & VFS Guide</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                    <Check className="w-3 h-3 stroke-[3]" />
-                  </div>
-                  <span>100% Money-Back & Zero-Risk Escrow Guarantee</span>
+                  <span>100% Escrow Milestone Protection Guarantee</span>
                 </div>
               </div>
 
               {/* Proceed to Payment CTA (Real Razorpay Window) */}
-              <div className="mt-5 space-y-2">
+              <div className="mt-4 space-y-2">
                 <button
                   type="button"
-                  onClick={handleProceedToPayment}
+                  onClick={() => handleProceedToPayment()}
                   disabled={isPaymentProcessing}
                   className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
                 >
                   {isPaymentProcessing ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Connecting to Razorpay...</span>
+                      <span>Opening Razorpay Gateway...</span>
                     </>
                   ) : (
                     <>
-                      <span>Proceed to Pay $5 (Unlock 3 Queries)</span>
+                      <span>Proceed to Pay ${selectedPlanTier} USD</span>
                       <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                     </>
                   )}
