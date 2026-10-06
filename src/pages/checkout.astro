@@ -1,0 +1,75 @@
+---
+// src/pages/checkout.astro
+import Layout from '../layouts/Layout.astro';
+import StatutoryFeeCard from '../components/checkout/StatutoryFeeCard.astro';
+
+export const prerender = false;
+
+const tierParam = Astro.url.searchParams.get('tier') || 'starter';
+const countryParam = Astro.url.searchParams.get('country') || 'General';
+const purposeParam = Astro.url.searchParams.get('purpose') || 'Travel';
+
+const TIERS: Record<string, { name: string; price: number; queries: number; desc: string }> = {
+  starter: { name: 'Starter', price: 5, queries: 3, desc: '3 AI query credits, AI document checklist & biometric spec check.' },
+  professional: { name: 'Professional', price: 29, queries: 10, desc: '10 AI query credits + MARA/RCIC consultant document vetting & sign-off.' },
+  concierge: { name: 'Concierge', price: 199, queries: -1, desc: 'End-to-end priority consular filing, VFS appointment booking & account manager.' },
+};
+
+const selected = TIERS[tierParam.toLowerCase()] || TIERS.starter;
+const embassyFee = 85;
+const embassyCurrency = 'USD';
+const platformFee = selected.price;
+const total = embassyFee + platformFee;
+---
+
+<Layout title={`Checkout — ${selected.name} Plan`}>
+  <div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="mb-8">
+      <a href={`/visa/${encodeURIComponent(countryParam.toLowerCase())}`} class="text-xs font-bold text-slate-500 hover:text-slate-800">
+        ← Back to Pathway
+      </a>
+      <h1 class="text-3xl font-black text-slate-900 mt-2">Complete Your Application</h1>
+      <p class="text-sm text-slate-600 mt-1">
+        Selected Package: <span class="font-bold text-slate-900">{selected.name} Tier</span> for {countryParam} ({purposeParam})
+      </p>
+    </div>
+
+    <!-- Statutory Fee & Transparency Card -->
+    <div class="mb-6">
+      <StatutoryFeeCard 
+        embassyFee={embassyFee} 
+        embassyCurrency={embassyCurrency} 
+        platformFee={platformFee} 
+        total={total} 
+      />
+    </div>
+
+    <!-- Plan Summary Card -->
+    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm mb-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div>
+          <div class="text-xs font-bold uppercase tracking-wider text-blue-600">{selected.name} Plan</div>
+          <div class="text-xl font-black text-slate-900 mt-0.5">${selected.price} USD</div>
+        </div>
+        <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-bold">
+          100% Escrow Protected
+        </span>
+      </div>
+      <p class="text-xs text-slate-600 mt-3">{selected.desc}</p>
+    </div>
+
+    <!-- Action Button -->
+    <button
+      id="payBtn"
+      class="w-full py-4 bg-[#00a896] hover:bg-[#028090] text-white font-black rounded-xl shadow-md transition-all text-sm uppercase tracking-wider"
+    >
+      Proceed to Escrow Checkout (${platformFee} USD)
+    </button>
+  </div>
+</Layout>
+
+<script define:vars={{ selected, countryParam, platformFee }}>
+  document.getElementById('payBtn')?.addEventListener('click', () => {
+    alert(`Proceeding to secure checkout for ${selected.name} Plan ($${platformFee}). Razorpay escrow gateway loading...`);
+  });
+</script>

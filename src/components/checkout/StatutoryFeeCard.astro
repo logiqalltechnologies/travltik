@@ -1,0 +1,28 @@
+---
+// src/components/checkout/StatutoryFeeCard.astro
+interface Props {
+  embassyFee: number;
+  embassyCurrency: string;
+  platformFee: number;
+  total: number;
+}
+const { embassyFee, embassyCurrency, platformFee, total } = Astro.props;
+---
+
+<div class="rounded-xl border border-slate-200 p-5 bg-slate-50 shadow-sm">
+  <div class="font-bold text-slate-800 mb-3">Cost Breakdown & Transparency</div>
+  <div class="space-y-2 text-sm">
+    <div class="flex justify-between">
+      <span class="text-slate-600">Government Embassy Fee:</span>
+      <span class="font-bold text-slate-900">{embassyCurrency} {embassyFee} (Direct to Govt)</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-slate-600">TravlTik Service Fee:</span>
+      <span class="font-bold text-slate-900">${platformFee} (Platform)</span>
+    </div>
+    <div class="flex justify-between pt-2 border-t border-slate-200">
+      <span class="font-bold text-slate-900">Total:</span>
+      <span class="font-black text-slate-900">{embassyCurrency} {total}</span>
+    </div>
+  </div>
+</div>
