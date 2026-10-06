@@ -14,6 +14,37 @@ export const onRequest = async (context: any, next: any): Promise<Response> => {
 
   const response = await next();
 
+  const path = url.pathname;
+
+  // Routes that should NEVER be cached (private/dynamic)
+  const NO_CACHE_ROUTES = [
+    /^\/api\//,
+    /^\/dashboard/,
+    /^\/checkout/,
+    /^\/settings/,
+    /^\/auth/,
+    /^\/admin/,
+  ];
+
+  // Routes that should be edge-cached (public static/informational)
+  const CACHEABLE_ROUTES = [
+    /^\/visa\/[^\/]+$/,
+    /^\/visa-guide\/[^\/]+\/[^\/]+$/,
+    /^\/countries\/[^\/]+$/,
+    /^\/tools\/[^\/]+$/,
+  ];
+
+  if (NO_CACHE_ROUTES.some((r) => r.test(path))) {
+    response.headers.set('Cache-Control', 'no-store, max-age=0');
+  } else if (CACHEABLE_ROUTES.some((r) => r.test(path))) {
+    response.headers.set(
+      'Cache-Control',
+      'public, s-maxage=3600, stale-while-revalidate=86400'
+    );
+    response.headers.set('CDN-Cache-Control', 'public, s-maxage=3600');
+    response.headers.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600');
+  }
+
   // Strict Production Security Headers
   response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   response.headers.set('X-Content-Type-Options', 'nosniff');
