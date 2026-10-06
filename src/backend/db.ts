@@ -939,6 +939,36 @@ export async function runMigrations() {
     ALTER TABLE visa_verified_records ALTER COLUMN field_applicability DROP NOT NULL;
     ALTER TABLE visa_verified_records ALTER COLUMN source_content_hash DROP NOT NULL;
     ALTER TABLE visa_review_queue ADD COLUMN IF NOT EXISTS assigned_to VARCHAR(255);
+
+    -- ── DECISION MATRIX RESULTS (Step 11) ──
+    CREATE TABLE IF NOT EXISTS decision_matrix_results (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id VARCHAR(255),
+      age INTEGER NOT NULL,
+      degree VARCHAR(50) NOT NULL,
+      experience INTEGER NOT NULL,
+      english_level VARCHAR(50) NOT NULL,
+      target_country VARCHAR(50) NOT NULL,
+      score INTEGER NOT NULL,
+      recommended_pathways JSONB NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_dmr_created_at ON decision_matrix_results (created_at DESC);
+
+    -- ── ESCROW MILESTONES (Step 14) ──
+    CREATE TABLE IF NOT EXISTS escrow_milestones (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      booking_id VARCHAR(100) NOT NULL,
+      step_order INTEGER NOT NULL,
+      title VARCHAR(100) NOT NULL,
+      percentage INTEGER NOT NULL,
+      amount NUMERIC(10, 2) NOT NULL,
+      status VARCHAR(20) NOT NULL DEFAULT 'pending',
+      released_at TIMESTAMP WITH TIME ZONE,
+      proof_url TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_em_booking_id ON escrow_milestones (booking_id);
   `);
   })();
   return migrationsPromise;
