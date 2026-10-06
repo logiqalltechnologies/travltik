@@ -16,13 +16,13 @@ export function ScrollReveal({
   direction = 'up',
   duration = 0.6,
   className = '',
-  viewportMargin = '-20px'
+  viewportMargin = '0px'
 }: Props) {
   const directions = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { x: 40, y: 0 },
-    right: { x: -40, y: 0 },
+    up: { y: 24, x: 0 },
+    down: { y: -24, x: 0 },
+    left: { x: 24, y: 0 },
+    right: { x: -24, y: 0 },
     none: { x: 0, y: 0 },
   };
 
@@ -37,6 +37,11 @@ export function ScrollReveal({
         x: 0, 
         y: 0 
       }}
+      animate={{
+        opacity: 1,
+        x: 0,
+        y: 0
+      }}
       viewport={{ once: true, margin: viewportMargin }}
       transition={{ 
         duration, 
@@ -44,6 +49,7 @@ export function ScrollReveal({
         ease: [0.4, 0, 0.2, 1]
       }}
       className={className}
+      style={{ minHeight: 'fit-content' }}
     >
       {children}
     </motion.div>
@@ -85,7 +91,8 @@ export function StaggerContainer({
       variants={staggerContainerVariants}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: '-40px' }}
+      animate="show"
+      viewport={{ once: true }}
       className={className}
     >
       {children}

@@ -4461,6 +4461,12 @@ export function VisaCountryResultPortal({
     setAiData(null);
     setIsAiLoading(true);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+      if (mounted) setIsAiLoading(false);
+    }, 6000);
+
     const fetchLiveAiRequirements = async () => {
       try {
         let userEmail = 'seeker@travltik.com';
@@ -4480,6 +4486,7 @@ export function VisaCountryResultPortal({
 
         const res = await fetch('/api/visa/live-requirements', {
           method: 'POST',
+          signal: controller.signal,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             passportCountry,
@@ -4603,14 +4610,19 @@ export function VisaCountryResultPortal({
           } catch (e) {}
         }
       } catch (err) {
-        console.error('Failed to fetch live AI requirements:', err);
+        console.warn('Live AI requirements fetch note:', err);
       } finally {
+        clearTimeout(timeoutId);
         if (mounted) setIsAiLoading(false);
       }
     };
 
     fetchLiveAiRequirements();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
   }, [countryName, passportCountry, activePurposeTab, showVisaInfo, userHasVisa]);
 
   // Dynamic user-uploaded documents (Starts empty: users fill their own data)

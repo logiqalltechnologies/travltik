@@ -2693,8 +2693,9 @@ export function AITripPlannerLanding() {
 
       // Check if user already unlocked this specific destination or has queries left from $5 plan
       const paidKey = `paid_visa_plan_${destSlug}_${passport.toLowerCase()}`;
+      const lastTx = typeof window !== 'undefined' ? localStorage.getItem('last_payment_tx') : null;
       const isDestinationUnlocked = typeof window !== 'undefined' && (
-        localStorage.getItem(paidKey) === 'true' ||
+        (localStorage.getItem(paidKey) === 'true' && Boolean(lastTx && lastTx.trim().length > 3)) ||
         localStorage.getItem('travltik_vip_access') === 'true'
       );
 
@@ -2704,18 +2705,18 @@ export function AITripPlannerLanding() {
 
       if (isDestinationUnlocked) {
         if (typeof window !== 'undefined') {
-          window.location.href = destinationUrl;
+          window.location.href = `${destinationUrl}&plan=visa-done&paid=true&payment_id=${encodeURIComponent(lastTx || 'unlocked')}`;
         }
-      } else if (queriesLeft > 0) {
+      } else if (queriesLeft > 0 && Boolean(lastTx && lastTx.trim().length > 3)) {
         // User has remaining queries from their $5 (3 Queries) plan!
         if (typeof window !== 'undefined') {
           try {
-            const nextQueries = queriesLeft - 1;
+            const nextQueries = Math.max(0, queriesLeft - 1);
             localStorage.setItem('travltik_paid_plan_queries_left', nextQueries.toString());
             localStorage.setItem(paidKey, 'true'); // lock this destination as unlocked
             setPaidPlanRemainingQueries(nextQueries);
           } catch(e) {}
-          window.location.href = `${destinationUrl}&plan=visa-done&paid=true`;
+          window.location.href = `${destinationUrl}&plan=visa-done&paid=true&payment_id=${encodeURIComponent(lastTx || 'credits')}`;
         }
       } else {
         // Intercept: Show $5 Plan Modal ("Get Your Visa Done - 3 Queries Included")
