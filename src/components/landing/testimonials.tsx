@@ -50,22 +50,19 @@ const testimonials: Testimonial[] = [
 ]
 
 export function Testimonials() {
-  const [startIndex, setStartIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  // Max starting index so the last 3 cards sit neatly on desktop
+  const maxDesktopIndex = Math.max(0, testimonials.length - 3)
+  const maxMobileIndex = testimonials.length - 1
 
   const handlePrev = () => {
-    setStartIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : testimonials.length - 1))
   }
 
   const handleNext = () => {
-    setStartIndex((prev) => (prev + 1) % testimonials.length)
+    setCurrentIndex((prev) => (prev < testimonials.length - 1 ? prev + 1 : 0))
   }
-
-  // Slice 3 consecutive cards with wrapping for desktop view
-  const visibleCards = [
-    testimonials[startIndex % testimonials.length],
-    testimonials[(startIndex + 1) % testimonials.length],
-    testimonials[(startIndex + 2) % testimonials.length],
-  ]
 
   return (
     <section className="w-full py-14 sm:py-20 px-4 sm:px-6 lg:px-8 bg-[#FAF6F0] rounded-3xl sm:rounded-[40px] my-6 border border-[#EFE8DD] shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
@@ -98,14 +95,14 @@ export function Testimonials() {
           </div>
         </div>
 
-        {/* Cards Carousel Area */}
-        <div className="relative">
+        {/* Cards Carousel Area with Smooth Slide Track */}
+        <div className="relative px-2 sm:px-6">
           
           {/* Navigation Arrows */}
           <button
             onClick={handlePrev}
             aria-label="Previous Testimonial"
-            className="absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-[#E8DEC8] text-[#78350F] shadow-lg flex items-center justify-center hover:bg-[#FDFBF7] hover:scale-105 active:scale-95 transition-all z-20 cursor-pointer"
+            className="absolute -left-2 sm:-left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-[#E8DEC8] text-[#78350F] shadow-lg flex items-center justify-center hover:bg-[#FDFBF7] hover:scale-105 active:scale-95 transition-all z-20 cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
           </button>
@@ -113,47 +110,71 @@ export function Testimonials() {
           <button
             onClick={handleNext}
             aria-label="Next Testimonial"
-            className="absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-[#E8DEC8] text-[#78350F] shadow-lg flex items-center justify-center hover:bg-[#FDFBF7] hover:scale-105 active:scale-95 transition-all z-20 cursor-pointer"
+            className="absolute -right-2 sm:-right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-[#E8DEC8] text-[#78350F] shadow-lg flex items-center justify-center hover:bg-[#FDFBF7] hover:scale-105 active:scale-95 transition-all z-20 cursor-pointer"
           >
             <ChevronRight className="w-5 h-5 stroke-[2.5]" />
           </button>
 
-          {/* Testimonial Cards Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 px-4 sm:px-6">
-            {visibleCards.map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-3xl p-6 sm:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-[#EFE8DD] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[340px]"
-              >
-                <div>
-                  {/* Peach / Terracotta Quotation Marks */}
-                  <span className="text-4xl sm:text-5xl font-serif text-[#FDBA74] font-black leading-none block select-none">
-                    “
-                  </span>
-                  <p className="mt-2 text-xs sm:text-[13px] text-slate-700 leading-relaxed font-normal">
-                    {item.quote}
-                  </p>
-                </div>
+          {/* Overflow Hidden Viewport */}
+          <div className="overflow-hidden py-3">
+            {/* Sliding Track (100% on mobile, 33.333% per card on desktop) */}
+            <div
+              className="flex transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"
+              style={{
+                transform: `translateX(-${currentIndex * (typeof window !== 'undefined' && window.innerWidth < 768 ? 100 : 33.3333)}%)`
+              }}
+            >
+              {testimonials.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="w-full md:w-1/3 shrink-0 px-2.5 sm:px-3 box-border"
+                >
+                  <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-[#EFE8DD] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full min-h-[350px]">
+                    <div>
+                      {/* Peach / Terracotta Quotation Marks */}
+                      <span className="text-4xl sm:text-5xl font-serif text-[#FDBA74] font-black leading-none block select-none">
+                        “
+                      </span>
+                      <p className="mt-2 text-xs sm:text-[13px] text-slate-700 leading-relaxed font-normal">
+                        {item.quote}
+                      </p>
+                    </div>
 
-                <div className="flex items-center gap-3.5 pt-6 mt-4 border-t border-slate-100">
-                  <img
-                    src={item.avatar}
-                    alt={item.name}
-                    width={48}
-                    height={48}
-                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-[#FED7AA] shadow-xs shrink-0"
-                    loading="lazy"
-                  />
-                  <div className="min-w-0">
-                    <h4 className="text-sm font-bold text-slate-900 tracking-tight truncate">
-                      {item.name}
-                    </h4>
-                    <p className="text-[11px] font-medium text-slate-400 mt-0.5">
-                      {item.date}
-                    </p>
+                    <div className="flex items-center gap-3.5 pt-6 mt-4 border-t border-slate-100">
+                      <img
+                        src={item.avatar}
+                        alt={item.name}
+                        width={48}
+                        height={48}
+                        className="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-[#FED7AA] shadow-xs shrink-0"
+                        loading="lazy"
+                      />
+                      <div className="min-w-0">
+                        <h4 className="text-sm font-bold text-slate-900 tracking-tight truncate">
+                          {item.name}
+                        </h4>
+                        <p className="text-[11px] font-medium text-slate-400 mt-0.5">
+                          {item.date}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex items-center justify-center gap-1.5 mt-6">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  currentIndex === i ? 'w-6 bg-[#78350F]' : 'w-1.5 bg-[#E8DEC8] hover:bg-[#9A6B48]'
+                }`}
+              />
             ))}
           </div>
 
