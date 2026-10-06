@@ -4148,7 +4148,7 @@ return (
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                       <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider">
-                        Milestone Escrow Safety Engine (Step 14)
+                        Milestone Escrow Safety Engine
                       </h4>
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">
