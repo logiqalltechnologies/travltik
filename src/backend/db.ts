@@ -969,6 +969,22 @@ export async function runMigrations() {
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
     CREATE INDEX IF NOT EXISTS idx_em_booking_id ON escrow_milestones (booking_id);
+
+    -- ── DB ENUM FOR ACCREDITATIONS (Step 26) ──
+    DO $$ BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'accreditation_type') THEN
+        CREATE TYPE accreditation_type AS ENUM (
+          'MARA',
+          'RCIC',
+          'SRA_SOLICITOR',
+          'BAR_COUNCIL',
+          'OISC',
+          'UNVERIFIED'
+        );
+      END IF;
+    END $$;
+
+    ALTER TABLE experts ADD COLUMN IF NOT EXISTS license_type accreditation_type DEFAULT 'UNVERIFIED';
   `);
   })();
   return migrationsPromise;
