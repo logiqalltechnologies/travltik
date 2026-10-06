@@ -7,11 +7,12 @@ export const prerender = false;
 export const GET: APIRoute = async ({ url }) => {
   try {
     const q       = url.searchParams.get('q')?.trim() || '';
+    const idParam = url.searchParams.get('id')?.trim() || '';
     const country = url.searchParams.get('country')?.trim() || '';
     const purpose = url.searchParams.get('purpose')?.trim() || '';
     const city    = url.searchParams.get('city')?.trim() || '';
 
-    const cacheKey = `experts:search:${q}:${country}:${purpose}:${city}`.toLowerCase();
+    const cacheKey = `experts:search:${idParam}:${q}:${country}:${purpose}:${city}`.toLowerCase();
     const cachedData = await cacheGet<any[]>(cacheKey);
     if (cachedData && Array.isArray(cachedData)) {
       return new Response(JSON.stringify({ success: true, experts: cachedData, total: cachedData.length, cached: true }), {
@@ -30,6 +31,16 @@ export const GET: APIRoute = async ({ url }) => {
 
     // Show all valid expert profiles
     conditions.push(`((business_name IS NOT NULL AND business_name != '') OR (email IS NOT NULL AND email != ''))`);
+
+    if (idParam) {
+      const cleanId = idParam.replace(/^db_/i, '').trim();
+      const numId = parseInt(cleanId, 10);
+      if (!isNaN(numId)) {
+        conditions.push(`id = $${idx}`);
+        params.push(numId);
+        idx++;
+      }
+    }
 
     if (q) {
       conditions.push(`(

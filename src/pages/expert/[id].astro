@@ -1,0 +1,128 @@
+---
+// src/pages/expert/[id].astro
+import Layout from '../../layouts/Layout.astro';
+import { ExpertProfileDetail } from '../../components/interactive/ExpertProfileDetail';
+import { dummyExperts, getExpertById } from '../../data/dummyExperts';
+import { runMigrations, getReadPool } from '../../backend/db';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+const expertIdStr = String(id || '').trim();
+
+let expert: any = null;
+
+// 1. First check dummy experts
+const foundDummy = getExpertById(expertIdStr);
+if (foundDummy) {
+  expert = foundDummy;
+}
+
+// 2. If not found in dummies, check database
+if (!expert && expertIdStr) {
+  try {
+    await runMigrations();
+    const pool = getReadPool();
+    const cleanId = expertIdStr.replace(/^db_/i, '').trim();
+    const numId = parseInt(cleanId, 10);
+    
+    let dbRow: any = null;
+    if (!isNaN(numId)) {
+      const res = await pool.query('SELECT * FROM experts WHERE id = $1 LIMIT 1', [numId]);
+      if (res.rows && res.rows.length > 0) {
+        dbRow = res.rows[0];
+      }
+    }
+
+    if (!dbRow) {
+      // Try finding by business_name or email prefix
+      const resName = await pool.query('SELECT * FROM experts WHERE LOWER(business_name) = LOWER($1) OR LOWER(email) = LOWER($1) LIMIT 1', [cleanId]);
+      if (resName.rows && resName.rows.length > 0) {
+        dbRow = resName.rows[0];
+      }
+    }
+
+    if (dbRow) {
+      const parseArray = (val: any): string[] => {
+        if (!val) return [];
+        if (Array.isArray(val)) return val.map(x => String(x).replace(/^[\{\"\s]+|[\}\"\s]+$/g, '')).filter(Boolean);
+        if (typeof val === 'string') {
+          try {
+            const p = JSON.parse(val);
+            if (Array.isArray(p)) return p.map(x => String(x).trim()).filter(Boolean);
+          } catch {}
+          return val.replace(/^\{|\}$/g, '').split(',').map(x => x.replace(/^["'\s]+|["'\s]+$/g, '').trim()).filter(Boolean);
+        }
+        return [];
+      };
+
+      const tags = parseArray(dbRow.expertise_tags);
+      const countries = parseArray(dbRow.countries_expertise);
+
+      expert = {
+        id: `db_${dbRow.id}`,
+        name: dbRow.business_name || dbRow.full_name || 'Verified Consultant',
+        businessName: dbRow.business_name || '',
+        fullName: dbRow.full_name || '',
+        role: dbRow.advisor_type || 'Immigration & Visa Consultant',
+        city: dbRow.city || dbRow.office_address || 'Hyderabad',
+        state: dbRow.state || '',
+        country: dbRow.country || 'India',
+        address: dbRow.office_address || '',
+        bio: dbRow.about_me || 'Verified TravlTik Immigration and Visa Consultant.',
+        email: dbRow.email || '',
+        phone: dbRow.contact_number || '',
+        govReg: dbRow.gov_registration_number || '',
+        tags: tags.length > 0 ? tags : ['Tourist Visa', 'Student Visa', 'Work Visa', 'PR Pathway'],
+        countries: countries.length > 0 ? countries : ['India', 'Canada', 'United Kingdom', 'Australia'],
+        image: (dbRow.profile_photo && !dbRow.profile_photo.includes('unsplash.com')) ? dbRow.profile_photo : '',
+        rating: 4.8,
+        reviews: 126,
+        isVerified: dbRow.is_verified === true || dbRow.verification_status === 'active',
+        experienceYears: dbRow.experience_years || '8+ Years',
+        hourlyRate: dbRow.hourly_rate || 49,
+        languages: parseArray(dbRow.languages_spoken)
+      };
+    }
+  } catch (err) {
+    console.warn('[expert/[id].astro] DB lookup error:', err);
+  }
+}
+
+// 3. Fallback if still not found
+if (!expert) {
+  expert = {
+    id: expertIdStr || 'globalpath',
+    name: 'GlobalPath Immigration Services',
+    businessName: 'GlobalPath Immigration Services',
+    role: 'Visa & Immigration Consultancy',
+    city: 'Hyderabad',
+    country: 'India',
+    bio: 'GlobalPath Immigration Services is a certified, results-driven immigration consultancy dedicated to facilitating seamless global mobility for individuals, students, and skilled professionals.',
+    tags: ['Tourist Visa', 'Student Visa', 'Work Visa', 'Business Visa', 'Family/Dependent Visa', 'Visa Appeals'],
+    countries: ['India', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'United States', 'Poland'],
+    rating: 4.8,
+    reviews: 126,
+    isVerified: true,
+    govReg: 'ICCRC-R123456',
+    experienceYears: '8+ Years',
+    languages: ['English', 'Hindi', 'Telugu']
+  };
+}
+
+// Related experts (other dummy/sample experts)
+const related = dummyExperts.filter(e => e.id !== expert.id).slice(0, 4);
+---
+
+<Layout 
+  title={`${expert.name} - Verified Visa & Immigration Consultant | TravlTik`}
+  description={expert.bio || `Consult with ${expert.name}, top-rated visa and immigration specialist in ${expert.city}.`}
+>
+  <main class="min-h-screen bg-[#f8fafc]">
+    <ExpertProfileDetail 
+      client:load 
+      expert={expert} 
+      relatedExperts={related} 
+    />
+  </main>
+</Layout>
