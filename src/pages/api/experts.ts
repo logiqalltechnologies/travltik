@@ -1,14 +1,14 @@
 // src/pages/api/experts.ts
 // Fetches all registered experts from Neon DB with optional search filters
 import type { APIRoute } from 'astro';
-import { runMigrations, getPool } from '../../backend/db';
+import { runMigrations, getReadPool } from '../../backend/db';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ url }) => {
   try {
     await runMigrations();
-    const pool = getPool();
+    const pool = getReadPool();
 
     const q       = url.searchParams.get('q')?.trim() || '';
     const country = url.searchParams.get('country')?.trim() || '';

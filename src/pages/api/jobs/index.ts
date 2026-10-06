@@ -1,12 +1,12 @@
 import type { APIRoute } from 'astro';
-import { getPool, runMigrations } from '../../../backend/db';
+import { getReadPool, runMigrations } from '../../../backend/db';
 
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
   try {
     await runMigrations();
-    const pool = getPool();
+    const pool = getReadPool();
 
     const result = await pool.query(`
       SELECT * FROM work_permit_jobs
