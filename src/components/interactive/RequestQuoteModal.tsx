@@ -339,6 +339,8 @@ export function RequestQuoteModal({
                 <label className="text-[10px] font-bold text-slate-700 block mb-1">Phone / WhatsApp</label>
                 <input
                   type="tel"
+                  pattern="\+[0-9]{1,4}\s?[0-9]{4,12}"
+                  title="International format: +[country code] [number], e.g. +91 9876543210"
                   placeholder="+91 9876543210"
                   value={seekerPhone}
                   onChange={(e) => setSeekerPhone(e.target.value)}

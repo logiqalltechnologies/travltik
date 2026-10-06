@@ -31,7 +31,7 @@ const faqs = [
     },
     {
         question: "Is my personal information secure?",
-        answer: "Yes. We use bank-grade 256-bit encryption for all data. Your documents are stored in secure servers and only accessible to you and your assigned legal representative.",
+        answer: "Yes. We use ISO/IEC 27001 standard and sovereign AES-256-GCM column encryption for all personal data. Your documents are stored in secure servers and only accessible to you and your assigned legal representative.",
     },
     {
         question: "What is your refund policy?",

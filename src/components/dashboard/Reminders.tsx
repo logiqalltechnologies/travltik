@@ -220,6 +220,24 @@ export const Reminders: React.FC<RemindersProps> = ({
             </div>
           </div>
         </div>
+
+        {/* GDPR / DPDP Right to be Forgotten (Step 40) */}
+        <div className="mt-8 pt-6 border-t border-slate-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-rose-50/50 border border-rose-200/80">
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-rose-700">Danger Zone • DPDP &amp; GDPR Compliance</h4>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Permanently delete your user account, revoke biometric consent, and purge all vault documents.
+              </p>
+            </div>
+            <a
+              href="/settings/delete-account"
+              className="inline-flex items-center justify-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs shrink-0"
+            >
+              Delete My Account
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

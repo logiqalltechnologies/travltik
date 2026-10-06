@@ -70,7 +70,7 @@ export function EscrowTracker({ bookingId }: { bookingId: string }) {
           <p className="text-xs text-slate-500">Funds released progressively upon verified completion</p>
         </div>
         <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full">
-          100% Escrow Protected
+          Milestone Escrow Protection
         </span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

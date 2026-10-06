@@ -3682,7 +3682,7 @@ return (
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-around gap-3 sm:gap-6 text-xs sm:text-[13px] font-semibold tracking-wide">
           <div className="flex items-center gap-2 text-emerald-400">
             <span className="text-base sm:text-lg">🛡️</span>
-            <span className="text-slate-100">100% Escrow Protected Payments</span>
+            <span className="text-slate-100">Milestone Escrow Protection</span>
           </div>
           <div className="hidden sm:block w-px h-4 bg-slate-700" />
           <div className="flex items-center gap-2 text-sky-400">
@@ -3692,7 +3692,7 @@ return (
           <div className="hidden sm:block w-px h-4 bg-slate-700" />
           <div className="flex items-center gap-2 text-amber-400">
             <span className="text-base sm:text-lg">🔒</span>
-            <span className="text-slate-100">Bank-Grade Data Privacy</span>
+            <span className="text-slate-100">ISO/IEC 27001 &amp; AES-256 Encrypted</span>
           </div>
         </div>
       </section>
