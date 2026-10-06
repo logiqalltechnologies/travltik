@@ -1,10 +1,31 @@
 import React, { useState } from 'react';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface Pathway {
   name: string;
   probability: string;
   timeline: string;
 }
+
+const countryOptions = [
+  { value: 'canada', label: 'Canada', subtitle: 'Express Entry & PNP Pathways' },
+  { value: 'australia', label: 'Australia', subtitle: 'Subclass 189, 190 & 491' },
+];
+
+const degreeOptions = [
+  { value: 'phd', label: 'PhD / Doctoral', subtitle: 'Level 10 Qualification' },
+  { value: 'masters', label: "Master's Degree", subtitle: 'Post-graduate Level' },
+  { value: 'bachelors', label: "Bachelor's Degree", subtitle: '3-4 Year Degree' },
+  { value: 'diploma', label: 'Diploma / Associate', subtitle: 'Post-secondary Trade/Diploma' },
+  { value: 'high_school', label: 'Secondary / High School', subtitle: 'Standard 12th Grade' },
+];
+
+const englishOptions = [
+  { value: 'superior', label: 'Superior (IELTS 8+ / CLB 9+)', subtitle: 'Maximum points bracket' },
+  { value: 'proficient', label: 'Proficient (IELTS 7 / CLB 8)', subtitle: 'High competitiveness' },
+  { value: 'competent', label: 'Competent (IELTS 6 / CLB 7)', subtitle: 'Standard eligibility' },
+  { value: 'basic', label: 'Basic (IELTS 5 / CLB 5)', subtitle: 'Minimum baseline' },
+];
 
 export function DecisionMatrix() {
   const [answers, setAnswers] = useState({
@@ -103,15 +124,12 @@ export function DecisionMatrix() {
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-semibold mb-2 text-slate-700">Target Country</label>
-          <select
+          <CustomSelect
             value={answers.targetCountry}
-            onChange={(e) => setAnswers({ ...answers, targetCountry: e.target.value })}
-            className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#00a896]"
-          >
-            <option value="">Select Target Country</option>
-            <option value="canada">Canada</option>
-            <option value="australia">Australia</option>
-          </select>
+            onChange={(val) => setAnswers({ ...answers, targetCountry: val })}
+            options={countryOptions}
+            placeholder="Select Target Country"
+          />
         </div>
 
         <div>
@@ -127,18 +145,12 @@ export function DecisionMatrix() {
 
         <div>
           <label className="block text-sm font-semibold mb-2 text-slate-700">Highest Degree</label>
-          <select
+          <CustomSelect
             value={answers.degree}
-            onChange={(e) => setAnswers({ ...answers, degree: e.target.value })}
-            className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#00a896]"
-          >
-            <option value="">Select Degree</option>
-            <option value="phd">PhD / Doctoral</option>
-            <option value="masters">Master's Degree</option>
-            <option value="bachelors">Bachelor's Degree</option>
-            <option value="diploma">Diploma / Associate</option>
-            <option value="high_school">Secondary / High School</option>
-          </select>
+            onChange={(val) => setAnswers({ ...answers, degree: val })}
+            options={degreeOptions}
+            placeholder="Select Degree"
+          />
         </div>
 
         <div>
@@ -154,17 +166,12 @@ export function DecisionMatrix() {
 
         <div>
           <label className="block text-sm font-semibold mb-2 text-slate-700">English Level</label>
-          <select
+          <CustomSelect
             value={answers.englishLevel}
-            onChange={(e) => setAnswers({ ...answers, englishLevel: e.target.value })}
-            className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#00a896]"
-          >
-            <option value="">Select English Proficiency</option>
-            <option value="superior">Superior (IELTS 8+ / CLB 9+)</option>
-            <option value="proficient">Proficient (IELTS 7 / CLB 8)</option>
-            <option value="competent">Competent (IELTS 6 / CLB 7)</option>
-            <option value="basic">Basic (IELTS 5 / CLB 5)</option>
-          </select>
+            onChange={(val) => setAnswers({ ...answers, englishLevel: val })}
+            options={englishOptions}
+            placeholder="Select English Proficiency"
+          />
         </div>
 
         {error && (
