@@ -3,6 +3,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { VisaCountryResultPortal } from '../../components/visa/VisaCountryResultPortal';
 import RoutePricing from '../../components/pathways/RoutePricing.astro';
+import { DecisionMatrix } from '../../components/tools/DecisionMatrix';
 
 export const prerender = false;
 
@@ -54,6 +55,28 @@ const pageDesc = `Get your ${countryClean} visa online from your smartphone with
     />
     <div class="max-w-6xl mx-auto px-4 pb-16">
       <RoutePricing country={countryClean} purpose={purpose} />
+
+      <!-- Decision Matrix — Bottom Section (Expandable Card) -->
+      <section class="mt-12">
+        <details class="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-slate-50 transition-colors">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">
+                Check Your Eligibility Score
+              </h2>
+              <p class="text-sm text-slate-500 mt-1">
+                Answer 4 quick questions to see your best visa pathways.
+              </p>
+            </div>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">
+              ▼
+            </span>
+          </summary>
+          <div class="border-t border-slate-100 p-6">
+            <DecisionMatrix client:visible />
+          </div>
+        </details>
+      </section>
     </div>
   </div>
 </Layout>
