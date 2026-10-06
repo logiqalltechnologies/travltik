@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 let pool: pg.Pool | null = null;
+let readPool: pg.Pool | null = null;
 let useSSL = true;
 
 function getDatabaseUrl(): string {
@@ -25,6 +26,28 @@ function getDatabaseUrl(): string {
     connStr = connStr.replace('.neon.tech', '-pooler.neon.tech');
   }
   return connStr;
+}
+
+function getReadReplicaUrl(): string {
+  let connStr = (import.meta?.env?.READ_REPLICA_URL as string || process.env.READ_REPLICA_URL || '').trim();
+
+  if (!connStr) {
+    try {
+      const envPath = path.resolve(process.cwd(), '.env');
+      if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf8');
+        const match = content.match(/^READ_REPLICA_URL\s*=\s*(.*)$/m);
+        if (match) {
+          connStr = match[1].trim().replace(/^["']|["']$/g, '');
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (connStr && connStr.includes('.neon.tech') && !connStr.includes('-pooler')) {
+    connStr = connStr.replace('.neon.tech', '-pooler.neon.tech');
+  }
+  return connStr || getDatabaseUrl();
 }
 
 function createPoolInstance(forceNoSSL = false) {
@@ -58,6 +81,56 @@ function createPoolInstance(forceNoSSL = false) {
   pool.on('error', (err) => {
     console.warn('[DB Pool Idle Client Error - Handled]:', err.message);
   });
+}
+
+function createReadPoolInstance(forceNoSSL = false) {
+  if (readPool) {
+    try { readPool.end(); } catch(e) {}
+  }
+  let connStr = getReadReplicaUrl();
+  if (forceNoSSL || !useSSL) {
+    connStr = connStr.replace('sslmode=require', 'sslmode=disable');
+    readPool = new pg.Pool({
+      connectionString: connStr,
+      ssl: false,
+      max: 20,
+      idleTimeoutMillis: 60000,
+      connectionTimeoutMillis: 12000
+    });
+  } else {
+    readPool = new pg.Pool({
+      connectionString: connStr,
+      ssl: { rejectUnauthorized: false },
+      max: 20,
+      idleTimeoutMillis: 60000,
+      connectionTimeoutMillis: 12000
+    });
+  }
+
+  readPool.on('error', (err) => {
+    console.warn('[DB Read Replica Pool Idle Client Error - Handled]:', err.message);
+  });
+}
+
+export function getReadPool() {
+  if (!readPool) {
+    createReadPoolInstance();
+  }
+  return {
+    query: async (text: string, params?: any[]) => {
+      try {
+        return await readPool!.query(text, params);
+      } catch (err: any) {
+        // Transparent fallback to primary pool on replica timeout/error
+        console.warn('[Read Replica query fallback to primary]:', err.message);
+        const primary = getPool();
+        return await primary.query(text, params);
+      }
+    },
+    end: async () => {
+      if (readPool) return readPool.end();
+    }
+  } as unknown as pg.Pool;
 }
 
 export function getPool() {
