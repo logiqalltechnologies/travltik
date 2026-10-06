@@ -4134,6 +4134,78 @@ return (
                   </div>
                 ))}
               </div>
+
+              {/* ── STEP 14: ESCROW MILESTONE 3-STAGE VISUAL TRACKER (PIZZA TRACKER UI) ── */}
+              <div className="mt-8 pt-6 border-t border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider">
+                        Milestone Escrow Safety Engine (Step 14)
+                      </h4>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Consultant receives payout in 3 stages only after verified proof of work.
+                    </p>
+                  </div>
+                  <a
+                    href="/dashboard"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00a896] hover:underline shrink-0"
+                  >
+                    <span>View In Client Dashboard</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-50/70 border-2 border-emerald-300">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-emerald-800">
+                        Milestone 1 • 20%
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900">
+                        Unlocked
+                      </span>
+                    </div>
+                    <div className="text-sm font-bold text-slate-900 mt-1.5">Document Verification</div>
+                    <p className="text-[11px] text-slate-600 mt-1 leading-snug">
+                      Counsel cross-verifies passport, financial proofs &amp; eligibility checklist.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-blue-50/70 border-2 border-blue-300">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-blue-800">
+                        Milestone 2 • 30%
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-200 text-blue-900">
+                        In Progress
+                      </span>
+                    </div>
+                    <div className="text-sm font-bold text-slate-900 mt-1.5">Application Filing &amp; VFS</div>
+                    <p className="text-[11px] text-slate-600 mt-1 leading-snug">
+                      Form filing, consular appointment slot confirmed &amp; SOP uploaded.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border-2 border-slate-200">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-slate-600">
+                        Milestone 3 • 50%
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
+                        Locked in Escrow
+                      </span>
+                    </div>
+                    <div className="text-sm font-bold text-slate-900 mt-1.5">Official Embassy Submission</div>
+                    <p className="text-[11px] text-slate-600 mt-1 leading-snug">
+                      Funds disbursed only upon official consular acknowledgment receipt.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </section>
 

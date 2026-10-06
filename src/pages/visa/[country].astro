@@ -2,6 +2,7 @@
 // src/pages/visa/[country].astro
 import Layout from '../../layouts/Layout.astro';
 import { VisaCountryResultPortal } from '../../components/visa/VisaCountryResultPortal';
+import RoutePricing from '../../components/pathways/RoutePricing.astro';
 
 export const prerender = false;
 
@@ -51,5 +52,8 @@ const pageDesc = `Get your ${countryClean} visa online from your smartphone with
       initialPassport={passport} 
       initialPurpose={purpose} 
     />
+    <div class="max-w-6xl mx-auto px-4 pb-16">
+      <RoutePricing country={countryClean} purpose={purpose} />
+    </div>
   </div>
 </Layout>

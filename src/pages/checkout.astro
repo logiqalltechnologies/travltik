@@ -10,9 +10,9 @@ const countryParam = Astro.url.searchParams.get('country') || 'General';
 const purposeParam = Astro.url.searchParams.get('purpose') || 'Travel';
 
 const TIERS: Record<string, { name: string; price: number; queries: number; desc: string }> = {
-  starter: { name: 'Starter', price: 5, queries: 3, desc: '3 AI query credits, AI document checklist & biometric spec check.' },
-  professional: { name: 'Professional', price: 29, queries: 10, desc: '10 AI query credits + MARA/RCIC consultant document vetting & sign-off.' },
-  concierge: { name: 'Concierge', price: 199, queries: -1, desc: 'End-to-end priority consular filing, VFS appointment booking & account manager.' },
+  starter: { name: 'DIY Assisted', price: 29, queries: 10, desc: 'AI document validation, checklist, SOP builder & consular submission guide.' },
+  professional: { name: 'Legal Review', price: 199, queries: 25, desc: 'Official MARA / RCIC attorney review, refusal risk audit & 100% milestone escrow.' },
+  concierge: { name: 'Concierge Filing', price: 399, queries: -1, desc: 'End-to-end white-glove filing, dedicated legal case officer & VFS priority booking.' },
 };
 
 const selected = TIERS[tierParam.toLowerCase()] || TIERS.starter;
