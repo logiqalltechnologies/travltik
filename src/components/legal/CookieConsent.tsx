@@ -14,32 +14,39 @@ export function CookieConsent() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md text-white p-4 border-t border-slate-800 shadow-2xl">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 flex-wrap">
-        <p className="text-xs sm:text-sm text-slate-300">
-          We use sovereign-compliant essential cookies to guarantee identity security, biometric integrity, and legal escrow handling. By continuing, you agree to our{' '}
-          <a href="/privacy" className="underline text-[#00a896] hover:text-[#028090]">Privacy Policy</a>.
-        </p>
-        <div className="flex gap-2">
-          <button
-            onClick={() => {
-              localStorage.setItem('cookie_consent', 'rejected');
-              setVisible(false);
-            }}
-            className="px-4 py-2 text-xs font-semibold border border-white/20 hover:bg-white/10 rounded-lg transition-colors"
-          >
-            Reject
-          </button>
-          <button
-            onClick={() => {
-              localStorage.setItem('cookie_consent', 'accepted');
-              setVisible(false);
-            }}
-            className="px-4 py-2 text-xs font-bold bg-[#00a896] hover:bg-[#028090] text-white rounded-lg transition-colors shadow-sm"
-          >
-            Accept
-          </button>
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 left-4 sm:left-auto z-50 max-w-sm w-auto bg-white text-slate-900 p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-2xl transition-all animate-in fade-in slide-in-from-bottom-5">
+      <div className="flex items-start gap-3">
+        <div className="w-9 h-9 rounded-xl bg-teal-50 text-[#00a896] flex items-center justify-center shrink-0 text-lg">
+          🍪
         </div>
+        <div>
+          <h4 className="text-sm font-bold text-slate-900">Cookie &amp; Privacy Notice</h4>
+          <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+            We use essential cookies to guarantee identity protection, biometric upload integrity, and legal escrow security. Learn more in our{' '}
+            <a href="/privacy" className="text-[#00a896] hover:underline font-semibold">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+        <button
+          onClick={() => {
+            localStorage.setItem('cookie_consent', 'rejected');
+            setVisible(false);
+          }}
+          className="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
+        >
+          Decline
+        </button>
+        <button
+          onClick={() => {
+            localStorage.setItem('cookie_consent', 'accepted');
+            setVisible(false);
+          }}
+          className="px-4 py-2 text-xs font-bold bg-[#00a896] hover:bg-[#028090] text-white rounded-xl shadow-sm transition-all"
+        >
+          Accept All
+        </button>
       </div>
     </div>
   );
