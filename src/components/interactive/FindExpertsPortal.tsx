@@ -997,9 +997,17 @@ export function FindExpertsPortal() {
 
                                                 {/* Rating Badge */}
                                                 <div className="flex items-center gap-1 shrink-0">
-                                                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                                                    <span className="font-semibold text-xs text-slate-900">{e.rating?.toFixed(1)}</span>
-                                                    {e.reviews > 0 && <span className="text-[10px] text-slate-400 font-normal">({e.reviews} verified reviews)</span>}
+                                                    {e.reviews > 0 && e.rating > 0 ? (
+                                                        <>
+                                                            <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                                                            <span className="font-semibold text-xs text-slate-900">{e.rating?.toFixed(1)}</span>
+                                                            <span className="text-[10px] text-slate-400 font-normal">({e.reviews} verified reviews)</span>
+                                                        </>
+                                                    ) : (
+                                                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200/60">
+                                                            <Sparkles className="w-2.5 h-2.5 text-teal-600" /> New Consultant
+                                                        </span>
+                                                    )}
                                                 </div>
                                             </div>
 

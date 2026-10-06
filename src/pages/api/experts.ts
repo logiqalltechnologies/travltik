@@ -97,34 +97,38 @@ export const GET: APIRoute = async ({ url }) => {
 
     const result = await pool.query(
       `SELECT
-        id,
-        business_name,
-        full_name,
-        email,
-        contact_number,
-        advisor_type,
-        about_me,
-        portfolio_link,
-        office_address,
-        city,
-        state,
-        country,
-        gov_registration_number,
-        expertise_tags,
-        countries_expertise,
-        profile_photo,
-        is_verified,
-        verification_status,
-        verification_tier,
-        hourly_rate,
-        experience_years,
-        languages_spoken,
-        is_google_verified,
-        service_category,
-        created_at
-      FROM experts
-      ${where}
-      ORDER BY created_at DESC
+        e.id,
+        e.business_name,
+        e.full_name,
+        e.email,
+        e.contact_number,
+        e.advisor_type,
+        e.about_me,
+        e.portfolio_link,
+        e.office_address,
+        e.city,
+        e.state,
+        e.country,
+        e.gov_registration_number,
+        e.expertise_tags,
+        e.countries_expertise,
+        e.profile_photo,
+        e.is_verified,
+        e.verification_status,
+        e.verification_tier,
+        e.hourly_rate,
+        e.experience_years,
+        e.languages_spoken,
+        e.is_google_verified,
+        e.service_category,
+        e.created_at,
+        COUNT(r.id)::int AS reviews_count,
+        COALESCE(ROUND(AVG(r.rating)::numeric, 1), 0.0) AS avg_rating
+      FROM experts e
+      LEFT JOIN reviews r ON r.expert_id = e.id
+      ${where ? where.replace(/\b(advisor_type|expertise_tags|countries_expertise|office_address|city|state|country|email|contact_number|service_category|about_me)\b/g, 'e.$1') : ''}
+      GROUP BY e.id
+      ORDER BY e.created_at DESC
       LIMIT 100`,
       params
     );
@@ -181,8 +185,8 @@ export const GET: APIRoute = async ({ url }) => {
         tags: tags.length > 0 ? tags : ['Visa Consultation', 'Immigration'],
         countries: countries.length > 0 ? countries : ['Worldwide'],
         image: (row.profile_photo && !row.profile_photo.includes('unsplash.com')) ? row.profile_photo : '',
-        rating: 5.0,
-        reviews: 1,
+        rating: row.reviews_count > 0 ? Number(row.avg_rating) : 0,
+        reviews: Number(row.reviews_count) || 0,
         isVerified: row.is_verified === true || row.verification_status === 'active',
         isGoogleVerified: row.is_google_verified === true,
         verificationTier: row.verification_tier || 'email_verified',

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Star, MapPin, CheckCircle, ShieldCheck, Clock, Award, 
   Building2, Users, Globe, Phone, Mail, ChevronRight, 
   ChevronDown, ExternalLink, MessageSquare, ArrowRight, 
   Share2, Bookmark, Check, Calendar, ArrowLeft, Heart,
-  Sparkles, FileText, AlertCircle
+  Sparkles, FileText, AlertCircle, MessageCircle
 } from 'lucide-react';
 import { RequestQuoteModal } from './RequestQuoteModal';
 import { ReviewRatingModal } from './ReviewRatingModal';
@@ -28,6 +28,8 @@ export interface ExpertProfileDetailProps {
     countries?: string[];
     rating?: number;
     reviews?: number;
+    reviewsList?: any[];
+    galleryImages?: Array<{ url: string; title: string }>;
     isVerified?: boolean;
     isRemote?: boolean;
     govReg?: string;
@@ -39,6 +41,7 @@ export interface ExpertProfileDetailProps {
     serviceCategory?: string;
     languages?: string[];
   };
+  initialReviews?: any[];
   relatedExperts?: any[];
   isModal?: boolean;
   onClose?: () => void;
@@ -46,6 +49,7 @@ export interface ExpertProfileDetailProps {
 
 export function ExpertProfileDetail({
   expert,
+  initialReviews = [],
   relatedExperts = [],
   isModal = false,
   onClose
@@ -63,95 +67,152 @@ export function ExpertProfileDetail({
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
-  const displayName = expert.businessName || expert.name || expert.fullName || 'GlobalPath Immigration Services';
-  const displayRole = expert.role || 'Visa & Immigration Consultancy';
-  const displayCity = expert.city || 'Hyderabad';
+  // Real Reviews state
+  const [reviewsList, setReviewsList] = useState<any[]>(() => {
+    if (initialReviews && initialReviews.length > 0) return initialReviews;
+    if (expert.reviewsList && expert.reviewsList.length > 0) return expert.reviewsList;
+    return [];
+  });
+  const [loadingReviews, setLoadingReviews] = useState(false);
+
+  // Parse numeric expert ID for reviews API
+  const numericExpertId = useMemo(() => {
+    if (typeof expert.id === 'number') return expert.id;
+    const match = String(expert.id).replace(/\D/g, '');
+    return match ? parseInt(match, 10) : 0;
+  }, [expert.id]);
+
+  // Fetch real reviews from API on mount if not provided
+  useEffect(() => {
+    if (numericExpertId > 0 && (!reviewsList || reviewsList.length === 0)) {
+      setLoadingReviews(true);
+      fetch(`/api/reviews?expertId=${numericExpertId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.reviews)) {
+            const formatted = data.reviews.map((r: any) => ({
+              id: r.id,
+              author: r.seeker_name || 'Verified Client',
+              date: r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently',
+              rating: Number(r.rating) || 5,
+              type: r.tags || 'Visa Consultation',
+              verified: Boolean(r.is_verified_transaction),
+              comment: r.feedback || ''
+            }));
+            setReviewsList(formatted);
+          }
+        })
+        .catch(err => {
+          console.warn('[ExpertProfileDetail] Failed to fetch reviews:', err);
+        })
+        .finally(() => {
+          setLoadingReviews(false);
+        });
+    }
+  }, [numericExpertId]);
+
+  const displayName = expert.businessName || expert.name || expert.fullName || 'Verified Consultant';
+  const displayRole = expert.role || 'Visa & Immigration Consultant';
+  const displayCity = expert.city || 'Remote';
   const displayCountry = expert.country || 'India';
-  const displayLocation = expert.city ? `${expert.city}, ${expert.country || 'India'}` : 'Hyderabad, India';
-  const ratingVal = expert.rating ? Number(expert.rating).toFixed(1) : '4.8';
-  const reviewCount = expert.reviews || 126;
-  const experienceText = expert.experienceYears ? `${expert.experienceYears}` : '8+ years experience';
+  const displayLocation = expert.city ? `${expert.city}, ${expert.country || 'India'}` : (expert.country || 'Remote');
+
+  // Compute real review count and average rating
+  const reviewCount = reviewsList.length;
+  const computedAvgRating = reviewCount > 0
+    ? (reviewsList.reduce((acc, curr) => acc + (Number(curr.rating) || 5), 0) / reviewCount)
+    : (expert.rating && expert.reviews ? Number(expert.rating) : 0);
+  const ratingVal = reviewCount > 0 ? computedAvgRating.toFixed(1) : (computedAvgRating > 0 ? computedAvgRating.toFixed(1) : 'New');
+
+  const experienceText = expert.experienceYears ? `${expert.experienceYears}` : 'Verified Consultant';
 
   const expertTags = (expert.tags && expert.tags.length > 0) 
     ? expert.tags 
-    : ['Tourist Visa', 'Student Visa', 'Work Visa', 'Business Visa', 'Family/Dependent Visa', 'Visa Appeals'];
+    : ['Visa Consultation', 'Documentation Audit', 'Application Review'];
 
   const expertCountries = (expert.countries && expert.countries.length > 0 && expert.countries[0] !== 'Worldwide')
     ? expert.countries
-    : ['India', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'United States', 'Poland'];
+    : [expert.country || 'India'];
 
   const expertLanguages = (expert.languages && expert.languages.length > 0)
     ? expert.languages
-    : ['English', 'Hindi', 'Telugu'];
+    : ['English'];
 
   const bioText = expert.bio || expert.aboutMe || 
-    `${displayName} is a certified, results-driven immigration consultancy dedicated to facilitating seamless global mobility for individuals, students, and skilled professionals. Backed by extensive legal compliance experience and deep embassy procedural intelligence, we ensure complete accuracy in application drafting, document notarization, and interview readiness across tier-1 destinations.`;
+    `${displayName} is a verified immigration and visa consultant on TravlTik. Connect directly to evaluate your eligibility, get personalized document checklists, and receive guidance through your visa process.`;
 
-  const defaultServices = [
-    {
-      title: 'Tourist Visa Assistance',
-      desc: 'Complete documentation support, itinerary planning, cover letter drafting, and appointment scheduling.',
-      price: '₹5,000',
-      tag: 'Popular'
-    },
-    {
-      title: 'Student Visa Support',
-      desc: 'University offer letter evaluation, financial document audit, CAS/I-20 filing, and embassy mock interviews.',
-      price: '₹15,000',
-      tag: 'High Success'
-    },
-    {
-      title: 'Work Visa & Skilled Permit',
-      desc: 'Employer sponsorship verification, LMIA / CoS coordination, points matrix calculation, and fast-track submission.',
-      price: '₹25,000',
-      tag: 'Expertise'
-    },
-    {
-      title: 'Family & Dependent Visa',
-      desc: 'Spousal sponsorship, dependent child visa, relationship evidence dossiers, and fast approvals.',
-      price: '₹18,000',
-      tag: 'Guaranteed Care'
+  // Dynamic services based on real expert attributes
+  const hourlyRateNum = typeof expert.hourlyRate === 'number' ? expert.hourlyRate : parseInt(String(expert.hourlyRate || '49'), 10) || 49;
+  const currencySymbol = expert.country === 'India' ? '₹' : '$';
+  const multiplier = expert.country === 'India' ? 80 : 1;
+  const baseRate = hourlyRateNum * multiplier;
+
+  const servicesOffered = useMemo(() => {
+    return [
+      {
+        title: 'Initial Case Evaluation & Eligibility',
+        desc: 'Comprehensive review of your passport, travel history, qualifications, and country eligibility pathways.',
+        price: `${currencySymbol}${baseRate.toLocaleString()}`,
+        tag: 'Recommended'
+      },
+      {
+        title: 'Document Audit & Application Drafting',
+        desc: 'Detailed checklist verification, cover letter drafting, financial document review, and embassy portal readiness.',
+        price: `${currencySymbol}${(baseRate * 2.5).toLocaleString()}`,
+        tag: 'Thorough Audit'
+      },
+      {
+        title: 'End-to-End Filing & Interview Prep',
+        desc: 'Full submission management, appointment guidance, mock interview preparation, and real-time updates.',
+        price: `${currencySymbol}${(baseRate * 5).toLocaleString()}`,
+        tag: 'Full Advisory'
+      }
+    ];
+  }, [baseRate, currencySymbol]);
+
+  // Gallery: only real images if uploaded by expert
+  const galleryImages = expert.galleryImages || [];
+
+  // Compute rating percentage breakdown from REAL reviews
+  const ratingBreakdown = useMemo(() => {
+    if (reviewCount === 0) {
+      return [
+        { star: '5 star', count: 0, pct: 0 },
+        { star: '4 star', count: 0, pct: 0 },
+        { star: '3 star', count: 0, pct: 0 },
+        { star: '2 star', count: 0, pct: 0 },
+        { star: '1 star', count: 0, pct: 0 },
+      ];
     }
-  ];
+    const counts: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    reviewsList.forEach(r => {
+      const star = Math.min(5, Math.max(1, Math.round(Number(r.rating) || 5)));
+      counts[star] = (counts[star] || 0) + 1;
+    });
+    return [5, 4, 3, 2, 1].map(star => {
+      const c = counts[star] || 0;
+      return {
+        star: `${star} star`,
+        count: c,
+        pct: Math.round((c / reviewCount) * 100)
+      };
+    });
+  }, [reviewsList, reviewCount]);
 
-  const galleryImages = [
-    { url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80', title: 'Corporate Headquarters' },
-    { url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80', title: 'Client Consultation Desk' },
-    { url: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80', title: 'Visa Stamping Briefing' },
-    { url: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80', title: 'Airport Departure Lounge' },
-    { url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80', title: 'Immigration Advisory Team' },
-    { url: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=600&q=80', title: 'Global Network Map' }
-  ];
+  // Filter reviews by active tag
+  const filteredReviews = useMemo(() => {
+    if (selectedReviewFilter === 'All reviews') return reviewsList;
+    return reviewsList.filter(r => (r.type || '').toLowerCase().includes(selectedReviewFilter.toLowerCase()));
+  }, [reviewsList, selectedReviewFilter]);
 
-  const sampleReviews = [
-    {
-      id: 1,
-      author: 'Vikram R.',
-      date: '2 weeks ago',
-      rating: 5,
-      type: 'Tourist Visa',
-      verified: true,
-      comment: 'GlobalPath handled my UK standard visitor visa smoothly. All documents were checked thoroughly before submission and got the visa within 12 working days without any hassle. Highly recommended!'
-    },
-    {
-      id: 2,
-      author: 'Sneha M.',
-      date: '1 month ago',
-      rating: 5,
-      type: 'Student Visa',
-      verified: true,
-      comment: 'Got my Canada study permit approved after an earlier refusal through another consultant. The team redrafted my SOP with exceptional precision and addressed every single tie to home country.'
-    },
-    {
-      id: 3,
-      author: 'Rohit Verma',
-      date: '2 months ago',
-      rating: 4,
-      type: 'Work Visa',
-      verified: true,
-      comment: 'Very professional communication. Provided clear checklists for German EU Blue Card paperwork and guided me step-by-step through the VFS appointment.'
-    }
-  ];
+  // Dynamic review filter options from existing review tags
+  const reviewFilterOptions = useMemo(() => {
+    const opts = new Set<string>(['All reviews']);
+    reviewsList.forEach(r => {
+      if (r.type && r.type.trim()) opts.add(r.type.trim());
+    });
+    return Array.from(opts);
+  }, [reviewsList]);
 
   const faqs = [
     {
@@ -369,7 +430,7 @@ export function ExpertProfileDetail({
                   “Your Global Journey, <br /><span className="text-amber-300">Our Trusted Expertise</span>”
                 </h3>
                 <p className="text-xs text-slate-200/80 max-w-xs mx-auto">
-                  Over 500+ successful applicant cases approved across top immigration corridors.
+                  {expert.isVerified ? 'Verified immigration advisory and compliant filing support.' : 'Direct consultation and visa filing guidance.'}
                 </p>
               </div>
             </div>
@@ -392,15 +453,15 @@ export function ExpertProfileDetail({
             <div className="pt-2 sm:pt-0 sm:pl-4">
               <div className="flex items-center justify-center gap-1.5 text-teal-600 font-black text-lg">
                 <Users className="w-4 h-4" />
-                <span className="text-slate-900">500+</span>
+                <span className="text-slate-900">{reviewCount > 0 ? `${reviewCount}+` : 'Active'}</span>
               </div>
-              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Applicants Assisted</p>
+              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">{reviewCount > 0 ? 'Verified Reviews' : 'Direct Booking'}</p>
             </div>
 
             <div className="pt-2 sm:pt-0 sm:pl-4">
               <div className="flex items-center justify-center gap-1.5 text-indigo-600 font-black text-lg">
                 <Award className="w-4 h-4" />
-                <span className="text-slate-900">{experienceText.split(' ')[0]}</span>
+                <span className="text-slate-900">{String(experienceText).split(' ')[0]}</span>
               </div>
               <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Years Experience</p>
             </div>
@@ -408,9 +469,9 @@ export function ExpertProfileDetail({
             <div className="pt-2 sm:pt-0 sm:pl-4">
               <div className="flex items-center justify-center gap-1.5 text-emerald-600 font-black text-lg">
                 <Clock className="w-4 h-4" />
-                <span className="text-slate-900">2 hr</span>
+                <span className="text-slate-900">Direct</span>
               </div>
-              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Avg Response Time</p>
+              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Consultation Access</p>
             </div>
 
             <div className="pt-2 sm:pt-0 sm:pl-4 col-span-2 sm:col-span-1">
@@ -560,7 +621,7 @@ export function ExpertProfileDetail({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {defaultServices.map((srv, idx) => (
+                {servicesOffered.map((srv, idx) => (
                   <div 
                     key={idx}
                     className="border border-slate-200/80 rounded-2xl p-5 hover:border-teal-400/50 hover:shadow-md transition-all flex flex-col justify-between group bg-slate-50/30"
@@ -615,28 +676,26 @@ export function ExpertProfileDetail({
               {/* Rating Summary Card */}
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
                 <div className="sm:col-span-4 text-center sm:text-left sm:border-r sm:border-slate-200/80 sm:pr-6">
-                  <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">{ratingVal}</div>
+                  <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+                    {reviewCount > 0 ? ratingVal : 'New'}
+                  </div>
                   <div className="flex items-center justify-center sm:justify-start text-amber-400 gap-1 my-1">
                     {[1, 2, 3, 4, 5].map(i => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
+                      <Star key={i} className={`w-4 h-4 ${reviewCount > 0 && i <= Math.round(Number(ratingVal) || 5) ? 'fill-amber-400 text-amber-400' : 'text-slate-300'}`} />
                     ))}
                   </div>
-                  <p className="text-xs font-semibold text-slate-500">Based on {reviewCount} verified reviews</p>
+                  <p className="text-xs font-semibold text-slate-500">
+                    {reviewCount > 0 ? `Based on ${reviewCount} verified review${reviewCount !== 1 ? 's' : ''}` : 'No client reviews yet'}
+                  </p>
                 </div>
 
                 <div className="sm:col-span-8 space-y-1.5">
-                  {[
-                    { star: '5 star', pct: 88 },
-                    { star: '4 star', pct: 9 },
-                    { star: '3 star', pct: 2 },
-                    { star: '2 star', pct: 1 },
-                    { star: '1 star', pct: 0 },
-                  ].map(item => (
+                  {ratingBreakdown.map(item => (
                     <div key={item.star} className="flex items-center gap-3 text-xs">
                       <span className="w-12 text-slate-600 font-medium shrink-0">{item.star}</span>
                       <div className="flex-1 h-2 rounded-full bg-slate-200 overflow-hidden">
                         <div 
-                          className="h-full bg-amber-400 rounded-full" 
+                          className="h-full bg-amber-400 rounded-full transition-all duration-500" 
                           style={{ width: `${item.pct}%` }} 
                         />
                       </div>
@@ -646,74 +705,118 @@ export function ExpertProfileDetail({
                 </div>
               </div>
 
-              {/* Review Filter Pills */}
-              <div className="flex flex-wrap gap-2 pt-2">
-                {["All reviews", "Tourist Visa", "Student Visa", "Work Visa"].map(f => (
-                  <button
-                    key={f}
-                    onClick={() => setSelectedReviewFilter(f)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${selectedReviewFilter === f ? 'bg-[#00a896] text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
+              {/* Review Filter Pills (Only shown when reviews exist) */}
+              {reviewCount > 0 && reviewFilterOptions.length > 1 && (
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {reviewFilterOptions.map(f => (
+                    <button
+                      key={f}
+                      onClick={() => setSelectedReviewFilter(f)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${selectedReviewFilter === f ? 'bg-[#00a896] text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {/* Review Cards List */}
-              <div className="space-y-4 pt-2">
-                {sampleReviews.map(rev => (
-                  <div key={rev.id} className="border border-slate-100 rounded-2xl p-5 bg-slate-50/40 space-y-2.5">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-xs text-slate-900">{rev.author}</span>
-                          {rev.verified && (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-                              <CheckCircle className="w-2.5 h-2.5 text-emerald-600" /> Verified interaction
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <div className="flex text-amber-400">
-                            {[...Array(rev.rating)].map((_, i) => (
-                              <Star key={i} className="w-3 h-3 fill-amber-400" />
-                            ))}
+              {reviewCount > 0 ? (
+                <div className="space-y-4 pt-2">
+                  {filteredReviews.map(rev => (
+                    <div key={rev.id} className="border border-slate-100 rounded-2xl p-5 bg-slate-50/40 space-y-2.5">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-xs text-slate-900">{rev.author}</span>
+                            {rev.verified && (
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                                <CheckCircle className="w-2.5 h-2.5 text-emerald-600" /> Verified interaction
+                              </span>
+                            )}
                           </div>
-                          <span className="text-[11px] text-slate-400 font-medium">• {rev.date}</span>
-                          <span className="text-[11px] text-teal-700 font-semibold">• {rev.type}</span>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <div className="flex text-amber-400">
+                              {[...Array(Math.min(5, Math.max(1, rev.rating || 5)))].map((_, i) => (
+                                <Star key={i} className="w-3 h-3 fill-amber-400" />
+                              ))}
+                            </div>
+                            <span className="text-[11px] text-slate-400 font-medium">• {rev.date}</span>
+                            {rev.type && <span className="text-[11px] text-teal-700 font-semibold">• {rev.type}</span>}
+                          </div>
                         </div>
                       </div>
+                      <p className="text-xs text-slate-600 leading-relaxed font-normal">
+                        &quot;{rev.comment}&quot;
+                      </p>
                     </div>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                      &quot;{rev.comment}&quot;
+                  ))}
+                </div>
+              ) : (
+                /* Authentic Clean Empty State */
+                <div className="border border-dashed border-slate-200 rounded-2xl p-8 sm:p-10 text-center space-y-3 bg-slate-50/50">
+                  <div className="w-12 h-12 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mx-auto border border-amber-200/60">
+                    <MessageCircle className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900">No client reviews yet</h3>
+                    <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 leading-relaxed">
+                      Have you booked or consulted with {displayName}? Be the first client to leave verified feedback.
                     </p>
                   </div>
-                ))}
-              </div>
+                  <button
+                    onClick={() => setReviewModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs transition-all cursor-pointer mt-2"
+                  >
+                    <Star className="w-3.5 h-3.5 fill-white" />
+                    <span>Be the first to review</span>
+                  </button>
+                </div>
+              )}
 
             </div>
 
             {/* SECTION 4: GALLERY */}
             <div id="section-gallery" className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-4">
               <div>
-                <h2 className="text-lg font-black text-slate-900 tracking-tight">Gallery</h2>
-                <p className="text-xs text-slate-500 mt-0.5">Inside look at our consultation facility, advisory sessions, and successful client departures.</p>
+                <h2 className="text-lg font-black text-slate-900 tracking-tight">Gallery &amp; Credentials</h2>
+                <p className="text-xs text-slate-500 mt-0.5">Verified media, advisory office presence, and legal credentials.</p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {galleryImages.map((img, idx) => (
-                  <div key={idx} className="group relative rounded-2xl overflow-hidden aspect-4/3 bg-slate-100 border border-slate-200/80 shadow-xs">
-                    <img 
-                      src={img.url} 
-                      alt={img.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
-                      <span className="text-[11px] font-semibold text-white drop-shadow-sm">{img.title}</span>
+              {galleryImages && galleryImages.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {galleryImages.map((img, idx) => (
+                    <div key={idx} className="group relative rounded-2xl overflow-hidden aspect-4/3 bg-slate-100 border border-slate-200/80 shadow-xs">
+                      <img 
+                        src={img.url} 
+                        alt={img.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                        <span className="text-[11px] font-semibold text-white drop-shadow-sm">{img.title}</span>
+                      </div>
                     </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-slate-200/80 p-6 bg-slate-50/50 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                  <div className="w-12 h-12 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-200/60">
+                    <ShieldCheck className="w-6 h-6 text-teal-600" />
                   </div>
-                ))}
-              </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs font-bold text-slate-900">Verified Direct Practice</h4>
+                    <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                      Consultant operates directly through TravlTik verified digital appointments and office consultations in {displayCity}. Portfolio certificates and case milestones are verified during booking.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setQuoteModalOpen(true)}
+                    className="text-xs font-bold text-teal-700 hover:text-teal-900 border border-teal-200/80 bg-white px-3.5 py-2 rounded-xl transition-colors shrink-0 cursor-pointer"
+                  >
+                    Request Credentials
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* SECTION 5: FAQS ACCORDION */}
@@ -928,6 +1031,27 @@ export function ExpertProfileDetail({
         onClose={() => setReviewModalOpen(false)}
         expertId={typeof expert.id === 'number' ? expert.id : parseInt(String(expert.id).replace(/\D/g, '')) || 0}
         expertName={displayName}
+        onSuccess={() => {
+          if (numericExpertId > 0) {
+            fetch(`/api/reviews?expertId=${numericExpertId}`)
+              .then(res => res.json())
+              .then(data => {
+                if (data.success && Array.isArray(data.reviews)) {
+                  const formatted = data.reviews.map((r: any) => ({
+                    id: r.id,
+                    author: r.seeker_name || 'Verified Client',
+                    date: r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently',
+                    rating: Number(r.rating) || 5,
+                    type: r.tags || 'Visa Consultation',
+                    verified: Boolean(r.is_verified_transaction),
+                    comment: r.feedback || ''
+                  }));
+                  setReviewsList(formatted);
+                }
+              })
+              .catch(() => {});
+          }
+        }}
       />
 
       <DisputeReportModal
