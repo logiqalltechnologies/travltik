@@ -3634,42 +3634,6 @@ return (
 
               </div>
 
-              {/* Travel Readiness — Dedicated Secondary Teaser Section (Correction 6) */}
-              <div className="mt-4 sm:mt-5 w-full flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-white border border-emerald-100 shadow-2xs">
-                <div className="flex items-center gap-3 w-full sm:w-auto">
-                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center">
-                    <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="40" fill="none" stroke="#E2E8F0" strokeWidth="6" />
-                      <circle
-                        cx="50"
-                        cy="50"
-                        r="40"
-                        fill="none"
-                        stroke="#00a896"
-                        strokeWidth="6.5"
-                        strokeDasharray="251.33"
-                        strokeDashoffset="55.3"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                      <span className="text-[11px] sm:text-xs font-black text-slate-900 leading-none">78%</span>
-                      <span className="text-[7px] font-bold text-[#00a896] uppercase leading-none mt-0.5">Ready</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-xs sm:text-sm font-bold text-slate-900">Check Your Travel Readiness Score</div>
-                  </div>
-                </div>
-                <a
-                  href={`/readiness?from=${encodeURIComponent(passportCountry || 'India')}&to=${encodeURIComponent(journeyDestination || 'Canada')}&purpose=${encodeURIComponent(travelPurpose || serviceLookingFor || 'Student')}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs hover:shadow transition-all shrink-0 cursor-pointer"
-                >
-                  <span>Check Score</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
             </div>
 
           </div>
@@ -3680,6 +3644,47 @@ return (
 
       {/* Trust Strip (Hero Ke Neeche) */}
       <TrustStrip />
+
+      {/* Travel Readiness Score (Outside Hero) */}
+      <section className="py-5 sm:py-6 bg-slate-50/90 border-b border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs">
+            <div className="flex items-center gap-4">
+              <div className="relative w-12 h-12 shrink-0 flex items-center justify-center">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#E2E8F0" strokeWidth="6" />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="40"
+                    fill="none"
+                    stroke="#00a896"
+                    strokeWidth="6.5"
+                    strokeDasharray="251.33"
+                    strokeDashoffset="55.3"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                  <span className="text-xs font-black text-slate-900 leading-none">78%</span>
+                  <span className="text-[7.5px] font-bold text-[#00a896] uppercase leading-none mt-0.5">Ready</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-900">Travel Readiness Score</p>
+                <p className="text-xs text-slate-500 mt-0.5">Check your visa eligibility &amp; document completeness in seconds</p>
+              </div>
+            </div>
+            <a
+              href={`/readiness?from=${encodeURIComponent(passportCountry || 'India')}&to=${encodeURIComponent(journeyDestination || 'Canada')}&purpose=${encodeURIComponent(travelPurpose || serviceLookingFor || 'Student')}`}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs hover:shadow transition-all shrink-0 cursor-pointer"
+            >
+              <span>Check Score</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* ── HIGH-CONTRAST TRUST STRIP (Moving Floating Marquee Line Right-to-Left) ── */}
       <section className="w-full bg-slate-900 text-white py-3.5 sm:py-4 border-y border-slate-800 shadow-sm relative z-20 overflow-hidden group">
