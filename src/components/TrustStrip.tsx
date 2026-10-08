@@ -1,6 +1,6 @@
 export default function TrustStrip() {
   return (
-    <div className="w-full bg-slate-50/90 border-y border-slate-200/80 py-4 px-4 sm:px-6 shadow-2xs">
+    <div className="w-full bg-white border-y border-slate-100 py-4 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 items-center">
         
         {/* Badge 1: 100% ESCROW PROTECTED (Green padlock with checkmark style) */}
