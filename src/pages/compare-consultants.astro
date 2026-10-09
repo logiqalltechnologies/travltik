@@ -1,0 +1,14 @@
+---
+// src/pages/compare-consultants.astro
+import Layout from '../layouts/Layout.astro';
+import { CompareConsultantsPortal } from '../components/interactive/CompareConsultantsPortal';
+---
+
+<Layout 
+  title="Compare Immigration Consultants | Side-by-Side Comparison | TravlTik" 
+  description="Compare top-rated verified immigration consultants, experience, visa success rate, transparent fees, and client reviews side by side."
+>
+  <div class="bg-[#f8fafc] min-h-screen">
+    <CompareConsultantsPortal client:only="react" />
+  </div>
+</Layout>
