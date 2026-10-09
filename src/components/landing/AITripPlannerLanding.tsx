@@ -4274,61 +4274,66 @@ return (
               </a>
             </div>
 
-            {/* Dynamic Luxury Promotional Banner Cards Grid (Matching reference design) */}
+            {/* Dynamic Luxury Promotional Banner Cards Grid (TravlTik Authentic Offerings) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
               
-              {/* Card 1: Escorted Tours by Partners (Venice Grand Canal / Europe) */}
+              {/* Card 1: Study in Canada — Top Universities 2026 */}
               <a
-                href="/tours"
+                href="/universities?country=Canada"
                 className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=85&w=1200&auto=format&fit=crop"
-                  alt="Escorted Tour by Partners"
+                  src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=85&w=1200&auto=format&fit=crop"
+                  alt="Study in Canada"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                {/* Subtle top-down gradient for ultra-crisp typography */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/40 to-transparent h-1/2" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/50 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
                 
-                <div className="relative z-10 max-w-[85%]">
+                <div className="relative z-10 max-w-[88%]">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-800 text-[10px] font-black uppercase tracking-wider mb-2 border border-emerald-500/20">
+                    ADMISSIONS OPEN
+                  </span>
                   <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight">
-                    Escorted Tour By Partners
+                    Study in Canada 2026
                   </h4>
                   <p className="mt-1 text-xs sm:text-[13px] font-semibold text-slate-700">
-                    Europamundo | Cosmos | Globus | Trafalgar &amp; More..
+                    Fast-Track SDS Visa • PGWP Work Rights • Top DLI Colleges
                   </p>
                   <div className="mt-4">
                     <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-md hover:bg-slate-50 transition-all border border-slate-100 group-hover:shadow-lg">
-                      View More <ArrowUpRight className="w-3.5 h-3.5" />
+                      Explore Programs <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
               </a>
 
-              {/* Card 2: Build Your Own Itinerary! (Happy Couple Travel Planning) */}
+              {/* Card 2: Skilled Migration & Work Permits */}
               <a
-                href="/trip-planner"
+                href="/jobs"
                 className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?q=85&w=1200&auto=format&fit=crop"
-                  alt="Build Your Own Itinerary"
+                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=85&w=1200&auto=format&fit=crop"
+                  alt="Skilled Migration & Work Permits"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/40 to-transparent h-1/2" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/50 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
 
                 <div className="relative z-10">
                   <div className="flex items-start justify-between gap-3">
                     <div>
+                      <span className="inline-block px-2.5 py-0.5 rounded-md bg-blue-500/10 text-blue-800 text-[10px] font-black uppercase tracking-wider mb-2 border border-blue-500/20">
+                        VERIFIED EMPLOYERS
+                      </span>
                       <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight">
-                        Build Your Own Itinerary!
+                        Skilled Work Permits
                       </h4>
                       <p className="mt-1 text-xs sm:text-[13px] font-semibold text-slate-700">
-                        Customize your flights, hotels &amp; sightseeing in just 10 minutes
+                        Germany Opportunity Card • UK Skilled Worker • Gulf Jobs
                       </p>
                     </div>
                     <span className="w-10 h-10 rounded-full bg-[#0052cc] text-white flex items-center justify-center shadow-md shrink-0 group-hover:scale-110 group-hover:bg-[#0065ff] transition-all">
@@ -4338,28 +4343,31 @@ return (
                 </div>
               </a>
 
-              {/* Card 3: Buy Forex & Earn Travel Rewards (Paris Eiffel Tower Traveler) */}
+              {/* Card 3: Milestone Escrow Protection */}
               <a
-                href="/checkout?service=forex"
+                href="/find-experts"
                 className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=85&w=1200&auto=format&fit=crop"
-                  alt="Buy Forex & Travel Rewards"
+                  src="https://images.unsplash.com/photo-1450133064473-71024230f91b?q=85&w=1200&auto=format&fit=crop"
+                  alt="Verified Immigration Consultants"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/40 to-transparent h-1/2" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/50 to-transparent h-1/2" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
 
                 <div className="relative z-10">
                   <div className="flex items-start justify-between gap-3">
                     <div>
+                      <span className="inline-block px-2.5 py-0.5 rounded-md bg-amber-500/10 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2 border border-amber-500/20">
+                        100% ESCROW SAFETY
+                      </span>
                       <h4 className="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-tight">
-                        Buy Forex &amp; Earn Travel Rewards
+                        Verified Legal Experts
                       </h4>
                       <p className="mt-1 text-xs sm:text-[13px] font-semibold text-slate-700">
-                        Up to ₹ 3000.00 worth of Loyalty Points
+                        MARA &amp; RCIC Affiliated • Pay in 3 Stages upon Approval
                       </p>
                     </div>
                     <span className="w-10 h-10 rounded-full bg-[#0052cc] text-white flex items-center justify-center shadow-md shrink-0 group-hover:scale-110 group-hover:bg-[#0065ff] transition-all">
@@ -4369,74 +4377,78 @@ return (
                 </div>
               </a>
 
-              {/* Card 4: Looking for Flights? (Bright Luxury Jet Flying in Clouds) */}
+              {/* Card 4: Global Flights & Relocation Logistics */}
               <a
                 href="/flights"
                 className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60 bg-gradient-to-b from-[#0b2545] to-[#134074]"
               >
                 <img
                   src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=85&w=1400&auto=format&fit=crop"
-                  alt="Looking for Flights"
+                  alt="Global Flights & Relocation Logistics"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                {/* Ultra-luxurious gradient overlay: crisp dark navy on top for high contrast, clear window onto the airliner below */}
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/35 to-transparent h-3/5" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/40 to-transparent h-3/5" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
 
                 <div className="relative z-10 max-w-[90%]">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-cyan-400/20 text-cyan-200 text-[10px] font-black uppercase tracking-wider mb-2 border border-cyan-400/30">
+                    AIR MOBILITY
+                  </span>
                   <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight drop-shadow-sm">
-                    Looking for Flights?
+                    Student &amp; Expat Flights
                   </h4>
                   <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-100 drop-shadow-sm">
-                    Find Your Best Fare Here!<br />
-                    Fly More, Pay Less — Book Your Flight Now ✈️
+                    Extra Baggage Allowance • Student Fares • One-Way Relocation Fares ✈️
                   </p>
                   <div className="mt-4">
                     <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-lg hover:bg-slate-100 transition-all border border-white/80 group-hover:scale-105">
-                      View More <ArrowUpRight className="w-3.5 h-3.5" />
+                      Search Flights <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
               </a>
 
-              {/* Card 5: Order Forex Online (Home Delivery, Zero Convenience Fee) */}
+              {/* Card 5: Student Housing & Flatshares */}
               <a
-                href="/forex"
+                href="/classifieds"
                 className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=85&w=1200&auto=format&fit=crop"
-                  alt="Order Forex Online"
+                  src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=85&w=1200&auto=format&fit=crop"
+                  alt="Student Housing & Flatshares"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-stone-900/80 via-stone-900/40 to-transparent h-1/2" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/40 to-transparent h-3/5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
 
                 <div className="relative z-10 max-w-[90%]">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-purple-400/20 text-purple-200 text-[10px] font-black uppercase tracking-wider mb-2 border border-purple-400/30">
+                    ACCOMMODATION
+                  </span>
                   <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
-                    Order Forex Online
+                    Overseas Student Housing
                   </h4>
                   <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-200">
-                    Delivered Home with Zero Convenience Fee
+                    Furnished Apartments &amp; Shared Rooms Near Top Global Campuses
                   </p>
                   <div className="mt-4">
                     <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-md hover:bg-slate-50 transition-all border border-slate-100 group-hover:shadow-lg">
-                      Buy Now <ArrowUpRight className="w-3.5 h-3.5" />
+                      View Listings <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
               </a>
 
-              {/* Card 6: Bali (Kelingking Beach / Perfect Island Escape) */}
+              {/* Card 6: Curated International Tour Packages */}
               <a
-                href="/tours?destination=Bali"
+                href="/tours"
                 className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between p-6 sm:p-7 text-left border border-slate-200/60 bg-sky-950"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=85&w=1200&auto=format&fit=crop"
-                  alt="Bali Perfect Beach Escape"
+                  src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=85&w=1200&auto=format&fit=crop"
+                  alt="Escrow Protected International Tours"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
@@ -4444,16 +4456,18 @@ return (
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
 
                 <div className="relative z-10 max-w-[90%]">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-teal-400/20 text-teal-200 text-[10px] font-black uppercase tracking-wider mb-2 border border-teal-400/30">
+                    ESCROW TOURS
+                  </span>
                   <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
-                    Bali
+                    Curated Global Packages
                   </h4>
                   <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-200">
-                    Your Perfect Beach Escape<br />
-                    Starting at ₹ 21 000.00
+                    Schengen Europe, Dubai &amp; SE Asia • Verified Itineraries with Visa Support
                   </p>
                   <div className="mt-4">
                     <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-950 text-xs font-bold shadow-md hover:bg-slate-50 transition-all border border-slate-100 group-hover:shadow-lg">
-                      View More <ArrowUpRight className="w-3.5 h-3.5" />
+                      View Packages <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
