@@ -87,6 +87,31 @@ export function ExpertComparisonContainer() {
     }
   };
 
+  const handleAdd = (newExpert: any) => {
+    const cleanId = String(newExpert.id).replace(/^db_/i, "");
+    if (experts.some(e => e.id === cleanId)) return;
+    if (experts.length >= 4) {
+      alert("You can compare up to 4 experts at a time.");
+      return;
+    }
+
+    const currentIds = experts.map(e => e.id);
+    const updatedIds = [...currentIds, cleanId];
+
+    // Sync localStorage
+    try {
+      localStorage.setItem("compare_experts", JSON.stringify(updatedIds));
+      window.dispatchEvent(new Event("compare_updated"));
+    } catch (e) {}
+
+    // Update URL
+    if (typeof window !== "undefined") {
+      window.history.replaceState({}, "", `/compare/experts?ids=${updatedIds.join(",")}`);
+    }
+
+    loadComparisonData(updatedIds);
+  };
+
   if (loading) {
     return (
       <div className="bg-white rounded-3xl border border-slate-200/80 p-16 text-center shadow-sm">
@@ -109,5 +134,6 @@ export function ExpertComparisonContainer() {
     );
   }
 
-  return <ExpertComparison experts={experts} onRemove={handleRemove} />;
+  return <ExpertComparison experts={experts} onRemove={handleRemove} onAdd={handleAdd} />;
 }
+
