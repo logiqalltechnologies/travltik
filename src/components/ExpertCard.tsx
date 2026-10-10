@@ -1,6 +1,65 @@
+import { useState, useEffect } from "react";
 import { Star, MapPin } from "lucide-react";
 
 export function ExpertCard({ expert }: { expert: any }) {
+    const cleanId = String(expert.id || '').replace(/^db_/i, '');
+    const [isCompared, setIsCompared] = useState(false);
+
+    useEffect(() => {
+        const checkCompared = () => {
+            try {
+                const stored = localStorage.getItem('compare_experts');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        setIsCompared(parsed.map(x => String(x).replace(/^db_/i, '')).includes(cleanId));
+                        return;
+                    }
+                }
+                setIsCompared(false);
+            } catch (e) {
+                setIsCompared(false);
+            }
+        };
+
+        checkCompared();
+        window.addEventListener('compare_updated', checkCompared);
+        window.addEventListener('storage', checkCompared);
+        return () => {
+            window.removeEventListener('compare_updated', checkCompared);
+            window.removeEventListener('storage', checkCompared);
+        };
+    }, [cleanId]);
+
+    const handleCompareToggle = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let current: string[] = [];
+        try {
+            const stored = localStorage.getItem('compare_experts');
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed)) current = parsed.map(x => String(x).replace(/^db_/i, ''));
+            }
+        } catch (err) {}
+
+        let updated: string[];
+        if (current.includes(cleanId)) {
+            updated = current.filter(id => id !== cleanId);
+        } else {
+            if (current.length >= 4) {
+                alert('You can compare up to 4 experts at a time.');
+                return;
+            }
+            updated = [...current, cleanId];
+        }
+
+        localStorage.setItem('compare_experts', JSON.stringify(updated));
+        setIsCompared(updated.includes(cleanId));
+        window.dispatchEvent(new Event('compare_updated'));
+    };
+
     return (
         <a href={`/expert/${expert.id}`} className="block h-full cursor-pointer">
             <div className="bg-white border border-gray-200 rounded-2xl p-5 flex flex-col gap-4 shadow-sm hover:shadow-xl hover:border-red-300 transition-all duration-300 h-full group">
@@ -77,8 +136,19 @@ export function ExpertCard({ expert }: { expert: any }) {
                 </div>
 
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                    <div className="text-left">
+                    <div className="flex items-center gap-3">
                         <div className="font-extrabold text-lg text-[#1a1a2e]">{expert.price}</div>
+                        <button
+                            type="button"
+                            onClick={handleCompareToggle}
+                            className={`text-xs px-2.5 py-1 rounded-lg border font-medium transition-all ${
+                                isCompared 
+                                    ? 'bg-teal-50 border-teal-500 text-teal-800 font-bold' 
+                                    : 'bg-white border-slate-200 text-slate-600 hover:border-teal-400'
+                            }`}
+                        >
+                            {isCompared ? '✓ Compare' : '+ Compare'}
+                        </button>
                     </div>
                     <button className="bg-black text-white px-5 py-2.5 rounded-xl font-bold hover:bg-slate-900 transition-all text-sm shadow-sm hover:shadow-md">
                         View Profile

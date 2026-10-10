@@ -1,0 +1,42 @@
+---
+// src/pages/compare/experts.astro
+import Layout from '../../layouts/Layout.astro';
+import { ExpertComparisonContainer } from '../../components/compare/ExpertComparisonContainer';
+
+export const prerender = false;
+---
+
+<Layout 
+  title="Side-by-Side Expert Comparison — TravlTik"
+  description="Compare verified visa consultants, immigration lawyers, and agencies side-by-side. Compare licenses, success rates, hourly fees, and escrow protections."
+>
+  <div className="min-h-screen bg-slate-50/60 py-8 sm:py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Breadcrumb / Back button */}
+      <div className="mb-6 flex items-center justify-between">
+        <a 
+          href="/experts" 
+          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-teal-700 transition-colors"
+        >
+          <span>← Back to All Experts</span>
+        </a>
+        <span className="text-xs font-semibold text-teal-800 bg-teal-50 border border-teal-200/80 px-3 py-1 rounded-full">
+          Live Database Comparison
+        </span>
+      </div>
+
+      {/* Page Heading */}
+      <div className="mb-8 sm:mb-10 text-center sm:text-left">
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Compare Immigration &amp; Visa Experts
+        </h1>
+        <p className="text-sm sm:text-base text-slate-600 mt-2 max-w-2xl">
+          Evaluate licensing, proven track records, verified pricing, and escrow status side-by-side to make an informed decision for your visa journey.
+        </p>
+      </div>
+
+      {/* Interactive Container */}
+      <ExpertComparisonContainer client:load />
+    </div>
+  </div>
+</Layout>

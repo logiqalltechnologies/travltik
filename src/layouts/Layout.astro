@@ -8,6 +8,7 @@ import { TalkToUs } from '../components/shared/talk-to-us';
 import { VisaMatchWidget } from '../components/shared/VisaMatchWidget';
 import { CustomCursor } from '../components/ui/CustomCursor';
 import { CookieConsent } from '../components/legal/CookieConsent';
+import { CompareBar } from '../components/compare/CompareBar';
 import '../styles/globals.css';
 
 export interface Props {
@@ -184,6 +185,7 @@ const defaultSchema = {
 
   {!shouldHideWidgets && <VisaMatchWidget client:only="react" />}
   {!shouldHideWidgets && <TalkToUs client:only="react" />}
+  <CompareBar client:load />
   <CookieConsent client:load />
   <CustomCursor client:load />
 

@@ -62,6 +62,60 @@ export function FindExpertsPortal() {
     const [paymentExpert, setPaymentExpert] = useState<any>(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [isConsultantUser, setIsConsultantUser] = useState(false);
+    const [comparedIds, setComparedIds] = useState<string[]>([]);
+
+    useEffect(() => {
+        const updateComparedList = () => {
+            try {
+                const stored = localStorage.getItem("compare_experts");
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        setComparedIds(parsed.map(id => String(id).replace(/^db_/i, '')));
+                        return;
+                    }
+                }
+                setComparedIds([]);
+            } catch (e) {
+                setComparedIds([]);
+            }
+        };
+        updateComparedList();
+        window.addEventListener("compare_updated", updateComparedList);
+        window.addEventListener("storage", updateComparedList);
+        return () => {
+            window.removeEventListener("compare_updated", updateComparedList);
+            window.removeEventListener("storage", updateComparedList);
+        };
+    }, []);
+
+    const toggleCompareExpert = (expertId: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        const cleanId = String(expertId).replace(/^db_/i, '');
+        let current: string[] = [];
+        try {
+            const stored = localStorage.getItem("compare_experts");
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed)) current = parsed.map(x => String(x).replace(/^db_/i, ''));
+            }
+        } catch (err) {}
+
+        let updated: string[];
+        if (current.includes(cleanId)) {
+            updated = current.filter(id => id !== cleanId);
+        } else {
+            if (current.length >= 4) {
+                alert("You can compare up to 4 experts at a time.");
+                return;
+            }
+            updated = [...current, cleanId];
+        }
+
+        localStorage.setItem("compare_experts", JSON.stringify(updated));
+        setComparedIds(updated);
+        window.dispatchEvent(new Event("compare_updated"));
+    };
 
     const isUserLoggedIn = () => {
         if (typeof window === "undefined") return false;
@@ -1060,6 +1114,24 @@ export function FindExpertsPortal() {
                                                 </div>
 
                                                 <div className="flex items-center gap-2 w-full sm:w-auto">
+                                                    {/* Compare Checkbox */}
+                                                    <label 
+                                                        onClick={(evt) => evt.stopPropagation()} 
+                                                        className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer border transition-all select-none ${
+                                                            comparedIds.includes(String(e.id).replace(/^db_/i, ''))
+                                                                ? 'bg-teal-50 border-teal-500 text-teal-900 shadow-xs'
+                                                                : 'bg-white border-slate-200 text-slate-700 hover:border-teal-300'
+                                                        }`}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={comparedIds.includes(String(e.id).replace(/^db_/i, ''))}
+                                                            onChange={(evt) => toggleCompareExpert(e.id, evt as any)}
+                                                            className="w-3.5 h-3.5 text-teal-600 rounded border-slate-300 focus:ring-teal-500 cursor-pointer accent-teal-600"
+                                                        />
+                                                        <span>Compare</span>
+                                                    </label>
+
                                                     <button
                                                         type="button"
                                                         onClick={() => {

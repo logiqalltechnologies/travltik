@@ -259,6 +259,17 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS languages_spoken TEXT;`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS is_google_verified BOOLEAN DEFAULT FALSE;`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS service_category VARCHAR(100);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS license_no VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS license_type VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS hourly_rate VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS response_time_minutes INTEGER DEFAULT 60;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS success_rate INTEGER DEFAULT 90;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS specializations TEXT[];`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS languages TEXT[];`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS location VARCHAR(100);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS escrow_protected BOOLEAN DEFAULT TRUE;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS rating DECIMAL(2,1) DEFAULT 4.8;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS review_count INTEGER DEFAULT 12;`);
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_experts_email_lower ON experts (LOWER(email));`);
 
 
