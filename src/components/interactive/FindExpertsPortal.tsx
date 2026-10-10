@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2, Users, Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Globe, Building2, GraduationCap, Briefcase, Flag, MessageSquare, CreditCard, Lock } from "lucide-react";
+import { Star, MapPin, ChevronDown, List, Map as MapIcon, CheckCircle, Search, Filter, X, Loader2, Users, Sparkles, ArrowRight, ArrowLeft, CheckCircle2, Globe, Building2, GraduationCap, Briefcase, Flag, MessageSquare, CreditCard, Lock, Scale } from "lucide-react";
 import { useAuth } from "../providers/auth-provider";
 import { ExpertProfileModal } from "./ExpertProfileModal";
 import { RequestQuoteModal } from "./RequestQuoteModal";
@@ -697,6 +697,37 @@ export function FindExpertsPortal() {
 
             <button onClick={() => { setCategory("All"); setSelectedCountry("All"); setConsultantType("All"); setConsultantMode("All"); setCity("All Cities"); setRating("Any"); setAvail("Anytime"); setSearchText(""); }}
                 className="w-full text-xs font-black tracking-wider text-[#420f79] hover:underline mt-2 cursor-pointer text-center">Reset All Filters</button>
+
+            {/* Compare Experts Quick Action */}
+            <div className="pt-3 border-t border-slate-100">
+                <a
+                    href={
+                        comparedIds.length > 0
+                            ? `/compare/experts?ids=${comparedIds.join(",")}`
+                            : (sorted.length > 0 
+                                ? `/compare/experts?ids=${sorted.slice(0, 3).map(e => String(e.id).replace(/^db_/i, '')).join(",")}`
+                                : `/compare/experts`)
+                    }
+                    className="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-600 text-white font-extrabold text-xs py-3 px-4 rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer group"
+                >
+                    <Scale className="w-4 h-4 text-emerald-100 group-hover:rotate-12 transition-transform" />
+                    <span>Compare Experts</span>
+                    {comparedIds.length > 0 ? (
+                        <span className="bg-white/20 text-white text-[10px] px-2 py-0.5 rounded-full font-bold ml-0.5">
+                            {comparedIds.length}
+                        </span>
+                    ) : (
+                        <span className="text-[10px] bg-black/15 text-white/90 px-1.5 py-0.5 rounded-md">
+                            Side-by-Side
+                        </span>
+                    )}
+                </a>
+                <p className="text-[11px] text-slate-400 text-center mt-1.5 font-medium">
+                    {comparedIds.length > 0
+                        ? `Comparing ${comparedIds.length} selected expert${comparedIds.length > 1 ? 's' : ''}`
+                        : "Compare top verified consultants side-by-side"}
+                </p>
+            </div>
         </div>
     );
 
