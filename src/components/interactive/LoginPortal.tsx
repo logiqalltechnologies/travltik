@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Loader2, X } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Loader2, X, Tag } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
 
@@ -14,6 +14,8 @@ function LoginPortalContent() {
     const [googleLoading, setGoogleLoading] = useState(false);
     const [googleLoadingText, setGoogleLoadingText] = useState("");
     const [turnstileToken, setTurnstileToken] = useState("");
+    const [referralCode, setReferralCode] = useState("");
+    const [showReferralInput, setShowReferralInput] = useState(false);
 
     const getRedirectDestination = (userType?: string): string => {
         if (typeof window === "undefined") return "/traveller/dashboard";
@@ -36,6 +38,13 @@ function LoginPortalContent() {
     // Fast check: If already logged in, redirect immediately without waiting or buffering
     React.useEffect(() => {
         if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const ref = params.get("ref") || params.get("referral") || params.get("invite");
+            if (ref) {
+                setReferralCode(ref.toUpperCase().trim());
+                setShowReferralInput(true);
+            }
+
             const userStr = localStorage.getItem("travltik_user");
             if (userStr && userStr !== "null") {
                 try {
@@ -396,18 +405,72 @@ function LoginPortalContent() {
 
                     {/* Bottom Registration Links */}
                     <div className="pt-1 text-center space-y-2">
+                        {/* Referral Code Field for Service Providers / Partners */}
+                        <div className="pt-0.5">
+                            {!showReferralInput && !referralCode ? (
+                                <button
+                                    type="button"
+                                    onClick={() => setShowReferralInput(true)}
+                                    className="text-[11px] font-semibold text-slate-500 hover:text-black inline-flex items-center gap-1 cursor-pointer transition-colors"
+                                >
+                                    <Tag className="w-3 h-3 text-slate-400" />
+                                    <span>Have a Channel Partner or Referral Code?</span>
+                                </button>
+                            ) : (
+                                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/90 text-left space-y-1.5 animate-in fade-in duration-150">
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1">
+                                            <Tag className="w-3 h-3 text-purple-700" />
+                                            <span>Referral / Invite Code</span>
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setReferralCode("");
+                                                setShowReferralInput(false);
+                                            }}
+                                            className="text-[10px] font-semibold text-slate-400 hover:text-slate-700 cursor-pointer"
+                                        >
+                                            Hide
+                                        </button>
+                                    </div>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            value={referralCode}
+                                            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                                            placeholder="e.g. CP-USA-001"
+                                            className="w-full px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-mono font-bold tracking-wider uppercase focus:outline-none focus:ring-1 focus:ring-black"
+                                        />
+                                        {referralCode && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setReferralCode("")}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                                            >
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <p className="text-[10px] text-slate-400">
+                                        Code will automatically apply when registering as a Service Provider.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
                         <p className="text-xs font-medium text-slate-500">
                             Don't have an account yet?
                         </p>
                         <div className="grid grid-cols-2 gap-2">
                             <a
-                                href="/signup/traveller"
+                                href={`/signup/traveller${referralCode ? `?ref=${encodeURIComponent(referralCode)}` : ''}`}
                                 className="bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-2.5 px-2 rounded-xl text-xs transition-all shadow-xs flex items-center justify-center text-center cursor-pointer"
                             >
                                 Register as Traveller
                             </a>
                             <a
-                                href="/signup/service-provider"
+                                href={`/signup/service-provider${referralCode ? `?ref=${encodeURIComponent(referralCode)}` : ''}`}
                                 className="bg-white hover:bg-slate-50 text-slate-900 font-bold py-2.5 px-2 rounded-xl text-xs border border-slate-200 transition-all shadow-2xs flex items-center justify-center text-center cursor-pointer"
                             >
                                 Service Provider

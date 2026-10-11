@@ -270,6 +270,8 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS escrow_protected BOOLEAN DEFAULT TRUE;`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS rating DECIMAL(2,1) DEFAULT 4.8;`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS review_count INTEGER DEFAULT 12;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS referral_code VARCHAR(50);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS channel_partner_id INTEGER REFERENCES channel_partners(id) ON DELETE SET NULL;`);
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_experts_email_lower ON experts (LOWER(email));`);
 
 

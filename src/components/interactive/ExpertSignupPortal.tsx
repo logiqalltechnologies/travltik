@@ -4,7 +4,7 @@ import {
   Building, Briefcase, MapPin, Clock, Globe, 
   Shield, Plane, Car, Hotel, GraduationCap, 
   Sparkles, Luggage, Umbrella, Check, X, 
-  Search, Eye, EyeOff, ChevronDown, Mail, Loader2
+  Search, Eye, EyeOff, ChevronDown, Mail, Loader2, Tag
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
@@ -192,8 +192,20 @@ function ExpertSignupPortalContent() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [referralCode, setReferralCode] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [googleLoading, setGoogleLoading] = useState(false);
+
+  // Auto-detect referral code from URL if present (e.g. ?ref=CP-USA-001)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("ref") || params.get("referral") || params.get("invite");
+      if (code) {
+        setReferralCode(code.toUpperCase().trim());
+      }
+    }
+  }, []);
 
   // ─── Step 2: Business Details Form (Clean empty initial states - user fills them) ───
   const [businessName, setBusinessName] = useState("");
@@ -617,6 +629,8 @@ function ExpertSignupPortalContent() {
         turnstileToken,
         service_category: selectedServices.includes("work_permit") ? "work_permit" : (selectedServices[0] || "work_permit"),
         serviceCategory: selectedServices.includes("work_permit") ? "work_permit" : (selectedServices[0] || "work_permit"),
+        referral_code: referralCode.trim() || undefined,
+        invite_code: referralCode.trim() || undefined,
       };
 
       const resp = await fetch("/api/register/expert", {
@@ -1094,6 +1108,43 @@ function ExpertSignupPortalContent() {
                   <Check className={`w-3.5 h-3.5 ${hasSpecial ? "text-purple-700 stroke-[3]" : "text-slate-300"}`} />
                   <span>One special character</span>
                 </div>
+              </div>
+
+              {/* Referral / Channel Partner Invite Code (Optional) */}
+              <div className="pt-1">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-bold text-slate-800">
+                    Referral / Channel Partner Code
+                  </label>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                    Optional
+                  </span>
+                </div>
+                <div className="relative">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <Tag className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    value={referralCode}
+                    onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                    placeholder="e.g. CP-USA-001 or CP-IND-001"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-[#481268] focus:border-transparent transition-all placeholder:normal-case placeholder:font-normal placeholder:tracking-normal"
+                  />
+                  {referralCode && (
+                    <button
+                      type="button"
+                      onClick={() => setReferralCode("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                      title="Clear code"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Have an invite code from a Channel Partner or Regional Director? Enter it here to link your account.
+                </p>
               </div>
 
               {/* Agreement Checkbox */}
@@ -1829,6 +1880,19 @@ function ExpertSignupPortalContent() {
                       <div className="font-bold text-slate-800">{selectedLanguages.join(", ")}</div>
                     </div>
                   </div>
+
+                  {/* Item: Referral / Channel Partner Code (if present) */}
+                  {referralCode && (
+                    <div className="flex items-start gap-3 text-xs sm:text-sm">
+                      <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 shrink-0 mt-0.5">
+                        <Tag className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-semibold text-slate-400">Referral / Partner Code</div>
+                        <div className="font-bold font-mono text-emerald-700">{referralCode}</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Confirmation Box */}

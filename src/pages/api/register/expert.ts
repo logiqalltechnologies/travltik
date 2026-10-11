@@ -24,7 +24,8 @@ export const POST: APIRoute = async ({ request }) => {
       license_document_url, expertise_tags, countries_expertise,
       business_type, year_established, business_email, business_phone,
       website, city, state, country, pin_code, full_name,
-      experience_years, languages_spoken, services, is_google_verified
+      experience_years, languages_spoken, services, is_google_verified,
+      referral_code, invite_code
     } = body;
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -87,6 +88,23 @@ export const POST: APIRoute = async ({ request }) => {
     const resolvedLanguages = typeof languages_spoken === 'string' ? languages_spoken : JSON.stringify(languages_spoken || []);
     const resolvedServiceCategory = body.service_category || body.serviceCategory || (Array.isArray(resolvedServices) && resolvedServices.includes('work_permit') ? 'work_permit' : 'work_permit');
 
+    // Resolve referral/invite code and channel partner if provided
+    const cleanReferralCode = String(referral_code || invite_code || '').trim();
+    let matchedChannelPartnerId: number | null = null;
+    if (cleanReferralCode) {
+      try {
+        const cpMatch = await pool.query(
+          'SELECT id FROM channel_partners WHERE LOWER(invite_code) = LOWER($1) LIMIT 1',
+          [cleanReferralCode]
+        );
+        if (cpMatch.rows.length > 0) {
+          matchedChannelPartnerId = cpMatch.rows[0].id;
+        }
+      } catch (cpErr) {
+        console.warn('[RegisterExpert] Channel Partner match check warning:', cpErr);
+      }
+    }
+
     // ── Step 3: Insert Expert Record with Race Condition Protection ───
     try {
       await pool.query(`
@@ -96,9 +114,10 @@ export const POST: APIRoute = async ({ request }) => {
           license_document_url, expertise_tags, countries_expertise,
           business_type, year_established, business_email, business_phone,
           website, city, state, country, pin_code, full_name,
-          experience_years, languages_spoken, is_google_verified, service_category
+          experience_years, languages_spoken, is_google_verified, service_category,
+          referral_code, channel_partner_id
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26);
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28);
       `, [
         resolvedBusinessName,
         cleanEmail,
@@ -125,7 +144,9 @@ export const POST: APIRoute = async ({ request }) => {
         experience_years || '',
         resolvedLanguages,
         !!is_google_verified,
-        resolvedServiceCategory
+        resolvedServiceCategory,
+        cleanReferralCode || null,
+        matchedChannelPartnerId
       ]);
     } catch (insertErr: any) {
       // PostgreSQL unique constraint error code 23505
