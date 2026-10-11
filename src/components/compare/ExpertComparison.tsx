@@ -216,22 +216,27 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
         </div>
       </div>
 
-      {/* 3. Side-by-Side Detailed Parameter Table */}
+      {/* 3. Side-by-Side Detailed Parameter Table - Square Grid Format */}
       {experts.length > 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse min-w-[700px] text-left">
+            <table className="w-full border-collapse min-w-[760px] text-left table-fixed">
               <thead>
-                <tr className="bg-slate-50/90 border-b border-slate-200">
-                  <th className="p-4 sm:p-5 w-48 sm:w-56 font-bold text-xs uppercase tracking-wider text-slate-500">
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="p-4 sm:p-5 w-56 sm:w-64 font-bold text-xs uppercase tracking-wider text-slate-500 border-r border-slate-200 bg-slate-100/70">
                     Parameter
                   </th>
-                  {experts.map((exp) => (
-                    <th key={exp.id} className="p-4 sm:p-5 min-w-[200px] align-top">
-                      <div className="font-bold text-slate-900 text-sm">
+                  {experts.map((exp, idx) => (
+                    <th 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-top bg-white ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
+                      <div className="font-extrabold text-slate-900 text-sm sm:text-base line-clamp-1">
                         {exp.name}
                       </div>
-                      <div className="text-xs text-slate-500 font-medium">
+                      <div className="text-xs text-slate-500 font-medium line-clamp-1 mt-0.5">
                         {exp.role}
                       </div>
                     </th>
@@ -239,22 +244,29 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
-                {/* License */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Award className="w-4 h-4 text-teal-600" />
+              <tbody className="text-xs sm:text-sm">
+                {/* License & Council */}
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <Award className="w-4 h-4" />
+                      </div>
                       <span>License &amp; Council</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       <div className="flex flex-col gap-1">
-                        <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded border border-blue-200 w-fit">
+                        <span className="inline-block px-2.5 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded-md border border-blue-200/80 w-fit">
                           {exp.licenseType || "Registered"}
                         </span>
-                        <span className="text-slate-600 font-mono text-[11px]">
+                        <span className="text-slate-500 font-mono text-[11px]">
                           #{exp.license}
                         </span>
                       </div>
@@ -263,30 +275,44 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                 </tr>
 
                 {/* Experience */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Briefcase className="w-4 h-4 text-teal-600" />
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <Briefcase className="w-4 h-4" />
+                      </div>
                       <span>Experience</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5 font-bold text-slate-900">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 font-bold text-slate-900 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       {exp.experienceYears}
                     </td>
                   ))}
                 </tr>
 
-                {/* Rating */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                {/* Rating & Reviews */}
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-amber-50 text-amber-600 shrink-0">
+                        <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                      </div>
                       <span>Rating &amp; Reviews</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       <div className="flex items-center gap-1.5">
                         <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
                         <span className="font-bold text-slate-900">{Number(exp.rating || 0).toFixed(1)}</span>
@@ -296,32 +322,46 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                   ))}
                 </tr>
 
-                {/* Hourly Rate */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-emerald-600" />
+                {/* Hourly Fee */}
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 shrink-0">
+                        <Sparkles className="w-4 h-4" />
+                      </div>
                       <span>Hourly Fee</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5 font-extrabold text-emerald-700 text-base">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 font-extrabold text-emerald-700 text-sm sm:text-base align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       {exp.hourlyRate}
                     </td>
                   ))}
                 </tr>
 
                 {/* Response Time */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-teal-600" />
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <Clock className="w-4 h-4" />
+                      </div>
                       <span>Response Time</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                         {exp.responseTime}
                       </span>
@@ -330,17 +370,24 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                 </tr>
 
                 {/* Success Rate */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Percent className="w-4 h-4 text-teal-600" />
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <Percent className="w-4 h-4" />
+                      </div>
                       <span>Success Rate</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5">
-                      <div className="flex items-center gap-2">
-                        <div className="w-16 bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-20 bg-slate-100 rounded-full h-2 overflow-hidden border border-slate-200">
                           <div className="bg-teal-600 h-2 rounded-full" style={{ width: exp.successRate }} />
                         </div>
                         <span className="font-bold text-slate-900 text-xs sm:text-sm">{exp.successRate}</span>
@@ -350,18 +397,25 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                 </tr>
 
                 {/* Specialization */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Briefcase className="w-4 h-4 text-teal-600" />
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <Briefcase className="w-4 h-4" />
+                      </div>
                       <span>Specialization</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       <div className="flex flex-wrap gap-1">
-                        {exp.specializations?.map((s, idx) => (
-                          <span key={idx} className="px-2 py-0.5 bg-slate-100 text-slate-800 text-[11px] font-medium rounded border border-slate-200">
+                        {exp.specializations?.map((s, sIdx) => (
+                          <span key={sIdx} className="px-2 py-0.5 bg-slate-100 text-slate-800 text-[11px] font-medium rounded border border-slate-200">
                             {s}
                           </span>
                         ))}
@@ -371,47 +425,68 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                 </tr>
 
                 {/* Languages */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-teal-600" />
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <Globe className="w-4 h-4" />
+                      </div>
                       <span>Languages</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5 text-slate-700">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 text-slate-700 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       {exp.languages?.join(", ") || "English"}
                     </td>
                   ))}
                 </tr>
 
                 {/* Location */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-teal-600" />
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <MapPin className="w-4 h-4" />
+                      </div>
                       <span>Location</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5 text-slate-700">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 text-slate-700 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       {exp.location}
                     </td>
                   ))}
                 </tr>
 
                 {/* Escrow Protection */}
-                <tr className="hover:bg-slate-50/50 transition-colors">
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="w-4 h-4 text-teal-600" />
+                <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 shrink-0">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
                       <span>Escrow Protection</span>
                     </div>
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       {exp.escrowProtected ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
                           <Check className="w-3.5 h-3.5 text-emerald-600" />
                           <span>Yes (100% Protected)</span>
                         </span>
@@ -423,15 +498,20 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                 </tr>
 
                 {/* Action Links */}
-                <tr>
-                  <td className="p-4 sm:p-5 font-semibold text-slate-800 bg-slate-50/40">
+                <tr className="bg-slate-50/30">
+                  <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200">
                     Action
                   </td>
-                  {experts.map(exp => (
-                    <td key={exp.id} className="p-4 sm:p-5">
+                  {experts.map((exp, idx) => (
+                    <td 
+                      key={exp.id} 
+                      className={`p-4 sm:p-5 align-middle ${
+                        idx < experts.length - 1 ? "border-r border-slate-200" : ""
+                      }`}
+                    >
                       <a
-                        href={exp.profileUrl || /expert/}
-                        className="inline-flex items-center justify-center gap-1.5 bg-[#00a896] hover:bg-teal-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-sm hover:shadow"
+                        href={exp.profileUrl || "/expert"}
+                        className="inline-flex items-center justify-center gap-1.5 bg-[#00a896] hover:bg-teal-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-xs hover:shadow"
                       >
                         <span>View Profile</span>
                         <ExternalLink className="w-3 h-3" />
