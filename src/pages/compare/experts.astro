@@ -10,10 +10,12 @@ export const prerender = false;
   title="Side-by-Side Expert Comparison — TravlTik"
   description="Compare verified visa consultants, immigration lawyers, and agencies side-by-side. Compare licenses, success rates, hourly fees, and escrow protections."
 >
-  <div className="min-h-screen bg-slate-50/60 py-6 sm:py-10">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div className="min-h-screen bg-slate-50/60 py-8 sm:py-12 flex flex-col items-center">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
       {/* Interactive Container */}
-      <ExpertComparisonContainer client:load />
+      <div className="w-full">
+        <ExpertComparisonContainer client:load />
+      </div>
     </div>
   </div>
 </Layout>
