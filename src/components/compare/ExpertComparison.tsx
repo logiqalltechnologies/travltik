@@ -179,41 +179,6 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
             </button>
           ))}
         </div>
-
-        {/* Share This Bar */}
-        <div className="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center gap-3">
-          <span className="text-xs font-semibold text-slate-500">Share this :</span>
-          <div className="flex items-center gap-2">
-            <button 
-              onClick={() => handleShare("facebook")}
-              className="w-8 h-8 rounded-lg bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
-              title="Share on Facebook"
-            >
-              <Facebook className="w-4 h-4 fill-white" />
-            </button>
-            <button 
-              onClick={() => handleShare("twitter")}
-              className="w-8 h-8 rounded-lg bg-[#1DA1F2] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
-              title="Share on Twitter"
-            >
-              <Twitter className="w-4 h-4 fill-white" />
-            </button>
-            <button 
-              onClick={() => handleShare("linkedin")}
-              className="w-8 h-8 rounded-lg bg-[#0A66C2] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
-              title="Share on LinkedIn"
-            >
-              <Linkedin className="w-4 h-4 fill-white" />
-            </button>
-            <button 
-              onClick={() => handleShare("email")}
-              className="w-8 h-8 rounded-lg bg-slate-800 text-white flex items-center justify-center hover:opacity-90 transition-opacity"
-              title="Share via Email"
-            >
-              <Mail className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* 3. Side-by-Side Detailed Parameter Table - Square Grid Format */}
