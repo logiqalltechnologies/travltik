@@ -91,10 +91,10 @@ export function CompareBar() {
 
           <a
             href={compareUrl}
-            className="bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-teal-500/25 flex items-center gap-1.5 active:scale-95 whitespace-nowrap"
+            className="bg-[#420f79] hover:bg-[#340b61] text-white font-bold px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-purple-900/30 flex items-center gap-1.5 active:scale-95 whitespace-nowrap"
           >
             <span>Compare Now</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-purple-200" />
           </a>
         </div>
       </div>
