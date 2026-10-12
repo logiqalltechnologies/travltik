@@ -163,7 +163,7 @@ function LoginPortalContent() {
         setError("");
         setLoading(true);
         try {
-            await signIn(email, password, turnstileToken);
+            await signIn(email, password, turnstileToken, referralCode);
             const userStr = typeof window !== "undefined" ? (localStorage.getItem("travltik_user")) : null;
             let resolvedType: string | undefined;
             if (userStr) {

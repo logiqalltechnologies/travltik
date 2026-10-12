@@ -17,7 +17,7 @@ export interface User {
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    signIn: (email: string, password: string, turnstileToken?: string) => Promise<void>;
+    signIn: (email: string, password: string, turnstileToken?: string, referralCode?: string) => Promise<void>;
     signUp: (email: string, password: string, name: string) => Promise<void>;
     signInWithGoogle: (role?: 'seeker' | 'expert', mode?: 'login' | 'signup', turnstileToken?: string) => Promise<any>;
     signOut: () => Promise<void>;
@@ -142,7 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         init();
     }, []);
 
-    const signIn = async (email: string, password: string, turnstileToken?: string) => {
+    const signIn = async (email: string, password: string, turnstileToken?: string, referralCode?: string) => {
         try {
             const response = await fetch(`${import.meta.env.PUBLIC_BACKEND_URL || ''}/api/login`, {
                 method: "POST",
@@ -150,7 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     "Content-Type": "application/json",
                     ...(turnstileToken ? { "x-turnstile-token": turnstileToken } : {})
                 },
-                body: JSON.stringify({ email, password, turnstileToken })
+                body: JSON.stringify({ email, password, turnstileToken, referralCode })
             });
             if (response.ok) {
                 const data = await response.json();

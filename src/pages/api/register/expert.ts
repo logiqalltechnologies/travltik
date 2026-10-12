@@ -148,6 +148,38 @@ export const POST: APIRoute = async ({ request }) => {
         cleanReferralCode || null,
         matchedChannelPartnerId
       ]);
+      // Sync to referral_consultants so channel partner sees them immediately in their dashboard
+      if (matchedChannelPartnerId) {
+        try {
+          const existingRef = await pool.query(
+            'SELECT id FROM referral_consultants WHERE LOWER(email) = LOWER($1)',
+            [cleanEmail]
+          );
+          if (existingRef.rows.length === 0) {
+            await pool.query(
+              `INSERT INTO referral_consultants (
+                country_partner_id, consultant_name, email, phone, region, speciality, status, password_hash
+              ) VALUES ($1, $2, $3, $4, $5, $6, 'approved', $7)`,
+              [
+                matchedChannelPartnerId,
+                resolvedBusinessName,
+                cleanEmail,
+                contact_number || business_phone || '',
+                city || country || 'Remote',
+                resolvedAdvisorType,
+                hashedPassword
+              ]
+            );
+          } else {
+            await pool.query(
+              'UPDATE referral_consultants SET country_partner_id = $1, status = $2 WHERE id = $3',
+              [matchedChannelPartnerId, 'approved', existingRef.rows[0].id]
+            );
+          }
+        } catch (refSyncErr) {
+          console.warn('[RegisterExpert] referral_consultants sync error:', refSyncErr);
+        }
+      }
     } catch (insertErr: any) {
       // PostgreSQL unique constraint error code 23505
       if (insertErr?.code === '23505' || insertErr?.message?.includes('duplicate key') || insertErr?.message?.includes('unique')) {

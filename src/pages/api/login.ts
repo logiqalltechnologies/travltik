@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { loginUser, createSession } from '../../backend/auth';
 import { verifyTurnstileToken } from '../../lib/verify-turnstile';
+import { getPool } from '../../backend/db';
 
 export const prerender = false;
 
@@ -31,6 +32,65 @@ export const POST: APIRoute = async ({ request }) => {
     const { user, type } = await loginUser(email, password, requestedRole);
     const token = await createSession(user.id, type);
 
+    // Link referral code or sync existing expert to referral_consultants
+    let finalUser = user;
+    if (type === 'expert') {
+      const inputRefCode = String(body.referralCode || body.referral_code || '').trim();
+      const pool = getPool();
+
+      if (inputRefCode) {
+        try {
+          const cpMatch = await pool.query(
+            'SELECT id FROM channel_partners WHERE LOWER(invite_code) = LOWER($1) LIMIT 1',
+            [inputRefCode]
+          );
+          if (cpMatch.rows.length > 0) {
+            const cpId = cpMatch.rows[0].id;
+            await pool.query(
+              'UPDATE experts SET channel_partner_id = $1, referral_code = $2 WHERE id = $3 AND (channel_partner_id IS NULL OR referral_code IS NULL)',
+              [cpId, inputRefCode, user.id]
+            );
+            finalUser = { ...user, channel_partner_id: cpId, referral_code: inputRefCode };
+          }
+        } catch (linkErr) {
+          console.warn('[Login Expert Referral Link Warning]', linkErr);
+        }
+      }
+
+      // Ensure expert with channel_partner_id is synced to referral_consultants
+      const activeCpId = finalUser.channel_partner_id || user.channel_partner_id;
+      if (activeCpId) {
+        try {
+          const existingRef = await pool.query(
+            'SELECT id FROM referral_consultants WHERE LOWER(email) = LOWER($1)',
+            [user.email.toLowerCase().trim()]
+          );
+          if (existingRef.rows.length === 0) {
+            await pool.query(
+              `INSERT INTO referral_consultants (
+                country_partner_id, consultant_name, email, phone, region, speciality, status
+              ) VALUES ($1, $2, $3, $4, $5, $6, 'approved')`,
+              [
+                activeCpId,
+                user.business_name || 'Service Provider',
+                user.email,
+                user.contact_number || user.business_phone || '',
+                user.city || user.country || 'Global',
+                user.advisor_type || 'Immigration Consultant'
+              ]
+            );
+          } else {
+            await pool.query(
+              'UPDATE referral_consultants SET country_partner_id = $1 WHERE id = $2',
+              [activeCpId, existingRef.rows[0].id]
+            );
+          }
+        } catch (refErr) {
+          console.warn('[Login Expert Sync Warning]', refErr);
+        }
+      }
+    }
+
     // Set cookie headers for session persistence
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -45,7 +105,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const displayName = type === 'seeker' 
       ? `${user.first_name} ${user.last_name || ''}`.trim() 
-      : user.business_name;
+      : finalUser.business_name;
 
     return new Response(JSON.stringify({
       status: 'success',
@@ -54,7 +114,7 @@ export const POST: APIRoute = async ({ request }) => {
         email: user.email,
         displayName: displayName || 'User',
         type,
-        rawUser: { ...user, password_hash: undefined }
+        rawUser: { ...finalUser, password_hash: undefined }
       }
     }), { status: 200, headers });
 
