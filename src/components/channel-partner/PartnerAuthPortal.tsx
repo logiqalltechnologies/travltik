@@ -886,38 +886,44 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
             <form onSubmit={handleRequestOtp} className="space-y-4">
 
               {/* ── 3-TIER HIERARCHICAL LEVEL SELECTOR ── */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Select Network Hierarchy Tier *
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                    Select Partnership Level *
                   </label>
                   <span className="text-[11px] text-[#00A878] font-semibold flex items-center gap-1">
                     <Layers className="w-3 h-3" /> Multi-Tier Model
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200/80">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   {/* Tier 1: Country Partner */}
                   <button
                     type="button"
                     onClick={() => setRole('country_partner')}
-                    className={`p-2.5 rounded-xl text-left transition-all cursor-pointer flex flex-col justify-between border ${
+                    className={`p-3 rounded-2xl text-left transition-all duration-200 cursor-pointer flex flex-col justify-between border relative overflow-hidden ${
                       role === 'country_partner'
-                        ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10'
-                        : 'bg-white text-slate-700 border-slate-200/80 hover:bg-slate-100/80'
+                        ? 'bg-gradient-to-b from-emerald-50/90 to-white text-slate-900 border-[#00A878] shadow-sm ring-2 ring-[#00A878]/25'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50/60'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full mb-1">
-                      <span className={`text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md ${
-                        role === 'country_partner' ? 'bg-[#00A878] text-white' : 'bg-emerald-100 text-emerald-800'
+                    <div className="flex items-center justify-between w-full mb-2">
+                      <span className={`text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-full ${
+                        role === 'country_partner' ? 'bg-[#00A878] text-white' : 'bg-slate-100 text-slate-600'
                       }`}>
                         Tier 1 Master
                       </span>
-                      <Globe className={`w-3.5 h-3.5 ${role === 'country_partner' ? 'text-emerald-400' : 'text-slate-400'}`} />
+                      <div className={`w-7 h-7 rounded-xl flex items-center justify-center ${
+                        role === 'country_partner' ? 'bg-emerald-100/80 text-[#00A878]' : 'bg-slate-100 text-slate-400'
+                      }`}>
+                        <Globe className="w-3.5 h-3.5" />
+                      </div>
                     </div>
-                    <div className="font-bold text-xs sm:text-[13px] leading-tight">Country Partner</div>
-                    <div className={`text-[10px] mt-0.5 ${role === 'country_partner' ? 'text-slate-300' : 'text-slate-400'}`}>
-                      National Franchise
+                    <div>
+                      <div className="font-bold text-xs sm:text-[13px] text-slate-900 leading-tight">Country Partner</div>
+                      <div className="text-[11px] mt-0.5 text-slate-500 font-normal">
+                        National Franchise
+                      </div>
                     </div>
                   </button>
 
@@ -925,23 +931,29 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                   <button
                     type="button"
                     onClick={() => setRole('state_partner')}
-                    className={`p-2.5 rounded-xl text-left transition-all cursor-pointer flex flex-col justify-between border ${
+                    className={`p-3 rounded-2xl text-left transition-all duration-200 cursor-pointer flex flex-col justify-between border relative overflow-hidden ${
                       role === 'state_partner'
-                        ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10'
-                        : 'bg-white text-slate-700 border-slate-200/80 hover:bg-slate-100/80'
+                        ? 'bg-gradient-to-b from-emerald-50/90 to-white text-slate-900 border-[#00A878] shadow-sm ring-2 ring-[#00A878]/25'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50/60'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full mb-1">
-                      <span className={`text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md ${
-                        role === 'state_partner' ? 'bg-[#00A878] text-white' : 'bg-emerald-100 text-emerald-800'
+                    <div className="flex items-center justify-between w-full mb-2">
+                      <span className={`text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-full ${
+                        role === 'state_partner' ? 'bg-[#00A878] text-white' : 'bg-slate-100 text-slate-600'
                       }`}>
                         Tier 2
                       </span>
-                      <Building2 className={`w-3.5 h-3.5 ${role === 'state_partner' ? 'text-emerald-400' : 'text-slate-400'}`} />
+                      <div className={`w-7 h-7 rounded-xl flex items-center justify-center ${
+                        role === 'state_partner' ? 'bg-emerald-100/80 text-[#00A878]' : 'bg-slate-100 text-slate-400'
+                      }`}>
+                        <Building2 className="w-3.5 h-3.5" />
+                      </div>
                     </div>
-                    <div className="font-bold text-xs sm:text-[13px] leading-tight">State Partner</div>
-                    <div className={`text-[10px] mt-0.5 ${role === 'state_partner' ? 'text-slate-300' : 'text-slate-400'}`}>
-                      Under Country Partner
+                    <div>
+                      <div className="font-bold text-xs sm:text-[13px] text-slate-900 leading-tight">State Partner</div>
+                      <div className="text-[11px] mt-0.5 text-slate-500 font-normal">
+                        Under Country Partner
+                      </div>
                     </div>
                   </button>
 
@@ -949,39 +961,49 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                   <button
                     type="button"
                     onClick={() => setRole('referral_consultant')}
-                    className={`p-2.5 rounded-xl text-left transition-all cursor-pointer flex flex-col justify-between border ${
+                    className={`p-3 rounded-2xl text-left transition-all duration-200 cursor-pointer flex flex-col justify-between border relative overflow-hidden ${
                       role === 'referral_consultant'
-                        ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-slate-900/10'
-                        : 'bg-white text-slate-700 border-slate-200/80 hover:bg-slate-100/80'
+                        ? 'bg-gradient-to-b from-emerald-50/90 to-white text-slate-900 border-[#00A878] shadow-sm ring-2 ring-[#00A878]/25'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50/60'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full mb-1">
-                      <span className={`text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md ${
-                        role === 'referral_consultant' ? 'bg-[#00A878] text-white' : 'bg-emerald-100 text-emerald-800'
+                    <div className="flex items-center justify-between w-full mb-2">
+                      <span className={`text-[10px] font-bold tracking-wide px-2 py-0.5 rounded-full ${
+                        role === 'referral_consultant' ? 'bg-[#00A878] text-white' : 'bg-slate-100 text-slate-600'
                       }`}>
                         Tier 3
                       </span>
-                      <UserCheck className={`w-3.5 h-3.5 ${role === 'referral_consultant' ? 'text-emerald-400' : 'text-slate-400'}`} />
+                      <div className={`w-7 h-7 rounded-xl flex items-center justify-center ${
+                        role === 'referral_consultant' ? 'bg-emerald-100/80 text-[#00A878]' : 'bg-slate-100 text-slate-400'
+                      }`}>
+                        <UserCheck className="w-3.5 h-3.5" />
+                      </div>
                     </div>
-                    <div className="font-bold text-xs sm:text-[13px] leading-tight">Referral Partner</div>
-                    <div className={`text-[10px] mt-0.5 ${role === 'referral_consultant' ? 'text-slate-300' : 'text-slate-400'}`}>
-                      Under State Partner
+                    <div>
+                      <div className="font-bold text-xs sm:text-[13px] text-slate-900 leading-tight">Referral Partner</div>
+                      <div className="text-[11px] mt-0.5 text-slate-500 font-normal">
+                        Under State Partner
+                      </div>
                     </div>
                   </button>
                 </div>
 
-                {/* Dynamic Hierarchy Breadcrumb Notice */}
-                <div className="mt-2.5 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200/70 text-[11px] flex items-center gap-2 text-slate-600">
-                  <Network className="w-3.5 h-3.5 text-[#00A878] shrink-0" />
-                  {role === 'country_partner' && (
-                    <span><strong>Tier 1 Hierarchy:</strong> Highest authority for national B2B licensing, approving State Partners & overrides.</span>
-                  )}
-                  {role === 'state_partner' && (
-                    <span><strong>Tier 2 Hierarchy:</strong> Operates <strong>directly under the Country Master Partner</strong> to manage regional agents & operations.</span>
-                  )}
-                  {role === 'referral_consultant' && (
-                    <span><strong>Tier 3 Hierarchy:</strong> Operates <strong>directly under the assigned State Partner</strong> to advise clients & refer applications.</span>
-                  )}
+                {/* Sleek Minimal Hierarchy Information Banner */}
+                <div className="px-3.5 py-2.5 rounded-2xl bg-emerald-50/60 border border-emerald-150 text-[11px] flex items-center gap-2.5 text-slate-600">
+                  <div className="w-5 h-5 rounded-full bg-[#00A878]/10 flex items-center justify-center shrink-0">
+                    <Network className="w-3 h-3 text-[#00A878]" />
+                  </div>
+                  <div className="leading-snug">
+                    {role === 'country_partner' && (
+                      <span><strong className="text-slate-800 font-semibold">Tier 1 Hierarchy:</strong> Highest authority for national B2B licensing, approving State Partners &amp; managing regional commission overrides.</span>
+                    )}
+                    {role === 'state_partner' && (
+                      <span><strong className="text-slate-800 font-semibold">Tier 2 Hierarchy:</strong> Operates <strong className="text-emerald-800 font-semibold">directly under the Country Master Partner</strong> to manage regional agents &amp; operations.</span>
+                    )}
+                    {role === 'referral_consultant' && (
+                      <span><strong className="text-slate-800 font-semibold">Tier 3 Hierarchy:</strong> Operates <strong className="text-emerald-800 font-semibold">directly under the assigned State Partner</strong> to advise clients &amp; refer applications.</span>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -1006,7 +1028,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         type="text"
                         value={regTaxId}
                         onChange={(e) => setRegTaxId(e.target.value)}
-                        placeholder="GSTIN / EIN-9283749"
+                        placeholder="e.g. GSTIN / EIN / Business License"
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
@@ -1022,7 +1044,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         required
                         value={regCompany}
                         onChange={(e) => setRegCompany(e.target.value)}
-                        placeholder="Risingat Sports / Global Horizons Ltd."
+                        placeholder="e.g. Global Horizon Mobility Ltd."
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
@@ -1036,7 +1058,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         required
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
-                        placeholder="Prashanth"
+                        placeholder="e.g. Rahul Sharma"
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
@@ -1126,7 +1148,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         required
                         value={regCompany}
                         onChange={(e) => setRegCompany(e.target.value)}
-                        placeholder="Telangana Visa Hub / Risingat Sports"
+                        placeholder="e.g. Apex Regional Mobility Hub"
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
@@ -1140,7 +1162,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         required
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
-                        placeholder="Prashanth"
+                        placeholder="e.g. Rajesh Nair"
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
@@ -1167,7 +1189,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         required
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
-                        placeholder="prashanth.e.l@gmail.com"
+                        placeholder="e.g. agency@mobilityhub.com"
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
@@ -1243,7 +1265,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         required
                         value={regContactName}
                         onChange={(e) => setRegContactName(e.target.value)}
-                        placeholder="Sarah Jenkins / Prashanth"
+                        placeholder="e.g. Sarah Jenkins"
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
@@ -1257,7 +1279,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                         required
                         value={regEmail}
                         onChange={(e) => setRegEmail(e.target.value)}
-                        placeholder="consultant@immigrationpro.com"
+                        placeholder="e.g. consultant@immigrationpro.com"
                         className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
                       />
                     </div>
