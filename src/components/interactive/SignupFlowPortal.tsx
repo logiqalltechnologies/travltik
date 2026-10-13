@@ -35,10 +35,10 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
             }}
             className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-start sm:justify-center p-3 sm:p-6 font-sans overflow-y-auto selection:bg-[#00a896] selection:text-white"
         >
-            <div className="relative z-10 w-full max-w-2xl flex flex-col items-center justify-center my-auto py-4 font-sans">
+            <div className="relative z-10 w-full max-w-4xl flex flex-col items-center justify-center my-auto py-4 font-sans">
                 
                 {/* Top Navigation Header */}
-                <div className="w-full max-w-2xl flex items-center justify-between mb-3 px-1 shrink-0 gap-2 font-sans">
+                <div className="w-full max-w-4xl flex items-center justify-between mb-3 px-1 shrink-0 gap-2 font-sans">
                     <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white bg-white/20 hover:bg-white/30 transition-all px-4 py-2 rounded-full border border-white/30 backdrop-blur-md shadow-md shrink-0">
                         <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to </span>Home
                     </a>
@@ -51,7 +51,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                 {/* VIEW 1: ROLE SELECTION MODAL ("I want to join as") - Unified Sora Font */}
                 {/* ========================================================================= */}
                 {mode === "selection" ? (
-                    <div className="text-slate-900 max-w-2xl w-[94vw] sm:w-full p-6 sm:p-9 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto bg-white border border-slate-200/90 rounded-[32px] shadow-2xl font-sans max-h-[85vh] overflow-y-auto">
+                    <div className="text-slate-900 max-w-4xl w-[94vw] sm:w-full p-6 sm:p-9 text-center space-y-6 sm:space-y-8 animate-fade-up relative my-auto bg-white border border-slate-200/90 rounded-[32px] shadow-2xl font-sans max-h-[88vh] overflow-y-auto">
                         
                         {/* Top-Right X Close Button */}
                         <button 
@@ -81,18 +81,18 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                             </p>
                         </div>
 
-                        {/* Two Role Choice Cards */}
-                        <div className="flex flex-col sm:flex-row items-stretch justify-center gap-6 sm:gap-8 py-2">
+                        {/* Three Role Choice Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 py-2 items-stretch justify-center">
                             
-                            {/* Traveller Option (Exact Travl Logo Green Theme: #00A86B) */}
+                            {/* 1. Traveller Option (Green Theme: #00A86B) */}
                             <div 
                                 onClick={() => setMode("seeker")} 
-                                className="group flex flex-col items-center justify-between text-center cursor-pointer w-full sm:w-[260px] bg-emerald-50/40 hover:bg-emerald-50/80 p-6 rounded-3xl border-2 border-[#00A86B]/30 hover:border-[#00A86B] hover:shadow-xl hover:shadow-[#00A86B]/15 transition-all font-sans"
+                                className="group flex flex-col items-center justify-between text-center cursor-pointer w-full bg-emerald-50/40 hover:bg-emerald-50/80 p-6 rounded-3xl border-2 border-[#00A86B]/30 hover:border-[#00A86B] hover:shadow-xl hover:shadow-[#00A86B]/15 transition-all font-sans"
                             >
                                 <div className="flex flex-col items-center">
                                     <div className="relative circle-float-1 mb-1">
                                         <div className="absolute inset-[-6px] rounded-full border-2 border-[#00A86B]/30 pulse-ring" />
-                                        <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#00A86B] flex items-center justify-center shadow-lg shadow-[#00A86B]/30 group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
+                                        <div className="w-20 h-20 rounded-full bg-[#00A86B] flex items-center justify-center shadow-lg shadow-[#00A86B]/30 group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
                                             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-10 sm:h-10">
                                                 <circle cx="12" cy="8" r="3.5" fill="#ffffff" opacity="0.3" />
                                                 <circle cx="12" cy="8" r="3.5" stroke="#ffffff" strokeWidth="2" fill="none" />
@@ -116,22 +116,15 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                 </button>
                             </div>
 
-                            {/* Divider */}
-                            <div className="flex flex-row sm:flex-col items-center justify-center gap-2 text-slate-400 font-bold text-xs tracking-widest font-sans self-center">
-                                <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200" />
-                                <span className="text-[11px] font-extrabold text-slate-400">OR</span>
-                                <div className="w-12 sm:w-px h-px sm:h-10 bg-slate-200" />
-                            </div>
-
-                            {/* Service Provider Option */}
+                            {/* 2. Service Provider Option (Navy Blue Theme: #0c1a2e) */}
                             <a 
                                 href="/signup/service-provider"
-                                className="group flex flex-col items-center justify-between text-center cursor-pointer w-full sm:w-[260px] bg-slate-50 hover:bg-slate-100/90 p-6 rounded-3xl border-2 border-slate-200 hover:border-slate-800 hover:shadow-xl transition-all font-sans"
+                                className="group flex flex-col items-center justify-between text-center cursor-pointer w-full bg-slate-50 hover:bg-slate-100/90 p-6 rounded-3xl border-2 border-slate-200 hover:border-slate-800 hover:shadow-xl transition-all font-sans"
                             >
                                 <div className="flex flex-col items-center">
                                     <div className="relative circle-float-2 mb-1">
                                         <div className="absolute inset-[-6px] rounded-full border-2 border-slate-300 pulse-ring" />
-                                        <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-[#0c1a2e] flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
+                                        <div className="w-20 h-20 rounded-full bg-[#0c1a2e] flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
                                             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-10 sm:h-10">
                                                 <rect x="5" y="2" width="14" height="20" rx="3" fill="#ffffff" opacity="0.2" />
                                                 <rect x="5" y="2" width="14" height="20" rx="3" stroke="#ffffff" strokeWidth="2" fill="none" />
@@ -156,10 +149,43 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                 </button>
                             </a>
 
+                            {/* 3. Channel Partner Option (Royal Purple Theme: #420f79) */}
+                            <a 
+                                href="/channel-partner/register"
+                                className="group flex flex-col items-center justify-between text-center cursor-pointer w-full bg-purple-50/40 hover:bg-purple-50/80 p-6 rounded-3xl border-2 border-[#420f79]/25 hover:border-[#420f79] hover:shadow-xl hover:shadow-[#420f79]/15 transition-all font-sans"
+                            >
+                                <div className="flex flex-col items-center">
+                                    <div className="relative circle-float-1 mb-1">
+                                        <div className="absolute inset-[-6px] rounded-full border-2 border-[#420f79]/30 pulse-ring" />
+                                        <div className="w-20 h-20 rounded-full bg-[#420f79] flex items-center justify-center shadow-lg shadow-[#420f79]/25 group-hover:scale-105 transition-all duration-300 relative z-10 mx-auto">
+                                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="w-9 h-9 sm:w-10 sm:h-10">
+                                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                                                <circle cx="9" cy="7" r="4" stroke="#ffffff" strokeWidth="2" fill="#ffffff" fillOpacity="0.2" />
+                                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                                                <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h2 className="mt-3 text-lg font-black tracking-tight text-[#420f79] transition-colors">
+                                        Channel Partner
+                                    </h2>
+                                    <span className="text-xs text-slate-500 max-w-[210px] mt-1 mb-5 font-medium leading-relaxed">
+                                        Manage regional network, agents &amp; earn commissions
+                                    </span>
+                                </div>
+
+                                <button className="w-full bg-[#420f79] hover:bg-[#340b61] text-white py-2.5 px-6 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer">
+                                    <span>Register</span>
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </button>
+                            </a>
+
                         </div>
 
-                        <div className="text-xs font-medium text-slate-500 pt-4 border-t border-slate-100 font-sans">
-                            Already a member? <a href="/login" className="text-[#00A86B] font-bold hover:underline">Log in</a>
+                        <div className="text-xs font-medium text-slate-500 pt-4 border-t border-slate-100 font-sans flex flex-wrap items-center justify-center gap-3">
+                            <span>Already a member? <a href="/login" className="text-[#00A86B] font-bold hover:underline">Log in</a></span>
+                            <span className="text-slate-300">•</span>
+                            <span>Channel Partner? <a href="/channel-partner/login" className="text-[#420f79] font-bold hover:underline">Partner Login</a></span>
                         </div>
                     </div>
                 ) : (
