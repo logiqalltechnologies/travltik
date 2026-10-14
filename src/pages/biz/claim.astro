@@ -7,14 +7,64 @@ export const prerender = false;
 
 <Layout title="Claim Your Business — TravlTik for Business">
   <div class="min-h-screen bg-[#F8FAFC]">
-    <div class="max-w-2xl mx-auto px-4 py-12">
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-slate-900 mb-2">Claim Your Business</h1>
-        <p class="text-sm text-slate-500">
-          Search for your business and claim it to manage your profile.
-        </p>
+    <div class="max-w-6xl mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        
+        <!-- LEFT: Main Search Area (Yelp-style) -->
+        <div class="lg:col-span-2">
+          <div class="mb-8">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">
+              Claim your business page
+            </h1>
+            <p class="text-sm text-slate-500">
+              It's free and easy to manage your business on TravlTik.
+            </p>
+          </div>
+          
+          <SearchBusiness client:load />
+        </div>
+
+        <!-- RIGHT: Sidebar (Yelp-style info) -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 sticky top-6 shadow-sm">
+            <h3 class="font-bold text-slate-900 mb-4">What you can do</h3>
+            
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3">
+                <span class="text-emerald-500 text-lg font-bold">✓</span>
+                <div>
+                  <p class="text-sm font-semibold text-slate-900">Update your info</p>
+                  <p class="text-xs text-slate-500">Manage hours, services, and contact details</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-emerald-500 text-lg font-bold">✓</span>
+                <div>
+                  <p class="text-sm font-semibold text-slate-900">Respond to reviews</p>
+                  <p class="text-xs text-slate-500">Engage with your customers publicly</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-emerald-500 text-lg font-bold">✓</span>
+                <div>
+                  <p class="text-sm font-semibold text-slate-900">Track performance</p>
+                  <p class="text-xs text-slate-500">See views and leads in your dashboard</p>
+                </div>
+              </li>
+            </ul>
+
+            <div class="mt-6 pt-6 border-t border-slate-100">
+              <p class="text-xs text-slate-500">
+                Don't see your business? 
+                <a href="/add-business" class="text-blue-600 font-semibold hover:underline ml-1">
+                  Add it here →
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <SearchBusiness client:load />
     </div>
   </div>
 </Layout>

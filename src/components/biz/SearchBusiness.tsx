@@ -6,7 +6,6 @@ interface Business {
   city: string;
   country: string;
   isClaimed: boolean;
-  avatar?: string;
 }
 
 export function SearchBusiness() {
@@ -15,8 +14,10 @@ export function SearchBusiness() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
-  async function handleSearch() {
+  async function handleSearch(e?: React.FormEvent) {
+    if (e) e.preventDefault();
     if (!query.trim()) return;
+    
     setLoading(true);
     setSearched(true);
     try {
@@ -32,72 +33,81 @@ export function SearchBusiness() {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <label className="block text-xs font-semibold text-slate-700 mb-2">
-        Search your business name
-      </label>
-      <div className="flex gap-2">
+      {/* Yelp-style: Big Search Bar */}
+      <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          placeholder="e.g., Global Horizons University"
-          className="flex-1 px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your business name"
+          className="flex-1 px-5 py-4 border-2 border-slate-200 rounded-xl text-base focus:outline-none focus:border-blue-500 transition-colors"
         />
         <button
-          type="button"
-          onClick={handleSearch}
+          type="submit"
           disabled={loading || !query.trim()}
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold disabled:opacity-50 hover:bg-blue-700 transition-colors cursor-pointer"
+          className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-sm disabled:opacity-50 hover:bg-blue-700 transition-colors cursor-pointer"
         >
           {loading ? 'Searching...' : 'Search'}
         </button>
-      </div>
+      </form>
 
-      {searched && !loading && results.length === 0 && (
-        <div className="mt-6 p-6 bg-amber-50 border border-amber-200 rounded-xl text-center">
-          <div className="text-3xl mb-2">🔍</div>
-          <p className="text-sm font-semibold text-amber-900">Business not found</p>
-          <p className="text-xs text-amber-700 mt-1 mb-4">
-            Can't find your business? Add it first, then claim it.
-          </p>
-          <a href="/add-business" className="inline-block px-5 py-2.5 bg-amber-600 text-white rounded-lg text-xs font-bold hover:bg-amber-700 transition-colors">
-            Add Your Business →
-          </a>
-        </div>
+      {/* Yelp-style: Results Header */}
+      {searched && !loading && results.length > 0 && (
+        <p className="text-xs text-slate-500 mt-6 mb-3 font-semibold uppercase tracking-wider">
+          {results.length} business{results.length > 1 ? 'es' : ''} found
+        </p>
       )}
 
+      {/* Yelp-style: Clean List */}
       {results.length > 0 && (
-        <div className="mt-6 space-y-3">
-          <p className="text-xs font-bold text-slate-500 uppercase">
-            {results.length} result{results.length > 1 ? 's' : ''} found
-          </p>
+        <div className="space-y-2 mt-4">
           {results.map((business) => {
             const cleanId = String(business.id).replace(/^db_/i, '');
             return (
-              <div key={business.id} className="p-4 border border-slate-200 rounded-xl flex items-center gap-4 hover:border-blue-300 transition-colors">
-                <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-xl font-bold text-slate-600 shrink-0">
-                  {business.name.charAt(0)}
+              <div 
+                key={business.id} 
+                className="flex items-center justify-between p-4 border border-slate-100 rounded-xl hover:border-slate-300 hover:bg-slate-50/50 transition-all"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-lg font-bold text-slate-500 shrink-0">
+                    {business.name.charAt(0)}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-slate-900 truncate">{business.name}</p>
+                    <p className="text-xs text-slate-400">{business.city}, {business.country}</p>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-slate-900 truncate">{business.name}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    {business.city}, {business.country}
-                  </p>
-                </div>
+                
                 {business.isClaimed ? (
-                  <span className="text-xs font-semibold text-slate-400 shrink-0">Already Claimed</span>
+                  <span className="text-xs font-semibold text-slate-400 shrink-0 ml-2">Claimed</span>
                 ) : (
                   <a
                     href={`/claim/${cleanId}`}
-                    className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors shrink-0"
+                    className="px-4 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold hover:bg-emerald-100 transition-colors shrink-0 ml-2"
                   >
-                    Claim →
+                    Claim
                   </a>
                 )}
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Yelp-style: Empty State */}
+      {searched && !loading && results.length === 0 && (
+        <div className="mt-8 p-8 text-center">
+          <div className="text-4xl mb-3">🔍</div>
+          <p className="text-sm font-bold text-slate-900">No business found</p>
+          <p className="text-xs text-slate-500 mt-1 mb-4">
+            Try a different name or add your business.
+          </p>
+          <a 
+            href="/add-business" 
+            className="inline-block px-5 py-2.5 bg-slate-900 text-white rounded-lg text-xs font-bold hover:bg-slate-800 transition-colors cursor-pointer"
+          >
+            Add Your Business
+          </a>
         </div>
       )}
     </div>

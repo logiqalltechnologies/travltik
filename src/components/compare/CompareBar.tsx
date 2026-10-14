@@ -8,6 +8,13 @@ export function CompareBar() {
   const updateFromStorage = () => {
     if (typeof window === "undefined") return;
     try {
+      // Show ONLY on /find-experts page
+      const currentPath = window.location.pathname.toLowerCase();
+      if (!currentPath.includes("find-experts")) {
+        setIsVisible(false);
+        return;
+      }
+
       const stored = localStorage.getItem("compare_experts");
       if (stored) {
         const parsed = JSON.parse(stored);
