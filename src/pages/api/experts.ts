@@ -121,6 +121,8 @@ export const GET: APIRoute = async ({ url }) => {
         e.languages_spoken,
         e.is_google_verified,
         e.service_category,
+        e.is_claimed,
+        e.claim_status,
         e.created_at,
         COUNT(r.id)::int AS reviews_count,
         COALESCE(ROUND(AVG(r.rating)::numeric, 1), 0.0) AS avg_rating
@@ -189,6 +191,8 @@ export const GET: APIRoute = async ({ url }) => {
         reviews: Number(row.reviews_count) || 0,
         isVerified: row.is_verified === true || row.verification_status === 'active',
         isGoogleVerified: row.is_google_verified === true,
+        isClaimed: row.is_claimed === true,
+        claimStatus: row.claim_status || 'unclaimed',
         verificationTier: row.verification_tier || 'email_verified',
         hourlyRate: row.hourly_rate || 49,
         experienceYears: row.experience_years || '',

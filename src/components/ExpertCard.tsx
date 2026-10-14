@@ -154,6 +154,22 @@ export function ExpertCard({ expert }: { expert: any }) {
                         View Profile
                     </button>
                 </div>
+
+                {!expert.isClaimed && !expert.is_claimed && (
+                    <div className="pt-2 border-t border-slate-100">
+                        <span
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                window.location.href = `/claim/${cleanId}`;
+                            }}
+                            className="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1 cursor-pointer"
+                        >
+                            ⚠️ Not claimed?
+                            <span>Claim This Business →</span>
+                        </span>
+                    </div>
+                )}
             </div>
         </a>
     );
