@@ -3,58 +3,99 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title="TravlTik for Business — Claim & Manage Your Business">
-  <div class="min-h-screen bg-[#F8FAFC]">
-    <!-- Hero -->
-    <section class="bg-slate-900 text-white py-24 px-4">
-      <div class="max-w-5xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold tracking-wider uppercase mb-6">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          TravlTik for Business
+  <div class="min-h-screen bg-white">
+    
+    <!-- Yelp-Style Hero: Clean White Background -->
+    <section class="bg-white border-b border-slate-100 py-20 px-4">
+      <div class="max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <!-- LEFT: Text Content -->
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-6">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              TravlTik for Business
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+              Claim your business.<br />Reach millions of travelers.
+            </h1>
+            
+            <p class="text-base text-slate-600 mb-8 leading-relaxed max-w-lg">
+              Join thousands of verified consultants, universities, and agencies on TravlTik. Manage your profile, respond to reviews, and grow your business.
+            </p>
+            
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="/biz/claim" class="px-6 py-3 bg-emerald-500 text-white rounded-xl font-bold text-sm hover:bg-emerald-600 transition-colors shadow-sm">
+                Claim Your Business →
+              </a>
+              <a href="/biz/login" class="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl font-semibold text-sm hover:bg-slate-50 transition-colors">
+                Business Login
+              </a>
+            </div>
+            
+            <p class="text-xs text-slate-500 mt-6">
+              Already have an account? <a href="/biz/login" class="text-emerald-600 hover:underline font-semibold">Sign in</a>
+            </p>
+          </div>
+
+          <!-- RIGHT: Visual (Yelp-style illustration) -->
+          <div class="hidden lg:block">
+            <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8 shadow-sm">
+              <div class="space-y-4">
+                <div class="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                  <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold">1</div>
+                  <div>
+                    <p class="text-sm font-bold text-slate-900">Find your business</p>
+                    <p class="text-xs text-slate-500">Search or add your listing</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                  <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold">2</div>
+                  <div>
+                    <p class="text-sm font-bold text-slate-900">Verify ownership</p>
+                    <p class="text-xs text-slate-500">Confirm via email</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                  <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 font-bold">3</div>
+                  <div>
+                    <p class="text-sm font-bold text-slate-900">Manage profile</p>
+                    <p class="text-xs text-slate-500">Respond to reviews & grow</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-          Claim your business.<br />Reach millions of travelers.
-        </h1>
-        <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Join thousands of verified consultants, universities, and agencies on TravlTik. Manage your profile, respond to reviews, and grow your business.
-        </p>
-        <div class="flex flex-wrap items-center justify-center gap-3">
-          <a href="/biz/claim" class="px-8 py-4 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 transition-colors shadow-lg">
-            Claim Your Business →
-          </a>
-          <a href="/biz/login" class="px-8 py-4 border border-white/20 text-white rounded-xl font-semibold hover:bg-white/10 transition-colors">
-            Business Login
-          </a>
-        </div>
-        <p class="text-xs text-slate-500 mt-6">
-          Already have an account? <a href="/biz/login" class="text-emerald-400 hover:underline">Sign in</a>
-        </p>
       </div>
     </section>
 
-    <!-- Stats Strip -->
-    <section class="bg-white border-b border-slate-200 py-8">
+    <!-- Stats Strip (Yelp-style) -->
+    <section class="bg-slate-50 border-b border-slate-200 py-6">
       <div class="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
         <div>
-          <div class="text-3xl font-black text-slate-900">193+</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold">Countries</div>
+          <div class="text-2xl font-black text-slate-900">193+</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Countries</div>
         </div>
         <div>
-          <div class="text-3xl font-black text-slate-900">50K+</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold">Travelers</div>
+          <div class="text-2xl font-black text-slate-900">50K+</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Travelers</div>
         </div>
         <div>
-          <div class="text-3xl font-black text-slate-900">100%</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold">Escrow Protected</div>
+          <div class="text-2xl font-black text-slate-900">100%</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Escrow Protected</div>
         </div>
         <div>
-          <div class="text-3xl font-black text-slate-900">24/7</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold">Support</div>
+          <div class="text-2xl font-black text-slate-900">24/7</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Support</div>
         </div>
       </div>
     </section>
 
-    <!-- Features -->
-    <section class="py-20 px-4">
+    <!-- Features Section (Keep Existing) -->
+    <section class="py-20 px-4 bg-white">
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-slate-900 text-center mb-4">
           Everything you need to grow
@@ -109,8 +150,8 @@ import Layout from '../../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="py-20 px-4 bg-white border-y border-slate-200">
+    <!-- How It Works (Keep Existing) -->
+    <section class="py-20 px-4 bg-slate-50 border-y border-slate-200">
       <div class="max-w-5xl mx-auto">
         <h2 class="text-3xl font-bold text-slate-900 text-center mb-12">
           How it works
@@ -140,8 +181,8 @@ import Layout from '../../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="py-20 px-4">
+    <!-- Final CTA (Yelp-style clean) -->
+    <section class="py-20 px-4 bg-white">
       <div class="max-w-3xl mx-auto text-center">
         <h2 class="text-3xl font-bold text-slate-900 mb-4">
           Ready to get started?
@@ -154,5 +195,6 @@ import Layout from '../../layouts/Layout.astro';
         </a>
       </div>
     </section>
+
   </div>
 </Layout>
