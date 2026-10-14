@@ -1,10 +1,37 @@
 import type { APIRoute } from 'astro';
 import { getPool, runMigrations } from '@/backend/db';
+import { verifySession } from '@/backend/auth';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // 1. Enforce login check
+    const cookieHeader = request.headers.get('Cookie') || '';
+    const match = cookieHeader.match(/travltik_sid=([^;]+)/);
+    const token = match ? match[1] : '';
+
+    if (!token) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: 'Please login to add your business.' 
+      }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const session = await verifySession(token);
+    if (!session || !session.user) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: 'Session expired. Please login again.' 
+      }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     const data = await request.json();
     const { businessType, businessName, website, email, phone, country, city, description } = data;
 
@@ -50,7 +77,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Insert business
+    // Insert business linked with logged in user
     const result = await pool.query(
       `INSERT INTO experts (
         business_name, business_type, website, email, contact_number, 

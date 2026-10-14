@@ -1,8 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { AddBusinessForm } from '../components/claim/AddBusinessForm';
+import { verifySession } from '../backend/auth';
 
 export const prerender = false;
+
+// Check session
+const cookieHeader = Astro.request.headers.get('Cookie') || '';
+const match = cookieHeader.match(/travltik_sid=([^;]+)/);
+const token = match ? match[1] : '';
+
+let currentUser = null;
+if (token) {
+  const session = await verifySession(token);
+  if (session && session.user) {
+    currentUser = session.user;
+  }
+}
+
+// Redirect to login if not logged in
+if (!currentUser) {
+  return Astro.redirect('/login?redirect=/add-business');
+}
 ---
 
 <Layout title="Add Your Business — TravlTik">

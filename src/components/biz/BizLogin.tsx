@@ -17,13 +17,19 @@ export function BizLogin() {
         body: JSON.stringify({ email, password, role: 'expert' }),
       });
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && (data.status === 'success' || data.success)) {
+        // Save to localStorage for client-side persistence
+        if (data.user) {
+          try {
+            localStorage.setItem('travltik_user', JSON.stringify(data.user));
+          } catch (e) {}
+        }
         window.location.href = '/biz/dashboard';
       } else {
-        setError(data.error || 'Invalid credentials');
+        setError(data.message || data.error || 'Invalid email or password.');
       }
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -77,8 +83,8 @@ export function BizLogin() {
         <p className="text-xs text-slate-500">
           Don't have a business account?
         </p>
-        <a href="/add-business" className="text-xs text-blue-600 hover:underline font-semibold mt-1 inline-block">
-          Add your business →
+        <a href="/signup/service-provider" className="text-xs text-blue-600 hover:underline font-semibold mt-1 inline-block">
+          Register as Service Provider →
         </a>
       </div>
     </form>
