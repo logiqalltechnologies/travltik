@@ -272,7 +272,30 @@ export async function runMigrations() {
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS review_count INTEGER DEFAULT 12;`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS referral_code VARCHAR(50);`);
   await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS channel_partner_id INTEGER REFERENCES channel_partners(id) ON DELETE SET NULL;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS is_claimed BOOLEAN DEFAULT false;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS claimed_by_user_id VARCHAR(100);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS claimed_at TIMESTAMP WITH TIME ZONE;`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS claim_status VARCHAR(20) DEFAULT 'unclaimed';`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS claim_token VARCHAR(100);`);
+  await p.query(`ALTER TABLE experts ADD COLUMN IF NOT EXISTS claim_token_expires_at TIMESTAMP WITH TIME ZONE;`);
   await p.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_experts_email_lower ON experts (LOWER(email));`);
+
+  // Expert Claims Table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS expert_claims (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      expert_id INTEGER NOT NULL REFERENCES experts(id) ON DELETE CASCADE,
+      claimant_email VARCHAR(255) NOT NULL,
+      claim_token VARCHAR(100) NOT NULL,
+      status VARCHAR(20) DEFAULT 'pending',
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      expires_at TIMESTAMP WITH TIME ZONE,
+      approved_at TIMESTAMP WITH TIME ZONE,
+      ip_address VARCHAR(45)
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_expert_claims_token ON expert_claims(claim_token);`);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_expert_claims_expert ON expert_claims(expert_id);`);
 
 
   // 3. Sessions Table
