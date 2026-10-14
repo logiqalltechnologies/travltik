@@ -38,19 +38,6 @@ export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
     }
 
     if (typeof window !== 'undefined') {
-      const userStr = localStorage.getItem('travltik_user');
-      if (userStr && userStr !== 'null') {
-        try {
-          const parsed = JSON.parse(userStr);
-          if (parsed && (parsed.email || parsed.uid)) {
-            setCurrentUser(parsed);
-            setAuthChecking(false);
-            return;
-          }
-        } catch (e) {}
-      }
-
-      // Check /api/auth/me fallback
       fetch('/api/auth/me')
         .then((r) => r.json())
         .then((data) => {
@@ -58,9 +45,14 @@ export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
             setCurrentUser(data.user);
           } else {
             setCurrentUser(null);
+            try { localStorage.removeItem('travltik_user'); } catch (e) {}
+            window.location.href = '/login?redirect=/add-business';
           }
         })
-        .catch(() => setCurrentUser(null))
+        .catch(() => {
+          setCurrentUser(null);
+          window.location.href = '/login?redirect=/add-business';
+        })
         .finally(() => setAuthChecking(false));
     } else {
       setAuthChecking(false);

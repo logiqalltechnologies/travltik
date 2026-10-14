@@ -45,6 +45,24 @@ function LoginPortalContent() {
                 setShowReferralInput(true);
             }
 
+            const redirectParam = params.get("redirect");
+            if (redirectParam) {
+                // If user came with a redirect parameter (e.g. from /add-business), verify real backend session
+                fetch('/api/auth/me')
+                    .then((r) => r.json())
+                    .then((data) => {
+                        if (data?.user) {
+                            window.location.href = getRedirectDestination(data.user.type);
+                        } else {
+                            try { localStorage.removeItem("travltik_user"); } catch (e) {}
+                        }
+                    })
+                    .catch(() => {
+                        try { localStorage.removeItem("travltik_user"); } catch (e) {}
+                    });
+                return;
+            }
+
             const userStr = localStorage.getItem("travltik_user");
             if (userStr && userStr !== "null") {
                 try {

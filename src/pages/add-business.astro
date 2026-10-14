@@ -14,6 +14,11 @@ if (token) {
     currentUser = session.user;
   }
 }
+
+// Redirect to login if not authenticated
+if (!currentUser) {
+  return Astro.redirect('/login?redirect=/add-business');
+}
 ---
 
 <Layout title="Add Your Business — TravlTik">
