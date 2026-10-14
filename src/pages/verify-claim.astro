@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = false;
+---
+
+<Layout title="Verify Your Claim — TravlTik">
+  <div class="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-4">
+    <div id="content" class="max-w-md w-full bg-white rounded-2xl border border-slate-200 p-8 text-center shadow-sm">
+      <div class="animate-pulse text-slate-500 font-medium">Verifying claim ownership...</div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const content = document.getElementById('content');
+
+  if (!token) {
+    if (content) {
+      content.innerHTML = `
+        <div class="w-16 h-16 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-3xl mx-auto mb-4">✕</div>
+        <h2 class="text-2xl font-bold text-slate-900 mb-2">Invalid Link</h2>
+        <p class="text-sm text-slate-500">No verification token found in URL.</p>
+      `;
+    }
+  } else {
+    fetch('/api/experts/verify-claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (!content) return;
+        if (data.success) {
+          content.innerHTML = `
+            <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4">✓</div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Claim Verified!</h2>
+            <p class="text-sm text-slate-500 mb-6">Your business is now verified on TravlTik.</p>
+            <a href="/login?role=expert" class="inline-block w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors">Sign in to Business Portal →</a>
+          `;
+        } else {
+          content.innerHTML = `
+            <div class="w-16 h-16 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-3xl mx-auto mb-4">✕</div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">Verification Failed</h2>
+            <p class="text-sm text-slate-500">${data.error || 'Invalid or expired verification token.'}</p>
+          `;
+        }
+      })
+      .catch(() => {
+        if (!content) return;
+        content.innerHTML = `
+          <div class="w-16 h-16 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-3xl mx-auto mb-4">✕</div>
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">Error</h2>
+          <p class="text-sm text-slate-500">Something went wrong. Please try again.</p>
+        `;
+      });
+  }
+</script>
