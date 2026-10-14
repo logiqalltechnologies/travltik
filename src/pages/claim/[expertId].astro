@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ClaimBusiness } from '../../components/claim/ClaimBusiness';
+
+export const prerender = false;
+const { expertId } = Astro.params;
+---
+
+<Layout title="Claim Your Business — TravlTik">
+  <div class="min-h-screen bg-[#F8FAFC]">
+    <div class="max-w-2xl mx-auto px-4 py-12">
+      <ClaimBusiness expertId={expertId || ''} client:load />
+    </div>
+  </div>
+</Layout>
