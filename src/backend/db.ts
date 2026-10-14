@@ -297,6 +297,22 @@ export async function runMigrations() {
   await p.query(`CREATE INDEX IF NOT EXISTS idx_expert_claims_token ON expert_claims(claim_token);`);
   await p.query(`CREATE INDEX IF NOT EXISTS idx_expert_claims_expert ON expert_claims(expert_id);`);
 
+  // Reviews table
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS expert_reviews (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      expert_id INTEGER NOT NULL REFERENCES experts(id) ON DELETE CASCADE,
+      user_id VARCHAR(100),
+      rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+      title VARCHAR(200),
+      content TEXT,
+      owner_response TEXT,
+      owner_responded_at TIMESTAMP WITH TIME ZONE,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    );
+  `);
+  await p.query(`CREATE INDEX IF NOT EXISTS idx_expert_reviews_expert ON expert_reviews(expert_id);`);
+
 
   // 3. Sessions Table
   await p.query(`

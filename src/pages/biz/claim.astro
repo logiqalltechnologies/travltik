@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SearchBusiness } from '../../components/biz/SearchBusiness';
+
+export const prerender = false;
+---
+
+<Layout title="Claim Your Business — TravlTik for Business">
+  <div class="min-h-screen bg-[#F8FAFC]">
+    <div class="max-w-2xl mx-auto px-4 py-12">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-slate-900 mb-2">Claim Your Business</h1>
+        <p class="text-sm text-slate-500">
+          Search for your business and claim it to manage your profile.
+        </p>
+      </div>
+      <SearchBusiness client:load />
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,14 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { BizDashboard } from '../../components/biz/BizDashboard';
+
+export const prerender = false;
+---
+
+<Layout title="Business Dashboard — TravlTik for Business">
+  <div class="min-h-screen bg-[#F8FAFC]">
+    <div class="max-w-6xl mx-auto px-4 py-12">
+      <BizDashboard client:load />
+    </div>
+  </div>
+</Layout>
