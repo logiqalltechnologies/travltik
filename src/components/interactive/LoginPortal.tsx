@@ -19,7 +19,6 @@ function LoginPortalContent() {
 
     const getRedirectDestination = (userType?: string): string => {
         if (typeof window === "undefined") return "/traveller/dashboard";
-        if (userType === "expert") return "/service-provider/dashboard";
         const params = new URLSearchParams(window.location.search);
         const redirectParam = params.get("redirect");
         if (
@@ -32,6 +31,7 @@ function LoginPortalContent() {
         ) {
             return redirectParam;
         }
+        if (userType === "expert") return "/service-provider/dashboard";
         return "/traveller/dashboard";
     };
 

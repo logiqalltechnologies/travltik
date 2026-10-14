@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const BUSINESS_TYPES = [
   { value: 'university', label: 'University', icon: '🎓' },
@@ -8,7 +8,13 @@ const BUSINESS_TYPES = [
   { value: 'recruiter', label: 'Recruiter', icon: '💼' },
 ];
 
-export function AddBusinessForm() {
+interface AddBusinessFormProps {
+  initialUser?: any;
+}
+
+export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
+  const [currentUser, setCurrentUser] = useState<any>(initialUser || null);
+  const [authChecking, setAuthChecking] = useState(!initialUser);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     businessType: '',
@@ -24,6 +30,43 @@ export function AddBusinessForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState<any>(null);
 
+  useEffect(() => {
+    if (initialUser) {
+      setCurrentUser(initialUser);
+      setAuthChecking(false);
+      return;
+    }
+
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem('travltik_user');
+      if (userStr && userStr !== 'null') {
+        try {
+          const parsed = JSON.parse(userStr);
+          if (parsed && (parsed.email || parsed.uid)) {
+            setCurrentUser(parsed);
+            setAuthChecking(false);
+            return;
+          }
+        } catch (e) {}
+      }
+
+      // Check /api/auth/me fallback
+      fetch('/api/auth/me')
+        .then((r) => r.json())
+        .then((data) => {
+          if (data?.user) {
+            setCurrentUser(data.user);
+          } else {
+            setCurrentUser(null);
+          }
+        })
+        .catch(() => setCurrentUser(null))
+        .finally(() => setAuthChecking(false));
+    } else {
+      setAuthChecking(false);
+    }
+  }, [initialUser]);
+
   async function handleSubmit() {
     setLoading(true);
     setError('');
@@ -31,20 +74,56 @@ export function AddBusinessForm() {
       const res = await fetch('/api/experts/add-business', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          userEmail: currentUser?.email || '',
+        }),
       });
       const data = await res.json();
+      if (res.status === 401) {
+        window.location.href = '/login?redirect=/add-business';
+        return;
+      }
       if (data.success) {
         setSuccess(data.expert);
         setStep(3);
       } else {
-        setError(data.error);
+        setError(data.error || 'Failed to add business.');
       }
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Something went wrong.');
     } finally {
       setLoading(false);
     }
+  }
+
+  if (authChecking) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-sm">
+        <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-sm text-slate-500 font-medium">Verifying login status...</p>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center shadow-sm max-w-md mx-auto">
+        <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mx-auto mb-4 font-bold">
+          🔒
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 mb-2">Sign In Required</h2>
+        <p className="text-sm text-slate-500 mb-6">
+          You must be logged in to add your business on TravlTik. Please sign in or create an account to proceed.
+        </p>
+        <a
+          href="/login?redirect=/add-business"
+          className="inline-flex items-center justify-center w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-sm"
+        >
+          Sign In to Continue →
+        </a>
+      </div>
+    );
   }
 
   if (step === 3 && success) {

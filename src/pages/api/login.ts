@@ -92,15 +92,13 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Set cookie headers for session persistence
+    const isSecure = request.url.startsWith('https:') || request.headers.get('x-forwarded-proto') === 'https';
+    const secureFlag = isSecure ? 'Secure; ' : '';
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append(
       'Set-Cookie',
-      `travltik_sid=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
-    );
-    headers.append(
-      'Set-Cookie',
-      `travltik_sid=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
+      `travltik_sid=${token}; Path=/; HttpOnly; ${secureFlag}SameSite=Lax; Max-Age=${30 * 24 * 60 * 60};`
     );
 
     const displayName = type === 'seeker' 

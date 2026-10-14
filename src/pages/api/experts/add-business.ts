@@ -7,11 +7,34 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     // 1. Enforce login check
+    const authHeader = request.headers.get('Authorization') || '';
+    const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : '';
     const cookieHeader = request.headers.get('Cookie') || '';
     const match = cookieHeader.match(/travltik_sid=([^;]+)/);
-    const token = match ? match[1] : '';
+    const token = bearerToken || (match ? match[1] : '');
 
-    if (!token) {
+    let session = token ? await verifySession(token) : null;
+    const data = await request.json();
+
+    if (!session || !session.user) {
+      const userEmail = data.userEmail;
+      if (userEmail) {
+        await runMigrations();
+        const pool = getPool();
+        const cleanEmail = String(userEmail).trim().toLowerCase();
+        const seekerCheck = await pool.query('SELECT id, email FROM seekers WHERE LOWER(email) = $1', [cleanEmail]);
+        if (seekerCheck.rows.length > 0) {
+          session = { user: seekerCheck.rows[0], type: 'seeker' };
+        } else {
+          const expertCheck = await pool.query('SELECT id, email FROM experts WHERE LOWER(email) = $1', [cleanEmail]);
+          if (expertCheck.rows.length > 0) {
+            session = { user: expertCheck.rows[0], type: 'expert' };
+          }
+        }
+      }
+    }
+
+    if (!session || !session.user) {
       return new Response(JSON.stringify({ 
         success: false, 
         error: 'Please login to add your business.' 
@@ -20,19 +43,6 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { 'Content-Type': 'application/json' },
       });
     }
-
-    const session = await verifySession(token);
-    if (!session || !session.user) {
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'Session expired. Please login again.' 
-      }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    const data = await request.json();
     const { businessType, businessName, website, email, phone, country, city, description } = data;
 
     // Validation
