@@ -3104,7 +3104,7 @@ return (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-3.5 items-end overflow-visible relative z-30">
                       
                       {/* Field 1: Passport Country (3 cols) */}
-                      <div ref={originCityRef} className="lg:col-span-3 relative z-40 overflow-visible">
+                      <div ref={originCityRef} className={`lg:col-span-3 relative overflow-visible ${isOriginCityOpen ? 'z-50' : 'z-30'}`}>
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
                           Where are you moving from?
                         </label>
@@ -3143,7 +3143,7 @@ return (
                             data-lenis-prevent="true"
                             onWheel={(e) => e.stopPropagation()}
                             onTouchMove={(e) => e.stopPropagation()}
-                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left overscroll-contain select-none"
+                            className="absolute top-[calc(100%+8px)] left-0 w-full sm:w-[320px] max-w-[calc(100vw-2.5rem)] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2.5 max-h-[300px] flex flex-col ring-1 ring-black/10 text-left overscroll-contain select-none"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {/* Search Input */}
@@ -3154,7 +3154,6 @@ return (
                                 value={passportSearchQuery}
                                 onChange={(e) => setPassportSearchQuery(e.target.value)}
                                 placeholder="Type passport country..."
-                                autoFocus
                                 className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
                               />
                             </div>
@@ -3208,7 +3207,7 @@ return (
                       </div>
 
                       {/* Field 2: Destination (I want to travel to...) (3 cols) */}
-                      <div ref={journeyDestRef} className="lg:col-span-3 relative z-40 overflow-visible">
+                      <div ref={journeyDestRef} className={`lg:col-span-3 relative overflow-visible ${isJourneyDestOpen ? 'z-50' : 'z-20'}`}>
                         <label className="block text-[10px] sm:text-xs font-semibold text-slate-700 mb-1 truncate">
                           Where do you want to go?
                         </label>
@@ -3247,7 +3246,7 @@ return (
                             data-lenis-prevent="true"
                             onWheel={(e) => e.stopPropagation()}
                             onTouchMove={(e) => e.stopPropagation()}
-                            className="absolute top-[calc(100%+8px)] left-0 w-[280px] sm:w-[320px] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2.5 max-h-[340px] flex flex-col ring-1 ring-black/10 text-left overscroll-contain select-none"
+                            className="absolute top-[calc(100%+8px)] left-0 w-full sm:w-[320px] max-w-[calc(100vw-2.5rem)] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2.5 max-h-[300px] flex flex-col ring-1 ring-black/10 text-left overscroll-contain select-none"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {/* Search Input */}
@@ -3258,7 +3257,6 @@ return (
                                 value={destSearchQuery}
                                 onChange={(e) => setDestSearchQuery(e.target.value)}
                                 placeholder="Type destination country..."
-                                autoFocus
                                 className="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B] focus:bg-white"
                               />
                             </div>
@@ -3311,7 +3309,7 @@ return (
                       </div>
 
                       {/* Field 3: Primary Purpose (4 cols) */}
-                      <div ref={lookingForRef} className="lg:col-span-4 relative z-40 overflow-visible">
+                      <div ref={lookingForRef} className={`lg:col-span-4 relative overflow-visible ${isLookingForOpen ? 'z-50' : 'z-10'}`}>
                         <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">
                           Purpose
                         </label>
@@ -3339,7 +3337,7 @@ return (
                             data-lenis-prevent="true"
                             onWheel={(e) => e.stopPropagation()}
                             onTouchMove={(e) => e.stopPropagation()}
-                            className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[280px] sm:min-w-[320px] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2 max-h-[320px] overflow-y-auto overscroll-contain ring-1 ring-black/10 select-none [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+                            className="absolute top-[calc(100%+8px)] left-0 w-full sm:w-[340px] max-w-[calc(100vw-2.5rem)] z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-2 max-h-[300px] overflow-y-auto overscroll-contain ring-1 ring-black/10 select-none [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <div className="space-y-1">
@@ -3409,7 +3407,7 @@ return (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-end animate-fadeIn overflow-visible relative z-30">
                     
                     {/* 1. Country (2 Cols) */}
-                    <div className="lg:col-span-2 relative z-40 overflow-visible">
+                    <div className={`lg:col-span-2 relative overflow-visible ${isDomesticCountryOpen ? 'z-50' : 'z-30'}`}>
                       <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">Country</label>
                       <div
                         ref={domesticCountryRef}
@@ -3436,7 +3434,7 @@ return (
                         <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticCountryOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
 
                         {isDomesticCountryOpen && (
-                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
+                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] max-w-[calc(100vw-2.5rem)] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
                             {domesticCountryOptions.map((opt) => (
                               <button
                                 key={opt.value}
@@ -3461,7 +3459,7 @@ return (
                     </div>
 
                     {/* 2. State / Region (2 Cols) */}
-                    <div className="lg:col-span-2 relative z-40 overflow-visible">
+                    <div className={`lg:col-span-2 relative overflow-visible ${isDomesticStateOpen ? 'z-50' : 'z-20'}`}>
                       <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">State / Region</label>
                       <div
                         ref={domesticStateRef}
@@ -3483,7 +3481,7 @@ return (
                         <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticStateOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
 
                         {isDomesticStateOpen && (
-                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
+                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[220px] max-w-[calc(100vw-2.5rem)] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
                             {currentDomesticStates.map((opt) => (
                               <button
                                 key={opt.value}
@@ -3525,7 +3523,7 @@ return (
                     </div>
 
                     {/* 4. Destination Package (3 Cols) */}
-                    <div className="lg:col-span-3 relative z-40 overflow-visible">
+                    <div className={`lg:col-span-3 relative overflow-visible ${isDomesticDestOpen ? 'z-50' : 'z-10'}`}>
                       <label className="block text-[11px] sm:text-xs font-normal text-slate-500 mb-1">Destination Package</label>
                       <div
                         ref={domesticDestRef}
@@ -3547,7 +3545,7 @@ return (
                         <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 ml-1 transition-transform duration-200 ${isDomesticDestOpen ? 'rotate-180 text-[#00A86B]' : ''}`} />
 
                         {isDomesticDestOpen && (
-                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[260px] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
+                          <div className="absolute top-[calc(100%+8px)] left-0 w-full min-w-[260px] max-w-[calc(100vw-2.5rem)] z-[99999] bg-white border border-slate-200 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.2)] p-2 max-h-[280px] overflow-y-auto no-scrollbar ring-1 ring-black/10" onClick={(e) => e.stopPropagation()}>
                             {currentDomesticDestinations.map((opt) => (
                               <button
                                 key={opt.value}
