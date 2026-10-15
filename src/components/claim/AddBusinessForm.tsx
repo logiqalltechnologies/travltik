@@ -143,7 +143,7 @@ export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+    <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
       {step === 1 && (
         <>
           <h2 className="text-lg font-bold text-slate-900 mb-4">What type of business?</h2>
@@ -230,7 +230,7 @@ export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Country <span className="text-rose-500">*</span>

@@ -56,7 +56,7 @@ export function BizReviews() {
   return (
     <div className="space-y-4">
       {reviews.map((review) => (
-        <div key={review.id} className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div key={review.id} className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
           <div className="flex items-start justify-between mb-3">
             <div>
               <div className="flex items-center gap-2">
@@ -73,12 +73,12 @@ export function BizReviews() {
           <p className="text-sm text-slate-600 mb-4">{review.content}</p>
           
           {review.owner_response ? (
-            <div className="ml-6 p-4 bg-slate-50 rounded-xl border-l-4 border-blue-500">
+            <div className="ml-2 sm:ml-6 p-4 bg-slate-50 rounded-xl border-l-4 border-blue-500">
               <p className="text-xs font-bold text-blue-600 mb-1">Your Response</p>
               <p className="text-sm text-slate-700">{review.owner_response}</p>
             </div>
           ) : respondingTo === review.id ? (
-            <div className="ml-6 space-y-3">
+            <div className="ml-2 sm:ml-6 space-y-3">
               <textarea
                 rows={3}
                 value={response}

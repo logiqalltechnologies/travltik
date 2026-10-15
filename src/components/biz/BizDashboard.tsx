@@ -39,22 +39,22 @@ export function BizDashboard() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-        <div className="flex items-start justify-between">
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-blue-100 flex items-center justify-center text-xl sm:text-2xl font-bold text-blue-700 shrink-0">
               {expert?.name?.charAt(0) || expert?.businessName?.charAt(0) || 'B'}
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 truncate">
                 {expert?.name || expert?.businessName || 'Business Name'}
               </h1>
-              <p className="text-sm text-slate-500">
+              <p className="text-xs sm:text-sm text-slate-500 truncate">
                 {expert?.email || 'business@example.com'}
               </p>
             </div>
           </div>
-          <a href={`/expert/${cleanId}`} className="text-xs text-blue-600 hover:underline font-semibold">
+          <a href={`/expert/${cleanId}`} className="text-xs text-blue-600 hover:underline font-semibold shrink-0">
             View Public Profile →
           </a>
         </div>
