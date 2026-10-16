@@ -44,10 +44,27 @@ section{padding:96px 0;position:relative}
 .bdg.p{background:var(--l2);color:var(--p)}.bdg svg{font-size:13px}
 .av{border-radius:50%;flex:none;display:block}
 /* top bar + header */
-.tb{background:linear-gradient(90deg,var(--l2),var(--l1) 50%,var(--gl));font-size:13px;font-weight:600;color:var(--p)}
-.tb .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:14px}
-.tb span{display:inline-flex;gap:8px;align-items:center}.tb .r{display:flex;gap:28px}.tb svg{color:var(--g2)}
-.tb .mid{background:#fff;padding:4px 14px;border-radius:99px;box-shadow:0 4px 14px -8px rgba(67,15,122,.4)}
+.tb{background:linear-gradient(90deg,var(--l2),var(--l1) 50%,var(--gl));font-size:13px;font-weight:600;color:var(--p);overflow:hidden}
+.tb .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:14px;white-space:nowrap}
+.tb a, .tb span{display:inline-flex;gap:8px;align-items:center;color:inherit;text-decoration:none;white-space:nowrap}
+.tb .r{display:flex;gap:24px;align-items:center}
+.tb svg{color:var(--g2);flex-shrink:0}
+.tb .mid{background:#fff;padding:4px 14px;border-radius:99px;box-shadow:0 4px 14px -8px rgba(67,15,122,.4);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+@media(max-width:900px){
+  .tb .hide, .tb .mid{display:none !important}
+  .tb .wrap{justify-content:space-between;padding:0 20px}
+  .tb .r{gap:16px}
+}
+@media(max-width:600px){
+  .tb{font-size:12px;height:38px}
+  .tb .wrap{height:38px;padding:0 16px;justify-content:space-between}
+  .tb .hide, .tb .mid{display:none !important}
+  .tb .r{gap:12px}
+}
+@media(max-width:380px){
+  .tb .r-lang{display:none !important}
+  .tb .wrap{justify-content:center}
+}
 header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:82px;gap:24px}.nav img{height:44px;display:block}
 .links{display:flex;gap:6px;background:var(--l1);padding:6px;border-radius:99px;border:1px solid var(--line)}
@@ -260,7 +277,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 /* responsive */
 @media(max-width:1180px){.wrap{padding:0 28px}.hero h1{font-size:56px}.cg,.clg{grid-template-columns:repeat(2,1fr)}.stp{grid-template-columns:repeat(3,1fr)}.stp:before{display:none}.app{grid-template-columns:200px 1fr}.rt2{display:none}.rvg{grid-template-columns:1fr 1fr}.ag{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:1020px){section{padding:84px 0}.links,.nr .lg,.nr .btn{display:none}.burger{display:flex}.hg,.cmg,.fq,.esc,.ctb{grid-template-columns:1fr}.hv{height:600px;max-width:640px;margin:20px auto 0;width:100%}.sg{grid-template-columns:repeat(3,1fr);gap:18px 0}.sg div:nth-child(3){border:0}.dg{grid-template-columns:repeat(2,1fr)}.bn{grid-template-columns:repeat(2,1fr)}.b1,.b2,.b6{grid-column:span 2}.b1{grid-row:auto}.sfm{grid-template-columns:1fr 1fr}.sfm .btn{grid-column:span 2;padding:16px}.res{grid-template-columns:1fr}.fg{grid-template-columns:1fr 1fr}.cpt{grid-template-columns:1fr 1.2fr .9fr}.sh h2,.cmg h2,.fq h2,.ctb h2{font-size:38px}.ctc{transform:none}.clh{flex-direction:column;align-items:flex-start}}
-@media(max-width:600px){.wrap{padding:0 20px}section{padding:64px 0}.tb .hide,.tb .mid{display:none}.tb .wrap{justify-content:center}.tb .r{gap:16px}.nav{height:68px}.nav img{height:36px}.hero{padding:34px 0 110px}.hero h1{font-size:40px}.hero .lead{font-size:16px}.chips{grid-template-columns:1fr}.live{font-size:12px}.hv{height:auto;display:flex;flex-direction:column;gap:16px;margin-top:10px}.hv .map{position:relative;left:0;top:0;width:100%}.hv .glass{position:relative;inset:auto;width:100%!important;animation:none}.stamp{display:none}.sh h2,.cmg h2,.fq h2,.ctb h2,.esc h3{font-size:30px}.sh p{font-size:16px}.sg{grid-template-columns:1fr 1fr;padding:22px 8px}.sg div{border:0!important}.sg b{font-size:30px}.dg,.bn,.stp,.cg,.clg,.rvg,.ag,.fg,.cms{grid-template-columns:1fr}.b1,.b2,.b6{grid-column:auto}.vz{grid-template-columns:1fr}.sfm{grid-template-columns:1fr}.sfm .btn{grid-column:auto}.sbox{padding:20px}.esc{padding:26px}.emil{grid-template-columns:1fr}.app{grid-template-columns:1fr;height:auto}.sd{flex-direction:row;overflow:auto;border:0;padding:12px;align-items:center}.sd h6,.sd>.ch{display:none}#chs{flex-direction:row!important}.ch{white-space:nowrap}.ms{min-height:340px}.cpt{font-size:13px}.cpt>div{padding:14px 10px;font-size:12.5px}.cpt .hd{font-size:13px}.cpt .ok,.cpt .no{width:22px;height:22px;font-size:12px}.cpt .tv{gap:6px}.cpt .tx small{display:none}.ctb{padding:44px 26px;border-radius:30px}.clb{flex-direction:column;align-items:flex-start}.stp .sc2 p{min-height:0}.sc2.on{transform:none}.qa button{font-size:15px;padding:18px}.fb{flex-direction:column;align-items:flex-start}.pin{display:none}}
+@media(max-width:600px){.wrap{padding:0 20px}section{padding:64px 0}.tb .hide,.tb .mid{display:none !important}.tb .wrap{justify-content:center}.tb .r{gap:16px}.nav{height:68px}.nav img{height:36px}.hero{padding:34px 0 110px}.hero h1{font-size:40px}.hero .lead{font-size:16px}.chips{grid-template-columns:1fr}.live{font-size:12px}.hv{height:auto;display:flex;flex-direction:column;gap:16px;margin-top:10px}.hv .map{position:relative;left:0;top:0;width:100%}.hv .glass{position:relative;inset:auto;width:100%!important;animation:none}.stamp{display:none}.sh h2,.cmg h2,.fq h2,.ctb h2,.esc h3{font-size:30px}.sh p{font-size:16px}.sg{grid-template-columns:1fr 1fr;padding:22px 8px}.sg div{border:0!important}.sg b{font-size:30px}.dg,.bn,.stp,.cg,.clg,.rvg,.ag,.fg,.cms{grid-template-columns:1fr}.b1,.b2,.b6{grid-column:auto}.vz{grid-template-columns:1fr}.sfm{grid-template-columns:1fr}.sfm .btn{grid-column:auto}.sbox{padding:20px}.esc{padding:26px}.emil{grid-template-columns:1fr}.app{grid-template-columns:1fr;height:auto}.sd{flex-direction:row;overflow:auto;border:0;padding:12px;align-items:center}.sd h6,.sd>.ch{display:none}#chs{flex-direction:row!important}.ch{white-space:nowrap}.ms{min-height:340px}.cpt{font-size:13px}.cpt>div{padding:14px 10px;font-size:12.5px}.cpt .hd{font-size:13px}.cpt .ok,.cpt .no{width:22px;height:22px;font-size:12px}.cpt .tv{gap:6px}.cpt .tx small{display:none}.ctb{padding:44px 26px;border-radius:30px}.clb{flex-direction:column;align-items:flex-start}.stp .sc2 p{min-height:0}.sc2.on{transform:none}.qa button{font-size:15px;padding:18px}.fb{flex-direction:column;align-items:flex-start}.pin{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute"><defs>
@@ -308,7 +325,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <symbol id="apple" viewBox="0 0 24 24"><path d="M16.500 12.500c0-2.500 2-3.500 2-3.500-1.100-1.600-2.800-1.800-3.400-1.800-1.400-.1-2.800.8-3.500.8s-1.800-.8-3-.8C6.700 7.300 4.500 9 4.500 12.600c0 3.600 2.500 8.200 4.500 8.200 1 0 1.600-.7 3-.7s1.900.7 3 .7c2 0 3.700-3.300 4-4.300-1.800-.8-2.500-2.200-2.500-4zM14.500 5.500c.7-.8 1-1.900.9-3-1 .1-2.100.7-2.800 1.500-.6.700-1 1.800-.9 2.800 1 .1 2.100-.5 2.800-1.300z"/></symbol>
 <symbol id="play" viewBox="0 0 24 24"><path d="M5 3.500v17l15-8.500z"/></symbol>
 </defs></svg>
-<div class="tb"><div class="wrap"><div class="r"><a href="tel:+917661989366" style="display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none"><svg class="i"><use href="#phone"/></svg>+91 766 1989 366</a><a href="mailto:hello@travltik.com" class="hide" style="display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none"><svg class="i"><use href="#mail"/></svg>hello@travltik.com</a></div><a href="/escrow" class="mid hide" style="display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none"><svg class="i"><use href="#lock"/></svg>Every payment protected by milestone escrow</a><div class="r"><span><svg class="i"><use href="#globe"/></svg>English · INR</span></div></div></div>
+<div class="tb"><div class="wrap"><div class="r"><a href="tel:+917661989366"><svg class="i"><use href="#phone"/></svg>+91 766 1989 366</a><a href="mailto:hello@travltik.com" class="hide"><svg class="i"><use href="#mail"/></svg>hello@travltik.com</a></div><a href="/escrow" class="mid hide"><svg class="i"><use href="#lock"/></svg>Every payment protected by milestone escrow</a><div class="r r-lang"><span><svg class="i"><use href="#globe"/></svg>English · INR</span></div></div></div>
 <header id="hd"><div class="wrap"><div class="nav"><a href="/"><img src="/logo.png" alt="TravlTik"></a>
 <nav class="links"><a href="#search" class="on">Search</a><a href="#destinations">Destinations</a><a href="#services">Services</a><a href="#how">How it works</a><a href="#experts">Experts</a><a href="#classifieds">Classifieds</a><a href="#community">Community</a><a href="/planner" style="color:var(--g2);font-weight:700">AI Planner</a></nav>
 <div class="nr"><a class="lg" href="/login">Log in</a><a class="btn g s" href="/register">Get started <svg class="i ar"><use href="#arrow"/></svg></a><button class="burger" id="bg" aria-label="Menu"><svg class="i"><use href="#menu"/></svg></button></div></div>
@@ -468,7 +485,7 @@ const drawTabs=()=>{
     else if (cur === 'Tours') vAll.href = '/tours';
     else vAll.href = `/find-experts?category=${encodeURIComponent(cur.toLowerCase())}`;
   }
-  $('.tab').forEach(b=>b.onclick=()=>{cur=b.dataset.k;$('#q').placeholder=T[cur].ph;drawTabs();drawRes()});
+  $$('.tab').forEach(b=>b.onclick=()=>{cur=b.dataset.k;$('#q').placeholder=T[cur].ph;drawTabs();drawRes()});
 };
 drawTabs();drawRes();$('#go').onclick=drawRes;
 const adv=$('#adv'),setM=m=>{$$('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.m==m));adv.classList.toggle('open',m=='a')};
@@ -611,7 +628,7 @@ if (cinForm && cinInput) {
 }
 
 // 4. Topic clicks in community
-$('.app .sd .ch').forEach(ch => {
+$$('.app .sd .ch').forEach(ch => {
   ch.style.cursor = 'pointer';
   ch.addEventListener('click', () => {
     const topic = ch.textContent.trim().toLowerCase();
@@ -636,7 +653,7 @@ if (nlForm) {
 }
 
 // 6. App store download buttons
-$('.apps a').forEach(a => {
+$$('.apps a').forEach(a => {
   a.addEventListener('click', (e) => {
     e.preventDefault();
     alert('TravlTik iOS and Android apps are launching soon! Enter your email in the newsletter below for early VIP access.');
@@ -652,7 +669,7 @@ document.addEventListener('click', (e) => {
     }
   }
 });
-$('#mm a').forEach(a => a.addEventListener('click', () => $('#mm').classList.remove('o')));
+$$('#mm a').forEach(a => a.addEventListener('click', () => $('#mm').classList.remove('o')));
 
 addEventListener('scroll',()=>{const y=scrollY+140,ids=['search','destinations','services','how','experts','classifieds','community'];let c=null;ids.forEach(i=>{const e=document.getElementById(i);if(e&&e.offsetTop<=y)c=i});$$('.links a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+c))});
 const ym=location.hash.match(/y=(\d+)/);if(ym&&+ym[1]>0){document.body.style.transform='translateY(-'+ym[1]+'px)';$('#hd').style.visibility='hidden'}
