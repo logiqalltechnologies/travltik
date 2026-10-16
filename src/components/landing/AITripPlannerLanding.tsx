@@ -1531,6 +1531,24 @@ export function AITripPlannerLanding() {
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [selectedPlanTier, setSelectedPlanTier] = useState<5 | 10 | 15>(5);
 
+  // Close modals on ESC key and prevent body scroll while active
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (showPaidPlanModal) setShowPaidPlanModal(false);
+        if (paymentSuccessModalOpen) setPaymentSuccessModalOpen(false);
+      }
+    };
+    if (showPaidPlanModal || paymentSuccessModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [showPaidPlanModal, paymentSuccessModalOpen]);
+
   // Handlers for Paid Plan & Real Razorpay
   const handleProceedToPayment = async (overrideAmount?: 5 | 10 | 15) => {
     if (!pendingSearchData) return;
@@ -5265,25 +5283,33 @@ return (
 
       {/* ── 7. $5 PAID PLAN MODAL ("Get Your Visa Done") ── */}
       {showPaidPlanModal && pendingSearchData && (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl sm:rounded-[32px] max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200/90 relative animate-in zoom-in-95 duration-200 flex flex-col text-left">
-            
+        <div
+          className="fixed inset-0 z-[99999] overflow-y-auto bg-slate-950/75 backdrop-blur-sm p-3 sm:p-4 flex min-h-full items-center justify-center overscroll-contain animate-in fade-in duration-200"
+          onClick={() => setShowPaidPlanModal(false)}
+        >
+          <div
+            className="my-auto bg-white rounded-2xl sm:rounded-[32px] max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200/90 relative animate-in zoom-in-95 duration-200 flex flex-col text-left max-h-[92vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Top Gradient Accent Bar */}
-            <div className="h-2 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600" />
+            <div className="h-1.5 sm:h-2 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-600 shrink-0" />
 
-            <div className="p-5 sm:p-6">
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={() => setShowPaidPlanModal(false)}
-                className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+            {/* Close Button - Always visible, top right */}
+            <button
+              type="button"
+              onClick={() => setShowPaidPlanModal(false)}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+              aria-label="Close modal"
+              title="Close"
+            >
+              <X className="w-4 h-4 stroke-[2.5]" />
+            </button>
+
+            <div className="p-4 sm:p-6 overflow-y-auto overscroll-contain flex-1">
 
               {/* Title & Badge */}
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <div className="flex items-center gap-2 mb-1 pr-10">
+                <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
                   AI Visa Pathway
                 </span>
                 <span className="text-xs text-slate-500 font-medium truncate">
@@ -5291,7 +5317,7 @@ return (
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h3 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
                 Get Your Visa Done
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -5331,13 +5357,13 @@ return (
                     <div
                       key={item.tier}
                       onClick={() => setSelectedPlanTier(item.tier)}
-                      className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
+                      className={`p-3 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-2.5 sm:gap-3 ${
                         isSelected
                           ? 'border-[#00a896] bg-teal-50/40 ring-2 ring-[#00a896]/20 shadow-sm'
                           : 'border-slate-200 bg-white hover:border-slate-300'
                       }`}
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                         <div
                           className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
                             isSelected ? 'border-[#00a896] bg-[#00a896]' : 'border-slate-300'
@@ -5345,21 +5371,23 @@ return (
                         >
                           {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-slate-900">{item.name}</span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">{item.name}</span>
                             {item.popular && (
-                              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#00a896] text-white">
+                              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#00a896] text-white shrink-0">
                                 Popular
                               </span>
                             )}
                           </div>
-                          <div className="text-[11px] text-slate-500">{item.desc}</div>
+                          <div className="text-[10px] sm:text-[11px] text-slate-500 line-clamp-1 sm:line-clamp-2 mt-0.5 break-words">
+                            {item.desc}
+                          </div>
                         </div>
                       </div>
-                      <div className="text-right shrink-0 ml-2">
-                        <span className="text-base font-black text-slate-900">{item.price}</span>
-                        <div className="text-[10px] font-bold text-emerald-600">{item.queries}</div>
+                      <div className="text-right shrink-0 pl-1">
+                        <span className="text-sm sm:text-base font-black text-slate-900 block leading-tight">{item.price}</span>
+                        <div className="text-[9px] sm:text-[10px] font-bold text-emerald-600 whitespace-nowrap">{item.queries}</div>
                       </div>
                     </div>
                   );
@@ -5388,7 +5416,7 @@ return (
                   type="button"
                   onClick={() => handleProceedToPayment()}
                   disabled={isPaymentProcessing}
-                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+                  className="w-full py-3 sm:py-3.5 px-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
                 >
                   {isPaymentProcessing ? (
                     <>
@@ -5407,6 +5435,15 @@ return (
                   <Lock className="w-3 h-3 text-slate-400" />
                   <span>Secured by Razorpay • Instant Activation</span>
                 </div>
+
+                {/* Explicit Back / Exit CTA for mobile users */}
+                <button
+                  type="button"
+                  onClick={() => setShowPaidPlanModal(false)}
+                  className="w-full py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 active:scale-[0.99] transition-all flex items-center justify-center gap-1.5 cursor-pointer mt-0.5"
+                >
+                  <span>← Cancel &amp; Return to Search</span>
+                </button>
               </div>
 
             </div>
@@ -5416,8 +5453,24 @@ return (
 
       {/* ── 8. RAZORPAY PAYMENT VERIFIED SUCCESS MODAL ── */}
       {paymentSuccessModalOpen && pendingSearchData && (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-950/75 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl sm:rounded-[32px] shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 text-left p-6 sm:p-7">
+        <div
+          className="fixed inset-0 z-[99999] overflow-y-auto bg-slate-950/75 backdrop-blur-xs p-3 sm:p-4 flex min-h-full items-center justify-center overscroll-contain animate-in fade-in duration-200"
+          onClick={() => setPaymentSuccessModalOpen(false)}
+        >
+          <div
+            className="my-auto bg-white rounded-2xl sm:rounded-[32px] shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 text-left p-6 sm:p-7 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setPaymentSuccessModalOpen(false)}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+              aria-label="Close modal"
+              title="Close"
+            >
+              <X className="w-4 h-4 stroke-[2.5]" />
+            </button>
             
             <div className="py-2 text-center flex flex-col items-center justify-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
@@ -5429,7 +5482,7 @@ return (
                   Payment Verified! 🎉
                 </h4>
                 <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
-                  Your <strong>$5 "Get Your Visa Done" (3 AI Queries)</strong> plan is now active!
+                  Your <strong>${selectedPlanTier} "{selectedPlanTier === 10 ? 'Professional Pack' : selectedPlanTier === 15 ? 'Concierge Pack' : 'Starter Plan'}"</strong> is now active!
                 </p>
                 <div className="mt-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-left">
                   <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-bold">
@@ -5437,7 +5490,7 @@ return (
                     <span>{pendingSearchData.targetCountry} Pathway Unlocked</span>
                   </div>
                   <p className="text-[11px] text-emerald-700 mt-0.5 font-medium">
-                    + 2 additional destination queries remaining on your account.
+                    + queries added to your account for comprehensive visa dossiers.
                   </p>
                 </div>
                 {paymentTxId && (
@@ -5454,6 +5507,14 @@ return (
               >
                 <span>Access Your Visa Pathway Now</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setPaymentSuccessModalOpen(false)}
+                className="w-full py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+              >
+                <span>Close Window</span>
               </button>
             </div>
 
