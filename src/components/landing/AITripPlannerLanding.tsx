@@ -5284,11 +5284,18 @@ return (
       {/* ── 7. $5 PAID PLAN MODAL ("Get Your Visa Done") ── */}
       {showPaidPlanModal && pendingSearchData && (
         <div
-          className="fixed inset-0 z-[99999] overflow-y-auto bg-slate-950/75 backdrop-blur-sm p-3 sm:p-4 flex min-h-full items-center justify-center overscroll-contain animate-in fade-in duration-200"
+          className="fixed inset-0 z-[99999] overflow-y-auto p-3 sm:p-4 flex min-h-full items-center justify-center overscroll-contain animate-in fade-in duration-200"
           onClick={() => setShowPaidPlanModal(false)}
         >
+          {/* Dedicated clickable backdrop */}
           <div
-            className="my-auto bg-white rounded-2xl sm:rounded-[32px] max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200/90 relative animate-in zoom-in-95 duration-200 flex flex-col text-left max-h-[92vh]"
+            className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"
+            onClick={() => setShowPaidPlanModal(false)}
+            aria-hidden="true"
+          />
+
+          <div
+            className="relative z-10 my-auto bg-white rounded-2xl sm:rounded-[32px] max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200/90 animate-in zoom-in-95 duration-200 flex flex-col text-left max-h-[92vh]"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Top Gradient Accent Bar */}
@@ -5454,11 +5461,18 @@ return (
       {/* ── 8. RAZORPAY PAYMENT VERIFIED SUCCESS MODAL ── */}
       {paymentSuccessModalOpen && pendingSearchData && (
         <div
-          className="fixed inset-0 z-[99999] overflow-y-auto bg-slate-950/75 backdrop-blur-xs p-3 sm:p-4 flex min-h-full items-center justify-center overscroll-contain animate-in fade-in duration-200"
+          className="fixed inset-0 z-[99999] overflow-y-auto p-3 sm:p-4 flex min-h-full items-center justify-center overscroll-contain animate-in fade-in duration-200"
           onClick={() => setPaymentSuccessModalOpen(false)}
         >
+          {/* Dedicated clickable backdrop */}
           <div
-            className="my-auto bg-white rounded-2xl sm:rounded-[32px] shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 text-left p-6 sm:p-7 relative"
+            className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs cursor-pointer"
+            onClick={() => setPaymentSuccessModalOpen(false)}
+            aria-hidden="true"
+          />
+
+          <div
+            className="relative z-10 my-auto bg-white rounded-2xl sm:rounded-[32px] shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 text-left p-6 sm:p-7"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}

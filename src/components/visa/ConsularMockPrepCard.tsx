@@ -235,8 +235,14 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
 
       {/* Interactive Razorpay & UPI Checkout Modal */}
       {activeCheckout && (
-        <div className="fixed inset-0 z-[9999] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 text-left space-y-5 relative animate-in fade-in zoom-in-95">
+        <div
+          className="fixed inset-0 z-[9999] bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+          onClick={() => setActiveCheckout(null)}
+        >
+          <div
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 text-left space-y-5 relative animate-in fade-in zoom-in-95 cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               onClick={() => setActiveCheckout(null)}
@@ -376,8 +382,14 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
 
       {/* Success Confirmation Modal */}
       {successModal?.active && (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-5 relative animate-in fade-in zoom-in-95">
+        <div
+          className="fixed inset-0 z-[9999] bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+          onClick={() => setSuccessModal(null)}
+        >
+          <div
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-5 relative animate-in fade-in zoom-in-95 cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               onClick={() => setSuccessModal(null)}

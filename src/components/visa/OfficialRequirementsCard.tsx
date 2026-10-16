@@ -737,8 +737,14 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
       )}
 
       {showAuthPrompt && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-5 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-4 sm:space-y-5 text-center">
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 cursor-pointer"
+          onClick={() => setShowAuthPrompt(false)}
+        >
+          <div
+            className="bg-white rounded-3xl p-5 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-4 sm:space-y-5 text-center cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="w-12 h-12 sm:w-14 sm:h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto text-xl sm:text-2xl text-indigo-600">
               <Lock className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>

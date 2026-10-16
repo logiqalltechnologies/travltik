@@ -7544,8 +7544,14 @@ export function VisaCountryResultPortal({
       
       {/* ── AUTH / LOGIN REQUIRED MODAL (SERVICE PROVIDER OR GUEST) ── */}
       {authNoticeType && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 text-center space-y-4">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in cursor-pointer"
+          onClick={() => setAuthNoticeType(null)}
+        >
+          <div
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-200 text-center space-y-4 cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold border ${
               authNoticeType === 'service_provider' ? 'bg-amber-50 border-amber-200 text-amber-600' : 'bg-emerald-50 border-emerald-200 text-emerald-600'
             }`}>
@@ -9333,8 +9339,14 @@ export function VisaCountryResultPortal({
 
         {/* DOCUMENT INSPECTION MODAL */}
         {inspectDocItem && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-            <div className="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 space-y-5 shadow-2xl text-left">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn cursor-pointer"
+            onClick={() => setInspectDocItem(null)}
+          >
+            <div
+              className="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 space-y-5 shadow-2xl text-left cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
@@ -11665,8 +11677,14 @@ export function VisaCountryResultPortal({
 
       {/* ── APPLICATION DETAILS MODAL POP-UP ── */}
       {showApplicationModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6 text-left relative">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn cursor-pointer"
+          onClick={() => setShowApplicationModal(false)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6 text-left relative cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             
             {/* Close Button */}
             <button
@@ -11865,8 +11883,14 @@ export function VisaCountryResultPortal({
 
       {/* ── CONSULTANT BOOKING MODAL ── */}
       {bookingModalConsultant && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-[32px] max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 text-left space-y-5 relative">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn cursor-pointer"
+          onClick={() => setBookingModalConsultant(null)}
+        >
+          <div
+            className="bg-white rounded-[32px] max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 text-left space-y-5 relative cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               onClick={() => setBookingModalConsultant(null)}
@@ -11955,8 +11979,14 @@ export function VisaCountryResultPortal({
 
       {/* ── CONCIERGE SUBMITTED MODAL ── */}
       {conciergeSubmittedModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 text-center space-y-4 relative">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn cursor-pointer"
+          onClick={() => setConciergeSubmittedModal(false)}
+        >
+          <div
+            className="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 text-center space-y-4 relative cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="w-16 h-16 rounded-3xl bg-emerald-100 text-[#00A86B] mx-auto flex items-center justify-center shadow-inner">
               <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
             </div>
@@ -12041,8 +12071,14 @@ export function VisaCountryResultPortal({
 
       {/* ── LOGIN REQUIRED MODAL (TRIGGERED ON DOWNLOAD & SYNC) ── */}
       {showLoginRequiredModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200 text-left">
-          <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5 animate-in zoom-in-95 duration-200">
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200 text-left cursor-pointer"
+          onClick={() => setShowLoginRequiredModal(false)}
+        >
+          <div
+            className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5 animate-in zoom-in-95 duration-200 cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close button */}
             <button
               type="button"
@@ -12097,8 +12133,14 @@ export function VisaCountryResultPortal({
 
       {/* ── SERVICE PROVIDER NOTICE MODAL (TRIGGERED ON DOWNLOAD & SYNC) ── */}
       {showServiceProviderNoticeModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200 text-left">
-          <div className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5 animate-in zoom-in-95 duration-200">
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200 text-left cursor-pointer"
+          onClick={() => setShowServiceProviderNoticeModal(false)}
+        >
+          <div
+            className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-5 animate-in zoom-in-95 duration-200 cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close button */}
             <button
               type="button"

@@ -1033,8 +1033,14 @@ export function UniversitiesPortal() {
 
         {/* COUNSELLING MODAL */}
         {counsellingModalOpen && activeConsultant && (
-          <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 font-sans">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 relative shadow-2xl border border-slate-200 text-left space-y-4">
+          <div
+            className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 font-sans cursor-pointer"
+            onClick={() => setCounsellingModalOpen(false)}
+          >
+            <div
+              className="bg-white rounded-3xl max-w-md w-full p-6 relative shadow-2xl border border-slate-200 text-left space-y-4 cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 type="button"
                 onClick={() => setCounsellingModalOpen(false)}
@@ -1124,8 +1130,14 @@ export function UniversitiesPortal() {
 
           {/* AD DETAIL POPUP MODAL */}
           {activeUniv && (
-        <div className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-4 sm:p-6 relative shadow-2xl border border-slate-200 my-auto max-h-[92vh] overflow-y-auto flex flex-col">
+        <div
+          className="fixed inset-0 z-[999] bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans cursor-pointer"
+          onClick={() => setActiveUniv(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-2xl w-full p-4 sm:p-6 relative shadow-2xl border border-slate-200 my-auto max-h-[92vh] overflow-y-auto flex flex-col cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={() => setActiveUniv(null)}
               className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold flex items-center justify-center transition-all z-20 outline-none shadow-sm cursor-pointer"
