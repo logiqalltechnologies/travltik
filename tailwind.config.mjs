@@ -101,9 +101,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["-apple-system", "BlinkMacSystemFont", "'SF Pro Text'", "'SF Pro Display'", "'Plus Jakarta Sans'", "'Inter'", "system-ui", "sans-serif"],
-        heading: ["-apple-system", "BlinkMacSystemFont", "'SF Pro Display'", "'Plus Jakarta Sans'", "'Manrope'", "sans-serif"],
-        display: ["-apple-system", "BlinkMacSystemFont", "'SF Pro Display'", "'Plus Jakarta Sans'", "'Manrope'", "sans-serif"],
+        sans: ["'Plus Jakarta Sans'", "-apple-system", "BlinkMacSystemFont", "'SF Pro Text'", "'SF Pro Display'", "'Inter'", "system-ui", "sans-serif"],
+        heading: ["'Plus Jakarta Sans'", "-apple-system", "BlinkMacSystemFont", "'SF Pro Display'", "'Manrope'", "sans-serif"],
+        display: ["'Plus Jakarta Sans'", "-apple-system", "BlinkMacSystemFont", "'SF Pro Display'", "'Manrope'", "sans-serif"],
         manrope: ["'Manrope'", "-apple-system", "sans-serif"],
         inter: ["'Inter'", "-apple-system", "sans-serif"],
         "plus-jakarta": ["'Plus Jakarta Sans'", "-apple-system", "sans-serif"],

@@ -3051,7 +3051,7 @@ return (
               </div>
 
               {/* Main H1 Headline */}
-              <h1 className="text-2xl xs:text-3xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.15] sm:leading-[1.08] tracking-tight">
+              <h1 className="font-plus-jakarta text-2xl xs:text-3xl sm:text-5xl lg:text-[52px] font-black text-slate-900 leading-[1.15] sm:leading-[1.08] tracking-tight">
                 Your journey, simplified
               </h1>
 
