@@ -234,16 +234,22 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 .cls{background:linear-gradient(180deg,#fff,var(--l1) 30%,var(--l1) 90%,#fff)}
 .clh{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:34px}.clh .sh{margin:0}
 .cf{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}.chip{padding:10px 20px;border-radius:99px;font-weight:700;font-size:14px;background:#fff;border:1.5px solid var(--l2);color:#4b4268;transition:.25s;display:inline-flex;gap:8px;align-items:center}.chip:hover{border-color:var(--p3)}.chip.on{background:var(--p);color:#fff;border-color:var(--p)}.chip small{font-weight:700;font-size:11.5px;opacity:.7}
-.clg{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-.cl{overflow:hidden;background:#fff;border-radius:24px;border:1px solid var(--line);box-shadow:var(--sh);transition:.35s;animation:in .5s both}.cl:hover{transform:translateY(-8px);box-shadow:0 36px 60px -26px rgba(67,15,122,.45)}
-.cl .im{height:150px;position:relative;display:grid;place-items:center;color:rgba(255,255,255,.95);font-size:58px;overflow:hidden}
-.cl .im:before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.16);right:-50px;top:-60px}.cl .im:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.12);left:-30px;bottom:-50px}
-.cl .im > svg{position:relative;z-index:1;width:58px;height:58px}
-.cl .ct{position:absolute;left:14px;top:14px;font-size:11.5px;font-weight:800;background:rgba(255,255,255,.95);color:var(--p);padding:5px 12px;border-radius:99px;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.06)}
-.hrt{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--p);display:grid;place-items:center;font-size:17px;z-index:2;transition:.25s}.hrt svg{width:18px;height:18px}.hrt:hover{transform:scale(1.12)}.hrt.on{background:var(--g);color:#fff}.hrt.on svg{fill:#fff}
-.cl .bd{padding:18px 20px 20px}.cl h4{font-size:16px;font-weight:700;line-height:1.3;margin-bottom:8px}.cl .lc{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--mut);font-weight:500;margin-bottom:14px}
-.cl .pf{display:flex;justify-content:space-between;align-items:center}.cl .pf b{font-family:Sora;font-size:20px;font-weight:800;color:var(--p)}.cl .pf small{font-size:12px;color:var(--mut);font-weight:600}
-.clb{margin-top:34px;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 30px;border-radius:24px;background:linear-gradient(110deg,var(--gl),#fff);border:1px dashed var(--g)}.clb b{font-size:18px;font-family:Sora}.clb p{color:var(--mut);font-size:14.5px}
+.clg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:980px){.clg{grid-template-columns:repeat(2,1fr);gap:18px}}
+@media(max-width:640px){.clg{grid-template-columns:1fr;gap:16px}}
+.cl-card{position:relative;min-height:360px;height:370px;border-radius:26px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:26px 24px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 12px 32px -10px rgba(0,0,0,0.12);transition:all .35s cubic-bezier(0.16,1,0.3,1);text-decoration:none;cursor:pointer;animation:in .5s both}
+.cl-card:hover{transform:translateY(-6px);box-shadow:0 26px 54px -14px rgba(0,0,0,0.24)}
+.cl-card .bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(0.16,1,0.3,1);z-index:1}
+.cl-card:hover .bg-img{transform:scale(1.05)}
+.cl-card .overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
+.cl-card .content{position:relative;z-index:3}
+.cl-card .content h4{font-family:Sora,sans-serif;font-size:22px;font-weight:800;line-height:1.2;margin:0 0 8px;letter-spacing:-0.015em}
+.cl-card .content p{font-size:13.5px;font-weight:600;line-height:1.45;margin:0}
+.cl-card .content .extra{margin-top:6px;font-size:13px;font-weight:700}
+.cl-btn-pill{position:relative;z-index:3;margin-top:18px;display:inline-flex;align-items:center;gap:6px;background:#fff;color:#0f172a;font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:99px;box-shadow:0 4px 14px rgba(0,0,0,0.12);transition:all .25s ease;width:fit-content}
+.cl-card:hover .cl-btn-pill{transform:scale(1.05);box-shadow:0 6px 18px rgba(0,0,0,0.18);background:#fafafa}
+.cl-btn-circle{width:42px;height:42px;border-radius:50%;background:#0052cc;color:#fff;display:grid;place-items:center;flex-shrink:0;box-shadow:0 4px 14px rgba(0,82,204,0.35);transition:all .25s ease}
+.cl-card:hover .cl-btn-circle{transform:scale(1.1);background:#0065ff}
 /* community */
 .cmg{display:grid;grid-template-columns:.72fr 1.28fr;gap:56px;align-items:center}
 .cmg h2{font-size:46px;line-height:1.1;font-weight:800;margin-bottom:18px}.cmg .l{color:var(--mut);font-size:17.5px;margin-bottom:28px}
@@ -452,7 +458,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <div class="fld c-drop" id="from-drop"><svg class="i"><use href="#flag"/></svg><div style="flex:1"><label>Moving from</label><button type="button" class="c-drop-trigger" id="from-btn"><span class="c-drop-val" id="from-val-text"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India</span><svg class="i chv"><use href="#chevron-down"/></svg></button><input type="hidden" id="from-val" value="India"><div class="c-drop-menu" id="from-menu"><div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India <svg class="i chk"><use href="#check"/></svg></div><div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria"> Nigeria <svg class="i chk"><use href="#check"/></svg></div><div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines"> Philippines <svg class="i chk"><use href="#check"/></svg></div><div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan"> Pakistan <svg class="i chk"><use href="#check"/></svg></div></div></div></div>
 <button class="btn g" id="go"><svg class="i"><use href="#search"/></svg>Search</button></div></div></div></section>
 <!-- CLASSIFIEDS -->
-<section class="cls" id="classifieds"><div class="wrap"><div class="clh"><div class="sh rv"><span class="eyebrow">Classifieds</span><h2>Buy, sell and <span class="grad">settle in faster</span></h2><p>Local listings from verified expats and residents: homes, jobs, vehicles, furniture and services.</p></div><a class="btn p" href="/service-provider/dashboard?tab=classifieds&action=new"><svg class="i"><use href="#plus"/></svg>Post a free ad</a></div>
+<section class="cls" id="classifieds"><div class="wrap"><div class="clh"><div class="sh rv"><span class="eyebrow">Classifieds</span><h2>Find latest and <span class="grad">best offers</span></h2><p>Find latest and best offers from trusted users</p></div><a class="btn p" href="/service-provider/dashboard?tab=classifieds&action=new"><svg class="i"><use href="#plus"/></svg>Post a free ad</a></div>
 <div class="cf" id="cf"></div><div class="clg" id="clg"></div>
 </div></section>
 <!-- HOW -->
@@ -642,23 +648,49 @@ const CN=[
 ];
 const rAv=(c)=>c.image&&c.image.startsWith('http')?`<img src="${c.image}" alt="${c.name}" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6)">`:`<div style="width:92px;height:92px;border-radius:50%;background:${c.gradient};color:#fff;display:grid;place-items:center;font-size:30px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6);letter-spacing:-0.03em">${c.initials}</div>`;
 $('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c.name)}'"><div style="position:relative;width:92px;height:92px;margin-bottom:14px">${rAv(c)}<span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c.name}</h4><div class="rl">${c.role}</div><span class="bdg lic">${ic('shield')}${c.badge}</span><div class="rt" style="margin-top:14px">${stars(5)}${c.rating} <small>(${c.reviews} reviews)</small></div><div class="lg">${c.languages.map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c.cases}</b><small>Cases done</small></div><div><b>${c.rate}</b><small>Per hour</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c.name)}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
-/* classifieds */
+/* classifieds & offers */
 const CL=[
-  ['Studio apartment near UofT','Housing','Toronto, CA','$900/mo','home','linear-gradient(135deg,#00b070,#6b34b3)','2h ago'],
-  ['2018 Honda Civic, 54K km','Vehicles','Calgary, CA','$11,500','car','linear-gradient(135deg,#6b34b3,#9a6bdc)','5h ago'],
-  ['Sponsored developer role','Jobs','London, UK','£58K/yr','brief','linear-gradient(135deg,#00c985,#2ba58f)','1d ago'],
-  ['3-seat sofa, like new','Furniture','Sydney, AU','A$250','sofa','linear-gradient(135deg,#9a6bdc,#00b070)','3h ago'],
-  ['IELTS tutor, online','Services','Remote','£25/hr','cap','linear-gradient(135deg,#430f7a,#9a6bdc)','1d ago'],
-  ['Furnished 1BHK, Marina','Housing','Dubai, AE','AED 5.5K','home','linear-gradient(135deg,#2ba58f,#6b34b3)','4h ago'],
-  ['Airport pickup & SIM setup','Services','Frankfurt, DE','€35','plane','linear-gradient(135deg,#00b070,#9a6bdc)','2d ago'],
-  ['Dining set with 4 chairs','Furniture','Toronto, CA','$180','sofa','linear-gradient(135deg,#6b34b3,#00c985)','6h ago']
+  {title:'Escorted Tour By Partners',sub:'Europamundo | Cosmos | Globus | Trafalgar & More..',extra:'',btnText:'View More',btnType:'pill',theme:'light',bgImg:'/images/offers/escorted_tour.avif',overlay:'linear-gradient(180deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Tours',href:'/tours'},
+  {title:'Build Your Own Itinerary!',sub:'Customize your flights,hotels & sightseeing in just 10 minutes',extra:'',btnText:'',btnType:'circle',theme:'light',bgImg:'/images/offers/build_itinerary.avif',overlay:'linear-gradient(180deg,rgba(255,255,255,0.94) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Itinerary',href:'/trip-planner'},
+  {title:'Buy Forex & Earn Travel Rewards',sub:'Up to ₹ 3000.00 worth of Loyalty Points',extra:'',btnText:'',btnType:'circle',theme:'light',bgImg:'/images/offers/buy_forex_rewards.avif',overlay:'linear-gradient(180deg,rgba(255,255,255,0.94) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Forex',href:'/forex'},
+  {title:'Looking for Flights?',sub:'Find Your Best Fare Here!',extra:'Fly More, Pay Less – Book Your Flight Now ✈',btnText:'View More',btnType:'pill',theme:'dark',bgImg:'/images/offers/looking_flights.avif',overlay:'linear-gradient(180deg,rgba(8,27,61,0.92) 0%,rgba(8,27,61,0.5) 50%,rgba(8,27,61,0) 80%)',cat:'Flights',href:'/flights'},
+  {title:'Order Forex Online',sub:'Delivered Home with Zero Convenience Fee',extra:'',btnText:'Buy Now',btnType:'pill',theme:'dark',bgImg:'/images/offers/order_forex_online.avif',overlay:'linear-gradient(180deg,rgba(30,25,20,0.85) 0%,rgba(30,25,20,0.4) 45%,rgba(30,25,20,0) 75%)',cat:'Forex',href:'/forex'},
+  {title:'Singapore',sub:'Feel the Magic, Live the Adventure.',extra:'Starting at ₹ 38 300.00',btnText:'View More',btnType:'pill',theme:'dark',bgImg:'/images/offers/singapore_special.avif',overlay:'linear-gradient(180deg,rgba(12,28,68,0.9) 0%,rgba(12,28,68,0.5) 50%,rgba(12,28,68,0) 80%)',cat:'Tours',href:'/tours?destination=Singapore'}
 ];
-let cat='All';const cats=['All','Housing','Jobs','Vehicles','Furniture','Services'];
+let cat='All';
+const cats=['All','Tours','Flights','Forex','Itinerary'];
 const drawC=()=>{
-  $('#cf').innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-c="${c}">${c}<small>${c=='All'?CL.length:CL.filter(x=>x[1]==c).length}</small></button>`).join('');
-  $('#clg').innerHTML=CL.filter(x=>cat=='All'||x[1]==cat).map((x,i)=>`<article class="cl" style="animation-delay:${i*.05}s;cursor:pointer" onclick="window.location.href='/service-provider/dashboard?tab=classifieds'"><div class="im" style="background:${x[5]}"><span class="ct">${x[1]}</span><button class="hrt ${i==1||i==3?'on':''}" aria-label="Save" onclick="event.stopPropagation();this.classList.toggle('on')">${ic('heart')}</button>${ic(x[4])}</div><div class="bd"><h4>${x[0]}</h4><div class="lc">${ic('map')}${x[2]} · ${x[6]}</div><div class="pf"><b>${x[3]}</b><span class="bdg">${ic('shield')}Verified</span></div></div></article>`).join('');
+  $('#cf').innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-c="${c}">${c}<small>${c=='All'?CL.length:CL.filter(x=>x.cat==c).length}</small></button>`).join('');
+  $('#clg').innerHTML=CL.filter(x=>cat=='All'||x.cat==cat).map((x,i)=>`
+    <article class="cl-card" style="animation-delay:${i*.06}s;" onclick="window.location.href='${x.href}'">
+      <img class="bg-img" src="${x.bgImg}" alt="${x.title}" loading="lazy" />
+      <div class="overlay" style="background:${x.overlay}"></div>
+      ${x.btnType=='circle'?`
+        <div class="content" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div>
+            <h4 style="color:${x.theme=='dark'?'#fff':'#0f172a'}">${x.title}</h4>
+            <p style="color:${x.theme=='dark'?'#e2e8f0':'#334155'}">${x.sub}</p>
+          </div>
+          <span class="cl-btn-circle" aria-label="Explore">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </span>
+        </div>
+        <div></div>
+      `:`
+        <div class="content">
+          <h4 style="color:${x.theme=='dark'?'#fff':'#0f172a'}">${x.title}</h4>
+          <p style="color:${x.theme=='dark'?'#e2e8f0':'#334155'}">${x.sub}</p>
+          ${x.extra?`<p class="extra" style="color:${x.theme=='dark'?'#fff':'#0f172a'}">${x.extra}</p>`:''}
+          <span class="cl-btn-pill">
+            ${x.btnText}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </span>
+        </div>
+        <div></div>
+      `}
+    </article>
+  `).join('');
   $$('#cf .chip').forEach(b=>b.onclick=()=>{cat=b.dataset.c;drawC()});
-  $$('.hrt').forEach(b=>b.onclick=()=>b.classList.toggle('on'));
 };
 drawC();
 /* chat */
