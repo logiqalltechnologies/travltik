@@ -215,7 +215,8 @@ function CustomSelect({
 
       {/* Dropdown Floating Menu */}
       {open && (
-        <div className="absolute top-[calc(100%+6px)] left-0 w-full z-[99999] bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 animate-fadeIn ring-1 ring-black/5 max-h-[260px] overflow-hidden flex flex-col">
+        <div className="absolute top-[calc(100%+6px)] left-0 w-full z-[99999] bg-white border border-slate-200/90 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-2 animate-fadeIn ring-1 ring-black/5 max-h-[260px] overflow-hidden flex flex-col"
+          style={{ backgroundColor: '#ffffff' }}>
           {searchable && (
             <div className="relative mb-2 shrink-0">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
@@ -604,44 +605,83 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   );
 
   return (
-    <div className="min-h-screen bg-[#f8f9fb] font-sans antialiased relative flex items-center justify-center p-4 sm:p-6 overflow-hidden select-none" style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div className="min-h-screen bg-[#fdfcff] font-sans antialiased relative flex flex-col items-center justify-center p-4 sm:p-6 overflow-x-hidden selection:bg-emerald-500 selection:text-white" style={{ fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       
-      {/* Soft Ambient Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[550px] h-[550px] rounded-full bg-emerald-100/50 blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[550px] h-[550px] rounded-full bg-teal-100/40 blur-[140px] pointer-events-none" />
-      <div className="absolute top-[35%] right-[20%] w-[380px] h-[380px] rounded-full bg-slate-200/50 blur-[100px] pointer-events-none" />
+      {/* Executive Landing Page Ambient Background Mesh */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none select-none bg-[#fdfcff]" aria-hidden="true">
+        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-[#eee3fc]/80 blur-[90px]" />
+        <div className="absolute top-1/4 -left-40 w-[550px] h-[550px] rounded-full bg-[#e2f7ee]/80 blur-[85px]" />
+        <div className="absolute -bottom-24 right-1/4 w-[500px] h-[500px] rounded-full bg-[#dccaf7]/50 blur-[90px]" />
+      </div>
+
+      {/* Top Floating Navigation Bar */}
+      <div className="w-full max-w-5xl mx-auto flex items-center justify-between mb-5 sm:mb-7 relative z-20 px-2">
+        <a 
+          href="/" 
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-slate-900 bg-white/95 hover:bg-white px-4 py-2 rounded-full border border-slate-200/90 shadow-xs transition-all duration-200 hover:-translate-y-0.5"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 text-slate-600" />
+          <span>Back to Home</span>
+        </a>
+
+        <div className="flex items-center gap-2 sm:gap-3 text-[11px] font-semibold text-slate-600">
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            218 Experts Online
+          </span>
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-50 text-purple-900 border border-purple-200/80 shadow-2xs font-bold">
+            <Shield className="w-3 h-3 text-purple-600" />
+            Escrow Secured
+          </span>
+        </div>
+      </div>
 
       {/* Main Container Card */}
-      <div className={`w-full ${mode === 'register' && step === 'form' ? 'max-w-[580px]' : 'max-w-[460px]'} relative z-10 transition-all duration-300`}>
-        <div className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-[0_15px_40px_rgba(0,0,0,0.05)] text-slate-900">
+      <div className={`w-full ${mode === 'register' && step === 'form' ? 'max-w-[620px]' : 'max-w-[480px]'} relative z-10 transition-all duration-300`}>
+        <div 
+          className="bg-white border border-slate-200/90 rounded-[32px] sm:rounded-[36px] p-6 sm:p-9 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.07)] text-slate-900 relative"
+          style={{ backgroundColor: '#ffffff' }}
+        >
 
           {/* Header & Logo */}
           <div className="text-center mb-6">
-            <div className="flex flex-col items-center justify-center gap-1.5 mb-2.5">
-              <img
-                src="/logo.png"
-                alt="TravlTik Official Logo"
-                className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 hover:scale-105"
-              />
-              <div className="text-[11px] font-semibold text-slate-500 tracking-[0.16em] uppercase mt-1">
-                CHANNEL PARTNER NETWORK
-              </div>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-50/80 border border-[#420f79]/20 text-[11px] font-bold text-[#420f79] mb-3.5 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#420f79]" />
+              <span>Institutional B2B Network</span>
             </div>
 
-            <div className="flex justify-center mb-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3.5 py-0.5 rounded-full shadow-2xs">
-                <Star className="w-3 h-3 text-[#00A878] fill-current" /> B2B Partner Hierarchy Engine
-              </span>
+            <div className="flex flex-col items-center justify-center gap-1 mb-2">
+              <a href="/" className="hover:opacity-90 transition-opacity">
+                <img
+                  src="/logo.png"
+                  alt="TravlTik"
+                  className="h-10 sm:h-11 w-auto object-contain mx-auto"
+                />
+              </a>
             </div>
+
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-sora mt-3">
+              {mode === 'login' ? (
+                <>Partner <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-purple-700 bg-clip-text text-transparent">Sign In</span></>
+              ) : (
+                <>Channel Partner <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-purple-700 bg-clip-text text-transparent">Network</span></>
+              )}
+            </h1>
+
+            <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1 max-w-md mx-auto">
+              {mode === 'login'
+                ? 'Sign in to access your partner operating system & commission reports'
+                : 'Scale your national or regional mobility network with tier commission hierarchy'}
+            </p>
           </div>
 
           {/* Mode Switcher Segmented Control (Only show in Form Step) */}
           {step === 'form' && (
-            <div className="flex bg-slate-100 p-1 rounded-2xl mb-6 border border-slate-200/70">
+            <div className="flex bg-slate-100/90 p-1 rounded-2xl mb-6 border border-slate-200/80 shadow-inner">
               <button
                 type="button"
                 onClick={() => { setMode('login'); setError(null); }}
-                className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
+                className={`flex-1 py-2.5 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer ${
                   mode === 'login'
                     ? 'bg-white text-slate-900 shadow-sm'
                     : 'text-slate-500 hover:text-slate-800'
@@ -652,9 +692,9 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <button
                 type="button"
                 onClick={() => { setMode('register'); setError(null); }}
-                className={`flex-1 py-2 rounded-xl text-xs sm:text-[13px] font-semibold transition-all cursor-pointer ${
+                className={`flex-1 py-2.5 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer ${
                   mode === 'register'
-                    ? 'bg-[#00A878] text-white shadow-sm'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -737,7 +777,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                 type="button"
                 disabled={loading || otpDigits.some(d => d === '')}
                 onClick={() => handleVerifyAndRegister()}
-                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs sm:text-sm font-semibold tracking-normal flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs sm:text-sm font-bold tracking-normal flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -849,7 +889,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs sm:text-sm font-semibold tracking-normal flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs sm:text-sm font-bold tracking-normal flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -1359,7 +1399,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-[#00A878] hover:bg-[#008A62] text-white text-xs sm:text-sm font-semibold tracking-normal flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+                className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs sm:text-sm font-bold tracking-normal flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
@@ -1379,8 +1419,23 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
         </div>
 
+        {/* Sub-Card Trust Guarantees */}
+        <div className="mt-5 flex items-center justify-center gap-4 text-[11px] font-semibold text-slate-600 flex-wrap">
+          <span className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 100% Milestone Escrow Protected
+          </span>
+          <span className="hidden sm:inline text-slate-300">•</span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span> Institutional B2B Network
+          </span>
+          <span className="hidden sm:inline text-slate-300">•</span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 256-Bit SSL Encrypted
+          </span>
+        </div>
+
         {/* Footer info */}
-        <div className="text-center mt-5">
+        <div className="text-center mt-3">
           <p className="text-xs text-slate-400 font-normal">
             TravlTik Global Immigration & Mobility Platform &copy; {new Date().getFullYear()}
           </p>

@@ -99,8 +99,8 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 py-2 items-stretch justify-center">
                             
                             {/* 1. Traveller Option (Green Theme: #00A86B) */}
-                            <div 
-                                onClick={() => setMode("seeker")} 
+                            <a 
+                                href="/signup/traveller"
                                 className="group flex flex-col items-center justify-between text-center cursor-pointer w-full bg-emerald-50/40 hover:bg-emerald-50/80 p-6 sm:p-7 rounded-3xl border-2 border-[#00A86B]/30 hover:border-[#00A86B] hover:shadow-xl hover:shadow-[#00A86B]/15 transition-all duration-200 hover:-translate-y-1 font-sans"
                             >
                                 <div className="flex flex-col items-center">
@@ -124,15 +124,13 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                     </span>
                                 </div>
 
-                                <button 
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); setMode("seeker"); }}
-                                    className="w-full bg-[#00A86B] hover:bg-[#00925c] text-white py-2.5 px-6 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer"
+                                <span 
+                                    className="w-full bg-[#00A86B] group-hover:bg-[#00925c] text-white py-2.5 px-6 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer"
                                 >
                                     <span>Register</span>
                                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </button>
-                            </div>
+                                </span>
+                            </a>
 
                             {/* 2. Service Provider Option (Navy Blue Theme: #0c1a2e) */}
                             <a 
