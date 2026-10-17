@@ -400,10 +400,10 @@ export function FindExpertsPortal() {
 
             const params = new URLSearchParams(window.location.search);
 
-            const textQuery = params.get("q") || params.get("query") || "";
+            const textQuery = params.get("q") || params.get("query") || params.get("search") || "";
             if (textQuery) { setSearchText(textQuery); initQ = textQuery; setSortBy("relevance"); }
 
-            const countryQuery = params.get("country") || "";
+            const countryQuery = params.get("country") || params.get("destination") || "";
             if (countryQuery) {
                 const cLower = countryQuery.toLowerCase();
                 const matchCountry = countryFilters.find(c => {
@@ -1218,7 +1218,7 @@ export function FindExpertsPortal() {
                                                 </span>
                                                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-900 bg-purple-50/90 border border-purple-200/60 px-2.5 py-0.5 rounded-full">
                                                     <Lock className="w-3 h-3 text-purple-600" />
-                                                    Milestone Escrow 20/30/50
+                                                    Milestone Escrow (Stagewise Installments)
                                                 </span>
                                                 {e.isRemote && (
                                                     <span className="inline-flex items-center gap-1 text-[11px] font-bold text-teal-800 bg-teal-50/90 border border-teal-200/60 px-2.5 py-0.5 rounded-full">

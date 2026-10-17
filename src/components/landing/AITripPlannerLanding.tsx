@@ -4193,7 +4193,7 @@ return (
                       </div>
                       <div className="mt-4">
                         <span className="text-[11px] font-black uppercase tracking-wider text-emerald-700 block">
-                          Milestone 1 • 20% Release
+                          1st installment of payment • Release
                         </span>
                         <h4 className="text-base font-bold text-slate-900 mt-1 tracking-tight">
                           Document Verification
@@ -4220,7 +4220,7 @@ return (
                       </div>
                       <div className="mt-4">
                         <span className="text-[11px] font-black uppercase tracking-wider text-blue-700 block">
-                          Milestone 2 • 30% Release
+                          02nd installment of payment • Release
                         </span>
                         <h4 className="text-base font-bold text-slate-900 mt-1 tracking-tight">
                           Application Filing &amp; VFS
@@ -4247,10 +4247,10 @@ return (
                       </div>
                       <div className="mt-4">
                         <span className="text-[11px] font-black uppercase tracking-wider text-slate-600 block">
-                          Milestone 3 • 50% Release
+                          Final payment • Release
                         </span>
                         <h4 className="text-base font-bold text-slate-900 mt-1 tracking-tight">
-                          Embassy Submission Receipt
+                          Embassy Submission Receipt / Outcome
                         </h4>
                         <p className="text-xs text-slate-600 font-normal mt-1.5 leading-relaxed">
                           Final tranche disbursed strictly upon official consular submission receipt or visa outcome confirmation.
@@ -4260,6 +4260,10 @@ return (
                   </div>
                 </div>
               </div>
+
+              <p className="text-[11px] text-slate-500 font-medium italic text-center mt-5">
+                *(All milestone and payment percentages shall be decided and mutually agreed upon between the consultant and applicant before starting the process)
+              </p>
 
             </div>
           </section>

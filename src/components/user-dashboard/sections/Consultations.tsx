@@ -40,21 +40,24 @@ export const Consultations: React.FC<ConsultationsProps> = ({ activeTab }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                     <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Milestone 1</span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">1st installment of payment</span>
                         <h4 className="font-extrabold text-slate-900">AI &amp; Legal Quality Audit</h4>
-                        <p className="text-slate-500 text-[11px]">30% released when all mandatory checklist items are verified.</p>
+                        <p className="text-slate-500 text-[11px]">Released when all mandatory checklist items are verified.</p>
                     </div>
                     <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Milestone 2</span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">02nd installment of payment</span>
                         <h4 className="font-extrabold text-slate-900">Embassy / VFS Filing</h4>
-                        <p className="text-slate-500 text-[11px]">40% released when official visa submission receipt is generated.</p>
+                        <p className="text-slate-500 text-[11px]">Released when official visa submission receipt is generated.</p>
                     </div>
                     <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Milestone 3</span>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Final payment</span>
                         <h4 className="font-extrabold text-slate-900">Visa Decision Clearance</h4>
-                        <p className="text-slate-500 text-[11px]">Remaining 30% released upon passport stamping and outcome delivery.</p>
+                        <p className="text-slate-500 text-[11px]">Released upon decision outcome and delivery.</p>
                     </div>
                 </div>
+                <p className="text-[11px] text-slate-500 italic mt-3">
+                    *(All milestone and payment percentages shall be decided and mutually agreed upon between the consultant and applicant before starting the process)
+                </p>
             </div>
         );
     }

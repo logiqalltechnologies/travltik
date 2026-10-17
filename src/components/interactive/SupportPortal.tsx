@@ -28,7 +28,7 @@ function Toast({ message, visible, onClose }: { message: string, visible: boolea
 const faqs = [
     {
         question: "How does TravlTik Milestone Escrow protect my payments?",
-        answer: "With TravlTik Milestone Escrow, your funds are never paid upfront to the consultant. Funds are locked securely in an escrow vault and released only in verified phases: 20% on agreement signing, 30% upon visa filing with official government receipt, and 50% only when your final visa milestone is approved.",
+        answer: "With TravlTik Milestone Escrow, your funds are never paid upfront to the consultant. Funds are locked securely in an escrow vault and released only in verified phases: 1st installment of payment on agreement signing and document verification, 02nd installment of payment upon visa filing with official government receipt, and Final payment only when your final visa milestone or decision outcome is reached. (All milestone and payment percentages shall be decided and mutually agreed upon between the consultant and applicant before starting the process).",
     },
     {
         question: "How do I book a consultation with a verified immigration lawyer?",
