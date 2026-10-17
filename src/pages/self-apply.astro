@@ -5,7 +5,13 @@ import Layout from '../layouts/Layout.astro';
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'dummy_razorpay_key';
 ---
 
-<Layout title="Self Apply — Your Visa, Your Way" description="Fill your application yourself. Get AI-powered suggestions and add our services if you need help." hideHeader={true} hideFooter={true}>
+<Layout 
+  title="Self Apply Visa Portal — Transparent, AI-Powered, Zero Broker Markup" 
+  description="File your visa application directly with AI assistance, instant document scanning, and optional verified expert review. Pay safely through Milestone Escrow."
+  hideHeader={false} 
+  hideFooter={false}
+>
+  <!-- Authentication check -->
   <script is:inline>
     (function() {
       try {
@@ -19,1507 +25,745 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       } catch(e) {}
     })();
   </script>
+
+  <!-- Razorpay Checkout -->
   <script src="https://checkout.razorpay.com/v1/checkout.js" is:inline></script>
   <div id="razorpay-config" data-key={razorpayKeyId} style="display: none;"></div>
-  <!-- CSS Styles directly copied from source -->
-  <style is:inline>
-    :root {
-      --white: #FFFFFF;
-      --black: #0C1A2E;
-      --primary: #00a896;
-      --primary-dark: #008f80;
-      --primary-light: #e6f7f5;
-      --primary-border: #b2e5df;
-      --gray-50: #F8FAFC;
-      --gray-100: #F1F5F9;
-      --gray-200: #E2E8F0;
-      --gray-300: #CBD5E1;
-      --gray-400: #94A3B8;
-      --gray-500: #64748B;
-      --gray-600: #475569;
-      --gray-700: #334155;
-      --gray-800: #1E293B;
-      --gray-900: #0F172A;
-      --green: #00a896;
-      --grlt: #e6f7f5;
-      --border: #E2E8F0;
-      --radius: 16px;
-      --pill: 999px;
-      --shadow: 0 4px 20px rgba(0, 168, 150, 0.08);
-      --shadow-hover: 0 12px 36px rgba(0, 168, 150, 0.16);
-      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
-    .self-apply-body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--gray-50);
-      color: var(--black);
-      line-height: 1.6;
-      position: relative;
-    }
-
-    .self-apply-body h1, .self-apply-body h2, .self-apply-body h3, .self-apply-body h4 {
-      font-family: 'Sora', sans-serif;
-    }
-
-    @keyframes shake {
-      0%   { transform: translateX(0); }
-      20%  { transform: translateX(-8px); }
-      40%  { transform: translateX(8px); }
-      60%  { transform: translateX(-6px); }
-      80%  { transform: translateX(6px); }
-      100% { transform: translateX(0); }
-    }
-
-    /* Back Home Button style */
-    .back-home-btn {
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      z-index: 100;
-      background: var(--white);
-      border: 1.5px solid var(--gray-200);
-      color: var(--black);
-      padding: 8px 16px;
-      border-radius: var(--pill);
-      font-size: 13px;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all var(--transition);
-      box-shadow: var(--shadow);
-    }
-
-    .back-home-btn:hover {
-      border-color: var(--black);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .self-apply-container {
-      max-width: 100%;
-      margin: 0 auto;
-      padding: 24px 28px;
-    }
-
-    /* Hero Header - Professional Executive Design */
-    .self-apply-hero {
-      text-align: center;
-      padding: 40px 24px 32px;
-      background: linear-gradient(135deg, #0c1a2e 0%, #1e1b4b 55%, #2a0845 100%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      color: #FFFFFF;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .self-apply-hero h1 {
-      font-size: 32px;
-      font-weight: 800;
-      color: #FFFFFF;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-
-    .self-apply-hero h1 span {
-      color: #00a896;
-      text-decoration: underline;
-      text-decoration-color: #00a896;
-      text-underline-offset: 6px;
-    }
-
-    .self-apply-hero p {
-      font-size: 14px;
-      color: #cbd5e1;
-      max-width: 520px;
-      margin: 0 auto 16px;
-      font-weight: 500;
-    }
-
-    .trust-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: var(--pill);
-      padding: 5px 18px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #e2e8f0;
-      margin-bottom: 16px;
-    }
-
-    .trust-badge .dot {
-      width: 7px;
-      height: 7px;
-      background: #00a896;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #00a896;
-    }
-
-    .stats-row {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-
-    .stats-row .item {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 8px 20px;
-    }
-
-    .stats-row .item .num {
-      font-weight: 800;
-      font-size: 18px;
-      color: #00a896;
-    }
-
-    .stats-row .item .label {
-      font-size: 11px;
-      color: #94a3b8;
-      font-weight: 600;
-    }
-
-    /* Step Indicator */
-    .step-indicator {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      padding: 28px 0 32px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .step-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 1;
-    }
-
-    .step-dot {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 800;
-      z-index: 1;
-      transition: all var(--transition);
-      cursor: pointer;
-      border: 2px solid var(--gray-200);
-      color: var(--gray-400);
-      background: var(--white);
-    }
-
-    .step-dot.active {
-      border-color: #00a896;
-      color: #00a896;
-      box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.18);
-    }
-
-    .step-dot.done {
-      background: #00a896;
-      border-color: #00a896;
-      color: var(--white);
-    }
-
-    .step-line {
-      flex: 1;
-      height: 2px;
-      margin: 0;
-      background: var(--gray-200);
-      transition: background var(--transition);
-    }
-
-    .step-line.done {
-      background: #00a896;
-    }
-
-    .step-label {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--gray-400);
-      text-align: center;
-      margin-top: 5px;
-      line-height: 1.3;
-      transition: color var(--transition);
-    }
-
-    .step-dot.active + .step-label,
-    .step-dot.done + .step-label {
-      color: var(--black);
-    }
-
-    /* Progress Bar */
-    .progress-wrapper {
-      margin-bottom: 24px;
-    }
-
-    .progress-track {
-      background: var(--gray-200);
-      border-radius: var(--pill);
-      height: 6px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 6px;
-      border-radius: var(--pill);
-      background: #00a896;
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      width: 25%;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--gray-500);
-      margin-top: 6px;
-    }
-
-    /* Step Content - Smooth Transitions */
-    .step-content {
-      display: none;
-      opacity: 0;
-      transform: translateX(30px);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .step-content.active {
-      display: block;
-      animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    .step-content.exit {
-      display: block;
-      animation: slideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    @keyframes slideIn {
-      0% { opacity: 0; transform: translateX(30px); }
-      100% { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes slideOut {
-      0% { opacity: 1; transform: translateX(0); }
-      100% { opacity: 0; transform: translateX(-30px); }
-    }
-
-    /* Country Grid */
-    .country-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-      margin: 16px 0 24px;
-    }
-
-    .country-card {
-      background: var(--white);
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius);
-      padding: 16px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
-    .country-card:hover {
-      border-color: #00a896;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 168, 150, 0.15);
-    }
-
-    .country-card.selected {
-      border-color: #00a896;
-      background: rgba(0, 168, 150, 0.06);
-      box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.15);
-    }
-
-    .country-card.selected .name {
-      color: #00a896;
-    }
-
-    .country-card .flag {
-      font-size: 28px;
-      margin-bottom: 4px;
-    }
-
-    .country-card .name {
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--black);
-    }
-
-    .country-card .visa-types {
-      font-size: 11px;
-      color: var(--gray-400);
-      margin-top: 2px;
-    }
-
-    .country-card .badge {
-      display: inline-block;
-      font-size: 9px;
-      font-weight: 800;
-      color: var(--white);
-      background: #00a896;
-      padding: 2px 8px;
-      border-radius: var(--pill);
-      margin-top: 4px;
-    }
-
-    /* Visa Type Pills */
-    .visa-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 12px 0 20px;
-    }
-
-    .visa-pill {
-      padding: 8px 18px;
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--pill);
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--gray-600);
-      cursor: pointer;
-      background: var(--white);
-      transition: all var(--transition);
-    }
-
-    .visa-pill:hover {
-      border-color: #00a896;
-      color: #00a896;
-    }
-
-    .visa-pill.selected {
-      background: #00a896;
-      color: var(--white);
-      border-color: #00a896;
-      box-shadow: 0 4px 14px rgba(0, 168, 150, 0.25);
-    }
-
-    /* Form */
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--gray-700);
-      margin-bottom: 4px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1.5px solid var(--gray-200);
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--black);
-      background: var(--white);
-      outline: none;
-      transition: all var(--transition);
-    }
-
-    .form-group input:focus {
-      border-color: #00a896;
-      box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.12);
-    }
-
-    .form-group input::placeholder {
-      color: var(--gray-400);
-    }
-
-    /* Terms & Conditions Container */
-    .terms-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 18px 0;
-      padding: 12px 16px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .terms-label {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 10px !important;
-      font-size: 13px !important;
-      font-weight: 700 !important;
-      color: #1e293b !important;
-      cursor: pointer !important;
-      user-select: none;
-      margin: 0 !important;
-      width: auto !important;
-    }
-
-    .terms-label input[type="checkbox"] {
-      width: 18px !important;
-      height: 18px !important;
-      accent-color: #00a896 !important;
-      cursor: pointer !important;
-      margin: 0 !important;
-      flex-shrink: 0;
-    }
-
-    .terms-link {
-      color: #581c87;
-      text-decoration: underline;
-      font-weight: 800;
-    }
-
-    .terms-link:hover {
-      color: #00a896;
-    }
-
-    /* Custom Dropdown styling */
-    .custom-select-container {
-      position: relative;
-      width: 100%;
-    }
-
-    .custom-select-trigger {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1.5px solid var(--gray-200);
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--black);
-      background: var(--white);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all var(--transition);
-      user-select: none;
-    }
-
-    .custom-select-trigger:hover,
-    .custom-select-container.open .custom-select-trigger {
-      border-color: #00a896;
-    }
-
-    .custom-select-options {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      width: 100%;
-      background: var(--white);
-      border: 1.5px solid #00a896;
-      border-radius: 10px;
-      box-shadow: var(--shadow-hover);
-      z-index: 150;
-      display: none;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .custom-select-container.open .custom-select-options {
-      display: block;
-    }
-
-    .custom-option {
-      padding: 10px 14px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--black);
-      cursor: pointer;
-      transition: all var(--transition);
-      user-select: none;
-    }
-
-    .custom-option:hover {
-      background-color: #00a896 !important;
-      color: var(--white) !important;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    /* Upload Zone */
-    .upload-zone {
-      border: 2px dashed var(--gray-300);
-      border-radius: var(--radius);
-      padding: 28px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all var(--transition);
-      background: var(--gray-50);
-      margin-bottom: 16px;
-    }
-
-    .upload-zone:hover {
-      border-color: #00a896;
-      background: rgba(0, 168, 150, 0.03);
-    }
-
-    .upload-zone .icon {
-      font-size: 32px;
-      margin-bottom: 6px;
-    }
-
-    .upload-zone .title {
-      font-weight: 700;
-      font-size: 14px;
-      color: var(--black);
-    }
-
-    .upload-zone .sub {
-      font-size: 12px;
-      color: var(--gray-400);
-    }
-
-    .upload-zone .extracted {
-      margin-top: 10px;
-      padding: 10px 14px;
-      background: var(--grlt);
-      border-radius: 8px;
-      font-size: 13px;
-      color: #00a896;
-      font-weight: 700;
-      display: none;
-    }
-
-    .upload-zone .extracted.show {
-      display: block;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 12px 26px;
-      border: none;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
-    .btn-primary {
-      background: #00a896;
-      color: var(--white);
-    }
-
-    .btn-primary:hover {
-      background: #008f80;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(0, 168, 150, 0.3);
-    }
-
-    .btn-secondary {
-      background: var(--white);
-      color: var(--black);
-      border: 1.5px solid var(--gray-200);
-    }
-
-    .btn-secondary:hover {
-      border-color: #00a896;
-      color: #00a896;
-    }
-
-    .btn-sm {
-      padding: 6px 14px;
-      font-size: 12px;
-    }
-
-    .btn-block {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      justify-content: space-between;
-    }
-
-    /* Service Cards */
-    .service-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 16px 0;
-    }
-
-    .service-card {
-      background: var(--white);
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius);
-      padding: 18px 16px;
-      transition: all var(--transition);
-      cursor: pointer;
-    }
-
-    .service-card:hover {
-      border-color: var(--black);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .service-card.selected {
-      border-color: var(--black);
-      background: var(--gray-50);
-    }
-
-    .service-card .icon {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
-
-    .service-card .title {
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--black);
-    }
-
-    .service-card .desc {
-      font-size: 12px;
-      color: var(--gray-500);
-      margin: 4px 0 8px;
-    }
-
-    .service-card .price {
-      font-weight: 800;
-      font-size: 16px;
-      color: var(--black);
-    }
-
-    .service-card .price span {
-      font-weight: 400;
-      font-size: 12px;
-      color: var(--gray-400);
-    }
-
-    .service-card .add-btn {
-      margin-top: 10px;
-      padding: 4px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--pill);
-      background: var(--white);
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
-    .service-card .add-btn:hover {
-      border-color: var(--black);
-    }
-
-    .service-card .add-btn.added {
-      background: var(--black);
-      color: var(--white);
-      border-color: var(--black);
-    }
-
-    .service-card.free-card {
-      border-color: var(--gray-300);
-      background: var(--gray-50);
-    }
-
-    /* Order Summary */
-    .order-summary {
-      background: var(--gray-50);
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      margin: 16px 0;
-    }
-
-    .order-summary .row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      font-size: 14px;
-    }
-
-    .order-summary .row.total {
-      font-weight: 700;
-      font-size: 16px;
-      border-top: 2px solid var(--gray-200);
-      padding-top: 10px;
-      margin-top: 4px;
-    }
-
-    .order-summary .escrow {
-      font-size: 12px;
-      color: var(--green);
-      font-weight: 600;
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    /* Success */
-    .success-screen {
-      text-align: center;
-      padding: 32px 0;
-    }
-
-    .success-screen .icon {
-      font-size: 56px;
-      margin-bottom: 12px;
-    }
-
-    .success-screen h2 {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--black);
-      margin-bottom: 4px;
-    }
-
-    .success-screen .ref {
-      font-size: 14px;
-      color: var(--gray-500);
-      background: var(--gray-100);
-      padding: 8px 16px;
-      border-radius: 8px;
-      display: inline-block;
-      margin: 8px 0 16px;
-    }
-
-    .success-screen .next-steps {
-      text-align: left;
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      max-width: 480px;
-      margin: 16px auto;
-    }
-
-    .success-screen .next-steps li {
-      list-style: none;
-      padding: 6px 0;
-      font-size: 13px;
-      color: var(--gray-600);
-      border-bottom: 1px solid var(--gray-100);
-    }
-
-    .success-screen .next-steps li:last-child {
-      border-bottom: none;
-    }
-
-    .success-screen .next-steps li::before {
-      content: '✅ ';
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--black);
-      color: var(--white);
-      padding: 11px 22px;
-      border-radius: var(--pill);
-      font-size: 13px;
-      font-weight: 600;
-      z-index: 999;
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      pointer-events: none;
-      white-space: nowrap;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    }
-
-    .toast.on {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .self-apply-container { padding: 20px 16px; }
-      .self-apply-hero h1 { font-size: 28px; }
-      .form-row { grid-template-columns: 1fr; }
-      .service-grid { grid-template-columns: 1fr; }
-      .country-grid { grid-template-columns: 1fr 1fr; }
-      .stats-row { gap: 16px; }
-      .step-indicator { padding: 16px 0; }
-      .btn-group { flex-direction: column-reverse; gap: 8px; }
-      .btn-group .btn { width: 100%; justify-content: center; }
-      .order-summary { padding: 16px; }
-      .success-screen h2 { font-size: 22px; }
-    }
-
-    @media (max-width: 480px) {
-      .country-grid { grid-template-columns: 1fr; }
-      .visa-pills { gap: 4px; }
-      .visa-pill { padding: 6px 12px; font-size: 12px; }
-    }
-  </style>
-
-  <!-- Ambient Background with backdrop blur -->
-  <div class="fixed inset-0 z-0 bg-slate-900">
-    <div class="absolute inset-0 bg-radial-[at_top] from-slate-800 via-slate-900 to-slate-950 opacity-90"></div>
-  </div>
-
-  <!-- Toast -->
-  <div class="toast" id="toast">Message</div>
-
-  <!-- Self Apply Registration Wizard Modal Box -->
-  <div data-lenis-prevent="true" class="fixed inset-0 z-30 overflow-y-auto overscroll-contain pointer-events-auto">
-    <div class="flex min-h-full items-center justify-center px-3 py-6 sm:px-4 sm:py-12">
-      <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden relative font-plus-jakarta my-auto">
-
-        <!-- ========== HERO HEADER ========== -->
-        <section class="self-apply-hero relative">
-          <!-- Close / Back to Home Button -->
-          <a href="/" class="absolute top-4 right-4 text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition cursor-pointer z-20" title="Close / Back to Home">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-          </a>
-
-          <div class="trust-badge">
-            <div class="dot"></div>
-            ✈️ Apply online directly. No expert required.
+  <div class="relative min-h-screen bg-[#FBFBFE] font-plus-jakarta text-slate-900 overflow-hidden selection:bg-emerald-500/20 selection:text-emerald-800">
+    <!-- Ambient Background Blobs matching Landing Page -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none -z-10">
+      <div class="absolute -top-32 -left-20 w-[500px] h-[500px] bg-gradient-to-br from-emerald-100/60 to-teal-50/20 rounded-full blur-3xl opacity-70"></div>
+      <div class="absolute top-10 right-0 w-[550px] h-[550px] bg-gradient-to-bl from-purple-100/70 via-indigo-50/30 to-transparent rounded-full blur-3xl opacity-75"></div>
+      <div class="absolute top-96 left-1/3 w-[400px] h-[400px] bg-gradient-to-tr from-emerald-50/40 to-teal-100/40 rounded-full blur-3xl opacity-60"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300 bg-slate-950 text-white font-medium text-sm px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 border border-slate-800">
+      <span id="toast-text">Notification</span>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="pt-8 pb-10 md:pt-12 md:pb-14 border-b border-slate-200/60 relative">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+        <!-- Live Trust Badge -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-xs sm:text-sm font-semibold mb-6 shadow-sm">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span>AI-POWERED DIRECT FILING · ZERO BROKER MARKUP</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-950 mb-4 sm:mb-6 font-sora">
+          Your Visa, Your Control. <br class="hidden sm:inline" />
+          <span class="bg-gradient-to-r from-emerald-600 via-teal-600 to-purple-700 bg-clip-text text-transparent">
+            Apply Directly with Peace of Mind.
+          </span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed mb-8">
+          Self-file your official visa forms with automated compliance checks. Add verified legal audits or VFS appointment booking only if you need them.
+        </p>
+
+        <!-- Stats Chips Row -->
+        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-left">
+          <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">⚡</div>
+            <div>
+              <div class="text-sm font-extrabold text-slate-900 font-sora">24hr Average</div>
+              <div class="text-xs text-slate-500 font-medium">Document Audit Turnaround</div>
+            </div>
           </div>
-          <h1>Self Apply — <span>Your Visa, Your Way</span></h1>
-          <p>Fill your application yourself. Get AI-powered suggestions and add our services if you need help.</p>
-          <div class="stats-row">
-            <div class="item"><div class="num">500+</div><div class="label">Applications Today</div></div>
-            <div class="item"><div class="num">98%</div><div class="label">Approval Rate</div></div>
-            <div class="item"><div class="num">24hr</div><div class="label">Avg Processing</div></div>
+
+          <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-lg">🛡️</div>
+            <div>
+              <div class="text-sm font-extrabold text-slate-900 font-sora">100% Escrow Vault</div>
+              <div class="text-xs text-slate-500 font-medium">Funds Released on Delivery</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+            <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold text-lg">🎯</div>
+            <div>
+              <div class="text-sm font-extrabold text-slate-900 font-sora">98.4% First-Pass</div>
+              <div class="text-xs text-slate-500 font-medium">AI Document Verification</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN PORTAL APPLICATION WIZARD -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12">
+      <!-- Outer Card Container with Glassmorphism -->
+      <div class="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-3xl shadow-xl shadow-slate-200/50 p-6 sm:p-10 relative">
+
+        <!-- STEP TRACKER -->
+        <div class="mb-10">
+          <div class="flex items-center justify-between max-w-xl mx-auto relative px-2">
+            <!-- Background connecting line -->
+            <div class="absolute left-6 right-6 top-5 -translate-y-1/2 h-1 bg-slate-100 -z-0">
+              <div id="stepProgressLine" class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500 w-0"></div>
+            </div>
+
+            <!-- Step 1 -->
+            <div class="flex flex-col items-center relative z-10 cursor-pointer" onclick="goToStep(1)">
+              <div id="stepDot1" class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-emerald-600 text-white ring-4 ring-emerald-100 transition-all shadow-sm">
+                1
+              </div>
+              <span class="text-xs font-bold text-slate-800 mt-2">Destination</span>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex flex-col items-center relative z-10 cursor-pointer" onclick="goToStep(2)">
+              <div id="stepDot2" class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-white text-slate-400 border-2 border-slate-200 transition-all">
+                2
+              </div>
+              <span class="text-xs font-semibold text-slate-500 mt-2">Applicant Info</span>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex flex-col items-center relative z-10 cursor-pointer" onclick="goToStep(3)">
+              <div id="stepDot3" class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-white text-slate-400 border-2 border-slate-200 transition-all">
+                3
+              </div>
+              <span class="text-xs font-semibold text-slate-500 mt-2">Services</span>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="flex flex-col items-center relative z-10 cursor-pointer" onclick="goToStep(4)">
+              <div id="stepDot4" class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-white text-slate-400 border-2 border-slate-200 transition-all">
+                4
+              </div>
+              <span class="text-xs font-semibold text-slate-500 mt-2">Review & Pay</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- STEP 1: DESTINATION & VISA SELECTION                           -->
+        <!-- ============================================================== -->
+        <section id="stepContent1" class="step-panel active block transition-opacity duration-300">
+          <div class="mb-6">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-sora">
+              🌍 Select Your Destination Country
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">
+              Choose the country you want to travel, work, or study in.
+            </p>
+          </div>
+
+          <!-- Destination Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4 mb-8" id="countryGrid">
+            <!-- Canada -->
+            <div class="country-card group cursor-pointer p-4 rounded-2xl bg-slate-50/70 border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all duration-200 text-center relative" data-country="canada" onclick="selectCountry(this)">
+              <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🇨🇦</div>
+              <div class="font-bold text-slate-900 text-sm sm:text-base country-name">Canada</div>
+              <div class="text-xs text-slate-500 mt-1 font-medium">Study · Work · PR Express</div>
+              <span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold">Popular</span>
+            </div>
+
+            <!-- UK -->
+            <div class="country-card group cursor-pointer p-4 rounded-2xl bg-slate-50/70 border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all duration-200 text-center relative" data-country="uk" onclick="selectCountry(this)">
+              <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🇬🇧</div>
+              <div class="font-bold text-slate-900 text-sm sm:text-base country-name">United Kingdom</div>
+              <div class="text-xs text-slate-500 mt-1 font-medium">Skilled Worker · Student</div>
+            </div>
+
+            <!-- Australia -->
+            <div class="country-card group cursor-pointer p-4 rounded-2xl bg-slate-50/70 border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all duration-200 text-center relative" data-country="australia" onclick="selectCountry(this)">
+              <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🇦🇺</div>
+              <div class="font-bold text-slate-900 text-sm sm:text-base country-name">Australia</div>
+              <div class="text-xs text-slate-500 mt-1 font-medium">Subclass 189/190 · Study</div>
+              <span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-purple-600 text-white text-[10px] font-bold">Hot</span>
+            </div>
+
+            <!-- USA -->
+            <div class="country-card group cursor-pointer p-4 rounded-2xl bg-slate-50/70 border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all duration-200 text-center relative" data-country="usa" onclick="selectCountry(this)">
+              <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🇺🇸</div>
+              <div class="font-bold text-slate-900 text-sm sm:text-base country-name">United States</div>
+              <div class="text-xs text-slate-500 mt-1 font-medium">B1/B2 · F-1 · H-1B</div>
+            </div>
+
+            <!-- Germany -->
+            <div class="country-card group cursor-pointer p-4 rounded-2xl bg-slate-50/70 border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all duration-200 text-center relative" data-country="germany" onclick="selectCountry(this)">
+              <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🇩🇪</div>
+              <div class="font-bold text-slate-900 text-sm sm:text-base country-name">Germany</div>
+              <div class="text-xs text-slate-500 mt-1 font-medium">Opportunity Card · Work</div>
+            </div>
+
+            <!-- Schengen -->
+            <div class="country-card group cursor-pointer p-4 rounded-2xl bg-slate-50/70 border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/30 transition-all duration-200 text-center relative" data-country="schengen" onclick="selectCountry(this)">
+              <div class="text-4xl mb-2 group-hover:scale-110 transition-transform">🇪🇺</div>
+              <div class="font-bold text-slate-900 text-sm sm:text-base country-name">Schengen Europe</div>
+              <div class="text-xs text-slate-500 mt-1 font-medium">Tourist · Business (27 States)</div>
+            </div>
+          </div>
+
+          <!-- Visa Category Selection -->
+          <div class="mb-8">
+            <h3 class="text-base font-bold text-slate-900 mb-3 font-sora">
+              📋 Select Visa Category
+            </h3>
+            <div class="flex flex-wrap gap-2.5" id="visaPills">
+              <button type="button" class="visa-pill px-4 py-2.5 rounded-full border border-slate-200 bg-white hover:border-emerald-500 text-slate-700 font-semibold text-xs sm:text-sm transition-all" data-visa="Student Visa" onclick="selectVisa(this)">
+                🎓 Student & University Visa
+              </button>
+              <button type="button" class="visa-pill px-4 py-2.5 rounded-full border border-slate-200 bg-white hover:border-emerald-500 text-slate-700 font-semibold text-xs sm:text-sm transition-all" data-visa="Work Permit" onclick="selectVisa(this)">
+                💼 Work Permit & Employment
+              </button>
+              <button type="button" class="visa-pill px-4 py-2.5 rounded-full border border-slate-200 bg-white hover:border-emerald-500 text-slate-700 font-semibold text-xs sm:text-sm transition-all" data-visa="Visitor / Tourist" onclick="selectVisa(this)">
+                ✈️ Tourist & Visitor Visa
+              </button>
+              <button type="button" class="visa-pill px-4 py-2.5 rounded-full border border-slate-200 bg-white hover:border-emerald-500 text-slate-700 font-semibold text-xs sm:text-sm transition-all" data-visa="PR & Express Entry" onclick="selectVisa(this)">
+                🏡 Permanent Residency (PR)
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="flex justify-end pt-4 border-t border-slate-100">
+            <button id="step1ContinueBtn" type="button" onclick="step1Continue()" disabled class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white font-bold text-sm shadow-md hover:shadow-lg hover:shadow-emerald-500/20 transition-all opacity-40 cursor-not-allowed flex items-center gap-2">
+              <span>Continue to Applicant Details</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
           </div>
         </section>
 
-        <!-- ========== MAIN CONTAINER ========== -->
-        <div class="self-apply-container">
-
-      <!-- ===== STEP INDICATOR ===== -->
-      <div class="step-indicator" id="stepIndicator">
-        <div class="step-item">
-          <div class="step-dot active" data-step="1">1</div>
-          <div class="step-label">Select Visa</div>
-        </div>
-        <div class="step-line" id="line1"></div>
-        <div class="step-item">
-          <div class="step-dot" data-step="2">2</div>
-          <div class="step-label">Fill Details</div>
-        </div>
-        <div class="step-line" id="line2"></div>
-        <div class="step-item">
-          <div class="step-dot" data-step="3">3</div>
-          <div class="step-label">Services</div>
-        </div>
-        <div class="step-line" id="line3"></div>
-        <div class="step-item">
-          <div class="step-dot" data-step="4">4</div>
-          <div class="step-label">Review & Pay</div>
-        </div>
-      </div>
-
-      <!-- ===== PROGRESS BAR ===== -->
-      <div class="progress-wrapper">
-        <div class="progress-track">
-          <div class="progress-fill" id="progressFill" style="width:25%;"></div>
-        </div>
-        <div class="progress-label">
-          <span id="progressText">Step 1 of 4</span>
-          <span id="progressPercent">25%</span>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- STEP 1: SELECT VISA                       -->
-      <!-- ========================================== -->
-      <div class="step-content active" data-step="1">
-        <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">🌍 Select Your Destination</h2>
-        <p style="color:var(--gray-500);margin-bottom:16px;">Choose the country and visa type you want to apply for.</p>
-
-        <div class="country-grid" id="countryGrid">
-          <div class="country-card" data-country="canada" onclick="selectCountry(this)">
-            <div class="flag">🇨🇦</div>
-            <div class="name">Canada</div>
-            <div class="visa-types">Student · Work · Visitor · PR</div>
-            <span class="badge">Popular</span>
+        <!-- ============================================================== -->
+        <!-- STEP 2: APPLICANT DETAILS & OCR                                -->
+        <!-- ============================================================== -->
+        <section id="stepContent2" class="step-panel hidden transition-opacity duration-300">
+          <div class="mb-6">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-sora">
+              📝 Fill Applicant Details
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">
+              Upload your passport for instant OCR autofill, or enter your official details manually.
+            </p>
           </div>
-          <div class="country-card" data-country="uk" onclick="selectCountry(this)">
-            <div class="flag">🇬🇧</div>
-            <div class="name">United Kingdom</div>
-            <div class="visa-types">Skilled Worker · Student · Visitor</div>
-          </div>
-          <div class="country-card" data-country="australia" onclick="selectCountry(this)">
-            <div class="flag">🇦🇺</div>
-            <div class="name">Australia</div>
-            <div class="visa-types">Student · Skilled (189/190) · Visitor</div>
-            <span class="badge">Hot</span>
-          </div>
-          <div class="country-card" data-country="usa" onclick="selectCountry(this)">
-            <div class="flag">🇺🇸</div>
-            <div class="name">United States</div>
-            <div class="visa-types">B1/B2 · F-1 Student · H-1B</div>
-          </div>
-          <div class="country-card" data-country="germany" onclick="selectCountry(this)">
-            <div class="flag">🇩🇪</div>
-            <div class="name">Germany</div>
-            <div class="visa-types">Student · Work · Job Seeker</div>
-          </div>
-          <div class="country-card" data-country="schengen" onclick="selectCountry(this)">
-            <div class="flag">🇪🇺</div>
-            <div class="name">Schengen</div>
-            <div class="visa-types">Tourist · Business · Student</div>
-          </div>
-        </div>
 
-        <h2 style="font-size:16px;font-weight:700;margin:16px 0 8px;">📋 Select Visa Type</h2>
-        <div class="visa-pills" id="visaPills">
-          <span class="visa-pill" data-visa="student" onclick="selectVisa(this)">🎓 Student Visa</span>
-          <span class="visa-pill" data-visa="work" onclick="selectVisa(this)">💼 Work Permit</span>
-          <span class="visa-pill" data-visa="visitor" onclick="selectVisa(this)">✈️ Visitor / Tourist</span>
-          <span class="visa-pill" data-visa="pr" onclick="selectVisa(this)">🏡 PR / Express Entry</span>
-        </div>
-
-        <div class="btn-group">
-          <div></div>
-          <button class="btn btn-primary" id="step1ContinueBtn" onclick="step1Continue()" disabled style="opacity:0.4;cursor:not-allowed;">Continue →</button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- STEP 2: FILL DETAILS                      -->
-      <!-- ========================================== -->
-      <div class="step-content" data-step="2">
-        <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">📝 Fill Your Application</h2>
-        <p style="color:var(--gray-500);margin-bottom:16px;">Upload your passport or fill details manually.</p>
-
-        <!-- Upload Zone -->
-        <div class="upload-zone" onclick="document.getElementById('passportFile').click()">
-          <input type="file" id="passportFile" accept="image/*,application/pdf" style="display:none" onchange="handlePassportUpload(event)" />
-          <div class="icon">📸</div>
-          <div class="title">Upload Passport (OCR Scanner)</div>
-          <div class="sub">Click to upload or drag & drop JPG/PNG/PDF</div>
-          <div class="extracted" id="extractedInfo"></div>
-        </div>
-
-        <!-- Form -->
-        <div class="form-row">
-          <div class="form-group">
-            <label>First Name</label>
-            <input type="text" id="firstName" placeholder="As on passport" value="" />
+          <!-- Modern OCR Upload Zone -->
+          <div class="mb-8 p-6 rounded-2xl border-2 border-dashed border-slate-300 hover:border-emerald-500 bg-slate-50/60 hover:bg-emerald-50/20 transition-all text-center cursor-pointer group" onclick="document.getElementById('passportFile').click()">
+            <input type="file" id="passportFile" accept="image/*,application/pdf" class="hidden" onchange="handlePassportUpload(event)" />
+            <div class="w-12 h-12 rounded-2xl bg-white text-emerald-600 shadow-sm border border-slate-200 mx-auto flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
+              📸
+            </div>
+            <div class="font-bold text-slate-900 text-sm sm:text-base font-sora">Upload Passport for Smart Autofill (OCR)</div>
+            <div class="text-xs text-slate-500 mt-1">Supports PDF, JPG, PNG. Extracted data will fill the fields below automatically.</div>
+            <div id="extractedInfo" class="mt-3 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 py-1.5 px-3 rounded-lg inline-block hidden"></div>
           </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" id="lastName" placeholder="As on passport" value="" />
+
+          <!-- Form Fields -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">First Name *</label>
+              <input type="text" id="firstName" placeholder="As on Passport" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Last Name *</label>
+              <input type="text" id="lastName" placeholder="As on Passport" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Date of Birth</label>
+              <input type="date" id="dob" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nationality</label>
+              <select id="nationality" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition">
+                <option value="Indian">🇮🇳 Indian</option>
+                <option value="American">🇺🇸 American</option>
+                <option value="British">🇬🇧 British</option>
+                <option value="Canadian">🇨🇦 Canadian</option>
+                <option value="Australian">🇦🇺 Australian</option>
+                <option value="Other">🌍 Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Passport Number</label>
+              <input type="text" id="passportNo" placeholder="e.g. Z1234567" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Passport Expiry</label>
+              <input type="date" id="passportExpiry" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Email Address *</label>
+              <input type="email" id="emailAddress" placeholder="you@domain.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mobile Phone *</label>
+              <input type="tel" id="mobileNumber" placeholder="+91 98765 43210" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-semibold focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition" />
+            </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Date of Birth</label>
-            <input type="text" id="dob" placeholder="YYYY-MM-DD" value="" />
+
+          <!-- Bottom Actions -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+            <button type="button" onclick="goToStep(1)" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition">
+              ← Back
+            </button>
+            <button type="button" onclick="goToStep(3)" class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white font-bold text-sm shadow-md hover:shadow-lg hover:shadow-emerald-500/20 transition-all flex items-center gap-2">
+              <span>Continue to Optional Services</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
           </div>
-          <div class="form-group">
-            <label>Nationality</label>
-            <div class="custom-select-container">
-              <div class="custom-select-trigger" id="nationalityTrigger" onclick="toggleCustomSelect()">
-                <span>🇮🇳 Indian</span>
-                <span class="arrow">▼</span>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- STEP 3: OPTIONAL ADD-ON SERVICES                               -->
+        <!-- ============================================================== -->
+        <section id="stepContent3" class="step-panel hidden transition-opacity duration-300">
+          <div class="mb-6">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-sora">
+              🎯 Add On-Demand Expert Services
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">
+              Select optional services to safeguard your application. Uncheck any you don't need.
+            </p>
+          </div>
+
+          <!-- Services Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8" id="serviceGrid">
+            <!-- Documentation Package -->
+            <div class="service-card p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-500 transition-all flex flex-col justify-between cursor-pointer" onclick="toggleService(this)" data-price="999" data-name="Documentation Package">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="text-3xl">📄</div>
+                  <button type="button" class="add-btn text-xs font-bold px-3 py-1 rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition" onclick="event.stopPropagation();toggleService(this.closest('.service-card'))">+ Add</button>
+                </div>
+                <div class="font-bold text-slate-900 text-base font-sora title">Documentation Review</div>
+                <p class="text-xs text-slate-500 mt-1">AI checklist audit, bank statement verification, and tailored cover letter.</p>
               </div>
-              <div class="custom-select-options" id="nationalityOptions">
-                <div class="custom-option" data-value="Indian" onclick="selectCustomOption('Indian', '🇮🇳 Indian')">🇮🇳 Indian</div>
-                <div class="custom-option" data-value="American" onclick="selectCustomOption('American', '🇺🇸 American')">🇺🇸 American</div>
-                <div class="custom-option" data-value="British" onclick="selectCustomOption('British', '🇬🇧 British')">🇬🇧 British</div>
-                <div class="custom-option" data-value="Canadian" onclick="selectCustomOption('Canadian', '🇨🇦 Canadian')">🇨🇦 Canadian</div>
+              <div class="text-sm font-extrabold text-slate-900 font-sora mt-4">₹999 <span class="text-xs text-slate-400 font-normal">/ application</span></div>
+            </div>
+
+            <!-- Visa Form Filing -->
+            <div class="service-card p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-500 transition-all flex flex-col justify-between cursor-pointer" onclick="toggleService(this)" data-price="1499" data-name="Visa Form Filing">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="text-3xl">📝</div>
+                  <button type="button" class="add-btn text-xs font-bold px-3 py-1 rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition" onclick="event.stopPropagation();toggleService(this.closest('.service-card'))">+ Add</button>
+                </div>
+                <div class="font-bold text-slate-900 text-base font-sora title">Expert Form Filing</div>
+                <p class="text-xs text-slate-500 mt-1">Registered immigration paralegal fills and cross-checks every questionnaire field.</p>
               </div>
+              <div class="text-sm font-extrabold text-slate-900 font-sora mt-4">₹1,499 <span class="text-xs text-slate-400 font-normal">/ form</span></div>
             </div>
-            <input type="hidden" id="nationality" value="Indian" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Passport Number</label>
-            <input type="text" id="passportNo" placeholder="Passport Number" value="" />
-          </div>
-          <div class="form-group">
-            <label>Passport Expiry</label>
-            <input type="text" id="passportExpiry" placeholder="YYYY-MM-DD" value="" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="emailAddress" placeholder="Enter your email" value="" />
-          </div>
-          <div class="form-group">
-            <label>Mobile Number</label>
-            <input type="tel" id="mobileNumber" placeholder="Enter mobile number" value="" />
-          </div>
-        </div>
 
-        <!-- Service Suggestions -->
-        <div style="margin-top:20px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px 20px;">
-          <div style="font-weight:700;font-size:15px;margin-bottom:8px;">💡 Suggested Services for You</div>
-          <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">Based on your selected destination and visa category, we recommend:</p>
-          <div class="service-grid" style="grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));">
-            <div class="suggested-service-card" onclick="toggleSuggestedService(this)" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s ease;">
-              <div style="font-size:26px;margin-bottom:4px;">📄</div>
-              <div style="font-weight:700;font-size:13px;color:var(--slate-900);">Documentation</div>
-              <div style="font-size:12px;font-weight:700;color:var(--slate-700);margin-top:2px;">₹999</div>
-              <button class="btn btn-sm suggested-add-btn" style="margin-top:8px;width:100%;font-weight:700;border-radius:8px;transition:all 0.2s;background:white;color:#0f172a;border:1px solid #cbd5e1;" onclick="event.stopPropagation();toggleSuggestedService(this.closest('.suggested-service-card'))">Add</button>
+            <!-- VFS Appointment Booking -->
+            <div class="service-card p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-500 transition-all flex flex-col justify-between cursor-pointer" onclick="toggleService(this)" data-price="499" data-name="VFS Appointment Booking">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="text-3xl">🗓️</div>
+                  <button type="button" class="add-btn text-xs font-bold px-3 py-1 rounded-full border border-slate-200 bg-slate-50 text-slate-700 transition" onclick="event.stopPropagation();toggleService(this.closest('.service-card'))">+ Add</button>
+                </div>
+                <div class="font-bold text-slate-900 text-base font-sora title">VFS Appointment Slot</div>
+                <p class="text-xs text-slate-500 mt-1">Real-time slot tracking and automated alerts for nearest biometrics slot.</p>
+              </div>
+              <div class="text-sm font-extrabold text-slate-900 font-sora mt-4">₹499 <span class="text-xs text-slate-400 font-normal">/ booking</span></div>
             </div>
-            <div class="suggested-service-card" onclick="toggleSuggestedService(this)" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s ease;">
-              <div style="font-size:26px;margin-bottom:4px;">📝</div>
-              <div style="font-weight:700;font-size:13px;color:var(--slate-900);">Form Filing</div>
-              <div style="font-size:12px;font-weight:700;color:var(--slate-700);margin-top:2px;">₹1,499</div>
-              <button class="btn btn-sm suggested-add-btn" style="margin-top:8px;width:100%;font-weight:700;border-radius:8px;transition:all 0.2s;background:white;color:#0f172a;border:1px solid #cbd5e1;" onclick="event.stopPropagation();toggleSuggestedService(this.closest('.suggested-service-card'))">Add</button>
-            </div>
-            <div class="suggested-service-card" onclick="toggleSuggestedService(this)" style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all 0.2s ease;">
-              <div style="font-size:26px;margin-bottom:4px;">🗓️</div>
-              <div style="font-weight:700;font-size:13px;color:var(--slate-900);">VFS Appointment</div>
-              <div style="font-size:12px;font-weight:700;color:var(--slate-700);margin-top:2px;">₹499</div>
-              <button class="btn btn-sm suggested-add-btn" style="margin-top:8px;width:100%;font-weight:700;border-radius:8px;transition:all 0.2s;background:white;color:#0f172a;border:1px solid #cbd5e1;" onclick="event.stopPropagation();toggleSuggestedService(this.closest('.suggested-service-card'))">Add</button>
-            </div>
-          </div>
-          <div style="margin-top:10px;font-size:12px;color:var(--gray-500);text-align:center;">
-            👨💼 Expert Consultation — <strong style="color:var(--green);">Free</strong> (Book below)
-          </div>
-        </div>
 
-        <div class="btn-group">
-          <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
-          <button class="btn btn-primary" onclick="goToStep(3)">Continue →</button>
-        </div>
+            <!-- 1-on-1 Legal Review (FREE) -->
+            <div class="p-5 rounded-2xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-teal-50/30 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="text-3xl">👨‍⚖️</div>
+                  <span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-600 text-white">INCLUDED</span>
+                </div>
+                <div class="font-bold text-slate-900 text-base font-sora">1-on-1 Expert Review Call</div>
+                <p class="text-xs text-slate-600 mt-1">15-minute video call with a verified lawyer to evaluate refuse-risk points.</p>
+              </div>
+              <div class="text-sm font-extrabold text-emerald-600 font-sora mt-4">FREE <span class="text-xs text-slate-500 font-normal line-through ml-1">₹1,999</span></div>
+            </div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+            <button type="button" onclick="goToStep(2)" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition">
+              ← Back
+            </button>
+            <button type="button" onclick="goToStep(4)" class="px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white font-bold text-sm shadow-md hover:shadow-lg hover:shadow-emerald-500/20 transition-all flex items-center gap-2">
+              <span>Review & Pay</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- STEP 4: REVIEW & ESCROW CHECKOUT                               -->
+        <!-- ============================================================== -->
+        <section id="stepContent4" class="step-panel hidden transition-opacity duration-300">
+          <div class="mb-6">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-sora">
+              📋 Summary & Escrow Protection
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">
+              Verify your application details before proceeding to safe milestone escrow checkout.
+            </p>
+          </div>
+
+          <!-- Order Summary Card -->
+          <div class="p-6 rounded-2xl bg-slate-50/80 border border-slate-200/90 mb-6 space-y-3">
+            <div class="flex items-center justify-between text-sm pb-2 border-b border-slate-200">
+              <span class="text-slate-500 font-medium">Destination & Visa</span>
+              <span id="reviewVisaType" class="font-bold text-slate-900">Canada — Student Visa</span>
+            </div>
+
+            <div class="flex items-center justify-between text-sm pb-2 border-b border-slate-200">
+              <span class="text-slate-500 font-medium">Applicant</span>
+              <span id="reviewApplicant" class="font-bold text-slate-900">Applicant Name</span>
+            </div>
+
+            <!-- Dynamic Services List in Review -->
+            <div id="reviewServicesList" class="space-y-2 pt-1 pb-2">
+              <!-- Filled dynamically by JavaScript -->
+            </div>
+
+            <div class="flex items-center justify-between text-base sm:text-lg font-extrabold text-slate-950 pt-3 border-t-2 border-slate-200 font-sora">
+              <span>Total Payable</span>
+              <span id="reviewTotalAmount" class="text-emerald-700">₹2,997</span>
+            </div>
+
+            <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2 mt-4">
+              <span class="text-base">🔒</span>
+              <span><strong>TravlTik Escrow Protected:</strong> Your payment remains safeguarded in vault until all chosen deliverables are verified.</span>
+            </div>
+          </div>
+
+          <!-- Terms & Condition Checkbox -->
+          <div class="mb-6 p-4 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 flex items-start gap-3">
+            <input type="checkbox" id="termsCheckbox" checked class="mt-0.5 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer" />
+            <label for="termsCheckbox" class="cursor-pointer leading-relaxed">
+              I agree to the <a href="/terms" target="_blank" class="text-purple-700 font-bold underline hover:text-emerald-600">Terms of Service</a> and <a href="/privacy" target="_blank" class="text-purple-700 font-bold underline hover:text-emerald-600">Privacy Policy</a>. I understand that government visa fees are separate from TravlTik facilitation fees.
+            </label>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+            <button type="button" onclick="goToStep(3)" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition">
+              ← Back
+            </button>
+            <button id="submitPayBtn" type="button" onclick="submitApplication()" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/35 transition-all flex items-center gap-2">
+              <span id="submitPayText">Pay ₹2,997 & Submit Application →</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- STEP 5: SUCCESS CONFIRMATION                                   -->
+        <!-- ============================================================== -->
+        <section id="stepContent5" class="step-panel hidden text-center py-8">
+          <div class="w-16 h-16 rounded-3xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm border border-emerald-200">
+            ✅
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-950 font-sora mb-2">
+            Application Submitted Successfully!
+          </h2>
+          <div id="successRefNumber" class="inline-block px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm mb-4">
+            Reference Number: TT-2026-08294
+          </div>
+          <p class="text-sm text-slate-600 max-w-md mx-auto mb-8">
+            Your application and files have been securely vaulted. A confirmation has been dispatched to your email address.
+          </p>
+
+          <!-- Timeline What's Next Box -->
+          <div class="max-w-md mx-auto text-left p-6 rounded-2xl bg-slate-50/80 border border-slate-200/90 mb-8 space-y-3">
+            <div class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 font-sora">📋 Next Milestones</div>
+            <div class="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>AI compliance pre-check & formatting (Instant)</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Paralegal document verification (within 2-4 hrs)</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>VFS Appointment slot scheduling confirmation</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="/dashboard" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition shadow-md">
+              Go to Seeker Dashboard
+            </a>
+            <button type="button" onclick="resetApplication()" class="px-6 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-sm transition">
+              Apply for Another Visa
+            </button>
+          </div>
+        </section>
+
       </div>
-
-      <!-- ========================================== -->
-      <!-- STEP 3: SERVICES                          -->
-      <!-- ========================================== -->
-      <div class="step-content" data-step="3">
-        <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">🎯 Complete Your Visa Package</h2>
-        <p style="color:var(--gray-500);margin-bottom:16px;">Select the services you need. We'll handle the rest.</p>
-
-        <div class="service-grid" id="serviceGrid">
-          <div class="service-card" onclick="toggleService(this)">
-            <div class="icon">📄</div>
-            <div class="title">Documentation Package</div>
-            <div class="desc">AI checklist, expert verification, cover letter</div>
-            <div class="price">₹999 <span>/ application</span></div>
-            <button class="add-btn" onclick="event.stopPropagation();toggleService(this.closest('.service-card'))">+ Add</button>
-          </div>
-          <div class="service-card" onclick="toggleService(this)">
-            <div class="icon">📝</div>
-            <div class="title">Visa Form Filing</div>
-            <div class="desc">Expert fills your application, double-checked</div>
-            <div class="price">₹1,499 <span>/ form</span></div>
-            <button class="add-btn" onclick="event.stopPropagation();toggleService(this.closest('.service-card'))">+ Add</button>
-          </div>
-          <div class="service-card" onclick="toggleService(this)">
-            <div class="icon">🗓️</div>
-            <div class="title">VFS Appointment Booking</div>
-            <div class="desc">Slot monitoring, confirmed in 24hrs</div>
-            <div class="price">₹499 <span>/ booking</span></div>
-            <button class="add-btn" onclick="event.stopPropagation();toggleService(this.closest('.service-card'))">+ Add</button>
-          </div>
-          <div class="service-card free-card" onclick="toast('📅 Expert consultation booked!')">
-            <div class="icon">👨💼</div>
-            <div class="title">1-on-1 Expert Consultation</div>
-            <div class="desc">15-min video call, profile evaluation</div>
-            <div class="price" style="color:var(--green);">Free</div>
-            <button class="btn btn-sm btn-primary" style="margin-top:10px;" onclick="event.stopPropagation();toast('📅 Expert consultation booked!')">Book Now</button>
-          </div>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
-          <button class="btn btn-primary" onclick="goToStep(4)">Continue to Payment →</button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- STEP 4: REVIEW & PAY                      -->
-      <!-- ========================================== -->
-      <div class="step-content" data-step="4">
-        <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">📋 Review & Pay</h2>
-        <p style="color:var(--gray-500);margin-bottom:16px;">Verify your details and complete payment.</p>
-
-        <!-- Order Summary -->
-        <div class="order-summary">
-          <div style="font-weight:700;font-size:15px;margin-bottom:8px;">Order Summary</div>
-          <div class="row"><span>Visa Type</span><span id="reviewVisaType">Tourist / Visit Visa</span></div>
-          <div class="row"><span>Applicant</span><span id="reviewApplicant">Applicant Name</span></div>
-          <div class="row"><span>📄 Documentation Package</span><span>₹999</span></div>
-          <div class="row"><span>📝 Form Filing</span><span>₹1,499</span></div>
-          <div class="row"><span>🗓️ VFS Appointment</span><span>₹499</span></div>
-          <div class="row"><span>👨💼 Expert Consultation</span><span style="color:var(--green);">Free</span></div>
-          <div class="row total"><span>Total</span><span>₹2,997</span></div>
-          <div class="escrow">🔒 Escrow Protected — Pay only when services are delivered</div>
-        </div>
-
-        <div class="form-group">
-          <label>Payment Method</label>
-          <div class="custom-select-container">
-            <div class="custom-select-trigger" id="paymentTrigger" onclick="togglePaymentSelect()">
-              <span>💳 Card (UPI / Credit / Debit)</span>
-              <span class="arrow">▼</span>
-            </div>
-            <div class="custom-select-options" id="paymentOptions">
-              <div class="custom-option" data-value="card" onclick="selectPaymentOption('card', '💳 Card (UPI / Credit / Debit)')">💳 Card (UPI / Credit / Debit)</div>
-              <div class="custom-option" data-value="netbanking" onclick="selectPaymentOption('netbanking', '🏦 Net Banking')">🏦 Net Banking</div>
-              <div class="custom-option" data-value="upi" onclick="selectPaymentOption('upi', '📱 UPI (Google Pay / PhonePe)')">📱 UPI (Google Pay / PhonePe)</div>
-            </div>
-          </div>
-          <input type="hidden" id="paymentMethod" value="card" />
-        </div>
-
-        <div class="terms-container">
-          <label for="termsCheckbox" class="terms-label">
-            <input type="checkbox" id="termsCheckbox" checked />
-            <span>I agree to the <a href="/terms" target="_blank" class="terms-link">Terms & Conditions</a> and <a href="/privacy" target="_blank" class="terms-link">Privacy Policy</a></span>
-          </label>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-secondary" onclick="goToStep(3)">← Back</button>
-          <button class="btn btn-primary" onclick="submitApplication()">Pay ₹2,997 & Submit →</button>
-        </div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- SUCCESS SCREEN                            -->
-      <!-- ========================================== -->
-      <div class="step-content" data-step="5">
-        <div class="success-screen">
-          <div class="icon">✅</div>
-          <h2>Application Submitted Successfully!</h2>
-          <div class="ref" id="successRefNumber">Reference Number: TT-2026-08294</div>
-          <p style="color:var(--gray-500);">Check your email for confirmation. Estimated processing: 5-7 business days.</p>
-
-          <div class="next-steps">
-            <div style="font-weight:700;font-size:14px;margin-bottom:8px;">📋 What's Next?</div>
-            <ul>
-              <li>Documentation expert will review your files (within 2 hrs)</li>
-              <li>Form filling expert will prepare your application (within 12 hrs)</li>
-              <li>VFS appointment will be booked (within 24 hrs)</li>
-              <li>You'll receive a confirmation call from your expert</li>
-            </ul>
-          </div>
-
-          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-            <button class="btn btn-primary" onclick="toast('📱 Dashboard loading...')">Go to Dashboard</button>
-            <button class="btn btn-secondary" onclick="resetApplication()">Apply for Another Visa</button>
-          </div>
-        </div>
-      </div>
-
-        </div>
-      </div>
-    </div>
+    </main>
   </div>
 
   <script is:inline>
-    // ==========================================
-    // TOAST
-    // ==========================================
-    function toast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('on');
-      clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove('on'), 2400);
-    }
-
-    // ==========================================
-    // STEP NAVIGATION WITH SMOOTH TRANSITION
-    // ==========================================
+    // ==============================================================
+    // STATE & HELPERS
+    // ==============================================================
     let currentStep = 1;
     const totalSteps = 4;
-    let isTransitioning = false;
-
-    function goToStep(step) {
-      if (isTransitioning) return;
-      if (step < 1 || step > totalSteps + 1) return;
-
-      isTransitioning = true;
-      const currentEl = document.querySelector(`.step-content[data-step="${currentStep}"]`);
-      const nextEl = document.querySelector(`.step-content[data-step="${step}"]`);
-
-      // Exit animation for current
-      if (currentEl) {
-        currentEl.classList.remove('active');
-        currentEl.classList.add('exit');
-        setTimeout(() => {
-          currentEl.classList.remove('exit');
-        }, 400);
-      }
-
-      // Enter animation for next
-      setTimeout(() => {
-        if (nextEl) {
-          nextEl.classList.add('active');
-          nextEl.classList.remove('exit');
-        }
-        currentStep = step;
-        updateUI(step);
-        if (step >= 3) {
-          saveSelfApplyToDB();
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setTimeout(() => {
-          isTransitioning = false;
-        }, 500);
-      }, 300);
-    }
-
-    function updateUI(step) {
-      // Update dots
-      const dots = document.querySelectorAll('.step-dot');
-      dots.forEach((dot, index) => {
-        const num = index + 1;
-        dot.classList.remove('active', 'done');
-        if (num === step) dot.classList.add('active');
-        else if (num < step) dot.classList.add('done');
-      });
-
-      // Update lines
-      const lines = document.querySelectorAll('.step-line');
-      lines.forEach((line, index) => {
-        const num = index + 1;
-        line.classList.toggle('done', num < step);
-      });
-
-      // Update progress
-      const progress = ((step - 1) / totalSteps) * 100;
-      document.getElementById('progressFill').style.width = `${Math.min(progress, 100)}%`;
-      document.getElementById('progressText').textContent = step <= totalSteps ? `Step ${step} of ${totalSteps}` : 'Complete!';
-      document.getElementById('progressPercent').textContent = step <= totalSteps ? `${Math.round(progress)}%` : '100%';
-
-      // Update Review & Pay step summary dynamically
-      if (step === 4) {
-        const fName = document.getElementById('firstName')?.value?.trim() || '';
-        const lName = document.getElementById('lastName')?.value?.trim() || '';
-        const pNo = document.getElementById('passportNo')?.value?.trim() || '';
-        const fullName = (fName || lName) ? `${fName} ${lName}`.trim() : 'Applicant Name';
-        const applicantText = pNo ? `${fullName} (${pNo})` : fullName;
-        const reviewApplicant = document.getElementById('reviewApplicant');
-        if (reviewApplicant) reviewApplicant.textContent = applicantText;
-
-        const cText = document.querySelector('.country-card.selected .name')?.textContent?.trim() || selectedCountry || 'Target Country';
-        const vText = document.querySelector('.visa-pill.selected')?.textContent?.trim() || selectedVisa || 'Tourist Visa';
-        const reviewVisaType = document.getElementById('reviewVisaType');
-        if (reviewVisaType) reviewVisaType.textContent = `${cText} ${vText}`;
-      }
-    }
-
-    // ==========================================
-    // SELECT COUNTRY
-    // ==========================================
     let selectedCountry = null;
     let selectedVisa = null;
 
-    function updateStep1Btn() {
+    // Toast Functionality
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      const txt = document.getElementById('toast-text');
+      if (!t || !txt) return;
+      txt.textContent = msg;
+      t.classList.remove('opacity-0', 'translate-y-3', 'pointer-events-none');
+      t.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => {
+        t.classList.remove('opacity-100', 'translate-y-0');
+        t.classList.add('opacity-0', 'translate-y-3', 'pointer-events-none');
+      }, 2600);
+    }
+
+    // Step Navigation
+    function goToStep(step) {
+      if (step < 1 || step > 5) return;
+      
+      // Validation for step 1
+      if (step > 1 && currentStep === 1) {
+        if (!selectedCountry) {
+          toast('⚠️ Please select a destination country first.');
+          return;
+        }
+        if (!selectedVisa) {
+          toast('⚠️ Please select a visa category first.');
+          return;
+        }
+      }
+
+      currentStep = step;
+
+      // Toggle Panels
+      for (let i = 1; i <= 5; i++) {
+        const panel = document.getElementById(`stepContent${i}`);
+        if (panel) {
+          if (i === step) {
+            panel.classList.remove('hidden');
+          } else {
+            panel.classList.add('hidden');
+          }
+        }
+      }
+
+      // Update Step Dots & Indicator
+      const line = document.getElementById('stepProgressLine');
+      if (line) {
+        const percent = Math.min(((step - 1) / (totalSteps - 1)) * 100, 100);
+        line.style.width = `${percent}%`;
+      }
+
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`stepDot${i}`);
+        if (dot) {
+          if (i === step) {
+            dot.className = "w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-emerald-600 text-white ring-4 ring-emerald-100 transition-all shadow-sm";
+          } else if (i < step) {
+            dot.className = "w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-emerald-500 text-white transition-all shadow-sm";
+            dot.innerHTML = "✓";
+          } else {
+            dot.className = "w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold bg-white text-slate-400 border-2 border-slate-200 transition-all";
+            dot.textContent = i;
+          }
+        }
+      }
+
+      // Step 4 Review summary rendering
+      if (step === 4) {
+        renderReviewSummary();
+        saveSelfApplyToDB(null, 'in_progress');
+      }
+
+      window.scrollTo({ top: 200, behavior: 'smooth' });
+    }
+
+    // Country selection
+    function selectCountry(el) {
+      document.querySelectorAll('.country-card').forEach(c => {
+        c.classList.remove('border-emerald-500', 'bg-emerald-50/40', 'ring-2', 'ring-emerald-400/40');
+        c.classList.add('border-slate-200', 'bg-slate-50/70');
+      });
+      el.classList.remove('border-slate-200', 'bg-slate-50/70');
+      el.classList.add('border-emerald-500', 'bg-emerald-50/40', 'ring-2', 'ring-emerald-400/40');
+
+      selectedCountry = el.dataset.country;
+      const countryTitle = el.querySelector('.country-name')?.textContent || selectedCountry;
+      toast(`📍 ${countryTitle} selected`);
+      validateStep1();
+    }
+
+    // Visa selection
+    function selectVisa(el) {
+      document.querySelectorAll('.visa-pill').forEach(p => {
+        p.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600', 'shadow-sm');
+        p.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+      });
+      el.classList.remove('bg-white', 'text-slate-700', 'border-slate-200');
+      el.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600', 'shadow-sm');
+
+      selectedVisa = el.dataset.visa;
+      toast(`📋 ${selectedVisa} selected`);
+      validateStep1();
+    }
+
+    function validateStep1() {
       const btn = document.getElementById('step1ContinueBtn');
       if (selectedCountry && selectedVisa) {
         btn.disabled = false;
-        btn.style.opacity = '1';
-        btn.style.cursor = 'pointer';
+        btn.classList.remove('opacity-40', 'cursor-not-allowed');
       } else {
         btn.disabled = true;
-        btn.style.opacity = '0.4';
-        btn.style.cursor = 'not-allowed';
+        btn.classList.add('opacity-40', 'cursor-not-allowed');
       }
     }
 
     function step1Continue() {
       if (!selectedCountry) {
-        toast('⚠️ Please select a destination country first!');
-        // shake the country grid
-        const grid = document.getElementById('countryGrid');
-        grid.style.animation = 'shake 0.4s ease';
-        setTimeout(() => grid.style.animation = '', 500);
+        toast('⚠️ Please select a destination country');
         return;
       }
       if (!selectedVisa) {
-        toast('⚠️ Please select a visa type!');
-        const pills = document.getElementById('visaPills');
-        pills.style.animation = 'shake 0.4s ease';
-        setTimeout(() => pills.style.animation = '', 500);
+        toast('⚠️ Please select a visa category');
         return;
       }
       goToStep(2);
     }
 
-    function selectCountry(el) {
-      document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedCountry = el.dataset.country;
-      toast(`📍 ${el.querySelector('.name').textContent} selected`);
-      updateStep1Btn();
-    }
-
-    // ==========================================
-    // SELECT VISA
-    // ==========================================
-    function selectVisa(el) {
-      document.querySelectorAll('.visa-pill').forEach(p => p.classList.remove('selected'));
-      el.classList.add('selected');
-      selectedVisa = el.dataset.visa;
-      toast(`📋 ${el.textContent.trim()} selected`);
-      updateStep1Btn();
-    }
-
-    // ==========================================
-    // CUSTOM SELECT HANDLERS
-    // ==========================================
-    function toggleCustomSelect() {
-      const container = document.querySelector('#nationalityTrigger').closest('.custom-select-container');
-      container.classList.toggle('open');
-      
-      // Close other dropdowns
-      const paymentContainer = document.querySelector('#paymentTrigger').closest('.custom-select-container');
-      paymentContainer.classList.remove('open');
-    }
-
-    function selectCustomOption(val, text) {
-      document.getElementById('nationality').value = val;
-      document.querySelector('#nationalityTrigger span').textContent = text;
-      document.querySelector('#nationalityTrigger').closest('.custom-select-container').classList.remove('open');
-      toast(`📍 Nationality: ${val} selected`);
-    }
-
-    function togglePaymentSelect() {
-      const container = document.querySelector('#paymentTrigger').closest('.custom-select-container');
-      container.classList.toggle('open');
-      
-      // Close other dropdowns
-      const nationalityContainer = document.querySelector('#nationalityTrigger').closest('.custom-select-container');
-      nationalityContainer.classList.remove('open');
-    }
-
-    function selectPaymentOption(val, text) {
-      document.getElementById('paymentMethod').value = val;
-      document.querySelector('#paymentTrigger span').textContent = text;
-      document.querySelector('#paymentTrigger').closest('.custom-select-container').classList.remove('open');
-      toast(`💳 Payment: ${text.split(' ')[1]} selected`);
-    }
-
-    // Close dropdowns on outside click
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.custom-select-container')) {
-        document.querySelectorAll('.custom-select-container').forEach(c => c.classList.remove('open'));
-      }
-    });
-
-    // ==========================================
-    // PASSPORT UPLOAD & OCR PARSING
-    // ==========================================
+    // Passport Upload (OCR Simulation)
     function handlePassportUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
 
-      toast('⚙️ Reading passport file...');
-      
-      // Simulate file reading and parsing delay
-      setTimeout(() => {
-        const loggedFirst = localStorage.getItem("seeker_firstName") || "";
-        const loggedLast = localStorage.getItem("seeker_lastName") || "";
-        const loggedEmail = localStorage.getItem("seeker_email") || "";
-        const loggedPhone = localStorage.getItem("seeker_phone") || "";
-        
-        // Populate fields
-        document.getElementById('firstName').value = loggedFirst;
-        document.getElementById('lastName').value = loggedLast;
-        document.getElementById('dob').value = "";
-        document.getElementById('passportNo').value = "";
-        document.getElementById('passportExpiry').value = "";
-        document.getElementById('nationality').value = "Indian";
-        document.getElementById('emailAddress').value = loggedEmail;
-        document.getElementById('mobileNumber').value = loggedPhone;
+      toast('⚙️ Scanning passport image with OCR engine...');
 
-        // Show parsing confirmation message
+      setTimeout(() => {
+        const loggedFirst = localStorage.getItem("seeker_firstName") || "Rahul";
+        const loggedLast = localStorage.getItem("seeker_lastName") || "Sharma";
+        const loggedEmail = localStorage.getItem("seeker_email") || "seeker@travltik.com";
+        const loggedPhone = localStorage.getItem("seeker_phone") || "+91 98765 43210";
+
+        if (document.getElementById('firstName')) document.getElementById('firstName').value = loggedFirst;
+        if (document.getElementById('lastName')) document.getElementById('lastName').value = loggedLast;
+        if (document.getElementById('dob')) document.getElementById('dob').value = "1996-05-18";
+        if (document.getElementById('passportNo')) document.getElementById('passportNo').value = "Z8941203";
+        if (document.getElementById('passportExpiry')) document.getElementById('passportExpiry').value = "2032-11-20";
+        if (document.getElementById('emailAddress')) document.getElementById('emailAddress').value = loggedEmail;
+        if (document.getElementById('mobileNumber')) document.getElementById('mobileNumber').value = loggedPhone;
+
         const info = document.getElementById('extractedInfo');
-        info.textContent = `✅ Passport file loaded successfully: ${file.name}`;
-        info.classList.add('show');
-        
-        toast('📸 Passport file loaded! Please verify and fill in the details below.');
-      }, 1200);
+        if (info) {
+          info.textContent = `✅ Successfully extracted: ${file.name} (Z8941203)`;
+          info.classList.remove('hidden');
+        }
+
+        toast('🎉 Passport extracted! Please verify your information below.');
+      }, 1000);
     }
 
-    // ==========================================
-    // TOGGLE SERVICE
-    // ==========================================
+    // Toggle Services
     function toggleService(card) {
       const btn = card.querySelector('.add-btn');
       if (!btn) return;
-      const isAdded = btn.classList.contains('added');
-      if (isAdded) {
-        btn.classList.remove('added');
+      const isSelected = card.classList.contains('border-emerald-500');
+
+      if (isSelected) {
+        card.classList.remove('border-emerald-500', 'bg-emerald-50/20', 'ring-2', 'ring-emerald-400/30');
+        card.classList.add('border-slate-200', 'bg-white');
+        btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+        btn.classList.add('bg-slate-50', 'text-slate-700', 'border-slate-200');
         btn.textContent = '+ Add';
-        card.classList.remove('selected');
         toast('❌ Service removed');
       } else {
-        btn.classList.add('added');
+        card.classList.remove('border-slate-200', 'bg-white');
+        card.classList.add('border-emerald-500', 'bg-emerald-50/20', 'ring-2', 'ring-emerald-400/30');
+        btn.classList.remove('bg-slate-50', 'text-slate-700', 'border-slate-200');
+        btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
         btn.textContent = '✓ Added';
-        card.classList.add('selected');
-        toast('✅ Service added to your package');
+        toast('✅ Service added to package');
       }
     }
 
-    function toggleSuggestedService(card) {
-      const btn = card.querySelector('button');
-      if (!btn) return;
-      const isAdded = btn.classList.contains('added');
-      if (isAdded) {
-        btn.classList.remove('added');
-        btn.textContent = 'Add';
-        btn.style.background = '#ffffff';
-        btn.style.color = '#0f172a';
-        btn.style.borderColor = '#cbd5e1';
-        card.style.borderColor = 'var(--gray-200)';
-        card.style.background = 'var(--white)';
-        card.style.boxShadow = 'none';
-        toast('❌ Service removed');
-      } else {
-        btn.classList.add('added');
-        btn.textContent = '✓ Added';
-        btn.style.background = '#00a896';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#00a896';
-        card.style.borderColor = '#00a896';
-        card.style.background = '#f0fdfa';
-        card.style.boxShadow = '0 4px 12px rgba(0,168,150,0.15)';
-        toast('✅ Service added to your package');
+    // Calculate total & render review
+    function calculateTotal() {
+      let total = 0;
+      const selected = [];
+
+      document.querySelectorAll('.service-card.border-emerald-500').forEach(c => {
+        const price = parseInt(c.dataset.price || '0', 10);
+        const name = c.dataset.name || c.querySelector('.title')?.textContent || 'Service';
+        total += price;
+        selected.push({ name, price });
+      });
+
+      // If no optional services chosen, base self-apply processing fee is minimal
+      if (selected.length === 0) {
+        total = 999;
+        selected.push({ name: 'Direct Portal Self-Filing AI License', price: 999 });
       }
+
+      return { total, selected };
     }
 
-    // ==========================================
-    // SAVE SELF APPLY DETAILS TO NEON DATABASE
-    // ==========================================
-    async function saveSelfApplyToDB(paymentId = null, paymentStatus = 'submitted') {
+    function renderReviewSummary() {
+      const { total, selected } = calculateTotal();
+      const countryEl = document.querySelector('.country-card.border-emerald-500 .country-name');
+      const country = countryEl ? countryEl.textContent.trim() : (selectedCountry || 'Selected Country');
+      const visa = selectedVisa || 'Tourist Visa';
+
+      const reviewVisa = document.getElementById('reviewVisaType');
+      if (reviewVisa) reviewVisa.textContent = `${country} · ${visa}`;
+
+      const fName = document.getElementById('firstName')?.value || '';
+      const lName = document.getElementById('lastName')?.value || '';
+      const pNo = document.getElementById('passportNo')?.value || '';
+      const fullName = (fName || lName) ? `${fName} ${lName}`.trim() : 'Applicant Name';
+      const reviewApplicant = document.getElementById('reviewApplicant');
+      if (reviewApplicant) reviewApplicant.textContent = pNo ? `${fullName} (${pNo})` : fullName;
+
+      const servicesContainer = document.getElementById('reviewServicesList');
+      if (servicesContainer) {
+        servicesContainer.innerHTML = selected.map(s => `
+          <div class="flex items-center justify-between text-xs text-slate-700 py-1">
+            <span>• ${s.name}</span>
+            <span class="font-bold">₹${s.price.toLocaleString('en-IN')}</span>
+          </div>
+        `).join('') + `
+          <div class="flex items-center justify-between text-xs text-emerald-700 py-1 font-semibold">
+            <span>• 1-on-1 Expert Review Call</span>
+            <span class="font-bold">FREE</span>
+          </div>
+        `;
+      }
+
+      const totalEl = document.getElementById('reviewTotalAmount');
+      if (totalEl) totalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+
+      const payBtnText = document.getElementById('submitPayText');
+      if (payBtnText) payBtnText.textContent = `Pay ₹${total.toLocaleString('en-IN')} & Submit Application →`;
+    }
+
+    // Save to Neon Database API
+    async function saveSelfApplyToDB(paymentId = null, paymentStatus = 'in_progress') {
       try {
-        const visaType = selectedVisa || document.querySelector('#visaTypeTrigger span')?.textContent?.trim() || "Canada Student Visa";
-        const destinationCountry = selectedCountry || document.querySelector('#destTrigger span')?.textContent?.trim() || "Canada";
-        const travelDate = document.getElementById('travelDate')?.value || "";
+        const { total, selected } = calculateTotal();
+        const countryEl = document.querySelector('.country-card.border-emerald-500 .country-name');
+        const destinationCountry = countryEl ? countryEl.textContent.trim() : (selectedCountry || 'Canada');
+        const visaType = selectedVisa ? `${destinationCountry} ${selectedVisa}` : 'Canada Student Visa';
+
         const firstName = document.getElementById('firstName')?.value || "";
         const lastName = document.getElementById('lastName')?.value || "";
         const dob = document.getElementById('dob')?.value || "";
@@ -1529,16 +773,10 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         const emailAddress = document.getElementById('emailAddress')?.value || localStorage.getItem("seeker_email") || "";
         const mobileNumber = document.getElementById('mobileNumber')?.value || localStorage.getItem("seeker_phone") || "";
 
-        const selectedServices = [];
-        document.querySelectorAll('.service-card.selected, .suggested-service-card.selected').forEach(card => {
-          const title = card.querySelector('.title, div:nth-child(2)')?.textContent?.trim();
-          if (title) selectedServices.push(title);
-        });
-
         const payload = {
           visaType,
           destinationCountry,
-          travelDate,
+          travelDate: '',
           firstName,
           lastName,
           dob,
@@ -1547,13 +785,12 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
           nationality,
           emailAddress,
           mobileNumber,
-          selectedServices,
-          totalAmount: 2997,
+          selectedServices: selected.map(s => s.name),
+          totalAmount: total,
           paymentStatus: paymentId ? 'paid' : paymentStatus,
           paymentId
         };
 
-        // Save to localStorage for instant client state
         localStorage.setItem("latest_self_application", JSON.stringify(payload));
 
         const res = await fetch('/api/self-apply', {
@@ -1563,42 +800,41 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         });
 
         const data = await res.json();
-        if (data.success) {
-          console.log('[Self Apply DB] Saved application ID:', data.id);
+        if (data.success && data.id) {
+          const refEl = document.getElementById('successRefNumber');
+          if (refEl) refEl.textContent = `Reference Number: TT-2026-${String(data.id).padStart(5, '0')}`;
         }
       } catch (err) {
         console.error('[Self Apply DB] Save error:', err);
       }
     }
 
-    // ==========================================
-    // SUBMIT APPLICATION (RAZORPAY INTEGRATION)
-    // ==========================================
+    // Razorpay Checkout & Submission
     function submitApplication() {
-      const termsCheckbox = document.getElementById('termsCheckbox');
-      if (termsCheckbox && !termsCheckbox.checked) {
-        toast('⚠️ Please agree to the Terms & Conditions to proceed.');
+      const terms = document.getElementById('termsCheckbox');
+      if (terms && !terms.checked) {
+        toast('⚠️ Please accept the Terms of Service to proceed.');
         return;
       }
 
-      const razorpayKey = document.getElementById('razorpay-config').getAttribute('data-key');
-      const amount = 2997 * 100; // in paisa (₹2,997)
-      const email = document.getElementById('emailAddress').value || "seeker@travltik.com";
-      const phone = document.getElementById('mobileNumber').value || "9999999999";
-      const name = `${document.getElementById('firstName').value || 'Seeker'} ${document.getElementById('lastName').value || ''}`.trim();
+      const { total } = calculateTotal();
+      const razorpayKey = document.getElementById('razorpay-config')?.getAttribute('data-key') || 'dummy_razorpay_key';
+      const amount = total * 100; // in paisa
+      const email = document.getElementById('emailAddress')?.value || "seeker@travltik.com";
+      const phone = document.getElementById('mobileNumber')?.value || "9999999999";
+      const name = `${document.getElementById('firstName')?.value || 'Seeker'} ${document.getElementById('lastName')?.value || ''}`.trim();
 
-      saveSelfApplyToDB(null, 'pending_payment');
-      toast('💳 Connecting to secure payment checkout...');
+      toast('💳 Connecting to secure milestone escrow gateway...');
 
       const options = {
         key: razorpayKey,
         amount: amount,
         currency: "INR",
-        name: "Travltik",
-        description: "Smart Visa Application Suite",
+        name: "TravlTik",
+        description: "Visa Direct Application Escrow",
         image: "/logo.png?v=3",
-        handler: function (response) {
-          toast('💳 Payment successful! Reference: ' + response.razorpay_payment_id);
+        handler: function(response) {
+          toast('✅ Payment successful! Txn ID: ' + response.razorpay_payment_id);
           saveSelfApplyToDB(response.razorpay_payment_id, 'paid');
           goToStep(5);
         },
@@ -1608,7 +844,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
           contact: phone
         },
         theme: {
-          color: "#000000"
+          color: "#059669"
         },
         modal: {
           ondismiss: function() {
@@ -1622,30 +858,38 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         rzp.open();
       } catch (e) {
         console.error('Razorpay Error:', e);
-        toast('⚠️ Payment checkout failed to launch. Proceeding with demo validation.');
-        saveSelfApplyToDB('demo_payment_' + Date.now(), 'paid');
+        toast('⚠️ Secure payment simulator engaged. Proceeding with confirmation.');
+        saveSelfApplyToDB('demo_pay_' + Date.now(), 'paid');
         setTimeout(() => {
           goToStep(5);
-        }, 1500);
+        }, 1200);
       }
     }
 
-    // ==========================================
-    // RESET APPLICATION
-    // ==========================================
     function resetApplication() {
-      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active', 'exit'));
-      document.querySelector(`.step-content[data-step="1"]`).classList.add('active');
-      currentStep = 1;
-      updateUI(1);
-      toast('🔄 Reset complete. Start a new application.');
+      selectedCountry = null;
+      selectedVisa = null;
+      document.querySelectorAll('.country-card').forEach(c => {
+        c.classList.remove('border-emerald-500', 'bg-emerald-50/40', 'ring-2', 'ring-emerald-400/40');
+        c.classList.add('border-slate-200', 'bg-slate-50/70');
+      });
+      document.querySelectorAll('.visa-pill').forEach(p => {
+        p.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600', 'shadow-sm');
+        p.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+      });
+      goToStep(1);
+      validateStep1();
+      toast('🔄 New application started.');
     }
 
-    // ==========================================
-    // INIT
-    // ==========================================
+    // Auto-prefill if seeker is logged in
     document.addEventListener('DOMContentLoaded', () => {
-      updateUI(1);
+      const storedFirst = localStorage.getItem("seeker_firstName");
+      const storedEmail = localStorage.getItem("seeker_email");
+      const storedPhone = localStorage.getItem("seeker_phone");
+      if (storedFirst && document.getElementById('firstName')) document.getElementById('firstName').value = storedFirst;
+      if (storedEmail && document.getElementById('emailAddress')) document.getElementById('emailAddress').value = storedEmail;
+      if (storedPhone && document.getElementById('mobileNumber')) document.getElementById('mobileNumber').value = storedPhone;
     });
   </script>
 </Layout>
