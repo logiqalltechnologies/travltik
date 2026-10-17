@@ -130,7 +130,7 @@ export const QuickAccessGrid: React.FC<QuickAccessGridProps> = ({
                   onItemClick(item);
                 }
               }}
-              className="group bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 text-center flex flex-col items-center justify-center space-y-2.5 shadow-2xs hover:shadow-md hover:border-slate-200 transition-all cursor-pointer"
+              className="group bg-white rounded-2xl border border-slate-200/60 p-4 sm:p-5 text-center flex flex-col items-center justify-center space-y-2.5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-emerald-500/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
             >
               {/* Icon Container */}
               <div

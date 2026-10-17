@@ -32,7 +32,7 @@ export const VisaReadinessCard: React.FC<VisaReadinessCardProps> = ({
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-100 p-5 sm:p-7 shadow-xs hover:shadow-sm transition-shadow">
+    <div className="bg-white rounded-2xl border border-slate-200/60 p-5 sm:p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
       {/* Top Tag */}
       <div className="flex items-center justify-between mb-4 sm:mb-5">
         <span className="text-[11px] sm:text-xs font-black uppercase text-slate-800 tracking-wider">

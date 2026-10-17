@@ -253,17 +253,17 @@ export function PhotoResizer() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 lg:py-12">
+    <div className="max-w-5xl mx-auto px-4 py-10 lg:py-16">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-8">
+      <div className="text-center max-w-2xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-3 border border-emerald-200">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Consular Biometric Standard Engine</span>
         </div>
-        <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
           Visa &amp; Passport Photo Resizer
         </h1>
-        <p className="text-slate-600 text-sm lg:text-base mt-2">
+        <p className="text-slate-500 text-sm lg:text-base mt-2.5">
           Resize, crop, and align your photo to 100% exact consular biometric dimensions for US, Schengen, UK, Canada &amp; India.
         </p>
       </div>
@@ -272,7 +272,7 @@ export function PhotoResizer() {
         {/* Left Column: Controls & Spec Selector */}
         <div className="lg:col-span-5 space-y-6">
           {/* Country Spec Selector */}
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
             <CustomSelect
               label="1. Select Destination / Consular Standard"
               value={selectedCountry}
@@ -301,7 +301,7 @@ export function PhotoResizer() {
           </div>
 
           {/* Upload / Re-upload Box */}
-          <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+          <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
               2. Upload Your Portrait Photo
             </label>
@@ -378,7 +378,7 @@ export function PhotoResizer() {
         </div>
 
         {/* Right Column: Interactive Editor Canvas & Result */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+        <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-900">Interactive Alignment &amp; Preview</h2>
             {imageSrc && (
@@ -481,7 +481,7 @@ export function PhotoResizer() {
 
                 <button
                   onClick={handleDownload}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#00a896] hover:bg-[#009282] active:scale-95 text-white font-bold text-sm shadow-md transition-all duration-150 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white font-semibold text-sm shadow-xs hover:shadow-md transition-all duration-150 cursor-pointer"
                 >
                   <Download className="w-4 h-4" />
                   Download Consular Photo

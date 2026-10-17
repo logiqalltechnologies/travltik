@@ -175,7 +175,7 @@ const defaultSchema = {
   <!-- Official Razorpay Checkout Library -->
   <script is:inline src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
-<body class="font-sans antialiased text-slate-900 selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden" data-barba="wrapper">
+<body class="font-sans antialiased text-slate-900 bg-[#F8FAFC] selection:bg-[#00a878]/20 selection:text-[#00a878] min-h-screen flex flex-col overflow-x-hidden" data-barba="wrapper">
   {!hideHeader && <Header />}
   <main class={`flex-grow ${hideHeader ? "" : "pt-14 lg:pt-20"} ${hideFooter ? "" : "pb-14 md:pb-0"}`} data-barba="container" data-barba-namespace="default">
     <slot />

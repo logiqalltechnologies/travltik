@@ -26,11 +26,11 @@ const total = embassyFee + platformFee;
 <Layout title={`Checkout — ${selected.name} ($${selected.price}) | TravlTik`}>
   <div class="max-w-2xl mx-auto px-4 py-12">
     <div class="mb-8">
-      <a href={`/visa/${encodeURIComponent(countryParam.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))}?passport=${encodeURIComponent(passportParam)}&purpose=${encodeURIComponent(purposeParam)}`} class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1">
+      <a href={`/visa/${encodeURIComponent(countryParam.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))}?passport=${encodeURIComponent(passportParam)}&purpose=${encodeURIComponent(purposeParam)}`} class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-colors">
         ← Back to Pathway
       </a>
-      <h1 class="text-3xl font-black text-slate-900 mt-2">Complete Your Application</h1>
-      <p class="text-sm text-slate-600 mt-1">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">Complete Your Application</h1>
+      <p class="text-slate-500 mt-2 text-sm md:text-base">
         Selected Package: <span class="font-bold text-slate-900">{selected.name} (${selected.price} USD)</span> for {countryParam} ({purposeParam})
       </p>
     </div>
@@ -46,7 +46,7 @@ const total = embassyFee + platformFee;
     </div>
 
     <!-- Plan Summary Card -->
-    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm mb-6">
+    <div class="p-6 rounded-2xl bg-white border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 mb-6">
       <div class="flex items-center justify-between pb-4 border-b border-slate-100">
         <div>
           <div class="text-xs font-bold uppercase tracking-wider text-[#00a896]">{selected.name}</div>
@@ -64,7 +64,7 @@ const total = embassyFee + platformFee;
       <button
         id="payBtn"
         type="button"
-        class="w-full py-4 bg-[#00a896] hover:bg-[#028090] text-white font-black rounded-xl shadow-md hover:shadow-lg transition-all text-sm uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
+        class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] text-sm uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
       >
         <span id="btnText">Proceed to Pay ${platformFee} USD</span>
         <span id="btnSpinner" class="hidden animate-spin">⏳</span>

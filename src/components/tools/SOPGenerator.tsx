@@ -120,24 +120,24 @@ export function SOPGenerator() {
   const wordCount = generatedSop ? generatedSop.trim().split(/\s+/).length : 0;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 lg:py-12">
+    <div className="max-w-5xl mx-auto px-4 py-10 lg:py-16">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-8">
+      <div className="text-center max-w-2xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-semibold mb-3 border border-teal-200">
           <Sparkles className="w-3.5 h-3.5 text-[#00a896]" />
           <span>Consular-Compliant AI Drafting Engine</span>
         </div>
-        <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
           AI Statement of Purpose (SOP) &amp; Cover Letter Generator
         </h1>
-        <p className="text-slate-600 text-sm lg:text-base mt-2">
+        <p className="text-slate-500 text-sm lg:text-base mt-2.5">
           Generate an embassy-grade cover letter or SOP structured to address consular scrutiny, funding clarity, and ties to your home country.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Input Form */}
-        <div className="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+        <div className="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 space-y-5">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <FileText className="w-4 h-4 text-[#00a896]" />
             Application Parameters
@@ -243,7 +243,7 @@ export function SOPGenerator() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#00a896] hover:bg-[#009282] active:scale-95 text-white font-bold text-sm shadow-md transition-all duration-150 cursor-pointer disabled:opacity-50"
+              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white font-semibold text-sm shadow-xs hover:shadow-md transition-all duration-150 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <>
@@ -261,7 +261,7 @@ export function SOPGenerator() {
         </div>
 
         {/* Right Column: Generated SOP Preview & Editor */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+        <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
             <div>
               <h2 className="text-base font-bold text-slate-900">Consular SOP Output</h2>

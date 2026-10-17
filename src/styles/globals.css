@@ -38,15 +38,23 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "tnum";
   }
 
+  body {
+    background-color: #F8FAFC;
+    color: #0f172a;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body, button, input, select, textarea {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-size: 15px;
     line-height: 24px;
     font-weight: 400;
-    color: #09090b;
+    color: #0f172a;
   }
 
   /* ── 1. Page Title (Hero Display) ── */
@@ -1274,6 +1282,129 @@ h3, h4 {
   font-size: 13px;
   font-weight: 400;
   color: #64748b;
+}
+
+/* ── 🚀 LANDING PAGE DESIGN SYSTEM EXTENSION ── */
+.landing-card, .premium-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.landing-card:hover, .premium-card:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+}
+
+.landing-btn-primary, .btn-primary-landing {
+  background-color: #10b981;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.landing-btn-primary:hover, .btn-primary-landing:hover {
+  background-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+.landing-btn-primary:active, .btn-primary-landing:active {
+  transform: scale(0.98);
+}
+
+.landing-btn-secondary, .btn-secondary-landing {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.landing-btn-secondary:hover, .btn-secondary-landing:hover {
+  background-color: #f8fafc;
+}
+
+.landing-input, .input-landing {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+.landing-input::placeholder, .input-landing::placeholder {
+  color: #94a3b8;
+}
+.landing-input:focus, .input-landing:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.landing-page-header {
+  margin-bottom: 2rem;
+}
+.landing-page-title {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+}
+@media (min-width: 768px) {
+  .landing-page-title {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+.landing-page-subtitle {
+  color: #64748b;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+@media (min-width: 768px) {
+  .landing-page-subtitle {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+.landing-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2.5rem;
+  padding-bottom: 3.5rem;
+}
+@media (min-width: 640px) {
+  .landing-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .landing-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 3.5rem;
+    padding-bottom: 5rem;
+  }
 }
 
 

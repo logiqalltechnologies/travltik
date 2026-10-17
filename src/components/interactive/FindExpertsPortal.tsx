@@ -741,8 +741,8 @@ export function FindExpertsPortal() {
 
 
                     {/* Search + Sort Bar */}
-                    <div className="bg-white rounded-3xl border border-slate-100 p-4 shadow-xl mb-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                        <div className="flex items-center gap-2.5 bg-slate-50/50 border border-slate-100/70 rounded-2xl px-4 py-2.5 flex-1 w-full sm:w-auto">
+                    <div className="bg-white rounded-2xl border border-slate-200/60 p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                        <div className="flex items-center gap-2.5 bg-slate-50/80 border border-slate-200/80 rounded-xl px-4 py-2.5 flex-1 w-full sm:w-auto focus-within:ring-2 focus-within:ring-emerald-500/20 focus-within:border-emerald-500 transition-all">
                             <Search className="w-4 h-4 text-gray-400 shrink-0" />
                             <input
                                 value={searchText}

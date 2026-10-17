@@ -21,7 +21,7 @@ export const UpcomingAppointment: React.FC<UpcomingAppointmentProps> = ({
   onViewAppointment,
 }) => {
   return (
-    <div className="bg-white rounded-3xl border border-slate-100 p-5 sm:p-7 shadow-xs hover:shadow-sm transition-shadow flex flex-col justify-between h-full text-center">
+    <div className="bg-white rounded-2xl border border-slate-200/60 p-5 sm:p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between h-full text-center">
       <div>
         <h3 className="text-sm font-bold text-slate-900 tracking-tight mb-5 text-left">
           Upcoming Appointment

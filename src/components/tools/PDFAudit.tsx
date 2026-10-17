@@ -118,23 +118,23 @@ export function PDFAudit() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 lg:py-12">
+    <div className="max-w-5xl mx-auto px-4 py-10 lg:py-16">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-8 print:hidden">
+      <div className="text-center max-w-2xl mx-auto mb-10 print:hidden">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-semibold mb-3 border border-teal-200">
           <Sparkles className="w-3.5 h-3.5 text-[#00a896]" />
           <span>Consular Regulatory Feasibility AI</span>
         </div>
-        <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
           AI Immigration Profile &amp; PDF Audit
         </h1>
-        <p className="text-slate-600 text-sm lg:text-base mt-2">
+        <p className="text-slate-500 text-sm lg:text-base mt-2.5">
           Evaluate your CRS score, identify critical document gaps, and generate a consular-grade feasibility report with official regulatory sources.
         </p>
       </div>
 
       {/* Input Form Card */}
-      <div className="bg-white rounded-2xl p-6 lg:p-8 border border-slate-200 shadow-sm mb-8 print:hidden">
+      <div className="bg-white rounded-2xl p-6 lg:p-8 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 mb-8 print:hidden">
         <form onSubmit={handleAudit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {/* Target Country */}
@@ -158,7 +158,7 @@ export function PDFAudit() {
                 placeholder="e.g. 28"
                 value={formData.age}
                 onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:ring-2 focus:ring-[#00a896] outline-none"
+                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-semibold"
                 required
               />
             </div>
@@ -221,7 +221,7 @@ export function PDFAudit() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#00a896] hover:bg-[#009282] active:scale-95 text-white font-bold text-sm shadow-md transition-all duration-150 cursor-pointer disabled:opacity-50"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white font-semibold text-sm shadow-xs hover:shadow-md transition-all duration-150 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <>
@@ -248,7 +248,7 @@ export function PDFAudit() {
 
       {/* Generated Report Output */}
       {report && (
-        <div className="bg-white rounded-2xl p-6 lg:p-10 border border-slate-200 shadow-md space-y-8 print:border-none print:shadow-none print:p-0">
+        <div className="bg-white rounded-2xl p-6 lg:p-10 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 space-y-8 print:border-none print:shadow-none print:p-0">
           {/* Printable Report Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
             <div>
