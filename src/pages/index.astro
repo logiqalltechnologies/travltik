@@ -43,19 +43,19 @@ section{padding:96px 0;position:relative}
 .bdg{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--gl);color:var(--g2);white-space:nowrap}
 .bdg.p{background:var(--l2);color:var(--p)}.bdg svg{font-size:13px}
 .av{border-radius:50%;flex:none;display:block}
-/* Old menu with dropdowns - aligned left next to logo */
-.nav-menu{display:flex;align-items:center;gap:6px;list-style:none;margin:0;margin-left:36px;padding:0;z-index:10}
+/* Nav menu with dropdowns - perfectly centered */
+.nav-menu{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0;position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);z-index:10}
 .nav-item{position:relative;padding:10px 0}
-.nav-link{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:14.5px;color:#352c50;padding:8px 14px;border-radius:99px;transition:.2s;text-decoration:none;white-space:nowrap}
+.nav-link{display:inline-flex;align-items:center;gap:4px;font-weight:600;font-size:14px;color:#352c50;padding:7px 12px;border-radius:99px;transition:.2s;text-decoration:none;white-space:nowrap}
 .nav-link:hover, .nav-item:hover .nav-link{color:var(--g2);background:var(--l1)}
 .nav-link.planner-link{color:var(--g2);font-weight:800}
 .nav-link svg.chv{width:12px;height:12px;transition:transform .2s;color:#7e749a}
 .nav-item:hover .nav-link svg.chv{transform:rotate(180deg);color:var(--g2)}
-.nav-drop{position:absolute;top:100%;left:0;min-width:240px;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:0 18px 40px -12px rgba(67,15,122,.22);padding:8px;opacity:0;visibility:hidden;transform:translateY(8px);transition:.2s cubic-bezier(.2,.7,.2,1);z-index:100;pointer-events:none}
-.nav-item:hover .nav-drop{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.nav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);min-width:240px;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:0 18px 40px -12px rgba(67,15,122,.22);padding:8px;opacity:0;visibility:hidden;transition:.2s cubic-bezier(.2,.7,.2,1);z-index:100;pointer-events:none}
+.nav-item:hover .nav-drop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}
 .nav-drop a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13.5px;font-weight:600;color:#352c50;text-decoration:none;transition:.15s;white-space:nowrap}
 .nav-drop a:hover{background:var(--l1);color:var(--g2);transform:translateX(3px)}
-@media(max-width:1080px){.nav-menu{display:none}.burger{display:flex}}
+@media(max-width:1120px){.nav-menu{display:none}.burger{display:flex}}
 /* top bar + header */
 .tb{background:linear-gradient(90deg,var(--l2),var(--l1) 50%,var(--gl));font-size:13px;font-weight:600;color:var(--p);overflow:hidden}
 .tb .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:14px;white-space:nowrap}
@@ -82,7 +82,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 .nav{display:flex;align-items:center;justify-content:space-between;height:82px;position:relative}.nav>a{position:relative;z-index:2;display:flex;align-items:center}.nav img{height:44px;display:block}
 .links{display:flex;gap:6px;background:var(--l1);padding:6px;border-radius:99px;border:1px solid var(--line)}
 .links a{font-weight:600;font-size:14px;color:#4b4268;padding:9px 16px;white-space:nowrap;border-radius:99px;transition:.25s}.links a:hover,.links a.on{background:#fff;color:var(--p);box-shadow:0 6px 16px -8px rgba(67,15,122,.5)}
-.nr{display:flex;gap:12px;align-items:center;position:relative;z-index:2;margin-left:auto}.nr .lg{white-space:nowrap;font-weight:700;font-size:14.5px;color:var(--p);padding:10px 14px}
+.nr{display:flex;gap:12px;align-items:center;position:relative;z-index:2}.nr .lg{white-space:nowrap;font-weight:700;font-size:14.5px;color:var(--p);padding:10px 14px}
 .burger{display:none;width:46px;height:46px;border-radius:50%;background:var(--l2);font-size:21px;align-items:center;justify-content:center;color:var(--p)}
 .mm{display:none;padding:6px 0 20px}.mm.o{display:block}.mm a{display:block;padding:14px 2px;font-weight:700;border-bottom:1px solid var(--line)}
 /* hero */
@@ -390,6 +390,14 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <a href="/vfs-appointment"><svg class="i"><use href="#clock"/></svg>VFS Appointment Support</a>
       <a href="/services/travel-insurance"><svg class="i"><use href="#heart"/></svg>Travel Insurance</a>
     </div>
+  <li class="nav-item">
+    <a href="/resources" class="nav-link">Resources <svg class="i chv"><use href="#chevron-down"/></svg></a>
+    <div class="nav-drop">
+      <a href="/visa-guide"><svg class="i"><use href="#file"/></svg>Immigration News & Guides</a>
+      <a href="/visa-guide"><svg class="i"><use href="#plane"/></svg>Visa Policy Changes 2026</a>
+      <a href="/find-experts"><svg class="i"><use href="#shield"/></svg>Verified Visa Experts</a>
+      <a href="/escrow"><svg class="i"><use href="#lock"/></svg>Milestone Escrow Guide</a>
+    </div>
   </li>
 </ul>
 <div class="nr"><a class="lg hide" href="/support" style="margin-right:2px;font-size:14px;color:#4b4268">Contact</a><a class="lg" href="/login">Log in</a><a class="btn g s" href="/signup">Get started <svg class="i ar"><use href="#arrow"/></svg></a><button class="burger" id="bg" aria-label="Menu"><svg class="i"><use href="#menu"/></svg></button></div></div>
@@ -398,6 +406,8 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <a href="/self-apply">Self Apply</a>
   <a href="/ai-tools">AI Tools</a>
   <a href="/visa-services">Visa Services</a>
+  <a href="/resources">Resources</a>
+  <a href="/planner" style="color:var(--g2);font-weight:700">AI Planner</a>
   <a href="/support">Contact & Support</a>
   <div style="display:flex;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
     <a href="/login" class="btn o s" style="flex:1;text-align:center">Log in</a>
@@ -506,7 +516,7 @@ const BG=[['#00c985','#6b34b3'],['#c4a6f0','#430f7a'],['#7fe3b9','#00b070'],['#9
 const HR=['<path d="M30 33c0-9 6-14 14-14s14 5 14 14c-4-5-9-7-14-7s-10 2-14 7z" fill="@H"/>','<path d="M29 40c-2-14 5-22 15-22s17 8 15 22c-1-8-6-12-15-12s-14 4-15 12z" fill="@H"/><rect x="28" y="36" width="6" height="22" rx="3" fill="@H"/><rect x="54" y="36" width="6" height="22" rx="3" fill="@H"/>','<circle cx="44" cy="17" r="7" fill="@H"/><path d="M30 34c1-8 7-12 14-12s13 4 14 12c-4-4-9-6-14-6s-10 2-14 6z" fill="@H"/>','<path d="M30 36c0-10 6-16 14-16s14 6 14 16c-2-4-4-6-6-7-4 2-9 3-14 2-3 1-6 3-8 5z" fill="@H"/>'];
 function av(i,s=44){const b=BG[i%BG.length],dark=(i%2==0)?'#430f7a':'#2a0a4d',id='g'+i+'_'+s+Math.floor(Math.random()*1e5);
 return `<svg class="av" width="${s}" height="${s}" viewBox="0 0 88 88"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${b[0]}"/><stop offset="1" stop-color="${b[1]}"/></linearGradient><clipPath id="c${id}"><circle cx="44" cy="44" r="44"/></clipPath></defs><g clip-path="url(#c${id})"><rect width="88" height="88" fill="url(#${id})"/><path d="M10 92c2-20 16-28 34-28s32 8 34 28z" fill="#fff" fill-opacity=".92"/><path d="M36 60h16v8c-3 3-13 3-16 0z" fill="#f3ebff"/><circle cx="44" cy="41" r="14" fill="#f8f3ff"/>${HR[i%4].replace(/@H/g,dark)}</g></svg>`}
-$('#hav').innerHTML=[0,3,5,2].map(i=>av(i,32)).join('');$('#cav').innerHTML='<img src="https://images.unsplash.com/photo-1517649763962-0c623266ddc0?q=80&w=200&auto=format&fit=crop" alt="Rising At Sports" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2.5px solid #fff;box-shadow:0 4px 12px rgba(67,15,122,.25);display:block;">';$('#mha').innerHTML=[2,4,6].map(i=>av(i,30)).join('');
+$('#hav').innerHTML=[0,3,5,2].map(i=>av(i,32)).join('');$('#cav').innerHTML='<img src="/cricket-avatar.jpg" alt="Rising At Sports" onerror="this.src=\'/images/cricket_ad.jpg\'" style="width:50px;height:50px;border-radius:50%;object-fit:cover;border:2.5px solid #fff;box-shadow:0 4px 12px rgba(67,15,122,.25);display:block;">';$('#mha').innerHTML=[2,4,6].map(i=>av(i,30)).join('');
 $('#bg').onclick=()=>$('#mm').classList.toggle('o');
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}}),{threshold:.08});
 const rvObs=()=>$$('.rv:not(.on)').forEach(e=>ST?e.classList.add('on'):io.observe(e));
@@ -531,11 +541,11 @@ const MQ=[['CA','Canada','Express Entry'],['UK','United Kingdom','Skilled Worker
 const mqh=a=>a.map((m,i)=>`<a href="#search" class="mc ${i%2?'alt':''}" data-dest="${m[1]}" data-visa="${m[2]}" style="cursor:pointer;text-decoration:none;color:inherit"><i>${m[0]}</i>${m[1]} <small>${m[2]}</small></a>`).join('');
 $('#mq1').innerHTML=mqh(MQ)+mqh(MQ);$('#mq2').innerHTML=mqh(MQ.slice().reverse())+mqh(MQ.slice().reverse());
 /* search */
-const T={Visas:{ph:'e.g. Express Entry PR',ic:'file',r:[['Express Entry PR filing','Priya Nair · Canada','RCIC R512345','4.9','₹85,000','~4 min',1],['Student visa & SOP review','Global Visa Partners · UK','SRA Regulated','4.8','₹32,000','~9 min',5],['Skilled 189 assessment','Southern Cross · Australia','MARA 1798452','4.9','₹78,000','~6 min',3]]},
+const T={Visas:{ph:'e.g. Express Entry PR',ic:'file',r:[['Express Entry PR filing','Evergreen Visa Consultancy · Canada','Reg: U80904HR...','4.9','₹85,000','~4 min',1],['Student visa & SOP review','Chaitanya N · UK & USA','Reg. Visa Counsel','4.8','₹32,000','~9 min',5],['Skilled 189 & Europe filing','Travel and Play · Australia','Reg. Consultancy','4.9','₹78,000','~6 min',3]]},
 Jobs:{ph:'e.g. Software engineer',ic:'brief',r:[['Software engineer','Toronto · Hybrid','Visa sponsored','4.7','₹28L / yr','Apply 2d',0],['Registered nurse','London · NHS trust','Relocation paid','4.8','₹34L / yr','Apply 5d',2],['Chef de partie','Dubai · Marina','Housing included','4.6','₹9L / yr','Apply 1d',6]]},
 Stays:{ph:'e.g. Room near campus',ic:'home',r:[['Studio near UofT','Toronto · 8 min walk','Bills included','4.8','$900 / mo','Move in 1 Nov',4],['Shared room, Zone 2','London · Students','Verified host','4.7','£620 / mo','Move in 15 Nov',7],['1BHK furnished','Dubai Marina','Short stay OK','4.9','AED 5.5K','Move in now',0]]},
 Tours:{ph:'e.g. Japan 7 nights',ic:'plane',r:[['Japan: Tokyo & Kyoto','7 nights · small group','Visa included','4.9','₹1.9 L','Next: 12 Dec',2],['Europe highlights','10 nights · 4 cities','Schengen handled','4.8','₹2.4 L','Next: 3 Jan',5],['Vietnam escape','6 nights · guided','Flights included','4.7','₹78,000','Next: 20 Nov',1]]},
-Experts:{ph:'e.g. RCIC consultant',ic:'users',r:[['Priya Nair','Canada · Express Entry','RCIC R512345','4.9','₹4,000 / hr','Online now',1],['Daniel Whitfield','UK · Student & Work','OISC Level 2','4.8','₹3,500 / hr','~12 min',3],['Mei Anderson','Australia · Skilled','MARA 1798452','4.9','₹4,500 / hr','Online now',5]]}};
+Experts:{ph:'e.g. Evergreen Visa, Travel and Play',ic:'users',r:[['Evergreen Visa Consultancy','Canada & Europe · Study & Visit','Gov Reg: U80904HR...','4.9','₹3,500 / hr','Online now',1],['Travel and Play','Schengen & UK · Relocation','Reg. Consultancy','4.9','₹4,000 / hr','Online now',3],['Chaitanya N','Canada & USA · Admissions','Reg. Counsel','4.8','₹3,200 / hr','~8 min',5]]}};
 let cur='Visas';
 const drawTabs=()=>{
   const tb = $('#tabs');
@@ -571,14 +581,14 @@ const S=[['Search & compare','Tell us your goal and destination. See verified ex
 let si=0;const drawS=()=>{$('#stp').innerHTML=S.map((s,i)=>`<div class="sc2 gc ${i==si?'on':''}" data-i="${i}"><div class="il"><span class="nb">${i+1}</span>${IL[i]}</div><h3>${s[0]}</h3><p>${s[1]}</p><span class="tg">${s[2]}</span></div>`).join('');$$('.sc2').forEach(b=>b.onclick=()=>{si=+b.dataset.i;drawS()})};drawS();if(!ST)setInterval(()=>{si=(si+1)%5;drawS()},3200);
 const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
 $('#ef').oninput=e=>{const v=e.target.value*1000;$('#ev2').textContent=$('#et').textContent=fmt(v);$('#a1').textContent=fmt(v*.2);$('#a2').textContent=fmt(v*.3);$('#a3').textContent=fmt(v*.5)};
-/* consultants */
+/* consultants - real registered experts */
 const CN=[
-  ['Priya Nair','Immigration consultant · Canada','RCIC R512345',['English','Hindi','Punjabi'],'4.9','312','1,240','https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop','₹4,000'],
-  ['Mei Anderson','Migration agent · Australia','MARA 1798452',['English','Mandarin'],'4.9','268','980','https://images.unsplash.com/photo-1580894732470-349079a0ce62?q=80&w=400&auto=format&fit=crop','₹4,500'],
-  ['Daniel Whitfield','Immigration adviser · UK','OISC Level 2',['English','French'],'4.8','204','860','https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop','₹3,500'],
-  ['Amira Haddad','Visa specialist · UAE & Germany','Licensed counsel',['English','Arabic','German'],'4.8','176','720','https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=400&auto=format&fit=crop','₹3,800']
+  ['Evergreen Visa Consultancy','Immigration & Visa Consultancy · Haryana & UAE','Gov Reg: U80904HR2022PTC100428',['English','Hindi','Punjabi'],'4.9','320','1,420','/experts/expert1.png','₹3,500'],
+  ['Travel and Play','Visa & Relocation Agency · Hyderabad','Reg. Consultancy · Schengen & Europe',['English','Hindi','Telugu'],'4.9','285','1,180','/experts/arjun_mehta.jpg','₹4,000'],
+  ['Chaitanya N','Study Visa & Admissions Counsel · Hyderabad','Canada, UK & USA Specialist',['English','Hindi','Telugu'],'4.8','215','860','/experts/karthik_reddy.jpg','₹3,200'],
+  ['Risingat Sports','Sports Visa & Global Travel · Mumbai','Verified Sports & Visitor Counsel',['English','Hindi'],'4.9','194','740','/cricket-avatar.jpg','₹4,500']
 ];
-$('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c[0])}'"><div style="position:relative;width:92px;height:92px;margin-bottom:14px"><img src="${c[7]}" alt="${c[0]}" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6)"><span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c[0]}</h4><div class="rl">${c[1]}</div><span class="bdg lic">${ic('shield')}${c[2]}</span><div class="rt" style="margin-top:14px">${stars(5)}${c[4]} <small>(${c[5]} reviews)</small></div><div class="lg">${c[3].map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c[6]}</b><small>Cases done</small></div><div><b>${c[8]}</b><small>Per hour</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c[0])}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
+$('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c[0])}'"><div style="position:relative;width:92px;height:92px;margin-bottom:14px"><img src="${c[7]}" alt="${c[0]}" onerror="this.src='/experts/expert2.png'" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6)"><span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c[0]}</h4><div class="rl">${c[1]}</div><span class="bdg lic">${ic('shield')}${c[2]}</span><div class="rt" style="margin-top:14px">${stars(5)}${c[4]} <small>(${c[5]} reviews)</small></div><div class="lg">${c[3].map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c[6]}</b><small>Cases done</small></div><div><b>${c[8]}</b><small>Per hour</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c[0])}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
 /* classifieds */
 const CL=[
   ['Studio apartment near UofT','Housing','Toronto, CA','$900/mo','https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop','2h ago'],
