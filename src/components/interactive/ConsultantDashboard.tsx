@@ -13,8 +13,20 @@ export function ConsultantDashboard() {
     const [consultantSearch, setConsultantSearch] = useState("");
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState("overview");
-    const [classifiedsViewMode, setClassifiedsViewMode] = useState<"form" | "list">("form");
+    const [activeTab, setActiveTab] = useState(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("tab") || "overview";
+        }
+        return "overview";
+    });
+    const [classifiedsViewMode, setClassifiedsViewMode] = useState<"form" | "list">(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("tab") === "classifieds" && params.get("action") === "list") return "list";
+        }
+        return "form";
+    });
     const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
     const [verificationStatus, setVerificationStatus] = useState("pending");
     const [timePeriod, setTimePeriod] = useState("This Month");
@@ -169,6 +181,16 @@ export function ConsultantDashboard() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabFromUrl = urlParams.get("tab");
+            const actionFromUrl = urlParams.get("action");
+            if (tabFromUrl) {
+                setActiveTab(tabFromUrl);
+                if (tabFromUrl === "classifieds") {
+                    setClassifiedsViewMode(actionFromUrl === "list" ? "list" : "form");
+                }
+            }
+
             const userStr = (localStorage.getItem("travltik_user"));
             const isLoggedInExpert = localStorage.getItem("expert_isLoggedIn");
 
@@ -178,9 +200,13 @@ export function ConsultantDashboard() {
             const isExpert = parsedUser?.type === "expert" || isLoggedInExpert === "true";
             
             if (!isExpert) {
-                // Not an expert - redirect to appropriate dashboard
-                window.location.href = parsedUser?.type === "seeker" ? "/dashboard" : "/login";
-                return;
+                if (tabFromUrl === "classifieds") {
+                    setActiveTab("classifieds");
+                    setClassifiedsViewMode(actionFromUrl === "list" ? "list" : "form");
+                } else {
+                    window.location.href = parsedUser?.type === "seeker" ? "/dashboard" : "/login";
+                    return;
+                }
             }
 
             // Load real Expert Profile details from localStorage
