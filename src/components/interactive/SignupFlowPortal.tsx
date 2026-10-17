@@ -212,7 +212,13 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                     <div className="w-full flex flex-col items-center font-sans">
                         <button 
                             type="button"
-                            onClick={() => setMode("selection")} 
+                            onClick={() => {
+                                if (typeof window !== 'undefined' && window.location.pathname.includes('/traveller')) {
+                                    window.location.href = '/signup';
+                                } else {
+                                    setMode("selection");
+                                }
+                            }} 
                             className="mb-3 text-xs font-bold text-slate-800 hover:text-slate-950 flex items-center gap-2 bg-white hover:bg-slate-50 px-4 py-2 rounded-full cursor-pointer border border-slate-200 shadow-sm font-sans"
                         >
                             &larr; Change Account Role
