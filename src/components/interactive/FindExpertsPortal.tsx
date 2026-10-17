@@ -804,7 +804,7 @@ export function FindExpertsPortal() {
             <main className="max-w-7xl mx-auto flex flex-col lg:flex-row py-8 px-4 sm:px-6 gap-8 font-sans">
                 {/* Desktop Sidebar */}
                 <aside className="hidden lg:block w-[300px] shrink-0">
-                    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm sticky top-24 font-sans">
+                    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm sticky top-[136px] font-sans">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="font-plus-jakarta text-lg font-extrabold text-slate-900">Filters</h2>
                             <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">Live Sync</span>
@@ -964,6 +964,30 @@ export function FindExpertsPortal() {
                                 </button>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Horizontal Category Filter Tabs */}
+                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 mb-5">
+                        {categoryFilters.map(cat => {
+                            const Icon = cat.icon;
+                            const isSelected = category === cat.id || 
+                                (cat.id === "Work Permit" && category === "Work") || 
+                                (cat.id === "Student Visa" && category === "Study");
+                            return (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setCategory(cat.id)}
+                                    className={`shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                                        isSelected
+                                            ? "bg-gradient-to-r from-[#430f7a] to-[#6b34b3] text-white shadow-md shadow-purple-900/10"
+                                            : "bg-white border border-slate-200/90 text-slate-700 hover:border-purple-300 hover:text-[#430f7a]"
+                                    }`}
+                                >
+                                    <Icon className={`w-3.5 h-3.5 ${isSelected ? "text-emerald-300" : "text-slate-400"}`} />
+                                    <span>{cat.label}</span>
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Active Pills and Count */}
