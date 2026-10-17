@@ -90,7 +90,7 @@ export function PaymentCheckoutModal({
     setStep("processing");
 
     try {
-      // 1. Create server-side payment order
+      // 1. Create server-side booking order
       const orderRes = await fetch("/api/bookings/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,7 +101,7 @@ export function PaymentCheckoutModal({
           seekerName: name,
           seekerEmail: email,
           seekerPhone: phone,
-          amount: hourlyRate,
+          amount: 0,
           currency: "INR",
           visaCategory,
           bookingDate: new Date().toISOString()
@@ -110,19 +110,19 @@ export function PaymentCheckoutModal({
 
       const orderData = await orderRes.json();
       if (!orderRes.ok || !orderData.success) {
-        throw new Error(orderData.error || "Failed to initialize payment order.");
+        throw new Error(orderData.error || "Failed to initialize consultation booking.");
       }
 
       const generatedOrderId = orderData.orderId;
       const targetBookingId = orderData.bookingId;
 
-      // 2. Process payment (Razorpay Checkout integration / simulation with server verification)
-      const simulatedPaymentId = `pay_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+      // 2. Instant confirmation for free consultation
+      const simulatedPaymentId = `free_consult_${Date.now()}`;
 
-      // Simulate network verification handshake
-      await new Promise(r => setTimeout(r, 1200));
+      // Simulate network verification
+      await new Promise(r => setTimeout(r, 600));
 
-      // 3. Server-side verification (Server is ALWAYS the authority)
+      // 3. Server-side verification
       const verifyRes = await fetch("/api/bookings/verify-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -130,7 +130,7 @@ export function PaymentCheckoutModal({
           orderId: generatedOrderId,
           paymentId: simulatedPaymentId,
           bookingId: targetBookingId,
-          signature: "verified_client_token"
+          signature: "verified_free_consultation"
         })
       });
 
@@ -211,7 +211,7 @@ export function PaymentCheckoutModal({
                     <span className="w-2 h-2 rounded-full bg-[#00a896]"></span>
                     <span className="text-xs font-extrabold text-slate-800">{visaCategory}</span>
                   </div>
-                  <span className="text-sm font-black text-[#00a896]">₹{hourlyRate} / Session</span>
+                  <span className="text-sm font-black text-emerald-600">Free Consultation (₹0)</span>
                 </div>
 
                 <div className="text-[11px] text-slate-600 space-y-1 pt-2 border-t border-slate-200/60 font-medium">
@@ -272,42 +272,15 @@ export function PaymentCheckoutModal({
                 </div>
               </div>
 
-              {/* Payment Methods */}
-              <div className="space-y-2">
-                <h4 className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
-                  Payment Method (Razorpay Secure)
-                </h4>
-
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { id: "razorpay_upi", label: "UPI / QR", desc: "GPay, PhonePe, Paytm" },
-                    { id: "razorpay_card", label: "Debit / Credit", desc: "Visa, MC, RuPay" },
-                    { id: "razorpay_netbanking", label: "NetBanking", desc: "All Indian Banks" }
-                  ].map(m => {
-                    const isSelected = paymentMethod === m.id;
-                    return (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => setPaymentMethod(m.id as any)}
-                        className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
-                          isSelected 
-                            ? "bg-teal-50 border-[#00a896] ring-1 ring-[#00a896]" 
-                            : "bg-slate-50 border-slate-200 hover:bg-slate-100"
-                        }`}
-                      >
-                        <div className="text-xs font-extrabold text-slate-900">{m.label}</div>
-                        <div className="text-[9px] text-slate-500 font-medium">{m.desc}</div>
-                      </button>
-                    );
-                  })}
+              {/* Free Consultation Assurance Banner */}
+              <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 text-emerald-950 space-y-1">
+                <div className="flex items-center gap-2 font-bold text-xs text-emerald-800">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>100% Free Initial Consultation</span>
                 </div>
-              </div>
-
-              {/* Trust Badge */}
-              <div className="flex items-center gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-500 font-medium">
-                <ShieldCheck className="w-4 h-4 text-[#00a896] shrink-0" />
-                <span>256-bit SSL encrypted checkout. 100% money-back protection if session does not take place.</span>
+                <p className="text-[11px] text-emerald-700 leading-relaxed font-medium">
+                  Zero consultation fees. Connect directly with {expertName} to evaluate your visa eligibility and milestones without any charges.
+                </p>
               </div>
 
               {/* Action Buttons */}
@@ -325,7 +298,7 @@ export function PaymentCheckoutModal({
                   disabled={loading}
                   className="px-6 py-2.5 rounded-xl bg-[#00a896] hover:bg-[#008f80] text-white text-xs font-extrabold shadow-sm transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
                 >
-                  <span>Pay ₹{hourlyRate} & Confirm Slot</span>
+                  <span>Confirm Free Consultation Slot</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -340,10 +313,10 @@ export function PaymentCheckoutModal({
               </div>
               <div>
                 <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">
-                  Verifying Payment with Gateway...
+                  Securing Free Consultation Slot...
                 </h3>
                 <p className="text-xs text-slate-500 font-medium mt-1">
-                  Please do not close or refresh this window while we secure your slot.
+                  Please wait while we confirm your appointment with {expertName}.
                 </p>
               </div>
             </div>
@@ -356,10 +329,10 @@ export function PaymentCheckoutModal({
               </div>
               <div>
                 <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">
-                  Booking Confirmed! 🎉
+                  Consultation Confirmed! 🎉
                 </h3>
                 <p className="text-xs text-slate-600 font-medium mt-1 max-w-sm mx-auto">
-                  Your session with <strong>{expertName}</strong> has been secured for <strong>{selectedDate}</strong>.
+                  Your free session with <strong>{expertName}</strong> has been secured for <strong>{selectedDate}</strong>.
                 </p>
               </div>
 
@@ -369,8 +342,8 @@ export function PaymentCheckoutModal({
                   <span className="font-mono font-bold text-slate-900">#{confirmedBookingId}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400 font-bold">Payment Ref:</span>
-                  <span className="font-mono font-bold text-slate-900">{paymentTxId}</span>
+                  <span className="text-slate-400 font-bold">Consultation Fee:</span>
+                  <span className="font-bold text-emerald-600">Free (₹0)</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400 font-bold">Confirmation Email:</span>

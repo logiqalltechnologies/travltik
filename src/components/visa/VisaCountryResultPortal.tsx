@@ -2970,7 +2970,7 @@ const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
     license: 'ICCRC-R705123 / OISC UK',
     experience: '11+ Years Experience',
     specialities: ['CAS & I-20 Verification', 'SOP Drafting & Review', 'UK & US Student Visas', '28-Day Maintenance Audit'],
-    fee: '₹999 / 30 mins',
+    fee: 'Free Consultation',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=faces&q=80',
     freeCounselling: true
   },
@@ -2987,7 +2987,7 @@ const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
     license: 'OISC Level 2 #F2021008',
     experience: '9+ Years Experience',
     specialities: ['Oxford / UCL / Imperial Admissions', 'CAS Processing', 'IHS & Visa Submissions', 'VFS Biometrics Slot'],
-    fee: '₹899 / 30 mins',
+    fee: 'Free Consultation',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces&q=80',
     freeCounselling: true
   },
@@ -3004,9 +3004,9 @@ const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
     license: 'US Bar Council #BAR-CA-78912',
     experience: '14+ Years Experience',
     specialities: ['Form I-20 & SEVIS Filing', 'F-1 Visa Interview Prep', 'Financial Solvency Proofs', 'Refusal Overturns'],
-    fee: '₹1,499 / 30 mins',
+    fee: 'Free Consultation',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces&q=80',
-    freeCounselling: false
+    freeCounselling: true
   },
   {
     id: 'cons-4',
@@ -3021,7 +3021,7 @@ const VERIFIED_STUDY_CONSULTANTS: StudyConsultantItem[] = [
     license: 'MARA Australia #1804521 / RCIC',
     experience: '8+ Years Experience',
     specialities: ['GTE & Genuine Student Audits', 'PGWP Pathway Planning', 'Scholarship Matching', 'Medical & Biometrics'],
-    fee: '₹799 / 30 mins',
+    fee: 'Free Consultation',
     image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=faces&q=80',
     freeCounselling: true
   }
@@ -11952,11 +11952,11 @@ export function VisaCountryResultPortal({
 
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-slate-400 font-medium block">Total Payable:</span>
-                  <strong className="text-slate-950 font-black text-sm">{bookingModalConsultant.fee}</strong>
+                  <span className="text-slate-400 font-medium block">Consultation Fee:</span>
+                  <strong className="text-emerald-600 font-black text-sm">Free (₹0)</strong>
                 </div>
                 <span className="text-[11px] font-bold text-[#00A86B] bg-emerald-50 px-2 py-1 rounded-lg">
-                  Protected under Escrow
+                  Free Initial Assessment
                 </span>
               </div>
             </div>

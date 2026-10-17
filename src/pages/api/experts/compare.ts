@@ -113,7 +113,7 @@ export const GET: APIRoute = async ({ url }) => {
         const license = row.license_no || row.gov_registration_number || row.license_type || 'RCIC Verified';
         const licenseType = row.license_type || (row.gov_registration_number?.includes('RCIC') ? 'RCIC' : row.gov_registration_number?.includes('MARA') ? 'MARA' : 'Bar Council');
         const location = row.location || [row.city, row.country].filter(Boolean).join(', ') || 'Delhi, India';
-        const hourlyRate = row.hourly_rate ? (String(row.hourly_rate).startsWith('₹') || String(row.hourly_rate).startsWith('$') ? String(row.hourly_rate) : `₹${row.hourly_rate}/hr`) : '₹2,000/hr';
+        const hourlyRate = 'Free Consultation';
 
         return {
           id: String(row.id),
@@ -152,7 +152,7 @@ export const GET: APIRoute = async ({ url }) => {
         experienceYears: String(de.experienceYears || '8+ Years'),
         rating: Number(de.rating) || 4.8,
         reviewCount: Number(de.reviews) || 120,
-        hourlyRate: de.hourlyRate ? `₹${de.hourlyRate}/hr` : '₹2,500/hr',
+        hourlyRate: 'Free Consultation',
         responseTime: '< 1 hour',
         successRate: '96%',
         specializations: de.tags && de.tags.length > 0 ? de.tags : ['Student Visa', 'Work Permit', 'PR'],

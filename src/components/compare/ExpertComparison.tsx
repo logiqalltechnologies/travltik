@@ -120,7 +120,7 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
           Compare Immigration &amp; Visa Experts
         </h1>
         <p className="text-sm text-slate-600 mt-2 max-w-3xl mx-auto leading-relaxed">
-          Compare verified consultants on the basis of their Regulatory Licenses, Success Rates, Hourly Fees, Verified Reviews, Response Time, and Escrow Protection.
+          Compare verified consultants on the basis of their Regulatory Licenses, Success Rates, Free Initial Consultations, Verified Reviews, Response Time, and Escrow Protection.
         </p>
       </div>
 
@@ -287,14 +287,14 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
                   ))}
                 </tr>
 
-                {/* Hourly Fee */}
+                {/* Initial Consultation */}
                 <tr className="border-b border-slate-200 hover:bg-slate-50/40 transition-colors">
                   <td className="p-4 sm:p-5 font-bold text-slate-800 bg-slate-50/70 border-r border-slate-200 text-left">
                     <div className="flex items-center gap-2.5">
                       <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 shrink-0">
                         <Sparkles className="w-4 h-4" />
                       </div>
-                      <span>Hourly Fee</span>
+                      <span>Initial Consultation</span>
                     </div>
                   </td>
                   {experts.map((exp, idx) => (

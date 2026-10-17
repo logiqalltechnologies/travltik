@@ -601,7 +601,7 @@ const CN=[
     rating: '4.9',
     reviews: '285',
     cases: '1,180',
-    rate: '₹4,000',
+    fee: 'Free',
     image: 'https://lh3.googleusercontent.com/a/ACg8ocJmQW2u-EWw3U7kmjdmoO1wThNVBE0ybnuDQ_Gw-UtEFOVjqw=s96-c',
     initials: 'TP',
     gradient: 'linear-gradient(135deg, #0f172a, #008f5a)'
@@ -614,7 +614,7 @@ const CN=[
     rating: '4.8',
     reviews: '215',
     cases: '860',
-    rate: '₹3,200',
+    fee: 'Free',
     image: '',
     initials: 'CN',
     gradient: 'linear-gradient(135deg, #1e1b4b, #430f7a)'
@@ -627,7 +627,7 @@ const CN=[
     rating: '4.9',
     reviews: '194',
     cases: '740',
-    rate: '₹4,500',
+    fee: 'Free',
     image: '',
     initials: 'RS',
     gradient: 'linear-gradient(135deg, #064e3b, #00b070)'
@@ -640,14 +640,14 @@ const CN=[
     rating: '4.9',
     reviews: '168',
     cases: '620',
-    rate: '₹3,500',
+    fee: 'Free',
     image: '',
     initials: 'EV',
     gradient: 'linear-gradient(135deg, #430f7a, #6b34b3)'
   }
 ];
 const rAv=(c)=>c.image&&c.image.startsWith('http')?`<img src="${c.image}" alt="${c.name}" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6)">`:`<div style="width:92px;height:92px;border-radius:50%;background:${c.gradient};color:#fff;display:grid;place-items:center;font-size:30px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6);letter-spacing:-0.03em">${c.initials}</div>`;
-$('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c.name)}'"><div style="position:relative;width:92px;height:92px;margin-bottom:14px">${rAv(c)}<span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c.name}</h4><div class="rl">${c.role}</div><span class="bdg lic">${ic('shield')}${c.badge}</span><div class="rt" style="margin-top:14px">${stars(5)}${c.rating} <small>(${c.reviews} reviews)</small></div><div class="lg">${c.languages.map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c.cases}</b><small>Cases done</small></div><div><b>${c.rate}</b><small>Per hour</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c.name)}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
+$('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c.name)}'"><div style="position:relative;width:92px;height:92px;margin-bottom:14px">${rAv(c)}<span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c.name}</h4><div class="rl">${c.role}</div><span class="bdg lic">${ic('shield')}${c.badge}</span><div class="rt" style="margin-top:14px">${stars(5)}${c.rating} <small>(${c.reviews} reviews)</small></div><div class="lg">${c.languages.map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c.cases}</b><small>Cases done</small></div><div><b style="color:var(--g2)">Free</b><small>Consultation</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c.name)}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
 /* classifieds & offers */
 const CL=[
   {title:'Escorted Tour By Partners',sub:'Europamundo | Cosmos | Globus | Trafalgar & More..',extra:'',btnText:'View More',btnType:'pill',theme:'light',bgImg:'/images/offers/escorted_tour.jpg',overlay:'linear-gradient(180deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Tours',href:'/tours'},

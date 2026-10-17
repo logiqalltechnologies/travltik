@@ -228,8 +228,8 @@ export function ExpertProfileDetail({
       a: 'No ethical or registered consultant can guarantee a visa outcome, as final decisions rest strictly with government consular officers. We maximize your approval probability through flawless documentation.'
     },
     {
-      q: 'Are consultation fees refundable?',
-      a: 'Introductory consultation fees cover one-on-one attorney time and file audit. If you subsequently retain our end-to-end filing services, the consultation fee is credited toward your total package.'
+      q: 'Is the initial consultation free?',
+      a: 'Yes, your initial case assessment and preliminary file evaluation with our advisors is completely free. When you proceed with comprehensive filing and legal representation, payments are handled strictly through TravlTik milestone escrow.'
     },
     {
       q: 'Can you assist if I have a previous visa refusal?',
@@ -823,7 +823,7 @@ export function ExpertProfileDetail({
             <div id="section-faqs" className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-4">
               <div>
                 <h2 className="text-lg font-black text-slate-900 tracking-tight">Frequently Asked Questions</h2>
-                <p className="text-xs text-slate-500 mt-0.5">Quick answers regarding consultation bookings, fees, and processing times.</p>
+                <p className="text-xs text-slate-500 mt-0.5">Quick answers regarding consultations, escrow milestones, and processing times.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">

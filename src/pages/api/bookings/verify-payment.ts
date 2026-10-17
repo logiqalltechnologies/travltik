@@ -45,7 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 2. Server-side signature validation
     const secret = import.meta?.env?.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_KEY_SECRET || '';
-    if (secret && signature) {
+    if (secret && signature && parseFloat(order.amount || 0) > 0) {
       const generatedSignature = crypto
         .createHmac('sha256', secret)
         .update(`${orderId}|${paymentId}`)
