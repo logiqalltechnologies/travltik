@@ -651,14 +651,14 @@ $('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:point
 /* classifieds & offers */
 const CL=[
   {title:'Escorted Tour By Partners',sub:'Europamundo | Cosmos | Globus | Trafalgar & More..',extra:'',btnText:'View More',btnType:'pill',theme:'light',bgImg:'/images/offers/escorted_tour.jpg',overlay:'linear-gradient(180deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Tours',href:'/tours'},
-  {title:'Build Your Own Itinerary!',sub:'Customize your flights,hotels & sightseeing in just 10 minutes',extra:'',btnText:'',btnType:'circle',theme:'light',bgImg:'/images/offers/build_itinerary.jpg',overlay:'linear-gradient(180deg,rgba(255,255,255,0.94) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Itinerary',href:'/trip-planner'},
+  {title:'Skilled Work Permits & Jobs',sub:'Germany Opportunity Card • UK Skilled Worker • Gulf Jobs',extra:'',btnText:'Explore Jobs',btnType:'pill',theme:'light',bgImg:'/images/offers/skilled_jobs.jpg',overlay:'linear-gradient(180deg,rgba(255,255,255,0.95) 0%,rgba(255,255,255,0.6) 45%,rgba(255,255,255,0) 75%)',cat:'Jobs',href:'/jobs'},
   {title:'Buy Forex & Earn Travel Rewards',sub:'Up to ₹ 3000.00 worth of Loyalty Points',extra:'',btnText:'',btnType:'circle',theme:'light',bgImg:'/images/offers/buy_forex_rewards.jpg',overlay:'linear-gradient(180deg,rgba(255,255,255,0.94) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Forex',href:'/forex'},
   {title:'Looking for Flights?',sub:'Find Your Best Fare Here!',extra:'Fly More, Pay Less – Book Your Flight Now ✈',btnText:'View More',btnType:'pill',theme:'dark',bgImg:'/images/offers/looking_flights.jpg',overlay:'linear-gradient(180deg,rgba(8,27,61,0.92) 0%,rgba(8,27,61,0.5) 50%,rgba(8,27,61,0) 80%)',cat:'Flights',href:'/flights'},
   {title:'Order Forex Online',sub:'Delivered Home with Zero Convenience Fee',extra:'',btnText:'Buy Now',btnType:'pill',theme:'dark',bgImg:'/images/offers/order_forex_online.jpg',overlay:'linear-gradient(180deg,rgba(20,24,33,0.88) 0%,rgba(20,24,33,0.45) 45%,rgba(20,24,33,0) 75%)',cat:'Forex',href:'/forex'},
   {title:'Dubai',sub:'Feel the Wonder, Live the Luxury.',extra:'Starting at ₹ 34 500.00',btnText:'View More',btnType:'pill',theme:'dark',bgImg:'/images/offers/dubai_special.jpg',overlay:'linear-gradient(180deg,rgba(10,22,50,0.9) 0%,rgba(10,22,50,0.5) 50%,rgba(10,22,50,0) 80%)',cat:'Tours',href:'/tours?destination=Dubai'}
 ];
 let cat='All';
-const cats=['All','Tours','Flights','Forex','Itinerary'];
+const cats=['All','Tours','Jobs','Flights','Forex'];
 const drawC=()=>{
   $('#cf').innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-c="${c}">${c}<small>${c=='All'?CL.length:CL.filter(x=>x.cat==c).length}</small></button>`).join('');
   $('#clg').innerHTML=CL.filter(x=>cat=='All'||x.cat==cat).map((x,i)=>`
