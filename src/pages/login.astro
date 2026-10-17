@@ -1,20 +1,51 @@
 ---
 // src/pages/login.astro
 import Layout from '../layouts/Layout.astro';
-import LandingPage from '../components/landing/LandingPage';
 import { LoginPortal } from '../components/interactive/LoginPortal';
 ---
 
 <Layout 
-  title="Sign In to TravlTik" 
+  title="Sign In to TravlTik — Access Your Account" 
   description="Sign in to your TravlTik visa consultation account. Complete your application filing, check upcoming session schedules, and upload passport document scans."
   hideHeader={true}
   hideFooter={true}
   hideWidgets={true}
 >
-  <!-- Live Background Homepage (Blurred & Semi-Transparent) -->
-  <div class="pointer-events-none filter blur-[3px] opacity-75 fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-    <LandingPage client:only="react" />
+  <!-- Executive Landing Page Background Canvas -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none select-none bg-[#fdfcff]" aria-hidden="true">
+    <!-- Ambient Gradients -->
+    <div class="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-[#eee3fc]/80 blur-[90px]"></div>
+    <div class="absolute top-1/4 -left-40 w-[550px] h-[550px] rounded-full bg-[#e2f7ee]/80 blur-[85px]"></div>
+    <div class="absolute -bottom-24 right-1/4 w-[500px] h-[500px] rounded-full bg-[#dccaf7]/50 blur-[90px]"></div>
+
+    <!-- Decorative Landing Preview Silhouettes -->
+    <div class="max-w-6xl mx-auto px-6 pt-12 opacity-35">
+      <div class="flex items-center justify-between mb-16">
+        <div class="flex items-center gap-3">
+          <img src="/logo.png" alt="TravlTik" class="h-9 w-auto" />
+        </div>
+        <div class="flex items-center gap-4 text-xs font-semibold text-slate-500">
+          <span class="px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80">● 218 Experts Online</span>
+          <span class="px-3.5 py-1.5 rounded-full bg-purple-50 text-purple-900 border border-purple-200/80">100% Escrow Protected</span>
+        </div>
+      </div>
+
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <h1 class="text-4xl sm:text-6xl font-black text-slate-900 font-sora tracking-tight leading-tight">
+          Move abroad. <span class="bg-gradient-to-r from-emerald-600 via-teal-600 to-purple-700 bg-clip-text text-transparent">Pay safely.</span>
+        </h1>
+        <p class="text-base text-slate-500 mt-4 max-w-xl mx-auto">
+          The global marketplace for visas, jobs, study and relocation, with licensed experts and escrow-protected payments.
+        </p>
+      </div>
+
+      <!-- Preview Cards Mockup Grid -->
+      <div class="grid grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div class="p-6 rounded-3xl bg-white/70 border border-slate-200/70 shadow-sm h-36"></div>
+        <div class="p-6 rounded-3xl bg-white/70 border border-slate-200/70 shadow-sm h-36"></div>
+        <div class="p-6 rounded-3xl bg-white/70 border border-slate-200/70 shadow-sm h-36"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Fixed Modal Card Overlay -->

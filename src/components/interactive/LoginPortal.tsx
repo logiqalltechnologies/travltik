@@ -200,25 +200,38 @@ function LoginPortalContent() {
     };
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-md overflow-y-auto font-sans">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/50 backdrop-blur-md overflow-y-auto font-sans">
             <div className="min-h-full flex flex-col items-center justify-center p-3 sm:p-6 py-4 sm:py-8">
             
-                {/* Top Back Button */}
-                <div className="w-full max-w-md flex items-center justify-between mb-2.5 px-1 shrink-0 gap-2">
-                    <a href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors bg-white/15 hover:bg-white/25 px-3.5 py-1.5 rounded-full border border-white/25 backdrop-blur-md shadow-sm shrink-0">
-                        <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
+                {/* Top Back & Logo Header */}
+                <div className="w-full max-w-md flex items-center justify-between mb-3 px-1 shrink-0 gap-2">
+                    <a 
+                        href="/" 
+                        className="inline-flex items-center gap-2 text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 transition-all px-4 py-2 rounded-full border border-slate-200 shadow-sm shrink-0 hover:-translate-x-0.5"
+                    >
+                        <ArrowLeft className="w-4 h-4 text-emerald-600" /> 
+                        <span><span className="hidden sm:inline">Back to </span>Home</span>
                     </a>
-                    <a href="/" className="shrink-0">
-                        <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-6 sm:h-7 w-auto object-contain" />
-                    </a>
+
+                    <div className="flex items-center gap-3 shrink-0">
+                        <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-[#430f7a] text-xs font-bold border border-slate-200 shadow-xs">
+                            <span className="w-2 h-2 rounded-full bg-[#00b070]"></span> Escrow Secured
+                        </span>
+                        <a href="/" className="shrink-0 flex items-center">
+                            <img src="/logo.png?v=8" alt="TravlTik" className="h-7 sm:h-8 w-auto object-contain" />
+                        </a>
+                    </div>
                 </div>
 
-                {/* Main Clean White Login Box */}
-                <div className="bg-white rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 max-w-md w-[95vw] sm:w-full shadow-2xl border border-slate-200/80 space-y-4 sm:space-y-4.5 text-slate-900 relative animate-fade-up overflow-hidden">
+                {/* Main Clean Solid White Login Box */}
+                <div 
+                    style={{ backgroundColor: '#ffffff' }}
+                    className="bg-white rounded-[32px] sm:rounded-[36px] p-6 sm:p-8 max-w-md w-[95vw] sm:w-full shadow-2xl border border-slate-200/90 space-y-4 sm:space-y-5 text-slate-900 relative animate-fade-up overflow-hidden ring-1 ring-slate-900/5"
+                >
                     
-                    {/* Google Connecting Overlay (Prevents screen appearing stuck) */}
+                    {/* Google Connecting Overlay */}
                     {googleLoading && (
-                        <div className="absolute inset-0 z-50 bg-white/95 backdrop-blur-md rounded-[28px] sm:rounded-[32px] flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-200 space-y-4">
+                        <div className="absolute inset-0 z-50 bg-white/98 backdrop-blur-md rounded-[32px] sm:rounded-[36px] flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-200 space-y-4">
                             <div className="relative flex items-center justify-center">
                                 <div className="w-16 h-16 rounded-full border-4 border-slate-100 border-t-blue-600 animate-spin" />
                                 <div className="absolute inset-0 flex items-center justify-center">
@@ -244,20 +257,20 @@ function LoginPortalContent() {
                         </div>
                     )}
 
-                    {/* Logo Centered */}
-                    <div className="flex justify-center pt-0.5">
-                        <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-8 sm:h-9 w-auto max-h-[40px] object-contain mx-auto" />
+                    {/* Logo Centered with Subtle Glow */}
+                    <div className="flex justify-center pt-1">
+                        <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-9 sm:h-10 w-auto max-h-[44px] object-contain mx-auto" />
                     </div>
 
                     {/* Title */}
-                    <div className="text-center space-y-1">
-                        <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight max-w-[280px] sm:max-w-xs mx-auto">
+                    <div className="text-center space-y-1.5">
+                        <h1 className="text-lg sm:text-xl font-extrabold text-slate-950 tracking-tight font-sora max-w-[300px] sm:max-w-xs mx-auto">
                             Sign in to get started with TravlTik
                         </h1>
                         {/* Step indicator dots */}
                         <div className="flex items-center justify-center gap-1.5 pt-0.5">
-                            <span className={`h-1.5 rounded-full transition-all duration-300 ${loginStep === 0 ? "w-8 bg-black" : "w-2 bg-slate-200"}`} />
-                            <span className={`h-1.5 rounded-full transition-all duration-300 ${loginStep === 1 ? "w-8 bg-black" : "w-2 bg-slate-200"}`} />
+                            <span className={`h-1.5 rounded-full transition-all duration-300 ${loginStep === 0 ? "w-8 bg-slate-950" : "w-2 bg-slate-200"}`} />
+                            <span className={`h-1.5 rounded-full transition-all duration-300 ${loginStep === 1 ? "w-8 bg-slate-950" : "w-2 bg-slate-200"}`} />
                         </div>
                     </div>
 
@@ -295,22 +308,23 @@ function LoginPortalContent() {
                                             if (error) setError("");
                                         }}
                                         placeholder="john@example.com"
-                                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                     />
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full bg-black hover:bg-slate-900 text-white font-bold py-3 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2"
+                                className="w-full bg-slate-950 hover:bg-slate-900 text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2 group"
                             >
-                                Continue <ArrowRight className="w-4 h-4" />
+                                <span>Continue</span>
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
 
                             <div className="text-center pt-0.5">
                                 <a
                                     href={`/forgot-password${email ? `?email=${encodeURIComponent(email)}` : ''}`}
-                                    className="text-xs font-semibold text-slate-500 hover:text-black hover:underline"
+                                    className="text-xs font-semibold text-slate-500 hover:text-emerald-700 hover:underline"
                                 >
                                     Forgot password?
                                 </a>
@@ -345,7 +359,7 @@ function LoginPortalContent() {
                                             if (error) setError("");
                                         }}
                                         placeholder="Enter your password"
-                                        className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                                        className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                                     />
                                     <button
                                         type="button"
@@ -368,9 +382,10 @@ function LoginPortalContent() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-black hover:bg-slate-900 text-white font-bold py-3 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2"
+                                className="w-full bg-slate-950 hover:bg-slate-900 text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] flex items-center justify-center gap-2 group"
                             >
-                                {loading ? "Signing in..." : "Sign in"} <ArrowRight className="w-4 h-4" />
+                                <span>{loading ? "Signing in..." : "Sign in"}</span>
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
 
                             <div className="text-center pt-0.5">
@@ -483,7 +498,7 @@ function LoginPortalContent() {
                         <div className="grid grid-cols-2 gap-2">
                             <a
                                 href={`/signup/traveller${referralCode ? `?ref=${encodeURIComponent(referralCode)}` : ''}`}
-                                className="bg-[#00a896] hover:bg-[#008f80] text-white font-bold py-2.5 px-2 rounded-xl text-xs transition-all shadow-xs flex items-center justify-center text-center cursor-pointer"
+                                className="bg-[#00A86B] hover:bg-[#00925c] text-white font-bold py-2.5 px-2 rounded-xl text-xs transition-all shadow-xs flex items-center justify-center text-center cursor-pointer"
                             >
                                 Register as Traveller
                             </a>
@@ -496,6 +511,21 @@ function LoginPortalContent() {
                         </div>
                     </div>
 
+                </div>
+
+                {/* Sub-Modal Trust Guarantees */}
+                <div className="mt-4 flex items-center justify-center gap-4 text-[11px] font-semibold text-white/90 flex-wrap drop-shadow-sm">
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 100% Milestone Escrow Protected
+                    </span>
+                    <span className="hidden sm:inline text-white/50">•</span>
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Verified RCIC &amp; MARA Consultants
+                    </span>
+                    <span className="hidden sm:inline text-white/50">•</span>
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> 256-Bit SSL Encrypted
+                    </span>
                 </div>
 
             </div>
