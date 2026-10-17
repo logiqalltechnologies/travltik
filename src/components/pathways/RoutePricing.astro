@@ -7,148 +7,362 @@ interface Props {
 const { country, purpose } = Astro.props;
 ---
 
-<div class="mt-8 p-6 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm">
-  <div class="mb-5">
-    <h3 class="text-lg font-bold text-slate-900">Choose Your Service Level</h3>
-    <p class="text-sm text-slate-500 mt-1">
-      Transparent pricing. No hidden fees. Escrow protected.
-    </p>
-  </div>
+<div class="mt-10 relative">
+  <!-- Ambient background glow effects -->
+  <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-full max-w-4xl h-72 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-    <!-- Tier 1: Starter ($5 - 3 queries) -->
-    <div class="p-5 rounded-2xl border border-slate-200 bg-white hover:shadow-lg transition-shadow flex flex-col justify-between">
-      <div>
-        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Starter Pathway</div>
-        <div class="flex items-baseline gap-1 mt-2">
-          <span class="text-3xl font-black text-slate-900">$5</span>
-          <span class="text-xs text-slate-500">/ 3 AI Visa Queries</span>
-        </div>
-        <p class="text-xs text-slate-500 mt-2">Full consular requirements, AI checklist &amp; pathway search</p>
-        <ul class="mt-4 space-y-2 text-xs text-slate-600">
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span><strong>3 Full AI Visa Queries</strong></span></li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Consular Document Checklist &amp; Pre-audit</span></li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Biometric Photo Resizer Tool</span></li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Instant Digital Activation</span></li>
-        </ul>
-
-        <!-- Govt vs Platform Fee Transparency Breakdown (Step 38) -->
-        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
-          <div class="flex justify-between items-center">
-            <span>Govt Embassy Fee:</span>
-            <span class="font-semibold text-slate-700">Paid direct to Govt</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span>TravlTik Service Fee:</span>
-            <span class="font-semibold text-slate-900">$5 (Included)</span>
-          </div>
-        </div>
-      </div>
-      <a href={`/checkout?tier=starter&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
-         class="block w-full mt-5 py-2.5 text-center border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
-        Select Starter — $5
-      </a>
-    </div>
-
-    <!-- Tier 2: Professional ($10 - 10 queries) -->
-    <div class="p-5 rounded-2xl border-2 border-[#00a896] bg-teal-50/30 relative hover:shadow-xl transition-shadow flex flex-col justify-between">
-      <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#00a896] text-white text-[10px] font-bold rounded-full uppercase tracking-wider shadow-sm">
-        Most Popular
+  <!-- Header Section -->
+  <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-xs font-semibold mb-3.5 shadow-xs">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
       </span>
-      <div>
-        <div class="text-xs font-bold uppercase tracking-wider text-[#00a896]">Professional Pack</div>
-        <div class="flex items-baseline gap-1 mt-2">
-          <span class="text-3xl font-black text-slate-900">$10</span>
-          <span class="text-xs text-slate-500">/ 10 AI Visa Queries</span>
-        </div>
-        <p class="text-xs text-slate-600 mt-2">Complete dossier preparation + SOP &amp; Cover Letter builder</p>
-        <ul class="mt-4 space-y-2 text-xs text-slate-700">
-          <li class="flex items-start gap-2"><span class="text-[#00a896] font-bold">✓</span><span><strong>10 AI Visa Queries</strong></span></li>
-          <li class="flex items-start gap-2"><span class="text-[#00a896] font-bold">✓</span><span>SOP &amp; Cover Letter Generator</span></li>
-          <li class="flex items-start gap-2"><span class="text-[#00a896] font-bold">✓</span><span>Detailed Refusal Risk Audit Report</span></li>
-          <li class="flex items-start gap-2"><span class="text-[#00a896] font-bold">✓</span><span>100% Escrow Milestone Protection</span></li>
-        </ul>
-
-        <!-- Govt vs Platform Fee Transparency Breakdown (Step 38) -->
-        <div class="mt-4 pt-3 border-t border-teal-200/60 text-[11px] text-slate-600 space-y-1">
-          <div class="flex justify-between items-center">
-            <span>Govt Embassy Fee:</span>
-            <span class="font-semibold text-slate-700">Paid direct to Govt</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span>TravlTik Service Fee:</span>
-            <span class="font-semibold text-teal-900">$10 (Included)</span>
-          </div>
-        </div>
-      </div>
-      <a href={`/checkout?tier=professional&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
-         class="block w-full mt-5 py-2.5 text-center bg-[#00a896] hover:bg-[#028090] text-white rounded-lg text-sm font-semibold transition-colors shadow-sm">
-        Select Pro — $10
-      </a>
+      <span>TRANSPARENT PRICING · NO HIDDEN FEES · ESCROW PROTECTED</span>
     </div>
 
-    <!-- Tier 3: Concierge / Premium ($15 - 25 queries) -->
-    <div class="p-5 rounded-2xl border border-slate-200 bg-white hover:shadow-lg transition-shadow flex flex-col justify-between">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-950 font-sora leading-tight">
+      Choose Your <span class="bg-gradient-to-r from-emerald-600 via-teal-600 to-purple-700 bg-clip-text text-transparent">Service Level</span>
+    </h2>
+
+    <p class="text-sm sm:text-base text-slate-600 mt-2.5 max-w-xl mx-auto">
+      Consular-grade AI dossier checks, verified requirements, and tailored visa roadmaps with complete milestone protection.
+    </p>
+
+    {country && (
+      <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/60">
+        <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Destination: <strong class="text-slate-900">{country}</strong> {purpose ? `· ${purpose}` : ''}</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Pricing Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch max-w-6xl mx-auto">
+
+    <!-- Tier 1: Starter Pathway ($5 - 3 queries) -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 sm:p-7 relative group hover:-translate-y-1">
       <div>
-        <div class="text-xs font-bold uppercase tracking-wider text-amber-700">Concierge Pack</div>
-        <div class="flex items-baseline gap-1 mt-2">
-          <span class="text-3xl font-black text-slate-900">$15</span>
-          <span class="text-xs text-slate-500">/ 25 AI Visa Queries</span>
+        <div class="flex items-center justify-between mb-3">
+          <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-[11px] font-bold rounded-lg uppercase tracking-wider">
+            Starter Pathway
+          </span>
+          <span class="text-[11px] font-medium text-slate-500">Self-Apply</span>
         </div>
-        <p class="text-xs text-slate-500 mt-2">Maximum queries &amp; priority consular dossier validation</p>
-        <ul class="mt-4 space-y-2 text-xs text-slate-600">
-          <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span><span><strong>25 AI Visa Queries</strong></span></li>
-          <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span><span>Everything in Professional Pack</span></li>
-          <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span><span>Consular Form Auto-Fill Guide</span></li>
-          <li class="flex items-start gap-2"><span class="text-amber-600 font-bold">✓</span><span>VFS Appointment Readiness Checklist</span></li>
+
+        <div class="flex items-baseline gap-1.5 mt-2 mb-1">
+          <span class="text-4xl sm:text-5xl font-black text-slate-950 font-sora tracking-tight">$5</span>
+          <span class="text-xs text-slate-500 font-medium">/ 3 AI Visa Queries</span>
+        </div>
+
+        <p class="text-xs sm:text-sm text-slate-600 mt-2 mb-5 leading-relaxed">
+          Full consular requirements, AI checklist &amp; pathway search for self-submission.
+        </p>
+
+        <div class="h-px bg-slate-100 my-4"></div>
+
+        <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span class="font-semibold text-slate-900">3 Full AI Visa Queries</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span>Consular Document Checklist &amp; Pre-audit</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span>Biometric Photo Resizer Tool</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span>Instant Digital Activation</span>
+          </li>
         </ul>
 
-        <!-- Govt vs Platform Fee Transparency Breakdown (Step 38) -->
-        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
+        <!-- Govt vs Platform Fee Transparency Box -->
+        <div class="mt-6 p-3 rounded-xl bg-slate-50 border border-slate-200/70 text-[11px] text-slate-600 space-y-1.5">
           <div class="flex justify-between items-center">
             <span>Govt Embassy Fee:</span>
-            <span class="font-semibold text-slate-700">Paid direct to Govt</span>
+            <span class="font-semibold text-slate-800">Paid direct to Govt</span>
           </div>
           <div class="flex justify-between items-center">
             <span>TravlTik Service Fee:</span>
-            <span class="font-semibold text-slate-900">$15 (Included)</span>
+            <span class="font-bold text-slate-950">$5 (Included)</span>
           </div>
         </div>
       </div>
-      <a href={`/checkout?tier=concierge&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
-         class="block w-full mt-5 py-2.5 text-center border border-slate-300 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
-        Select Concierge — $15
-      </a>
+
+      <div class="mt-6 pt-2">
+        <a href={`/checkout?tier=starter&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
+           class="w-full inline-flex items-center justify-center gap-2 py-3 px-5 text-center border border-slate-300 rounded-xl text-sm font-bold text-slate-800 bg-white hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-200 shadow-xs hover:shadow-md">
+          <span>Select Starter — $5</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Tier 2: Professional Pack ($10 - Most Popular Centerpiece) -->
+    <div class="bg-gradient-to-b from-white via-white to-emerald-50/20 rounded-3xl border-2 border-emerald-500 shadow-xl shadow-emerald-950/10 ring-4 ring-emerald-500/15 flex flex-col justify-between p-6 sm:p-7 relative group md:-translate-y-2 hover:-translate-y-3 transition-all duration-300">
+      <!-- Most Popular Ribbon Badge -->
+      <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
+        <span class="inline-flex items-center gap-1.5 px-4 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-[11px] font-extrabold rounded-full uppercase tracking-wider shadow-md">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          MOST POPULAR · RECOMMENDED
+        </span>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-3 mt-1">
+          <span class="inline-block px-3 py-1 bg-emerald-100/80 text-emerald-900 text-[11px] font-extrabold rounded-lg uppercase tracking-wider">
+            Professional Pack
+          </span>
+          <span class="text-[11px] font-semibold text-emerald-700">Best Value</span>
+        </div>
+
+        <div class="flex items-baseline gap-1.5 mt-2 mb-1">
+          <span class="text-4xl sm:text-5xl font-black text-slate-950 font-sora tracking-tight">$10</span>
+          <span class="text-xs text-slate-600 font-semibold">/ 10 AI Visa Queries</span>
+        </div>
+
+        <p class="text-xs sm:text-sm text-slate-600 mt-2 mb-5 leading-relaxed">
+          Complete dossier preparation + SOP &amp; Cover Letter builder with risk evaluation.
+        </p>
+
+        <div class="h-px bg-emerald-100 my-4"></div>
+
+        <ul class="space-y-3 text-xs sm:text-sm text-slate-800">
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center mt-0.5 shadow-xs">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span class="font-bold text-slate-950">10 AI Visa Queries (Deep Audit)</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center mt-0.5 shadow-xs">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span class="font-semibold text-slate-900">SOP &amp; Cover Letter Generator</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center mt-0.5 shadow-xs">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span class="font-semibold text-slate-900">Detailed Refusal Risk Audit Report</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center mt-0.5 shadow-xs">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span class="font-semibold text-slate-900">100% Escrow Milestone Protection</span>
+          </li>
+        </ul>
+
+        <!-- Govt vs Platform Fee Transparency Box -->
+        <div class="mt-6 p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-[11px] text-slate-700 space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span>Govt Embassy Fee:</span>
+            <span class="font-semibold text-slate-800">Paid direct to Govt</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>TravlTik Service Fee:</span>
+            <span class="font-bold text-emerald-950">$10 (Included)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-2">
+        <a href={`/checkout?tier=professional&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
+           class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-5 text-center bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-sm font-bold transition-all duration-200 shadow-lg shadow-emerald-600/30 group">
+          <span>Select Pro — $10</span>
+          <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Tier 3: Concierge Pack ($15 - 25 queries) -->
+    <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6 sm:p-7 relative group hover:-translate-y-1">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="inline-block px-3 py-1 bg-amber-50 text-amber-900 border border-amber-200/60 text-[11px] font-bold rounded-lg uppercase tracking-wider">
+            Concierge Pack
+          </span>
+          <span class="text-[11px] font-medium text-amber-700">VIP Priority</span>
+        </div>
+
+        <div class="flex items-baseline gap-1.5 mt-2 mb-1">
+          <span class="text-4xl sm:text-5xl font-black text-slate-950 font-sora tracking-tight">$15</span>
+          <span class="text-xs text-slate-500 font-medium">/ 25 AI Visa Queries</span>
+        </div>
+
+        <p class="text-xs sm:text-sm text-slate-600 mt-2 mb-5 leading-relaxed">
+          Maximum queries &amp; priority consular dossier validation for complex applications.
+        </p>
+
+        <div class="h-px bg-slate-100 my-4"></div>
+
+        <ul class="space-y-3 text-xs sm:text-sm text-slate-700">
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span class="font-bold text-slate-950">25 AI Visa Queries</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span>Everything in Professional Pack</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span>Consular Form Auto-Fill Guide</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mt-0.5">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span>VFS Appointment Readiness Checklist</span>
+          </li>
+        </ul>
+
+        <!-- Govt vs Platform Fee Transparency Box -->
+        <div class="mt-6 p-3 rounded-xl bg-slate-50 border border-slate-200/70 text-[11px] text-slate-600 space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span>Govt Embassy Fee:</span>
+            <span class="font-semibold text-slate-800">Paid direct to Govt</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span>TravlTik Service Fee:</span>
+            <span class="font-bold text-slate-950">$15 (Included)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-2">
+        <a href={`/checkout?tier=concierge&country=${encodeURIComponent(country || '')}&purpose=${encodeURIComponent(purpose || '')}`}
+           class="w-full inline-flex items-center justify-center gap-2 py-3 px-5 text-center border border-slate-300 rounded-xl text-sm font-bold text-slate-800 bg-white hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-200 shadow-xs hover:shadow-md">
+          <span>Select Concierge — $15</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
     </div>
 
   </div>
 
-  <!-- Transparent Fee Summary Card (Step 38) -->
-  <div class="mt-6 p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs text-xs">
-    <div class="font-bold text-slate-900 mb-2 flex items-center gap-1.5">
-      <span class="text-emerald-600 font-black">ℹ️</span>
-      <span>Fee Transparency Breakdown</span>
+  <!-- Transparent Fee Summary Banner -->
+  <div class="mt-10 p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-sm max-w-6xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-sm">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-950 text-sm sm:text-base">Fee Transparency Breakdown</h3>
+          <p class="text-xs text-slate-500">Every single penny is accounted for with zero hidden charges.</p>
+        </div>
+      </div>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200/60 self-start sm:self-auto">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+        100% Verified Escrow
+      </span>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-100">
-      <div>
-        <span class="text-slate-500 block text-[11px]">Government Embassy Fee:</span>
-        <span class="font-bold text-slate-800 text-xs">Direct to Embassy / VFS</span>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+      <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+        <span class="text-slate-500 block text-xs font-medium mb-1">Government Embassy Fee:</span>
+        <span class="font-extrabold text-slate-900 text-sm block">Direct to Embassy / VFS</span>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">Zero platform markup or cut</span>
       </div>
-      <div>
-        <span class="text-slate-500 block text-[11px]">TravlTik Platform Fee:</span>
-        <span class="font-bold text-[#00a896] text-xs">$5 / $10 / $15 (Milestone Escrow)</span>
+
+      <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/60">
+        <span class="text-emerald-800 block text-xs font-medium mb-1">TravlTik Platform Fee:</span>
+        <span class="font-extrabold text-emerald-950 text-sm block">$5 / $10 / $15</span>
+        <span class="text-[11px] text-emerald-700 mt-0.5 block">Protected in Milestone Escrow</span>
       </div>
-      <div>
-        <span class="text-slate-500 block text-[11px]">Hidden Charges:</span>
-        <span class="font-black text-emerald-700 text-xs">$0.00 — Zero Markup</span>
+
+      <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+        <span class="text-slate-500 block text-xs font-medium mb-1">Hidden Convenience Markups:</span>
+        <span class="font-black text-emerald-600 text-sm block">$0.00 — Zero Markup</span>
+        <span class="text-[11px] text-slate-500 mt-0.5 block">Guaranteed no unexpected surprises</span>
       </div>
     </div>
   </div>
 
-  <div class="mt-5 flex items-center justify-center gap-4 text-xs text-slate-500 flex-wrap">
-    <span class="flex items-center gap-1"><span class="text-emerald-500">🔒</span>Escrow Protected</span>
-    <span class="flex items-center gap-1"><span class="text-emerald-500">↩️</span>7-Day Refund</span>
-    <span class="flex items-center gap-1"><span class="text-emerald-500">✓</span>No Hidden Fees</span>
+  <!-- Trust Badges Strip -->
+  <div class="mt-6 flex items-center justify-center gap-6 text-xs text-slate-500 flex-wrap max-w-4xl mx-auto">
+    <div class="flex items-center gap-1.5 font-medium">
+      <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+      <span>Escrow Milestone Protected</span>
+    </div>
+    <div class="flex items-center gap-1.5 font-medium">
+      <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      <span>7-Day Risk-Free Guarantee</span>
+    </div>
+    <div class="flex items-center gap-1.5 font-medium">
+      <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+      <span>256-Bit Bank-Grade SSL</span>
+    </div>
+    <div class="flex items-center gap-1.5 font-medium">
+      <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>Instant AI Dossier Activation</span>
+    </div>
   </div>
 </div>
