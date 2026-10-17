@@ -720,12 +720,45 @@ document.addEventListener('click', (e) => {
 // 1. Search submit logic
 $('#go').onclick = () => {
   const qVal = ($('#q') ? $('#q').value.trim() : '');
-  const destVal = ($('#dest-val') ? $('#dest-val').value : '');
+  const destVal = ($('#dest-val') ? $('#dest-val').value : 'Canada');
+  const fromVal = ($('#from-val') ? $('#from-val').value : 'India');
+
+  const destSlugMap = {
+    'Canada': 'canada',
+    'United Kingdom': 'uk',
+    'Australia': 'australia',
+    'UAE': 'uae',
+    'Germany': 'germany',
+    'Japan': 'japan'
+  };
+
+  if (cur === 'Visas') {
+    const countrySlug = destSlugMap[destVal] || (destVal ? destVal.toLowerCase().replace(/\s+/g, '-') : 'canada');
+    const purpose = qVal || 'Express Entry PR';
+    window.location.href = `/visa/${encodeURIComponent(countrySlug)}?passport=${encodeURIComponent(fromVal)}&from=${encodeURIComponent(fromVal)}&purpose=${encodeURIComponent(purpose)}`;
+    return;
+  }
+
+  if (cur === 'Jobs') {
+    window.location.href = '/jobs' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
+    return;
+  }
+
+  if (cur === 'Tours') {
+    window.location.href = '/tours' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
+    return;
+  }
+
+  if (cur === 'Stays') {
+    window.location.href = '/find-experts?category=Housing' + (destVal ? '&destination=' + encodeURIComponent(destVal) : '');
+    return;
+  }
+
+  // Default: Experts tab
   const params = [];
   if (qVal) params.push('search=' + encodeURIComponent(qVal));
   if (destVal) params.push('destination=' + encodeURIComponent(destVal));
-  if (cur) params.push('category=' + encodeURIComponent(cur.toLowerCase()));
-  window.location.href = '/find-experts?' + params.join('&');
+  window.location.href = '/find-experts' + (params.length ? '?' + params.join('&') : '');
 };
 const qInp = $('#q');
 if (qInp) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, AlertTriangle, Upload, ArrowRight, ShieldCheck, FileText, Sparkles, Check, Globe } from "lucide-react";
+import { CheckCircle, AlertTriangle, Upload, ArrowRight, ShieldCheck, FileText, Sparkles, Check, Globe, Lock, Clock } from "lucide-react";
 
 type VisaCountry = "canada" | "uk" | "uae" | "aus" | "sch";
 
@@ -93,7 +93,7 @@ export function VisaDocumentationPortal() {
       return;
     }
     setOrderDone(true);
-    showToast("✅ Order placed! Expert assigned.");
+    showToast("✅ Order placed! Verified specialist assigned.");
   };
 
   const currentChecklist = docList[activeTab];
@@ -102,110 +102,157 @@ export function VisaDocumentationPortal() {
   const progressPct = Math.round((readyCount / totalCount) * 100);
 
   return (
-    <div className="bg-white min-h-screen text-black font-sans pb-24">
-      {/* Toast */}
+    <div className="relative min-h-screen bg-[#FBFBFE] font-plus-jakarta text-slate-900 pb-24 overflow-hidden selection:bg-emerald-500/20 selection:text-emerald-800">
+      {/* Ambient background glows */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none -z-10">
+        <div className="absolute -top-32 -left-20 w-[500px] h-[500px] bg-gradient-to-br from-emerald-100/60 to-teal-50/20 rounded-full blur-3xl opacity-70"></div>
+        <div className="absolute top-10 right-0 w-[550px] h-[550px] bg-gradient-to-bl from-purple-100/70 via-indigo-50/30 to-transparent rounded-full blur-3xl opacity-75"></div>
+      </div>
+
+      {/* Toast Notification */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#0c1a2e] text-white px-6 py-3 rounded-full text-xs font-bold z-50 shadow-xl transition-all duration-300">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-950 text-white px-6 py-3 rounded-full text-xs font-bold z-50 shadow-2xl border border-slate-800 flex items-center gap-2">
           {toast}
         </div>
       )}
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-sky-50/50 via-sky-50/20 to-white pt-20 pb-20 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-100 rounded-full px-4 py-1.5 text-xs font-bold text-[#359FC2] mb-6">
-              <Sparkles className="w-3.5 h-3.5" /> 📂 Visa Documentation Filing
-            </div>
-            <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-[#0c1a2e] leading-[1.1] mb-5 tracking-tight">
-              We Prepare Your<br />
-              <span className="bg-gradient-to-r from-[#359FC2] to-[#1e82a3] bg-clip-text text-transparent">
-                Visa Documents.
-              </span>
-            </h1>
-            <p className="text-gray-500 text-base md:text-lg max-w-lg leading-relaxed mb-8 font-medium">
-              Submit the right documents, in the right format, with zero errors. Our experts and AI verify everything before your application goes in.
-            </p>
-            <button
-              onClick={scrollToOrder}
-              className="bg-black hover:bg-slate-900 text-white font-bold px-7 py-4 rounded-2xl text-sm shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2"
-            >
-              Start Documentation →
-            </button>
-          </div>
-          <div className="lg:col-span-5 hidden lg:block">
-            <div className="bg-white rounded-3xl border border-slate-250 p-7 shadow-2xl">
-              <div className="font-sans font-bold text-[#0c1a2e] mb-4 flex items-center gap-2">
-                <span>🛡️</span> Free Redo Protection
+      {/* HERO SECTION */}
+      <section className="pt-10 pb-16 md:pt-16 md:pb-20 border-b border-slate-200/60 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              {/* Live Pulse Pill */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-xs sm:text-sm font-semibold mb-6 shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>VERIFIED LEGAL AUDIT · 100% ESCROW PROTECTED</span>
               </div>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4">
-                If your visa is rejected due to any documentation error made by our experts, we will redo the entire filing service completely free of charge.
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-950 leading-[1.08] mb-5 font-sora">
+                We Prepare Your <br />
+                <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-purple-700 bg-clip-text text-transparent">
+                  Visa Documents Flawlessly.
+                </span>
+              </h1>
+
+              <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed mb-8 font-normal">
+                Submit accurate, consular-compliant documents with zero formatting errors. Our verified immigration paralegals audit and assemble your complete application dossier before submission.
               </p>
-              <div className="h-px bg-slate-100 my-4" />
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 font-bold">✓</div>
-                <div className="text-xs text-gray-500">Verified by TravlTik Audit Operations</div>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <button
+                  onClick={scrollToOrder}
+                  className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-8 py-4 rounded-2xl text-sm shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-all flex items-center gap-2.5"
+                >
+                  <span>Start Documentation Filing</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <a
+                  href="#checklist"
+                  className="px-6 py-4 rounded-2xl bg-white border border-slate-200/90 text-slate-700 font-bold text-sm hover:border-emerald-500 hover:text-emerald-700 transition-all shadow-xs"
+                >
+                  View Required Checklist ↓
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 hidden lg:block">
+              <div className="bg-white/95 backdrop-blur-xl rounded-3xl border border-slate-200/90 p-8 shadow-xl shadow-slate-200/50 relative">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xl mb-4 border border-emerald-100">
+                  🛡️
+                </div>
+                <h3 className="font-sora font-extrabold text-slate-900 text-lg mb-2">
+                  TravlTik Free Redo Guarantee
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-medium">
+                  If your visa receives a documentation query or refusal due to any oversight by our filing team, we redo the entire dossier completely free of charge.
+                </p>
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-700">
+                  <span className="flex items-center gap-2 text-emerald-700">
+                    <CheckCircle className="w-4 h-4" /> 100% Quality Inspected
+                  </span>
+                  <span className="text-slate-400">Escrow Held</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Bar */}
-      <div className="bg-white border-y border-slate-100 py-6">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-slate-100">
+      {/* STATS STRIP */}
+      <div className="bg-white/80 border-b border-slate-200/80 py-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-slate-100">
           {[
-            { value: "120+", label: "Countries" },
-            { value: "50+", label: "Visa Types" },
-            { value: "24 Hours", label: "Fast Delivery" },
-            { value: "99.4%", label: "Accuracy Rate" },
+            { value: "120+", label: "Destinations Supported" },
+            { value: "50+", label: "Visa Subclasses & Categories" },
+            { value: "24 Hours", label: "Average Dossier Turnaround" },
+            { value: "99.4%", label: "Consular First-Pass Rate" },
           ].map((stat, i) => (
             <div key={stat.label} className={i > 0 ? "pl-4" : ""}>
-              <div className="font-sans font-extrabold text-2xl md:text-3xl text-[#359FC2]">{stat.value}</div>
-              <div className="text-xs text-gray-400 font-semibold mt-0.5">{stat.label}</div>
+              <div className="font-sora font-extrabold text-2xl md:text-3xl bg-gradient-to-r from-emerald-600 to-teal-700 bg-clip-text text-transparent">
+                {stat.value}
+              </div>
+              <div className="text-xs text-slate-500 font-semibold mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 mt-16 space-y-16">
-        {/* Features Grid */}
+      {/* MAIN CONTENT */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-16 space-y-16">
+        {/* Service Features Grid */}
         <div>
-          <span className="text-[11px] font-extrabold text-[#359FC2] tracking-widest block mb-2">Our Service Features</span>
-          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">What is included in Documentation?</h2>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-bold mb-2">
+            <span>COMPREHENSIVE DOSSIER INCLUSIONS</span>
+          </div>
+          <h2 className="font-sora font-extrabold text-slate-950 text-2xl sm:text-3xl mb-8">
+            What is Included in Your Documentation Filing?
+          </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: "🔍", title: "AI Document Check", desc: "Upload your documents — our AI scans for errors, missing items, incorrect formats instantly." },
-              { icon: "📋", title: "Custom Checklist", desc: "Country-specific and visa-type-specific document list — no generic lists." },
-              { icon: "🧑‍💼", title: "Expert Review", desc: "A verified immigration expert reviews your complete package before submission." },
-              { icon: "📄", title: "Cover Letter Writing", desc: "Professional cover letter tailored to your visa type and destination." },
-              { icon: "✍️", title: "SOP / Personal Statement", desc: "Statement of Purpose written and refined by expert writers." },
-              { icon: "📦", title: "Submission Package", desc: "All documents organised in correct order, ready for submission." },
+              { icon: "🔍", title: "Automated AI File Audit", desc: "We scan scans and statements for resolution, missing stamps, and expired credential dates." },
+              { icon: "📋", title: "Consular Custom Checklist", desc: "Country-specific and subclass-specific inventories — tailored to your individual profile." },
+              { icon: "🧑‍⚖️", title: "Human Legal Review", desc: "A verified immigration specialist inspects the dossier before submission to consulate." },
+              { icon: "📄", title: "Tailored Cover Letter", desc: "Legally sound cover letter highlighting ties to home country and genuine temporary intent." },
+              { icon: "✍️", title: "SOP & Financial Clarification", desc: "Personal statements refined by professional immigration writers to address refusal risks." },
+              { icon: "📦", title: "Submission-Ready Package", desc: "Fully indexed, numbered, and bookmarked PDF ready for VFS or consular upload." },
             ].map((f) => (
-              <div key={f.title} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-3xl mb-4">{f.icon}</div>
-                <div className="font-sans font-bold text-sm text-[#0c1a2e] mb-2">{f.title}</div>
-                <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
+              <div key={f.title} className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-emerald-500/50 hover:-translate-y-1 transition-all">
+                <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl mb-4">
+                  {f.icon}
+                </div>
+                <div className="font-sora font-bold text-base text-slate-900 mb-2">{f.title}</div>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">{f.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Interactive Document Checklist */}
-        <div>
-          <span className="text-[11px] font-extrabold text-red-500 tracking-widest block mb-2">Interactive Tool</span>
-          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-2">What Documents Do You Need?</h2>
-          <p className="text-sm text-gray-500 mb-6">Select your destination and visa type to preview the required documentation. Click items to toggle status.</p>
+        {/* Interactive Document Checklist Tool */}
+        <div id="checklist">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold mb-2">
+            <span>INTERACTIVE PRE-FLIGHT CHECKLIST</span>
+          </div>
+          <h2 className="font-sora font-extrabold text-slate-950 text-2xl sm:text-3xl mb-2">
+            What Documents Do You Need?
+          </h2>
+          <p className="text-sm text-slate-600 mb-6">
+            Select your target country to explore official consular document requirements. Click any item to check off your ready files.
+          </p>
 
+          {/* Country Tabs */}
           <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">
             {(Object.keys(checklists) as VisaCountry[]).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap transition-all ${
+                className={`px-5 py-2.5 rounded-full text-xs font-bold border whitespace-nowrap transition-all cursor-pointer ${
                   activeTab === tab
-                    ? "bg-black text-white border-transparent"
-                    : "bg-white text-gray-500 border-slate-200 hover:border-[#359FC2]"
+                    ? "bg-slate-950 text-white border-slate-950 shadow-sm"
+                    : "bg-white text-slate-600 border-slate-200 hover:border-emerald-500 hover:text-emerald-700"
                 }`}
               >
                 {checklists[tab].title}
@@ -219,26 +266,26 @@ export function VisaDocumentationPortal() {
                 <div
                   key={doc.name}
                   onClick={() => toggleDocStatus(activeTab, idx)}
-                  className={`flex items-center gap-4 p-4 border rounded-2xl cursor-pointer hover:shadow-sm transition-all ${
+                  className={`flex items-center gap-4 p-4 sm:p-5 border rounded-2xl cursor-pointer hover:shadow-md transition-all ${
                     doc.status === "ready"
-                      ? "border-emerald-150 bg-emerald-50/20"
-                      : "border-slate-200 bg-slate-50/20"
+                      ? "border-emerald-300 bg-emerald-50/40"
+                      : "border-slate-200 bg-white"
                   }`}
                 >
-                  <div className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center text-lg shrink-0">
+                  <div className="w-11 h-11 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-xl shrink-0">
                     {doc.icon}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-bold text-sm text-[#0c1a2e]">{doc.name}</div>
-                    <div className="text-xs text-gray-400 truncate">{doc.desc}</div>
+                    <div className="font-bold text-sm sm:text-base text-slate-900 font-sora">{doc.name}</div>
+                    <div className="text-xs text-slate-500 truncate mt-0.5">{doc.desc}</div>
                   </div>
                   <div className="shrink-0 text-xs font-bold">
                     {doc.status === "ready" ? (
-                      <span className="text-emerald-600 flex items-center gap-1">
+                      <span className="text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full flex items-center gap-1">
                         <Check className="w-3.5 h-3.5" /> Ready
                       </span>
                     ) : (
-                      <span className="text-amber-600 flex items-center gap-1">
+                      <span className="text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full flex items-center gap-1">
                         <AlertTriangle className="w-3.5 h-3.5" /> Missing
                       </span>
                     )}
@@ -247,68 +294,81 @@ export function VisaDocumentationPortal() {
               ))}
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6">
-              <h3 className="font-sans font-bold text-sm text-[#0c1a2e] mb-3">Checklist Progress</h3>
-              <div className="flex justify-between text-xs text-gray-400 font-bold mb-2">
+            {/* Progress Card */}
+            <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-sm">
+              <h3 className="font-sora font-bold text-base text-slate-900 mb-3">Checklist Progress</h3>
+              <div className="flex justify-between text-xs text-slate-500 font-bold mb-2">
                 <span>Documents Ready</span>
-                <span>{readyCount} of {totalCount}</span>
+                <span className="text-slate-900">{readyCount} of {totalCount}</span>
               </div>
-              <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden mb-4">
+              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden mb-4">
                 <div
-                  className="bg-[#359FC2] h-2 rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2.5 rounded-full transition-all duration-500"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Need help preparing the missing documents? Order our documentation filing service below to get them done by an expert.
+              <p className="text-xs text-slate-500 leading-relaxed mb-6 font-medium">
+                Missing required consular proofs? Order our verified preparation package below to have an immigration paralegal assemble every document.
               </p>
+              <button
+                onClick={scrollToOrder}
+                className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm"
+              >
+                Assemble Missing Files →
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Order Section */}
+        {/* Order Form Section */}
         <div id="doc-order" className="pt-8">
-          <span className="text-[11px] font-extrabold text-[#359FC2] tracking-widest block mb-2">Order Service</span>
-          <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl sm:text-3xl mb-8">Start Your Documentation Service</h2>
-          
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-bold mb-2">
+            <span>ESCROW-PROTECTED SUBMISSION</span>
+          </div>
+          <h2 className="font-sora font-extrabold text-slate-950 text-2xl sm:text-3xl mb-8">
+            Start Your Documentation Filing Service
+          </h2>
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-7">
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-xl">
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50">
                 {orderDone ? (
-                  <div className="text-center py-6">
-                    <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-8 h-8 text-emerald-600" />
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+                      <CheckCircle className="w-8 h-8" />
                     </div>
-                    <h3 className="font-sans font-bold text-lg text-black mb-2">Order Received!</h3>
-                    <p className="text-sm text-gray-500 mb-6">A document filing expert is analyzing your details and will connect via WhatsApp within 2 hours.</p>
+                    <h3 className="font-sora font-extrabold text-xl text-slate-950 mb-2">Order Confirmed!</h3>
+                    <p className="text-sm text-slate-600 mb-6 max-w-sm mx-auto">
+                      A documentation specialist is reviewing your file and will contact you via WhatsApp / email within 2 hours.
+                    </p>
                     <button
                       onClick={() => setOrderDone(false)}
-                      className="bg-black hover:bg-slate-900 text-white font-bold px-6 py-2.5 rounded-xl text-xs"
+                      className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition"
                     >
-                      New Request
+                      Start Another Application
                     </button>
                   </div>
                 ) : (
                   <form onSubmit={handleOrder} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Full Name</label>
+                        <label className="text-xs font-bold text-slate-700 block mb-1.5 uppercase tracking-wider">Full Name *</label>
                         <input
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
-                          placeholder="Your Full Name"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition"
+                          placeholder="Your Full Legal Name"
                           required
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Email</label>
+                        <label className="text-xs font-bold text-slate-700 block mb-1.5 uppercase tracking-wider">Email Address *</label>
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
-                          placeholder="yourname@example.com"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition"
+                          placeholder="you@domain.com"
                           required
                         />
                       </div>
@@ -316,21 +376,21 @@ export function VisaDocumentationPortal() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div>
-                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">WhatsApp Number</label>
+                        <label className="text-xs font-bold text-slate-700 block mb-1.5 uppercase tracking-wider">WhatsApp Phone *</label>
                         <input
                           value={whatsapp}
                           onChange={(e) => setWhatsapp(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2]"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition"
                           placeholder="+91 98765 43210"
                           required
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Destination</label>
+                        <label className="text-xs font-bold text-slate-700 block mb-1.5 uppercase tracking-wider">Destination</label>
                         <select
                           value={dest}
                           onChange={(e) => setDest(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2] cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394B0C4%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_16px_center]"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition cursor-pointer"
                         >
                           <option>Canada</option>
                           <option>United Kingdom</option>
@@ -341,11 +401,11 @@ export function VisaDocumentationPortal() {
                         </select>
                       </div>
                       <div>
-                        <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-1.5">Visa Type</label>
+                        <label className="text-xs font-bold text-slate-700 block mb-1.5 uppercase tracking-wider">Visa Type</label>
                         <select
                           value={visaType}
                           onChange={(e) => setVisaType(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-black outline-none focus:border-[#359FC2] cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394B0C4%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_16px_center]"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition cursor-pointer"
                         >
                           <option>Student Visa</option>
                           <option>Tourist / Visitor</option>
@@ -356,22 +416,23 @@ export function VisaDocumentationPortal() {
                     </div>
 
                     <div>
-                      <label className="text-[10px] font-medium tracking-normal text-gray-400 block mb-2">Upload Files You Have (Optional)</label>
-                      <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
-                        <Upload className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                        <p className="text-xs font-semibold text-[#0c1a2e] mb-0.5">Drop files here or click to browse</p>
-                        <p className="text-[10px] text-gray-400">PDF, JPG, PNG · Max 10MB each</p>
+                      <label className="text-xs font-bold text-slate-700 block mb-1.5 uppercase tracking-wider">Upload Drafts or Documents (Optional)</label>
+                      <div className="border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl p-6 text-center bg-slate-50/60 hover:bg-emerald-50/20 transition-all cursor-pointer">
+                        <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                        <p className="text-xs font-semibold text-slate-800 mb-0.5">Drop files here or click to browse</p>
+                        <p className="text-[11px] text-slate-500">PDF, JPG, PNG · Max 10MB each</p>
                       </div>
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full bg-[#359FC2] hover:bg-[#288eb0] text-white font-bold py-4 rounded-2xl text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                      className="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-4 rounded-xl text-sm shadow-md shadow-emerald-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      Place Order <ArrowRight className="w-4 h-4" />
+                      <span>Submit Documentation Request</span>
+                      <ArrowRight className="w-4 h-4" />
                     </button>
-                    <div className="text-center text-[10px] text-gray-450 font-bold tracking-wider mt-2">
-                      🔒 Escrow protected · Expert assigned within 2 hours
+                    <div className="text-center text-xs text-slate-500 font-medium mt-2">
+                      🔒 Protected by TravlTik Milestone Escrow Vault
                     </div>
                   </form>
                 )}
@@ -379,33 +440,33 @@ export function VisaDocumentationPortal() {
             </div>
 
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-slate-50 border border-slate-250 rounded-3xl p-6">
-                <h3 className="font-sans font-bold text-sm text-[#0c1a2e] mb-4">What Happens After You Order</h3>
+              <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-sm">
+                <h3 className="font-sora font-bold text-sm text-slate-900 mb-4">What Happens After You Order</h3>
                 <div className="space-y-4">
                   {[
-                    { step: "1", title: "Order placed & expert assigned", time: "Within 2 hours" },
-                    { step: "2", title: "AI + Expert document review", time: "Errors flagged" },
-                    { step: "3", title: "Final package delivered", time: "Submission-ready PDF" },
+                    { step: "1", title: "Order received & specialist assigned", time: "Within 2 hours" },
+                    { step: "2", title: "AI & Human paralegal audit", time: "Discrepancies flagged" },
+                    { step: "3", title: "Submission-ready PDF delivered", time: "Consular approved format" },
                   ].map((s) => (
-                    <div key={s.step} className="flex gap-3 items-start">
-                      <div className="w-7 h-7 bg-sky-50 text-[#359FC2] border border-sky-100 rounded-full flex items-center justify-center font-bold text-xs shrink-0">
+                    <div key={s.step} className="flex gap-3.5 items-start">
+                      <div className="w-8 h-8 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl flex items-center justify-center font-bold text-xs shrink-0">
                         {s.step}
                       </div>
                       <div>
-                        <div className="font-bold text-xs text-[#0c1a2e]">{s.title}</div>
-                        <div className="text-[10px] text-gray-400 font-semibold">{s.time}</div>
+                        <div className="font-bold text-xs sm:text-sm text-slate-900 font-sora">{s.title}</div>
+                        <div className="text-[11px] text-slate-500 font-medium">{s.time}</div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-emerald-50 border border-emerald-100 rounded-3xl p-6 flex gap-3 items-start">
-                <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+              <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-3xl p-6 flex gap-3.5 items-start">
+                <ShieldCheck className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-emerald-800 mb-1">Free Redo Protection</h4>
-                  <p className="text-[11px] text-emerald-700 leading-relaxed">
-                    If visa is rejected due to our documentation error, we will redo the entire service completely free.
+                  <h4 className="text-xs sm:text-sm font-bold text-emerald-950 mb-1 font-sora">Free Redo Assurance</h4>
+                  <p className="text-xs text-emerald-800 leading-relaxed">
+                    If any document prepared by our legal team is rejected by the embassy, we redo the entire filing service at zero cost.
                   </p>
                 </div>
               </div>
