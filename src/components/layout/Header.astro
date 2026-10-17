@@ -23,35 +23,54 @@ const ICONS: Record<string, any> = {
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between h-14 lg:h-20">
+    <!-- Top Utility Bar -->
+    <div class="w-full bg-[#F8FAFC] border-b border-slate-200">
+      <div class="max-w-[1440px] mx-auto px-6 h-10 flex items-center justify-between text-xs text-slate-600">
         
-        <!-- Left Mobile Menu Button (Hamburger) -->
-        <div class="flex items-center lg:hidden">
-            <button id="mobile-menu-btn" class="p-2 -ml-2 rounded-xl text-slate-700 hover:text-slate-900 transition-colors flex items-center justify-center focus:outline-none" aria-label="Toggle Menu">
-                <span id="menu-icon" class="block">
-                    <Menu class="w-6 h-6 stroke-[2]" />
-                </span>
-                <span id="close-icon" class="hidden">
-                    <X class="w-6 h-6 stroke-[2]" />
-                </span>
-            </button>
+        <!-- LEFT: Contact Info (Phone + Email) -->
+        <div class="flex items-center gap-6">
+          <a href="tel:+917661989366" class="flex items-center gap-1.5 hover:text-slate-900 transition-colors">
+            <span>📞</span>
+            <span>+91 766 1989 366</span>
+          </a>
+          <a href="mailto:hello@travltik.com" class="flex items-center gap-1.5 hover:text-slate-900 transition-colors">
+            <span>✉️</span>
+            <span>hello@travltik.com</span>
+          </a>
         </div>
 
-        <!-- Logo - Centered on Mobile, Left-aligned on Desktop -->
-        <div class="flex items-center shrink-0 py-1 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 pointer-events-auto">
-            <a href="/" class="flex flex-col items-center lg:items-start focus:outline-none -ml-0 lg:-ml-2" aria-label="TravlTik Home">
+        <!-- CENTER: Escrow Protection Text -->
+        <div class="flex items-center gap-2">
+          <span>🔒</span>
+          <span>Every payment protected by milestone escrow</span>
+        </div>
+
+        <!-- RIGHT: Language / Currency -->
+        <div class="flex items-center gap-1.5 hover:text-slate-900 cursor-pointer transition-colors">
+          <span>🌐</span>
+          <span>English · INR</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between gap-8 h-14 lg:h-20">
+        
+        <!-- 1. LEFT: Logo (Left-aligned on both Mobile & Desktop) -->
+        <div class="flex items-center shrink-0 py-1 pointer-events-auto">
+            <a href="/" class="flex items-center gap-2 focus:outline-none" aria-label="TravlTik Home">
                 <img id="header-logo-img" src="/logo.png?v=8" class="h-8 sm:h-10 lg:h-[44px] max-h-[46px] w-auto max-w-[135px] sm:max-w-[170px] lg:max-w-none object-contain transition-all duration-200" alt="TravlTik Logo" />
             </a>
         </div>
 
-        <!-- Desktop Navigation Links (Centered) -->
-        <nav aria-label="Main navigation" class="hidden lg:flex items-center gap-4 xl:gap-8 font-plus-jakarta">
+        <!-- 2. CENTER: Navigation Links (Locked in center with flex-1 justify-center) -->
+        <nav aria-label="Main navigation" class="hidden lg:flex items-center flex-1 justify-center gap-6 xl:gap-8 font-plus-jakarta">
             {MAIN_NAV.map((item) => (
                 item.children && item.children.length > 0 ? (
                     <div class="relative py-3 group">
-                        <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 group-hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
+                        <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-medium text-slate-700 hover:text-emerald-600 whitespace-nowrap transition-colors flex items-center gap-1 focus:outline-none cursor-pointer">
                             {item.label}
-                            <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
+                            <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition-all duration-200 group-hover:rotate-180" />
                         </button>
                         <div class="absolute top-full left-0 pt-2 w-[280px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                             <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
@@ -67,8 +86,8 @@ const ICONS: Record<string, any> = {
                                     return (
                                         <>
                                             {showDivider && <div class="my-1 border-t border-slate-100" />}
-                                            <a href={child.href} class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#00a896] transition-all duration-150 group/item">
-                                                {IconComponent && <IconComponent class={`w-4 h-4 ${iconColor} group-hover/item:text-[#00a896] transition-colors shrink-0`} />}
+                                            <a href={child.href} class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-emerald-600 transition-all duration-150 group/item">
+                                                {IconComponent && <IconComponent class={`w-4 h-4 ${iconColor} group-hover/item:text-emerald-600 transition-colors shrink-0`} />}
                                                 <span class={`${isAiTools && cIdx >= 4 ? "text-[13px]" : "text-[14px]"} font-medium`}>{child.label}</span>
                                             </a>
                                         </>
@@ -79,7 +98,7 @@ const ICONS: Record<string, any> = {
                     </div>
                 ) : (
                     <div class="py-3">
-                        <a href={item.href} class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-800 hover:text-[#00a896] transition-all duration-200 flex items-center gap-1 focus:outline-none cursor-pointer">
+                        <a href={item.href} class="font-plus-jakarta text-[14px] xl:text-[15px] font-medium text-slate-700 hover:text-emerald-600 whitespace-nowrap transition-colors flex items-center gap-1 focus:outline-none cursor-pointer">
                             {item.label}
                         </a>
                     </div>
@@ -87,10 +106,10 @@ const ICONS: Record<string, any> = {
             ))}
         </nav>
 
-        <!-- Right Side Actions (Globe selector, Auth Buttons / Profile Block) -->
-        <div class="hidden lg:flex items-center gap-3.5 xl:gap-5 shrink-0 z-50 font-plus-jakarta">
-            <!-- Contact Link (Replaces Globe selector) -->
-            <a href="/support" id="contact-btn" class="flex items-center gap-1.5 text-[14px] xl:text-[15px] font-medium text-slate-800 hover:text-[#00A86B] transition-colors focus:outline-none">
+        <!-- 3. RIGHT: Auth & CTA Buttons (Desktop) -->
+        <div class="hidden lg:flex items-center gap-4 shrink-0 z-50 font-plus-jakarta">
+            <!-- Contact Link -->
+            <a href="/support" id="contact-btn" class="flex items-center gap-1.5 text-sm font-medium text-slate-700 hover:text-emerald-600 transition-colors focus:outline-none">
                 <MessageSquare class="w-4.5 h-4.5 text-slate-500" />
                 <span>Contact</span>
             </a>
@@ -100,11 +119,12 @@ const ICONS: Record<string, any> = {
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-3" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="inline-flex items-center justify-center border border-slate-300 hover:border-slate-800 bg-white hover:bg-slate-50 text-slate-800 px-5 py-2 min-w-[88px] rounded-xl text-[14px] font-medium transition-all duration-200 shadow-2xs active:scale-95 whitespace-nowrap cursor-pointer">
+                <a href="/login" id="login-btn" class="px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors hidden sm:block whitespace-nowrap cursor-pointer">
                     Log in
                 </a>
-                <a href="/signup" id="signup-btn" class="inline-flex items-center justify-center bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 !text-slate-950 px-5 py-2 rounded-xl text-[14px] font-bold transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-emerald-500/25 active:scale-95 whitespace-nowrap">
-                    Sign Up
+                <a href="/signup" id="signup-btn" class="px-5 py-2.5 bg-emerald-500 text-white rounded-lg text-sm font-bold hover:bg-emerald-600 transition-colors shadow-sm flex items-center gap-1.5 whitespace-nowrap">
+                    <span>Get started</span>
+                    <span>→</span>
                 </a>
             </div>
 
@@ -139,7 +159,7 @@ const ICONS: Record<string, any> = {
             </div>
         </div>
 
-        <!-- Right Mobile Actions (Sign Up / Logged In Profile Avatar) -->
+        <!-- Right Mobile Actions (Sign Up + Hamburger Menu Button on RIGHT) -->
         <div class="flex items-center gap-2 lg:hidden z-50 shrink-0">
             <a href="/signup" id="mobile-top-signup-btn" class="bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 !text-slate-950 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-emerald-500/25 active:scale-95 inline-flex items-center justify-center whitespace-nowrap">
                 Sign Up
@@ -148,6 +168,14 @@ const ICONS: Record<string, any> = {
                 <img id="mobile-top-profile-avatar-img" class="w-full h-full object-cover hidden" src="" alt="avatar" />
                 <span class="font-black text-xs sm:text-sm text-white bg-[#00a896] w-full h-full flex items-center justify-center" id="mobile-top-profile-avatar-letters"></span>
             </a>
+            <button id="mobile-menu-btn" class="p-2 rounded-xl text-slate-700 hover:text-slate-900 transition-colors flex items-center justify-center focus:outline-none shrink-0" aria-label="Toggle Menu">
+                <span id="menu-icon" class="block">
+                    <Menu class="w-6 h-6 stroke-[2]" />
+                </span>
+                <span id="close-icon" class="hidden">
+                    <X class="w-6 h-6 stroke-[2]" />
+                </span>
+            </button>
         </div>
     </div>
 
