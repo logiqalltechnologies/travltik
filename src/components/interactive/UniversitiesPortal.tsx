@@ -344,12 +344,18 @@ export function UniversitiesPortal() {
   React.useEffect(() => {
     if (typeof window !== "undefined") {
       const searchParams = new URLSearchParams(window.location.search);
-      const countryParam = searchParams.get("country");
+      const countryParam = searchParams.get("country") || searchParams.get("destination");
       const adParam = searchParams.get("ad");
       const tabParam = searchParams.get("tab") || searchParams.get("mode") || searchParams.get("category");
+      const qParam = searchParams.get("search") || searchParams.get("q") || searchParams.get("query") || "";
       
       if (tabParam === "consultants" || tabParam === "consultant" || tabParam === "experts" || tabParam === "student") {
         setActiveMode("consultants");
+      }
+
+      if (qParam) {
+        setSearchQuery(qParam);
+        setConsultantSearch(qParam);
       }
 
       if (countryParam) {

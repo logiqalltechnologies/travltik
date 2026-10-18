@@ -503,8 +503,8 @@ export function JobsPortal() {
       .catch(err => console.warn('Could not fetch server jobs:', err));
 
     const params = new URLSearchParams(window.location.search);
-    const qParam = params.get("q") || params.get("query") || params.get("role") || "";
-    const countryParam = params.get("country") || "";
+    const qParam = params.get("search") || params.get("q") || params.get("query") || params.get("role") || "";
+    const countryParam = params.get("country") || params.get("destination") || "";
     const categoryParam = params.get("category") || "";
 
     let qVal = qParam;

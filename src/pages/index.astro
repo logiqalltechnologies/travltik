@@ -149,7 +149,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 .sfm .btn{border-radius:16px;padding:0 34px}
 
 /* Quick Search (Bottom) */
-.qs-card{background:#fff;border-radius:28px;padding:32px 34px 28px;border:1px solid var(--line);box-shadow:0 30px 60px -25px rgba(67,15,122,.18),0 0 1px rgba(0,0,0,.08);font-family:'Plus Jakarta Sans',sans-serif}
+.qs-card{background:#fff;border-radius:32px;padding:32px 34px 28px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(67,15,122,.18),0 0 1px rgba(0,0,0,.06);font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px}
 .qs-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:22px}
 .qs-title-wrap{display:flex;align-items:center;gap:14px}
 .qs-icon-box{width:46px;height:46px;border-radius:16px;background:var(--gl);border:1px solid rgba(0,176,112,.2);display:flex;align-items:center;justify-content:center;color:var(--g2);flex-shrink:0}
@@ -158,61 +158,62 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 .qs-heading-row h3{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;margin:0;line-height:1}
 .qs-badge-live{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:800;background:var(--gl);color:var(--g2);border:1px solid rgba(0,176,112,.25);letter-spacing:.06em}
 .qs-badge-live .pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 1.8s infinite}
-.qs-sub{font-size:13px;color:var(--mut);font-weight:500;margin:4px 0 0}
+.qs-sub{font-size:13.5px;color:var(--mut);font-weight:500;margin:4px 0 0}
 .qs-trust{display:flex;align-items:center;gap:16px;font-size:12.5px;font-weight:700;color:var(--mut)}
 .qs-trust span{display:flex;align-items:center;gap:6px}
 .qs-trust .dot{width:6px;height:6px;border-radius:50%;background:var(--g);display:inline-block}
 @media(max-width:860px){.qs-trust{display:none}}
 
 /* Category Tabs */
-.qs-tabs{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--l2);padding-bottom:14px;margin-bottom:24px;overflow-x:auto;scrollbar-width:none}
+.qs-tabs{display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--l2);padding-bottom:16px;margin-bottom:22px;overflow-x:auto;scrollbar-width:none}
 .qs-tabs::-webkit-scrollbar{display:none}
-.qs-tab{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:14px;font-size:13.5px;font-weight:700;color:#5a5174;background:transparent;border:1.5px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s;position:relative}
-.qs-tab:hover{color:var(--ink);background:var(--l1)}
-.qs-tab.on{color:var(--g2);background:#fff;border-color:var(--l3);box-shadow:0 4px 12px -4px rgba(0,176,112,.25)}
-.qs-tab.on:after{content:"";position:absolute;bottom:-15px;left:10px;right:10px;height:3px;background:var(--g);border-radius:99px}
-.qs-tab svg{width:16px;height:16px}
-.qs-tab.on svg{color:var(--g)}
+.qs-tab{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:99px;font-size:13.5px;font-weight:700;color:#5a5174;background:var(--l1);border:1.5px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s ease;position:relative}
+.qs-tab:hover{color:var(--ink);background:var(--l2);transform:translateY(-1px)}
+.qs-tab.on{color:#fff;background:linear-gradient(135deg,var(--p2),var(--p));box-shadow:0 10px 22px -10px rgba(67,15,122,.75);border-color:transparent}
+.qs-tab svg{width:16px;height:16px;transition:color .2s}
+.qs-tab.on svg{color:#fff}
 
 /* 4 Search Inputs Grid */
-.qs-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:14px;margin-bottom:24px}
+.qs-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:14px;margin-bottom:24px}
 @media(max-width:1020px){.qs-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.qs-grid{grid-template-columns:1fr}}
 .qs-col{position:relative}
-.qs-lbl{display:block;font-size:12px;font-weight:800;color:var(--ink);margin-bottom:8px;letter-spacing:-0.01em}
-.qs-input-box, .qs-drop-box{background:#fff;border:1.5px solid var(--l3);border-radius:16px;height:52px;padding:0 14px;display:flex;align-items:center;gap:10px;transition:all .2s;position:relative}
-.qs-input-box:hover, .qs-drop-box:hover{border-color:var(--p3)}
-.qs-input-box:focus-within, .qs-drop-box.open{border-color:var(--g);box-shadow:0 0 0 3px rgba(0,176,112,.12)}
-.qs-fld-icon{width:18px;height:18px;color:#7e749a;flex-shrink:0}
-.qs-input-box input{width:100%;border:0;outline:0;background:transparent;font-size:13.5px;font-weight:600;color:var(--ink);padding:0}
+.qs-lbl{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.qs-lbl span{font-weight:600;text-transform:none;letter-spacing:0}
+.qs-input-box, .qs-drop-box{background:#fff;border:1.5px solid var(--l3);border-radius:18px;height:54px;padding:0 16px;display:flex;align-items:center;gap:11px;transition:all .2s ease;position:relative}
+.qs-input-box:hover, .qs-drop-box:hover{border-color:var(--p3);box-shadow:0 4px 14px -6px rgba(67,15,122,.15)}
+.qs-input-box:focus-within, .qs-drop-box.open{border-color:var(--g);box-shadow:0 0 0 3.5px rgba(0,176,112,.14)}
+.qs-fld-icon{width:19px;height:19px;color:var(--g2);flex-shrink:0}
+.qs-input-box input{width:100%;border:0;outline:0;background:transparent;font-size:14px;font-weight:600;color:var(--ink);padding:0;font-family:inherit}
 .qs-input-box input::placeholder{color:#94a3b8;font-weight:500}
-.qs-locate-btn{background:transparent;border:0;padding:6px;border-radius:8px;cursor:pointer;color:var(--g);display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0}
-.qs-locate-btn:hover{background:var(--gl)}
-.qs-locate-btn svg{width:18px;height:18px}
+.qs-locate-btn{background:var(--gl);border:0;padding:7px;border-radius:10px;cursor:pointer;color:var(--g2);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.qs-locate-btn:hover{background:var(--g);color:#fff;transform:scale(1.06)}
+.qs-locate-btn svg{width:17px;height:17px}
 .qs-drop-trigger{width:100%;height:100%;background:transparent;border:0;outline:0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0;text-align:left}
-.qs-drop-val{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.qs-drop-trigger svg.chv{width:14px;height:14px;color:#7e749a;transition:transform .2s;flex-shrink:0}
+.qs-drop-val{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qs-drop-trigger svg.chv{width:15px;height:15px;color:#7e749a;transition:transform .2s;flex-shrink:0}
 .qs-drop-box.open .qs-drop-trigger svg.chv{transform:rotate(180deg);color:var(--g2)}
 .c-drop-val .flag-icon, .c-drop-opt .flag-icon{width:20px;height:14px;border-radius:3px;object-fit:cover;box-shadow:0 1px 3px rgba(0,0,0,.15);flex-shrink:0}
-.c-drop-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:0 22px 50px -12px rgba(67,15,122,.28),0 0 0 1px rgba(67,15,122,.06);padding:6px;opacity:0;visibility:hidden;transform:translateY(6px);transition:.2s cubic-bezier(.2,.7,.2,1);z-index:99;display:flex;flex-direction:column;gap:2px}
+.c-drop-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border-radius:20px;border:1px solid var(--line);box-shadow:0 24px 50px -12px rgba(67,15,122,.28),0 0 0 1px rgba(67,15,122,.06);padding:7px;opacity:0;visibility:hidden;transform:translateY(6px);transition:.2s cubic-bezier(.2,.7,.2,1);z-index:999;display:flex;flex-direction:column;gap:3px}
 .c-drop.open .c-drop-menu{opacity:1;visibility:visible;transform:none}
-.c-drop-opt{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;font-size:14px;font-weight:600;color:#352c50;cursor:pointer;transition:.15s}
-.c-drop-opt:hover{background:var(--l1);color:var(--g2);transform:translateX(2px)}
+.c-drop-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;font-size:13.5px;font-weight:600;color:#352c50;cursor:pointer;transition:.15s}
+.c-drop-opt:hover{background:var(--l1);color:var(--g2);transform:translateX(3px)}
 .c-drop-opt.on{background:var(--gl);color:var(--g2);font-weight:700}
 .c-drop-opt svg.chk{width:14px;height:14px;margin-left:auto;color:var(--g2);display:none}
 .c-drop-opt.on svg.chk{display:block}
-.qs-menu{max-height:260px;overflow-y:auto}
+.qs-menu{max-height:280px;overflow-y:auto}
 
 /* Action Row */
-.qs-action-row{display:flex;align-items:center;justify-content:center;position:relative;padding-top:4px}
-.qs-btn-search{min-width:260px;height:50px;border-radius:16px;font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 24px -8px rgba(0,176,112,.5);cursor:pointer;transition:all .25s}
-.qs-btn-search:hover{transform:translateY(-2px);box-shadow:0 16px 30px -8px rgba(0,176,112,.65)}
+.qs-action-row{display:flex;align-items:center;justify-content:center;position:relative;padding-top:6px}
+.qs-btn-search{min-width:280px;height:52px;border-radius:99px;font-size:15px;font-weight:800;letter-spacing:-0.01em;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 14px 28px -8px rgba(0,176,112,.55);cursor:pointer;transition:all .25s ease;background:linear-gradient(135deg,var(--g3),var(--g));color:#fff;border:none}
+.qs-btn-search:hover{transform:translateY(-2px);box-shadow:0 18px 34px -8px rgba(0,176,112,.7);filter:brightness(1.03)}
+.qs-btn-search:active{transform:translateY(0);filter:brightness(0.97)}
 .qs-btn-search svg{width:18px;height:18px}
-.qs-adv-link{position:absolute;right:0;display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--p);text-decoration:none;transition:color .2s}
-.qs-adv-link:hover{color:var(--p2);text-decoration:underline}
-.qs-adv-link svg{width:15px;height:15px}
+.qs-adv-link{position:absolute;right:0;display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--p);text-decoration:none;transition:all .2s;padding:8px 14px;border-radius:99px}
+.qs-adv-link:hover{color:var(--p2);background:var(--l1);text-decoration:none}
+.qs-adv-link svg{width:16px;height:16px}
 @media(max-width:720px){
-  .qs-action-row{flex-direction:column;gap:12px}
+  .qs-action-row{flex-direction:column;gap:14px}
   .qs-btn-search{width:100%;min-width:unset}
   .qs-adv-link{position:static}
 }
@@ -1113,7 +1114,16 @@ if (goBtn) {
     }
 
     if (cur === 'Jobs') {
-      window.location.href = '/jobs' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
+      const jParams = new URLSearchParams();
+      if (qVal) {
+        jParams.set('search', qVal);
+        jParams.set('q', qVal);
+      }
+      if (destVal && destVal !== 'All Countries') {
+        jParams.set('country', destVal);
+        jParams.set('destination', destVal);
+      }
+      window.location.href = '/jobs' + (jParams.toString() ? '?' + jParams.toString() : '');
       return;
     }
 
@@ -1172,7 +1182,7 @@ $$('.qs-tab').forEach(btn => {
     if (qInp && qsPlaceholders[activeQsTab]) {
       qInp.placeholder = qsPlaceholders[activeQsTab];
     }
-    // Contextual auto-select
+    // Contextual auto-select in category dropdown
     if (activeQsTab === 'universities') {
       const opt = $(`#qs-cat-menu .c-drop-opt[data-v="Student Visa"]`);
       if (opt) opt.click();
@@ -1181,6 +1191,9 @@ $$('.qs-tab').forEach(btn => {
       if (opt) opt.click();
     } else if (activeQsTab === 'lawyers') {
       const opt = $(`#qs-cat-menu .c-drop-opt[data-v="Legal Help & Appeals"]`);
+      if (opt) opt.click();
+    } else if (activeQsTab === 'consultant' || activeQsTab === 'all') {
+      const opt = $(`#qs-cat-menu .c-drop-opt[data-v="All Categories"]`);
       if (opt) opt.click();
     }
   };
@@ -1219,24 +1232,49 @@ const executeQsSearch = () => {
   const locationVal = ($('#qs-location') ? $('#qs-location').value.trim() : '');
   const category = ($('#qs-cat-val') ? $('#qs-cat-val').value : 'All Categories');
 
+  // 1. JOBS: Redirect to /jobs
   if (activeQsTab === 'jobs' || category === 'Work Visa' || category === 'Work Permit') {
-    window.location.href = '/jobs' + (query ? '?search=' + encodeURIComponent(query) : '');
+    const params = new URLSearchParams();
+    if (query) {
+      params.set('q', query);
+      params.set('search', query);
+    }
+    if (destination && destination !== 'All Countries') {
+      params.set('country', destination);
+      params.set('destination', destination);
+    }
+    if (locationVal) {
+      params.set('location', locationVal);
+    }
+    window.location.href = '/jobs' + (params.toString() ? '?' + params.toString() : '');
     return;
   }
 
-  if (activeQsTab === 'universities') {
-    const qParams = [];
-    if (query) qParams.push('search=' + encodeURIComponent(query));
-    if (destination !== 'All Countries') qParams.push('country=' + encodeURIComponent(destination));
-    window.location.href = '/universities' + (qParams.length ? '?' + qParams.join('&') : '');
+  // 2. UNIVERSITIES: Redirect to /universities
+  if (activeQsTab === 'universities' || category === 'Student Visa') {
+    const params = new URLSearchParams();
+    if (query) {
+      params.set('q', query);
+      params.set('search', query);
+    }
+    if (destination && destination !== 'All Countries') {
+      params.set('country', destination);
+      params.set('destination', destination);
+    }
+    if (locationVal) {
+      params.set('location', locationVal);
+    }
+    window.location.href = '/universities' + (params.toString() ? '?' + params.toString() : '');
     return;
   }
 
+  // 3. INSURANCE: Redirect to services insurance
   if (activeQsTab === 'insurance') {
     window.location.href = '/services?tab=insurance';
     return;
   }
 
+  // 4. CONSULTANT / ALL SERVICES / LAWYERS: Redirect to /find-experts
   const params = new URLSearchParams();
   if (query) {
     params.set('q', query);
@@ -1248,8 +1286,12 @@ const executeQsSearch = () => {
   }
   if (locationVal) {
     params.set('location', locationVal);
+    params.set('city', locationVal);
   }
-  if (category && category !== 'All Categories') {
+  if (activeQsTab === 'lawyers') {
+    params.set('category', 'Visa Appeals');
+    params.set('service', 'Immigration Lawyer');
+  } else if (category && category !== 'All Categories') {
     params.set('category', category);
   }
 
