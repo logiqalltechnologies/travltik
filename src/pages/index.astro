@@ -181,8 +181,8 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 .qs-lbl{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
 .qs-lbl span{font-weight:600;text-transform:none;letter-spacing:0}
 .qs-input-box, .qs-drop-box{background:#fff;border:1.5px solid var(--l3);border-radius:18px;height:54px;padding:0 16px;display:flex;align-items:center;gap:11px;transition:all .2s ease;position:relative}
-.qs-input-box:hover, .qs-drop-box:hover{border-color:var(--p3);box-shadow:0 4px 14px -6px rgba(67,15,122,.15)}
-.qs-input-box:focus-within, .qs-drop-box.open{border-color:var(--g);box-shadow:0 0 0 3.5px rgba(0,176,112,.14)}
+.qs-input-box:focus-within, .qs-drop-box.open{border-color:var(--g);box-shadow:0 0 0 3.5px rgba(0,176,112,.14);z-index:60}
+.qs-col:has(.open){z-index:60}
 .qs-fld-icon{width:19px;height:19px;color:var(--g2);flex-shrink:0}
 .qs-input-box input{width:100%;border:0;outline:0;background:transparent;font-size:14px;font-weight:600;color:var(--ink);padding:0;font-family:inherit}
 .qs-input-box input::placeholder{color:#94a3b8;font-weight:500}
