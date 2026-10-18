@@ -821,7 +821,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <div><h5>Services</h5><ul><li><a href="/find-experts">Visas &amp; PR</a></li><li><a href="/find-experts?category=student">Study abroad</a></li><li><a href="/jobs">Jobs abroad</a></li><li><a href="/tours">Tours &amp; packages</a></li><li><a href="/find-experts">Housing</a></li></ul></div>
 <div><h5>Explore</h5><ul><li><a href="/find-experts">Find consultants</a></li><li><a href="/planner">AI Trip Planner</a></li><li><a href="/community">Community chat</a></li><li><a href="#destinations">Destinations</a></li><li><a href="/visa-guide">Blog &amp; guides</a></li></ul></div>
 <div><h5>Company</h5><ul><li><a href="/about">About TravlTik</a></li><li><a href="/channel-partner">Become a consultant</a></li><li><a href="/add-business">Add Your Business</a></li><li><a href="/biz/claim">Claim Your Business</a></li><li><a href="/escrow">Escrow Protection</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/support">Contact &amp; Support</a></li></ul></div>
-<div><h5>Get the app</h5><div class="apps" style="flex-direction:column"><a href="#"><svg class="i f"><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a><a href="#"><svg class="i f"><use href="#play"/></svg><span><small>Get it on</small><b>Google Play</b></span></a></div></div></div>
+<div><h5>Get the app</h5><div class="apps" style="flex-direction:column"><a href="javascript:void(0)" onclick="alert('The TravlTik iOS App is currently in TestFlight beta and launching on the App Store soon!')"><svg class="i f"><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a><a href="javascript:void(0)" onclick="alert('The TravlTik Android App is currently in early access and launching on Google Play soon!')"><svg class="i f"><use href="#play"/></svg><span><small>Get it on</small><b>Google Play</b></span></a></div></div></div>
 <div class="fb"><span>© 2026 TravlTik. All rights reserved. <a href="/terms" style="text-decoration:underline">Terms</a> · <a href="/privacy" style="text-decoration:underline">Privacy</a> · <a href="/escrow" style="text-decoration:underline">Escrow policy</a></span><div class="tr"><span><svg class="i"><use href="#lock"/></svg>Escrow secured</span><span><svg class="i"><use href="#shield"/></svg>Licence verified</span></div></div></div></footer>
 <script is:inline>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],ST=location.hash.startsWith('#static');
@@ -1257,9 +1257,9 @@ const executeQsSearch = () => {
     return;
   }
 
-  // 3. INSURANCE: Redirect to services insurance
+  // 3. INSURANCE: Redirect to insurance experts & services
   if (activeQsTab === 'insurance') {
-    window.location.href = '/services?tab=insurance';
+    window.location.href = '/find-experts?q=Insurance';
     return;
   }
 
