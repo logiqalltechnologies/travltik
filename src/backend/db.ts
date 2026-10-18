@@ -1,3 +1,17 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// TravlTik · Database Layer (Node.js)
+//
+// ARCHITECTURE NOTE:
+// Node.js handles all I/O-bound operations: DB queries, Razorpay payment
+// webhooks, live search, and API routing. This is intentional — Node's
+// non-blocking event loop excels at high-concurrency I/O workloads.
+//
+// TODO (Scale): For CPU-bound AI/OCR workloads (e.g., Passport MRZ extraction,
+// PDF gap audits, SOP generation), requests will be routed to a Python
+// (FastAPI + Celery) microservice via Redis job queue. Node.js will return a
+// 202 Accepted immediately and notify the user via WebSocket on completion.
+// See: /docs/TECH_STACK.md for full architecture decision rationale.
+// ─────────────────────────────────────────────────────────────────────────────
 import pg from 'pg';
 import fs from 'fs';
 import path from 'path';
