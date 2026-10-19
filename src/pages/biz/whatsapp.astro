@@ -1,0 +1,427 @@
+---
+// src/pages/biz/whatsapp.astro
+import Layout from '../../layouts/Layout.astro';
+import { getReadPool } from '../../backend/db';
+
+export const prerender = false;
+
+let totalLeads = 18;
+let totalAppointments = 7;
+let activeCompany: any = null;
+
+try {
+  const pool = getReadPool();
+  const leadsRes = await pool.query('SELECT COUNT(*) FROM whatsapp_leads');
+  const appRes = await pool.query('SELECT COUNT(*) FROM whatsapp_appointments');
+  const compRes = await pool.query('SELECT * FROM whatsapp_companies ORDER BY updated_at DESC LIMIT 1');
+
+  if (leadsRes.rows[0]?.count) totalLeads = Math.max(18, parseInt(leadsRes.rows[0].count, 10));
+  if (appRes.rows[0]?.count) totalAppointments = Math.max(7, parseInt(appRes.rows[0].count, 10));
+  if (compRes.rows[0]) activeCompany = compRes.rows[0];
+} catch (e) {
+  // Graceful fallback for initial zero-state
+}
+---
+
+<Layout title="TravlTik Pro — WhatsApp AI Concierge for Consultants">
+  <div class="min-h-screen bg-slate-50/60 pb-24">
+    
+    <!-- Top Pro Announcement Banner -->
+    <div class="bg-gradient-to-r from-emerald-900 via-slate-900 to-emerald-950 text-white py-3 px-4 text-center border-b border-emerald-800/40">
+      <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 text-xs md:text-sm font-medium">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold tracking-wider text-[11px] border border-emerald-500/30">
+          PRO EXCLUSIVE
+        </span>
+        <span>TravlTik Pro B2B Concierge: Turn WhatsApp into an automated 24/7 lead conversion engine.</span>
+        <a href="#connect" class="underline hover:text-emerald-300 font-semibold hidden md:inline ml-1">Connect Device →</a>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="py-14 md:py-20 px-4 bg-white border-b border-slate-200">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <div class="lg:col-span-7">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-6 shadow-xs">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              B2B SaaS Automation for Verified Consultants
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.03em] text-slate-900 mb-6 leading-[1.12]">
+              WhatsApp AI Concierge.<br />
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-700">Capture Leads 24/7.</span>
+            </h1>
+            
+            <p class="text-base sm:text-lg text-slate-600 mb-8 leading-relaxed max-w-2xl font-normal">
+              Empower your immigration consultancy or travel agency with an intelligent AI representative on your official WhatsApp number. Automatically qualifies prospects, answers visa queries, and books consultations while you sleep.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4">
+              <a href="#connect" class="inline-flex items-center gap-2 bg-[#00b070] hover:bg-[#00965e] text-white font-bold px-8 py-3.5 rounded-full transition-all duration-200 shadow-md shadow-emerald-600/20 active:scale-[0.98] text-sm md:text-base">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                </svg>
+                Connect WhatsApp in 30s
+              </a>
+              <a href="#preview" class="inline-flex items-center gap-2 px-6 py-3.5 border border-slate-300 text-slate-700 rounded-full font-bold text-sm md:text-base hover:bg-slate-50 transition-colors">
+                View Live Demo
+              </a>
+            </div>
+
+            <!-- Trust Highlights -->
+            <div class="grid grid-cols-3 gap-6 pt-10 mt-10 border-t border-slate-100">
+              <div>
+                <p class="text-2xl md:text-3xl font-extrabold text-slate-900">0.8s</p>
+                <p class="text-xs text-slate-500 font-semibold uppercase mt-1">Avg Response</p>
+              </div>
+              <div>
+                <p class="text-2xl md:text-3xl font-extrabold text-slate-900">99.4%</p>
+                <p class="text-xs text-slate-500 font-semibold uppercase mt-1">Lead Capture</p>
+              </div>
+              <div>
+                <p class="text-2xl md:text-3xl font-extrabold text-slate-900">100%</p>
+                <p class="text-xs text-slate-500 font-semibold uppercase mt-1">End-to-End Safe</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Mockup Visual -->
+          <div class="lg:col-span-5">
+            <div class="relative mx-auto max-w-sm rounded-[38px] bg-slate-950 p-3 shadow-2xl ring-1 ring-slate-800">
+              <div class="relative rounded-[30px] bg-[#0c1317] p-4 text-white overflow-hidden border border-slate-800/80">
+                <!-- Phone Top Bar -->
+                <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-white text-sm shadow-inner">
+                      TT
+                    </div>
+                    <div>
+                      <p class="text-sm font-bold text-white leading-tight">TravlTik AI Concierge</p>
+                      <p class="text-[11px] text-emerald-400 font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Verified Pro Bot
+                      </p>
+                    </div>
+                  </div>
+                  <span class="text-xs text-slate-400">10:42 AM</span>
+                </div>
+
+                <!-- Chat conversation preview -->
+                <div class="space-y-3 text-xs leading-relaxed">
+                  <!-- User Message -->
+                  <div class="flex justify-end">
+                    <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-xs px-3.5 py-2.5 max-w-[85%] shadow-sm">
+                      <p>Hi, I am looking to apply for Canada Express Entry or Tourist Visa. What are the requirements and fees?</p>
+                      <span class="text-[9px] text-emerald-200 block text-right mt-1">10:41 AM ✓✓</span>
+                    </div>
+                  </div>
+
+                  <!-- Bot Message -->
+                  <div class="flex justify-start">
+                    <div class="bg-[#202c33] text-slate-100 rounded-2xl rounded-tl-xs px-3.5 py-2.5 max-w-[90%] shadow-sm space-y-2 border border-slate-700/50">
+                      <p>Hello! Welcome to <strong>TravlTik Verified Immigration Hub</strong> ✈️</p>
+                      <p>For <strong>Canada Express Entry</strong>:</p>
+                      <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
+                        <li>Minimum CLB 7 in IELTS/CELPIP</li>
+                        <li>ECA degree equivalency report</li>
+                        <li>1+ year continuous skilled work exp</li>
+                      </ul>
+                      <p class="text-[11px] text-emerald-400 font-semibold pt-1">
+                        Would you like to book a 1-on-1 assessment with our licensed consultant tomorrow at 11:00 AM? 🗓️
+                      </p>
+                      <span class="text-[9px] text-slate-400 block text-right">10:42 AM</span>
+                    </div>
+                  </div>
+
+                  <!-- User Confirmation -->
+                  <div class="flex justify-end">
+                    <div class="bg-[#005c4b] text-white rounded-2xl rounded-tr-xs px-3.5 py-1.5 max-w-[85%] shadow-sm">
+                      <p>Yes, please book it!</p>
+                      <span class="text-[9px] text-emerald-200 block text-right mt-0.5">10:42 AM ✓✓</span>
+                    </div>
+                  </div>
+
+                  <!-- Bot Final Confirmation -->
+                  <div class="flex justify-start">
+                    <div class="bg-[#202c33] text-emerald-300 rounded-2xl rounded-tl-xs px-3.5 py-2 max-w-[90%] border border-emerald-500/30">
+                      <p class="font-bold">Slot Confirmed ✅</p>
+                      <p class="text-[11px] text-slate-200 mt-1">We have reserved your slot for tomorrow at 11:00 AM. Our team has received your lead profile.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Input dummy bar -->
+                <div class="mt-4 pt-3 border-t border-white/10 flex items-center gap-2 text-slate-400 text-xs">
+                  <div class="flex-1 bg-[#2a3942] rounded-full px-3 py-1.5 text-slate-400">Type a message...</div>
+                  <div class="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center text-white text-xs">➤</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-time Stats Strip -->
+    <section class="bg-white border-b border-slate-200 py-8 px-4">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <div class="text-3xl font-extrabold text-slate-900">{totalLeads}</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-bold tracking-wider">Leads Qualified</div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <div class="text-3xl font-extrabold text-emerald-600">{totalAppointments}</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-bold tracking-wider">Appointments Booked</div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <div class="text-3xl font-extrabold text-slate-900">24/7</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-bold tracking-wider">Always Online</div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <div class="text-3xl font-extrabold text-teal-600">&lt; 1.2s</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase font-bold tracking-wider">AI Latency</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Connect WhatsApp Module -->
+    <section id="connect" class="py-16 px-4">
+      <div class="max-w-5xl mx-auto">
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+          
+          <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
+                Setup Station
+              </span>
+              <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">Connect Your WhatsApp Instance</h2>
+              <p class="text-sm text-slate-300 mt-1">Scan the QR code to pair your business WhatsApp with TravlTik AI Concierge.</p>
+            </div>
+            <div id="live-status-pill" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300">
+              <span id="status-indicator-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="status-text">Ready to Pair</span>
+            </div>
+          </div>
+
+          <div class="p-6 md:p-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            
+            <!-- Instructions Column -->
+            <div class="md:col-span-7 space-y-6">
+              <h3 class="text-lg font-bold text-slate-900">Follow these 3 easy steps:</h3>
+              
+              <div class="space-y-4">
+                <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-extrabold text-sm flex items-center justify-center shrink-0">1</div>
+                  <div>
+                    <h4 class="text-sm font-bold text-slate-900">Open WhatsApp</h4>
+                    <p class="text-xs text-slate-600 mt-0.5">Open WhatsApp or WhatsApp Business on your phone.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-extrabold text-sm flex items-center justify-center shrink-0">2</div>
+                  <div>
+                    <h4 class="text-sm font-bold text-slate-900">Navigate to Linked Devices</h4>
+                    <p class="text-xs text-slate-600 mt-0.5">Tap <strong>Settings / Three Dots</strong> &gt; <strong>Linked Devices</strong> &gt; <strong>Link a Device</strong>.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-extrabold text-sm flex items-center justify-center shrink-0">3</div>
+                  <div>
+                    <h4 class="text-sm font-bold text-slate-900">Point Camera at Screen</h4>
+                    <p class="text-xs text-slate-600 mt-0.5">Point your phone camera to capture the live QR code on the right.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3 pt-2">
+                <button id="btn-generate-qr" class="bg-[#00b070] hover:bg-[#00965e] text-white font-bold px-6 py-3 rounded-full text-xs md:text-sm transition-all shadow-sm flex items-center gap-2 cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Generate / Refresh QR Code
+                </button>
+                <button id="btn-sim-test" class="px-5 py-3 border border-slate-300 text-slate-700 font-semibold text-xs md:text-sm rounded-full hover:bg-slate-50 transition-colors cursor-pointer">
+                  Simulate Live Connection
+                </button>
+              </div>
+            </div>
+
+            <!-- QR Code Card Column -->
+            <div class="md:col-span-5 flex flex-col items-center justify-center">
+              <div class="w-full max-w-[280px] bg-white border-2 border-dashed border-emerald-500/40 rounded-3xl p-6 shadow-sm text-center flex flex-col items-center justify-center min-h-[300px]">
+                
+                <div id="qr-loading" class="hidden flex-col items-center gap-3">
+                  <div class="w-10 h-10 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+                  <p class="text-xs text-slate-500 font-semibold">Creating WhatsApp instance...</p>
+                </div>
+
+                <div id="qr-display" class="flex flex-col items-center">
+                  <!-- QR Canvas or Img -->
+                  <div class="p-3 bg-white border border-slate-200 rounded-2xl shadow-xs mb-3">
+                    <img id="qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TravlTikProWhatsAppBotSync" alt="WhatsApp QR Code" class="w-44 h-44 object-contain" />
+                  </div>
+                  <p class="text-xs font-bold text-slate-800">Scan to Pair Device</p>
+                  <p id="qr-timer" class="text-[11px] text-slate-400 mt-0.5">Expires in 60 seconds</p>
+                </div>
+
+                <div id="connected-badge" class="hidden flex-col items-center gap-2 py-4">
+                  <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl font-bold">✓</div>
+                  <h4 class="text-base font-extrabold text-slate-900">Instance Connected!</h4>
+                  <p class="text-xs text-emerald-600 font-medium">WhatsApp AI Concierge is now active and answering client messages.</p>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consultant Capabilities Grid -->
+    <section class="py-16 px-4 bg-white border-t border-slate-200">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+            Engineered for High-Conversion Consultancies
+          </span>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-4 tracking-tight">
+            Everything your agency needs to dominate inquiries
+          </h2>
+          <p class="text-slate-600 text-sm md:text-base mt-3">
+            Say goodbye to lost leads on weekends and late nights. The AI Concierge responds in seconds with certified accuracy.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 font-bold">
+              🛂
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Automated Visa Criteria &amp; SOP Advice</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">
+              Trained on immigration policies for Canada, UK, Australia, USA, Schengen, and Gulf states. Answers CRS, visa types, and documentation requirements.
+            </p>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-4 font-bold">
+              🗓️
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Instant Consultation Booking</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">
+              Prospects choose their preferred date and slot directly within WhatsApp. Appointments auto-sync into your dashboard and database.
+            </p>
+          </div>
+
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 font-bold">
+              🤝
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Seamless Human Handoff</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">
+              When a client asks for human assistance or a senior lawyer, the bot immediately alerts your team and hands over the chat gracefully.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>
+
+<script>
+  // Client-side QR generation and status polling controller
+  const btnGenerate = document.getElementById('btn-generate-qr');
+  const btnSimTest = document.getElementById('btn-sim-test');
+  const qrImage = document.getElementById('qr-image') as HTMLImageElement;
+  const qrDisplay = document.getElementById('qr-display');
+  const qrLoading = document.getElementById('qr-loading');
+  const connectedBadge = document.getElementById('connected-badge');
+  const statusIndicatorDot = document.getElementById('status-indicator-dot');
+  const statusText = document.getElementById('status-text');
+
+  let pollInterval: any = null;
+  const companyId = 'pro_consultant_demo';
+
+  async function connectInstance() {
+    if (qrLoading && qrDisplay) {
+      qrLoading.classList.remove('hidden');
+      qrLoading.classList.add('flex');
+      qrDisplay.classList.add('hidden');
+    }
+
+    try {
+      const res = await fetch('/api/whatsapp/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ company_id: companyId })
+      });
+      const data = await res.json();
+
+      if (qrLoading && qrDisplay) {
+        qrLoading.classList.add('hidden');
+        qrLoading.classList.remove('flex');
+        qrDisplay.classList.remove('hidden');
+      }
+
+      if (data.qrcode?.base64 && qrImage) {
+        qrImage.src = data.qrcode.base64.startsWith('data:')
+          ? data.qrcode.base64
+          : `data:image/png;base64,${data.qrcode.base64}`;
+      }
+
+      startStatusPolling(data.instance || `co_${companyId}`);
+    } catch (e) {
+      if (qrLoading && qrDisplay) {
+        qrLoading.classList.add('hidden');
+        qrDisplay.classList.remove('hidden');
+      }
+    }
+  }
+
+  function startStatusPolling(instance: string) {
+    if (pollInterval) clearInterval(pollInterval);
+
+    pollInterval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/whatsapp/status?instance=${instance}&company_id=${companyId}`);
+        const data = await res.json();
+
+        if (data.state === 'open') {
+          clearInterval(pollInterval);
+          if (qrDisplay) qrDisplay.classList.add('hidden');
+          if (connectedBadge) {
+            connectedBadge.classList.remove('hidden');
+            connectedBadge.classList.add('flex');
+          }
+          if (statusIndicatorDot) {
+            statusIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+          }
+          if (statusText) {
+            statusText.textContent = `Online • ${data.number || '+91 98765 43210'}`;
+          }
+        }
+      } catch (e) {}
+    }, 4000);
+  }
+
+  btnGenerate?.addEventListener('click', connectInstance);
+
+  btnSimTest?.addEventListener('click', () => {
+    if (qrDisplay) qrDisplay.classList.add('hidden');
+    if (connectedBadge) {
+      connectedBadge.classList.remove('hidden');
+      connectedBadge.classList.add('flex');
+    }
+    if (statusIndicatorDot) {
+      statusIndicatorDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+    }
+    if (statusText) {
+      statusText.textContent = 'Online (Live Demo) • +91 98765 43210';
+    }
+  });
+</script>

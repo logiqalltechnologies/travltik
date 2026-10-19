@@ -1055,6 +1055,78 @@ export async function runMigrations() {
     -- ── AES-256 COLUMN ENCRYPTION MIGRATION (Step 27) ──
     ALTER TABLE documents ADD COLUMN IF NOT EXISTS passport_number_encrypted TEXT;
     ALTER TABLE documents ADD COLUMN IF NOT EXISTS bank_account_encrypted TEXT;
+
+    -- ── WHATSAPP AI CONCIERGE TABLES (PRO) ──
+    CREATE TABLE IF NOT EXISTS whatsapp_companies (
+      id VARCHAR(255) PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      website_url TEXT,
+      whatsapp_number VARCHAR(50),
+      whatsapp_session_id VARCHAR(100) UNIQUE,
+      status VARCHAR(50) DEFAULT 'pending',
+      plan_tier VARCHAR(50) DEFAULT 'pro',
+      bot_name VARCHAR(100) DEFAULT 'TravlTik AI Concierge',
+      bot_greeting TEXT,
+      bot_instructions TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_wa_companies_session ON whatsapp_companies (whatsapp_session_id);
+
+    CREATE TABLE IF NOT EXISTS whatsapp_leads (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id VARCHAR(255) NOT NULL,
+      phone VARCHAR(50),
+      name VARCHAR(255),
+      requirement TEXT,
+      source VARCHAR(50) DEFAULT 'whatsapp',
+      status VARCHAR(50) DEFAULT 'new',
+      notes TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_wa_leads_company ON whatsapp_leads (company_id);
+    CREATE INDEX IF NOT EXISTS idx_wa_leads_created ON whatsapp_leads (created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS whatsapp_appointments (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id VARCHAR(255) NOT NULL,
+      customer_phone VARCHAR(50) NOT NULL,
+      customer_name VARCHAR(255) NOT NULL,
+      customer_email VARCHAR(255),
+      service_name VARCHAR(255),
+      appointment_date DATE,
+      appointment_time VARCHAR(20),
+      duration_minutes INTEGER DEFAULT 30,
+      status VARCHAR(50) DEFAULT 'confirmed',
+      notes TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_wa_appointments_company ON whatsapp_appointments (company_id);
+    CREATE INDEX IF NOT EXISTS idx_wa_appointments_date ON whatsapp_appointments (appointment_date);
+
+    CREATE TABLE IF NOT EXISTS whatsapp_services (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      duration_minutes INTEGER DEFAULT 30,
+      price NUMERIC(10, 2) DEFAULT 0.00,
+      description TEXT,
+      is_active BOOLEAN DEFAULT TRUE,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_wa_services_company ON whatsapp_services (company_id);
+
+    CREATE TABLE IF NOT EXISTS whatsapp_conversations (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id VARCHAR(255) NOT NULL,
+      customer_phone VARCHAR(50) NOT NULL,
+      customer_name VARCHAR(255),
+      status VARCHAR(50) DEFAULT 'ai',
+      last_intent VARCHAR(100),
+      last_message_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_wa_conv_comp_phone ON whatsapp_conversations (company_id, customer_phone);
   `);
   })();
   return migrationsPromise;

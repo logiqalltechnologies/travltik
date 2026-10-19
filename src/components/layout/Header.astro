@@ -19,6 +19,7 @@ const ICONS: Record<string, any> = {
     HeartHandshake,
     Plane,
     Award,
+    MessageSquare,
 };
 ---
 
@@ -78,7 +79,8 @@ const ICONS: Record<string, any> = {
                                     const IconComponent = child.icon ? ICONS[child.icon] : null;
                                     const isAiTools = item.label === "AI Tools";
                                     const showDivider = isAiTools && cIdx === 4;
-                                    const iconColor = child.href === "/ai-tools" ? "text-amber-500" :
+                                    const iconColor = child.href === "/biz/whatsapp" ? "text-emerald-500" :
+                                                     child.href === "/ai-tools" ? "text-amber-500" :
                                                      child.href === "/ai-tools/photo-resizer" ? "text-emerald-600" :
                                                      child.href === "/ai-tools/pdf-audit" ? "text-[#00a896]" :
                                                      child.href === "/ai-tools/sop-generator" ? "text-blue-600" :
@@ -86,9 +88,16 @@ const ICONS: Record<string, any> = {
                                     return (
                                         <>
                                             {showDivider && <div class="my-1 border-t border-slate-100" />}
-                                            <a href={child.href} class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-emerald-600 transition-all duration-150 group/item">
-                                                {IconComponent && <IconComponent class={`w-4 h-4 ${iconColor} group-hover/item:text-emerald-600 transition-colors shrink-0`} />}
-                                                <span class={`${isAiTools && cIdx >= 4 ? "text-[13px]" : "text-[14px]"} font-medium`}>{child.label}</span>
+                                            <a href={child.href} class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-emerald-600 transition-all duration-150 group/item">
+                                                <div class="flex items-center gap-2.5">
+                                                    {IconComponent && <IconComponent class={`w-4 h-4 ${iconColor} group-hover/item:text-emerald-600 transition-colors shrink-0`} />}
+                                                    <span class={`${isAiTools && cIdx >= 4 ? "text-[13px]" : "text-[14px]"} font-medium`}>{child.label}</span>
+                                                </div>
+                                                {child.badge && (
+                                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                                                        {child.badge}
+                                                    </span>
+                                                )}
                                             </a>
                                         </>
                                     );
