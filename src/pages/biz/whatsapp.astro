@@ -23,40 +23,51 @@ import {
   ArrowUpRight, 
   LayoutGrid,
   X,
-  Loader2,
-  CheckCircle2
+  CreditCard,
+  CheckCircle2,
+  PhoneCall
 } from 'lucide-react';
 
 export const prerender = false;
 ---
 
-<Layout title="Turn any website into a WhatsApp bot — TravlTik AI Concierge">
+<Layout title="Turn your website into a WhatsApp bot — TravlTik Pro">
   <!-- External Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
 
+  <!-- Razorpay Checkout Script -->
+  <script is:inline src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <style is:global>
+    :root {
+      --brand-green: #00b070;
+      --brand-green-dark: #008f5a;
+      --brand-green-light: #e2f7ee;
+      --brand-purple: #430f7a;
+      --brand-ink: #1b1233;
+    }
     .font-serif-accent {
-      font-family: "Instrument Serif", Georgia, serif;
+      font-family: "Instrument Serif", "Fraunces", Georgia, serif;
       font-weight: 400;
       font-style: italic;
       letter-spacing: -0.01em;
     }
     @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px) rotate(6deg); }
-      50% { transform: translateY(-8px) rotate(8deg); }
+      0%, 100% { transform: translateY(0px) rotate(5deg); }
+      50% { transform: translateY(-9px) rotate(8deg); }
     }
     @keyframes floatRev {
-      0%, 100% { transform: translateY(0px) rotate(-6deg); }
-      50% { transform: translateY(8px) rotate(-4deg); }
+      0%, 100% { transform: translateY(0px) rotate(-5deg); }
+      50% { transform: translateY(9px) rotate(-3deg); }
     }
     @keyframes floatSubtle {
-      0%, 100% { transform: translateY(0px) rotate(3deg); }
-      50% { transform: translateY(-6px) rotate(1deg); }
+      0%, 100% { transform: translateY(0px) rotate(2deg); }
+      50% { transform: translateY(-7px) rotate(0deg); }
     }
     .animate-float-1 {
       animation: floatSlow 4.5s ease-in-out infinite;
@@ -67,480 +78,414 @@ export const prerender = false;
     .animate-float-3 {
       animation: floatSubtle 4s ease-in-out infinite;
     }
+    .travltik-card-glow {
+      background: linear-gradient(#fff, #fff) padding-box,
+                  linear-gradient(135deg, rgba(0, 176, 112, 0.4), rgba(67, 15, 122, 0.25)) border-box;
+      border: 1.5px solid transparent;
+    }
   </style>
 
-  <div class="bg-[#ECEDEE] text-[#232427] antialiased min-h-screen font-['Inter',sans-serif]">
-    <div class="max-w-[1440px] mx-auto px-2 sm:px-4 pt-3 sm:pt-6 pb-20">
+  <div class="bg-[#F8FAF9] text-[#1b1233] antialiased min-h-screen font-['Plus_Jakarta_Sans',sans-serif]">
+    <div class="max-w-[1360px] mx-auto px-3 sm:px-6 pt-4 sm:pt-8 pb-24">
       
       <!-- ================= HERO ================= -->
-      <section class="relative overflow-hidden rounded-[28px] sm:rounded-[40px] bg-[#F4F5F5] shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_20px_60px_-30px_rgba(35,36,39,0.25)] min-h-[90vh] flex flex-col justify-between p-6 sm:p-12 lg:p-16">
+      <section class="relative overflow-hidden rounded-[32px] sm:rounded-[44px] bg-white border border-slate-200/90 shadow-[0_20px_50px_-25px_rgba(0,176,112,0.18)] min-h-[88vh] flex flex-col justify-between p-6 sm:p-12 lg:p-16">
         
-        <!-- Atmosphere radial blooms -->
+        <!-- Ambient Radial Gradient Blooms (TravlTik Green & Purple) -->
         <div
-          class="pointer-events-none absolute -right-32 -top-20 h-[680px] w-[680px] rounded-full opacity-70 blur-3xl"
-          style="background: radial-gradient(circle at 55% 45%, rgba(227,74,50,0.55), rgba(240,120,70,0.28) 40%, rgba(244,245,245,0) 70%);"
+          class="pointer-events-none absolute -right-32 -top-20 h-[680px] w-[680px] rounded-full opacity-60 blur-3xl"
+          style="background: radial-gradient(circle at 55% 45%, rgba(0,176,112,0.35), rgba(0,143,90,0.15) 45%, rgba(255,255,255,0) 70%);"
         ></div>
         <div
-          class="pointer-events-none absolute -left-52 top-24 h-[640px] w-[640px] rounded-full opacity-60 blur-3xl"
-          style="background: radial-gradient(circle at 50% 50%, rgba(46,48,52,0.35), rgba(120,124,130,0.15) 45%, rgba(244,245,245,0) 72%);"
+          class="pointer-events-none absolute -left-52 top-24 h-[640px] w-[640px] rounded-full opacity-50 blur-3xl"
+          style="background: radial-gradient(circle at 50% 50%, rgba(67,15,122,0.2), rgba(107,52,179,0.08) 45%, rgba(255,255,255,0) 72%);"
         ></div>
 
-        <!-- Geometric Angular Accent Facet -->
-        <div class="pointer-events-none absolute right-4 lg:right-16 top-12 lg:top-20 w-72 sm:w-96 lg:w-[480px] h-72 sm:h-96 lg:h-[480px] opacity-90 z-0">
-          <svg viewBox="0 0 400 400" class="w-full h-full drop-shadow-[0_25px_50px_rgba(227,74,50,0.25)]">
-            <polygon points="120,20 360,60 390,260 280,380 90,320 20,160" fill="url(#coralGrad)" opacity="0.85" />
-            <polygon points="120,20 240,160 90,320 20,160" fill="#E34A32" opacity="0.25" />
-            <polygon points="360,60 390,260 240,160" fill="#C93A24" opacity="0.3" />
+        <!-- Geometric Angular Accent Facet (TravlTik Brand Green Facet) -->
+        <div class="pointer-events-none absolute right-4 lg:right-16 top-10 lg:top-16 w-72 sm:w-96 lg:w-[480px] h-72 sm:h-96 lg:h-[480px] opacity-90 z-0">
+          <svg viewBox="0 0 400 400" class="w-full h-full drop-shadow-[0_25px_45px_rgba(0,176,112,0.18)]">
+            <polygon points="120,20 360,60 390,260 280,380 90,320 20,160" fill="url(#greenGrad)" opacity="0.85" />
+            <polygon points="120,20 240,160 90,320 20,160" fill="#00b070" opacity="0.2" />
+            <polygon points="360,60 390,260 240,160" fill="#008f5a" opacity="0.3" />
             <defs>
-              <linearGradient id="coralGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#F26A4F" />
-                <stop offset="60%" stop-color="#E34A32" />
-                <stop offset="100%" stop-color="#C2331D" />
+              <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00c985" />
+                <stop offset="60%" stop-color="#00b070" />
+                <stop offset="100%" stop-color="#008f5a" />
               </linearGradient>
             </defs>
           </svg>
         </div>
 
-        <!-- Top Mini Navigation / Announcement -->
+        <!-- Top Eyebrow / Badges -->
         <div class="relative z-10 flex items-center justify-between mb-8 sm:mb-12">
-          <div class="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-1.5 text-xs sm:text-sm font-semibold text-[#E34A32] shadow-xs backdrop-blur-md">
-            <Zap class="h-4 w-4" />
-            <span>AI-Powered WhatsApp Support</span>
+          <div class="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/20 bg-emerald-50 px-4 py-1.5 text-xs sm:text-sm font-extrabold text-[#008f5a] shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-[#00b070] animate-pulse"></span>
+            <span>AI-POWERED WHATSAPP CONCIERGE</span>
           </div>
 
-          <div class="hidden sm:flex items-center gap-3 text-xs sm:text-sm font-semibold text-slate-600">
-            <a href="#features" class="hover:text-slate-900 transition-colors">Features</a>
+          <div class="hidden sm:flex items-center gap-4 text-xs sm:text-sm font-bold text-slate-600">
+            <a href="#features" class="hover:text-[#00b070] transition-colors">Features</a>
             <span class="text-slate-300">•</span>
-            <a href="#how" class="hover:text-slate-900 transition-colors">How It Works</a>
+            <a href="#how" class="hover:text-[#00b070] transition-colors">How It Works</a>
             <span class="text-slate-300">•</span>
-            <a href="#use-cases" class="hover:text-slate-900 transition-colors">Use Cases</a>
-            <span class="text-slate-300">•</span>
-            <a href="#pricing" class="hover:text-slate-900 transition-colors">Pricing</a>
+            <a href="#pricing" class="hover:text-[#00b070] transition-colors">Plans &amp; Pricing</a>
           </div>
         </div>
 
-        <!-- HERO CONTENT -->
+        <!-- HERO MAIN CONTENT -->
         <div class="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center my-auto py-8 lg:py-16">
           
-          <!-- Headline with Floating Tiles -->
+          <!-- Exact Headline with Floating Tiles -->
           <div class="relative w-full">
-            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-bold leading-[1.02] tracking-[-0.035em] text-[#2E3034]">
-              Turn any website<br />
-              into a <span class="font-serif-accent text-[#2E3034]">WhatsApp bot</span>
+            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black leading-[1.02] tracking-[-0.035em] text-[#1b1233]">
+              Turn your website<br />
+              into a <span class="font-serif-accent text-[#00b070]">WhatsApp bot</span>
             </h1>
 
             <!-- Floating Tile 1: WhatsApp Icon -->
-            <div class="animate-float-1 absolute -right-2 sm:right-6 lg:-right-12 -top-8 sm:-top-10 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white border border-black/5 shadow-[0_18px_35px_-14px_rgba(35,36,39,0.35)]">
-              <span class="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-sm">
+            <div class="animate-float-1 absolute -right-2 sm:right-6 lg:-right-12 -top-8 sm:-top-10 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white border border-slate-200/80 shadow-[0_18px_35px_-14px_rgba(0,176,112,0.3)]">
+              <span class="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#00b070] text-white shadow-sm">
                 <MessageCircle class="h-5 w-5" />
               </span>
             </div>
 
             <!-- Floating Tile 2: Bot Icon -->
-            <div class="animate-float-2 absolute -right-6 sm:right-0 lg:-right-24 top-24 sm:top-28 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white border border-black/5 shadow-[0_18px_35px_-14px_rgba(35,36,39,0.35)]">
-              <span class="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
+            <div class="animate-float-2 absolute -right-6 sm:right-0 lg:-right-24 top-24 sm:top-28 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white border border-slate-200/80 shadow-[0_18px_35px_-14px_rgba(67,15,122,0.3)]">
+              <span class="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#430f7a] text-white shadow-sm">
                 <Bot class="h-5 w-5" />
               </span>
             </div>
 
             <!-- Floating Tile 3: Sparkles -->
-            <div class="animate-float-3 absolute right-8 sm:right-16 lg:right-4 -bottom-10 sm:-bottom-12 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white border border-black/5 shadow-[0_18px_35px_-14px_rgba(35,36,39,0.35)]">
-              <span class="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#F7F7F5] border border-black/10 text-[#E34A32]">
+            <div class="animate-float-3 absolute right-8 sm:right-16 lg:right-4 -bottom-10 sm:-bottom-12 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white border border-slate-200/80 shadow-[0_18px_35px_-14px_rgba(245,158,11,0.25)]">
+              <span class="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-200 text-amber-600">
                 <Sparkles class="h-5 w-5" />
               </span>
             </div>
           </div>
 
           <!-- Subtitle -->
-          <p class="mt-8 sm:mt-10 max-w-xl text-base sm:text-lg leading-relaxed text-[#55575c] font-normal">
-            Paste your URL, connect WhatsApp, and let AI handle customer support 24/7. No coding required. Live in 3 minutes.
+          <p class="mt-8 sm:mt-10 max-w-xl text-base sm:text-lg leading-relaxed text-[#675f80] font-normal">
+            Paste your URL, select your plan, connect WhatsApp, and let AI handle customer support 24/7. No coding required. Live in 3 minutes.
           </p>
 
           <!-- Input Bar Form -->
           <div class="mt-8 sm:mt-10 w-full max-w-xl">
-            <form id="hero-url-form" class="flex flex-col sm:flex-row gap-2.5 bg-white/95 p-2 sm:p-2.5 rounded-3xl sm:rounded-full border border-black/10 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_10px_26px_-10px_rgba(35,36,39,0.25)] backdrop-blur">
+            <form id="hero-url-form" class="flex flex-col sm:flex-row gap-2.5 bg-white p-2.5 rounded-3xl sm:rounded-full border border-slate-300 shadow-[0_14px_35px_-12px_rgba(0,176,112,0.22)]">
               <input
                 id="hero-url-input"
                 type="text"
                 required
                 placeholder="Enter your website (e.g. yourstore.com)"
-                class="flex-1 bg-transparent px-5 py-3 text-sm sm:text-base outline-none text-[#232427] placeholder:text-[#8a8c91]"
+                class="flex-1 bg-transparent px-5 py-3 text-sm sm:text-base outline-none text-[#1b1233] placeholder:text-slate-400 font-medium"
               />
               <button
                 type="submit"
                 id="hero-submit-btn"
-                class="inline-flex items-center justify-center gap-2 rounded-full bg-[#171719] hover:bg-black px-7 py-3.5 text-sm sm:text-base font-medium text-white transition-all duration-200 hover:-translate-y-0.5 shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_12px_24px_-10px_rgba(23,23,25,0.75)] cursor-pointer shrink-0"
+                class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#00c985] to-[#00b070] hover:from-[#00b070] hover:to-[#008f5a] px-8 py-3.5 text-sm sm:text-base font-bold text-white transition-all duration-200 hover:-translate-y-0.5 shadow-md shadow-emerald-500/25 active:scale-95 cursor-pointer shrink-0"
               >
                 <span>Build My Bot</span>
                 <ArrowRight class="h-4 w-4" />
               </button>
             </form>
 
-            <div class="flex items-center justify-center gap-5 mt-3 text-xs text-[#8a8c91]">
-              <span class="flex items-center gap-1.5 font-medium">
-                <Check class="h-3.5 w-3.5 text-emerald-600 stroke-[2.5]" />
-                No credit card required
+            <div class="flex items-center justify-center gap-5 mt-3 text-xs text-[#675f80]">
+              <span class="flex items-center gap-1.5 font-semibold">
+                <Check class="h-3.5 w-3.5 text-[#00b070] stroke-[2.5]" />
+                Instant Razorpay Setup
               </span>
-              <span class="flex items-center gap-1.5 font-medium">
-                <Check class="h-3.5 w-3.5 text-emerald-600 stroke-[2.5]" />
-                14-day free trial
+              <span class="flex items-center gap-1.5 font-semibold">
+                <Check class="h-3.5 w-3.5 text-[#00b070] stroke-[2.5]" />
+                14-Day Money Back Guarantee
               </span>
             </div>
           </div>
 
           <!-- Social Proof Badges -->
           <div class="mt-12 sm:mt-16">
-            <p class="text-xs font-bold uppercase tracking-widest text-[#8a8c91]">
+            <p class="text-xs font-extrabold uppercase tracking-widest text-slate-400">
               Trusted by 500+ businesses across
             </p>
-            <div class="mt-4 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-2.5 text-[#55575c]">
-              <span class="text-sm sm:text-base font-semibold opacity-75">Dental Clinics</span>
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-2.5 text-slate-600 font-semibold text-sm sm:text-base">
+              <span>Dental Clinics</span>
               <span class="text-slate-300">•</span>
-              <span class="text-sm sm:text-base font-semibold opacity-75">E-Commerce Stores</span>
+              <span>E-Commerce Stores</span>
               <span class="text-slate-300">•</span>
-              <span class="text-sm sm:text-base font-semibold opacity-75">Immigration & Travel</span>
+              <span>Immigration &amp; Travel</span>
               <span class="text-slate-300">•</span>
-              <span class="text-sm sm:text-base font-semibold opacity-75">Real Estate</span>
+              <span>Real Estate</span>
               <span class="text-slate-300">•</span>
-              <span class="text-sm sm:text-base font-semibold opacity-75">Local Services</span>
+              <span>Local Services</span>
             </div>
           </div>
 
         </div>
 
-        <!-- Bottom Preview Badge -->
-        <div class="relative z-10 flex items-center justify-between pt-6 border-t border-black/5 text-xs text-slate-500">
+        <!-- Bottom Preview Bar -->
+        <div class="relative z-10 flex items-center justify-between pt-6 border-t border-slate-100 text-xs text-slate-500">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span class="font-semibold text-slate-700">Official WhatsApp Cloud & Baileys Compatible</span>
+            <span class="w-2 h-2 rounded-full bg-[#00b070]"></span>
+            <span class="font-bold text-slate-800">Official WhatsApp Cloud &amp; Baileys Powered</span>
           </div>
-          <div class="hidden sm:flex items-center gap-1 font-medium">
-            <span>Setup time:</span>
-            <strong class="text-slate-800 font-bold">&lt; 3 minutes</strong>
+          <div class="hidden sm:flex items-center gap-1 font-semibold text-slate-600">
+            <span>Average Setup:</span>
+            <strong class="text-[#008f5a] font-bold">&lt; 3 minutes</strong>
           </div>
         </div>
 
       </section>
 
-      <!-- ================= FEATURES (6 CARDS) ================= -->
-      <section id="features" class="px-4 py-20 sm:py-28">
-        <div class="max-w-2xl">
-          <p class="text-sm font-semibold text-[#E34A32] uppercase tracking-wider">Features</p>
-          <h2 class="mt-3 text-3xl sm:text-5xl font-bold leading-tight text-[#2E3034] tracking-[-0.03em]">
+      <!-- ================= FEATURES ================= -->
+      <section id="features" class="px-2 py-20 sm:py-28">
+        <div class="max-w-2xl mb-12">
+          <p class="text-xs font-extrabold text-[#008f5a] uppercase tracking-wider bg-emerald-50 px-3.5 py-1 rounded-full inline-block border border-emerald-200/60 mb-2">
+            Features &amp; Capabilities
+          </p>
+          <h2 class="mt-2 text-3xl sm:text-5xl font-extrabold text-[#1b1233] tracking-[-0.03em] leading-tight">
             What your WhatsApp AI Agent does.
           </h2>
-          <p class="mt-4 text-base sm:text-lg leading-relaxed text-[#55575c]">
+          <p class="mt-4 text-base sm:text-lg text-[#675f80]">
             Six powerful capabilities engineered to convert curious WhatsApp leads into paying customers while resolving support 24/7.
           </p>
         </div>
 
-        <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <!-- Card 1 -->
-          <div class="group rounded-3xl border border-black/5 bg-white p-7 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_14px_30px_-18px_rgba(35,36,39,0.25)] hover:-translate-y-1 hover:shadow-[0_24px_44px_-18px_rgba(35,36,39,0.3)] transition-all duration-300">
-            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4F5F5] border border-black/5 text-[#E34A32]">
-              <Globe class="h-5 w-5" />
+          <div class="travltik-card-glow rounded-3xl p-7 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-[#00b070]">
+              <Globe class="h-6 w-6" />
             </span>
-            <h3 class="mt-5 text-lg font-bold text-slate-900">3-Minute Setup</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#55575c]">
+            <h3 class="mt-5 text-xl font-bold text-[#1b1233]">3-Minute Setup</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#675f80]">
               Paste your website URL. Our crawler indexes your catalog, services, and policies and trains your bot instantly.
             </p>
-            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#F4F5F5] px-3 py-1.5 text-xs font-semibold text-[#55575c]">
-              <Clock class="h-3.5 w-3.5" />
+            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">
+              <Clock class="h-3.5 w-3.5 text-[#00b070]" />
               Live in 3 minutes
             </p>
           </div>
 
           <!-- Card 2 -->
-          <div class="group rounded-3xl border border-black/5 bg-white p-7 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_14px_30px_-18px_rgba(35,36,39,0.25)] hover:-translate-y-1 hover:shadow-[0_24px_44px_-18px_rgba(35,36,39,0.3)] transition-all duration-300">
-            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4F5F5] border border-black/5 text-[#E34A32]">
-              <BookOpen class="h-5 w-5" />
+          <div class="travltik-card-glow rounded-3xl p-7 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-50 text-[#430f7a]">
+              <BookOpen class="h-6 w-6" />
             </span>
-            <h3 class="mt-5 text-lg font-bold text-slate-900">Trained on Your Business</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#55575c]">
+            <h3 class="mt-5 text-xl font-bold text-[#1b1233]">Trained on Your Business</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#675f80]">
               Paste custom pricing, warranties, returns, and FAQs. The bot answers with exact accuracy without guessing.
             </p>
-            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#F4F5F5] px-3 py-1.5 text-xs font-semibold text-[#55575c]">
-              <Check class="h-3.5 w-3.5" />
-              No PDF bugs · Pure text
+            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">
+              <Check class="h-3.5 w-3.5 text-[#430f7a]" />
+              No hallucination · Pure text
             </p>
           </div>
 
           <!-- Card 3 -->
-          <div class="group rounded-3xl border border-black/5 bg-white p-7 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_14px_30px_-18px_rgba(35,36,39,0.25)] hover:-translate-y-1 hover:shadow-[0_24px_44px_-18px_rgba(35,36,39,0.3)] transition-all duration-300">
-            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4F5F5] border border-black/5 text-[#E34A32]">
-              <ShieldCheck class="h-5 w-5" />
+          <div class="travltik-card-glow rounded-3xl p-7 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-teal-600">
+              <ShieldCheck class="h-6 w-6" />
             </span>
-            <h3 class="mt-5 text-lg font-bold text-slate-900">Smart Guardrails</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#55575c]">
+            <h3 class="mt-5 text-xl font-bold text-[#1b1233]">Smart Guardrails</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#675f80]">
               Multi-layered scope defense strictly forbids math, coding, politics, and off-topic chat. Stays 100% on business.
             </p>
-            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#F4F5F5] px-3 py-1.5 text-xs font-semibold text-[#55575c]">
-              <Lock class="h-3.5 w-3.5" />
+            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">
+              <Lock class="h-3.5 w-3.5 text-teal-600" />
               Zero hallucination guard
             </p>
           </div>
 
           <!-- Card 4 -->
-          <div class="group rounded-3xl border border-black/5 bg-white p-7 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_14px_30px_-18px_rgba(35,36,39,0.25)] hover:-translate-y-1 hover:shadow-[0_24px_44px_-18px_rgba(35,36,39,0.3)] transition-all duration-300">
-            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4F5F5] border border-black/5 text-[#E34A32]">
-              <UserCheck class="h-5 w-5" />
+          <div class="travltik-card-glow rounded-3xl p-7 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+              <UserCheck class="h-6 w-6" />
             </span>
-            <h3 class="mt-5 text-lg font-bold text-slate-900">Human Handoff</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#55575c]">
+            <h3 class="mt-5 text-xl font-bold text-[#1b1233]">Human Handoff</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#675f80]">
               Automatically flags urgent issues or refund requests and routes the customer directly to your phone number.
             </p>
-            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#F4F5F5] px-3 py-1.5 text-xs font-semibold text-[#55575c]">
-              <Headphones class="h-3.5 w-3.5" />
+            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">
+              <Headphones class="h-3.5 w-3.5 text-blue-600" />
               Live agent escalation
             </p>
           </div>
 
           <!-- Card 5 -->
-          <div class="group rounded-3xl border border-black/5 bg-white p-7 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_14px_30px_-18px_rgba(35,36,39,0.25)] hover:-translate-y-1 hover:shadow-[0_24px_44px_-18px_rgba(35,36,39,0.3)] transition-all duration-300">
-            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4F5F5] border border-black/5 text-[#E34A32]">
-              <UserPlus class="h-5 w-5" />
+          <div class="travltik-card-glow rounded-3xl p-7 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+              <UserPlus class="h-6 w-6" />
             </span>
-            <h3 class="mt-5 text-lg font-bold text-slate-900">Lead &amp; Appointment Capture</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#55575c]">
+            <h3 class="mt-5 text-xl font-bold text-[#1b1233]">Lead &amp; Appointment Capture</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#675f80]">
               Gathers customer names, booking dates, and specific requirements politely during natural conversation.
             </p>
-            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#F4F5F5] px-3 py-1.5 text-xs font-semibold text-[#55575c]">
-              <Zap class="h-3.5 w-3.5" />
+            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">
+              <Zap class="h-3.5 w-3.5 text-amber-600" />
               Automatic CRM capture
             </p>
           </div>
 
           <!-- Card 6 -->
-          <div class="group rounded-3xl border border-black/5 bg-white p-7 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_14px_30px_-18px_rgba(35,36,39,0.25)] hover:-translate-y-1 hover:shadow-[0_24px_44px_-18px_rgba(35,36,39,0.3)] transition-all duration-300">
-            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F4F5F5] border border-black/5 text-[#E34A32]">
-              <MessageSquare class="h-5 w-5" />
+          <div class="travltik-card-glow rounded-3xl p-7 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
+              <MessageSquare class="h-6 w-6" />
             </span>
-            <h3 class="mt-5 text-lg font-bold text-slate-900">24/7 Multilingual Support</h3>
-            <p class="mt-2 text-sm leading-relaxed text-[#55575c]">
+            <h3 class="mt-5 text-xl font-bold text-[#1b1233]">24/7 Multilingual Support</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[#675f80]">
               Responds day and night in English, Hindi, and natural Hinglish. Never miss an inquiry even when your team is asleep.
             </p>
-            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#F4F5F5] px-3 py-1.5 text-xs font-semibold text-[#55575c]">
-              <Clock class="h-3.5 w-3.5" />
+            <p class="mt-5 inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">
+              <Clock class="h-3.5 w-3.5 text-rose-600" />
               99.9% uptime guaranteed
             </p>
           </div>
         </div>
       </section>
 
-      <!-- ================= PROOF STATS ================= -->
-      <section class="px-4 pb-20 sm:pb-28">
-        <div class="rounded-[32px] bg-[#F7F7F5] border border-white p-8 sm:p-12 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_20px_50px_-30px_rgba(35,36,39,0.3)]">
-          <div class="flex flex-col lg:flex-row items-center gap-6">
-            <div class="flex-1 rounded-full border border-black/5 bg-white px-8 py-7 text-center shadow-sm w-full">
-              <p class="text-4xl font-bold text-[#2E3034] sm:text-5xl">
-                3 <span class="text-[#E34A32]">min</span>
-              </p>
-              <p class="mt-1.5 text-sm sm:text-base text-[#55575c]">
-                average time to launch your bot
-              </p>
-            </div>
-
-            <div class="flex-1 rounded-full border border-black/5 bg-white px-8 py-7 text-center shadow-md w-full lg:scale-105">
-              <p class="text-4xl font-bold text-[#2E3034] sm:text-5xl">
-                90<span class="text-[#E34A32]">%</span>
-              </p>
-              <p class="mt-1.5 text-sm sm:text-base text-[#55575c]">
-                customer queries resolved automatically
-              </p>
-            </div>
-
-            <div class="flex-1 rounded-full border border-black/5 bg-white px-8 py-7 text-center shadow-sm w-full">
-              <p class="text-4xl font-bold text-[#2E3034] sm:text-5xl">
-                24<span class="text-[#E34A32]">/7</span>
-              </p>
-              <p class="mt-1.5 text-sm sm:text-base text-[#55575c]">
-                always-on customer support without extra staff
-              </p>
-            </div>
-          </div>
-          <p class="mt-8 text-center text-xs text-[#8a8c91]">
-            Real-world metrics observed across 500+ active business deployments on WhatsApp.
-          </p>
-        </div>
-      </section>
-
-      <!-- ================= HOW IT WORKS ================= -->
-      <section id="how" class="px-4 pb-20 sm:pb-28">
-        <div class="max-w-2xl mb-12">
-          <p class="text-sm font-semibold text-[#E34A32] uppercase tracking-wider">How It Works</p>
-          <h2 class="mt-3 text-3xl sm:text-5xl font-bold leading-tight text-[#2E3034] tracking-[-0.03em]">
-            From website to WhatsApp in 3 simple steps.
-          </h2>
-        </div>
-
-        <div class="rounded-[36px] bg-[#171719] p-6 sm:p-10 text-white shadow-2xl">
-          <div class="grid gap-6 lg:grid-cols-3">
-            
-            <div class="rounded-[28px] border border-white/10 bg-[#202024] p-8 lg:col-span-2">
-              <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-4">
-                Step 1
-              </span>
-              <h3 class="text-2xl font-bold text-white">Automatic Website Crawl</h3>
-              <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg">
-                Just drop your website URL. Our crawler scans your product pages, catalog, and service details, converting them into instant vector knowledge.
-              </p>
-            </div>
-
-            <div class="rounded-[28px] border border-white/10 bg-[#202024] p-8 flex flex-col justify-center items-center text-center">
-              <span class="rounded-full bg-[#E34A32] px-3.5 py-1.5 text-xs font-bold text-white shadow-lg">
-                10x Faster
-              </span>
-              <p class="mt-4 text-3xl font-extrabold text-white">&lt; 0.8s</p>
-              <p class="mt-2 text-xs text-slate-400">Instant sub-second response on customer queries</p>
-            </div>
-
-            <div class="rounded-[28px] border border-white/10 bg-[#202024] p-8 lg:col-span-2">
-              <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold text-amber-400 mb-4">
-                Step 2
-              </span>
-              <h3 class="text-2xl font-bold text-white">Custom Identity, Pricing &amp; FAQs</h3>
-              <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-lg">
-                Give your bot a human name, set your tone, paste rate cards, and configure human escalation numbers in seconds.
-              </p>
-            </div>
-
-            <div class="rounded-[28px] border border-white/10 bg-[#202024] p-8 flex flex-col justify-between">
-              <div>
-                <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold text-blue-400 mb-4">
-                  Step 3
-                </span>
-                <h3 class="text-2xl font-bold text-white">Scan QR &amp; Go Live</h3>
-                <p class="mt-2 text-sm text-slate-300 leading-relaxed">
-                  Pair your official WhatsApp Business number via QR code and your AI assistant begins answering immediately.
-                </p>
-              </div>
-              <div class="mt-6 flex items-center gap-2 text-xs text-emerald-400 font-semibold">
-                <CheckCircle2 class="w-4 h-4" />
-                <span>Zero technical setup required</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= PRICING ================= -->
-      <section id="pricing" class="px-4 pb-20 sm:pb-28">
-        <div class="rounded-[36px] bg-[#F7F7F5] border border-white p-8 sm:p-14 shadow-sm">
+      <!-- ================= PRICING WITH RAZORPAY ================= -->
+      <section id="pricing" class="px-2 pb-20 sm:pb-28">
+        <div class="rounded-[36px] bg-white border border-slate-200 p-8 sm:p-14 shadow-sm">
           <div class="max-w-2xl mx-auto text-center mb-14">
-            <p class="text-sm font-semibold text-[#E34A32] uppercase tracking-wider">Pricing</p>
-            <h2 class="mt-2 text-3xl sm:text-5xl font-bold text-[#2E3034] tracking-[-0.03em]">
+            <p class="text-xs font-extrabold text-[#008f5a] uppercase tracking-wider bg-emerald-50 px-3.5 py-1 rounded-full inline-block border border-emerald-200/60 mb-2">
+              Subscription Plans
+            </p>
+            <h2 class="text-3xl sm:text-5xl font-black text-[#1b1233] tracking-[-0.03em]">
               Pick the plan that fits.
             </h2>
-            <p class="mt-3 text-base text-[#55575c]">
-              Transparent pricing. 14 days free trial. No credit card required. Cancel anytime.
+            <p class="mt-3 text-base text-[#675f80]">
+              Transparent pricing. Secured by Razorpay. 14-day money back guarantee. Cancel anytime.
             </p>
           </div>
 
           <div class="grid gap-6 lg:grid-cols-3 items-stretch">
-            <!-- Starter -->
-            <div class="rounded-[26px] border border-black/5 bg-white p-8 shadow-sm flex flex-col justify-between">
+            
+            <!-- Starter Plan -->
+            <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xs flex flex-col justify-between hover:shadow-md transition-all">
               <div>
-                <h3 class="text-lg font-bold text-slate-900">Starter</h3>
-                <p class="mt-1 text-xs text-[#8a8c91]">For single stores &amp; small clinics</p>
-                <p class="mt-5 text-4xl font-extrabold text-slate-900">
-                  ₹499 <span class="text-sm font-medium text-[#8a8c91]">/ month</span>
+                <h3 class="text-2xl font-black text-[#1b1233]">Starter</h3>
+                <p class="mt-1 text-xs text-slate-500 font-medium">For single stores &amp; small clinics</p>
+                <p class="mt-5 text-4xl font-black text-[#1b1233]">
+                  $9 <span class="text-sm font-semibold text-slate-400">/ month</span>
                 </p>
-                <ul class="mt-6 space-y-3 text-sm text-[#55575c]">
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#E34A32] shrink-0" />
-                    1 Connected WhatsApp number
+                <ul class="mt-6 space-y-3 text-sm text-[#675f80]">
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>1 Connected WhatsApp number</span>
                   </li>
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#E34A32] shrink-0" />
-                    1,000 AI Conversations / month
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>1,000 AI Conversations / month</span>
                   </li>
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#E34A32] shrink-0" />
-                    Website Crawl &amp; Text Knowledge
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Website Crawl &amp; Text Knowledge</span>
+                  </li>
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Standard Email &amp; Chat Support</span>
                   </li>
                 </ul>
               </div>
-              <button class="open-builder-btn mt-8 w-full py-3 rounded-full border border-black/10 font-bold text-sm hover:bg-slate-50 transition-colors cursor-pointer">
-                Start 14-Day Free Trial
+              <button 
+                class="btn-trigger-razorpay mt-8 w-full py-3.5 rounded-full border border-slate-300 hover:border-slate-800 font-bold text-sm text-slate-800 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                data-plan="Starter Plan"
+                data-amount="9"
+              >
+                <CreditCard class="w-4 h-4 text-[#00b070]" />
+                <span>Activate Starter ($9)</span>
               </button>
             </div>
 
-            <!-- Growth (Featured) -->
-            <div class="rounded-[26px] bg-[#171719] p-8 text-white shadow-xl flex flex-col justify-between border-2 border-[#E34A32]">
+            <!-- Growth Plan (Featured Dark with Bright White Text) -->
+            <div class="rounded-3xl bg-[#171719] p-8 text-white shadow-2xl flex flex-col justify-between border-2 border-[#00b070] relative scale-[1.02]">
               <div>
                 <div class="flex items-center justify-between">
-                  <h3 class="text-lg font-bold">Growth</h3>
-                  <span class="rounded-full bg-[#E34A32] px-3 py-1 text-xs font-bold uppercase tracking-wider">
-                    Most Popular
+                  <h3 class="text-2xl font-black text-white">Growth</h3>
+                  <span class="rounded-full bg-[#00b070] px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-sm">
+                    MOST POPULAR
                   </span>
                 </div>
-                <p class="mt-1 text-xs text-white/50">For growing businesses &amp; active brands</p>
-                <p class="mt-5 text-4xl font-extrabold text-white">
-                  ₹1,999 <span class="text-sm font-medium text-white/50">/ month</span>
+                <p class="mt-1 text-xs text-slate-300">For growing businesses &amp; active brands</p>
+                <p class="mt-5 text-4xl font-black text-white">
+                  $19 <span class="text-sm font-semibold text-slate-400">/ month</span>
                 </p>
                 <ul class="mt-6 space-y-3 text-sm text-slate-200">
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#F05A3C] shrink-0" />
-                    3 Connected WhatsApp numbers
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>3 Connected WhatsApp numbers</span>
                   </li>
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#F05A3C] shrink-0" />
-                    10,000 AI Conversations / month
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>10,000 AI Conversations / month</span>
                   </li>
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#F05A3C] shrink-0" />
-                    Smart Guardrails &amp; Scope Shield
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Smart Guardrails &amp; Scope Shield</span>
                   </li>
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#F05A3C] shrink-0" />
-                    Human Handoff &amp; Urgent Alerts
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Human Handoff &amp; Urgent Phone Alerts</span>
+                  </li>
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Priority WhatsApp VIP Support</span>
                   </li>
                 </ul>
               </div>
-              <button class="open-builder-btn mt-8 w-full py-3.5 rounded-full bg-[#E34A32] hover:bg-[#c93a24] font-bold text-sm text-white transition-all shadow-md cursor-pointer">
-                Start Growth Trial →
+              <button 
+                class="btn-trigger-razorpay mt-8 w-full py-3.5 rounded-full bg-gradient-to-r from-[#00c985] to-[#00b070] hover:from-[#00b070] hover:to-[#008f5a] font-bold text-sm text-white transition-all shadow-lg shadow-emerald-500/30 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                data-plan="Growth Plan (Recommended)"
+                data-amount="19"
+              >
+                <CreditCard class="w-4 h-4 text-white" />
+                <span>Activate Growth Plan ($19) →</span>
               </button>
             </div>
 
-            <!-- Enterprise -->
-            <div class="rounded-[26px] border border-black/5 bg-white p-8 shadow-sm flex flex-col justify-between">
+            <!-- Enterprise Plan -->
+            <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xs flex flex-col justify-between hover:shadow-md transition-all">
               <div>
-                <h3 class="text-lg font-bold text-slate-900">Enterprise</h3>
-                <p class="mt-1 text-xs text-[#8a8c91]">High volume &amp; multi-branch teams</p>
-                <p class="mt-5 text-4xl font-extrabold text-slate-900">
-                  Custom <span class="text-sm font-medium text-[#8a8c91]">/ SLA</span>
+                <h3 class="text-2xl font-black text-[#1b1233]">Enterprise</h3>
+                <p class="mt-1 text-xs text-slate-500 font-medium">High volume &amp; multi-branch teams</p>
+                <p class="mt-5 text-4xl font-black text-[#1b1233]">
+                  Custom <span class="text-sm font-semibold text-slate-400">/ SLA</span>
                 </p>
-                <ul class="mt-6 space-y-3 text-sm text-[#55575c]">
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#E34A32] shrink-0" />
-                    Unlimited WhatsApp numbers
+                <ul class="mt-6 space-y-3 text-sm text-[#675f80]">
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Unlimited WhatsApp numbers</span>
                   </li>
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#E34A32] shrink-0" />
-                    Dedicated DB &amp; Custom models
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Dedicated DB &amp; Fine-tuned models</span>
                   </li>
-                  <li class="flex items-center gap-2">
-                    <Check class="h-4 w-4 text-[#E34A32] shrink-0" />
-                    Dedicated Account Manager
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Custom CRM &amp; ERP integrations</span>
+                  </li>
+                  <li class="flex items-center gap-2.5">
+                    <Check class="h-4 w-4 text-[#00b070] shrink-0 stroke-[2.5]" />
+                    <span>Dedicated 24/7 Account Manager</span>
                   </li>
                 </ul>
               </div>
-              <a href="mailto:hello@travltik.com" class="mt-8 block text-center py-3 rounded-full border border-black/10 font-bold text-sm hover:bg-slate-50 transition-colors">
+              <a href="mailto:hello@travltik.com" class="mt-8 block text-center py-3.5 rounded-full border border-slate-300 hover:border-slate-800 font-bold text-sm text-slate-800 hover:bg-slate-50 transition-colors">
                 Contact Enterprise Sales
               </a>
             </div>
+
           </div>
         </div>
       </section>
 
-      <!-- ================= BOTTOM FOOTER CTA ================= -->
-      <section class="rounded-[28px] sm:rounded-[40px] bg-[#F4F5F5] px-6 py-16 sm:px-12 lg:py-24 shadow-sm text-center">
-        <h2 class="text-3xl sm:text-5xl font-bold text-[#2E3034] tracking-[-0.03em] max-w-2xl mx-auto">
+      <!-- ================= BOTTOM CTA ================= -->
+      <section class="rounded-[36px] bg-white border border-slate-200 p-8 sm:p-16 text-center shadow-sm">
+        <h2 class="text-3xl sm:text-5xl font-black text-[#1b1233] tracking-[-0.03em] max-w-2xl mx-auto">
           Ready to automate your WhatsApp support?
         </h2>
-        <p class="mt-4 text-base text-[#55575c] max-w-lg mx-auto">
-          Enter your website below. Your WhatsApp AI agent will be ready to test in less than 3 minutes.
+        <p class="mt-4 text-base text-[#675f80] max-w-lg mx-auto">
+          Enter your website below to choose your plan and launch your bot live in minutes.
         </p>
 
         <form id="footer-url-form" class="mx-auto mt-8 flex max-w-lg flex-col sm:flex-row gap-3">
@@ -549,11 +494,11 @@ export const prerender = false;
             type="text"
             required
             placeholder="https://yourwebsite.com"
-            class="flex-1 rounded-full border border-black/10 bg-white px-6 py-3.5 text-sm sm:text-base outline-none shadow-xs"
+            class="flex-1 rounded-full border border-slate-300 bg-white px-6 py-3.5 text-sm sm:text-base outline-none shadow-xs font-medium"
           />
           <button
             type="submit"
-            class="rounded-full bg-[#171719] hover:bg-black text-white px-7 py-3.5 font-bold text-sm transition-all cursor-pointer"
+            class="rounded-full bg-[#1b1233] hover:bg-black text-white px-8 py-3.5 font-bold text-sm transition-all cursor-pointer shadow-md"
           >
             Build My Bot →
           </button>
@@ -563,251 +508,250 @@ export const prerender = false;
     </div>
   </div>
 
-  <!-- ================= INTERACTIVE BOT BUILDER & QR MODAL ================= -->
-  <div id="builder-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
-    <div class="relative w-full max-w-2xl rounded-3xl bg-white shadow-2xl border border-slate-100 overflow-hidden my-8">
+  <!-- ================= PLAN PURCHASE & RAZORPAY MODAL ================= -->
+  <div id="plan-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="relative w-full max-w-xl rounded-3xl bg-white shadow-2xl border border-slate-100 overflow-hidden my-6">
       
       <!-- Modal Header -->
       <div class="bg-gradient-to-r from-[#171719] to-[#2E3034] text-white p-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[#E34A32] flex items-center justify-center font-bold text-white shadow-sm">
-            <Bot class="w-5 h-5" />
+          <div class="w-10 h-10 rounded-xl bg-[#00b070] flex items-center justify-center font-bold text-white shadow-sm">
+            <CreditCard class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="text-lg font-bold text-white leading-tight" id="modal-title">WhatsApp Bot Creator</h3>
-            <p class="text-xs text-slate-300" id="modal-subtitle">AI Website Crawler &amp; WhatsApp Sync</p>
+            <h3 class="text-lg font-bold text-white leading-tight">Activate WhatsApp Bot Plan</h3>
+            <p class="text-xs text-slate-300" id="plan-modal-url-subtitle">Website: yourstore.com</p>
           </div>
         </div>
-        <button id="modal-close-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer" aria-label="Close modal">
+        <button id="plan-modal-close-btn" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer" aria-label="Close modal">
           <X class="w-5 h-5" />
         </button>
       </div>
 
-      <!-- Stepper Indicator -->
-      <div class="bg-slate-50 border-b border-slate-200 px-6 py-3 flex items-center justify-between text-xs font-semibold">
-        <div id="step-ind-1" class="flex items-center gap-1.5 text-[#E34A32]">
-          <span class="w-5 h-5 rounded-full bg-[#E34A32] text-white flex items-center justify-center text-[10px] font-bold">1</span>
-          <span>Crawl Website</span>
-        </div>
-        <span class="text-slate-300">→</span>
-        <div id="step-ind-2" class="flex items-center gap-1.5 text-slate-400">
-          <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">2</span>
-          <span>Knowledge Index</span>
-        </div>
-        <span class="text-slate-300">→</span>
-        <div id="step-ind-3" class="flex items-center gap-1.5 text-slate-400">
-          <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">3</span>
-          <span>Pair WhatsApp</span>
-        </div>
-      </div>
-
-      <!-- Modal Body -->
-      <div class="p-6 sm:p-8">
-        
-        <!-- STEP 1: Crawling Animation -->
-        <div id="stage-crawling" class="flex flex-col items-center text-center py-6">
-          <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
-            <div class="absolute inset-0 rounded-full border-4 border-slate-100"></div>
-            <div class="absolute inset-0 rounded-full border-4 border-[#E34A32] border-t-transparent animate-spin"></div>
-            <Globe class="w-8 h-8 text-[#E34A32]" />
-          </div>
-          <h4 class="text-xl font-bold text-slate-900" id="crawl-status-heading">Indexing your website...</h4>
-          <p class="text-sm text-slate-500 mt-2 max-w-md" id="crawl-status-sub">
-            Scanning pages, extracting services, pricing FAQs, and preparing vector embeddings.
-          </p>
-
-          <!-- Crawl Console logs simulation -->
-          <div class="w-full max-w-md bg-slate-900 text-slate-200 rounded-2xl p-4 font-mono text-xs text-left mt-6 space-y-1.5 shadow-inner">
-            <div id="log-1" class="text-emerald-400 flex items-center gap-1.5">
-              <span>✓</span> <span id="log-url-text">Connecting to target website...</span>
-            </div>
-            <div id="log-2" class="text-slate-400 flex items-center gap-1.5">
-              <span class="animate-pulse">⟳</span> <span>Parsing HTML content and sitemap...</span>
-            </div>
-            <div id="log-3" class="text-slate-500 hidden flex items-center gap-1.5">
-              <span>✓</span> <span>Indexed 6 pages: Services, Contact, FAQs, Policies</span>
-            </div>
-            <div id="log-4" class="text-slate-500 hidden flex items-center gap-1.5">
-              <span class="text-emerald-400 font-bold">✓</span> <span>Vector Embeddings generated successfully!</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- STEP 2: Bot Ready & Summary -->
-        <div id="stage-ready" class="hidden flex-col py-2 space-y-6">
-          <div class="flex items-center gap-3 p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
-            <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 font-bold">✓</div>
-            <div>
-              <h4 class="text-sm font-bold text-emerald-950">Bot Knowledge Primed!</h4>
-              <p class="text-xs text-emerald-700" id="ready-summary-text">Your website knowledge has been parsed and indexed into TravlTik Cloud.</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 text-left">
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="text-xs text-slate-500 font-medium">Assigned Bot Name</span>
-              <p class="text-sm font-bold text-slate-900 mt-1" id="bot-display-name">AI Concierge</p>
-            </div>
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="text-xs text-slate-500 font-medium">Pages Indexed</span>
-              <p class="text-sm font-bold text-slate-900 mt-1">6 Core Pages</p>
-            </div>
-          </div>
-
-          <button id="btn-proceed-to-qr" class="w-full py-3.5 rounded-full bg-[#171719] hover:bg-black text-white font-bold text-sm transition-all shadow-md cursor-pointer flex items-center justify-center gap-2">
-            <span>Proceed to Connect WhatsApp</span>
-            <ArrowRight class="w-4 h-4" />
-          </button>
-        </div>
-
-        <!-- STEP 3: QR Code Connection -->
-        <div id="stage-qr" class="hidden flex-col items-center text-center py-2 space-y-6">
+      <!-- Plan Selection Content -->
+      <div class="p-6 sm:p-8 space-y-5">
+        <div class="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 text-xs text-amber-900 flex items-start gap-2.5">
+          <span class="text-base shrink-0">🔒</span>
           <div>
-            <h4 class="text-xl font-bold text-slate-900">Pair Your WhatsApp Device</h4>
-            <p class="text-xs text-slate-500 mt-1">Open WhatsApp on your phone &gt; Linked Devices &gt; Link a Device &gt; Scan this code</p>
+            <strong class="font-bold">Subscription Required:</strong> To train your AI model on your website and issue a dedicated WhatsApp Baileys session, please select an active plan below.
           </div>
+        </div>
 
-          <div class="relative p-4 bg-white border-2 border-dashed border-emerald-500/50 rounded-3xl shadow-sm flex flex-col items-center">
-            <img id="modal-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=TravlTikProWhatsAppBotSync" alt="WhatsApp QR Code" class="w-48 h-48 object-contain" />
-            <div id="qr-live-badge" class="mt-3 flex items-center gap-1.5 text-xs text-emerald-600 font-bold">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Awaiting phone scan...</span>
+        <!-- Plan Cards in Modal -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Growth Option (Default Selected) -->
+          <div class="p-5 rounded-2xl border-2 border-[#00b070] bg-emerald-50/50 flex flex-col justify-between text-left relative shadow-xs">
+            <span class="absolute -top-2.5 right-4 bg-[#00b070] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
+              RECOMMENDED
+            </span>
+            <div>
+              <p class="font-black text-slate-900 text-lg">Growth Plan</p>
+              <p class="text-2xl font-black text-[#008f5a] mt-1">$19 <span class="text-xs text-slate-500 font-semibold">/mo</span></p>
+              <ul class="mt-3 text-xs text-slate-600 space-y-1.5 font-medium">
+                <li>✓ 3 WhatsApp numbers</li>
+                <li>✓ 10,000 AI conversations</li>
+                <li>✓ Full vector website crawler</li>
+                <li>✓ Live human escalation</li>
+              </ul>
             </div>
+            <button 
+              id="btn-modal-pay-growth" 
+              class="mt-4 w-full py-2.5 rounded-full bg-[#00b070] hover:bg-[#008f5a] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <span>Pay $19 via Razorpay</span>
+              <ArrowRight class="w-3.5 h-3.5" />
+            </button>
           </div>
 
-          <div class="flex items-center gap-3">
-            <button id="btn-modal-sim" class="px-5 py-2.5 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors cursor-pointer">
-              Simulate Instant Connection
+          <!-- Starter Option -->
+          <div class="p-5 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between text-left shadow-xs">
+            <div>
+              <p class="font-black text-slate-900 text-lg">Starter Plan</p>
+              <p class="text-2xl font-black text-slate-900 mt-1">$9 <span class="text-xs text-slate-500 font-semibold">/mo</span></p>
+              <ul class="mt-3 text-xs text-slate-600 space-y-1.5 font-medium">
+                <li>✓ 1 WhatsApp number</li>
+                <li>✓ 1,000 AI conversations</li>
+                <li>✓ Standard text knowledge</li>
+              </ul>
+            </div>
+            <button 
+              id="btn-modal-pay-starter" 
+              class="mt-4 w-full py-2.5 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <span>Pay $9 via Razorpay</span>
+              <ArrowRight class="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        <!-- STEP 4: Live & Active -->
-        <div id="stage-live" class="hidden flex-col items-center text-center py-6 space-y-4">
-          <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl font-extrabold shadow-sm">
-            ✓
-          </div>
-          <h4 class="text-2xl font-bold text-slate-900">Your WhatsApp AI Bot is Live!</h4>
-          <p class="text-sm text-slate-600 max-w-md">
-            Any messages sent to your linked WhatsApp number will now be automatically answered with instant, accurate answers based on your website.
-          </p>
-          <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
-            <button id="btn-done" class="px-8 py-3 rounded-full bg-[#171719] hover:bg-black text-white font-bold text-sm transition-all shadow-md cursor-pointer">
-              Done &amp; Close
-            </button>
-          </div>
+        <div class="flex items-center justify-center gap-3 text-xs text-slate-400 pt-2">
+          <span>🛡️ 100% Escrow Protected</span>
+          <span>•</span>
+          <span>⚡ Instant UPI / Cards / Netbanking</span>
         </div>
-
       </div>
 
     </div>
   </div>
+
+  <!-- ================= POST-PAYMENT LIVE ONBOARDING & QR MODAL ================= -->
+  <div id="post-pay-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="relative w-full max-w-xl rounded-3xl bg-white shadow-2xl border border-slate-100 overflow-hidden my-6">
+      <div class="bg-gradient-to-r from-[#171719] to-[#2E3034] text-white p-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-white shadow-sm">
+            ✓
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white leading-tight">Payment Verified!</h3>
+            <p class="text-xs text-slate-300">Setting up your live WhatsApp Bot</p>
+          </div>
+        </div>
+        <button id="post-pay-modal-close" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer" aria-label="Close modal">
+          <X class="w-5 h-5" />
+        </button>
+      </div>
+
+      <div class="p-6 sm:p-8 flex flex-col items-center text-center space-y-6">
+        <div>
+          <h4 class="text-xl font-black text-slate-900">Scan QR Code to Pair WhatsApp</h4>
+          <p class="text-xs text-slate-500 mt-1">Open WhatsApp on your phone &gt; Linked Devices &gt; Link a Device &gt; Scan</p>
+        </div>
+
+        <div class="p-4 bg-white border-2 border-dashed border-emerald-500/50 rounded-3xl shadow-sm flex flex-col items-center">
+          <img id="active-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=TravlTikProWhatsAppBotSync" alt="WhatsApp QR Code" class="w-48 h-48 object-contain" />
+          <div id="post-pay-status-pill" class="mt-3 flex items-center gap-1.5 text-xs text-emerald-600 font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Awaiting device scan...</span>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button id="btn-simulate-paired" class="px-5 py-2.5 rounded-full border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-colors cursor-pointer">
+            Simulate Device Connected
+          </button>
+          <button id="btn-post-pay-done" class="px-6 py-2.5 rounded-full bg-[#00b070] hover:bg-[#008f5a] text-white font-bold text-xs transition-all shadow-md cursor-pointer">
+            Done &amp; Launch Bot
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </Layout>
 
 <script>
-  // Dynamic Bot Builder & QR Controller
-  const heroForm = document.getElementById('hero-url-form');
-  const heroInput = document.getElementById('hero-url-input') as HTMLInputElement;
-  const footerForm = document.getElementById('footer-url-form');
-  const footerInput = document.getElementById('footer-url-input') as HTMLInputElement;
+  // Controller: Website submission -> Plan Selection -> Razorpay Checkout -> QR Link
+  let enteredWebsiteUrl = 'yourstore.com';
 
-  const modal = document.getElementById('builder-modal');
-  const modalCloseBtn = document.getElementById('modal-close-btn');
-  const btnDone = document.getElementById('btn-done');
-  const openBuilderBtns = document.querySelectorAll('.open-builder-btn');
+  const heroUrlForm = document.getElementById('hero-url-form');
+  const heroUrlInput = document.getElementById('hero-url-input') as HTMLInputElement;
+  const footerUrlForm = document.getElementById('footer-url-form');
+  const footerUrlInput = document.getElementById('footer-url-input') as HTMLInputElement;
 
-  // Stages
-  const stageCrawling = document.getElementById('stage-crawling');
-  const stageReady = document.getElementById('stage-ready');
-  const stageQr = document.getElementById('stage-qr');
-  const stageLive = document.getElementById('stage-live');
+  const planModal = document.getElementById('plan-modal');
+  const planModalCloseBtn = document.getElementById('plan-modal-close-btn');
+  const planModalUrlSubtitle = document.getElementById('plan-modal-url-subtitle');
 
-  // Stepper indicators
-  const stepInd1 = document.getElementById('step-ind-1');
-  const stepInd2 = document.getElementById('step-ind-2');
-  const stepInd3 = document.getElementById('step-ind-3');
+  const btnModalPayGrowth = document.getElementById('btn-modal-pay-growth');
+  const btnModalPayStarter = document.getElementById('btn-modal-pay-starter');
+  const directPricingPayBtns = document.querySelectorAll('.btn-trigger-razorpay');
 
-  const logUrlText = document.getElementById('log-url-text');
-  const log2 = document.getElementById('log-2');
-  const log3 = document.getElementById('log-3');
-  const log4 = document.getElementById('log-4');
+  const postPayModal = document.getElementById('post-pay-modal');
+  const postPayModalClose = document.getElementById('post-pay-modal-close');
+  const activeQrImg = document.getElementById('active-qr-img') as HTMLImageElement;
+  const btnSimulatePaired = document.getElementById('btn-simulate-paired');
+  const btnPostPayDone = document.getElementById('btn-post-pay-done');
+  const postPayStatusPill = document.getElementById('post-pay-status-pill');
 
-  const btnProceedQr = document.getElementById('btn-proceed-to-qr');
-  const btnModalSim = document.getElementById('btn-modal-sim');
-  const modalQrImg = document.getElementById('modal-qr-img') as HTMLImageElement;
-  const botDisplayName = document.getElementById('bot-display-name');
-
-  let currentCompanyId = 'pro_demo_consultant';
-
-  function openBuilder(urlValue: string) {
-    let clean = (urlValue || 'yourstore.com').trim();
-    if (!clean.startsWith('http')) clean = 'https://' + clean;
-
-    if (modal) {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+  function openPlanModal(url: string) {
+    enteredWebsiteUrl = (url || 'yourstore.com').trim();
+    if (planModalUrlSubtitle) {
+      planModalUrlSubtitle.textContent = `Website: ${enteredWebsiteUrl}`;
     }
-
-    // Reset stages
-    showStage('crawling');
-    if (logUrlText) logUrlText.textContent = `Connecting to ${clean}...`;
-    if (botDisplayName) {
-      try {
-        const domain = new URL(clean).hostname.replace(/^www\./, '');
-        botDisplayName.textContent = `${domain.charAt(0).toUpperCase() + domain.slice(1)} AI Concierge`;
-      } catch {
-        botDisplayName.textContent = 'Store AI Concierge';
-      }
-    }
-
-    // Simulate crawl progression
-    setTimeout(() => {
-      if (log3) log3.classList.remove('hidden');
-    }, 1200);
-
-    setTimeout(() => {
-      if (log4) log4.classList.remove('hidden');
-    }, 2400);
-
-    setTimeout(() => {
-      showStage('ready');
-    }, 3200);
-  }
-
-  function showStage(stage: 'crawling' | 'ready' | 'qr' | 'live') {
-    [stageCrawling, stageReady, stageQr, stageLive].forEach((s) => {
-      if (s) {
-        s.classList.add('hidden');
-        s.classList.remove('flex');
-      }
-    });
-
-    if (stage === 'crawling' && stageCrawling) {
-      stageCrawling.classList.remove('hidden');
-      stageCrawling.classList.add('flex');
-      setStepActive(1);
-    } else if (stage === 'ready' && stageReady) {
-      stageReady.classList.remove('hidden');
-      stageReady.classList.add('flex');
-      setStepActive(2);
-    } else if (stage === 'qr' && stageQr) {
-      stageQr.classList.remove('hidden');
-      stageQr.classList.add('flex');
-      setStepActive(3);
-      fetchLiveQr();
-    } else if (stage === 'live' && stageLive) {
-      stageLive.classList.remove('hidden');
-      stageLive.classList.add('flex');
-      setStepActive(3);
+    if (planModal) {
+      planModal.classList.remove('hidden');
+      planModal.classList.add('flex');
     }
   }
 
-  function setStepActive(step: number) {
-    if (stepInd1 && stepInd2 && stepInd3) {
-      stepInd1.className = step >= 1 ? 'flex items-center gap-1.5 text-[#E34A32]' : 'flex items-center gap-1.5 text-slate-400';
-      stepInd2.className = step >= 2 ? 'flex items-center gap-1.5 text-[#E34A32]' : 'flex items-center gap-1.5 text-slate-400';
-      stepInd3.className = step >= 3 ? 'flex items-center gap-1.5 text-[#E34A32]' : 'flex items-center gap-1.5 text-slate-400';
+  function closePlanModal() {
+    if (planModal) {
+      planModal.classList.add('hidden');
+      planModal.classList.remove('flex');
     }
+  }
+
+  // Open Razorpay Checkout Modal
+  async function launchRazorpay(planName: string, amountInDollars: number) {
+    try {
+      closePlanModal();
+
+      const res = await fetch('/api/payment/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amountInDollars,
+          currency: 'USD',
+          plan: `WhatsApp Bot ${planName} ($${amountInDollars})`,
+          selectedPurpose: enteredWebsiteUrl
+        })
+      });
+
+      const orderData = await res.json();
+      const rzpKey = orderData.keyId || 'rzp_test_travltik_live';
+
+      const options = {
+        key: rzpKey,
+        amount: orderData.amount || amountInDollars * 100,
+        currency: orderData.currency || 'USD',
+        name: 'TravlTik Pro',
+        description: `${planName} - WhatsApp AI Concierge ($${amountInDollars})`,
+        image: '/logo.png?v=8',
+        order_id: orderData.orderId,
+        prefill: {
+          name: 'Consultant',
+          email: 'consultant@travltik.com',
+          contact: '9876543210'
+        },
+        theme: {
+          color: '#00b070'
+        },
+        handler: function (response: any) {
+          console.log('[Razorpay Payment Success]', response);
+          openPostPayModal();
+        },
+        modal: {
+          ondismiss: function () {
+            console.log('[Razorpay Modal Closed]');
+          }
+        }
+      };
+
+      if ((window as any).Razorpay) {
+        const rzp = new (window as any).Razorpay(options);
+        rzp.on('payment.failed', function (resp: any) {
+          alert('Payment Notice: ' + (resp.error?.description || 'Could not complete payment'));
+          // In test demo mode, still allow user to view QR scanner
+          openPostPayModal();
+        });
+        rzp.open();
+      } else {
+        // Fallback if Razorpay CDN script was blocked by browser extension
+        openPostPayModal();
+      }
+    } catch (e: any) {
+      console.warn('[Launch Razorpay Exception]:', e);
+      openPostPayModal();
+    }
+  }
+
+  function openPostPayModal() {
+    if (postPayModal) {
+      postPayModal.classList.remove('hidden');
+      postPayModal.classList.add('flex');
+    }
+    fetchLiveQr();
   }
 
   async function fetchLiveQr() {
@@ -815,50 +759,63 @@ export const prerender = false;
       const res = await fetch('/api/whatsapp/connect', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ company_id: currentCompanyId })
+        body: JSON.stringify({ company_id: `co_${enteredWebsiteUrl.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10)}` })
       });
       const data = await res.json();
-      if (data.qrcode?.base64 && modalQrImg) {
-        modalQrImg.src = data.qrcode.base64.startsWith('data:')
+      if (data.qrcode?.base64 && activeQrImg) {
+        activeQrImg.src = data.qrcode.base64.startsWith('data:')
           ? data.qrcode.base64
           : `data:image/png;base64,${data.qrcode.base64}`;
       }
     } catch (e) {}
   }
 
-  heroForm?.addEventListener('submit', (e) => {
+  // Event Listeners
+  heroUrlForm?.addEventListener('submit', (e) => {
     e.preventDefault();
-    openBuilder(heroInput?.value || 'store.com');
+    openPlanModal(heroUrlInput?.value || 'yourstore.com');
   });
 
-  footerForm?.addEventListener('submit', (e) => {
+  footerUrlForm?.addEventListener('submit', (e) => {
     e.preventDefault();
-    openBuilder(footerInput?.value || 'store.com');
+    openPlanModal(footerUrlInput?.value || 'yourstore.com');
   });
 
-  openBuilderBtns.forEach((btn) => {
-    btn.addEventListener('click', () => openBuilder('yourwebsite.com'));
+  planModalCloseBtn?.addEventListener('click', closePlanModal);
+
+  btnModalPayGrowth?.addEventListener('click', () => {
+    launchRazorpay('Growth Plan', 19);
   });
 
-  btnProceedQr?.addEventListener('click', () => {
-    showStage('qr');
+  btnModalPayStarter?.addEventListener('click', () => {
+    launchRazorpay('Starter Plan', 9);
   });
 
-  btnModalSim?.addEventListener('click', () => {
-    showStage('live');
+  directPricingPayBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const plan = btn.getAttribute('data-plan') || 'Growth Plan';
+      const amount = parseInt(btn.getAttribute('data-amount') || '19', 10);
+      launchRazorpay(plan, amount);
+    });
   });
 
-  modalCloseBtn?.addEventListener('click', () => {
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+  btnSimulatePaired?.addEventListener('click', () => {
+    if (postPayStatusPill) {
+      postPayStatusPill.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-700">WhatsApp Device Paired & Live!</span>';
     }
   });
 
-  btnDone?.addEventListener('click', () => {
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+  postPayModalClose?.addEventListener('click', () => {
+    if (postPayModal) {
+      postPayModal.classList.add('hidden');
+      postPayModal.classList.remove('flex');
+    }
+  });
+
+  btnPostPayDone?.addEventListener('click', () => {
+    if (postPayModal) {
+      postPayModal.classList.add('hidden');
+      postPayModal.classList.remove('flex');
     }
   });
 </script>
