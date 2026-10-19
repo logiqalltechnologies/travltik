@@ -47,6 +47,10 @@ export const POST: APIRoute = async ({ request }) => {
       getEnvVar('NEXT_PUBLIC_RAZORPAY_KEY_ID') ||
       getEnvVar('PUBLIC_RAZORPAY_KEY_ID');
 
+    const keySecret =
+      getEnvVar('RAZORPAY_KEY_SECRET') ||
+      getEnvVar('RAZORPAY_SECRET');
+
     const rawAmount = Number(body.amount);
     const amountVal = (!isNaN(rawAmount) && rawAmount > 0) ? rawAmount : 5.00;
     const amountInSubunits = Math.round(amountVal * 100);
