@@ -10,6 +10,8 @@ import { ConsultantDashboard } from '../../components/interactive/ConsultantDash
   hideHeader={true}
   hideFooter={true}
 >
+  <!-- Razorpay Script for In-Dashboard Plan Activation -->
+  <script is:inline src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <!-- Mount client-only React expert dashboard island -->
   <ConsultantDashboard client:only="react" />
 </Layout>

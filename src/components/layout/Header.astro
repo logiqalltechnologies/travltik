@@ -79,8 +79,7 @@ const ICONS: Record<string, any> = {
                                     const IconComponent = child.icon ? ICONS[child.icon] : null;
                                     const isAiTools = item.label === "AI Tools";
                                     const showDivider = isAiTools && cIdx === 4;
-                                    const iconColor = child.href === "/biz/whatsapp" ? "text-emerald-500" :
-                                                     child.href === "/ai-tools" ? "text-amber-500" :
+                                    const iconColor = child.href === "/ai-tools" ? "text-amber-500" :
                                                      child.href === "/ai-tools/photo-resizer" ? "text-emerald-600" :
                                                      child.href === "/ai-tools/pdf-audit" ? "text-[#00a896]" :
                                                      child.href === "/ai-tools/sop-generator" ? "text-blue-600" :

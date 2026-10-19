@@ -22,7 +22,6 @@ export const MAIN_NAV: NavItem[] = [
     label: "AI Tools",
     href: "/ai-tools",
     children: [
-      { label: "WhatsApp AI Concierge", href: "/biz/whatsapp", icon: "MessageSquare", badge: "Pro" },
       { label: "Visa Photo Resizer", href: "/ai-tools/photo-resizer", icon: "Camera" },
       { label: "AI PDF Audit", href: "/ai-tools/pdf-audit", icon: "FileCheck2" },
       { label: "SOP Generator", href: "/ai-tools/sop-generator", icon: "FileText" },
