@@ -25,8 +25,6 @@ export const MAIN_NAV: NavItem[] = [
       { label: "Visa Photo Resizer", href: "/ai-tools/photo-resizer", icon: "Camera" },
       { label: "AI PDF Audit", href: "/ai-tools/pdf-audit", icon: "FileCheck2" },
       { label: "SOP Generator", href: "/ai-tools/sop-generator", icon: "FileText" },
-      { label: "CRS Points Calculator", href: "/ai-tools/crs-calculator", icon: "Compass" },
-      { label: "Immigration Eligibility Check", href: "/ai-tools/eligibility", icon: "Scale" },
     ],
   },
   {
@@ -55,4 +53,5 @@ export const FOOTER_NAV: NavItem[] = [
   { label: "Terms of Service", href: "/terms" },
   { label: "Trust Standards", href: "/trust" },
 ];
+
 
