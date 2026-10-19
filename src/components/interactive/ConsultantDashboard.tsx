@@ -1032,7 +1032,7 @@ export function ConsultantDashboard() {
                 </div>
 
                 {/* Main Content Workspace */}
-                <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 overflow-x-hidden">
+                <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden"><div className="max-w-7xl mx-auto space-y-6 w-full">
 
                     {/* Live Profile Listing Status Banners */}
                     {activeTab !== "work-permit" && (
@@ -2062,6 +2062,7 @@ export function ConsultantDashboard() {
                         </div>
                     )}
 
+                    </div>
                 </main>
             </div>
 
@@ -2522,3 +2523,4 @@ export function ConsultantDashboard() {
         </div>
     );
 }
+

@@ -2,178 +2,139 @@
 import Layout from '../../layouts/Layout.astro';
 ---
 
-<Layout title="TravlTik for Business — Claim & Manage Your Business">
+<Layout title="TravlTik for Business — Claim &amp; Manage Your Business">
   <div class="min-h-screen bg-white">
     
-    <!-- Yelp-Style Hero: Clean White Background -->
+    <!-- Hero -->
     <section class="bg-white border-b border-slate-100 py-20 px-4">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          <!-- LEFT: Text Content -->
           <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold tracking-wider uppercase mb-6">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light border border-brand/20 text-brand text-xs font-bold tracking-wider uppercase mb-6">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
               TravlTik for Business
             </div>
-            
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-[-0.03em] text-slate-900 mb-6 leading-tight">
               Claim your business.<br />Reach millions of travelers.
             </h1>
-            
             <p class="text-base text-slate-600 mb-8 leading-relaxed max-w-lg">
               Join thousands of verified consultants, universities, and agencies on TravlTik. Manage your profile, respond to reviews, and grow your business.
             </p>
-            
             <div class="flex flex-wrap items-center gap-3">
-              <a href="/biz/claim" class="px-6 py-3 bg-emerald-500 text-white rounded-xl font-bold text-sm hover:bg-emerald-600 transition-colors shadow-sm">
+              <a href="/biz/claim" class="bg-brand hover:bg-brand-hover text-white font-bold px-6 py-3 rounded-full transition-all shadow-sm active:scale-[0.98]">
                 Claim Your Business →
               </a>
-              <a href="/biz/login" class="px-6 py-3 border border-slate-300 text-slate-700 rounded-xl font-semibold text-sm hover:bg-slate-50 transition-colors">
+              <a href="/biz/login" class="px-6 py-3 border border-slate-300 text-slate-700 rounded-full font-semibold text-sm hover:bg-slate-50 transition-colors">
                 Business Login
               </a>
             </div>
-            
             <p class="text-xs text-slate-500 mt-6">
-              Already have an account? <a href="/biz/login" class="text-emerald-600 hover:underline font-semibold">Sign in</a>
+              Already have an account? <a href="/biz/login" class="text-brand hover:underline font-semibold">Sign in</a>
             </p>
           </div>
-
-          <!-- RIGHT: Visual (Yelp-style illustration) -->
           <div class="hidden lg:block">
-            <div class="bg-slate-50 rounded-2xl border border-slate-200 p-8 shadow-sm">
+            <div class="bg-slate-50 rounded-3xl border border-slate-200 p-8 shadow-sm">
               <div class="space-y-4">
-                <div class="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
-                  <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold">1</div>
+                <div class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                  <div class="w-10 h-10 rounded-xl bg-brand-light flex items-center justify-center text-brand font-bold">1</div>
                   <div>
                     <p class="text-sm font-bold text-slate-900">Find your business</p>
                     <p class="text-xs text-slate-500">Search or add your listing</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
-                  <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold">2</div>
+                <div class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                  <div class="w-10 h-10 rounded-xl bg-brand-light flex items-center justify-center text-brand font-bold">2</div>
                   <div>
                     <p class="text-sm font-bold text-slate-900">Verify ownership</p>
                     <p class="text-xs text-slate-500">Confirm via email</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-3 p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
-                  <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 font-bold">3</div>
+                <div class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                  <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 font-bold">3</div>
                   <div>
                     <p class="text-sm font-bold text-slate-900">Manage profile</p>
-                    <p class="text-xs text-slate-500">Respond to reviews & grow</p>
+                    <p class="text-xs text-slate-500">Respond to reviews and grow</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
 
-    <!-- Stats Strip (Yelp-style) -->
+    <!-- Stats Strip -->
     <section class="bg-slate-50 border-b border-slate-200 py-6">
-      <div class="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div>
-          <div class="text-2xl font-black text-slate-900">193+</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Countries</div>
-        </div>
-        <div>
-          <div class="text-2xl font-black text-slate-900">50K+</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Travelers</div>
-        </div>
-        <div>
-          <div class="text-2xl font-black text-slate-900">100%</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Escrow Protected</div>
-        </div>
-        <div>
-          <div class="text-2xl font-black text-slate-900">24/7</div>
-          <div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Support</div>
-        </div>
+      <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div><div class="text-2xl font-black text-slate-900">193+</div><div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Countries</div></div>
+        <div><div class="text-2xl font-black text-slate-900">50K+</div><div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Travelers</div></div>
+        <div><div class="text-2xl font-black text-slate-900">100%</div><div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Escrow Protected</div></div>
+        <div><div class="text-2xl font-black text-slate-900">24/7</div><div class="text-xs text-slate-500 mt-1 uppercase font-semibold tracking-wider">Support</div></div>
       </div>
     </section>
 
-    <!-- Features Section (Keep Existing) -->
+    <!-- Features -->
     <section class="py-20 px-4 bg-white">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-slate-900 text-center mb-4">
-          Everything you need to grow
-        </h2>
-        <p class="text-sm text-slate-500 text-center mb-12 max-w-2xl mx-auto">
-          Powerful tools to manage your business profile, engage with customers, and track performance.
-        </p>
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 text-center mb-4">Everything you need to grow</h2>
+        <p class="text-sm text-slate-500 text-center mb-12 max-w-2xl mx-auto">Powerful tools to manage your business profile, engage with customers, and track performance.</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+          <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-4">🎯</div>
             <h3 class="text-lg font-bold text-slate-900 mb-2">Reach Global Travelers</h3>
-            <p class="text-sm text-slate-500 leading-relaxed">
-              Connect with millions of travelers searching for visa and immigration services worldwide.
-            </p>
+            <p class="text-sm text-slate-500 leading-relaxed">Connect with millions of travelers searching for visa and immigration services worldwide.</p>
           </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
-            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4">🛡️</div>
+          <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-brand-light text-brand flex items-center justify-center text-2xl mb-4">🛡️</div>
             <h3 class="text-lg font-bold text-slate-900 mb-2">Escrow Protection</h3>
-            <p class="text-sm text-slate-500 leading-relaxed">
-              Get paid securely through milestone-based escrow releases. Zero payment risk.
-            </p>
+            <p class="text-sm text-slate-500 leading-relaxed">Get paid securely through milestone-based escrow releases. Zero payment risk.</p>
           </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+          <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-4">📊</div>
-            <h3 class="text-lg font-bold text-slate-900 mb-2">Analytics & Insights</h3>
-            <p class="text-sm text-slate-500 leading-relaxed">
-              Track profile views, leads, and conversions in real-time with detailed dashboards.
-            </p>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Analytics and Insights</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Track profile views, leads, and conversions in real-time with detailed dashboards.</p>
           </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+          <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center text-2xl mb-4">⭐</div>
             <h3 class="text-lg font-bold text-slate-900 mb-2">Respond to Reviews</h3>
-            <p class="text-sm text-slate-500 leading-relaxed">
-              Engage with your customers by responding to reviews publicly.
-            </p>
+            <p class="text-sm text-slate-500 leading-relaxed">Engage with your customers by responding to reviews publicly.</p>
           </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+          <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mb-4">🔒</div>
             <h3 class="text-lg font-bold text-slate-900 mb-2">Verified Badge</h3>
-            <p class="text-sm text-slate-500 leading-relaxed">
-              Get your profile verified to build trust with potential customers.
-            </p>
+            <p class="text-sm text-slate-500 leading-relaxed">Get your profile verified to build trust with potential customers.</p>
           </div>
-          <div class="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+          <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mb-4">💬</div>
             <h3 class="text-lg font-bold text-slate-900 mb-2">Lead Management</h3>
-            <p class="text-sm text-slate-500 leading-relaxed">
-              Receive and manage inquiries from potential clients in one place.
-            </p>
+            <p class="text-sm text-slate-500 leading-relaxed">Receive and manage inquiries from potential clients in one place.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- How It Works (Keep Existing) -->
+    <!-- How It Works -->
     <section class="py-20 px-4 bg-slate-50 border-y border-slate-200">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold text-slate-900 text-center mb-12">
-          How it works
-        </h2>
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 text-center mb-12">How it works</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div class="text-center">
-            <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
+            <div class="w-16 h-16 rounded-full bg-brand text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
             <h3 class="font-bold text-slate-900 mb-2">Find Your Business</h3>
-            <p class="text-xs text-slate-500">Search for your business or add it if it's not listed.</p>
+            <p class="text-xs text-slate-500">Search for your business or add it if not listed.</p>
           </div>
           <div class="text-center">
-            <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
+            <div class="w-16 h-16 rounded-full bg-brand text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
             <h3 class="font-bold text-slate-900 mb-2">Verify Ownership</h3>
             <p class="text-xs text-slate-500">Receive a verification email and confirm your identity.</p>
           </div>
           <div class="text-center">
-            <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
+            <div class="w-16 h-16 rounded-full bg-brand text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
             <h3 class="font-bold text-slate-900 mb-2">Manage Profile</h3>
             <p class="text-xs text-slate-500">Update your details, add services, and engage with customers.</p>
           </div>
           <div class="text-center">
-            <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
+            <div class="w-16 h-16 rounded-full bg-brand text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
             <h3 class="font-bold text-slate-900 mb-2">Grow Business</h3>
             <p class="text-xs text-slate-500">Track analytics, respond to reviews, and win more clients.</p>
           </div>
@@ -181,16 +142,12 @@ import Layout from '../../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- Final CTA (Yelp-style clean) -->
+    <!-- Final CTA -->
     <section class="py-20 px-4 bg-white">
       <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-3xl font-bold text-slate-900 mb-4">
-          Ready to get started?
-        </h2>
-        <p class="text-sm text-slate-500 mb-8">
-          Claim your business in minutes and join thousands of verified providers.
-        </p>
-        <a href="/biz/claim" class="inline-block px-8 py-4 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 transition-colors shadow-lg">
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 mb-4">Ready to get started?</h2>
+        <p class="text-sm text-slate-500 mb-8">Claim your business in minutes and join thousands of verified providers.</p>
+        <a href="/biz/claim" class="bg-brand hover:bg-brand-hover text-white font-bold px-8 py-4 rounded-full transition-all shadow-sm active:scale-[0.98]">
           Claim Your Business →
         </a>
       </div>

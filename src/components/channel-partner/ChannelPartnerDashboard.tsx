@@ -872,7 +872,7 @@ export default function ChannelPartnerDashboard() {
         </header>
 
         {/* Dashboard Main Scroll Area */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-5 lg:p-6">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-5 lg:p-6"><div className="max-w-7xl mx-auto w-full">
 
           {/* ═══════════ TAB 1: DASHBOARD OVERVIEW ═══════════ */}
           {active === 'dashboard' && (
@@ -1384,6 +1384,7 @@ export default function ChannelPartnerDashboard() {
             <PartnerSettingsView />
           )}
 
+          </div>
         </main>
       </div>
 
@@ -1412,3 +1413,4 @@ export default function ChannelPartnerDashboard() {
     </div>
   );
 }
+

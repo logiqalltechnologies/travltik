@@ -40,7 +40,7 @@ export function SearchBusiness() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Enter your business name"
-          className="flex-1 px-5 py-4 border-2 border-slate-200 rounded-xl text-base focus:outline-none focus:border-blue-500 transition-colors"
+          className="flex-1 px-5 py-4 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
         />
         <button
           type="submit"
@@ -113,3 +113,4 @@ export function SearchBusiness() {
     </div>
   );
 }
+

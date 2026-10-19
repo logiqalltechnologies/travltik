@@ -484,7 +484,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <a href="/find-experts" class="live" style="cursor:pointer;text-decoration:none;color:inherit"><span class="avs" id="hav"></span><span class="pulse"></span><span><b id="onl">18</b> licensed consultants available now</span></a>
 <h1 class="font-display">Move abroad.<br>Pay <span class="hi grad">safely.<svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M3 11C40 3 90 3 140 8s45 2 57-3" fill="none" stroke="#00b070" stroke-width="4.500" stroke-linecap="round"/></svg></span><br>Land <span class="ser" style="color:var(--p2);font-weight:600">confident.</span></h1>
 <p class="lead">The global marketplace for visas, study, jobs and relocation. Compare licensed MARA and RCIC consultants, pay in milestones, and track every step in one place.</p>
-<div class="hb"><a class="btn g" href="#search">Find my expert <svg class="i ar"><use href="#arrow"/></svg></a><a class="btn o" href="#how"><svg class="i"><use href="#play"/></svg> See how it works</a></div>
+<div class="hb"><a class="btn g" id="hero-find-expert-btn" href="#search" style="cursor:pointer">Find my expert <svg class="i ar"><use href="#arrow"/></svg></a><a class="btn o" href="#how"><svg class="i"><use href="#play"/></svg> See how it works</a></div>
 <div class="chips">
 <a href="/escrow" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#lock"/></svg></i><span>Milestone Escrow<small>Funds released per milestone</small></span></a>
 <a href="/find-experts" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#shield"/></svg></i><span>Licence-verified<small>MARA, RCIC and lawyers</small></span></a>
@@ -824,6 +824,29 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <div><h5>Get the app</h5><div class="apps" style="flex-direction:column"><a href="javascript:void(0)" onclick="alert('The TravlTik iOS App is currently in TestFlight beta and launching on the App Store soon!')"><svg class="i f"><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a><a href="javascript:void(0)" onclick="alert('The TravlTik Android App is currently in early access and launching on Google Play soon!')"><svg class="i f"><use href="#play"/></svg><span><small>Get it on</small><b>Google Play</b></span></a></div></div></div>
 <div class="fb"><span>© 2026 TravlTik. All rights reserved. <a href="/terms" style="text-decoration:underline">Terms</a> · <a href="/privacy" style="text-decoration:underline">Privacy</a> · <a href="/escrow" style="text-decoration:underline">Escrow policy</a></span><div class="tr"><span><svg class="i"><use href="#lock"/></svg>Escrow secured</span><span><svg class="i"><use href="#shield"/></svg>Licence verified</span></div></div></div></footer>
 <script is:inline>
+/* ── AUTH GUARD: Find my expert hero CTA ─────────────────────────────────── */
+(function(){
+  const btn = document.getElementById('hero-find-expert-btn');
+  if(!btn) return;
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    // Check Firebase auth state
+    try {
+      const raw = localStorage.getItem('firebase:authUser:' +
+        Object.keys(localStorage).find(k => k.startsWith('firebase:authUser:'))?.split(':')[2] || '');
+      const uid = raw ? JSON.parse(raw)?.uid : null;
+      if(uid){ window.location.href='/find-experts'; return; }
+    } catch(_){}
+    // Fallback: check any firebase session key
+    const hasSession = Object.keys(localStorage).some(k =>
+      k.startsWith('firebase:authUser:') || k === 'travltik_user' || k === 'tt_uid'
+    );
+    if(hasSession){ window.location.href='/find-experts'; return; }
+    // Not logged in → send to login with return URL
+    window.location.href='/login?returnUrl=' + encodeURIComponent('/find-experts');
+  });
+})();
+/* ── END AUTH GUARD ─────────────────────────────────────────────────────── */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],ST=location.hash.startsWith('#static');
 const ic=(n,c='')=>`<svg class="i ${c}"><use href="#${n}"/></svg>`;
 const stars=(n=5)=>`<span class="stars">${ic('star','f').repeat(n)}</span>`;

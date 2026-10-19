@@ -94,6 +94,13 @@ export default {
           dark: "#020617",
           light: "#1e293b",
         },
+        // ── TravlTik Brand Green (replaces scattered emerald-500 usage) ──
+        brand: {
+          DEFAULT: "#00b070",
+          hover:   "#008f5a",
+          light:   "#e2f7ee",
+          mint:    "#00c985",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

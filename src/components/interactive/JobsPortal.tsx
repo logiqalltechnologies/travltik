@@ -657,7 +657,7 @@ export function JobsPortal() {
           </button>
 
           {/* Hero Image */}
-          <div className="relative rounded-3xl overflow-hidden h-52 mb-6 border border-red-100 shadow-sm">
+          <div className="relative rounded-3xl overflow-hidden h-52 mb-6 border border-slate-200 shadow-sm">
             <img src={activeJob.heroImg} alt={activeJob.location} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/70 to-transparent"></div>
             <div className="absolute bottom-4 left-5 flex items-center gap-2">
@@ -668,13 +668,13 @@ export function JobsPortal() {
             </div>
           </div>
 
-          <div className="bg-white border border-red-100 rounded-2xl p-8 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
             <div className="flex gap-4 items-start mb-6">
               <JobCompanyLogo
                 src={activeJob.logo}
                 alt={activeJob.company}
                 companyName={activeJob.company}
-                className="w-16 h-16 rounded-2xl object-cover border border-red-100 bg-white shrink-0 shadow-sm"
+                className="w-16 h-16 rounded-2xl object-cover border border-slate-200 bg-white shrink-0 shadow-sm"
                 fallbackSize="w-16 h-16"
                 icon={activeJob.icon}
                 iconColor={activeJob.iconColor}
@@ -697,7 +697,7 @@ export function JobsPortal() {
                 { label: "Visa", value: "Sponsored", sub: "Work permit" },
                 { label: "Relocation", value: activeJob.relocation ? "Included" : "Not offered", sub: "" },
               ].map(item => (
-                <div key={item.label} className="bg-red-50/30 border border-red-100 rounded-2xl p-3.5 text-center">
+                <div key={item.label} className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-center">
                   <div className="text-[10px] text-[#94b0c4] font-medium tracking-normal mb-1">{item.label}</div>
                   <div className="font-sans font-extrabold text-sm text-[#0c1a2e]">{item.value}</div>
                   {item.sub && <div className="text-[10px] text-gray-400 font-semibold">{item.sub}</div>}
@@ -708,14 +708,14 @@ export function JobsPortal() {
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-5">
               {activeJob.tags.map((t: string) => (
-                <span key={t} className="bg-red-50 text-red-600 border border-red-100 px-3 py-1 rounded-lg text-[10px] font-medium tracking-normal">{t}</span>
+                <span key={t} className="bg-brand-light text-brand border border-brand/20 px-3 py-1 rounded-lg text-[10px] font-medium tracking-normal">{t}</span>
               ))}
               {activeJob.sponsorship && <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-lg text-[10px] font-medium tracking-normal flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5" />Visa Sponsored</span>}
               {activeJob.relocation && <span className="bg-violet-50 text-violet-700 border border-violet-200 px-3 py-1 rounded-lg text-[10px] font-medium tracking-normal flex items-center gap-1"><Plane className="w-3.5 h-3.5" />Relocation</span>}
             </div>
 
             {/* Description */}
-            <div className="border-t border-red-100 py-5">
+            <div className="border-t border-slate-100 py-5">
               <h3 className="text-xs font-extrabold text-navy tracking-wider mb-2">Job Description</h3>
               <p className="text-sm text-[#475569] leading-relaxed">
                 {activeJob.desc} We are hiring premium international candidates for this role. Direct visa filing, relocation credits, and official employer sponsorships will be arranged by our expert immigration panel.
@@ -757,7 +757,7 @@ export function JobsPortal() {
             )}
 
             {/* Visa Package */}
-            <div className="bg-red-50/30 border border-red-100 rounded-2xl p-5 mb-6">
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-6">
               <h4 className="text-xs font-bold text-navy flex items-center gap-2 mb-2">
                 <Shield className="w-4 h-4 text-black" /> Visa & Relocation Package Included
               </h4>
@@ -767,7 +767,7 @@ export function JobsPortal() {
             </div>
 
             {/* Actions */}
-            <div className="flex flex-wrap gap-3 pt-4 border-t border-red-100">
+            <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100">
               <button
                 onClick={() => handleInitiateApplication(activeJob)}
                 className="bg-black hover:bg-neutral-900 text-white font-bold text-sm px-7 py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center gap-2 outline-none"
@@ -1506,5 +1506,6 @@ export function JobsPortal() {
     </div>
   );
 }
+
 
 
