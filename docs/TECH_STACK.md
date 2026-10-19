@@ -5,6 +5,21 @@
 
 ---
 
+
+## 🐍 Python Microservice Architecture (Proof of Concept)
+
+We have initialized the Python compute layer in the `/backend` directory. 
+- **Framework:** FastAPI
+- **Purpose:** Handle CPU-bound tasks (OCR, AI document audits) without blocking the Node.js event loop.
+- **Node.js Integration:** `src/backend/pythonClient.ts` acts as the bridge.
+
+You can test the Python service locally:
+```bash
+cd backend && uvicorn main:app --reload
+# Visit http://localhost:8000/docs
+```
+
+---
 ## Current Architecture (Speed, SEO & Rapid Iteration)
 
 | Layer | Technology | Why |
@@ -74,3 +89,4 @@ User/Browser → Astro/Node.js (Web Layer)
 ---
 
 *Last updated: October 2026 | Version 1.0*
+
