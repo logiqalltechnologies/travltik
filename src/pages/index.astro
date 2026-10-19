@@ -437,7 +437,6 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <li class="nav-item">
     <a href="/ai-tools" class="nav-link">AI Tools <svg class="i chv"><use href="#chevron-down"/></svg></a>
     <div class="nav-drop">
-      <a href="/ai-tools"><svg class="i"><use href="#bolt"/></svg>All AI Migration Tools</a>
       <a href="/ai-tools/photo-resizer"><svg class="i"><use href="#file"/></svg>Visa Photo Resizer</a>
       <a href="/ai-tools/pdf-audit"><svg class="i"><use href="#check"/></svg>AI PDF Audit</a>
       <a href="/ai-tools/sop-generator"><svg class="i"><use href="#file"/></svg>SOP Generator</a>
@@ -1426,3 +1425,4 @@ $$('#mm a').forEach(a => a.addEventListener('click', () => $('#mm').classList.re
 addEventListener('scroll',()=>{const y=scrollY+140,ids=['search','destinations','services','how','experts','classifieds','community'];let c=null;ids.forEach(i=>{const e=document.getElementById(i);if(e&&e.offsetTop<=y)c=i});$$('.links a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+c))});
 const ym=location.hash.match(/y=(\d+)/);if(ym&&+ym[1]>0){document.body.style.transform='translateY(-'+ym[1]+'px)';$('#hd').style.visibility='hidden'}
 </script></body></html>
+

@@ -22,7 +22,6 @@ export const MAIN_NAV: NavItem[] = [
     label: "AI Tools",
     href: "/ai-tools",
     children: [
-      { label: "All AI Migration Tools", href: "/ai-tools", icon: "Sparkles" },
       { label: "Visa Photo Resizer", href: "/ai-tools/photo-resizer", icon: "Camera" },
       { label: "AI PDF Audit", href: "/ai-tools/pdf-audit", icon: "FileCheck2" },
       { label: "SOP Generator", href: "/ai-tools/sop-generator", icon: "FileText" },
@@ -56,3 +55,4 @@ export const FOOTER_NAV: NavItem[] = [
   { label: "Terms of Service", href: "/terms" },
   { label: "Trust Standards", href: "/trust" },
 ];
+

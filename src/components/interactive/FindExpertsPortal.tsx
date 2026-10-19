@@ -801,10 +801,10 @@ export function FindExpertsPortal() {
             {/* Ambient background glows matching landing page */}
             <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
             <div className="absolute top-40 right-10 w-[450px] h-[450px] bg-emerald-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
-            <main className="max-w-7xl mx-auto flex flex-col lg:flex-row py-8 px-4 sm:px-6 gap-6 lg:gap-8 font-sans w-full min-w-0">
+            <main className="max-w-7xl mx-auto flex flex-col lg:flex-row pt-3 pb-8 px-4 sm:px-6 gap-6 lg:gap-8 font-sans w-full min-w-0">
                 {/* Desktop Sidebar */}
                 <aside className="hidden lg:block w-[280px] xl:w-[300px] shrink-0">
-                    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm sticky top-[136px] font-sans">
+                    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm sticky top-[96px] font-sans">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="font-plus-jakarta text-lg font-extrabold text-slate-900">Filters</h2>
                             <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">Live Sync</span>
@@ -1445,3 +1445,4 @@ export function FindExpertsPortal() {
         </div>
     );
 }
+
