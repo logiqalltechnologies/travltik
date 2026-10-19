@@ -3,8 +3,7 @@ import {
     DollarSign, Users, CheckCircle, Clock, TrendingUp, BarChart3, GripVertical, 
     Settings, X, Save, Edit2, Globe, Sparkles, ArrowLeft, LogOut, LayoutDashboard, 
     Menu, Briefcase, Calendar, Plus, ChevronRight, ChevronLeft, ChevronDown, Bell, Search, Lock, 
-    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw, BadgeCheck, Phone, Mail, MapPin, Building2,
-    CreditCard, ArrowRight, Check, Zap, QrCode
+    FileText, LayoutGrid, Star, ShieldCheck, CheckSquare, MessageSquare, Camera, Upload, Trash2, Image, ArrowUpRight, HelpCircle, Eye, AlertTriangle, ExternalLink, Megaphone, User, Send, Filter, CheckCircle2, RefreshCw, BadgeCheck, Phone, Mail, MapPin, Building2
 } from "lucide-react";
 import { ProviderVerificationModal } from "./ProviderVerificationModal";
 import { WorkPermitOrderForm } from "../dashboard/WorkPermitOrderForm";
@@ -17,7 +16,12 @@ export function ConsultantDashboard() {
     const [activeTab, setActiveTab] = useState(() => {
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
-            return params.get("tab") || "overview";
+            const tabParam = params.get("tab");
+            if (tabParam === "whatsapp") {
+                window.location.href = "/biz/whatsapp";
+                return "overview";
+            }
+            return tabParam || "overview";
         }
         return "overview";
     });
@@ -32,41 +36,6 @@ export function ConsultantDashboard() {
     const [verificationStatus, setVerificationStatus] = useState("pending");
     const [timePeriod, setTimePeriod] = useState("This Month");
     const [timePeriodOpen, setTimePeriodOpen] = useState(false);
-
-    // WhatsApp AI Concierge Studio States
-    const [whatsappState, setWhatsappState] = useState<"disconnected" | "connecting" | "connected">(() => {
-        if (typeof window !== "undefined") {
-            return (localStorage.getItem("expert_whatsapp_status") as any) || "disconnected";
-        }
-        return "disconnected";
-    });
-    const [whatsappQrCode, setWhatsappQrCode] = useState<string>("");
-    const [whatsappNumber, setWhatsappNumber] = useState<string>(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem("expert_whatsapp_number") || "+91 98765 43210";
-        }
-        return "+91 98765 43210";
-    });
-    const [whatsappWebsite, setWhatsappWebsite] = useState<string>(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem("expert_whatsapp_website") || "https://yourconsultancy.com";
-        }
-        return "https://yourconsultancy.com";
-    });
-    const [whatsappCustomFaqs, setWhatsappCustomFaqs] = useState<string>(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem("expert_whatsapp_faqs") || "Consultation Fee: $50 / 30 mins.\nSpecializations: Canada Express Entry, UK Skilled Worker, Australia PR.\nOffice Hours: Mon-Sat 10 AM to 6 PM.";
-        }
-        return "Consultation Fee: $50 / 30 mins.\nSpecializations: Canada Express Entry, UK Skilled Worker, Australia PR.\nOffice Hours: Mon-Sat 10 AM to 6 PM.";
-    });
-    const [whatsappPlan, setWhatsappPlan] = useState<string>(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem("expert_whatsapp_plan") || "Growth Plan ($19)";
-        }
-        return "Growth Plan ($19)";
-    });
-    const [isConnectingWhatsApp, setIsConnectingWhatsApp] = useState(false);
-    const [isCrawlingWebsite, setIsCrawlingWebsite] = useState(false);
 
     // Profile Dropdown States (Matching Traveller Dashboard)
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -220,6 +189,10 @@ export function ConsultantDashboard() {
             const urlParams = new URLSearchParams(window.location.search);
             const tabFromUrl = urlParams.get("tab");
             const actionFromUrl = urlParams.get("action");
+            if (tabFromUrl === "whatsapp") {
+                window.location.href = "/biz/whatsapp";
+                return;
+            }
             if (tabFromUrl) {
                 setActiveTab(tabFromUrl);
                 if (tabFromUrl === "classifieds") {
@@ -683,128 +656,6 @@ export function ConsultantDashboard() {
         triggerToast(`Support ticket #${ticketId} created & saved to your dashboard!`);
     };
 
-    // WhatsApp AI Concierge Studio Handlers
-    const handleConnectWhatsApp = async () => {
-        setIsConnectingWhatsApp(true);
-        setWhatsappState("connecting");
-        try {
-            const companyId = providerEmail ? `co_${providerEmail.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10)}` : 'pro_consultant_live';
-            const res = await fetch('/api/whatsapp/connect', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ company_id: companyId })
-            });
-            const data = await res.json();
-            if (data?.qrcode?.base64) {
-                const qrUrl = data.qrcode.base64.startsWith('data:') 
-                    ? data.qrcode.base64 
-                    : `data:image/png;base64,${data.qrcode.base64}`;
-                setWhatsappQrCode(qrUrl);
-            } else {
-                setWhatsappQrCode(`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TravlTikProWhatsAppSync_${Date.now()}`);
-            }
-        } catch {
-            setWhatsappQrCode(`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TravlTikProWhatsAppSync_${Date.now()}`);
-        } finally {
-            setIsConnectingWhatsApp(false);
-        }
-    };
-
-    const handleSimulateConnected = () => {
-        setWhatsappState("connected");
-        if (typeof window !== "undefined") {
-            localStorage.setItem("expert_whatsapp_status", "connected");
-            localStorage.setItem("expert_whatsapp_number", whatsappNumber);
-        }
-        triggerToast("WhatsApp AI Concierge paired & live on " + whatsappNumber + "!");
-    };
-
-    const handleDisconnectWhatsApp = () => {
-        setWhatsappState("disconnected");
-        setWhatsappQrCode("");
-        if (typeof window !== "undefined") {
-            localStorage.setItem("expert_whatsapp_status", "disconnected");
-        }
-        triggerToast("WhatsApp session disconnected.");
-    };
-
-    const handleCrawlWebsite = () => {
-        if (!whatsappWebsite.trim()) {
-            alert("Please enter your consultancy website URL");
-            return;
-        }
-        setIsCrawlingWebsite(true);
-        setTimeout(() => {
-            setIsCrawlingWebsite(false);
-            if (typeof window !== "undefined") {
-                localStorage.setItem("expert_whatsapp_website", whatsappWebsite.trim());
-            }
-            triggerToast("Successfully indexed & trained bot on " + whatsappWebsite.trim() + "!");
-        }, 2200);
-    };
-
-    const handleSaveCustomKnowledge = () => {
-        if (typeof window !== "undefined") {
-            localStorage.setItem("expert_whatsapp_faqs", whatsappCustomFaqs);
-        }
-        triggerToast("Bot knowledge base & FAQs saved successfully!");
-    };
-
-    const handleUpgradeWhatsAppPlan = async (planName: string, amount: number) => {
-        try {
-            triggerToast("Initializing Razorpay checkout for " + planName + "...");
-            const res = await fetch('/api/payment/create-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amount: amount,
-                    currency: 'USD',
-                    plan: `WhatsApp Bot ${planName} ($${amount})`,
-                    selectedPurpose: whatsappWebsite || 'Consultant WhatsApp'
-                })
-            });
-            const data = await res.json();
-            if (!data.success || !data.orderId) {
-                alert("Payment initiation failed: " + (data.error || "Please try again."));
-                return;
-            }
-
-            const options = {
-                key: data.keyId || 'rzp_live_SXMX6RIgR8HDyH',
-                amount: data.amount,
-                currency: data.currency || 'USD',
-                name: 'TravlTik Pro',
-                description: `${planName} - WhatsApp AI Concierge ($${amount})`,
-                image: '/logo.png?v=8',
-                order_id: data.orderId,
-                prefill: {
-                    name: profile.name || 'Service Provider',
-                    email: providerEmail || 'provider@travltik.com',
-                    contact: profile.phone || '9876543210'
-                },
-                theme: {
-                    color: '#00b070'
-                },
-                handler: function (resp: any) {
-                    setWhatsappPlan(`${planName} ($${amount})`);
-                    if (typeof window !== "undefined") {
-                        localStorage.setItem("expert_whatsapp_plan", `${planName} ($${amount})`);
-                    }
-                    triggerToast("Payment successful! " + planName + " activated.");
-                }
-            };
-
-            if ((window as any).Razorpay) {
-                const rzp = new (window as any).Razorpay(options);
-                rzp.open();
-            } else {
-                alert("Razorpay checkout is loading. Please try again.");
-            }
-        } catch (e: any) {
-            alert("Could not open checkout: " + (e.message || "Network error"));
-        }
-    };
-
     const handleLogout = () => {
         if (typeof window !== "undefined") {
             localStorage.removeItem("expert_isLoggedIn");
@@ -843,7 +694,8 @@ export function ConsultantDashboard() {
                     label: "WhatsApp AI Bot", 
                     icon: MessageSquare, 
                     badge: "PRO", 
-                    badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-200/60 font-bold" 
+                    badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-200/60 font-bold",
+                    href: "/biz/whatsapp"
                 },
                 { id: "analytics", label: "Analytics", icon: BarChart3 },
                 { id: "promotions", label: "Promotions", icon: Sparkles, badge: "BOOST", badgeColor: "bg-indigo-50 text-indigo-700 border border-indigo-200/60" },
@@ -1073,6 +925,10 @@ export function ConsultantDashboard() {
                                                     <button
                                                         key={item.id}
                                                         onClick={() => {
+                                                            if ((item as any).href) {
+                                                                window.location.href = (item as any).href;
+                                                                return;
+                                                            }
                                                             setActiveTab(item.id);
                                                             if (item.id === "classifieds") {
                                                                 setClassifiedsViewMode("form");
@@ -1165,6 +1021,10 @@ export function ConsultantDashboard() {
                                         <button
                                             key={item.id}
                                             onClick={() => {
+                                                if ((item as any).href) {
+                                                    window.location.href = (item as any).href;
+                                                    return;
+                                                }
                                                 setActiveTab(item.id);
                                                 if (item.id === "classifieds") {
                                                     setClassifiedsViewMode("form");
@@ -1300,15 +1160,14 @@ export function ConsultantDashboard() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
-                                    <button
-                                        type="button"
-                                        onClick={() => setActiveTab("whatsapp")}
+                                    <a
+                                        href="/biz/whatsapp"
                                         className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition-all active:scale-[0.98] cursor-pointer"
                                     >
                                         <MessageSquare className="w-3.5 h-3.5" />
                                         <span>WhatsApp AI Bot</span>
                                         <span className="bg-emerald-800 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black">PRO</span>
-                                    </button>
+                                    </a>
                                     <button
                                         type="button"
                                         onClick={() => setActiveTab("work-permit")}
@@ -2115,411 +1974,6 @@ export function ConsultantDashboard() {
                                     <button onClick={() => triggerToast("Upgrading to Pro Consultant Plan...")} className="w-full bg-slate-900 text-white py-2 rounded-xl text-xs font-bold">
                                         Upgrade to Pro
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* TAB: WHATSAPP AI BOT CONCIERGE STUDIO */}
-                    {activeTab === "whatsapp" && (
-                        <div className="space-y-6">
-                            {/* Top Banner Card */}
-                            <div className="bg-gradient-to-r from-emerald-900 via-slate-900 to-[#1b1233] rounded-3xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
-                                <div className="pointer-events-none absolute -right-16 -top-16 w-64 h-64 rounded-full bg-emerald-500/20 blur-3xl"></div>
-                                <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                    <div className="space-y-2 max-w-2xl">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                                            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                                            <span>TRAVLTIK PRO • B2B AI CONCIERGE</span>
-                                        </div>
-                                        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                                            WhatsApp AI Concierge &amp; Lead Agent
-                                        </h2>
-                                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
-                                            Connect your official WhatsApp number to automatically qualify visa applicants, share document checklists, and book consultations on autopilot 24/7.
-                                        </p>
-                                    </div>
-
-                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 shrink-0">
-                                        <div className={`px-4 py-2.5 rounded-2xl flex items-center gap-2.5 text-xs font-bold border ${
-                                            whatsappState === "connected"
-                                                ? "bg-emerald-500/20 border-emerald-400/40 text-emerald-300"
-                                                : whatsappState === "connecting"
-                                                ? "bg-amber-500/20 border-amber-400/40 text-amber-300"
-                                                : "bg-white/10 border-white/20 text-slate-300"
-                                        }`}>
-                                            <span className={`w-2.5 h-2.5 rounded-full ${
-                                                whatsappState === "connected" ? "bg-emerald-400 animate-pulse" : whatsappState === "connecting" ? "bg-amber-400 animate-pulse" : "bg-slate-400"
-                                            }`}></span>
-                                            <span>{whatsappState === "connected" ? `Live • ${whatsappNumber}` : whatsappState === "connecting" ? "Pairing Session..." : "Device Disconnected"}</span>
-                                        </div>
-
-                                        {whatsappState === "connected" ? (
-                                            <button 
-                                                onClick={handleDisconnectWhatsApp}
-                                                className="px-4 py-2.5 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold border border-rose-400/30 transition-all cursor-pointer"
-                                            >
-                                                Disconnect
-                                            </button>
-                                        ) : (
-                                            <button 
-                                                onClick={handleConnectWhatsApp}
-                                                disabled={isConnectingWhatsApp}
-                                                className="px-5 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold text-xs shadow-md shadow-emerald-500/30 transition-all cursor-pointer flex items-center gap-2 active:scale-95"
-                                            >
-                                                <QrCode className="w-4 h-4" />
-                                                <span>{isConnectingWhatsApp ? "Connecting..." : "Pair WhatsApp Device"}</span>
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Main Studio Grid */}
-                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                                
-                                {/* Left Column: WhatsApp Device Link & QR */}
-                                <div className="lg:col-span-5 bg-white rounded-3xl border border-slate-200/80 p-6 shadow-2xs space-y-5">
-                                    <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[#00b070]">
-                                                <MessageSquare className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-base font-extrabold text-slate-900">WhatsApp Device Pairing</h3>
-                                                <p className="text-xs text-slate-500">Official Baileys WebSocket instance</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {whatsappState === "connected" ? (
-                                        <div className="p-6 bg-gradient-to-b from-emerald-50/60 to-white border border-emerald-200/80 rounded-2xl space-y-4 text-center">
-                                            <div className="w-14 h-14 mx-auto rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md">
-                                                <CheckCircle2 className="w-7 h-7" />
-                                            </div>
-                                            <div>
-                                                <h4 className="text-base font-black text-slate-900">WhatsApp Bot is Active &amp; Live!</h4>
-                                                <p className="text-xs text-slate-600 mt-1">
-                                                    Responding automatically from <span className="font-bold text-emerald-800">{whatsappNumber}</span>
-                                                </p>
-                                            </div>
-
-                                            <div className="grid grid-cols-2 gap-3 text-left pt-2">
-                                                <div className="p-3 bg-white rounded-xl border border-slate-200/80">
-                                                    <span className="text-[10px] text-slate-400 font-bold uppercase block">Uptime</span>
-                                                    <span className="text-sm font-black text-emerald-700">99.9% Online</span>
-                                                </div>
-                                                <div className="p-3 bg-white rounded-xl border border-slate-200/80">
-                                                    <span className="text-[10px] text-slate-400 font-bold uppercase block">AI Model</span>
-                                                    <span className="text-sm font-black text-slate-800">Gemini 2.5 Flash</span>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex gap-2.5 pt-2">
-                                                <button 
-                                                    onClick={() => triggerToast("Simulated test query sent to your bot!")}
-                                                    className="flex-1 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
-                                                >
-                                                    Send Test Echo
-                                                </button>
-                                                <button 
-                                                    onClick={handleDisconnectWhatsApp}
-                                                    className="flex-1 py-2.5 rounded-xl border border-rose-200 bg-rose-50/50 hover:bg-rose-100 text-rose-700 font-bold text-xs transition-colors cursor-pointer"
-                                                >
-                                                    Disconnect
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-4 text-center">
-                                            <div className="p-4 bg-slate-50 border border-slate-200/80 rounded-2xl flex flex-col items-center">
-                                                {whatsappQrCode ? (
-                                                    <div className="p-3 bg-white border-2 border-dashed border-emerald-500/60 rounded-2xl shadow-xs">
-                                                        <img src={whatsappQrCode} alt="WhatsApp QR Code" className="w-44 h-44 object-contain mx-auto" />
-                                                        <p className="text-[11px] font-bold text-emerald-700 mt-2 flex items-center justify-center gap-1.5">
-                                                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                                            Scan with WhatsApp &gt; Linked Devices
-                                                        </p>
-                                                    </div>
-                                                ) : (
-                                                    <div className="py-8 px-4 text-center space-y-3">
-                                                        <QrCode className="w-12 h-12 text-slate-300 mx-auto" />
-                                                        <p className="text-xs text-slate-500 font-medium">Click below to generate your secure WhatsApp QR code</p>
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className="space-y-2 text-left bg-slate-50 p-4 rounded-2xl border border-slate-200/60 text-xs text-slate-600">
-                                                <p className="font-bold text-slate-800">Quick Pairing Steps:</p>
-                                                <ol className="list-decimal pl-4 space-y-1 font-medium">
-                                                    <li>Open WhatsApp on your phone</li>
-                                                    <li>Tap Settings or Menu &gt; Linked Devices</li>
-                                                    <li>Tap "Link a Device" and scan the code above</li>
-                                                </ol>
-                                            </div>
-
-                                            <div className="flex gap-2.5">
-                                                <button 
-                                                    onClick={handleConnectWhatsApp}
-                                                    disabled={isConnectingWhatsApp}
-                                                    className="flex-1 py-3 rounded-xl bg-[#00b070] hover:bg-[#008f5a] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
-                                                >
-                                                    <RefreshCw className={`w-3.5 h-3.5 ${isConnectingWhatsApp ? "animate-spin" : ""}`} />
-                                                    <span>{isConnectingWhatsApp ? "Generating QR..." : "Generate QR Code"}</span>
-                                                </button>
-                                                <button 
-                                                    onClick={handleSimulateConnected}
-                                                    className="px-3.5 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
-                                                    title="Instant preview pairing for demonstration"
-                                                >
-                                                    Simulate Link
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Number override input */}
-                                    <div className="pt-2 border-t border-slate-100">
-                                        <label className="text-[11px] font-bold text-slate-600 block mb-1">Assigned Consultant WhatsApp Number</label>
-                                        <div className="flex gap-2">
-                                            <input 
-                                                type="text" 
-                                                value={whatsappNumber}
-                                                onChange={(e) => setWhatsappNumber(e.target.value)}
-                                                placeholder="+91 98765 43210"
-                                                className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none"
-                                            />
-                                            <button 
-                                                onClick={() => {
-                                                    if (typeof window !== "undefined") {
-                                                        localStorage.setItem("expert_whatsapp_number", whatsappNumber);
-                                                    }
-                                                    triggerToast("Phone number updated!");
-                                                }}
-                                                className="px-3 py-2 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-all cursor-pointer"
-                                            >
-                                                Save
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Right Column: AI Training & Website Crawler */}
-                                <div className="lg:col-span-7 space-y-6">
-                                    {/* Crawler Section */}
-                                    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-2xs space-y-4">
-                                        <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                                            <div className="w-10 h-10 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-[#430f7a]">
-                                                <Globe className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-base font-extrabold text-slate-900">Website Scraping &amp; Knowledge Ingestion</h3>
-                                                <p className="text-xs text-slate-500">Train your bot automatically on your consultancy web pages</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-3">
-                                            <label className="text-xs font-bold text-slate-700 block">Your Consultancy Website URL</label>
-                                            <div className="flex flex-col sm:flex-row gap-2.5">
-                                                <input 
-                                                    type="url" 
-                                                    value={whatsappWebsite}
-                                                    onChange={(e) => setWhatsappWebsite(e.target.value)}
-                                                    placeholder="https://yourconsultancy.com"
-                                                    className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-emerald-500"
-                                                />
-                                                <button 
-                                                    onClick={handleCrawlWebsite}
-                                                    disabled={isCrawlingWebsite}
-                                                    className="px-5 py-2.5 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95 shrink-0"
-                                                >
-                                                    <RefreshCw className={`w-3.5 h-3.5 ${isCrawlingWebsite ? "animate-spin" : ""}`} />
-                                                    <span>{isCrawlingWebsite ? "Crawling..." : "Sync Website"}</span>
-                                                </button>
-                                            </div>
-                                            <p className="text-[11px] text-slate-400 font-medium">
-                                                Our crawler parses your visa service offerings, country requirements, and guides to vectorize knowledge for instant responses.
-                                            </p>
-                                        </div>
-
-                                        <div className="space-y-2 pt-2 border-t border-slate-100">
-                                            <label className="text-xs font-bold text-slate-700 block">Custom Fee Rules &amp; Consultation FAQs</label>
-                                            <textarea 
-                                                rows={4}
-                                                value={whatsappCustomFaqs}
-                                                onChange={(e) => setWhatsappCustomFaqs(e.target.value)}
-                                                className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 outline-none focus:border-emerald-500 leading-relaxed font-mono"
-                                                placeholder="Add custom instructions, fee details, office working hours, or refusal policies..."
-                                            />
-                                            <div className="flex justify-end">
-                                                <button 
-                                                    onClick={handleSaveCustomKnowledge}
-                                                    className="px-5 py-2 bg-[#00b070] hover:bg-[#008f5a] text-white text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs active:scale-95"
-                                                >
-                                                    Save Custom Knowledge
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Subscription Plans Card with Razorpay */}
-                                    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-2xs space-y-4">
-                                        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                                            <div>
-                                                <h3 className="text-base font-extrabold text-slate-900">Concierge Subscription Tier</h3>
-                                                <p className="text-xs text-slate-500">Current active plan: <span className="font-bold text-emerald-700">{whatsappPlan}</span></p>
-                                            </div>
-                                            <span className="text-[10px] font-black uppercase px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200/80 rounded-full">
-                                                Active SaaS
-                                            </span>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                            {/* Starter */}
-                                            <div className="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between hover:border-slate-300 transition-all text-left">
-                                                <div>
-                                                    <span className="text-[10px] font-extrabold uppercase text-slate-500 block">Starter</span>
-                                                    <p className="text-xl font-black text-slate-900 mt-1">$9 <span className="text-[10px] text-slate-400 font-semibold">/mo</span></p>
-                                                    <p className="text-[11px] text-slate-500 mt-1 font-medium">1 Number • 1,000 Chats</p>
-                                                </div>
-                                                <button 
-                                                    onClick={() => handleUpgradeWhatsAppPlan('Starter Plan', 9)}
-                                                    className="mt-4 w-full py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold text-xs transition-colors cursor-pointer"
-                                                >
-                                                    Upgrade ($9)
-                                                </button>
-                                            </div>
-
-                                            {/* Growth */}
-                                            <div className="p-4 rounded-2xl border-2 border-[#00b070] bg-emerald-50/40 flex flex-col justify-between relative text-left">
-                                                <span className="absolute -top-2 right-3 bg-[#00b070] text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
-                                                    RECOMMENDED
-                                                </span>
-                                                <div>
-                                                    <span className="text-[10px] font-extrabold uppercase text-emerald-800 block">Growth</span>
-                                                    <p className="text-xl font-black text-[#008f5a] mt-1">$19 <span className="text-[10px] text-slate-500 font-semibold">/mo</span></p>
-                                                    <p className="text-[11px] text-slate-600 mt-1 font-medium">3 Numbers • 10,000 Chats • Escalation</p>
-                                                </div>
-                                                <button 
-                                                    onClick={() => handleUpgradeWhatsAppPlan('Growth Plan', 19)}
-                                                    className="mt-4 w-full py-2 rounded-xl bg-[#00b070] hover:bg-[#008f5a] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
-                                                >
-                                                    Activate ($19)
-                                                </button>
-                                            </div>
-
-                                            {/* Pro Scale */}
-                                            <div className="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between hover:border-slate-300 transition-all text-left">
-                                                <div>
-                                                    <span className="text-[10px] font-extrabold uppercase text-slate-500 block">Pro Scale</span>
-                                                    <p className="text-xl font-black text-slate-900 mt-1">$49 <span className="text-[10px] text-slate-400 font-semibold">/mo</span></p>
-                                                    <p className="text-[11px] text-slate-500 mt-1 font-medium">10 Numbers • Unlimited • VIP SLA</p>
-                                                </div>
-                                                <button 
-                                                    onClick={() => handleUpgradeWhatsAppPlan('Pro Scale Plan', 49)}
-                                                    className="mt-4 w-full py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs transition-colors cursor-pointer"
-                                                >
-                                                    Activate ($49)
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Recent WhatsApp Captured Leads Table */}
-                            <div className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-2xs space-y-4">
-                                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                                    <div>
-                                        <h3 className="text-base font-extrabold text-slate-900">Recent WhatsApp AI Captured Leads</h3>
-                                        <p className="text-xs text-slate-500">Inquiries qualified and captured automatically by your bot</p>
-                                    </div>
-                                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-                                        ● Auto-Syncing with Leads Tab
-                                    </span>
-                                </div>
-
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-left text-xs">
-                                        <thead>
-                                            <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase text-[10px]">
-                                                <th className="py-3 px-3">Applicant Name</th>
-                                                <th className="py-3 px-3">WhatsApp Number</th>
-                                                <th className="py-3 px-3">Target Country &amp; Visa</th>
-                                                <th className="py-3 px-3">Lead Status</th>
-                                                <th className="py-3 px-3">Time</th>
-                                                <th className="py-3 px-3 text-right">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-100">
-                                            <tr className="hover:bg-slate-50/70 transition-colors">
-                                                <td className="py-3.5 px-3 font-extrabold text-slate-900">Rohit Sharma</td>
-                                                <td className="py-3.5 px-3 font-semibold text-slate-700">+91 98234 11200</td>
-                                                <td className="py-3.5 px-3 font-medium text-slate-800">Canada • Express Entry PR</td>
-                                                <td className="py-3.5 px-3">
-                                                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                                                        Hot Lead • Ready to File
-                                                    </span>
-                                                </td>
-                                                <td className="py-3.5 px-3 text-slate-400 font-medium">Just now</td>
-                                                <td className="py-3.5 px-3 text-right">
-                                                    <a 
-                                                        href="https://wa.me/919823411200" 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer" 
-                                                        className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] rounded-lg border border-emerald-200 transition-colors"
-                                                    >
-                                                        <span>Chat</span>
-                                                        <ArrowUpRight className="w-3 h-3" />
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr className="hover:bg-slate-50/70 transition-colors">
-                                                <td className="py-3.5 px-3 font-extrabold text-slate-900">Simran Kaur</td>
-                                                <td className="py-3.5 px-3 font-semibold text-slate-700">+91 98111 88442</td>
-                                                <td className="py-3.5 px-3 font-medium text-slate-800">UK • Student Visa (Sep Intake)</td>
-                                                <td className="py-3.5 px-3">
-                                                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                        Slot Booked • Tomorrow 4 PM
-                                                    </span>
-                                                </td>
-                                                <td className="py-3.5 px-3 text-slate-400 font-medium">18 mins ago</td>
-                                                <td className="py-3.5 px-3 text-right">
-                                                    <a 
-                                                        href="https://wa.me/919811188442" 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer" 
-                                                        className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] rounded-lg border border-emerald-200 transition-colors"
-                                                    >
-                                                        <span>Chat</span>
-                                                        <ArrowUpRight className="w-3 h-3" />
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr className="hover:bg-slate-50/70 transition-colors">
-                                                <td className="py-3.5 px-3 font-extrabold text-slate-900">Amit Patel</td>
-                                                <td className="py-3.5 px-3 font-semibold text-slate-700">+91 98700 23450</td>
-                                                <td className="py-3.5 px-3 font-medium text-slate-800">Australia • Subclass 189 Skilled</td>
-                                                <td className="py-3.5 px-3">
-                                                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                                                        Documents Requested
-                                                    </span>
-                                                </td>
-                                                <td className="py-3.5 px-3 text-slate-400 font-medium">1 hour ago</td>
-                                                <td className="py-3.5 px-3 text-right">
-                                                    <a 
-                                                        href="https://wa.me/919870023450" 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer" 
-                                                        className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] rounded-lg border border-emerald-200 transition-colors"
-                                                    >
-                                                        <span>Chat</span>
-                                                        <ArrowUpRight className="w-3 h-3" />
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
