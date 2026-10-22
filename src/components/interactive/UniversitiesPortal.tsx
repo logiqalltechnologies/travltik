@@ -348,7 +348,7 @@ export function UniversitiesPortal() {
       const adParam = searchParams.get("ad");
       const tabParam = searchParams.get("tab") || searchParams.get("mode") || searchParams.get("category");
       const qParam = searchParams.get("search") || searchParams.get("q") || searchParams.get("query") || "";
-      
+
       if (tabParam === "consultants" || tabParam === "consultant" || tabParam === "experts" || tabParam === "student") {
         setActiveMode("consultants");
       }
@@ -406,7 +406,7 @@ export function UniversitiesPortal() {
     let f = studyConsultantsList;
     if (consultantSearch.trim()) {
       const q = consultantSearch.toLowerCase();
-      f = f.filter(c => 
+      f = f.filter(c =>
         c.name.toLowerCase().includes(q) ||
         c.agencyName.toLowerCase().includes(q) ||
         c.role.toLowerCase().includes(q) ||
@@ -487,63 +487,58 @@ export function UniversitiesPortal() {
 
         {/* MAIN LISTING VIEW */}
         <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
-          {/* Main Twilight Universities Banner Container */}
-          <div 
-              className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[540px] md:min-h-[600px] shadow-2xl border border-white/10"
-              style={{ background: '#0C1A2E' }}
+          {/* Main Universities Banner Container */}
+          <div
+              className="relative w-full rounded-[36px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[500px] md:min-h-[560px] shadow-2xl border border-white/20 bg-slate-900"
           >
               {/* Background Image with Crisp Contrast & Clean Shading */}
               <div className="absolute inset-0 z-0">
-                  <img 
-                      src="/univ_grad_girls.png" 
-                      alt="University Graduates" 
-                      className="w-full h-full object-cover brightness-[0.7] contrast-[1.1] object-center"
+                  <img
+                      src="/univ_grad_girls.png"
+                      alt="University Graduates"
+                      className="w-full h-full object-cover brightness-[0.75] contrast-[1.05] object-center"
                   />
-                  {/* A soft transparent overlay for text readability without extra shading */}
-                  <div 
-                      className="absolute inset-0 bg-black/35"
-                  />
+                  {/* Smooth cinematic gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/40 to-transparent" />
               </div>
 
               {/* Banner Content */}
               <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
-                  
+
                   {/* Active status pill */}
-                  <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/80 mb-6 backdrop-blur-sm">
+                  <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/90 mb-6 backdrop-blur-sm shadow-sm">
                     <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                     150+ Verified Global Universities · PGWP Work Permits Included
                   </div>
 
-                  {/* Main Serif Header */}
-                  <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                  {/* Main Header */}
+                  <h1 className="font-plus-jakarta text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-3 drop-shadow-md">
                       Find Your Dream Overseas University.
                   </h1>
-
-
 
                   {/* 3-Column Metadata Row */}
                   <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                       <div>
-                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">UNIVERSITIES</span>
-                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">150+ VERIFIED</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">UNIVERSITIES</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">150+ VERIFIED</span>
                       </div>
                       <div>
-                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">STUDENT VISA</span>
-                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">100% SUCCESS</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">STUDENT VISA</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">100% SUCCESS</span>
                       </div>
                       <div>
-                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">COUNTRIES</span>
-                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">20+ SPACES</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">COUNTRIES</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">20+ SPACES</span>
                       </div>
                   </div>
 
                   {/* Pill CTA Button */}
-                  <button 
+                  <button
                       onClick={() => {
                           const el = document.getElementById("univ-search-bar");
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wider active:scale-[0.98] select-none"
+                      className="bg-white hover:bg-[#FAF5FC] text-[#430f7a] font-extrabold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wide active:scale-[0.98] select-none cursor-pointer"
                   >
                       Browse Vetted Universities
                   </button>
@@ -553,14 +548,14 @@ export function UniversitiesPortal() {
           {/* Search bar below the banner with Mode Switcher */}
           <div id="univ-search-bar" className="mt-8 bg-white border border-slate-200/80 rounded-3xl p-5 sm:p-6 shadow-xl max-w-4xl mx-auto space-y-4">
             {/* Mode Switcher Tabs */}
-            <div className="flex items-center justify-center p-1 bg-slate-100 rounded-2xl max-w-md mx-auto">
+            <div className="flex items-center justify-center p-1.5 bg-slate-100/90 rounded-2xl max-w-md mx-auto border border-slate-200/60">
               <button
                 type="button"
                 onClick={() => setActiveMode("universities")}
-                className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   activeMode === "universities"
-                    ? "bg-slate-900 text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "bg-[#430f7a] text-white shadow-md shadow-purple-950/20"
+                    : "text-slate-600 hover:text-[#430f7a]"
                 }`}
               >
                 <Building2 className="w-4 h-4" />
@@ -569,10 +564,10 @@ export function UniversitiesPortal() {
               <button
                 type="button"
                 onClick={() => setActiveMode("consultants")}
-                className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   activeMode === "consultants"
-                    ? "bg-slate-900 text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "bg-[#430f7a] text-white shadow-md shadow-purple-950/20"
+                    : "text-slate-600 hover:text-[#430f7a]"
                 }`}
               >
                 <Users className="w-4 h-4" />
@@ -627,13 +622,13 @@ export function UniversitiesPortal() {
 
                 <div className="flex gap-6 mt-2 pt-3 border-t border-slate-100">
                   <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setPgwpOnly(!pgwpOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-slate-900" : "bg-slate-200"}`}>
+                    <div className={`w-9 h-5 rounded-full transition-all relative ${pgwpOnly ? "bg-[#00b070]" : "bg-slate-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${pgwpOnly ? "left-4" : "left-0.5"}`} />
                     </div>
                     <span className="text-xs font-semibold text-slate-700">PGWP Eligible Only</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setScholarshipOnly(!scholarshipOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-slate-900" : "bg-slate-200"}`}>
+                    <div className={`w-9 h-5 rounded-full transition-all relative ${scholarshipOnly ? "bg-[#00b070]" : "bg-slate-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${scholarshipOnly ? "left-4" : "left-0.5"}`} />
                     </div>
                     <span className="text-xs font-semibold text-slate-700">Scholarships Available</span>
@@ -708,10 +703,10 @@ export function UniversitiesPortal() {
                 <button
                   key={chip}
                   onClick={() => filterByChip(chip)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold border shrink-0 transition-all outline-none cursor-pointer ${
+                  className={`px-4 py-2 rounded-full text-xs transition-all outline-none cursor-pointer ${
                     activeChip === chip
-                      ? "bg-slate-900 text-white border-slate-900 shadow-sm"
-                      : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                      ? "bg-[#430f7a] text-white font-extrabold border border-[#430f7a] shadow-sm"
+                      : "bg-white border border-slate-200 text-slate-700 font-bold hover:border-slate-300 hover:bg-slate-50"
                   }`}
                 >
                   {chip}
@@ -867,9 +862,9 @@ export function UniversitiesPortal() {
               {/* LISTINGS */}
               <div className="lg:col-span-9 space-y-4">
                 <div className="bg-gradient-to-r from-slate-50 to-white border border-slate-200 border-l-4 border-l-slate-900 rounded-2xl p-4 flex gap-3">
-                  <Zap className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" />
+                  <Zap className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-extrabold text-slate-900 mb-0.5">Verified Student Visa Pathways</h4>
+                    <h4 className="text-xs font-extrabold text-emerald-900 mb-0.5">Verified Student Visa Pathways</h4>
                     <p className="text-[11px] text-slate-600 font-semibold leading-normal">Every listing includes verified post-graduation work permit (PGWP) guides. Get admission assistance in one tap.</p>
                   </div>
                 </div>
@@ -878,22 +873,22 @@ export function UniversitiesPortal() {
                   <div
                     key={univ.id}
                     onClick={() => setActiveUniv(univ)}
-                    className="bg-white border border-slate-200/90 rounded-[22px] p-5 hover:shadow-xl hover:border-slate-900/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group shadow-xs"
+                    className="bg-white border border-slate-200/90 rounded-[24px] p-5 hover:shadow-xl hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group shadow-xs"
                   >
                     <div className="flex gap-4 items-center w-full">
                       <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-[18px] object-cover border border-slate-100 shrink-0 shadow-sm" />
                       <div className="flex-grow min-w-0">
-                        <h3 className="font-sans font-bold text-lg text-slate-900 mb-1.5 leading-snug group-hover:text-slate-700 transition-colors">{univ.name}</h3>
+                        <h3 className="font-sans font-bold text-lg text-slate-900 mb-1.5 leading-snug group-hover:text-emerald-700 transition-colors">{univ.name}</h3>
                         <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-600 font-semibold">
-                          <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-slate-900" />{univ.location}</span>
+                          <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-emerald-600" />{univ.location}</span>
                           <span className="text-slate-300">•</span>
-                          <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-slate-900" />{univ.tuition} <span className="text-slate-400 font-normal">{univ.tuitionNote}</span></span>
+                          <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-emerald-600" />{univ.tuition} <span className="text-slate-400 font-normal">{univ.tuitionNote}</span></span>
                         </div>
                       </div>
                     </div>
                     <div className="flex sm:flex-col items-end justify-between sm:justify-center gap-3 w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
                       <div className="text-[11px] text-slate-400 font-medium tracking-wide">{univ.posted}</div>
-                      <button className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs tracking-wide px-5 py-2 rounded-full flex items-center gap-1.5 transition-all outline-none shrink-0 shadow-sm active:scale-95 cursor-pointer">
+                      <button className="bg-[#00b070] hover:bg-[#009282] text-white font-extrabold text-xs tracking-wide px-5 py-2.5 rounded-xl flex items-center gap-1.5 transition-all outline-none shrink-0 shadow-sm shadow-emerald-500/20 active:scale-95 cursor-pointer">
                         <span>Details</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
@@ -918,7 +913,7 @@ export function UniversitiesPortal() {
                 href="https://wa.me/917661989366?text=Hi%20TravlTik,%20I%20need%20help%20finding%20the%20best%20study%20abroad%20consultant"
                 target="_blank"
                 rel="noreferrer"
-                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-md transition-all self-start sm:self-auto"
+                className="bg-[#00b070] hover:bg-[#009282] text-white font-extrabold text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-md shadow-emerald-500/25 transition-all self-start sm:self-auto cursor-pointer"
               >
                 <span>Free Concierge Match</span>
                 <ArrowRight className="w-4 h-4" />
@@ -932,7 +927,7 @@ export function UniversitiesPortal() {
                 <p className="text-xs text-slate-500">Try changing your destination country or city filter.</p>
                 <button
                   onClick={clearConsultantFilters}
-                  className="bg-slate-900 text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-slate-800 transition-all cursor-pointer"
+                  className="bg-[#430f7a] text-white text-xs font-extrabold px-6 py-2.5 rounded-full hover:bg-[#340b61] transition-all cursor-pointer shadow-sm"
                 >
                   View All Consultants
                 </button>
@@ -942,7 +937,7 @@ export function UniversitiesPortal() {
                 {consultants.map(consultant => (
                   <div
                     key={consultant.id}
-                    className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-sm hover:shadow-xl hover:border-slate-900/30 transition-all duration-300 flex flex-col justify-between space-y-4"
+                    className="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-sm hover:shadow-xl hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-4"
                   >
                     <div className="space-y-3.5">
                       {/* Top Header */}
@@ -1025,7 +1020,7 @@ export function UniversitiesPortal() {
                       <button
                         type="button"
                         onClick={() => handleBookCounselling(consultant)}
-                        className="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                        className="py-2.5 px-4 rounded-xl bg-[#430f7a] hover:bg-[#340b61] text-white text-xs font-extrabold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
                       >
                         <span>Book Counselling</span>
                       </button>
@@ -1227,7 +1222,7 @@ export function UniversitiesPortal() {
                   href="https://wa.me/919044854415?text=Hi,%20I%20am%20interested%20in%20Study%20in%20Cyprus%20October%20Intake%202026."
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full sm:w-auto bg-black hover:bg-neutral-900 text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg transition-all outline-none active:scale-95 shrink-0"
+                  className="w-full sm:w-auto bg-[#00b070] hover:bg-[#009282] text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all outline-none active:scale-95 shrink-0"
                 >
                   <span>Apply / Register (+91 9044854415)</span>
                   <ArrowRight className="w-4 h-4 text-white" />

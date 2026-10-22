@@ -482,7 +482,7 @@ export function JobsPortal() {
 
           const seen = new Set();
           const merged: any[] = [];
-          
+
           for (const sj of serverJobs) {
             if (!seen.has(sj.id)) {
               seen.add(sj.id);
@@ -770,7 +770,7 @@ export function JobsPortal() {
             <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100">
               <button
                 onClick={() => handleInitiateApplication(activeJob)}
-                className="bg-black hover:bg-neutral-900 text-white font-bold text-sm px-7 py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center gap-2 outline-none"
+                className="bg-[#00b070] hover:bg-[#009282] text-white font-extrabold text-sm px-7 py-3.5 rounded-2xl shadow-md shadow-emerald-500/25 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center gap-2 outline-none"
               >
                 Submit Application <ArrowRight className="w-4 h-4" />
               </button>
@@ -787,63 +787,58 @@ export function JobsPortal() {
         /* MAIN LISTING VIEW */
         <div>
         <div className="max-w-7xl mx-auto px-4 pt-8 pb-10">
-          {/* Main Twilight Jobs Banner Container */}
-          <div 
-              className="relative w-full rounded-[40px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[540px] md:min-h-[600px] shadow-2xl border border-white/10"
-              style={{ background: '#0C1A2E' }}
+          {/* Main Jobs Banner Container */}
+          <div
+              className="relative w-full rounded-[36px] overflow-hidden flex flex-col items-center justify-center text-center px-6 py-20 min-h-[500px] md:min-h-[560px] shadow-2xl border border-white/20 bg-slate-900"
           >
               {/* Background Image with Crisp Contrast & Clean Shading */}
               <div className="absolute inset-0 z-0">
-                  <img 
-                      src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&auto=format&fit=crop&q=95" 
-                      alt="City skyline" 
-                      className="w-full h-full object-cover brightness-[0.7] contrast-[1.1]"
+                  <img
+                      src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&auto=format&fit=crop&q=95"
+                      alt="City skyline"
+                      className="w-full h-full object-cover brightness-[0.75] contrast-[1.05]"
                   />
-                  {/* A soft transparent overlay for text readability without extra shading */}
-                  <div 
-                      className="absolute inset-0 bg-black/35"
-                  />
+                  {/* Smooth cinematic gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/40 to-transparent" />
               </div>
 
               {/* Banner Content */}
               <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
-                  
+
                   {/* Active listings pill */}
-                  <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/80 mb-6 backdrop-blur-sm">
+                  <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/90 mb-6 backdrop-blur-sm shadow-sm">
                     <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
                     4,200+ Active Listings · Work Visa Included · 40+ Countries
                   </div>
 
-                  {/* Main Serif Header */}
-                  <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                  {/* Main Header */}
+                  <h1 className="font-plus-jakarta text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-3 drop-shadow-md">
                       Find Your Dream Overseas Job.
                   </h1>
-
-
 
                   {/* 3-Column Metadata Row */}
                   <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                       <div>
-                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">LISTINGS</span>
-                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">4,200+ ACTIVE</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">LISTINGS</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">4,200+ ACTIVE</span>
                       </div>
                       <div>
-                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">WORK PERMIT</span>
-                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">SPONSORED</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">WORK PERMIT</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">SPONSORED</span>
                       </div>
                       <div>
-                          <span className="text-[9px] text-gray-300 font-bold uppercase tracking-wider block mb-1">COUNTRIES</span>
-                          <span className="text-[11px] text-white font-extrabold tracking-wide uppercase block">40+ SPACES</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">COUNTRIES</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">40+ SPACES</span>
                       </div>
                   </div>
 
                   {/* Pill CTA Button */}
-                  <button 
+                  <button
                       onClick={() => {
                           const el = document.getElementById("jobs-search-bar");
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wider active:scale-[0.98] select-none"
+                      className="bg-white hover:bg-[#FAF5FC] text-[#430f7a] font-extrabold text-sm px-8 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.02] shadow-xl tracking-wide active:scale-[0.98] select-none cursor-pointer"
                   >
                       Browse Sponsorship Jobs
                   </button>
@@ -851,69 +846,69 @@ export function JobsPortal() {
           </div>
 
           {/* Search bar below the banner */}
-          <div id="jobs-search-bar" className="mt-8 bg-white rounded-2xl p-4 shadow-xl border border-red-100 text-left">
+          <div id="jobs-search-bar" className="mt-8 bg-white rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-200/80 text-left max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
               <div className="md:col-span-5">
-                <label className="text-[10px] font-medium tracking-normal text-[#94b0c4] block mb-1.5">Job Title / Skill / Company</label>
+                <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5">Job Title / Skill / Company</label>
                 <div className="relative">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="text"
-                    placeholder="e.g. Software Engineer, Nurse…"
+                    placeholder="e.g. Software Engineer, Nurse, Construction…"
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="w-full bg-[#fff5f5] border border-red-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-navy outline-none focus:border-[#ef4444] transition-all placeholder:text-gray-300"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-[#00b070] focus:bg-white transition-all placeholder:text-slate-400"
                   />
                 </div>
               </div>
               <div className="md:col-span-3">
-                <label className="text-[10px] font-medium tracking-normal text-[#94b0c4] block mb-1.5">Country</label>
+                <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5">Country</label>
                 <div className="relative">
-                  <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                  <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                   <select
                     value={selectedCountry}
                     onChange={e => setSelectedCountry(e.target.value)}
-                    className="w-full bg-[#fff5f5] border border-red-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-[#ef4444] transition-all appearance-none cursor-pointer"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-[#00b070] focus:bg-white transition-all appearance-none cursor-pointer"
                   >
-                    {countriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
+                    {countriesList.map(c => <option key={c} className="text-slate-900 bg-white">{c}</option>)}
                   </select>
                 </div>
               </div>
               <div className="md:col-span-3">
-                <label className="text-[10px] font-medium tracking-normal text-[#94b0c4] block mb-1.5">Category</label>
+                <label className="text-[10px] font-bold tracking-normal text-slate-500 block mb-1.5">Category</label>
                 <div className="relative">
-                  <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                  <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                   <select
                     value={selectedCategory}
                     onChange={e => setSelectedCategory(e.target.value)}
-                    className="w-full bg-[#fff5f5] border border-red-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-black outline-none focus:border-[#ef4444] transition-all appearance-none cursor-pointer"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold text-slate-900 outline-none focus:border-[#00b070] focus:bg-white transition-all appearance-none cursor-pointer"
                   >
-                    {categoriesList.map(c => <option key={c} className="text-black bg-white">{c}</option>)}
+                    {categoriesList.map(c => <option key={c} className="text-slate-900 bg-white">{c}</option>)}
                   </select>
                 </div>
               </div>
               <div className="md:col-span-1">
                 <button
                   onClick={applyFilters}
-                  className="w-full h-[42px] bg-black hover:bg-neutral-900 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center outline-none"
+                  className="w-full h-[42px] bg-[#00b070] hover:bg-[#009282] text-white font-extrabold rounded-xl shadow-md shadow-emerald-500/25 active:scale-[0.98] transition-all flex items-center justify-center outline-none cursor-pointer"
                 >
                   <Search className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            <div className="flex gap-6 mt-3 pt-3 border-t border-red-50">
-              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setSponsorOnly(!sponsorOnly)}>
-                <div className={`w-9 h-5 rounded-full transition-all relative ${sponsorOnly ? "bg-black" : "bg-gray-200"}`}>
+            <div className="flex gap-6 mt-3 pt-3 border-t border-slate-100">
+              <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setSponsorOnly(!sponsorOnly)}>
+                <div className={`w-9 h-5 rounded-full transition-all relative ${sponsorOnly ? "bg-[#00b070]" : "bg-slate-200"}`}>
                   <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${sponsorOnly ? "left-4" : "left-0.5"}`} />
                 </div>
-                <span className="text-xs font-semibold text-[#475569]">Visa Sponsored Only</span>
+                <span className="text-xs font-semibold text-slate-700">Visa Sponsored Only</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setRelocationOnly(!relocationOnly)}>
-                <div className={`w-9 h-5 rounded-full transition-all relative ${relocationOnly ? "bg-black" : "bg-gray-200"}`}>
+              <label className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setRelocationOnly(!relocationOnly)}>
+                <div className={`w-9 h-5 rounded-full transition-all relative ${relocationOnly ? "bg-[#00b070]" : "bg-slate-200"}`}>
                   <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${relocationOnly ? "left-4" : "left-0.5"}`} />
                 </div>
-                <span className="text-xs font-semibold text-[#475569]">Relocation Package</span>
+                <span className="text-xs font-semibold text-slate-700">Relocation Package</span>
               </label>
             </div>
           </div>
@@ -924,10 +919,10 @@ export function JobsPortal() {
               <button
                 key={chip}
                 onClick={() => filterByChip(chip)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold border shrink-0 transition-all outline-none ${
+                className={`px-4 py-2 rounded-full text-xs transition-all outline-none cursor-pointer ${
                   activeChip === chip
-                    ? "bg-black text-white border-black shadow-sm"
-                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                    ? "bg-[#430f7a] text-white font-extrabold border border-[#430f7a] shadow-sm"
+                    : "bg-white border border-slate-200 text-slate-700 font-bold hover:border-slate-300 hover:bg-slate-50"
                 }`}
               >
                 {chip}
@@ -1050,19 +1045,19 @@ export function JobsPortal() {
                   })}
                 </div>
 
-                <div className="h-px bg-red-50"></div>
+                <div className="h-px bg-slate-100"></div>
 
                 {/* Perks toggles */}
                 <div className="space-y-2">
                   <span className="text-xs font-light text-[#359FC2] tracking-normal block">Special Perks</span>
                   <label className="flex items-center gap-2 cursor-pointer" onClick={() => setSponsorOnly(!sponsorOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${sponsorOnly ? "bg-black" : "bg-gray-200"}`}>
+                    <div className={`w-9 h-5 rounded-full transition-all relative ${sponsorOnly ? "bg-[#00b070]" : "bg-gray-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${sponsorOnly ? "left-4" : "left-0.5"}`} />
                     </div>
                     <span className="text-xs text-[#475569] font-semibold">Visa Sponsored</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer" onClick={() => setRelocationOnly(!relocationOnly)}>
-                    <div className={`w-9 h-5 rounded-full transition-all relative ${relocationOnly ? "bg-black" : "bg-gray-200"}`}>
+                    <div className={`w-9 h-5 rounded-full transition-all relative ${relocationOnly ? "bg-[#00b070]" : "bg-gray-200"}`}>
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${relocationOnly ? "left-4" : "left-0.5"}`} />
                     </div>
                     <span className="text-xs text-[#475569] font-semibold">Relocation Package</span>
@@ -1071,7 +1066,7 @@ export function JobsPortal() {
 
                 <button
                   onClick={applyFilters}
-                  className="w-full bg-black hover:bg-neutral-900 text-white font-bold py-2.5 rounded-xl text-xs shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all outline-none"
+                  className="w-full bg-[#00b070] hover:bg-[#009282] text-white font-extrabold py-3 rounded-xl text-xs shadow-md shadow-emerald-500/20 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all outline-none"
                 >
                   Apply Filters
                 </button>
@@ -1080,10 +1075,10 @@ export function JobsPortal() {
 
             {/* JOBS GRID */}
             <div className="lg:col-span-9 space-y-4">
-              <div className="bg-gradient-to-r from-red-50/50 to-white border border-red-100 border-l-4 border-l-black rounded-2xl p-4 flex gap-3">
-                <Zap className="w-5 h-5 text-black shrink-0 mt-0.5" />
+              <div className="bg-gradient-to-r from-emerald-50/60 to-white border border-emerald-100/80 border-l-4 border-l-[#00b070] rounded-2xl p-4 flex gap-3 shadow-sm">
+                <Zap className="w-5 h-5 text-[#00b070] shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-extrabold text-red-700 mb-0.5">Work Visa Help on Every Job</h4>
+                  <h4 className="text-xs font-extrabold text-[#00b070] mb-0.5">Work Visa Help on Every Job</h4>
                   <p className="text-[11px] text-[#475569] font-semibold leading-normal">Every listing includes free work permit guidance. Apply and book a visa expert in one seamless flow.</p>
                 </div>
               </div>
@@ -1092,7 +1087,7 @@ export function JobsPortal() {
                 <div className="text-xs font-semibold text-gray-400">
                   <span className="text-[#0c1a2e] font-extrabold">{jobs.length} jobs</span> matching your preference
                 </div>
-                <select className="bg-white border border-red-100 rounded-xl px-3 py-1.5 text-xs font-bold text-[#475569] outline-none">
+                <select className="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 outline-none hover:border-slate-300 shadow-sm">
                   <option>Most Relevant</option>
                   <option>Newest Added</option>
                   <option>Highest Salary</option>
@@ -1100,11 +1095,11 @@ export function JobsPortal() {
               </div>
 
               {jobs.length === 0 ? (
-                <div className="bg-white border border-red-100 rounded-2xl p-16 text-center shadow-sm">
-                  <Briefcase className="w-10 h-10 text-red-100 mx-auto mb-3" />
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-16 text-center shadow-sm">
+                  <Briefcase className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                   <h3 className="font-sans font-extrabold text-[#0c1a2e] text-sm mb-1">No Jobs Found</h3>
                   <p className="text-xs text-[#94b0c4] font-semibold mb-4">Try clearing filters to broaden your search.</p>
-                  <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">Clear All Filters</button>
+                  <button onClick={clearFilters} className="text-xs font-bold text-[#00b070] hover:underline outline-none">Clear All Filters</button>
                 </div>
               ) : jobs.map(job => {
                 const JobIcon = job.icon;
@@ -1112,7 +1107,7 @@ export function JobsPortal() {
                   <div
                     key={job.id}
                     onClick={() => { setActiveJob(job); window.scrollTo(0, 0); }}
-                    className={`group bg-white border border-slate-300 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:border-slate-500 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer ${job.featured ? "ring-1 ring-[#ef4444]/20" : ""}`}
+                    className={`group bg-white border border-slate-200/90 rounded-[24px] overflow-hidden shadow-sm hover:shadow-xl hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer ${job.featured ? "ring-1 ring-emerald-500/20" : ""}`}
                   >
                     <div className="relative h-44 overflow-hidden">
                       <img src={job.heroImg} alt={job.location} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -1129,7 +1124,7 @@ export function JobsPortal() {
                         className="absolute top-2.5 left-2.5 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/50 hover:bg-white shadow-sm transition-all outline-none"
                       >
                         {saved.includes(job.id)
-                          ? <Bookmark className="w-4 h-4 text-[#ef4444] fill-[#ef4444]" />
+                          ? <Bookmark className="w-4 h-4 text-[#00b070] fill-[#00b070]" />
                           : <BookmarkPlus className="w-4 h-4 text-gray-400" />}
                       </button>
 
@@ -1154,7 +1149,7 @@ export function JobsPortal() {
                         />
 
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-sans font-semibold text-base text-[#0c1a2e] leading-snug group-hover:text-[#ef4444] transition-colors mb-1">
+                          <h3 className="font-sans font-semibold text-base text-[#0c1a2e] leading-snug group-hover:text-[#00b070] transition-colors mb-1">
                             {job.title}
                           </h3>
                           <div className="flex items-center gap-1.5 text-xs text-[#475569] font-semibold">
@@ -1178,14 +1173,14 @@ export function JobsPortal() {
                       </div>
 
 
-                      <div className="flex items-center justify-between pt-4 border-t border-red-50">
+                      <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                         <div className="flex items-center gap-4 text-[11px] text-[#94b0c4] font-bold">
                           <span className="flex items-center gap-1"><Briefcase className="w-3.5 h-3.5" />{job.type}</span>
                           <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{job.posted}</span>
                         </div>
                         <button
                           onClick={e => { e.stopPropagation(); setActiveJob(job); window.scrollTo(0, 0); }}
-                          className="bg-black hover:bg-neutral-900 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.97] transition-all flex items-center gap-1.5 group/btn outline-none"
+                          className="bg-[#00b070] hover:bg-[#009282] text-white text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-500/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all flex items-center gap-1.5 group/btn outline-none"
                         >
                           Apply Now <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                         </button>
@@ -1198,7 +1193,7 @@ export function JobsPortal() {
               <div className="text-center pt-4">
                 <button
                   onClick={() => showToast("📄 Loading more jobs...")}
-                  className="bg-white border border-gray-200 text-black font-bold text-xs px-7 py-3 rounded-xl hover:bg-gray-50 hover:shadow-sm active:scale-[0.98] transition-all shadow-sm outline-none"
+                  className="bg-white border border-slate-200 text-slate-800 font-extrabold text-xs px-7 py-3 rounded-xl hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm active:scale-[0.98] transition-all shadow-sm outline-none"
                 >
                   Load More Jobs →
                 </button>
@@ -1268,7 +1263,7 @@ export function JobsPortal() {
                         value={applicantName}
                         onChange={(e) => setApplicantName(e.target.value)}
                         placeholder="e.g. John Doe"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-black focus:bg-white transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-[#00b070] focus:bg-white transition-all"
                       />
                     </div>
                   </div>
@@ -1293,7 +1288,7 @@ export function JobsPortal() {
                         }}
                         placeholder="e.g. john@example.com"
                         className={`w-full bg-slate-50 border rounded-xl pl-10 pr-3 py-2.5 text-sm font-medium focus:outline-none focus:bg-white transition-all ${
-                          formErrors.email ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-black"
+                          formErrors.email ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-[#00b070]"
                         }`}
                       />
                     </div>
@@ -1319,7 +1314,7 @@ export function JobsPortal() {
                         }}
                         placeholder="e.g. +1 (555) 234-5678"
                         className={`w-full bg-slate-50 border rounded-xl pl-10 pr-3 py-2.5 text-sm font-medium focus:outline-none focus:bg-white transition-all ${
-                          formErrors.phone ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-black"
+                          formErrors.phone ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-[#00b070]"
                         }`}
                       />
                     </div>
@@ -1345,7 +1340,7 @@ export function JobsPortal() {
                         }}
                         placeholder="e.g. Toronto, Canada or New Delhi, India"
                         className={`w-full bg-slate-50 border rounded-xl pl-10 pr-3 py-2.5 text-sm font-medium focus:outline-none focus:bg-white transition-all ${
-                          formErrors.location ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-black"
+                          formErrors.location ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-[#00b070]"
                         }`}
                       />
                     </div>
@@ -1361,7 +1356,7 @@ export function JobsPortal() {
                       value={applicantMessage}
                       onChange={(e) => setApplicantMessage(e.target.value)}
                       placeholder="Brief note regarding your experience or relocation preference..."
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 font-medium focus:outline-none focus:border-black focus:bg-white transition-all resize-none"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-800 font-medium focus:outline-none focus:border-[#00b070] focus:bg-white transition-all resize-none"
                     />
                   </div>
 
@@ -1378,7 +1373,7 @@ export function JobsPortal() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-black hover:bg-neutral-900 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+                      className="bg-[#00b070] hover:bg-[#009282] text-white font-extrabold text-xs px-6 py-2.5 rounded-xl shadow-md shadow-emerald-500/20 hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <>
