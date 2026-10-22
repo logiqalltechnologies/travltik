@@ -17,7 +17,17 @@ export const MAIN_NAV: NavItem[] = [
       { label: "Licensed Lawyers & MARA", href: "/emergency", icon: "Scale" },
     ],
   },
-  { label: "Self Apply", href: "/self-apply" },
+  {
+    label: "Visa Services",
+    href: "/visa-services",
+    children: [
+      { label: "Visa Documentation Filing", href: "/visa-documentation", icon: "FileText" },
+      { label: "Visa Form Filing Assistance", href: "/visa-form-filing", icon: "FileText" },
+      { label: "VFS Appointment Support", href: "/vfs-appointment", icon: "Calendar" },
+      { label: "Self Apply", href: "/self-apply", icon: "FileText" },
+      { label: "Travel Insurance", href: "/services/travel-insurance", icon: "HeartHandshake" },
+    ],
+  },
   {
     label: "AI Tools",
     href: "/ai-tools",
@@ -28,13 +38,13 @@ export const MAIN_NAV: NavItem[] = [
     ],
   },
   {
-    label: "Visa Services",
-    href: "/visa-services",
+    label: "Marketplace",
+    href: "/jobs",
     children: [
-      { label: "Visa Documentation Filing", href: "/visa-documentation", icon: "FileText" },
-      { label: "Visa Form Filing Assistance", href: "/visa-form-filing", icon: "FileText" },
-      { label: "VFS Appointment Support", href: "/vfs-appointment", icon: "Calendar" },
-      { label: "Travel Insurance", href: "/services/travel-insurance", icon: "HeartHandshake" },
+      { label: "Jobs & Careers", href: "/jobs", icon: "Briefcase" },
+      { label: "Universities", href: "/universities", icon: "GraduationCap" },
+      { label: "Tours & Stays", href: "/tours", icon: "Plane" },
+      { label: "Classifieds", href: "/service-provider/dashboard?tab=classifieds&action=new", icon: "Compass" },
     ],
   },
   {
@@ -44,6 +54,7 @@ export const MAIN_NAV: NavItem[] = [
       { label: "Immigration News & Guides", href: "/visa-guide", icon: "FileText" },
       { label: "Visa Policy Changes 2026", href: "/visa-guide", icon: "Plane" },
       { label: "Verified Visa Experts", href: "/find-experts", icon: "Award" },
+      { label: "Milestone Escrow Guide", href: "/escrow", icon: "Scale" },
     ],
   },
 ];
