@@ -44,7 +44,7 @@ export const MAIN_NAV: NavItem[] = [
       { label: "Jobs & Careers", href: "/jobs", icon: "Briefcase" },
       { label: "Universities", href: "/universities", icon: "GraduationCap" },
       { label: "Tours & Stays", href: "/tours", icon: "Plane" },
-      { label: "Classifieds", href: "/service-provider/dashboard?tab=classifieds&action=new", icon: "Compass" },
+      { label: "Classifieds", href: "/#classifieds", icon: "Compass" },
     ],
   },
   {

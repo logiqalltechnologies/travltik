@@ -282,7 +282,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 .bdg.p{background:var(--l2);color:var(--p)}
 .bdg svg{font-size:13px}
 /* classifieds */
-.cls{background:linear-gradient(180deg,#fff,var(--l1) 30%,var(--l1) 90%,#fff)}
+.cls{scroll-margin-top:90px;background:linear-gradient(180deg,#fff,var(--l1) 30%,var(--l1) 90%,#fff)}
 .clh{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:34px}.clh .sh{margin:0}
 .cf{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}.chip{padding:10px 20px;border-radius:99px;font-weight:700;font-size:14px;background:#fff;border:1.5px solid var(--l2);color:#4b4268;transition:.25s;display:inline-flex;gap:8px;align-items:center}.chip:hover{border-color:var(--p3)}.chip.on{background:var(--p);color:#fff;border-color:var(--p)}.chip small{font-weight:700;font-size:11.5px;opacity:.7}
 .clg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -455,7 +455,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <a href="/jobs"><svg class="i"><use href="#brief"/></svg>Jobs &amp; Careers</a>
       <a href="/universities"><svg class="i"><use href="#cap"/></svg>Universities</a>
       <a href="/tours"><svg class="i"><use href="#plane"/></svg>Tours &amp; Stays</a>
-      <a href="/service-provider/dashboard?tab=classifieds&action=new"><svg class="i"><use href="#plus"/></svg>Classifieds</a>
+      <a href="#classifieds"><svg class="i"><use href="#plus"/></svg>Classifieds</a>
     </div>
   </li>
   <li class="nav-item">
@@ -476,7 +476,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <a href="/jobs">Marketplace: Jobs &amp; Careers</a>
   <a href="/universities">Marketplace: Universities</a>
   <a href="/tours">Marketplace: Tours &amp; Stays</a>
-  <a href="/service-provider/dashboard?tab=classifieds&action=new">Marketplace: Classifieds</a>
+  <a href="#classifieds">Marketplace: Classifieds</a>
   <a href="/resources">Resources</a>
   <a href="/planner" style="color:var(--g2);font-weight:700">AI Planner</a>
   <a href="/support">Contact & Support</a>
@@ -1496,6 +1496,11 @@ document.addEventListener('click', (e) => {
   }
 });
 $$('#mm a').forEach(a => a.addEventListener('click', () => $('#mm').classList.remove('o')));
+
+function scrollToClassifieds(){const el=document.getElementById('classifieds');if(el){el.scrollIntoView({behavior:'smooth',block:'start'})}}
+$$('a[href="#classifieds"],a[href="/#classifieds"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();scrollToClassifieds();history.pushState(null,'','#classifieds')})});
+if(location.hash==='#classifieds'){setTimeout(scrollToClassifieds,250)}
+addEventListener('hashchange',()=>{if(location.hash==='#classifieds')scrollToClassifieds()});
 
 addEventListener('scroll',()=>{const y=scrollY+140,ids=['search','destinations','services','how','experts','classifieds','community'];let c=null;ids.forEach(i=>{const e=document.getElementById(i);if(e&&e.offsetTop<=y)c=i});$$('.links a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+c))});
 const ym=location.hash.match(/y=(\d+)/);if(ym&&+ym[1]>0){document.body.style.transform='translateY(-'+ym[1]+'px)';$('#hd').style.visibility='hidden'}
