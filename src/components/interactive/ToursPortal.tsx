@@ -416,8 +416,8 @@ export function ToursPortal() {
                         {/* Banner Content */}
                         <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
                             
-                            {/* Main Serif Header */}
-                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                            {/* Main Header */}
+                            <h1 className="font-plus-jakarta text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-2 drop-shadow-md">
                                 Dream Holidays. Visas Sorted.
                             </h1>
 
@@ -482,7 +482,7 @@ export function ToursPortal() {
                                 ]} 
                             />
                         </div>
-                        <button onClick={() => triggerToast("✈️ Searching holiday packages...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
+                        <button onClick={() => triggerToast("✈️ Searching holiday packages...")} className="w-full md:w-auto bg-[#00b070] hover:bg-[#009282] text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/25 active:scale-95 self-end shrink-0 cursor-pointer">
                             <Search className="w-4 h-4" /> Search Holidays
                         </button>
                     </div>
@@ -512,8 +512,8 @@ export function ToursPortal() {
                         {/* Banner Content */}
                         <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
                             
-                            {/* Main Serif Header */}
-                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                            {/* Main Header */}
+                            <h1 className="font-plus-jakarta text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-2 drop-shadow-md">
                                 Live the Game. Visas Sorted.
                             </h1>
 
@@ -587,7 +587,7 @@ export function ToursPortal() {
                                 ]} 
                             />
                         </div>
-                        <button onClick={() => triggerToast("⚽ Searching sport tours...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
+                        <button onClick={() => triggerToast("⚽ Searching sport tours...")} className="w-full md:w-auto bg-[#00b070] hover:bg-[#009282] text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/25 active:scale-95 self-end shrink-0 cursor-pointer">
                             <Search className="w-4 h-4" /> Search Sport Tours
                         </button>
                     </div>
@@ -617,8 +617,8 @@ export function ToursPortal() {
                         {/* Banner Content */}
                         <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
                             
-                            {/* Main Serif Header */}
-                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                            {/* Main Header */}
+                            <h1 className="font-plus-jakarta text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-2 drop-shadow-md">
                                 Sail the World. Ports & Visas Sorted.
                             </h1>
 
@@ -690,7 +690,7 @@ export function ToursPortal() {
                                 ]} 
                             />
                         </div>
-                        <button onClick={() => triggerToast("🚢 Searching cruises...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
+                        <button onClick={() => triggerToast("🚢 Searching cruises...")} className="w-full md:w-auto bg-[#00b070] hover:bg-[#009282] text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/25 active:scale-95 self-end shrink-0 cursor-pointer">
                             <Search className="w-4 h-4" /> Search Cruises
                         </button>
                     </div>
@@ -720,8 +720,8 @@ export function ToursPortal() {
                         {/* Banner Content */}
                         <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
                             
-                            {/* Main Serif Header */}
-                            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-wide mb-2 drop-shadow-md">
+                            {/* Main Header */}
+                            <h1 className="font-plus-jakarta text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight mb-2 drop-shadow-md">
                                 See the Show. Visas Sorted.
                             </h1>
 
@@ -803,7 +803,7 @@ export function ToursPortal() {
                                 ]} 
                             />
                         </div>
-                        <button onClick={() => triggerToast("🎭 Searching events...")} className="w-full md:w-auto bg-black hover:bg-slate-900 text-white font-bold px-8 py-3.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all self-end shrink-0">
+                        <button onClick={() => triggerToast("🎭 Searching events...")} className="w-full md:w-auto bg-[#00b070] hover:bg-[#009282] text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/25 active:scale-95 self-end shrink-0 cursor-pointer">
                             <Search className="w-4 h-4" /> Search Events
                         </button>
                     </div>
@@ -811,59 +811,59 @@ export function ToursPortal() {
             )}
 
             {/* Category Navigation Bar */}
-            <div className="bg-white border-b border-red-100 sticky top-32 z-30 shadow-sm">
+            <div className="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-32 z-30 shadow-xs">
                 <div className="max-w-6xl mx-auto px-4 flex justify-between items-center overflow-x-auto h-14 scrollbar-none">
                     <div className="flex gap-2 shrink-0 py-2">
                         {/* Tab: Holiday */}
                         <button 
                             onClick={() => { setActiveTab("holiday"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold transition-all duration-300 ${
                                 activeTab === "holiday" 
-                                    ? "bg-red-50 text-[#ef4444] border border-red-100 shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                                    ? "bg-[#FAF5FC] text-[#430f7a] border border-[#dccaf7] shadow-xs" 
+                                    : "text-slate-600 hover:text-[#430f7a] hover:bg-slate-50 border border-transparent"
                             }`}
                         >
-                            <Umbrella className="w-4 h-4 shrink-0" />
+                            <Umbrella className="w-4 h-4 shrink-0 text-[#00b070]" />
                             Holiday Packages
                         </button>
 
                         {/* Tab: Sports */}
                         <button 
                             onClick={() => { setActiveTab("sports"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold transition-all duration-300 ${
                                 activeTab === "sports" 
-                                    ? "bg-black text-white border border-black shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                                    ? "bg-[#FAF5FC] text-[#430f7a] border border-[#dccaf7] shadow-xs" 
+                                    : "text-slate-600 hover:text-[#430f7a] hover:bg-slate-50 border border-transparent"
                             }`}
                         >
-                            <Trophy className="w-4 h-4 shrink-0" />
+                            <Trophy className="w-4 h-4 shrink-0 text-amber-500" />
                             Sport Tours
-                            <span className="bg-black text-white text-[9px] px-1.5 py-0.5 rounded-full font-extrabold animate-pulse">NEW</span>
+                            <span className="bg-[#00b070] text-white text-[9px] px-1.5 py-0.5 rounded-full font-black">NEW</span>
                         </button>
 
                         {/* Tab: Cruises */}
                         <button 
                             onClick={() => { setActiveTab("cruises"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold transition-all duration-300 ${
                                 activeTab === "cruises" 
-                                    ? "bg-black text-white border border-black shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                                    ? "bg-[#FAF5FC] text-[#430f7a] border border-[#dccaf7] shadow-xs" 
+                                    : "text-slate-600 hover:text-[#430f7a] hover:bg-slate-50 border border-transparent"
                             }`}
                         >
-                            <Ship className="w-4 h-4 shrink-0" />
+                            <Ship className="w-4 h-4 shrink-0 text-sky-500" />
                             Cruises
                         </button>
 
                         {/* Tab: Events */}
                         <button 
                             onClick={() => { setActiveTab("events"); setSortBy("popular"); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 ${
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold transition-all duration-300 ${
                                 activeTab === "events" 
-                                    ? "bg-orange-50 text-orange-600 border border-orange-100 shadow-sm" 
-                                    : "text-gray-500 hover:text-navy hover:bg-gray-50"
+                                    ? "bg-[#FAF5FC] text-[#430f7a] border border-[#dccaf7] shadow-xs" 
+                                    : "text-slate-600 hover:text-[#430f7a] hover:bg-slate-50 border border-transparent"
                             }`}
                         >
-                            <Music className="w-4 h-4 shrink-0" />
+                            <Music className="w-4 h-4 shrink-0 text-rose-500" />
                             Entertainment Events
                         </button>
                     </div>
@@ -874,9 +874,9 @@ export function ToursPortal() {
             <div className="max-w-6xl mx-auto px-4 mt-8">
                 {activeTab === "holiday" && (
                     <div className="flex flex-wrap gap-2 mb-6">
-                        <button onClick={() => setHolidayDest("All")} className={`px-4 py-2 rounded-full text-xs font-bold border transition-all duration-300 ${holidayDest === "All" ? "bg-black text-white border-transparent shadow-md" : "bg-white text-gray-500 border-slate-200 hover:bg-slate-50"}`}>All Destinations</button>
+                        <button onClick={() => setHolidayDest("All")} className={`px-4 py-2 rounded-full text-xs transition-all duration-250 cursor-pointer ${holidayDest === "All" ? "bg-[#430f7a] text-white font-extrabold shadow-sm border border-[#430f7a]" : "bg-white text-slate-700 font-bold border border-slate-200 hover:border-slate-300 hover:bg-slate-50"}`}>All Destinations</button>
                         {["Bali", "Dubai", "Europe", "Thailand", "Singapore", "Maldives", "Malaysia", "Vietnam", "Switzerland"].map(d => (
-                            <button key={d} onClick={() => setHolidayDest(d)} className={`px-4 py-2 rounded-full text-xs font-bold border transition-all duration-300 ${holidayDest === d ? "bg-black text-white border-transparent shadow-md" : "bg-white text-gray-500 border-slate-200 hover:bg-slate-50"}`}>{d}</button>
+                            <button key={d} onClick={() => setHolidayDest(d)} className={`px-4 py-2 rounded-full text-xs transition-all duration-250 cursor-pointer ${holidayDest === d ? "bg-[#430f7a] text-white font-extrabold shadow-sm border border-[#430f7a]" : "bg-white text-slate-700 font-bold border border-slate-200 hover:border-slate-300 hover:bg-slate-50"}`}>{d}</button>
                         ))}
                     </div>
                 )}
@@ -894,14 +894,14 @@ export function ToursPortal() {
                                 <div 
                                     key={item.key} 
                                     onClick={() => { setActiveSportFilter(item.key); triggerToast(`Showing ${item.label} packages`); }}
-                                    className={`p-3 rounded-xl border text-center cursor-pointer transition-all duration-300 ${
+                                    className={`p-3 rounded-2xl border text-center cursor-pointer transition-all duration-300 ${
                                         activeSportFilter === item.key 
-                                            ? "border-black bg-black/5 shadow-sm" 
-                                            : "border-slate-200 bg-white hover:border-slate-400"
+                                            ? "border-[#430f7a] bg-[#FAF5FC] shadow-sm" 
+                                            : "border-slate-200 bg-white hover:border-slate-300"
                                     }`}
                                 >
                                     <div className="text-2xl mb-1">{item.emoji}</div>
-                                    <div className="text-xs font-bold text-navy">{item.label}</div>
+                                    <div className={`text-xs font-bold ${activeSportFilter === item.key ? "text-[#430f7a]" : "text-slate-800"}`}>{item.label}</div>
                                 </div>
                             ))}
                         </div>
@@ -919,10 +919,10 @@ export function ToursPortal() {
                             <button 
                                 key={item.key} 
                                 onClick={() => setActiveCruiseFilter(item.key)}
-                                className={`px-4 py-2 rounded-full text-xs font-bold border transition-all duration-300 ${
+                                className={`px-4 py-2 rounded-full text-xs transition-all duration-250 cursor-pointer ${
                                     activeCruiseFilter === item.key 
-                                        ? "bg-black text-white border-transparent shadow-md" 
-                                        : "bg-white text-gray-500 border-slate-200 hover:bg-slate-50"
+                                        ? "bg-[#430f7a] text-white font-extrabold border border-[#430f7a] shadow-sm" 
+                                        : "bg-white text-slate-700 font-bold border border-slate-200 hover:border-slate-300 hover:bg-slate-50"
                                 }`}
                             >
                                 {item.label}
@@ -942,10 +942,10 @@ export function ToursPortal() {
                             <button 
                                 key={item.key} 
                                 onClick={() => setActiveEventFilter(item.key)}
-                                className={`px-4 py-2 rounded-full text-xs font-bold border transition-all duration-300 ${
+                                className={`px-4 py-2 rounded-full text-xs transition-all duration-250 cursor-pointer ${
                                     activeEventFilter === item.key 
-                                        ? "bg-black text-white border-transparent shadow-md" 
-                                        : "bg-white text-gray-500 border-slate-200 hover:bg-slate-50"
+                                        ? "bg-[#430f7a] text-white font-extrabold border border-[#430f7a] shadow-sm" 
+                                        : "bg-white text-slate-700 font-bold border border-slate-200 hover:border-slate-300 hover:bg-slate-50"
                                 }`}
                             >
                                 {item.label}
@@ -982,8 +982,7 @@ export function ToursPortal() {
                         {sortedTours.map(tour => (
                             <div
                                 key={tour.id}
-                                className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
-                                style={{ background: '#0C1A2E' }}
+                                className="group relative h-[450px] w-full rounded-[26px] overflow-hidden text-left bg-slate-900 border border-slate-200/90 hover:border-emerald-500/40 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer"
                                 onClick={() => handleBooking(tour)}
                             >
                                 {/* Background Image Container */}
@@ -1023,26 +1022,23 @@ export function ToursPortal() {
                                     </div>
 
                                     {/* Tour Title - Serif, uppercase, letter-spaced */}
-                                    <h3 className="font-serif text-xl font-normal text-white text-center tracking-wider uppercase mb-5 leading-snug drop-shadow-md">
+                                    <h3 className="font-plus-jakarta text-lg sm:text-[19px] font-extrabold text-white text-center tracking-tight mb-4 leading-snug drop-shadow-md group-hover:text-emerald-300 transition-colors">
                                         {tour.name}
                                     </h3>
 
-                                    {/* Divider Line */}
-                                    <div className="w-full h-[0.5px] bg-white/20 mb-5" />
-
                                     {/* Info Table Grid */}
-                                    <div className="grid grid-cols-3 gap-2 text-center">
+                                    <div className="grid grid-cols-3 gap-2 text-center bg-black/40 backdrop-blur-md rounded-2xl py-2.5 px-2 border border-white/15">
                                         <div>
-                                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">DURATION</span>
-                                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{tour.days}D/{tour.nights}N</span>
+                                            <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">DURATION</span>
+                                            <span className="text-[12px] text-white font-extrabold tracking-wide">{tour.days}D/{tour.nights}N</span>
                                         </div>
                                         <div>
-                                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">RATING</span>
-                                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase flex items-center justify-center gap-0.5">{tour.rating} ★</span>
+                                            <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">RATING</span>
+                                            <span className="text-[12px] text-amber-300 font-extrabold tracking-wide flex items-center justify-center gap-0.5">★ {tour.rating}</span>
                                         </div>
                                         <div>
-                                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PRICE</span>
-                                            <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">₹{tour.price.toLocaleString()}</span>
+                                            <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">PRICE</span>
+                                            <span className="text-[13px] text-emerald-400 font-black tracking-wide">₹{tour.price.toLocaleString()}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1060,8 +1056,7 @@ export function ToursPortal() {
                             return (
                                 <div
                                     key={tour.id}
-                                    className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
-                                    style={{ background: '#0C1A2E' }}
+                                    className="group relative h-[450px] w-full rounded-[26px] overflow-hidden text-left bg-slate-900 border border-slate-200/90 hover:border-emerald-500/40 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer"
                                     onClick={() => handleBooking(tour)}
                                 >
                                     {/* Background Image Container */}
@@ -1096,26 +1091,23 @@ export function ToursPortal() {
                                         </div>
 
                                         {/* Tour Title - Serif, uppercase, letter-spaced */}
-                                        <h3 className="font-serif text-xl font-normal text-white text-center tracking-wider uppercase mb-5 leading-snug drop-shadow-md">
+                                        <h3 className="font-plus-jakarta text-lg sm:text-[19px] font-extrabold text-white text-center tracking-tight mb-4 leading-snug drop-shadow-md group-hover:text-emerald-300 transition-colors">
                                             {tour.name}
                                         </h3>
 
-                                        {/* Divider Line */}
-                                        <div className="w-full h-[0.5px] bg-white/20 mb-5" />
-
                                         {/* Info Table Grid */}
-                                        <div className="grid grid-cols-3 gap-2 text-center">
+                                        <div className="grid grid-cols-3 gap-2 text-center bg-black/40 backdrop-blur-md rounded-2xl py-2.5 px-2 border border-white/15">
                                             <div>
-                                                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">EVENT</span>
-                                                <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{tour.sport || "Sports"}</span>
+                                                <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">EVENT</span>
+                                                <span className="text-[12px] text-white font-extrabold tracking-wide uppercase truncate block">{tour.sport || "Sports"}</span>
                                             </div>
                                             <div>
-                                                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">RATING</span>
-                                                <span className="text-[11px] text-white font-extrabold tracking-wide uppercase flex items-center justify-center gap-0.5">{tour.rating} ★</span>
+                                                <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">RATING</span>
+                                                <span className="text-[12px] text-amber-300 font-extrabold tracking-wide flex items-center justify-center gap-0.5">★ {tour.rating}</span>
                                             </div>
                                             <div>
-                                                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PRICE</span>
-                                                <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">₹{tour.price.toLocaleString()}</span>
+                                                <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">PRICE</span>
+                                                <span className="text-[13px] text-emerald-400 font-black tracking-wide">₹{tour.price.toLocaleString()}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1135,8 +1127,7 @@ export function ToursPortal() {
                                 return (
                                     <div
                                         key={tour.id}
-                                        className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
-                                        style={{ background: '#0C1A2E' }}
+                                        className="group relative h-[450px] w-full rounded-[26px] overflow-hidden text-left bg-slate-900 border border-slate-200/90 hover:border-emerald-500/40 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer"
                                         onClick={() => handleBooking(tour)}
                                     >
                                         {/* Background Image Container */}
@@ -1171,26 +1162,23 @@ export function ToursPortal() {
                                             </div>
 
                                             {/* Tour Title - Serif, uppercase, letter-spaced */}
-                                            <h3 className="font-serif text-xl font-normal text-white text-center tracking-wider uppercase mb-5 leading-snug drop-shadow-md">
+                                            <h3 className="font-plus-jakarta text-lg sm:text-[19px] font-extrabold text-white text-center tracking-tight mb-4 leading-snug drop-shadow-md group-hover:text-emerald-300 transition-colors">
                                                 {tour.name}
                                             </h3>
 
-                                            {/* Divider Line */}
-                                            <div className="w-full h-[0.5px] bg-white/20 mb-5" />
-
                                             {/* Info Table Grid */}
-                                            <div className="grid grid-cols-3 gap-2 text-center">
+                                            <div className="grid grid-cols-3 gap-2 text-center bg-black/40 backdrop-blur-md rounded-2xl py-2.5 px-2 border border-white/15">
                                                 <div>
-                                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">ROUTE</span>
-                                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase truncate block">{tour.duration}</span>
+                                                    <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">ROUTE</span>
+                                                    <span className="text-[12px] text-white font-extrabold tracking-wide uppercase truncate block">{tour.duration}</span>
                                                 </div>
                                                 <div>
-                                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">RATING</span>
-                                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase flex items-center justify-center gap-0.5">{tour.rating} ★</span>
+                                                    <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">RATING</span>
+                                                    <span className="text-[12px] text-amber-300 font-extrabold tracking-wide flex items-center justify-center gap-0.5">★ {tour.rating}</span>
                                                 </div>
                                                 <div>
-                                                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PRICE</span>
-                                                    <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">₹{tour.price.toLocaleString()}</span>
+                                                    <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">PRICE</span>
+                                                    <span className="text-[13px] text-emerald-400 font-black tracking-wide">₹{tour.price.toLocaleString()}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1221,8 +1209,7 @@ export function ToursPortal() {
                             return (
                                 <div
                                     key={tour.id}
-                                    className="group relative h-[440px] w-full rounded-[32px] overflow-hidden text-left hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent"
-                                    style={{ background: '#0C1A2E' }}
+                                    className="group relative h-[450px] w-full rounded-[26px] overflow-hidden text-left bg-slate-900 border border-slate-200/90 hover:border-emerald-500/40 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer"
                                     onClick={() => handleBooking(tour)}
                                 >
                                     {/* Background Image Container */}
@@ -1259,26 +1246,23 @@ export function ToursPortal() {
                                         </div>
 
                                         {/* Tour Title - Serif, uppercase, letter-spaced */}
-                                        <h3 className="font-serif text-xl font-normal text-white text-center tracking-wider uppercase mb-5 leading-snug drop-shadow-md">
+                                        <h3 className="font-plus-jakarta text-lg sm:text-[19px] font-extrabold text-white text-center tracking-tight mb-4 leading-snug drop-shadow-md group-hover:text-emerald-300 transition-colors">
                                             {tour.name}
                                         </h3>
 
-                                        {/* Divider Line */}
-                                        <div className="w-full h-[0.5px] bg-white/20 mb-5" />
-
                                         {/* Info Table Grid */}
-                                        <div className="grid grid-cols-3 gap-2 text-center">
+                                        <div className="grid grid-cols-3 gap-2 text-center bg-black/40 backdrop-blur-md rounded-2xl py-2.5 px-2 border border-white/15">
                                             <div>
-                                                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">DATE</span>
-                                                <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">{tour.date} {tour.monthName}</span>
+                                                <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">DATE</span>
+                                                <span className="text-[12px] text-white font-extrabold tracking-wide uppercase">{tour.date} {tour.monthName}</span>
                                             </div>
                                             <div>
-                                                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">RATING</span>
-                                                <span className="text-[11px] text-white font-extrabold tracking-wide uppercase flex items-center justify-center gap-0.5">{tour.rating} ★</span>
+                                                <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">RATING</span>
+                                                <span className="text-[12px] text-amber-300 font-extrabold tracking-wide flex items-center justify-center gap-0.5">★ {tour.rating}</span>
                                             </div>
                                             <div>
-                                                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">PRICE</span>
-                                                <span className="text-[11px] text-white font-extrabold tracking-wide uppercase">₹{tour.price.toLocaleString()}</span>
+                                                <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block mb-0.5">PRICE</span>
+                                                <span className="text-[13px] text-emerald-400 font-black tracking-wide">₹{tour.price.toLocaleString()}</span>
                                             </div>
                                         </div>
                                     </div>
