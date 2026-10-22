@@ -38,7 +38,7 @@ export default defineConfig({
     },
     envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_', 'RESEND_', 'EMAIL_', 'DATABASE_', 'TURNSTILE_'],
     define: {
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || (process.env.npm_lifecycle_event === 'build' ? 'production' : 'development')),
     },
     ssr: {
       external: ['resend', 'pg', 'bcryptjs', 'nodemailer', 'firebase-admin', 'firebase-admin/app', 'firebase-admin/auth'],
