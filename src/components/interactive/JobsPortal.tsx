@@ -25,6 +25,7 @@ const initialJobs = [
     relocation: true,
     featured: true,
     urgent: true,
+    isVerified: false,
     logo: "/images/construction_worker.jpg",
     heroImg: "/images/job_construction_greece.png",
     tags: ["Verified Contract", "Accommodations Provided", "Maldives Channel"],
@@ -48,6 +49,7 @@ const initialJobs = [
     relocation: false,
     featured: true,
     urgent: true,
+    isVerified: true,
     logo: "https://images.unsplash.com/photo-1549924231-f129b911e442?w=120&h=120&fit=crop",
     heroImg: "/images/job_tech_engineer.png",
     tags: ["React", "Node.js", "AWS", "LMIA"],
@@ -71,6 +73,7 @@ const initialJobs = [
     relocation: true,
     featured: false,
     urgent: false,
+    isVerified: true,
     logo: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=120&h=120&fit=crop",
     heroImg: "/images/job_nurse_dubai.png",
     tags: ["ICU", "DHA License", "Tax-Free", "Relocation"],
@@ -95,6 +98,7 @@ const initialJobs = [
     relocation: false,
     featured: true,
     urgent: false,
+    isVerified: true,
     logo: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=120&h=120&fit=crop",
     heroImg: "/images/job_chef_london.png",
     tags: ["Fine Dining", "Skilled Worker Visa", "Tier 2"],
@@ -118,6 +122,7 @@ const initialJobs = [
     relocation: true,
     featured: false,
     urgent: true,
+    isVerified: true,
     logo: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=120&h=120&fit=crop",
     heroImg: "/images/job_data_scientist_berlin.png",
     tags: ["Python", "ML/AI", "EU Blue Card", "Relocation"],
@@ -141,6 +146,7 @@ const initialJobs = [
     relocation: true,
     featured: false,
     urgent: false,
+    isVerified: true,
     logo: "https://images.unsplash.com/photo-1562774053-701939374585?w=120&h=120&fit=crop",
     heroImg: "/images/job_university_lecturer_auckland.png",
     tags: ["MBA", "PhD", "Work Visa NZ", "Relocation"],
@@ -151,11 +157,11 @@ const initialJobs = [
 ];
 
 const countryCards = [
-  { name: "Canada",       code: "ca", jobs: "1,240 jobs", img: "/images/dest_canada_cold.png" },
-  { name: "Dubai, UAE",   code: "ae", jobs: "980 jobs",   img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=300&fit=crop&q=90" },
-  { name: "UK",           code: "gb", jobs: "720 jobs",   img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90" },
-  { name: "Australia",    code: "au", jobs: "640 jobs",   img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&h=300&fit=crop&q=90" },
-  { name: "Germany",      code: "de", jobs: "380 jobs",   img: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=500&h=300&fit=crop&q=90" },
+  { name: "Canada",       code: "ca", jobs: "Verified Pilot", img: "/images/dest_canada_cold.png" },
+  { name: "Dubai, UAE",   code: "ae", jobs: "Direct Sponsor", img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=300&fit=crop&q=90" },
+  { name: "UK",           code: "gb", jobs: "Skilled Worker", img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90" },
+  { name: "Australia",    code: "au", jobs: "Verified Pilot", img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&h=300&fit=crop&q=90" },
+  { name: "Germany",      code: "de", jobs: "EU Blue Card",   img: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=500&h=300&fit=crop&q=90" },
 ];
 
 const categoriesList = ["All Categories", "IT & Tech", "Healthcare", "Engineering", "Hospitality", "Education"];
@@ -223,8 +229,8 @@ function JobCompanyLogo({
 }
 
 export function JobsPortal() {
-  const [jobs, setJobs]                   = useState(initialJobs);
-  const [allLoadedJobs, setAllLoadedJobs] = useState(initialJobs);
+  const [jobs, setJobs]                   = useState(() => initialJobs.filter(j => j.isVerified === true));
+  const [allLoadedJobs, setAllLoadedJobs] = useState(() => initialJobs.filter(j => j.isVerified === true));
   const [saved, setSaved]                 = useState<string[]>([]);
   const [searchQuery, setSearchQuery]     = useState("");
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
@@ -462,8 +468,9 @@ export function JobsPortal() {
     } catch (e) {
       console.warn("Could not load published jobs:", e);
     }
-    setAllLoadedJobs(combined);
-    setJobs(combined);
+    const verifiedInitial = combined.filter(j => j.isVerified !== false);
+    setAllLoadedJobs(verifiedInitial);
+    setJobs(verifiedInitial);
 
     // Fetch live jobs from the platform database so all users across the world see newly published jobs
     fetch('/api/jobs')
@@ -478,19 +485,20 @@ export function JobsPortal() {
             featured: true,
             urgent: p.urgent !== undefined ? p.urgent : true,
             isProviderOffer: true,
+            isVerified: p.is_verified ?? true,
           }));
 
           const seen = new Set();
           const merged: any[] = [];
 
           for (const sj of serverJobs) {
-            if (!seen.has(sj.id)) {
+            if (sj.isVerified !== false && !seen.has(sj.id)) {
               seen.add(sj.id);
               merged.push(sj);
             }
           }
           for (const ij of initialJobs) {
-            if (!seen.has(ij.id)) {
+            if (ij.isVerified !== false && !seen.has(ij.id)) {
               seen.add(ij.id);
               merged.push(ij);
             }
@@ -550,7 +558,7 @@ export function JobsPortal() {
     if (categoryVal !== "All Categories") setSelectedCategory(categoryVal);
 
     // Filter jobs immediately
-    let f = combined;
+    let f = combined.filter(j => j.isVerified !== false);
     if (qVal) {
       const qLower = qVal.toLowerCase();
       f = f.filter(j =>
@@ -581,7 +589,7 @@ export function JobsPortal() {
   };
 
   const applyFilters = () => {
-    let f = allLoadedJobs;
+    let f = allLoadedJobs.filter(j => j.isVerified !== false);
     if (searchQuery) f = f.filter(j =>
       j.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       j.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -808,7 +816,7 @@ export function JobsPortal() {
                   {/* Active listings pill */}
                   <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-xs font-bold text-white/90 mb-6 backdrop-blur-sm shadow-sm">
                     <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                    4,200+ Active Listings · Work Visa Included · 40+ Countries
+                    Verified Pilot Cohort · Work Visa Included · Escrow Protected
                   </div>
 
                   {/* Main Header */}
@@ -819,16 +827,16 @@ export function JobsPortal() {
                   {/* 3-Column Metadata Row */}
                   <div className="grid grid-cols-3 gap-8 md:gap-16 text-center mb-10 w-full max-w-lg">
                       <div>
-                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">LISTINGS</span>
-                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">4,200+ ACTIVE</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">PARTNERS</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">15+ VERIFIED</span>
                       </div>
                       <div>
-                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">WORK PERMIT</span>
-                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">SPONSORED</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">ESCROW</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">100% PROTECTED</span>
                       </div>
                       <div>
-                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">COUNTRIES</span>
-                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">40+ SPACES</span>
+                          <span className="text-[10px] text-gray-300 font-bold uppercase tracking-wider block mb-1">COHORT</span>
+                          <span className="text-[12px] text-white font-extrabold tracking-wide uppercase block">PILOT LAUNCH</span>
                       </div>
                   </div>
 
@@ -932,28 +940,27 @@ export function JobsPortal() {
         </div>
 
           {/* STATS BAR */}
-          <div className="bg-white border-b border-red-100">
-            <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-6 items-center justify-between">
-              <div className="flex items-center gap-8 flex-wrap">
-                {[
-                  { icon: Briefcase, value: "4,200+", label: "Active Jobs" },
-                  { icon: Globe, value: "40+", label: "Countries" },
-                  { icon: BadgeCheck, value: "320+", label: "Verified Recruiters" },
-                  { icon: Users, value: "50K+", label: "Placements Done" },
-                ].map(s => {
-                  const Icon = s.icon;
-                  return (
-                    <div key={s.label} className="flex items-center gap-2">
-                      <Icon className="w-4 h-4 text-black" />
-                      <span className="font-sans font-extrabold text-black text-base">{s.value}</span>
-                      <span className="text-[11px] font-bold text-[#475569]">{s.label}</span>
-                    </div>
-                  );
-                })}
+          <div className="bg-white border-b border-slate-200/80">
+            <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-8 items-center justify-between">
+              <div className="flex items-center gap-8 md:gap-12 flex-wrap text-sm font-semibold text-slate-600">
+                <div>
+                  <span className="block text-xl md:text-2xl font-black text-slate-900">15+</span>
+                  <span className="text-xs text-slate-500 font-semibold">Verified Partners</span>
+                </div>
+                <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
+                <div>
+                  <span className="block text-xl md:text-2xl font-black text-slate-900">100%</span>
+                  <span className="text-xs text-slate-500 font-semibold">Escrow Protected</span>
+                </div>
+                <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
+                <div>
+                  <span className="block text-xl md:text-2xl font-black text-slate-900">Pilot</span>
+                  <span className="text-xs text-slate-500 font-semibold">Launch Cohort</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse" />
-                <span className="text-xs font-extrabold text-emerald-600">142 jobs added today</span>
+              <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200/60 px-3.5 py-1.5 rounded-full">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                <span className="text-xs font-extrabold text-emerald-700">Verified Pilot Network</span>
               </div>
             </div>
           </div>
@@ -962,10 +969,10 @@ export function JobsPortal() {
           <div className="max-w-6xl mx-auto px-6 pt-12 pb-2 text-left">
             <div className="flex items-end justify-between mb-6">
               <div>
-                <span className="text-[11px] font-semibold text-[#ef4444] tracking-wider block mb-1">Browse by Destination</span>
+                <span className="text-[11px] font-semibold text-[#00b070] tracking-wider block mb-1">Browse by Destination</span>
                 <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Work?</h2>
               </div>
-              <button onClick={clearFilters} className="text-xs font-bold text-[#ef4444] hover:underline outline-none">View All →</button>
+              <button onClick={clearFilters} className="text-xs font-bold text-[#00b070] hover:underline outline-none">View All →</button>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -973,7 +980,7 @@ export function JobsPortal() {
                 <div
                   key={c.name}
                   onClick={() => filterByCountry(c.name)}
-                  className="group relative overflow-hidden rounded-2xl cursor-pointer h-40 border border-red-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  className="group relative overflow-hidden rounded-2xl cursor-pointer h-40 border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300"
                 >
                   <img src={c.img} alt={c.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/75 via-[#0c1a2e]/20 to-transparent"></div>
@@ -982,7 +989,7 @@ export function JobsPortal() {
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
                     <div className="text-white font-sans font-extrabold text-sm leading-snug">{c.name}</div>
-                    <div className="text-red-100 text-xs font-bold mt-0.5">{c.jobs}</div>
+                    <div className="text-emerald-300 text-xs font-bold mt-0.5">{c.jobs}</div>
                   </div>
                 </div>
               ))}
@@ -1114,6 +1121,15 @@ export function JobsPortal() {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/60 via-[#0c1a2e]/10 to-transparent"></div>
 
                       <div className="absolute top-2.5 right-2.5 flex gap-1.5">
+                        {job.isVerified !== false ? (
+                          <span className="bg-emerald-600 text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow flex items-center gap-1">
+                            ✓ Verified Pilot
+                          </span>
+                        ) : (
+                          <span className="bg-amber-100 text-amber-700 border border-amber-200 text-[9px] font-extrabold px-2.5 py-1 rounded-md">
+                            ⏳ Under Review
+                          </span>
+                        )}
                         {job.isProviderOffer && <span className="bg-blue-600 text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow">⚡ Work Permit Offer</span>}
                         {job.featured && <span className="bg-[#0c1a2e] text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow">⭐ Featured</span>}
                         {job.urgent && <span className="bg-red-50 text-red-700 border border-red-200 text-[9px] font-extrabold px-2.5 py-1 rounded-md">🔴 Urgent</span>}
@@ -1189,6 +1205,12 @@ export function JobsPortal() {
                   </div>
                 );
               })}
+
+              <div className="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-xl text-center">
+                <p className="text-xs text-slate-500 font-medium">
+                  🛡️ All job postings are reviewed by our compliance team. We do not list unverified recruitment agencies or roles that require upfront payment.
+                </p>
+              </div>
 
               <div className="text-center pt-4">
                 <button
