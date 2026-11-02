@@ -155,11 +155,20 @@ section{padding:96px 0;position:relative}
 .airbnb-pill-segment.c-drop.open{z-index:150}
 
 .airbnb-pill-divider{width:1px;height:32px;background-color:#ebebeb;flex-shrink:0}
-.airbnb-pill-btn-box{flex-shrink:0;margin-left:6px}
-.airbnb-round-search-btn{width:48px;height:48px;border-radius:50%;background:#00b070;color:#ffffff;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background-color .2s ease,transform .15s ease,box-shadow .2s ease;box-shadow:0 2px 8px rgba(0,176,112,0.3)}
-.airbnb-round-search-btn:hover{background:#008f5a;transform:scale(1.05);box-shadow:0 4px 14px rgba(0,176,112,0.45)}
+.airbnb-pill-btn-box{flex-shrink:0;margin-left:8px}
+.airbnb-round-search-btn{width:48px;height:48px;border-radius:50%;background:#ff385c;color:#ffffff;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background-color .2s ease,transform .15s ease,box-shadow .2s ease;box-shadow:0 2px 10px rgba(255,56,92,0.4)}
+.airbnb-round-search-btn:hover{background:#e00b41;transform:scale(1.05);box-shadow:0 4px 16px rgba(255,56,92,0.55)}
 .airbnb-round-search-btn:active{transform:scale(0.96)}
-.airbnb-round-search-btn svg{width:18px;height:18px;stroke:#ffffff;stroke-width:2.5}
+.airbnb-round-search-btn svg{width:18px;height:18px;stroke:#ffffff;stroke-width:2.6}
+
+/* Luxury Dropdown Popup inside Pill */
+.airbnb-pill-popup{position:absolute;top:calc(100% + 14px);left:0;min-width:280px;background:#ffffff;border-radius:24px;border:1px solid #ebebeb;box-shadow:0 14px 40px rgba(0,0,0,0.14);padding:14px;z-index:250;display:none;flex-direction:column;gap:4px}
+.airbnb-pill-segment.open .airbnb-pill-popup{display:flex}
+.airbnb-popup-title{font-size:11px;font-weight:800;text-transform:uppercase;color:#64748b;letter-spacing:0.04em;padding:4px 8px 6px}
+.airbnb-popup-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:6px}
+.airbnb-popup-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;font-size:13.5px;font-weight:600;color:#1e293b;cursor:pointer;transition:background-color .15s ease;background:#f8fafc;border:1px solid #f1f5f9}
+.airbnb-popup-opt:hover{background:#f1f5f9;border-color:#cbd5e1}
+.airbnb-popup-opt img{width:18px;height:13px;border-radius:2px;object-fit:cover}
 
 @media(max-width:960px){
   .airbnb-cat-tabs{display:none}
@@ -834,9 +843,74 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         </div>
       </div>
     </div>
-    <input type="hidden" id="q" value="" />
-    <input type="hidden" id="dest-val" value="" />
-    <input type="hidden" id="from-val" value="India" />
+    <!-- Row 2: Floating Airbnb 3-Segment Search Pill (Exact 1:1 Airbnb Style) -->
+    <div class="airbnb-search-bar-row">
+      <div class="airbnb-pill-search">
+        <!-- Segment 1: Where -->
+        <div class="airbnb-pill-segment" id="pill-seg-where">
+          <label for="dest-val-input">Where</label>
+          <input type="text" id="dest-val-input" placeholder="Search destinations" autocomplete="off" />
+          <input type="hidden" id="dest-val" value="" />
+          <div class="airbnb-pill-popup" id="popup-where">
+            <span class="airbnb-popup-title">Popular Destinations</span>
+            <div class="airbnb-popup-grid">
+              <div class="airbnb-popup-opt" data-type="dest" data-val="Canada"><img src="https://flagcdn.com/w40/ca.png" alt="Canada" /> Canada</div>
+              <div class="airbnb-popup-opt" data-type="dest" data-val="United Kingdom"><img src="https://flagcdn.com/w40/gb.png" alt="UK" /> UK</div>
+              <div class="airbnb-popup-opt" data-type="dest" data-val="Australia"><img src="https://flagcdn.com/w40/au.png" alt="Australia" /> Australia</div>
+              <div class="airbnb-popup-opt" data-type="dest" data-val="UAE"><img src="https://flagcdn.com/w40/ae.png" alt="UAE" /> UAE</div>
+              <div class="airbnb-popup-opt" data-type="dest" data-val="Germany"><img src="https://flagcdn.com/w40/de.png" alt="Germany" /> Germany</div>
+              <div class="airbnb-popup-opt" data-type="dest" data-val="USA"><img src="https://flagcdn.com/w40/us.png" alt="USA" /> USA</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="airbnb-pill-divider"></div>
+
+        <!-- Segment 2: When / Visa -->
+        <div class="airbnb-pill-segment" id="pill-seg-when">
+          <label for="q">When</label>
+          <input type="text" id="q" placeholder="Add dates" autocomplete="off" />
+          <div class="airbnb-pill-popup" id="popup-when" style="min-width:260px;">
+            <span class="airbnb-popup-title">Common Visa Routes</span>
+            <div class="airbnb-popup-grid">
+              <div class="airbnb-popup-opt" data-type="visa" data-val="PR Visa"><span>📑</span> PR Visa</div>
+              <div class="airbnb-popup-opt" data-type="visa" data-val="Work Permit"><span>💼</span> Work Permit</div>
+              <div class="airbnb-popup-opt" data-type="visa" data-val="Student Visa"><span>🎓</span> Student Visa</div>
+              <div class="airbnb-popup-opt" data-type="visa" data-val="Tourist Visa"><span>✈️</span> Tourist Visa</div>
+              <div class="airbnb-popup-opt" data-type="visa" data-val="Business Visa"><span>🏢</span> Business Visa</div>
+              <div class="airbnb-popup-opt" data-type="visa" data-val="Golden Visa"><span>👑</span> Golden Visa</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="airbnb-pill-divider"></div>
+
+        <!-- Segment 3: Who / Citizenship -->
+        <div class="airbnb-pill-segment" id="pill-seg-who">
+          <label for="from-val-input">Who</label>
+          <input type="text" id="from-val-input" placeholder="Add guests" value="" autocomplete="off" />
+          <input type="hidden" id="from-val" value="India" />
+          <div class="airbnb-pill-popup" id="popup-who" style="left:auto;right:0;min-width:270px;">
+            <span class="airbnb-popup-title">Citizenship / Origin</span>
+            <div class="airbnb-popup-grid">
+              <div class="airbnb-popup-opt" data-type="from" data-val="India"><img src="https://flagcdn.com/w40/in.png" alt="India" /> India</div>
+              <div class="airbnb-popup-opt" data-type="from" data-val="Nigeria"><img src="https://flagcdn.com/w40/ng.png" alt="Nigeria" /> Nigeria</div>
+              <div class="airbnb-popup-opt" data-type="from" data-val="Philippines"><img src="https://flagcdn.com/w40/ph.png" alt="Philippines" /> Philippines</div>
+              <div class="airbnb-popup-opt" data-type="from" data-val="Pakistan"><img src="https://flagcdn.com/w40/pk.png" alt="Pakistan" /> Pakistan</div>
+              <div class="airbnb-popup-opt" data-type="from" data-val="United Kingdom"><img src="https://flagcdn.com/w40/gb.png" alt="UK" /> UK</div>
+              <div class="airbnb-popup-opt" data-type="from" data-val="USA"><img src="https://flagcdn.com/w40/us.png" alt="USA" /> USA</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Red Round Search Button -->
+        <div class="airbnb-pill-btn-box">
+          <button type="button" id="go" class="airbnb-round-search-btn" aria-label="Search">
+            <svg class="i" style="width:16px;height:16px;stroke:#fff;stroke-width:2.8"><use href="#search"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 <main>
@@ -890,12 +964,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     </div>
   </div>
 
-  <!-- Marquee Strip (2nd photo) -->
-  <div class="mqs" style="padding:10px 0 28px;overflow:hidden;"><div class="mq" id="mq1"></div><div class="mq r" id="mq2"></div></div>
-
-  <!-- Easy Search Bar (1st photo) -->
+  <!-- Easy Search Bar (Above Floating Cards) -->
   <div class="wrap">
-    <div class="sbox rv">
+    <div class="sbox rv" style="margin-bottom:20px;">
       <div class="tabs" id="tabs"></div>
       <div class="sfm">
         <div class="fld c-drop" id="easy-need-drop">
@@ -957,6 +1028,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       </div>
     </div>
   </div>
+
+  <!-- Floating Cards Marquee Strip (Below Search Box) -->
+  <div class="mqs" style="padding:10px 0 26px;overflow:hidden;"><div class="mq" id="mq1"></div><div class="mq r" id="mq2"></div></div>
 </section>
 
 <!-- STATS -->
@@ -2153,8 +2227,8 @@ const goBtn = $('#go');
 if (goBtn) {
   goBtn.onclick = () => {
     const qVal = ($('#q') ? $('#q').value.trim() : '');
-    const destVal = ($('#dest-val') ? $('#dest-val').value : '');
-    const fromVal = ($('#from-val') ? $('#from-val').value : 'India');
+    const destVal = ($('#dest-val') && $('#dest-val').value.trim()) || ($('#dest-val-input') ? $('#dest-val-input').value.trim() : '');
+    const fromVal = ($('#from-val') && $('#from-val').value.trim()) || ($('#from-val-input') ? $('#from-val-input').value.trim() : 'India');
 
     if (activeAirbnbTab === 'jobs') {
       const jParams = new URLSearchParams();
@@ -2214,6 +2288,77 @@ if (goBtn) {
 const mainQ = $('#q');
 if (mainQ) {
   mainQ.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (goBtn) goBtn.click();
+    }
+  });
+}
+
+// Airbnb search pill segment popups & selection
+const pillSegs = document.querySelectorAll('.airbnb-pill-segment');
+pillSegs.forEach(seg => {
+  seg.addEventListener('click', (e) => {
+    if (e.target.closest('.airbnb-popup-opt')) return;
+    const wasOpen = seg.classList.contains('open');
+    pillSegs.forEach(s => s.classList.remove('open'));
+    if (!wasOpen) seg.classList.add('open');
+    const input = seg.querySelector('input[type="text"]');
+    if (input && e.target !== input) input.focus();
+  });
+});
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.airbnb-pill-segment')) {
+    pillSegs.forEach(s => s.classList.remove('open'));
+  }
+});
+document.querySelectorAll('.airbnb-popup-opt').forEach(opt => {
+  opt.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const type = opt.getAttribute('data-type');
+    const val = opt.getAttribute('data-val');
+    if (type === 'dest') {
+      const destInput = document.getElementById('dest-val-input');
+      const destHidden = document.getElementById('dest-val');
+      if (destInput) destInput.value = val;
+      if (destHidden) destHidden.value = val;
+      renderShowcase(activeAirbnbTab, val);
+    } else if (type === 'visa') {
+      const qInput = document.getElementById('q');
+      if (qInput) qInput.value = val;
+      renderShowcase(activeAirbnbTab, val);
+    } else if (type === 'from') {
+      const fromInput = document.getElementById('from-val-input');
+      const fromHidden = document.getElementById('from-val');
+      if (fromInput) fromInput.value = val;
+      if (fromHidden) fromHidden.value = val;
+    }
+    opt.closest('.airbnb-pill-segment')?.classList.remove('open');
+  });
+});
+
+const destInp = document.getElementById('dest-val-input');
+if (destInp) {
+  destInp.addEventListener('input', () => {
+    const hidden = document.getElementById('dest-val');
+    if (hidden) hidden.value = destInp.value;
+    renderShowcase(activeAirbnbTab, destInp.value.trim());
+  });
+  destInp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (goBtn) goBtn.click();
+    }
+  });
+}
+
+const fromInp = document.getElementById('from-val-input');
+if (fromInp) {
+  fromInp.addEventListener('input', () => {
+    const hidden = document.getElementById('from-val');
+    if (hidden) hidden.value = fromInp.value;
+  });
+  fromInp.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       if (goBtn) goBtn.click();
