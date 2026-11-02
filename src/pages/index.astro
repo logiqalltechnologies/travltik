@@ -151,7 +151,8 @@ section{padding:96px 0;position:relative}
 .pill-placeholder{color:#717171;font-weight:500}
 .pill-drop-chv{width:13px;height:13px;color:#717171;transition:transform .2s ease,color .2s ease;flex-shrink:0;margin-left:6px}
 .c-drop.open .pill-drop-chv{transform:rotate(180deg);color:#00b070}
-.pill-drop-menu{position:absolute;top:calc(100% + 14px);left:-8px;min-width:270px;max-height:320px;overflow-y:auto;background:#ffffff;border-radius:22px;border:1px solid rgba(67,15,122,0.12);box-shadow:0 24px 50px -12px rgba(15,23,42,0.22),0 0 0 1px rgba(0,0,0,0.05);padding:8px;z-index:250;display:flex;flex-direction:column;gap:3px;scrollbar-width:thin}
+.pill-drop-menu{position:absolute;top:calc(100% + 14px);left:-8px;min-width:270px;max-height:320px;overflow-y:auto;background:#ffffff;border-radius:22px;border:1px solid rgba(67,15,122,0.12);box-shadow:0 24px 50px -12px rgba(15,23,42,0.22),0 0 0 1px rgba(0,0,0,0.05);padding:8px;z-index:250;display:none;flex-direction:column;gap:3px;scrollbar-width:thin}
+.c-drop.open .pill-drop-menu{display:flex}
 .airbnb-pill-segment.c-drop.open{z-index:150}
 
 .airbnb-pill-divider{width:1px;height:32px;background-color:#ebebeb;flex-shrink:0}
@@ -843,67 +844,65 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         </div>
       </div>
     </div>
-    <!-- Row 2: Floating Airbnb 3-Segment Search Pill (Exact 1:1 Airbnb Style) -->
+    <!-- Row 2: Centered Floating Search Pill Bar -->
     <div class="airbnb-search-bar-row">
       <div class="airbnb-pill-search">
-        <!-- Segment 1: Where -->
-        <div class="airbnb-pill-segment" id="pill-seg-where">
-          <label for="dest-val-input">Where</label>
-          <input type="text" id="dest-val-input" placeholder="Search destinations" autocomplete="off" />
+        <!-- Field 1: What do you need? -->
+        <div class="airbnb-pill-segment">
+          <label for="q">What do you need?</label>
+          <input type="text" id="q" placeholder="e.g. Canada Student Visa" autocomplete="off" />
+        </div>
+
+        <div class="airbnb-pill-divider"></div>
+
+        <!-- Field 2: Destination -->
+        <div class="airbnb-pill-segment c-drop" id="pill-dest-drop">
+          <label>Destination</label>
+          <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-dest-btn">
+            <span class="pill-drop-val" id="pill-dest-val-text"><span class="pill-placeholder">Select Country</span></span>
+            <svg class="i pill-drop-chv"><use href="#chevron-down"/></svg>
+          </button>
           <input type="hidden" id="dest-val" value="" />
-          <div class="airbnb-pill-popup" id="popup-where">
-            <span class="airbnb-popup-title">Popular Destinations</span>
-            <div class="airbnb-popup-grid">
-              <div class="airbnb-popup-opt" data-type="dest" data-val="Canada"><img src="https://flagcdn.com/w40/ca.png" alt="Canada" /> Canada</div>
-              <div class="airbnb-popup-opt" data-type="dest" data-val="United Kingdom"><img src="https://flagcdn.com/w40/gb.png" alt="UK" /> UK</div>
-              <div class="airbnb-popup-opt" data-type="dest" data-val="Australia"><img src="https://flagcdn.com/w40/au.png" alt="Australia" /> Australia</div>
-              <div class="airbnb-popup-opt" data-type="dest" data-val="UAE"><img src="https://flagcdn.com/w40/ae.png" alt="UAE" /> UAE</div>
-              <div class="airbnb-popup-opt" data-type="dest" data-val="Germany"><img src="https://flagcdn.com/w40/de.png" alt="Germany" /> Germany</div>
-              <div class="airbnb-popup-opt" data-type="dest" data-val="USA"><img src="https://flagcdn.com/w40/us.png" alt="USA" /> USA</div>
-            </div>
+          <div class="pill-drop-menu" id="pill-dest-menu">
+            <div class="c-drop-opt on" data-v=""><span class="flag-icon" style="font-size:16px">🌐</span> All Countries <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada" /> Canada <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia" /> Australia <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="USA" data-f="us"><img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="USA" /> USA <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Germany" data-f="de"><img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany" /> Germany <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Japan" data-f="jp"><img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan" /> Japan <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Singapore" data-f="sg"><img src="https://flagcdn.com/w40/sg.png" class="flag-icon" alt="Singapore" /> Singapore <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Ireland" data-f="ie"><img src="https://flagcdn.com/w40/ie.png" class="flag-icon" alt="Ireland" /> Ireland <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="France" data-f="fr"><img src="https://flagcdn.com/w40/fr.png" class="flag-icon" alt="France" /> France <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="New Zealand" data-f="nz"><img src="https://flagcdn.com/w40/nz.png" class="flag-icon" alt="NZ" /> New Zealand <svg class="i chk"><use href="#check"/></svg></div>
           </div>
         </div>
 
         <div class="airbnb-pill-divider"></div>
 
-        <!-- Segment 2: When / Visa -->
-        <div class="airbnb-pill-segment" id="pill-seg-when">
-          <label for="q">When</label>
-          <input type="text" id="q" placeholder="Add dates" autocomplete="off" />
-          <div class="airbnb-pill-popup" id="popup-when" style="min-width:260px;">
-            <span class="airbnb-popup-title">Common Visa Routes</span>
-            <div class="airbnb-popup-grid">
-              <div class="airbnb-popup-opt" data-type="visa" data-val="PR Visa"><span>📑</span> PR Visa</div>
-              <div class="airbnb-popup-opt" data-type="visa" data-val="Work Permit"><span>💼</span> Work Permit</div>
-              <div class="airbnb-popup-opt" data-type="visa" data-val="Student Visa"><span>🎓</span> Student Visa</div>
-              <div class="airbnb-popup-opt" data-type="visa" data-val="Tourist Visa"><span>✈️</span> Tourist Visa</div>
-              <div class="airbnb-popup-opt" data-type="visa" data-val="Business Visa"><span>🏢</span> Business Visa</div>
-              <div class="airbnb-popup-opt" data-type="visa" data-val="Golden Visa"><span>👑</span> Golden Visa</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="airbnb-pill-divider"></div>
-
-        <!-- Segment 3: Who / Citizenship -->
-        <div class="airbnb-pill-segment" id="pill-seg-who">
-          <label for="from-val-input">Who</label>
-          <input type="text" id="from-val-input" placeholder="Add guests" value="" autocomplete="off" />
+        <!-- Field 3: Moving from -->
+        <div class="airbnb-pill-segment c-drop" id="pill-from-drop">
+          <label>Moving from</label>
+          <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-from-btn">
+            <span class="pill-drop-val" id="pill-from-val-text"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India</span>
+            <svg class="i pill-drop-chv"><use href="#chevron-down"/></svg>
+          </button>
           <input type="hidden" id="from-val" value="India" />
-          <div class="airbnb-pill-popup" id="popup-who" style="left:auto;right:0;min-width:270px;">
-            <span class="airbnb-popup-title">Citizenship / Origin</span>
-            <div class="airbnb-popup-grid">
-              <div class="airbnb-popup-opt" data-type="from" data-val="India"><img src="https://flagcdn.com/w40/in.png" alt="India" /> India</div>
-              <div class="airbnb-popup-opt" data-type="from" data-val="Nigeria"><img src="https://flagcdn.com/w40/ng.png" alt="Nigeria" /> Nigeria</div>
-              <div class="airbnb-popup-opt" data-type="from" data-val="Philippines"><img src="https://flagcdn.com/w40/ph.png" alt="Philippines" /> Philippines</div>
-              <div class="airbnb-popup-opt" data-type="from" data-val="Pakistan"><img src="https://flagcdn.com/w40/pk.png" alt="Pakistan" /> Pakistan</div>
-              <div class="airbnb-popup-opt" data-type="from" data-val="United Kingdom"><img src="https://flagcdn.com/w40/gb.png" alt="UK" /> UK</div>
-              <div class="airbnb-popup-opt" data-type="from" data-val="USA"><img src="https://flagcdn.com/w40/us.png" alt="USA" /> USA</div>
-            </div>
+          <div class="pill-drop-menu" id="pill-from-menu" style="left:auto;right:0;">
+            <div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India" /> India <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria" /> Nigeria <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines" /> Philippines <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan" /> Pakistan <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Bangladesh" data-f="bd"><img src="https://flagcdn.com/w40/bd.png" class="flag-icon" alt="Bangladesh" /> Bangladesh <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Nepal" data-f="np"><img src="https://flagcdn.com/w40/np.png" class="flag-icon" alt="Nepal" /> Nepal <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Sri Lanka" data-f="lk"><img src="https://flagcdn.com/w40/lk.png" class="flag-icon" alt="Sri Lanka" /> Sri Lanka <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
           </div>
         </div>
 
-        <!-- Red Round Search Button -->
+        <!-- Search Button (Brand Green Circle) -->
         <div class="airbnb-pill-btn-box">
           <button type="button" id="go" class="airbnb-round-search-btn" aria-label="Search">
             <svg class="i" style="width:16px;height:16px;stroke:#fff;stroke-width:2.8"><use href="#search"/></svg>
@@ -2295,74 +2294,16 @@ if (mainQ) {
   });
 }
 
-// Airbnb search pill segment popups & selection
-const pillSegs = document.querySelectorAll('.airbnb-pill-segment');
-pillSegs.forEach(seg => {
-  seg.addEventListener('click', (e) => {
-    if (e.target.closest('.airbnb-popup-opt')) return;
-    const wasOpen = seg.classList.contains('open');
-    pillSegs.forEach(s => s.classList.remove('open'));
-    if (!wasOpen) seg.classList.add('open');
-    const input = seg.querySelector('input[type="text"]');
-    if (input && e.target !== input) input.focus();
-  });
-});
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.airbnb-pill-segment')) {
-    pillSegs.forEach(s => s.classList.remove('open'));
-  }
-});
-document.querySelectorAll('.airbnb-popup-opt').forEach(opt => {
-  opt.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const type = opt.getAttribute('data-type');
-    const val = opt.getAttribute('data-val');
-    if (type === 'dest') {
-      const destInput = document.getElementById('dest-val-input');
-      const destHidden = document.getElementById('dest-val');
-      if (destInput) destInput.value = val;
-      if (destHidden) destHidden.value = val;
-      renderShowcase(activeAirbnbTab, val);
-    } else if (type === 'visa') {
-      const qInput = document.getElementById('q');
-      if (qInput) qInput.value = val;
-      renderShowcase(activeAirbnbTab, val);
-    } else if (type === 'from') {
-      const fromInput = document.getElementById('from-val-input');
-      const fromHidden = document.getElementById('from-val');
-      if (fromInput) fromInput.value = val;
-      if (fromHidden) fromHidden.value = val;
-    }
-    opt.closest('.airbnb-pill-segment')?.classList.remove('open');
-  });
-});
-
-const destInp = document.getElementById('dest-val-input');
-if (destInp) {
-  destInp.addEventListener('input', () => {
-    const hidden = document.getElementById('dest-val');
-    if (hidden) hidden.value = destInp.value;
-    renderShowcase(activeAirbnbTab, destInp.value.trim());
-  });
-  destInp.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (goBtn) goBtn.click();
-    }
-  });
-}
-
-const fromInp = document.getElementById('from-val-input');
-if (fromInp) {
-  fromInp.addEventListener('input', () => {
-    const hidden = document.getElementById('from-val');
-    if (hidden) hidden.value = fromInp.value;
-  });
-  fromInp.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (goBtn) goBtn.click();
-    }
+// Header pill custom dropdowns
+initCustomDropdown('#pill-dest-drop', '#dest-val', '#pill-dest-val-text');
+initCustomDropdown('#pill-from-drop', '#from-val', '#pill-from-val-text');
+const pillDestDrop = $('#pill-dest-drop');
+if (pillDestDrop) {
+  pillDestDrop.querySelectorAll('.c-drop-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const v = opt.dataset.v;
+      renderShowcase(activeAirbnbTab, v);
+    });
   });
 }
 
