@@ -146,6 +146,45 @@ section{padding:96px 0;position:relative}
 /* search - Airbnb clean style */
 .srch{background:#ffffff;padding-bottom:10px}
 
+/* Easy Search Bar (Restored Above Quick Search) */
+.sbox{padding:26px 28px;border-radius:28px;background:#fff;border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(67,15,122,.2);margin-bottom:24px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:99px;font-weight:700;font-size:13.5px;color:#5a5174;background:var(--l1);border:1px solid transparent;transition:.2s ease;cursor:pointer}
+.tab:hover{background:var(--l2);color:var(--ink)}
+.tab.on{background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;box-shadow:0 10px 20px -10px rgba(67,15,122,.75)}
+.tab svg{font-size:15px;width:15px;height:15px}
+.sfm{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:12px;align-items:stretch;padding:10px;border-radius:22px;background:var(--l1);border:1px solid var(--l2)}
+@media(max-width:980px){.sfm{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.sfm{grid-template-columns:1fr}}
+.fld{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:10px 16px;border:1.5px solid transparent;transition:.2s;position:relative}
+.fld:hover{border-color:var(--p3)}
+.fld:focus-within{border-color:var(--g)}
+.fld>svg{color:var(--g2);font-size:18px;width:18px;height:18px;flex-shrink:0}
+.fld label{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);line-height:1.2}
+.fld input{border:0;outline:0;width:100%;font-weight:600;font-size:14px;background:transparent;color:var(--ink);padding:2px 0}
+.sfm .btn{border-radius:16px;padding:0 30px}
+
+/* Airbnb Showcase Grid & Cards */
+.airbnb-showcase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:20px}
+@media(max-width:640px){.airbnb-showcase-grid{grid-template-columns:1fr;gap:16px}}
+.sc-card{background:#ffffff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.04);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;display:flex;flex-direction:column;cursor:pointer;text-decoration:none;color:inherit}
+.sc-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px -8px rgba(0,0,0,0.12);border-color:#cbd5e1}
+.sc-card-img-box{position:relative;width:100%;height:160px;background:#f8fafc;overflow:hidden}
+.sc-card-img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.sc-card:hover .sc-card-img{transform:scale(1.04)}
+.sc-card-badge-top{position:absolute;top:10px;left:10px;background:rgba(15,23,42,0.85);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:5px}
+.sc-card-badge-green{background:rgba(0,176,112,0.92);color:#fff}
+.sc-card-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
+.sc-card-tag-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.sc-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:#f1f5f9;color:#475569}
+.sc-pill-green{background:#eefcf6;color:#008f5a;border:1px solid #c3f2df}
+.sc-card-title{font-size:15.5px;font-weight:800;color:#0f172a;line-height:1.3;margin:0 0 5px;letter-spacing:-0.01em}
+.sc-card-sub{font-size:12.5px;color:#64748b;margin:0 0 10px;font-weight:500;display:flex;align-items:center;gap:6px}
+.sc-card-meta{margin-top:auto;padding-top:10px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.sc-card-price{font-size:14.5px;font-weight:800;color:#0f172a}
+.sc-card-btn{font-size:12px;font-weight:700;padding:6px 12px;border-radius:99px;background:#00b070;color:#fff;text-align:center;border:none;cursor:pointer;transition:background .2s ease;display:inline-flex;align-items:center;gap:4px}
+.sc-card-btn:hover{background:#008f5a}
+
 /* Quick Search (Bottom) */
 .qs-card{background:#fff;border-radius:32px;padding:32px 34px 28px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(67,15,122,.18),0 0 1px rgba(0,0,0,.06);font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px}
 .qs-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:22px}
@@ -560,26 +599,27 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   </div>
 </header>
 <main>
-<!-- Clean Subtle Trust & Live Status Strip (Airbnb Style) -->
-<div style="background:#ffffff;padding:14px 0 16px;border-bottom:1px solid #f1f5f9;">
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <a href="/find-experts" class="live" style="cursor:pointer;text-decoration:none;color:inherit;margin-bottom:0;box-shadow:0 1px 3px rgba(0,0,0,0.06);border:1px solid #e2e8f0;padding:6px 14px 6px 8px;font-size:12.5px;"><span class="avs" id="hav"></span><span class="pulse"></span><span><b id="onl">18</b> licensed consultants online</span></a>
-      <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;padding:6px 12px;border-radius:9999px;">
-        <span>🔒</span> 100% Escrow Protected
-      </span>
-      <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;padding:6px 12px;border-radius:9999px;">
-        <span>🛡️</span> MARA &amp; RCIC Verified
-      </span>
-      <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;padding:6px 12px;border-radius:9999px;">
-        <span>⚖️</span> Fixed Transparent Fees
-      </span>
+<!-- AIRBNB IMMEDIATE CONTENT SHOWCASE (Switches instantly when category tabs: Experts, Jobs, Universities, Tours, Offers are clicked) -->
+<section id="airbnb-showcase" style="padding:28px 0 38px;background:#ffffff;border-bottom:1px solid #f1f5f9;">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2 id="showcase-title" style="font-size:22px;font-weight:800;color:#0f172a;margin:0;letter-spacing:-0.02em;display:flex;align-items:center;gap:8px;">
+          <span>⚖️</span> Verified Visa &amp; Immigration Experts
+        </h2>
+        <p id="showcase-subtitle" style="font-size:13.5px;color:#64748b;margin:4px 0 0;font-weight:500;">
+          Compare licensed MARA &amp; RCIC consultants with milestone escrow protection and fixed fees
+        </p>
+      </div>
+      <a id="showcase-view-all" href="/find-experts" style="font-size:13.5px;font-weight:700;color:#00b070;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:99px;background:#eefcf6;border:1px solid #c3f2df;transition:all .2s ease;">
+        <span id="showcase-view-all-text">Show all experts (150+)</span> <svg class="i ar" style="width:14px;height:14px"><use href="#arrow"/></svg>
+      </a>
     </div>
-    <a href="/find-experts" style="font-size:13px;font-weight:700;color:#00b070;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
-      View all verified experts <svg class="i ar" style="width:14px;height:14px"><use href="#arrow"/></svg>
-    </a>
+
+    <!-- The Dynamic Showcase Grid -->
+    <div id="showcase-grid" class="airbnb-showcase-grid"></div>
   </div>
-</div>
+</section>
 
 <!-- HERO SECTION (pehele jaisa) -->
 <section class="hero" style="position:relative"><div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>
@@ -614,6 +654,69 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <section class="srch" id="search">
   <div class="wrap">
     <div class="sh c rv"><span class="eyebrow">Quick Directory</span><h2>Find the right path in <span class="grad">under two minutes</span></h2><p>Search verified visa routes, licensed experts, study programs and stays across 193+ countries.</p></div>
+
+    <!-- Easy Search Bar (Top - Restored above Quick Search) -->
+    <div class="sbox rv">
+      <div class="tabs" id="tabs"></div>
+      <div class="sfm">
+        <div class="fld c-drop" id="easy-need-drop">
+          <svg class="i"><use href="#search"/></svg>
+          <div style="flex:1">
+            <label>What do you need?</label>
+            <button type="button" class="c-drop-trigger" id="easy-need-btn">
+              <span class="c-drop-val" id="easy-need-val-text"><span class="flag-icon" style="font-size:16px">📑</span> PR Visa</span>
+              <svg class="i chv"><use href="#chevron-down"/></svg>
+            </button>
+            <input type="hidden" id="easy-q" value="PR Visa">
+            <div class="c-drop-menu" id="easy-need-menu">
+              <div class="c-drop-opt on" data-v="PR Visa" data-icon="📑"><span class="flag-icon" style="font-size:16px">📑</span> PR Visa <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Job Visa" data-icon="💼"><span class="flag-icon" style="font-size:16px">💼</span> Job Visa <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Student Visa" data-icon="🎓"><span class="flag-icon" style="font-size:16px">🎓</span> Student Visa <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Tourist Visa" data-icon="✈️"><span class="flag-icon" style="font-size:16px">✈️</span> Tourist Visa <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Business Visa" data-icon="🏢"><span class="flag-icon" style="font-size:16px">🏢</span> Business Visa <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Work Permit" data-icon="🛠️"><span class="flag-icon" style="font-size:16px">🛠️</span> Work Permit <svg class="i chk"><use href="#check"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <div class="fld c-drop" id="easy-dest-drop">
+          <svg class="i"><use href="#map"/></svg>
+          <div style="flex:1">
+            <label>Destination</label>
+            <button type="button" class="c-drop-trigger" id="easy-dest-btn">
+              <span class="c-drop-val" id="easy-dest-val-text"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada"> Canada</span>
+              <svg class="i chv"><use href="#chevron-down"/></svg>
+            </button>
+            <input type="hidden" id="easy-dest-val" value="Canada">
+            <div class="c-drop-menu" id="easy-dest-menu">
+              <div class="c-drop-opt on" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada"> Canada <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK"> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia"> Australia <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE"> UAE <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Germany" data-f="de"><img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany"> Germany <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Japan" data-f="jp"><img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan"> Japan <svg class="i chk"><use href="#check"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <div class="fld c-drop" id="easy-from-drop">
+          <svg class="i"><use href="#flag"/></svg>
+          <div style="flex:1">
+            <label>Moving from</label>
+            <button type="button" class="c-drop-trigger" id="easy-from-btn">
+              <span class="c-drop-val" id="easy-from-val-text"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India</span>
+              <svg class="i chv"><use href="#chevron-down"/></svg>
+            </button>
+            <input type="hidden" id="easy-from-val" value="India">
+            <div class="c-drop-menu" id="easy-from-menu">
+              <div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria"> Nigeria <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines"> Philippines <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan"> Pakistan <svg class="i chk"><use href="#check"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn g" id="easy-go"><svg class="i"><use href="#search"/></svg>Search</button>
+      </div>
+    </div>
 
     <!-- Quick Search Card (Below Easy Search) -->
     <div class="qs-card rv">
@@ -1177,6 +1280,468 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
   });
 }
 
+// Airbnb Showcase Data
+const SHOWCASE_DATA = {
+  experts: {
+    title: '<span>⚖️</span> Verified Visa &amp; Immigration Experts',
+    subtitle: 'Compare licensed MARA &amp; RCIC consultants with milestone escrow protection and fixed fees',
+    viewAllHref: '/find-experts',
+    viewAllText: 'Show all experts (150+)',
+    items: [
+      {
+        title: 'Travel and Play',
+        sub: 'Visa & Relocation Agency · Hyderabad',
+        badge: 'Reg. Consultancy · Schengen',
+        pill: '4.9 ★ (285 reviews)',
+        price: '99% Success',
+        meta: '1,180 Cases done',
+        btnText: 'Book consultation',
+        href: '/find-experts?search=Travel+and+Play',
+        img: 'https://lh3.googleusercontent.com/a/ACg8ocJmQW2u-EWw3U7kmjdmoO1wThNVBE0ybnuDQ_Gw-UtEFOVjqw=s96-c',
+        isAvatar: true,
+        initials: 'TP'
+      },
+      {
+        title: 'Chaitanya N',
+        sub: 'Study Visa & Admissions Counsel',
+        badge: 'Canada, UK & USA Specialist',
+        pill: '4.8 ★ (215 reviews)',
+        price: '98% Success',
+        meta: '860 Cases done',
+        btnText: 'Book consultation',
+        href: '/find-experts?search=Chaitanya+N',
+        img: '',
+        isAvatar: true,
+        initials: 'CN'
+      },
+      {
+        title: 'Risingat Sports',
+        sub: 'Sports Visa & Global Travel · Mumbai',
+        badge: 'Verified Sports & Visitor Counsel',
+        pill: '4.9 ★ (194 reviews)',
+        price: '99% Success',
+        meta: '740 Cases done',
+        btnText: 'Book consultation',
+        href: '/find-experts?search=Risingat+Sports',
+        img: '',
+        isAvatar: true,
+        initials: 'RS'
+      },
+      {
+        title: 'Easy Visa Ltd',
+        sub: 'Visitor & Business Visa Agency',
+        badge: 'UAE, Singapore & Schengen',
+        pill: '4.9 ★ (168 reviews)',
+        price: '97% Success',
+        meta: '620 Cases done',
+        btnText: 'Book consultation',
+        href: '/find-experts?search=Easy+Visa+Ltd',
+        img: '',
+        isAvatar: true,
+        initials: 'EV'
+      },
+      {
+        title: 'Apex Global Migration',
+        sub: 'MARA Licensed Australia & NZ Counsel',
+        badge: 'MARA Verified #1804210',
+        pill: '4.9 ★ (310 reviews)',
+        price: '98% Success',
+        meta: '1,420 Cases done',
+        btnText: 'Book consultation',
+        href: '/find-experts?search=Apex+Global',
+        img: '',
+        isAvatar: true,
+        initials: 'AG'
+      },
+      {
+        title: 'North Star Relocation',
+        sub: 'RCIC Licensed Canada Express Entry',
+        badge: 'RCIC Verified #R512345',
+        pill: '5.0 ★ (142 reviews)',
+        price: '99% Success',
+        meta: '580 Cases done',
+        btnText: 'Book consultation',
+        href: '/find-experts?search=North+Star',
+        img: '',
+        isAvatar: true,
+        initials: 'NS'
+      }
+    ]
+  },
+  jobs: {
+    title: '<span>💼</span> Verified Global Jobs with Visa Sponsorship',
+    subtitle: 'Direct employer hiring, verified contracts, and work visa support across top destinations',
+    viewAllHref: '/jobs',
+    viewAllText: 'Show all jobs (120+)',
+    items: [
+      {
+        title: 'Construction Crew Recruitment',
+        sub: 'Maldives Agency Channel · Greece 🇬🇷',
+        badge: 'Visa Sponsorship',
+        pill: 'Accommodations Provided',
+        price: '€2,200–€2,800',
+        meta: 'Contract (30 slots)',
+        btnText: 'Apply Now',
+        href: '/jobs',
+        img: '/images/job_construction_greece.png'
+      },
+      {
+        title: 'Senior Full Stack Engineer',
+        sub: 'Tech Innovations Inc. · Canada 🇨🇦',
+        badge: 'LMIA Sponsorship',
+        pill: 'React, Node.js, AWS',
+        price: 'CAD $95K–$120K',
+        meta: 'Full-Time · Toronto',
+        btnText: 'Apply Now',
+        href: '/jobs',
+        img: '/images/job_tech_engineer.png'
+      },
+      {
+        title: 'Registered Nurse — ICU Specialist',
+        sub: 'Royal Dubai Hospital · UAE 🇦🇪',
+        badge: 'Tax-Free + Visa',
+        pill: 'DHA License · Luxury Hospital',
+        price: 'AED 12K–18K/mo',
+        meta: 'Full-Time · Dubai',
+        btnText: 'Apply Now',
+        href: '/jobs',
+        img: '/images/job_nurse_dubai.png'
+      },
+      {
+        title: 'Executive Chef — Fine Dining',
+        sub: 'The Ritz London · UK 🇬🇧',
+        badge: 'Skilled Worker Visa',
+        pill: 'Tier 2 Sponsor · Fine Dining',
+        price: 'GBP £55K–£75K',
+        meta: 'Full-Time · London',
+        btnText: 'Apply Now',
+        href: '/jobs',
+        img: '/images/job_chef_london.png'
+      },
+      {
+        title: 'Data Scientist — AI Division',
+        sub: 'DataViz GmbH · Germany 🇩🇪',
+        badge: 'EU Blue Card',
+        pill: 'Python, ML/AI, Relocation',
+        price: '€70K–€95K',
+        meta: 'Full-Time · Berlin',
+        btnText: 'Apply Now',
+        href: '/jobs',
+        img: '/images/job_data_scientist_berlin.png'
+      },
+      {
+        title: 'University Lecturer — Business',
+        sub: 'Auckland University · New Zealand 🇳🇿',
+        badge: 'Work Visa NZ',
+        pill: 'Family Visa Support',
+        price: 'NZD $80K–$110K',
+        meta: 'Full-Time · Auckland',
+        btnText: 'Apply Now',
+        href: '/jobs',
+        img: '/images/job_university_lecturer_auckland.png'
+      }
+    ]
+  },
+  universities: {
+    title: '<span>🎓</span> Global Universities &amp; Study Programs',
+    subtitle: 'Direct admissions, scholarship eligibility, and post-study work permits (PGWP)',
+    viewAllHref: '/universities',
+    viewAllText: 'Show all universities (200+)',
+    items: [
+      {
+        title: 'Study In Cyprus (October Intake)',
+        sub: 'Cyprus, Europe 🇨🇾',
+        badge: '100% Visa Support',
+        pill: 'Zero Apostille Charges',
+        price: '€3,300–€5,000/yr',
+        meta: 'Foundation / Bachelor / Master',
+        btnText: 'Explore Course',
+        href: '/universities',
+        img: '/images/cyprus-ad.jpg'
+      },
+      {
+        title: 'University of Toronto',
+        sub: 'Toronto, Canada 🇨🇦',
+        badge: '#21 Global Rank',
+        pill: 'PGWP Eligible · Co-op',
+        price: 'CAD $38K–$52K/yr',
+        meta: 'Engineering & Tech',
+        btnText: 'Explore Course',
+        href: '/universities',
+        img: '/images/univ_toronto_night.png'
+      },
+      {
+        title: 'University of Melbourne',
+        sub: 'Melbourne, Australia 🇦🇺',
+        badge: '#14 Global Rank',
+        pill: 'Post-Study Work Rights',
+        price: 'AUD $36K–$48K/yr',
+        meta: 'Business & Management',
+        btnText: 'Explore Course',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=500&h=300&fit=crop&q=90'
+      },
+      {
+        title: 'Technical University of Munich',
+        sub: 'Munich, Germany 🇩🇪',
+        badge: 'Top Tech in Europe',
+        pill: 'EU Blue Card Pathway',
+        price: '€0 Tuition (Public)',
+        meta: 'Engineering & Computing',
+        btnText: 'Explore Course',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=500&h=300&fit=crop&q=90'
+      },
+      {
+        title: 'University of Oxford',
+        sub: 'Oxford, United Kingdom 🇬🇧',
+        badge: 'World #1 Research',
+        pill: 'Graduate Route Visa',
+        price: 'GBP £28K–£42K/yr',
+        meta: 'All Major Disciplines',
+        btnText: 'Explore Course',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90'
+      },
+      {
+        title: 'National University of Singapore',
+        sub: 'Singapore 🇸🇬',
+        badge: '#8 Global Rank',
+        pill: 'High Employment Rate',
+        price: 'SGD $32K–$45K/yr',
+        meta: 'Science & Computing',
+        btnText: 'Explore Course',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=300&fit=crop&q=90'
+      }
+    ]
+  },
+  tours: {
+    title: '<span>✈️</span> Escorted Tours &amp; Travel Packages',
+    subtitle: 'Handcrafted group tours, luxury packages, and guaranteed visa assistance',
+    viewAllHref: '/tours',
+    viewAllText: 'Show all tours & packages',
+    items: [
+      {
+        title: 'Escorted Tour By Partners',
+        sub: 'Europamundo | Cosmos | Globus',
+        badge: 'Schengen Visa Support',
+        pill: '8 Countries · 15 Days',
+        price: 'From ₹1,45,000',
+        meta: 'Guided Multi-Country',
+        btnText: 'View Package',
+        href: '/tours',
+        img: '/images/offers/escorted_tour.jpg'
+      },
+      {
+        title: 'Dubai Luxury Wonder & Safari',
+        sub: 'Dubai, UAE 🇦🇪',
+        badge: '100% Visa Guarantee',
+        pill: '5 Days / 4 Nights',
+        price: 'Starting ₹34,500',
+        meta: 'Desert Safari + Marina Stay',
+        btnText: 'View Package',
+        href: '/tours?destination=Dubai',
+        img: '/images/offers/dubai_special.jpg'
+      },
+      {
+        title: 'Switzerland Alps & Glacier Express',
+        sub: 'Zurich & Lucerne, Switzerland 🇨🇭',
+        badge: 'Group Escorted',
+        pill: '7 Days / 6 Nights',
+        price: 'From ₹1,85,000',
+        meta: 'Alpine Rail + Mountain Stay',
+        btnText: 'View Package',
+        href: '/tours',
+        img: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=500&h=300&fit=crop&q=90'
+      },
+      {
+        title: 'Singapore & Malaysia Twin City',
+        sub: 'Singapore & Kuala Lumpur 🇸🇬 🇲🇾',
+        badge: 'Fast eVisa Included',
+        pill: '6 Days / 5 Nights',
+        price: 'From ₹52,000',
+        meta: 'Sentosa + Genting Highlands',
+        btnText: 'View Package',
+        href: '/tours',
+        img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=500&h=300&fit=crop&q=90'
+      },
+      {
+        title: 'UK & Scottish Highlands Tour',
+        sub: 'London, Manchester & Edinburgh 🇬🇧',
+        badge: 'Standard Visitor Visa Help',
+        pill: '9 Days / 8 Nights',
+        price: 'From ₹1,65,000',
+        meta: 'Castle Tours + Lake District',
+        btnText: 'View Package',
+        href: '/tours',
+        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500&h=300&fit=crop&q=90'
+      },
+      {
+        title: 'Japan Golden Route Discovery',
+        sub: 'Tokyo, Kyoto & Osaka 🇯🇵',
+        badge: 'Tourist Visa Included',
+        pill: '8 Days / 7 Nights',
+        price: 'From ₹1,95,000',
+        meta: 'Bullet Train Experience',
+        btnText: 'View Package',
+        href: '/tours',
+        img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=500&h=300&fit=crop&q=90'
+      }
+    ]
+  },
+  offers: {
+    title: '<span>🏷️</span> Exclusive Deals, Forex &amp; Relocation Offers',
+    subtitle: 'Zero convenience fee forex, flight deals, cashbacks, and special partner perks',
+    viewAllHref: '#classifieds',
+    viewAllText: 'Explore all offers & classifieds',
+    items: [
+      {
+        title: 'Buy Forex & Earn Travel Rewards',
+        sub: 'Currency Exchange & Cards',
+        badge: 'Loyalty Points',
+        pill: 'Up to ₹3,000 Rewards',
+        price: 'Best FX Rates',
+        meta: 'Instant Dispatch',
+        btnText: 'Explore Deals',
+        href: '/forex',
+        img: '/images/offers/buy_forex_rewards.jpg'
+      },
+      {
+        title: 'Order Forex Online Zero Fee',
+        sub: 'Doorstep Delivery Pan-India',
+        badge: 'Zero Convenience Fee',
+        pill: 'Same-Day Delivery',
+        price: 'Zero Extra Fee',
+        meta: 'TravlTik Verified Partner',
+        btnText: 'Order Forex',
+        href: '/forex',
+        img: '/images/offers/order_forex_online.jpg'
+      },
+      {
+        title: 'Looking for Flights? Best Fares',
+        sub: 'International Student & PR Fares',
+        badge: 'Fly More, Pay Less',
+        pill: 'Extra Baggage Perks',
+        price: 'Exclusive Discount',
+        meta: 'Direct Airlines Partner',
+        btnText: 'Book Flight',
+        href: '/flights',
+        img: '/images/offers/looking_flights.jpg'
+      },
+      {
+        title: 'Skilled Work Permits & Jobs',
+        sub: 'Germany, UK & Gulf Opportunities',
+        badge: 'Verified Employer Contracts',
+        pill: 'Opportunity Card Support',
+        price: 'Direct Openings',
+        meta: 'Work Relocation',
+        btnText: 'Explore Jobs',
+        href: '/jobs',
+        img: '/images/offers/skilled_jobs.jpg'
+      },
+      {
+        title: 'Escorted Tour By Partners',
+        sub: 'Europamundo, Cosmos, Trafalgar',
+        badge: 'Early Bird 15% OFF',
+        pill: 'All Inclusive Packages',
+        price: 'Special Rates',
+        meta: 'Worldwide Tours',
+        btnText: 'View Tour Deals',
+        href: '/tours',
+        img: '/images/offers/escorted_tour.jpg'
+      },
+      {
+        title: 'Dubai Special Experience',
+        sub: 'Feel the Wonder, Live the Luxury',
+        badge: 'Starting ₹34,500',
+        pill: 'Visa + Stay + Tours',
+        price: '₹34,500 Flat',
+        meta: 'Limited Slots',
+        btnText: 'Claim Deal',
+        href: '/tours?destination=Dubai',
+        img: '/images/offers/dubai_special.jpg'
+      }
+    ]
+  }
+};
+
+function renderShowcase(tab, filterQuery = '') {
+  const data = SHOWCASE_DATA[tab] || SHOWCASE_DATA.experts;
+  const titleEl = $('#showcase-title');
+  const subEl = $('#showcase-subtitle');
+  const viewAllEl = $('#showcase-view-all');
+  const viewAllText = $('#showcase-view-all-text');
+  const gridEl = $('#showcase-grid');
+
+  if (titleEl) titleEl.innerHTML = data.title;
+  if (subEl) subEl.textContent = data.subtitle;
+  if (viewAllEl) viewAllEl.href = data.viewAllHref;
+  if (viewAllText) viewAllText.textContent = data.viewAllText;
+
+  let items = data.items;
+  if (filterQuery) {
+    const q = filterQuery.toLowerCase();
+    items = items.filter(it => 
+      it.title.toLowerCase().includes(q) || 
+      it.sub.toLowerCase().includes(q) || 
+      it.badge.toLowerCase().includes(q) || 
+      it.pill.toLowerCase().includes(q)
+    );
+  }
+
+  if (gridEl) {
+    if (items.length === 0) {
+      gridEl.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:36px;color:#64748b;font-weight:600;">No listings found matching "${filterQuery}". <button type="button" style="color:#00b070;font-weight:700;background:none;border:none;cursor:pointer;text-decoration:underline;" onclick="if($('#q')){$('#q').value='';renderShowcase('${tab}');}">Clear search</button></div>`;
+      return;
+    }
+
+    gridEl.innerHTML = items.map(it => {
+      let imgHtml = '';
+      if (it.isAvatar) {
+        if (it.img) {
+          imgHtml = `<div style="display:flex;align-items:center;justify-content:center;height:100%;background:linear-gradient(135deg,#f8fafc,#eefcf6);"><img src="${it.img}" alt="${it.title}" style="width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 8px 20px -8px rgba(0,0,0,0.15);"/></div>`;
+        } else {
+          const initials = it.initials || 'EX';
+          imgHtml = `<div style="display:flex;align-items:center;justify-content:center;height:100%;background:linear-gradient(135deg,#0f172a,#008f5a);color:#fff;font-size:32px;font-weight:800;letter-spacing:-0.03em;">${initials}</div>`;
+        }
+      } else {
+        imgHtml = `<img src="${it.img}" alt="${it.title}" class="sc-card-img" loading="lazy" onerror="this.src='/images/cricket_ad.jpg'"/>`;
+      }
+
+      return `
+        <article class="sc-card" onclick="window.location.href='${it.href}'">
+          <div class="sc-card-img-box">
+            ${imgHtml}
+            <span class="sc-card-badge-top ${tab === 'experts' || tab === 'jobs' ? 'sc-card-badge-green' : ''}">
+              ${it.badge}
+            </span>
+          </div>
+          <div class="sc-card-body">
+            <div class="sc-card-tag-row">
+              <span class="sc-pill sc-pill-green">${it.pill}</span>
+            </div>
+            <h3 class="sc-card-title">${it.title}</h3>
+            <p class="sc-card-sub">${it.sub}</p>
+            <div class="sc-card-meta">
+              <div>
+                <span class="sc-card-price">${it.price}</span>
+                <span style="display:block;font-size:11px;color:#94a3b8;font-weight:600;">${it.meta}</span>
+              </div>
+              <button type="button" class="sc-card-btn" onclick="event.stopPropagation();window.location.href='${it.href}'">
+                ${it.btnText} →
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+}
+
+// Initial showcase render
+renderShowcase('experts');
+
 // Airbnb Category Tabs & Search Handler
 let activeAirbnbTab = 'experts';
 const airbnbPlaceholders = {
@@ -1196,10 +1761,24 @@ $$('.airbnb-cat-tab').forEach(btn => {
     if (qInp && airbnbPlaceholders[activeAirbnbTab]) {
       qInp.placeholder = airbnbPlaceholders[activeAirbnbTab];
     }
+    // Showcase all cards for this category right there!
+    renderShowcase(activeAirbnbTab, qInp ? qInp.value.trim() : '');
+    const scEl = $('#airbnb-showcase');
+    if (scEl) {
+      scEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 });
 
-// Search submit
+// Live filter showcase when typing in search input
+const liveQ = $('#q');
+if (liveQ) {
+  liveQ.addEventListener('input', () => {
+    renderShowcase(activeAirbnbTab, liveQ.value.trim());
+  });
+}
+
+// Search submit button
 const goBtn = $('#go');
 if (goBtn) {
   goBtn.onclick = () => {
@@ -1270,6 +1849,80 @@ if (mainQ) {
       if (goBtn) goBtn.click();
     }
   });
+}
+
+/* Easy search tabs (Top Bar above Quick Search) */
+const EASY_T = {
+  Visas: { ic: 'file' },
+  Jobs: { ic: 'brief' },
+  Stays: { ic: 'home' },
+  Tours: { ic: 'plane' },
+  Experts: { ic: 'users' }
+};
+let curEasy = 'Visas';
+const drawEasyTabs = () => {
+  const tb = $('#tabs');
+  if (tb) {
+    tb.innerHTML = Object.keys(EASY_T).map(k => `<button type="button" class="tab ${k === curEasy ? 'on' : ''}" data-k="${k}">${ic(EASY_T[k].ic)}${k}</button>`).join('');
+    $$('#tabs .tab').forEach(b => b.onclick = () => {
+      curEasy = b.dataset.k;
+      drawEasyTabs();
+      if (curEasy === 'Jobs') {
+        const jobsTab = document.querySelector('.airbnb-cat-tab[data-tab="jobs"]');
+        if (jobsTab) jobsTab.click();
+      } else if (curEasy === 'Experts') {
+        const expTab = document.querySelector('.airbnb-cat-tab[data-tab="experts"]');
+        if (expTab) expTab.click();
+      } else if (curEasy === 'Tours') {
+        const tourTab = document.querySelector('.airbnb-cat-tab[data-tab="tours"]');
+        if (tourTab) tourTab.click();
+      }
+    });
+  }
+};
+drawEasyTabs();
+
+// Easy search dropdowns
+initCustomDropdown('#easy-need-drop', '#easy-q', '#easy-need-val-text');
+initCustomDropdown('#easy-dest-drop', '#easy-dest-val', '#easy-dest-val-text');
+initCustomDropdown('#easy-from-drop', '#easy-from-val', '#easy-from-val-text');
+
+// Easy search submit
+const easyGoBtn = $('#easy-go');
+if (easyGoBtn) {
+  easyGoBtn.onclick = () => {
+    const qVal = ($('#easy-q') ? $('#easy-q').value.trim() : '');
+    const destVal = ($('#easy-dest-val') ? $('#easy-dest-val').value : 'Canada');
+    const fromVal = ($('#easy-from-val') ? $('#easy-from-val').value : 'India');
+
+    if (curEasy === 'Visas') {
+      const destSlugMap = {
+        'Canada': 'canada',
+        'United Kingdom': 'uk',
+        'Australia': 'australia',
+        'UAE': 'uae',
+        'Germany': 'germany',
+        'Japan': 'japan'
+      };
+      const countrySlug = destSlugMap[destVal] || (destVal ? destVal.toLowerCase().replace(/\s+/g, '-') : 'canada');
+      window.location.href = `/visa/${encodeURIComponent(countrySlug)}?passport=${encodeURIComponent(fromVal)}&from=${encodeURIComponent(fromVal)}&purpose=${encodeURIComponent(qVal || 'Express Entry PR')}`;
+      return;
+    }
+    if (curEasy === 'Jobs') {
+      window.location.href = '/jobs' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
+      return;
+    }
+    if (curEasy === 'Tours') {
+      window.location.href = '/tours' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
+      return;
+    }
+    if (curEasy === 'Stays') {
+      window.location.href = '/find-experts?category=Housing' + (destVal ? '&destination=' + encodeURIComponent(destVal) : '');
+      return;
+    }
+    // Experts
+    window.location.href = '/find-experts?q=' + encodeURIComponent(qVal) + '&country=' + encodeURIComponent(destVal);
+  };
 }
 
 // Quick search dropdowns
