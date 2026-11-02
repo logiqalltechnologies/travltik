@@ -23,30 +23,30 @@ const ICONS: Record<string, any> = {
 };
 ---
 
-<!-- Top Utility Bar (Scrolls away naturally with the page) -->
-<div id="top-utility-bar" class="w-full bg-linear-to-r from-[#F4E8F9] via-[#FAF5FC] to-[#E9FBF0] border-b border-slate-200/80 text-xs sm:text-[13px] font-semibold text-[#430f7a] overflow-hidden">
+<!-- Top Utility Bar (Clean Minimal Style) -->
+<div id="top-utility-bar" class="w-full bg-white border-b border-slate-200 text-xs sm:text-[13px] font-semibold text-slate-600 overflow-hidden">
   <div class="max-w-[1440px] mx-auto px-4 lg:px-8 h-10 flex items-center justify-between whitespace-nowrap">
     
     <!-- LEFT: Contact Info (Phone + Email) -->
     <div class="flex items-center gap-4 sm:gap-6">
-      <a href="tel:+917661989366" class="flex items-center gap-1.5 text-[#430f7a] hover:text-[#00b070] transition-colors">
+      <a href="tel:+917661989366" class="flex items-center gap-1.5 text-slate-600 hover:text-slate-900 transition-colors">
         <span class="text-sm">📞</span>
         <span>+91 766 1989 366</span>
       </a>
-      <a href="mailto:hello@travltik.com" class="hidden sm:flex items-center gap-1.5 text-[#430f7a] hover:text-[#00b070] transition-colors">
+      <a href="mailto:hello@travltik.com" class="hidden sm:flex items-center gap-1.5 text-slate-600 hover:text-slate-900 transition-colors">
         <span class="text-sm">✉️</span>
         <span>hello@travltik.com</span>
       </a>
     </div>
 
     <!-- CENTER: Escrow Protection Text -->
-    <a href="/escrow" class="hidden md:inline-flex items-center gap-2 bg-white px-3.5 py-1 rounded-full shadow-2xs text-[#430f7a] hover:text-[#00b070] transition-colors text-xs font-semibold">
+    <a href="/escrow" class="hidden md:inline-flex items-center gap-2 bg-slate-50 px-3.5 py-1 rounded-full border border-slate-200 text-slate-700 hover:text-slate-900 transition-colors text-xs font-semibold">
       <span>🔒</span>
       <span>Every payment protected by milestone escrow</span>
     </a>
 
     <!-- RIGHT: Language / Currency -->
-    <div class="flex items-center gap-1.5 text-[#430f7a] hover:text-[#00b070] cursor-pointer transition-colors">
+    <div class="flex items-center gap-1.5 text-slate-600 hover:text-slate-900 cursor-pointer transition-colors">
       <span>🌐</span>
       <span>English · INR</span>
     </div>
