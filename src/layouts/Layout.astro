@@ -185,9 +185,9 @@ const defaultSchema = {
 
   {!shouldHideWidgets && <VisaMatchWidget client:only="react" />}
   {!shouldHideWidgets && <TalkToUs client:only="react" />}
-  <CompareBar client:load />
-  <CookieConsent client:load />
-  <CustomCursor client:load />
+  {!shouldHideWidgets && <CompareBar client:only="react" />}
+  <CookieConsent client:only="react" />
+  <CustomCursor client:only="react" />
 
   <!-- Lenis Smooth Scroll, GSAP, SplitType Text Shine & Magnetic Interactions -->
   <script>

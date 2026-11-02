@@ -172,17 +172,142 @@ section{padding:96px 0;position:relative}
 .airbnb-popup-opt img{width:18px;height:13px;border-radius:2px;object-fit:cover}
 
 @media(max-width:960px){
-  .airbnb-cat-tabs{display:none}
-  .airbnb-host-link,.airbnb-globe-pill{display:none}
+  .airbnb-header-inner{padding:0 20px}
+  .airbnb-top-row{min-height:58px;padding:6px 0 4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .airbnb-logo{flex:0 0 auto}
+  .airbnb-right-box{flex:0 0 auto;margin-left:auto}
+  .airbnb-top-row nav{order:3;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .airbnb-cat-tabs{
+    display:flex;
+    justify-content:flex-start;
+    gap:10px;
+    padding:4px 0 8px;
+    width:100%;
+    overflow-x:auto;
+    scrollbar-width:none;
+    list-style:none;
+    margin:0;
+  }
+  .airbnb-cat-tabs::-webkit-scrollbar{display:none}
+  .airbnb-cat-tab{
+    display:inline-flex;
+    flex-direction:row;
+    align-items:center;
+    gap:6px;
+    padding:6px 14px;
+    border-radius:9999px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    font-size:13px;
+    font-weight:600;
+    color:#475569;
+    flex-shrink:0;
+    white-space:nowrap;
+  }
+  .airbnb-cat-tab .tab-icon{font-size:16px}
+  .airbnb-cat-tab.active{
+    background:#0f172a;
+    color:#ffffff;
+    border-color:#0f172a;
+    font-weight:700;
+  }
+  .airbnb-cat-tab:hover{
+    background:#f1f5f9;
+    color:#0f172a;
+  }
+  .airbnb-host-link{display:inline-flex;padding:7px 12px;font-size:13px}
+  .airbnb-globe-pill{display:none}
 }
 @media(max-width:768px){
-  .airbnb-header-inner{padding:0 16px}
-  .airbnb-top-row{height:64px}
-  .airbnb-search-bar-row{padding:0 0 16px}
-  .airbnb-pill-search{border-radius:24px;flex-direction:column;padding:12px;align-items:stretch;gap:8px}
-  .airbnb-pill-segment{padding:6px 4px;border-bottom:1px solid #f1f5f9}
-  .airbnb-pill-divider{display:none}
-  .airbnb-round-search-btn{width:100%;border-radius:9999px;height:44px;margin-top:4px}
+  .airbnb-header-inner{padding:0 12px}
+  .airbnb-top-row{min-height:50px;padding:4px 0 2px;gap:6px}
+  .airbnb-logo img{height:30px}
+  .airbnb-host-link{padding:6px 10px;font-size:12px;font-weight:700}
+  .airbnb-user-pill-btn{padding:4px 8px;gap:6px}
+  .airbnb-user-pill-btn svg.i{width:14px;height:14px}
+  .airbnb-user-avatar{width:22px;height:22px}
+  .airbnb-cat-tabs{gap:8px;padding:2px 0 6px}
+  .airbnb-cat-tab{padding:5px 11px;font-size:12px;gap:5px}
+  .airbnb-cat-tab .tab-icon{font-size:14px}
+  
+  .airbnb-search-bar-row{padding:4px 0 14px}
+  .airbnb-pill-search{
+    border-radius:9999px !important;
+    flex-direction:row !important;
+    padding:3px 5px 3px 10px !important;
+    align-items:center !important;
+    gap:0 !important;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08) !important;
+    border:1px solid #d1d5db !important;
+    width:100% !important;
+  }
+  .airbnb-pill-segment{
+    padding:2px 5px !important;
+    border:none !important;
+    min-width:0 !important;
+    flex:1 !important;
+  }
+  .airbnb-pill-segment label{
+    font-size:8px !important;
+    font-weight:800 !important;
+    letter-spacing:0.04em !important;
+    margin-bottom:1px !important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    color:#334155 !important;
+  }
+  .airbnb-pill-segment input{
+    font-size:11px !important;
+    line-height:1.2 !important;
+    color:#0f172a !important;
+  }
+  .pill-drop-btn{
+    padding:0 !important;
+  }
+  .pill-drop-val{
+    font-size:11px !important;
+    gap:3px !important;
+    color:#0f172a !important;
+  }
+  .pill-drop-val .flag-icon{
+    width:14px !important;
+    height:10px !important;
+  }
+  .pill-drop-chv{
+    width:10px !important;
+    height:10px !important;
+    margin-left:2px !important;
+  }
+  .pill-drop-menu{
+    max-width:min(280px, 92vw) !important;
+  }
+  .airbnb-pill-divider{
+    display:block !important;
+    width:1px !important;
+    height:22px !important;
+    background-color:#e2e8f0 !important;
+    flex-shrink:0 !important;
+  }
+  .airbnb-pill-btn-box{
+    margin-left:4px !important;
+    flex-shrink:0 !important;
+  }
+  .airbnb-round-search-btn{
+    width:34px !important;
+    height:34px !important;
+    min-width:34px !important;
+    border-radius:50% !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+  .airbnb-round-search-btn svg{
+    width:14px !important;
+    height:14px !important;
+  }
 }
 /* hero - Airbnb clean pure white */
 .hero{padding:40px 0 80px;background:#ffffff;overflow:hidden}
@@ -307,6 +432,7 @@ section{padding:96px 0;position:relative}
   object-position: center 20%;
   transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
+  pointer-events: none;
 }
 .atlys-card:hover .atlys-card-bg{
   transform: scale(1.07);
@@ -318,6 +444,7 @@ section{padding:96px 0;position:relative}
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,0.7) 72%, rgba(0,0,0,0.96) 100%);
   z-index: 2;
   transition: background 0.35s ease;
+  pointer-events: none;
 }
 .atlys-card:hover .atlys-card-gradient{
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 36%, rgba(0,0,0,0.76) 68%, rgba(0,0,0,0.98) 100%);
@@ -342,6 +469,7 @@ section{padding:96px 0;position:relative}
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  pointer-events: none;
 }
 
 .atlys-card-content{
@@ -352,6 +480,7 @@ section{padding:96px 0;position:relative}
   align-items: center;
   text-align: center;
   width: 100%;
+  pointer-events: none;
 }
 
 .atlys-flag-icon{
@@ -2132,7 +2261,7 @@ function renderShowcase(tab, filterQuery = '') {
     }
 
     gridEl.innerHTML = items.map(it => `
-      <article class="atlys-card" onclick="window.location.href='${it.href}'">
+      <a href="${it.href}" class="atlys-card" onclick="if(event.target.tagName !== 'BUTTON'){window.location.href='${it.href}';}">
         <img src="${it.img}" alt="${it.title.replace(/<[^>]+>/g, ' ')}" class="atlys-card-bg" loading="lazy" onerror="this.src='/experts/expert1.png'"/>
         <div class="atlys-card-gradient"></div>
         ${it.badge ? `<div class="atlys-card-top-pill">${it.badge}</div>` : ''}
@@ -2155,7 +2284,7 @@ function renderShowcase(tab, filterQuery = '') {
             </div>
           </div>
         </div>
-      </article>
+      </a>
     `).join('');
   }
 }

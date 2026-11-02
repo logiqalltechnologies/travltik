@@ -37,9 +37,6 @@ export default defineConfig({
       },
     },
     envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_', 'RESEND_', 'EMAIL_', 'DATABASE_', 'TURNSTILE_'],
-    define: {
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || (process.env.npm_lifecycle_event === 'build' ? 'production' : 'development')),
-    },
     ssr: {
       external: ['resend', 'pg', 'bcryptjs', 'nodemailer', 'firebase-admin', 'firebase-admin/app', 'firebase-admin/auth'],
       noExternal: ['lucide-react', 'firebase', 'firebase/app', 'firebase/auth', '@marsidev/react-turnstile'],
@@ -73,10 +70,11 @@ export default defineConfig({
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('firebase')) return 'vendor-firebase';
-              if (id.includes('gsap') || id.includes('lenis')) return 'vendor-anim';
-              if (id.includes('lucide-react')) return 'vendor-icons';
-              if (id.includes('react-dom') || id.includes('react/')) return 'vendor-react';
+              const nid = id.replace(/\\/g, '/');
+              if (nid.includes('firebase')) return 'vendor-firebase';
+              if (nid.includes('gsap') || nid.includes('lenis')) return 'vendor-anim';
+              if (nid.includes('lucide-react')) return 'vendor-icons';
+              if (nid.includes('/react') || nid.includes('/scheduler')) return 'vendor-react';
             }
           }
         }
