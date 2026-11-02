@@ -5,7 +5,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
 <title>TravlTik — Move abroad. Pay safely. Land confident.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style is:global>
 :root{--g:#00b070;--g2:#008f5a;--g3:#00c985;--gl:#e2f7ee;--gl2:#f1fbf6;--p:#430f7a;--p2:#6b34b3;--p3:#9a6bdc;--l1:#f7f2fe;--l2:#eee3fc;--l3:#dccaf7;--l4:#c4a6f0;--ink:#1b1233;--mut:#675f80;--line:rgba(67,15,122,.1);--sh:0 24px 50px -28px rgba(67,15,122,.35);--r:24px}
 *,*:before,*:after{box-sizing:border-box;margin:0;padding:0}
@@ -164,11 +164,11 @@ section{padding:96px 0;position:relative}
 .fld input{border:0;outline:0;width:100%;font-weight:600;font-size:14px;background:transparent;color:var(--ink);padding:2px 0}
 .sfm .btn{border-radius:16px;padding:0 30px}
 
-/* Atlys Luxury Cards (High-End & Luxurious) */
+/* Atlys Luxury Cards (Billion-Dollar Marketplace Style) */
 .atlys-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 20px;
   width: 100%;
 }
 @media(max-width: 768px){
@@ -176,8 +176,8 @@ section{padding:96px 0;position:relative}
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    gap: 14px;
-    padding-bottom: 12px;
+    gap: 16px;
+    padding-bottom: 16px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -186,31 +186,34 @@ section{padding:96px 0;position:relative}
 
 .atlys-card{
   position: relative;
-  height: 380px;
-  border-radius: 26px;
+  height: 440px;
+  border-radius: 28px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 20px 16px 18px;
+  padding: 24px 18px 20px;
   cursor: pointer;
   text-decoration: none;
   color: #ffffff;
-  box-shadow: 0 10px 28px -10px rgba(0,0,0,0.35);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  box-shadow: 0 12px 32px -8px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s ease, border-color 0.3s ease;
   flex-shrink: 0;
   box-sizing: border-box;
-  background: #0b1120;
+  background: #090d16;
 }
 @media(max-width: 768px){
   .atlys-card{
-    width: 240px;
+    width: 255px;
+    height: 430px;
     scroll-snap-align: start;
   }
 }
 .atlys-card:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 22px 46px -12px rgba(0,0,0,0.55);
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px -12px rgba(0,0,0,0.65);
+  border-color: rgba(255,255,255,0.25);
 }
 
 .atlys-card-bg{
@@ -219,37 +222,41 @@ section{padding:96px 0;position:relative}
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  object-position: center 20%;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
 }
 .atlys-card:hover .atlys-card-bg{
-  transform: scale(1.08);
+  transform: scale(1.07);
 }
 
 .atlys-card-gradient{
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0.96) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,0.7) 72%, rgba(0,0,0,0.96) 100%);
   z-index: 2;
-  transition: background 0.3s ease;
+  transition: background 0.35s ease;
 }
 .atlys-card:hover .atlys-card-gradient{
-  background: linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.2) 35%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.98) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 36%, rgba(0,0,0,0.76) 68%, rgba(0,0,0,0.98) 100%);
 }
 
 .atlys-card-top-pill{
   position: absolute;
-  top: 14px;
-  left: 14px;
+  top: 15px;
+  left: 15px;
   z-index: 3;
-  background: linear-gradient(135deg, var(--p2), var(--p));
+  background: linear-gradient(135deg, rgba(107, 52, 179, 0.92), rgba(67, 15, 122, 0.96));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.24);
   color: #ffffff;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
-  padding: 4px 10px;
+  padding: 4px 11px;
   border-radius: 99px;
   letter-spacing: 0.04em;
-  box-shadow: 0 4px 12px rgba(67, 15, 122, 0.4);
+  box-shadow: 0 4px 14px rgba(67, 15, 122, 0.45);
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -270,75 +277,126 @@ section{padding:96px 0;position:relative}
   height: 26px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
-  border: 1.5px solid rgba(255,255,255,0.85);
+  margin-bottom: 9px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.55);
+  border: 1.5px solid rgba(255,255,255,0.92);
 }
 
 .atlys-card-title{
-  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-  font-size: 17px;
-  font-weight: 800;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
   color: #ffffff;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin: 0 0 3px;
-  line-height: 1.25;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  margin: 0 0 4px;
+  line-height: 1.18;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.85);
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 95%;
+  max-width: 98%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .atlys-card-subtitle{
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.8);
-  margin: 0 0 14px;
-  line-height: 1.3;
+  font-weight: 500;
+  color: rgba(255,255,255,0.82);
+  margin: 0 0 16px;
+  line-height: 1.35;
   max-width: 95%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
 }
 
 .atlys-meta-row{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   width: 100%;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 13px;
+  border-top: 1px solid rgba(255,255,255,0.22);
   box-sizing: border-box;
+  gap: 6px;
+}
+.atlys-meta-row.cols-2{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .atlys-meta-col{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  flex: 1;
+  min-width: 0;
 }
-.atlys-meta-col:first-child{ align-items: flex-start; }
-.atlys-meta-col:last-child{ align-items: flex-end; }
+.atlys-meta-col:first-child{ align-items: flex-start; text-align: left; }
+.atlys-meta-col:nth-child(2){ align-items: center; text-align: center; }
+.atlys-meta-col:last-child{ align-items: flex-end; text-align: right; }
 
 .atlys-meta-label{
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.62);
   text-transform: uppercase;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .atlys-meta-val{
-  font-size: 12.5px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: 0.02em;
+  text-transform: uppercase;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
   text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+/* Floating List/Map Pill (Atlys Style) */
+.atlys-floating-pill-wrap{
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+}
+.atlys-floating-pill{
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 99px;
+  padding: 5px 6px;
+  box-shadow: 0 16px 36px -8px rgba(15,23,42,0.25), 0 0 0 1px rgba(15,23,42,0.06);
+  gap: 2px;
+}
+.atlys-fp-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #64748b;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.atlys-fp-btn.active{
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(15,23,42,0.25);
 }
 
 /* Quick Search (Bottom) */
@@ -774,6 +832,20 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 
     <!-- The Dynamic Showcase Grid (Atlys Luxury Style) -->
     <div id="showcase-grid" class="atlys-grid"></div>
+
+    <!-- Floating List/Map Pill (Atlys Style) -->
+    <div class="atlys-floating-pill-wrap">
+      <div class="atlys-floating-pill">
+        <button type="button" class="atlys-fp-btn active" id="atlys-view-list-btn" onclick="this.classList.add('active');document.getElementById('atlys-view-map-btn')?.classList.remove('active');">
+          <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          List
+        </button>
+        <button type="button" class="atlys-fp-btn" id="atlys-view-map-btn" onclick="this.classList.add('active');document.getElementById('atlys-view-list-btn')?.classList.remove('active');window.location.hash='destinations';">
+          <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+          Map
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1436,97 +1508,125 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
   });
 }
 
-// Airbnb Showcase Data (Atlys Luxury Style)
+// Airbnb Showcase Data (Atlys Luxury Style - Billion-Dollar Marketplace)
 const SHOWCASE_DATA = {
   experts: {
     title: '<span>⚖️</span> Verified Visa &amp; Immigration Experts',
-    subtitle: 'Compare licensed MARA &amp; RCIC consultants with milestone escrow protection and fixed fees',
+    subtitle: 'Compare licensed MARA, RCIC, OISC consultants and lawyers with milestone escrow protection',
     viewAllHref: '/find-experts',
     viewAllText: 'Show all experts (150+)',
     items: [
       {
-        title: 'SCHENGEN & EUROPE',
-        flag: 'eu',
-        sub: 'Travel & Play · 1,180 Cases',
-        badge: 'VERIFIED MARA',
-        col1Label: 'TYPE',
-        col1Val: 'TOUR & WORK',
-        col2Label: 'SUCCESS',
-        col2Val: '99%',
-        col3Label: 'RATING',
-        col3Val: '★ 4.9',
-        href: '/find-experts?search=Travel+and+Play',
-        img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=1200&fit=crop&q=90'
-      },
-      {
-        title: 'CANADA',
+        title: 'ARJUN MEHTA',
         flag: 'ca',
-        sub: 'Chaitanya N · RCIC Partner',
-        badge: 'RCIC VERIFIED',
+        sub: 'Canada PR & Study · Hyderabad',
+        badge: '🛡️ ICCRC-R123456',
         col1Label: 'TYPE',
-        col1Val: 'EXPRESS ENTRY',
-        col2Label: 'SUCCESS',
-        col2Val: '98%',
+        col1Val: 'PR & STUDY',
+        col2Label: 'EXP',
+        col2Val: '10+ YRS',
         col3Label: 'RATING',
-        col3Val: '★ 4.8',
-        href: '/find-experts?search=Chaitanya+N',
-        img: 'https://images.unsplash.com/photo-1517935703635-2717090c2210?w=800&h=1200&fit=crop&q=90'
+        col3Val: '★ 4.9 (312)',
+        href: '/expert/d1',
+        img: '/experts/arjun_mehta.jpg'
       },
       {
-        title: 'AUSTRALIA',
-        flag: 'au',
-        sub: 'Apex Global · MARA #1804210',
-        badge: 'MARA LICENSED',
-        col1Label: 'TYPE',
-        col1Val: 'PR & SKILLED',
-        col2Label: 'SUCCESS',
-        col2Val: '98%',
-        col3Label: 'RATING',
-        col3Val: '★ 4.9',
-        href: '/find-experts?search=Apex+Global',
-        img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=1200&fit=crop&q=90'
-      },
-      {
-        title: 'UNITED ARAB EMIRATES',
-        flag: 'ae',
-        sub: 'Easy Visa Ltd · Golden Visa',
-        badge: 'FAST TRACK',
-        col1Label: 'TYPE',
-        col1Val: 'GOLDEN VISA',
-        col2Label: 'VALID',
-        col2Val: '10 YEARS',
-        col3Label: 'RATING',
-        col3Val: '★ 4.9',
-        href: '/find-experts?search=Easy+Visa+Ltd',
-        img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&h=1200&fit=crop&q=90'
-      },
-      {
-        title: 'UNITED KINGDOM',
+        title: 'PRIYA SHARMA',
         flag: 'gb',
-        sub: 'North Star · Skilled Worker',
-        badge: 'ESCROW VERIFIED',
+        sub: 'UK & Australia Specialist · Mumbai',
+        badge: '🛡️ OISC-L2-00234',
         col1Label: 'TYPE',
-        col1Val: 'WORK VISA',
-        col2Label: 'SUCCESS',
-        col2Val: '99%',
+        col1Val: 'SKILLED VISA',
+        col2Label: 'EXP',
+        col2Val: '8+ YRS',
         col3Label: 'RATING',
-        col3Val: '★ 5.0',
-        href: '/find-experts?search=North+Star',
-        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=1200&fit=crop&q=90'
+        col3Val: '★ 4.8 (198)',
+        href: '/expert/d2',
+        img: '/experts/priya_sharma.jpg'
       },
       {
-        title: 'GERMANY',
+        title: 'KARTHIK REDDY',
+        flag: 'us',
+        sub: 'US Immigration Attorney · Bangalore',
+        badge: '🛡️ BAR-CA-78912',
+        col1Label: 'TYPE',
+        col1Val: 'H-1B & EB-1',
+        col2Label: 'EXP',
+        col2Val: '12+ YRS',
+        col3Label: 'RATING',
+        col3Val: '★ 5.0 (421)',
+        href: '/expert/d3',
+        img: '/experts/karthik_reddy.jpg'
+      },
+      {
+        title: 'DEEPA NAIR',
+        flag: 'ca',
+        sub: 'PR & Citizenship · Chennai',
+        badge: '🛡️ ICCRC-R987654',
+        col1Label: 'TYPE',
+        col1Val: 'CANADIAN PR',
+        col2Label: 'EXP',
+        col2Val: '18+ YRS',
+        col3Label: 'RATING',
+        col3Val: '★ 4.9 (389)',
+        href: '/expert/d6',
+        img: '/experts/deepa_nair.jpg'
+      },
+      {
+        title: 'RAHUL KAPOOR',
         flag: 'de',
-        sub: 'Risingat Sports · Relocation',
-        badge: 'VERIFIED AGENCY',
+        sub: 'Germany Blue Card · Pune',
+        badge: '🛡️ BAMF-2023-4512',
         col1Label: 'TYPE',
         col1Val: 'BLUE CARD',
-        col2Label: 'SUCCESS',
-        col2Val: '99%',
+        col2Label: 'EXP',
+        col2Val: '7+ YRS',
         col3Label: 'RATING',
-        col3Val: '★ 4.9',
-        href: '/find-experts?search=Risingat+Sports',
-        img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&h=1200&fit=crop&q=90'
+        col3Val: '★ 4.8 (142)',
+        href: '/expert/d5',
+        img: '/experts/rahul_kapoor.jpg'
+      },
+      {
+        title: 'SNEHA JOSHI',
+        flag: 'au',
+        sub: 'NZ & Australia Skilled · Nagpur',
+        badge: '🛡️ IAA-0023456',
+        col1Label: 'TYPE',
+        col1Val: 'SKILLED PR',
+        col2Label: 'EXP',
+        col2Val: '9+ YRS',
+        col3Label: 'RATING',
+        col3Val: '★ 4.7 (203)',
+        href: '/expert/d8',
+        img: '/experts/sneha_joshi.jpg'
+      },
+      {
+        title: 'AMIR KHAN',
+        flag: 'gb',
+        sub: 'Immigration Lawyer & Appeals · Hyd',
+        badge: '🛡️ BAR-HYD-3344',
+        col1Label: 'TYPE',
+        col1Val: 'APPEALS & LAW',
+        col2Label: 'EXP',
+        col2Val: '11+ YRS',
+        col3Label: 'RATING',
+        col3Val: '★ 4.9 (97)',
+        href: '/expert/d9',
+        img: '/experts/amir_khan.jpg'
+      },
+      {
+        title: 'NISHA AGARWAL',
+        flag: 'ca',
+        sub: 'Student Visa Counsellor · Delhi',
+        badge: '🛡️ STUDY COUNSEL',
+        col1Label: 'TYPE',
+        col1Val: 'STUDENT VISA',
+        col2Label: 'EXP',
+        col2Val: '7+ YRS',
+        col3Label: 'RATING',
+        col3Val: '★ 4.7 (563)',
+        href: '/expert/d4',
+        img: '/experts/nisha_agarwal.jpg'
       }
     ]
   },
@@ -1546,7 +1646,7 @@ const SHOWCASE_DATA = {
         col2Label: 'PERK',
         col2Val: 'HOUSING',
         col3Label: 'PAY',
-        col3Val: '€2,800/mo',
+        col3Val: '€2,800/MO',
         href: '/jobs',
         img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&h=1200&fit=crop&q=90'
       },
@@ -1565,7 +1665,7 @@ const SHOWCASE_DATA = {
         img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'UNITED ARAB EMIRATES',
+        title: 'UNITED ARAB<br>EMIRATES',
         flag: 'ae',
         sub: 'Registered Nurse · ICU Specialty',
         badge: 'TAX-FREE SALARY',
@@ -1574,7 +1674,7 @@ const SHOWCASE_DATA = {
         col2Label: 'VISA',
         col2Val: 'EMPLOYER',
         col3Label: 'SALARY',
-        col3Val: 'AED 18K/mo',
+        col3Val: 'AED 18K/MO',
         href: '/jobs',
         img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=1200&fit=crop&q=90'
       },
@@ -1588,7 +1688,7 @@ const SHOWCASE_DATA = {
         col2Label: 'SPONSOR',
         col2Val: 'VERIFIED',
         col3Label: 'SALARY',
-        col3Val: '£65K/yr',
+        col3Val: '£65K/YR',
         href: '/jobs',
         img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=1200&fit=crop&q=90'
       },
@@ -1600,9 +1700,9 @@ const SHOWCASE_DATA = {
         col1Label: 'TYPE',
         col1Val: 'FULL-TIME',
         col2Label: 'PATHWAY',
-        col2Val: 'PR FAST-TRACK',
+        col2Val: 'FAST-TRACK',
         col3Label: 'SALARY',
-        col3Val: '€85K/yr',
+        col3Val: '€85K/YR',
         href: '/jobs',
         img: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&h=1200&fit=crop&q=90'
       },
@@ -1638,17 +1738,17 @@ const SHOWCASE_DATA = {
         col2Label: 'APOSTILLE',
         col2Val: 'ZERO FEE',
         col3Label: 'TUITION',
-        col3Val: '€3,300/yr',
+        col3Val: '€3,300/YR',
         href: '/universities',
         img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=1200&fit=crop&q=90'
       },
       {
         title: 'CANADA',
         flag: 'ca',
-        sub: 'University of Toronto · QS #21',
+        sub: 'Univ of Toronto · QS #21',
         badge: 'PGWP ELIGIBLE',
         col1Label: 'DEGREE',
-        col1Val: 'ENGINEERING',
+        col1Val: 'B.TECH / CS',
         col2Label: 'WORK PERMIT',
         col2Val: '3 YEARS',
         col3Label: 'TUITION',
@@ -1694,7 +1794,7 @@ const SHOWCASE_DATA = {
         col2Label: 'GRAD ROUTE',
         col2Val: '2 YEARS',
         col3Label: 'TUITION',
-        col3Val: '£28K/yr',
+        col3Val: '£28K/YR',
         href: '/universities',
         img: 'https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=800&h=1200&fit=crop&q=90'
       },
@@ -1724,43 +1824,71 @@ const SHOWCASE_DATA = {
         title: 'THAILAND',
         flag: 'th',
         sub: 'Bangkok, Phuket & Phi Phi Island',
-        badge: 'FREE VISA ON ARRIVAL',
+        badge: 'VISA ON ARRIVAL',
         col1Label: 'TYPE',
-        col1Val: 'E-VISA / VOA',
+        col1Val: 'DAC',
         col2Label: 'VALID',
-        col2Val: '60 DAYS',
+        col2Val: '90 DAYS',
         col3Label: 'FEES',
         col3Val: '₹2,500',
         href: '/tours?destination=Thailand',
         img: 'https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'UNITED ARAB EMIRATES',
+        title: 'UNITED ARAB<br>EMIRATES',
         flag: 'ae',
         sub: 'Dubai Luxury Safari & Marina',
         badge: '100% VISA GUARANTEE',
         col1Label: 'TYPE',
-        col1Val: 'TOURIST VISA',
+        col1Val: 'E-VISA',
+        col2Label: 'VALID',
+        col2Val: '60 DAYS',
+        col3Label: 'FEES',
+        col3Val: '₹8,180',
+        href: '/tours?destination=Dubai',
+        img: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'SRI LANKA',
+        flag: 'lk',
+        sub: 'Sigiriya Rock & Colombo Heritage',
+        badge: 'FAST ETA',
+        col1Label: 'TYPE',
+        col1Val: 'ETA',
         col2Label: 'VALID',
         col2Val: '30 DAYS',
         col3Label: 'FEES',
-        col3Val: '₹6,499',
-        href: '/tours?destination=Dubai',
-        img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&h=1200&fit=crop&q=90'
+        col3Val: '₹3,150',
+        href: '/tours?destination=Sri+Lanka',
+        img: 'https://images.unsplash.com/photo-1588598198321-9735fd52455b?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'SWITZERLAND',
-        flag: 'ch',
-        sub: 'Zurich, Alps & Glacier Express',
-        badge: 'ESCORTED LUXURY',
+        title: 'VIETNAM',
+        flag: 'vn',
+        sub: 'Hanoi, Da Nang & Mekong River',
+        badge: 'POPULAR DESTINATION',
         col1Label: 'TYPE',
-        col1Val: 'SCHENGEN',
+        col1Val: 'E-VISA',
         col2Label: 'VALID',
         col2Val: '90 DAYS',
-        col3Label: 'PACKAGE',
-        col3Val: '₹1.85L',
-        href: '/tours?destination=Switzerland',
-        img: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=800&h=1200&fit=crop&q=90'
+        col3Label: 'FEES',
+        col3Val: '₹3,307',
+        href: '/tours?destination=Vietnam',
+        img: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'MALAYSIA',
+        flag: 'my',
+        sub: 'Kuala Lumpur & Penang Island',
+        badge: 'EASY ENTRY',
+        col1Label: 'TYPE',
+        col1Val: 'DAC',
+        col2Label: 'VALID',
+        col2Val: '30 DAYS',
+        col3Label: 'FEES',
+        col3Val: '₹2,950',
+        href: '/tours?destination=Malaysia',
+        img: 'https://images.unsplash.com/photo-1508062878650-88b52897f298?w=800&h=1200&fit=crop&q=90'
       },
       {
         title: 'SINGAPORE',
@@ -1768,7 +1896,7 @@ const SHOWCASE_DATA = {
         sub: 'Marina Bay & Sentosa Luxury',
         badge: 'FAST 24H EVISA',
         col1Label: 'TYPE',
-        col1Val: 'EVISA',
+        col1Val: 'E-VISA',
         col2Label: 'VALID',
         col2Val: '30 DAYS',
         col3Label: 'FEES',
@@ -1782,7 +1910,7 @@ const SHOWCASE_DATA = {
         sub: 'Tokyo, Kyoto & Mt. Fuji Discovery',
         badge: 'TOURIST VISA HELP',
         col1Label: 'TYPE',
-        col1Val: 'EVISA',
+        col1Val: 'E-VISA',
         col2Label: 'VALID',
         col2Val: '90 DAYS',
         col3Label: 'FEES',
@@ -1791,18 +1919,18 @@ const SHOWCASE_DATA = {
         img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'UNITED KINGDOM',
-        flag: 'gb',
-        sub: 'London & Scottish Highlands',
-        badge: 'VISA ASSISTANCE',
+        title: 'SWITZERLAND',
+        flag: 'ch',
+        sub: 'Zurich, Alps & Glacier Express',
+        badge: 'ESCORTED LUXURY',
         col1Label: 'TYPE',
-        col1Val: 'STANDARD VISIT',
+        col1Val: 'SCHENGEN',
         col2Label: 'VALID',
-        col2Val: '6 MONTHS',
+        col2Val: '90 DAYS',
         col3Label: 'FEES',
-        col3Val: '₹12,499',
-        href: '/tours?destination=UK',
-        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=1200&fit=crop&q=90'
+        col3Val: '₹8,900',
+        href: '/tours?destination=Switzerland',
+        img: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=800&h=1200&fit=crop&q=90'
       }
     ]
   },
@@ -1919,7 +2047,7 @@ function renderShowcase(tab, filterQuery = '') {
     items = items.filter(it => 
       it.title.toLowerCase().includes(q) || 
       it.sub.toLowerCase().includes(q) || 
-      it.badge.toLowerCase().includes(q) ||
+      (it.badge && it.badge.toLowerCase().includes(q)) ||
       (it.col1Val && it.col1Val.toLowerCase().includes(q)) ||
       (it.col2Val && it.col2Val.toLowerCase().includes(q)) ||
       (it.col3Val && it.col3Val.toLowerCase().includes(q))
@@ -1934,11 +2062,11 @@ function renderShowcase(tab, filterQuery = '') {
 
     gridEl.innerHTML = items.map(it => `
       <article class="atlys-card" onclick="window.location.href='${it.href}'">
-        <img src="${it.img}" alt="${it.title}" class="atlys-card-bg" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=1200&fit=crop&q=90'"/>
+        <img src="${it.img}" alt="${it.title.replace(/<[^>]+>/g, ' ')}" class="atlys-card-bg" loading="lazy" onerror="this.src='/experts/expert1.png'"/>
         <div class="atlys-card-gradient"></div>
-        <div class="atlys-card-top-pill">${it.badge}</div>
+        ${it.badge ? `<div class="atlys-card-top-pill">${it.badge}</div>` : ''}
         <div class="atlys-card-content">
-          ${it.flag ? `<img src="https://flagcdn.com/w40/${it.flag}.png" class="atlys-flag-icon" alt="${it.title}"/>` : ''}
+          ${it.flag ? `<img src="https://flagcdn.com/w40/${it.flag}.png" class="atlys-flag-icon" alt="${it.title.replace(/<[^>]+>/g, ' ')}"/>` : ''}
           <h3 class="atlys-card-title">${it.title}</h3>
           <p class="atlys-card-subtitle">${it.sub}</p>
           <div class="atlys-meta-row">
