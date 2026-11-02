@@ -3020,28 +3020,11 @@ return (
         {/* Full-width Scenic Travel Background Card */}
         <div ref={heroParallaxRef} className="relative w-full max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-white border border-slate-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)] ring-1 ring-slate-900/5 overflow-visible">
           
-          {/* High-Resolution Generated Travel Photograph Background */}
-          <div 
-            className="absolute top-0 right-0 w-[42%] xs:w-[45%] sm:w-3/5 lg:w-[58%] h-[200px] xs:h-[225px] sm:h-full pointer-events-none opacity-100 rounded-tr-3xl sm:rounded-bl-none sm:rounded-r-[36px] overflow-hidden"
-          >
-            <div 
-              ref={heroImageParallaxRef}
-              className="hero-image w-full h-full bg-cover bg-[position:top_right] sm:bg-right md:bg-center will-change-transform"
-              style={{
-                backgroundImage: `url('/images/hero-traveler-bg.jpg')`,
-              }}
-            />
-            {/* Soft, Transparent Gradient only on the left side of image (Pure White Blend) */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/50 to-transparent w-1/3 sm:w-1/2" />
-            {/* Subtle bottom fade to blend smoothly before the search tabs on mobile */}
-            <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-white to-transparent sm:hidden" />
-          </div>
-
           {/* Hero Content Container */}
-          <div className="relative z-10 w-full p-3 sm:p-5 lg:pt-8 lg:pb-6 lg:px-8 text-left">
+          <div className="relative z-10 w-full p-3 sm:p-6 lg:pt-8 lg:pb-8 lg:px-8 text-center">
             
             {/* Clean Hero Heading Section */}
-            <div className="max-w-2xl text-left mb-4 sm:mb-6 pr-[42%] xs:pr-[45%] sm:pr-0">
+            <div className="max-w-3xl mx-auto text-center mb-6">
               {/* Top Pill Badge */}
               <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-2xs mb-2 sm:mb-3.5 max-w-full">
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#00A86B] animate-pulse shrink-0" />
@@ -3065,6 +3048,133 @@ return (
                 </span>
               </p>
             </div>
+
+            {/* Category Tabs (Airbnb Style) */}
+            <div className="flex items-center justify-center gap-6 md:gap-10 mb-8 overflow-x-auto pb-4">
+              {/* Active Tab */}
+              <button 
+                type="button"
+                onClick={() => { window.location.href = '/find-experts'; }}
+                className="flex flex-col items-center gap-2 border-b-2 border-slate-900 pb-2 cursor-pointer"
+              >
+                <span className="text-2xl">⚖️</span>
+                <span className="text-sm font-bold text-slate-900">Experts</span>
+              </button>
+              
+              {/* Inactive Tabs */}
+              <button 
+                type="button"
+                onClick={() => { window.location.href = '/jobs'; }}
+                className="flex flex-col items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors pb-2 cursor-pointer"
+              >
+                <span className="text-2xl">💼</span>
+                <span className="text-sm font-medium">Jobs</span>
+              </button>
+              
+              <button 
+                type="button"
+                onClick={() => { window.location.href = '/universities'; }}
+                className="flex flex-col items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors pb-2 cursor-pointer"
+              >
+                <span className="text-2xl">🎓</span>
+                <span className="text-sm font-medium">Universities</span>
+              </button>
+              
+              <button 
+                type="button"
+                onClick={() => { window.location.href = '/tours'; }}
+                className="flex flex-col items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors pb-2 cursor-pointer"
+              >
+                <span className="text-2xl">✈️</span>
+                <span className="text-sm font-medium">Tours</span>
+              </button>
+              
+              <button 
+                type="button"
+                onClick={() => { window.location.href = '/find-experts?filter=offers'; }}
+                className="flex flex-col items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors pb-2 cursor-pointer"
+              >
+                <span className="text-2xl">🏷️</span>
+                <span className="text-sm font-medium">Offers</span>
+              </button>
+            </div>
+
+            {/* Search Bar (Pill Design) */}
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                const q = document.getElementById('airbnb-search-input')?.value || '';
+                const dest = document.getElementById('airbnb-dest-select')?.value || '';
+                const from = document.getElementById('airbnb-from-select')?.value || 'India';
+                const p = new URLSearchParams();
+                if (q) p.set('q', q);
+                if (dest && dest !== 'Select Country') p.set('country', dest);
+                if (from) p.set('from', from);
+                window.location.href = '/find-experts?' + p.toString();
+              }}
+              className="w-full max-w-4xl mx-auto bg-white rounded-full border border-slate-300 shadow-md flex flex-col md:flex-row items-center p-2 mb-8"
+            >
+              {/* Field 1 */}
+              <div className="flex-1 px-6 py-2 w-full border-b md:border-b-0 md:border-r border-slate-200 text-left">
+                <label className="block text-xs font-bold text-slate-900">What do you need?</label>
+                <input 
+                  id="airbnb-search-input"
+                  type="text" 
+                  placeholder="e.g. Canada Student Visa" 
+                  className="w-full focus:outline-none text-sm text-slate-600 bg-transparent placeholder-slate-400" 
+                />
+              </div>
+
+              {/* Field 2 */}
+              <div className="flex-1 px-6 py-2 w-full border-b md:border-b-0 md:border-r border-slate-200 text-left">
+                <label className="block text-xs font-bold text-slate-900">Destination</label>
+                <select 
+                  id="airbnb-dest-select"
+                  className="w-full focus:outline-none text-sm text-slate-600 bg-transparent cursor-pointer"
+                >
+                  <option value="">Select Country</option>
+                  <option value="Canada">Canada</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Australia">Australia</option>
+                  <option value="United States">United States</option>
+                  <option value="UAE">UAE</option>
+                  <option value="Germany">Germany</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Singapore">Singapore</option>
+                  <option value="Ireland">Ireland</option>
+                  <option value="France">France</option>
+                  <option value="New Zealand">New Zealand</option>
+                </select>
+              </div>
+
+              {/* Field 3 */}
+              <div className="flex-1 px-6 py-2 w-full text-left">
+                <label className="block text-xs font-bold text-slate-900">Moving from</label>
+                <select 
+                  id="airbnb-from-select"
+                  className="w-full focus:outline-none text-sm text-slate-600 bg-transparent cursor-pointer"
+                >
+                  <option value="India">India</option>
+                  <option value="Nigeria">Nigeria</option>
+                  <option value="Philippines">Philippines</option>
+                  <option value="Pakistan">Pakistan</option>
+                  <option value="Bangladesh">Bangladesh</option>
+                  <option value="Nepal">Nepal</option>
+                  <option value="Sri Lanka">Sri Lanka</option>
+                  <option value="UAE">UAE</option>
+                </select>
+              </div>
+
+              {/* Search Button */}
+              <div className="p-2 w-full md:w-auto mt-2 md:mt-0">
+                <button 
+                  type="submit"
+                  className="w-full md:w-auto bg-[#00b070] hover:bg-[#008f5a] text-white font-bold px-8 py-4 rounded-full transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                >
+                  <span>🔍</span> <span className="hidden md:inline">Search</span>
+                </button>
+              </div>
+            </form>
 
             {/* ── INTEGRATED HERO TABS + ENLARGED SEARCH CARD ── */}
             <div className="w-full max-w-full mt-2.5 sm:mt-4">

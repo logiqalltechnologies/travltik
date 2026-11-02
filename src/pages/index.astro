@@ -60,12 +60,12 @@ section{padding:96px 0;position:relative}
 .nav-drop a:hover{background:#f1f5f9;color:#0f172a;transform:translateX(3px)}
 @media(max-width:1120px){.nav-menu{display:none}.burger{display:flex}}
 /* top bar + header */
-.tb{background:linear-gradient(90deg,var(--l2),var(--l1) 50%,var(--gl));font-size:13px;font-weight:600;color:var(--p);overflow:hidden}
-.tb .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:14px;white-space:nowrap}
+.tb{background:#f8fafc;border-bottom:1px solid #e2e8f0;font-size:12.5px;font-weight:600;color:#475569;overflow:hidden}
+.tb .wrap{display:flex;justify-content:space-between;align-items:center;height:40px;gap:14px;white-space:nowrap}
 .tb a, .tb span{display:inline-flex;gap:8px;align-items:center;color:inherit;text-decoration:none;white-space:nowrap}
 .tb .r{display:flex;gap:24px;align-items:center}
-.tb svg{color:var(--g2);flex-shrink:0}
-.tb .mid{background:#fff;padding:4px 14px;border-radius:99px;box-shadow:0 4px 14px -8px rgba(67,15,122,.4);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.tb svg{color:#00b070;flex-shrink:0}
+.tb .mid{background:#fff;padding:4px 14px;border-radius:99px;border:1px solid #e2e8f0;box-shadow:0 1px 2px rgba(0,0,0,.05);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;color:#0f172a}
 @media(max-width:900px){
   .tb .hide, .tb .mid{display:none !important}
   .tb .wrap{justify-content:space-between;padding:0 20px}
@@ -513,39 +513,23 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   </div>
 </div></div></header>
 <main>
-<!-- HERO -->
-<section class="hero" style="position:relative">
-<div class="wrap hg"><div class="hl rv">
-<a href="/find-experts" class="live" style="cursor:pointer;text-decoration:none;color:inherit"><span class="avs" id="hav"></span><span class="pulse"></span><span><b id="onl">18</b> licensed consultants available now</span></a>
-<h1 class="font-display">Move abroad.<br>Pay <span class="hi grad">safely.<svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M3 11C40 3 90 3 140 8s45 2 57-3" fill="none" stroke="#00b070" stroke-width="4.500" stroke-linecap="round"/></svg></span><br>Land <span class="ser" style="color:var(--p2);font-weight:600">confident.</span></h1>
-<p class="lead">The global marketplace for visas, study, jobs and relocation. Compare licensed MARA and RCIC consultants, pay in milestones, and track every step in one place.</p>
-<div class="hb"><a class="btn g" id="hero-find-expert-btn" href="#search" style="cursor:pointer">Find my expert <svg class="i ar"><use href="#arrow"/></svg></a><a class="btn o" href="#how"><svg class="i"><use href="#play"/></svg> See how it works</a></div>
-<div class="chips">
-<a href="/escrow" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#lock"/></svg></i><span>Milestone Escrow<small>Funds released per milestone</small></span></a>
-<a href="/find-experts" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#shield"/></svg></i><span>Licence-verified<small>MARA, RCIC and lawyers</small></span></a>
-<a href="/find-experts" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#scale"/></svg></i><span>Transparent fees<small>Fixed prices, no surprises</small></span></a>
-<a href="#destinations" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#globe"/></svg></i><span>193+ Countries<small>Visas, tours and packages</small></span></a></div></div>
-<div class="hv rv">
-<svg class="map" id="wmap" viewBox="0 20 800 300"></svg>
-<svg class="stamp" viewBox="0 0 140 140"><defs><path id="cir" d="M70 70m-50 0a50 50 0 1 1 100 0a50 50 0 1 1-100 0"/></defs><circle cx="70" cy="70" r="64" fill="rgba(255,255,255,.55)" stroke="#00b070" stroke-width="3" stroke-dasharray="3 5"/><circle cx="70" cy="70" r="40" fill="none" stroke="#00b070" stroke-width="2"/><text font-family="Sora" font-weight="800" font-size="11.500" letter-spacing="3" fill="#008f5a"><textPath href="#cir">VISA APPROVED · TRAVLTIK · 2026 ·</textPath></text><path d="m52 71 12 12 24-26" fill="none" stroke="#00b070" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-<a href="/find-experts" class="glass cA f1" style="display:block;cursor:pointer;text-decoration:none;color:inherit"><div class="t"><span id="cav"></span><div><b>Rising At Sports</b><small>Canada PR &amp; Europe Tour Specialist</small></div></div><div style="margin:12px 0 0;display:flex;gap:7px;flex-wrap:wrap"><span class="bdg"><svg class="i"><use href="#shield"/></svg>Licence verified</span><span class="bdg p">Hindi · English</span></div><div class="mt"><span class="stars"><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg>&nbsp;4.9 <span style="color:var(--mut);font-weight:600">(12)</span></span><span style="color:var(--g2)">Replies in ~4 min</span></div></a>
-<a href="#how" class="glass cB f2" style="display:block;cursor:pointer;text-decoration:none;color:inherit"><h4 style="margin-bottom:14px">Escrow milestones <span class="bdg"><svg class="i"><use href="#lock"/></svg>Protected</span></h4>
-<div class="mbar" style="grid-template-columns:2fr 3fr 5fr"><i class="d" style="flex:2"></i><i class="h" style="flex:3"></i><i style="flex:5"></i></div>
-<div class="ml"><i>&#10003;</i>1st installment of payment<em>Released</em></div><div class="ml h"><i>2</i>02nd installment of payment<em>In progress</em></div><div class="ml l"><i>3</i>Final payment<em>Locked</em></div></a>
-
-</div></div></section>
-<!-- STATS -->
-<div class="stats"><div class="wrap"><div class="sg rv">
-<div><b><span data-c="1500" data-s="+">1,500+</span></b><span>Early movers</span></div><div><b><span data-c="150" data-s="+">150+</span></b><span>Verified consultants</span></div><div><b><span data-c="193" data-s="+">193+</span></b><span>Countries covered</span></div><div><b>100%<span style="font-size:22px;color:var(--g)"> Escrow</span></b><span>Milestone protected</span></div><div><b>4.8<span style="font-size:22px;color:var(--g)"> / 5</span></b><span>Average rating</span></div></div></div></div>
-<!-- MARQUEE -->
-<div class="mqs"><div class="mq" id="mq1"></div><div class="mq r" id="mq2"></div></div>
-<!-- SEARCH -->
-<section class="srch" id="search">
-  <div class="wrap">
-    <div class="sh c rv"><span class="eyebrow">Easy search</span><h2>Find the right path in <span class="grad">under two minutes</span></h2><p>Search verified visa routes, licensed experts, study programs and stays across 193+ countries.</p></div>
+<!-- HERO (Airbnb Style) -->
+<section class="hero" style="position:relative; padding: 48px 0 54px; background: #ffffff;">
+  <div class="wrap" style="text-align: center; max-width: 980px; margin: 0 auto;">
+    
+    <!-- Hero Headline & Subhead -->
+    <div style="margin-bottom: 26px;">
+      <a href="/find-experts" class="live" style="cursor:pointer;text-decoration:none;color:inherit;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);border:1px solid #e2e8f0;"><span class="avs" id="hav"></span><span class="pulse"></span><span><b id="onl">18</b> licensed consultants available now</span></a>
+      <h1 class="font-display" style="font-size: clamp(32px, 5.2vw, 56px); font-weight: 800; line-height: 1.12; color: #0f172a; margin-bottom: 14px; letter-spacing: -0.03em;">
+        Move abroad. Pay <span class="hi grad">safely.<svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M3 11C40 3 90 3 140 8s45 2 57-3" fill="none" stroke="#00b070" stroke-width="4.500" stroke-linecap="round"/></svg></span> Land <span class="ser" style="color:#00b070;font-weight:600">confident.</span>
+      </h1>
+      <p class="lead" style="font-size: clamp(15px, 2vw, 17.5px); color: #64748b; max-width: 620px; margin: 0 auto; line-height: 1.5;">
+        The global marketplace for visas, study, jobs and relocation. Compare licensed MARA &amp; RCIC consultants, pay in milestones, and track every step.
+      </p>
+    </div>
 
     <!-- Category Tabs (Airbnb Style) -->
-    <div class="airbnb-cat-tabs rv">
+    <div class="airbnb-cat-tabs rv" style="margin-bottom: 20px;">
       <!-- Active Tab -->
       <button type="button" class="airbnb-cat-tab active" data-tab="experts">
         <span class="tab-icon">⚖️</span>
@@ -575,7 +559,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     </div>
 
     <!-- Search Bar (Pill Design - Airbnb Style) -->
-    <div class="airbnb-search-wrap rv">
+    <div class="airbnb-search-wrap rv" style="margin-bottom: 24px;">
       <div class="airbnb-search-bar">
         <!-- Field 1: What do you need? -->
         <div class="airbnb-field">
@@ -629,6 +613,29 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         </div>
       </div>
     </div>
+
+    <!-- Trust Badges (Clean Airbnb Style) -->
+    <div class="chips" style="margin: 0 auto; justify-content: center; max-width: 820px; display: flex; flex-wrap: wrap; gap: 10px;">
+      <a href="/escrow" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#lock"/></svg></i><span>Milestone Escrow<small>100% Protected</small></span></a>
+      <a href="/find-experts" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#shield"/></svg></i><span>Licence-verified<small>MARA &amp; RCIC</small></span></a>
+      <a href="/find-experts" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#scale"/></svg></i><span>Transparent fees<small>No surprises</small></span></a>
+      <a href="#destinations" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#globe"/></svg></i><span>193+ Countries<small>Visas &amp; Stays</small></span></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats"><div class="wrap"><div class="sg rv">
+<div><b><span data-c="1500" data-s="+">1,500+</span></b><span>Early movers</span></div><div><b><span data-c="150" data-s="+">150+</span></b><span>Verified consultants</span></div><div><b><span data-c="193" data-s="+">193+</span></b><span>Countries covered</span></div><div><b>100%<span style="font-size:22px;color:var(--g)"> Escrow</span></b><span>Milestone protected</span></div><div><b>4.8<span style="font-size:22px;color:var(--g)"> / 5</span></b><span>Average rating</span></div></div></div></div>
+
+<!-- MARQUEE -->
+<div class="mqs"><div class="mq" id="mq1"></div><div class="mq r" id="mq2"></div></div>
+
+<!-- SEARCH / DISCOVERY -->
+<section class="srch" id="search">
+  <div class="wrap">
+    <div class="sh c rv"><span class="eyebrow">Quick Directory</span><h2>Find the right path in <span class="grad">under two minutes</span></h2><p>Search verified visa routes, licensed experts, study programs and stays across 193+ countries.</p></div>
 
     <!-- Quick Search Card (Below Easy Search) -->
     <div class="qs-card rv">
