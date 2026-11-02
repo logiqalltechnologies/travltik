@@ -47,16 +47,16 @@ section{padding:96px 0;position:relative}
 .bdg.p{background:var(--l2);color:var(--p)}.bdg svg{font-size:13px}
 .av{border-radius:50%;flex:none;display:block}
 /* Airbnb Unified Header */
-.airbnb-header-wrap{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#ffffff 0%,#fafdfc 55%,#f2f9f5 100%);border-bottom:1px solid rgba(0,176,112,0.09);box-shadow:0 4px 18px -8px rgba(0,176,112,0.06);transition:all .2s ease}
+.airbnb-header-wrap{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#ffffff 0%,#faf8fc 50%,#f4eff9 100%);border-bottom:1px solid rgba(67,15,122,0.08);box-shadow:0 4px 20px -8px rgba(67,15,122,0.08);transition:all .2s ease}
 .airbnb-header-inner{max-width:1440px;width:100%;margin:0 auto;padding:0 36px;box-sizing:border-box}
 .airbnb-top-row{display:flex;align-items:center;justify-content:space-between;min-height:76px;padding:12px 0 6px;gap:20px}
 .airbnb-logo{display:flex;align-items:center;flex:0 0 160px}
 .airbnb-logo img{height:38px;width:auto;display:block}
-.airbnb-cat-tabs{display:flex;align-items:center;justify-content:center;gap:32px;margin:0;padding:0;list-style:none;flex:1}
-.airbnb-cat-tab{display:flex;flex-direction:row;align-items:center;gap:8px;padding:10px 14px 14px;border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s ease;color:#555555;font-size:14px;font-weight:600;white-space:nowrap}
-.airbnb-cat-tab .tab-icon{font-size:18px;line-height:1;display:block}
-.airbnb-cat-tab:hover{color:#008753;border-bottom-color:#a7f3d0}
-.airbnb-cat-tab.active{color:#008753;font-weight:700;border-bottom-color:#00b070}
+.airbnb-cat-tabs{display:flex;align-items:center;justify-content:center;gap:10px;margin:0;padding:0;list-style:none;flex:1}
+.airbnb-cat-tab{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:9999px;font-weight:700;font-size:13.5px;color:#4b4268;background:#f7f5fa;border:1px solid #ede9f6;transition:all .2s ease;cursor:pointer}
+.airbnb-cat-tab:hover{background:#ede8f5;color:#1e1338}
+.airbnb-cat-tab.active{background:#370c63;color:#ffffff;border-color:#370c63;box-shadow:0 6px 18px -4px rgba(55,12,99,0.45)}
+.airbnb-cat-tab .tab-icon{font-size:16px;line-height:1}
 
 .airbnb-right-box{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:0 0 auto;position:relative}
 .airbnb-host-link{font-size:14px;font-weight:600;color:#222222;padding:10px 14px;border-radius:9999px;text-decoration:none;transition:background-color .15s ease;white-space:nowrap}
@@ -137,8 +137,8 @@ section{padding:96px 0;position:relative}
 }
 
 .airbnb-search-bar-row{display:flex;justify-content:center;padding:16px 0 30px;position:relative;z-index:110}
-.airbnb-pill-search{width:100%;max-width:860px;min-height:64px;background:#ffffff;border:1px solid #e5e7eb;border-radius:9999px;box-shadow:0 8px 24px -6px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.02);display:flex;align-items:center;padding:6px 10px 6px 28px;transition:all .2s ease;box-sizing:border-box;position:relative}
-.airbnb-pill-search:hover,.airbnb-pill-search:focus-within{box-shadow:0 12px 32px -6px rgba(0,176,112,0.18),0 0 0 2px rgba(0,176,112,0.2);border-color:#00b070}
+.airbnb-pill-search{width:100%;max-width:860px;min-height:64px;background:#ffffff;border:1.5px solid #ede9fe;border-radius:9999px;box-shadow:0 12px 36px -10px rgba(67,15,122,0.12),0 2px 6px rgba(0,0,0,0.03);display:flex;align-items:center;padding:6px 10px 6px 28px;transition:all .2s ease;box-sizing:border-box;position:relative}
+.airbnb-pill-search:hover,.airbnb-pill-search:focus-within{box-shadow:0 16px 42px -10px rgba(0,176,112,0.2),0 0 0 3px rgba(0,176,112,0.18);border-color:#00b070}
 .airbnb-pill-segment{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:6px 16px;position:relative;border-radius:9999px;transition:background-color .15s ease}
 .airbnb-pill-segment:hover{background:rgba(0,0,0,0.02)}
 .pill-label-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
@@ -160,10 +160,10 @@ section{padding:96px 0;position:relative}
 
 .airbnb-pill-divider{width:1px;height:32px;background-color:#e2e8f0;flex-shrink:0}
 .airbnb-pill-btn-box{flex-shrink:0;margin-left:8px}
-.airbnb-round-search-btn{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00c882,#00b070);color:#ffffff;display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 14px rgba(0,176,112,0.42);flex-shrink:0}
-.airbnb-round-search-btn:hover{background:linear-gradient(135deg,#00b070,#009660);transform:scale(1.05);box-shadow:0 6px 20px rgba(0,176,112,0.55)}
-.airbnb-round-search-btn:active{transform:scale(0.96)}
-.airbnb-round-search-btn svg{width:18px;height:18px;stroke:#ffffff;stroke-width:2.8}
+.airbnb-round-search-btn{height:46px;border-radius:9999px;padding:0 22px;background:linear-gradient(135deg,#00c882,#00b070);color:#ffffff;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:-0.01em;transition:all .2s ease;box-shadow:0 4px 16px rgba(0,176,112,0.42);flex-shrink:0}
+.airbnb-round-search-btn:hover{background:linear-gradient(135deg,#00b070,#009660);transform:translateY(-1px) scale(1.02);box-shadow:0 6px 20px rgba(0,176,112,0.55)}
+.airbnb-round-search-btn:active{transform:scale(0.97)}
+.airbnb-round-search-btn svg{width:16px;height:16px;stroke:#ffffff;stroke-width:2.6}
 
 /* Luxury Dropdown Popup inside Pill */
 .airbnb-pill-popup{position:absolute;top:calc(100% + 14px);left:0;min-width:280px;background:#ffffff;border-radius:24px;border:1px solid #ebebeb;box-shadow:0 14px 40px rgba(0,0,0,0.14);padding:14px;z-index:250;display:none;flex-direction:column;gap:4px}
@@ -1036,10 +1036,11 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           </div>
         </div>
 
-        <!-- Search Button (Brand Green Circle Button) -->
+        <!-- Search Button (Brand Green Button) -->
         <div class="airbnb-pill-btn-box">
           <button type="button" id="go" class="airbnb-round-search-btn" aria-label="Search">
-            <svg class="i" style="width:18px;height:18px;stroke:#fff;stroke-width:2.8"><use href="#search"/></svg>
+            <svg class="i" style="width:16px;height:16px;stroke:#fff;stroke-width:2.8"><use href="#search"/></svg>
+            <span>Search</span>
           </button>
         </div>
       </div>
@@ -1053,7 +1054,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
       <div>
         <h2 id="showcase-title" style="font-size:22px;font-weight:800;color:#0f172a;margin:0;letter-spacing:-0.02em;display:flex;align-items:center;gap:8px;">
-          <span>⚖️</span> Verified Visa &amp; Immigration Experts
+          <span>⚖️</span> Verified <span class="grad">Visa &amp; Immigration Experts</span>
         </h2>
         <p id="showcase-subtitle" style="font-size:13.5px;color:#64748b;margin:4px 0 0;font-weight:500;">
           Compare licensed MARA &amp; RCIC consultants with milestone escrow protection and fixed fees
