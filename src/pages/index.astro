@@ -75,32 +75,176 @@ section{padding:96px 0;position:relative}
 .airbnb-dropdown-menu a.bold-link{font-weight:700;color:#0f172a}
 .airbnb-dropdown-divider{height:1px;background:#f1f5f9;margin:6px 0}
 
+/* Atlys Header Top Banner */
+.atlys-top-banner{
+  background: linear-gradient(90deg, #4f46e5 0%, #430f7a 50%, #6b34b3 100%);
+  color: #ffffff;
+  width: 100%;
+  position: relative;
+  z-index: 50;
+}
+.atlys-top-banner-inner{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  padding: 8px 20px;
+  text-align: center;
+  flex-wrap: wrap;
+}
+.atlys-top-banner-btn{
+  background: #ffffff;
+  color: #430f7a;
+  padding: 4px 14px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  white-space: nowrap;
+  transition: transform .15s ease;
+}
+.atlys-top-banner-btn:hover{ transform: scale(1.04); }
+
 .airbnb-search-bar-row{display:flex;justify-content:center;padding:16px 0 24px}
-.airbnb-pill-search{width:100%;max-width:860px;background:#ffffff;border:1px solid #dddddd;border-radius:9999px;box-shadow:0 3px 12px rgba(0,0,0,0.08);display:flex;align-items:center;padding:6px 8px 6px 24px;transition:all .2s ease;box-sizing:border-box}
-.airbnb-pill-search:hover,.airbnb-pill-search:focus-within{box-shadow:0 6px 22px rgba(0,0,0,0.13);border-color:#b5b5b5}
-.airbnb-pill-segment{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:4px 14px}
-.airbnb-pill-segment label{display:block;font-size:11px;font-weight:800;color:#222222;letter-spacing:.04em;margin-bottom:2px;text-transform:uppercase}
-.airbnb-pill-segment input,.airbnb-pill-segment select{width:100%;border:none;outline:none;background:transparent;font-size:14px;color:#222222;font-weight:500;padding:0;line-height:1.3}
-.airbnb-pill-segment input::placeholder{color:#717171;font-weight:400}
-.airbnb-pill-divider{width:1px;height:32px;background-color:#ebebeb;flex-shrink:0}
-.airbnb-pill-btn-box{flex-shrink:0;margin-left:6px}
-.airbnb-round-search-btn{width:48px;height:48px;border-radius:50%;background:#00b070;color:#ffffff;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:background-color .2s ease,transform .15s ease,box-shadow .2s ease;box-shadow:0 2px 8px rgba(0,176,112,0.3)}
-.airbnb-round-search-btn:hover{background:#008f5a;transform:scale(1.05);box-shadow:0 4px 14px rgba(0,176,112,0.45)}
-.airbnb-round-search-btn:active{transform:scale(0.96)}
-.airbnb-round-search-btn svg{width:18px;height:18px;stroke:#ffffff;stroke-width:2.5}
+
+/* Atlys Nav Right Search */
+.atlys-nav-search{
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 99px;
+  padding: 3px 6px 3px 12px;
+  transition: all .2s ease;
+}
+.atlys-nav-search:focus-within{
+  background: #ffffff;
+  border-color: #6b34b3;
+  box-shadow: 0 0 0 3px rgba(107,52,179,0.12);
+}
+.atlys-nav-search input{
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  padding: 5px 8px;
+  width: 130px;
+}
+.atlys-nav-search input::placeholder{ color: #94a3b8; font-weight: 500; }
+
+/* Atlys Floating Search Pill */
+.atlys-pill-search{
+  width: 100%;
+  max-width: 890px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 9999px;
+  box-shadow: 0 12px 36px -6px rgba(15,23,42,0.08), 0 2px 6px rgba(15,23,42,0.03);
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  transition: all .25s ease;
+  box-sizing: border-box;
+}
+.atlys-pill-search:hover{
+  box-shadow: 0 18px 44px -8px rgba(15,23,42,0.14);
+  border-color: rgba(0,0,0,0.14);
+}
+.atlys-pill-seg{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 14px;
+  cursor: pointer;
+  min-width: 0;
+  border-radius: 99px;
+  transition: background .2s ease;
+}
+.atlys-pill-seg:hover{
+  background: #f8fafc;
+}
+.atlys-pill-badge{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.badge-green{ background: #eefcf6; color: #008f5a; }
+.badge-blue{ background: #eff6ff; color: #2563eb; }
+.badge-amber{ background: #fefce8; color: #ca8a04; }
+.badge-pink{ background: #fdf2f8; color: #db2777; }
+
+.atlys-pill-text{
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.atlys-pill-sub{
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748b;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.atlys-pill-main{
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.atlys-pill-main .chv-icon{
+  width: 12px;
+  height: 12px;
+  stroke: #64748b;
+  stroke-width: 2.2;
+  fill: none;
+}
+.atlys-pill-div{
+  width: 1px;
+  height: 32px;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
 
 @media(max-width:960px){
   .airbnb-cat-tabs{display:none}
   .airbnb-host-link,.airbnb-globe-pill{display:none}
 }
+@media(max-width:820px){
+  .atlys-pill-search{
+    border-radius: 24px;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 8px;
+  }
+  .atlys-pill-seg{
+    flex: 1 1 45%;
+    padding: 6px;
+  }
+  .atlys-pill-div{ display: none; }
+}
 @media(max-width:768px){
   .airbnb-header-inner{padding:0 16px}
   .airbnb-top-row{height:64px}
   .airbnb-search-bar-row{padding:0 0 16px}
-  .airbnb-pill-search{border-radius:24px;flex-direction:column;padding:12px;align-items:stretch;gap:8px}
-  .airbnb-pill-segment{padding:6px 4px;border-bottom:1px solid #f1f5f9}
-  .airbnb-pill-divider{display:none}
-  .airbnb-round-search-btn{width:100%;border-radius:9999px;height:44px;margin-top:4px}
 }
 /* hero - Airbnb clean pure white */
 .hero{padding:40px 0 80px;background:#ffffff;overflow:hidden}
@@ -164,19 +308,24 @@ section{padding:96px 0;position:relative}
 .fld input{border:0;outline:0;width:100%;font-weight:600;font-size:14px;background:transparent;color:var(--ink);padding:2px 0}
 .sfm .btn{border-radius:16px;padding:0 30px}
 
-/* Atlys Luxury Cards (Billion-Dollar Marketplace Style) */
+/* Atlys Luxury 5-Column Grid (Pure Atlys Design) */
 .atlys-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
   width: 100%;
+}
+@media(max-width: 1160px){
+  .atlys-grid{
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 @media(max-width: 768px){
   .atlys-grid{
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    gap: 16px;
+    gap: 14px;
     padding-bottom: 16px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -186,18 +335,18 @@ section{padding:96px 0;position:relative}
 
 .atlys-card{
   position: relative;
-  height: 440px;
-  border-radius: 28px;
+  height: 520px;
+  border-radius: 32px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 24px 18px 20px;
+  padding: 26px 18px 24px;
   cursor: pointer;
   text-decoration: none;
   color: #ffffff;
-  box-shadow: 0 12px 32px -8px rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 32px -8px rgba(0,0,0,0.32);
+  border: 1px solid rgba(255,255,255,0.06);
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s ease, border-color 0.3s ease;
   flex-shrink: 0;
   box-sizing: border-box;
@@ -205,15 +354,16 @@ section{padding:96px 0;position:relative}
 }
 @media(max-width: 768px){
   .atlys-card{
-    width: 255px;
-    height: 430px;
+    width: 245px;
+    height: 500px;
+    flex-shrink: 0;
     scroll-snap-align: start;
   }
 }
 .atlys-card:hover{
   transform: translateY(-8px);
-  box-shadow: 0 24px 50px -12px rgba(0,0,0,0.65);
-  border-color: rgba(255,255,255,0.25);
+  box-shadow: 0 24px 50px -12px rgba(0,0,0,0.6);
+  border-color: rgba(255,255,255,0.22);
 }
 
 .atlys-card-bg{
@@ -227,39 +377,18 @@ section{padding:96px 0;position:relative}
   z-index: 1;
 }
 .atlys-card:hover .atlys-card-bg{
-  transform: scale(1.07);
+  transform: scale(1.06);
 }
 
 .atlys-card-gradient{
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,0.7) 72%, rgba(0,0,0,0.96) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.02) 48%, rgba(0,0,0,0.72) 74%, rgba(0,0,0,0.96) 100%);
   z-index: 2;
   transition: background 0.35s ease;
 }
 .atlys-card:hover .atlys-card-gradient{
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 36%, rgba(0,0,0,0.76) 68%, rgba(0,0,0,0.98) 100%);
-}
-
-.atlys-card-top-pill{
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  z-index: 3;
-  background: linear-gradient(135deg, rgba(107, 52, 179, 0.92), rgba(67, 15, 122, 0.96));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.24);
-  color: #ffffff;
-  font-size: 10.5px;
-  font-weight: 800;
-  padding: 4px 11px;
-  border-radius: 99px;
-  letter-spacing: 0.04em;
-  box-shadow: 0 4px 14px rgba(67, 15, 122, 0.45);
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.06) 42%, rgba(0,0,0,0.78) 70%, rgba(0,0,0,0.98) 100%);
 }
 
 .atlys-card-content{
@@ -273,55 +402,38 @@ section{padding:96px 0;position:relative}
 }
 
 .atlys-flag-icon{
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 9px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.55);
-  border: 1.5px solid rgba(255,255,255,0.92);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  border: 1.5px solid rgba(255,255,255,0.95);
 }
 
 .atlys-card-title{
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin: 0 0 4px;
-  line-height: 1.18;
+  margin: 0 0 16px;
+  line-height: 1.15;
   text-shadow: 0 2px 10px rgba(0,0,0,0.85);
-  overflow: hidden;
-  text-overflow: ellipsis;
   max-width: 98%;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
-
-.atlys-card-subtitle{
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.82);
-  margin: 0 0 16px;
-  line-height: 1.35;
-  max-width: 95%;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
 }
 
 .atlys-meta-row{
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   width: 100%;
-  padding-top: 13px;
-  border-top: 1px solid rgba(255,255,255,0.22);
   box-sizing: border-box;
-  gap: 6px;
+  gap: 4px;
 }
 .atlys-meta-row.cols-2{
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -335,15 +447,16 @@ section{padding:96px 0;position:relative}
 .atlys-meta-col:first-child{ align-items: flex-start; text-align: left; }
 .atlys-meta-col:nth-child(2){ align-items: center; text-align: center; }
 .atlys-meta-col:last-child{ align-items: flex-end; text-align: right; }
+.atlys-meta-row.cols-2 .atlys-meta-col:last-child{ align-items: flex-end; text-align: right; }
 
 .atlys-meta-label{
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 800;
+  font-size: 9.5px;
+  font-weight: 700;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.62);
+  color: rgba(255,255,255,0.65);
   text-transform: uppercase;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -352,7 +465,7 @@ section{padding:96px 0;position:relative}
 
 .atlys-meta-val{
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: 0.02em;
@@ -678,6 +791,14 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <symbol id="user-check" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>
 <symbol id="crosshair" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
 </defs></svg>
+<!-- Atlys Top Announcement Banner -->
+<div class="atlys-top-banner">
+  <div class="wrap atlys-top-banner-inner">
+    <span>✨ Waiting for a US visa appointment? Join the TravlTik queue for free</span>
+    <a href="/find-experts" class="atlys-top-banner-btn">Join the queue &rarr;</a>
+  </div>
+</div>
+
 <!-- Airbnb Unified Header -->
 <header class="airbnb-header-wrap" id="hd">
   <div class="airbnb-header-inner">
@@ -691,7 +812,13 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <nav aria-label="Categories">
         <ul class="airbnb-cat-tabs">
           <li>
-            <button type="button" class="airbnb-cat-tab active" data-tab="experts">
+            <button type="button" class="airbnb-cat-tab active" data-tab="tours">
+              <span class="tab-icon">✈️</span>
+              <span>Tours</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="airbnb-cat-tab" data-tab="experts">
               <span class="tab-icon">⚖️</span>
               <span>Experts</span>
             </button>
@@ -709,12 +836,6 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="tours">
-              <span class="tab-icon">✈️</span>
-              <span>Tours</span>
-            </button>
-          </li>
-          <li>
             <button type="button" class="airbnb-cat-tab" data-tab="offers">
               <span class="tab-icon">🏷️</span>
               <span>Offers</span>
@@ -725,6 +846,10 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 
       <!-- Right Side Actions -->
       <div class="airbnb-right-box">
+        <div class="atlys-nav-search">
+          <svg style="width:14px;height:14px;color:#94a3b8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="atlys-quick-search-input" placeholder="Search Country" onkeydown="if(event.key==='Enter'){window.location.href='/tours?q='+encodeURIComponent(this.value)}">
+        </div>
         <a href="/biz" class="airbnb-host-link">List your practice</a>
         <a href="/escrow" class="airbnb-globe-pill" title="English · INR · Milestone Escrow" aria-label="Language & Currency">
           <svg class="i" style="width:18px;height:18px"><use href="#globe"/></svg>
@@ -755,58 +880,53 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       </div>
     </div>
 
-    <!-- Row 2: Centered Floating Search Pill Bar -->
+    <!-- Row 2: Atlys 4-Segment Floating Search Pill -->
     <div class="airbnb-search-bar-row">
-      <div class="airbnb-pill-search">
-        <!-- Field 1: What do you need? -->
-        <div class="airbnb-pill-segment">
-          <label>What do you need?</label>
-          <input type="text" id="q" placeholder="e.g. Canada Student Visa" autocomplete="off" />
+      <div class="atlys-pill-search">
+        <input type="hidden" id="q" value="" />
+        <input type="hidden" id="dest-val" value="" />
+        <input type="hidden" id="from-val" value="" />
+
+        <!-- Segment 1: Visa delivery -->
+        <div class="atlys-pill-seg" onclick="document.getElementById('easy-need-btn')?.click() || window.location.assign('#search')">
+          <div class="atlys-pill-badge badge-green">⚡</div>
+          <div class="atlys-pill-text">
+            <span class="atlys-pill-sub">Visa delivery</span>
+            <span class="atlys-pill-main">Any Time <svg class="chv-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </div>
         </div>
 
-        <div class="airbnb-pill-divider"></div>
+        <div class="atlys-pill-div"></div>
 
-        <!-- Field 2: Destination -->
-        <div class="airbnb-pill-segment">
-          <label>Destination</label>
-          <select id="dest-val">
-            <option value="">Select Country</option>
-            <option value="Canada">Canada</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="Australia">Australia</option>
-            <option value="USA">USA</option>
-            <option value="UAE">UAE</option>
-            <option value="Germany">Germany</option>
-            <option value="Japan">Japan</option>
-            <option value="Singapore">Singapore</option>
-            <option value="Ireland">Ireland</option>
-            <option value="France">France</option>
-            <option value="New Zealand">New Zealand</option>
-          </select>
+        <!-- Segment 2: Type -->
+        <div class="atlys-pill-seg" onclick="document.getElementById('easy-need-btn')?.click() || window.location.assign('#search')">
+          <div class="atlys-pill-badge badge-blue">✈️</div>
+          <div class="atlys-pill-text">
+            <span class="atlys-pill-sub">Type</span>
+            <span class="atlys-pill-main">All Visa Types <svg class="chv-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </div>
         </div>
 
-        <div class="airbnb-pill-divider"></div>
+        <div class="atlys-pill-div"></div>
 
-        <!-- Field 3: Moving from -->
-        <div class="airbnb-pill-segment">
-          <label>Moving from</label>
-          <select id="from-val">
-            <option value="India">India</option>
-            <option value="Nigeria">Nigeria</option>
-            <option value="Philippines">Philippines</option>
-            <option value="Pakistan">Pakistan</option>
-            <option value="Bangladesh">Bangladesh</option>
-            <option value="Nepal">Nepal</option>
-            <option value="Sri Lanka">Sri Lanka</option>
-            <option value="UAE">UAE</option>
-          </select>
+        <!-- Segment 3: Documents -->
+        <div class="atlys-pill-seg" onclick="window.location.assign('/ai-tools')">
+          <div class="atlys-pill-badge badge-amber">📋</div>
+          <div class="atlys-pill-text">
+            <span class="atlys-pill-sub">Documents</span>
+            <span class="atlys-pill-main">Any Documents <svg class="chv-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </div>
         </div>
 
-        <!-- Search Button (Brand Green Circle) -->
-        <div class="airbnb-pill-btn-box">
-          <button type="button" id="go" class="airbnb-round-search-btn" aria-label="Search">
-            <svg class="i"><use href="#search"/></svg>
-          </button>
+        <div class="atlys-pill-div"></div>
+
+        <!-- Segment 4: Holidays -->
+        <div class="atlys-pill-seg" onclick="window.location.assign('#search')">
+          <div class="atlys-pill-badge badge-pink">🏖️</div>
+          <div class="atlys-pill-text">
+            <span class="atlys-pill-sub">Holidays</span>
+            <span class="atlys-pill-main">Select Dates <svg class="chv-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
+          </div>
         </div>
       </div>
     </div>
@@ -834,28 +954,6 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     </div>
   </div>
 </section>
-
-<!-- HERO SECTION (pehele jaisa) -->
-<section class="hero" style="position:relative"><div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>
-<div class="wrap hg"><div class="hl rv">
-<a href="/find-experts" class="live" style="cursor:pointer;text-decoration:none;color:inherit"><span class="avs" id="hav-hero"></span><span class="pulse"></span><span><b id="onl-hero">18</b> licensed consultants available now</span></a>
-<h1 class="font-display">Move abroad.<br>Pay <span class="hi grad">safely.<svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M3 11C40 3 90 3 140 8s45 2 57-3" fill="none" stroke="#00b070" stroke-width="4.500" stroke-linecap="round"/></svg></span><br>Land <span class="ser" style="color:var(--p2);font-weight:600">confident.</span></h1>
-<p class="lead">The global marketplace for visas, study, jobs and relocation. Compare licensed MARA and RCIC consultants, pay in milestones, and track every step in one place.</p>
-<div class="hb"><a class="btn g" id="hero-find-expert-btn" href="#search" style="cursor:pointer">Find my expert <svg class="i ar"><use href="#arrow"/></svg></a><a class="btn o" href="#how"><svg class="i"><use href="#play"/></svg> See how it works</a></div>
-<div class="chips">
-<a href="/escrow" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#lock"/></svg></i><span>Milestone Escrow<small>Funds released per milestone</small></span></a>
-<a href="/find-experts" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#shield"/></svg></i><span>Licence-verified<small>MARA, RCIC and lawyers</small></span></a>
-<a href="/find-experts" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#scale"/></svg></i><span>Transparent fees<small>Fixed prices, no surprises</small></span></a>
-<a href="#destinations" class="tc" style="text-decoration:none;color:inherit;cursor:pointer"><i><svg class="i"><use href="#globe"/></svg></i><span>193+ Countries<small>Visas, tours and packages</small></span></a></div></div>
-<div class="hv rv">
-<svg class="map" id="wmap" viewBox="0 20 800 300"></svg>
-<svg class="stamp" viewBox="0 0 140 140"><defs><path id="cir" d="M70 70m-50 0a50 50 0 1 1 100 0a50 50 0 1 1-100 0"/></defs><circle cx="70" cy="70" r="64" fill="rgba(255,255,255,.55)" stroke="#00b070" stroke-width="3" stroke-dasharray="3 5"/><circle cx="70" cy="70" r="40" fill="none" stroke="#00b070" stroke-width="2"/><text font-family="Sora" font-weight="800" font-size="11.500" letter-spacing="3" fill="#008f5a"><textPath href="#cir">VISA APPROVED · TRAVLTIK · 2026 ·</textPath></text><path d="m52 71 12 12 24-26" fill="none" stroke="#00b070" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-<a href="/find-experts" class="glass cA f1" style="display:block;cursor:pointer;text-decoration:none;color:inherit"><div class="t"><span id="cav"></span><div><b>Rising At Sports</b><small>Canada PR &amp; Europe Tour Specialist</small></div></div><div style="margin:12px 0 0;display:flex;gap:7px;flex-wrap:wrap"><span class="bdg"><svg class="i"><use href="#shield"/></svg>Licence verified</span><span class="bdg p">Hindi · English</span></div><div class="mt"><span class="stars"><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg><svg class="i f"><use href="#star"/></svg>&nbsp;4.9 <span style="color:var(--mut);font-weight:600">(12)</span></span><span style="color:var(--g2)">Replies in ~4 min</span></div></a>
-<a href="#how" class="glass cB f2" style="display:block;cursor:pointer;text-decoration:none;color:inherit"><h4 style="margin-bottom:14px">Escrow milestones <span class="bdg"><svg class="i"><use href="#lock"/></svg>Protected</span></h4>
-<div class="mbar" style="grid-template-columns:2fr 3fr 5fr"><i class="d" style="flex:2"></i><i class="h" style="flex:3"></i><i style="flex:5"></i></div>
-<div class="ml"><i>&#10003;</i>1st installment of payment<em>Released</em></div><div class="ml h"><i>2</i>02nd installment of payment<em>In progress</em></div><div class="ml l"><i>3</i>Final payment<em>Locked</em></div></a>
-
-</div></div></section>
 
 <!-- STATS -->
 <div class="stats"><div class="wrap"><div class="sg rv">
@@ -1810,13 +1908,10 @@ const SHOWCASE_DATA = {
         title: 'THAILAND',
         flag: 'th',
         sub: 'Bangkok, Phuket & Phi Phi Island',
-        badge: 'VISA ON ARRIVAL',
         col1Label: 'TYPE',
         col1Val: 'DAC',
         col2Label: 'VALID',
         col2Val: '90 DAYS',
-        col3Label: 'FEES',
-        col3Val: '₹2,500',
         href: '/tours?destination=Thailand',
         img: 'https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=800&h=1200&fit=crop&q=90'
       },
@@ -1824,7 +1919,6 @@ const SHOWCASE_DATA = {
         title: 'UNITED ARAB<br>EMIRATES',
         flag: 'ae',
         sub: 'Dubai Luxury Safari & Marina',
-        badge: '100% VISA GUARANTEE',
         col1Label: 'TYPE',
         col1Val: 'E-VISA',
         col2Label: 'VALID',
@@ -1838,13 +1932,10 @@ const SHOWCASE_DATA = {
         title: 'SRI LANKA',
         flag: 'lk',
         sub: 'Sigiriya Rock & Colombo Heritage',
-        badge: 'FAST ETA',
         col1Label: 'TYPE',
         col1Val: 'ETA',
         col2Label: 'VALID',
-        col2Val: '30 DAYS',
-        col3Label: 'FEES',
-        col3Val: '₹3,150',
+        col2Val: '180 DAYS',
         href: '/tours?destination=Sri+Lanka',
         img: 'https://images.unsplash.com/photo-1588598198321-9735fd52455b?w=800&h=1200&fit=crop&q=90'
       },
@@ -1852,7 +1943,6 @@ const SHOWCASE_DATA = {
         title: 'VIETNAM',
         flag: 'vn',
         sub: 'Hanoi, Da Nang & Mekong River',
-        badge: 'POPULAR DESTINATION',
         col1Label: 'TYPE',
         col1Val: 'E-VISA',
         col2Label: 'VALID',
@@ -1866,13 +1956,10 @@ const SHOWCASE_DATA = {
         title: 'MALAYSIA',
         flag: 'my',
         sub: 'Kuala Lumpur & Penang Island',
-        badge: 'EASY ENTRY',
         col1Label: 'TYPE',
         col1Val: 'DAC',
         col2Label: 'VALID',
         col2Val: '30 DAYS',
-        col3Label: 'FEES',
-        col3Val: '₹2,950',
         href: '/tours?destination=Malaysia',
         img: 'https://images.unsplash.com/photo-1508062878650-88b52897f298?w=800&h=1200&fit=crop&q=90'
       },
@@ -1880,7 +1967,6 @@ const SHOWCASE_DATA = {
         title: 'SINGAPORE',
         flag: 'sg',
         sub: 'Marina Bay & Sentosa Luxury',
-        badge: 'FAST 24H EVISA',
         col1Label: 'TYPE',
         col1Val: 'E-VISA',
         col2Label: 'VALID',
@@ -1894,7 +1980,6 @@ const SHOWCASE_DATA = {
         title: 'JAPAN',
         flag: 'jp',
         sub: 'Tokyo, Kyoto & Mt. Fuji Discovery',
-        badge: 'TOURIST VISA HELP',
         col1Label: 'TYPE',
         col1Val: 'E-VISA',
         col2Label: 'VALID',
@@ -1908,7 +1993,6 @@ const SHOWCASE_DATA = {
         title: 'SWITZERLAND',
         flag: 'ch',
         sub: 'Zurich, Alps & Glacier Express',
-        badge: 'ESCORTED LUXURY',
         col1Label: 'TYPE',
         col1Val: 'SCHENGEN',
         col2Label: 'VALID',
@@ -2050,12 +2134,10 @@ function renderShowcase(tab, filterQuery = '') {
       <article class="atlys-card" onclick="window.location.href='${it.href}'">
         <img src="${it.img}" alt="${it.title.replace(/<[^>]+>/g, ' ')}" class="atlys-card-bg" loading="lazy" onerror="this.src='/experts/expert1.png'"/>
         <div class="atlys-card-gradient"></div>
-        ${it.badge ? `<div class="atlys-card-top-pill">${it.badge}</div>` : ''}
         <div class="atlys-card-content">
           ${it.flag ? `<img src="https://flagcdn.com/w40/${it.flag}.png" class="atlys-flag-icon" alt="${it.title.replace(/<[^>]+>/g, ' ')}"/>` : ''}
           <h3 class="atlys-card-title">${it.title}</h3>
-          <p class="atlys-card-subtitle">${it.sub}</p>
-          <div class="atlys-meta-row">
+          <div class="atlys-meta-row${!it.col3Label ? ' cols-2' : ''}">
             <div class="atlys-meta-col">
               <span class="atlys-meta-label">${it.col1Label}</span>
               <span class="atlys-meta-val">${it.col1Val}</span>
@@ -2064,10 +2146,11 @@ function renderShowcase(tab, filterQuery = '') {
               <span class="atlys-meta-label">${it.col2Label}</span>
               <span class="atlys-meta-val">${it.col2Val}</span>
             </div>
+            ${it.col3Label ? `
             <div class="atlys-meta-col">
               <span class="atlys-meta-label">${it.col3Label}</span>
               <span class="atlys-meta-val">${it.col3Val}</span>
-            </div>
+            </div>` : ''}
           </div>
         </div>
       </article>
@@ -2076,10 +2159,10 @@ function renderShowcase(tab, filterQuery = '') {
 }
 
 // Initial showcase render
-renderShowcase('experts');
+renderShowcase('tours');
 
 // Airbnb Category Tabs & Search Handler
-let activeAirbnbTab = 'experts';
+let activeAirbnbTab = 'tours';
 const airbnbPlaceholders = {
   experts: 'e.g. Canada Student Visa',
   jobs: 'e.g. Software Engineer, Healthcare in UK',
