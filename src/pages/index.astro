@@ -47,7 +47,7 @@ section{padding:96px 0;position:relative}
 .bdg.p{background:var(--l2);color:var(--p)}.bdg svg{font-size:13px}
 .av{border-radius:50%;flex:none;display:block}
 /* Airbnb Unified Header */
-.airbnb-header-wrap{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#ffffff 0%,#f4fbf7 48%,#e3f5eb 100%);border-bottom:1px solid rgba(0,176,112,0.18);box-shadow:0 6px 24px -10px rgba(0,176,112,0.14);transition:all .2s ease}
+.airbnb-header-wrap{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#ffffff 0%,#fafdfc 55%,#f2f9f5 100%);border-bottom:1px solid rgba(0,176,112,0.09);box-shadow:0 4px 18px -8px rgba(0,176,112,0.06);transition:all .2s ease}
 .airbnb-header-inner{max-width:1440px;width:100%;margin:0 auto;padding:0 36px;box-sizing:border-box}
 .airbnb-top-row{display:flex;align-items:center;justify-content:space-between;min-height:76px;padding:12px 0 6px;gap:20px}
 .airbnb-logo{display:flex;align-items:center;flex:0 0 160px}
@@ -137,8 +137,8 @@ section{padding:96px 0;position:relative}
 }
 
 .airbnb-search-bar-row{display:flex;justify-content:center;padding:16px 0 30px;position:relative;z-index:110}
-.airbnb-pill-search{width:100%;max-width:860px;min-height:64px;background:#ffffff;border:1.5px solid rgba(0,176,112,0.2);border-radius:9999px;box-shadow:0 12px 32px -8px rgba(0,176,112,0.14),0 2px 8px rgba(0,0,0,0.03);display:flex;align-items:center;padding:6px 10px 6px 28px;transition:all .2s ease;box-sizing:border-box;position:relative}
-.airbnb-pill-search:hover,.airbnb-pill-search:focus-within{box-shadow:0 16px 42px -8px rgba(0,176,112,0.22),0 0 0 3px rgba(0,176,112,0.25);border-color:#00b070}
+.airbnb-pill-search{width:100%;max-width:860px;min-height:64px;background:#ffffff;border:1px solid #e5e7eb;border-radius:9999px;box-shadow:0 8px 24px -6px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.02);display:flex;align-items:center;padding:6px 10px 6px 28px;transition:all .2s ease;box-sizing:border-box;position:relative}
+.airbnb-pill-search:hover,.airbnb-pill-search:focus-within{box-shadow:0 12px 32px -6px rgba(0,176,112,0.18),0 0 0 2px rgba(0,176,112,0.2);border-color:#00b070}
 .airbnb-pill-segment{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:6px 16px;position:relative;border-radius:9999px;transition:background-color .15s ease}
 .airbnb-pill-segment:hover{background:rgba(0,0,0,0.02)}
 .pill-label-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
@@ -972,11 +972,11 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <!-- Row 2: Centered Floating Search Pill Bar -->
     <div class="airbnb-search-bar-row">
       <div class="airbnb-pill-search">
-        <!-- Field 1: What do you need? -->
+        <!-- Field 1: Service -->
         <div class="airbnb-pill-segment">
           <div class="pill-label-row">
             <svg class="i pill-segment-icon"><use href="#search"/></svg>
-            <label for="q">What do you need?</label>
+            <label for="q">Service</label>
           </div>
           <input type="text" id="q" placeholder="e.g. Canada Student Visa" autocomplete="off" />
         </div>
@@ -1012,11 +1012,11 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 
         <div class="airbnb-pill-divider"></div>
 
-        <!-- Field 3: Moving from -->
+        <!-- Field 3: Location -->
         <div class="airbnb-pill-segment c-drop" id="pill-from-drop">
           <div class="pill-label-row">
             <svg class="i pill-segment-icon"><use href="#flag"/></svg>
-            <label>Moving from</label>
+            <label>Location</label>
           </div>
           <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-from-btn">
             <span class="pill-drop-val" id="pill-from-val-text"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India</span>
