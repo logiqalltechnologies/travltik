@@ -164,26 +164,182 @@ section{padding:96px 0;position:relative}
 .fld input{border:0;outline:0;width:100%;font-weight:600;font-size:14px;background:transparent;color:var(--ink);padding:2px 0}
 .sfm .btn{border-radius:16px;padding:0 30px}
 
-/* Airbnb Showcase Grid & Cards */
-.airbnb-showcase-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
-@media(max-width:640px){.airbnb-showcase-grid{grid-template-columns:1fr;gap:16px}}
-.sc-card{background:#ffffff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.03);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;display:flex;flex-direction:column;cursor:pointer;text-decoration:none;color:inherit}
-.sc-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px -6px rgba(0,0,0,0.1);border-color:#cbd5e1}
-.sc-card-img-box{position:relative;width:100%;height:175px;background:#f8fafc;overflow:hidden}
-.sc-card-img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;display:block}
-.sc-card:hover .sc-card-img{transform:scale(1.03)}
-.sc-card-badge-top{position:absolute;top:10px;left:10px;background:rgba(15,23,42,0.82);backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;display:inline-flex;align-items:center;gap:4px}
-.sc-card-badge-green{background:#00b070;color:#fff}
-.sc-card-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
-.sc-card-tag-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.sc-pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:#f1f5f9;color:#475569}
-.sc-pill-green{background:#eefcf6;color:#008f5a;border:1px solid #c3f2df}
-.sc-card-title{font-size:15px;font-weight:800;color:#0f172a;line-height:1.3;margin:0 0 4px;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sc-card-sub{font-size:12.5px;color:#64748b;margin:0 0 12px;font-weight:500;display:flex;align-items:center;gap:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sc-card-meta{margin-top:auto;padding-top:10px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;font-size:12px}
-.sc-card-price{font-size:14.5px;font-weight:800;color:#0f172a}
-.sc-card-btn{font-size:12px;font-weight:700;padding:6px 14px;border-radius:99px;background:#00b070;color:#fff;text-align:center;border:none;cursor:pointer;transition:all .15s ease;display:inline-flex;align-items:center;gap:4px}
-.sc-card-btn:hover{background:#008f5a;box-shadow:0 2px 8px rgba(0,176,112,0.35)}
+/* Atlys Luxury Cards (High-End & Luxurious) */
+.atlys-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+@media(max-width: 768px){
+  .atlys-grid{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .atlys-grid::-webkit-scrollbar{ display: none; }
+}
+
+.atlys-card{
+  position: relative;
+  height: 380px;
+  border-radius: 26px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px 16px 18px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #ffffff;
+  box-shadow: 0 10px 28px -10px rgba(0,0,0,0.35);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: #0b1120;
+}
+@media(max-width: 768px){
+  .atlys-card{
+    width: 240px;
+    scroll-snap-align: start;
+  }
+}
+.atlys-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 22px 46px -12px rgba(0,0,0,0.55);
+}
+
+.atlys-card-bg{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+}
+.atlys-card:hover .atlys-card-bg{
+  transform: scale(1.08);
+}
+
+.atlys-card-gradient{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0.96) 100%);
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+.atlys-card:hover .atlys-card-gradient{
+  background: linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.2) 35%, rgba(0,0,0,0.88) 72%, rgba(0,0,0,0.98) 100%);
+}
+
+.atlys-card-top-pill{
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  background: linear-gradient(135deg, var(--p2), var(--p));
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 12px rgba(67, 15, 122, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.atlys-card-content{
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.atlys-flag-icon{
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+  border: 1.5px solid rgba(255,255,255,0.85);
+}
+
+.atlys-card-title{
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 3px;
+  line-height: 1.25;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 95%;
+}
+
+.atlys-card-subtitle{
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin: 0 0 14px;
+  line-height: 1.3;
+  max-width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+.atlys-meta-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  box-sizing: border-box;
+}
+
+.atlys-meta-col{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.atlys-meta-col:first-child{ align-items: flex-start; }
+.atlys-meta-col:last-child{ align-items: flex-end; }
+
+.atlys-meta-label{
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.atlys-meta-val{
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
 
 /* Quick Search (Bottom) */
 .qs-card{background:#fff;border-radius:32px;padding:32px 34px 28px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(67,15,122,.18),0 0 1px rgba(0,0,0,.06);font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px}
@@ -611,13 +767,13 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           Compare licensed MARA &amp; RCIC consultants with milestone escrow protection and fixed fees
         </p>
       </div>
-      <a id="showcase-view-all" href="/find-experts" style="font-size:13.5px;font-weight:700;color:#00b070;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:99px;background:#eefcf6;border:1px solid #c3f2df;transition:all .2s ease;">
+      <a id="showcase-view-all" href="/find-experts" style="font-size:13.5px;font-weight:700;color:var(--p2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:99px;background:rgba(107,52,179,0.08);border:1px solid rgba(107,52,179,0.22);transition:all .2s ease;">
         <span id="showcase-view-all-text">Show all experts (150+)</span> <svg class="i ar" style="width:14px;height:14px"><use href="#arrow"/></svg>
       </a>
     </div>
 
-    <!-- The Dynamic Showcase Grid -->
-    <div id="showcase-grid" class="airbnb-showcase-grid"></div>
+    <!-- The Dynamic Showcase Grid (Atlys Luxury Style) -->
+    <div id="showcase-grid" class="atlys-grid"></div>
   </div>
 </section>
 
@@ -1280,7 +1436,7 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
   });
 }
 
-// Airbnb Showcase Data
+// Airbnb Showcase Data (Atlys Luxury Style)
 const SHOWCASE_DATA = {
   experts: {
     title: '<span>⚖️</span> Verified Visa &amp; Immigration Experts',
@@ -1289,70 +1445,88 @@ const SHOWCASE_DATA = {
     viewAllText: 'Show all experts (150+)',
     items: [
       {
-        title: 'Travel and Play',
-        sub: 'Hyderabad · Schengen & Europe',
-        badge: '🛡️ Reg. Consultancy',
-        pill: '★ 4.9 (285 reviews)',
-        price: '99% Success',
-        meta: '1,180 Cases done',
-        btnText: 'Book consultation',
+        title: 'SCHENGEN & EUROPE',
+        flag: 'eu',
+        sub: 'Travel & Play · 1,180 Cases',
+        badge: 'VERIFIED MARA',
+        col1Label: 'TYPE',
+        col1Val: 'TOUR & WORK',
+        col2Label: 'SUCCESS',
+        col2Val: '99%',
+        col3Label: 'RATING',
+        col3Val: '★ 4.9',
         href: '/find-experts?search=Travel+and+Play',
-        img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Chaitanya N',
-        sub: 'Hyderabad · Canada, UK & USA',
-        badge: '🛡️ Verified Counsel',
-        pill: '★ 4.8 (215 reviews)',
-        price: '98% Success',
-        meta: '860 Cases done',
-        btnText: 'Book consultation',
+        title: 'CANADA',
+        flag: 'ca',
+        sub: 'Chaitanya N · RCIC Partner',
+        badge: 'RCIC VERIFIED',
+        col1Label: 'TYPE',
+        col1Val: 'EXPRESS ENTRY',
+        col2Label: 'SUCCESS',
+        col2Val: '98%',
+        col3Label: 'RATING',
+        col3Val: '★ 4.8',
         href: '/find-experts?search=Chaitanya+N',
-        img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1517935703635-2717090c2210?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Risingat Sports',
-        sub: 'Mumbai · Sports Visa & Relocation',
-        badge: '🛡️ Verified Agency',
-        pill: '★ 4.9 (194 reviews)',
-        price: '99% Success',
-        meta: '740 Cases done',
-        btnText: 'Book consultation',
-        href: '/find-experts?search=Risingat+Sports',
-        img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=380&fit=crop&q=90'
-      },
-      {
-        title: 'Easy Visa Ltd',
-        sub: 'Hyderabad · UAE & Singapore',
-        badge: '🛡️ Reg. Agency',
-        pill: '★ 4.9 (168 reviews)',
-        price: '97% Success',
-        meta: '620 Cases done',
-        btnText: 'Book consultation',
-        href: '/find-experts?search=Easy+Visa+Ltd',
-        img: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&h=380&fit=crop&q=90'
-      },
-      {
-        title: 'Apex Global Migration',
-        sub: 'Delhi · Australia & NZ',
-        badge: '🛡️ MARA #1804210',
-        pill: '★ 4.9 (310 reviews)',
-        price: '98% Success',
-        meta: '1,420 Cases done',
-        btnText: 'Book consultation',
+        title: 'AUSTRALIA',
+        flag: 'au',
+        sub: 'Apex Global · MARA #1804210',
+        badge: 'MARA LICENSED',
+        col1Label: 'TYPE',
+        col1Val: 'PR & SKILLED',
+        col2Label: 'SUCCESS',
+        col2Val: '98%',
+        col3Label: 'RATING',
+        col3Val: '★ 4.9',
         href: '/find-experts?search=Apex+Global',
-        img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'North Star Relocation',
-        sub: 'Bangalore · Canada Express Entry',
-        badge: '🛡️ RCIC #R512345',
-        pill: '★ 5.0 (142 reviews)',
-        price: '99% Success',
-        meta: '580 Cases done',
-        btnText: 'Book consultation',
+        title: 'UNITED ARAB EMIRATES',
+        flag: 'ae',
+        sub: 'Easy Visa Ltd · Golden Visa',
+        badge: 'FAST TRACK',
+        col1Label: 'TYPE',
+        col1Val: 'GOLDEN VISA',
+        col2Label: 'VALID',
+        col2Val: '10 YEARS',
+        col3Label: 'RATING',
+        col3Val: '★ 4.9',
+        href: '/find-experts?search=Easy+Visa+Ltd',
+        img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'UNITED KINGDOM',
+        flag: 'gb',
+        sub: 'North Star · Skilled Worker',
+        badge: 'ESCROW VERIFIED',
+        col1Label: 'TYPE',
+        col1Val: 'WORK VISA',
+        col2Label: 'SUCCESS',
+        col2Val: '99%',
+        col3Label: 'RATING',
+        col3Val: '★ 5.0',
         href: '/find-experts?search=North+Star',
-        img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'GERMANY',
+        flag: 'de',
+        sub: 'Risingat Sports · Relocation',
+        badge: 'VERIFIED AGENCY',
+        col1Label: 'TYPE',
+        col1Val: 'BLUE CARD',
+        col2Label: 'SUCCESS',
+        col2Val: '99%',
+        col3Label: 'RATING',
+        col3Val: '★ 4.9',
+        href: '/find-experts?search=Risingat+Sports',
+        img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&h=1200&fit=crop&q=90'
       }
     ]
   },
@@ -1363,70 +1537,88 @@ const SHOWCASE_DATA = {
     viewAllText: 'Show all jobs (120+)',
     items: [
       {
-        title: 'Construction Crew Recruitment',
-        sub: 'Maldives Agency Channel · Greece 🇬🇷',
-        badge: 'Visa Sponsorship',
-        pill: 'Accommodations Provided',
-        price: '€2,200–€2,800',
-        meta: 'Contract (30 slots)',
-        btnText: 'Apply Now',
+        title: 'GREECE',
+        flag: 'gr',
+        sub: 'Construction Crew · 30 Slots',
+        badge: 'VISA SPONSORSHIP',
+        col1Label: 'TYPE',
+        col1Val: 'CONTRACT',
+        col2Label: 'PERK',
+        col2Val: 'HOUSING',
+        col3Label: 'PAY',
+        col3Val: '€2,800/mo',
         href: '/jobs',
-        img: '/images/job_construction_greece.png'
+        img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Senior Full Stack Engineer',
-        sub: 'Tech Innovations Inc. · Canada 🇨🇦',
-        badge: 'LMIA Sponsorship',
-        pill: 'React, Node.js, AWS',
-        price: 'CAD $95K–$120K',
-        meta: 'Full-Time · Toronto',
-        btnText: 'Apply Now',
+        title: 'CANADA',
+        flag: 'ca',
+        sub: 'Senior Software Engineer · LMIA',
+        badge: 'LMIA SPONSORSHIP',
+        col1Label: 'TYPE',
+        col1Val: 'FULL-TIME',
+        col2Label: 'VALID',
+        col2Val: '2 YEARS',
+        col3Label: 'SALARY',
+        col3Val: 'CAD $110K',
         href: '/jobs',
-        img: '/images/job_tech_engineer.png'
+        img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Registered Nurse — ICU Specialist',
-        sub: 'Royal Dubai Hospital · UAE 🇦🇪',
-        badge: 'Tax-Free + Visa',
-        pill: 'DHA License · Luxury Hospital',
-        price: 'AED 12K–18K/mo',
-        meta: 'Full-Time · Dubai',
-        btnText: 'Apply Now',
+        title: 'UNITED ARAB EMIRATES',
+        flag: 'ae',
+        sub: 'Registered Nurse · ICU Specialty',
+        badge: 'TAX-FREE SALARY',
+        col1Label: 'TYPE',
+        col1Val: 'PERMANENT',
+        col2Label: 'VISA',
+        col2Val: 'EMPLOYER',
+        col3Label: 'SALARY',
+        col3Val: 'AED 18K/mo',
         href: '/jobs',
-        img: '/images/job_nurse_dubai.png'
+        img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Executive Chef — Fine Dining',
-        sub: 'The Ritz London · UK 🇬🇧',
-        badge: 'Skilled Worker Visa',
-        pill: 'Tier 2 Sponsor · Fine Dining',
-        price: 'GBP £55K–£75K',
-        meta: 'Full-Time · London',
-        btnText: 'Apply Now',
+        title: 'UNITED KINGDOM',
+        flag: 'gb',
+        sub: 'Executive Chef · Fine Dining',
+        badge: 'SKILLED WORKER',
+        col1Label: 'TYPE',
+        col1Val: 'TIER 2',
+        col2Label: 'SPONSOR',
+        col2Val: 'VERIFIED',
+        col3Label: 'SALARY',
+        col3Val: '£65K/yr',
         href: '/jobs',
-        img: '/images/job_chef_london.png'
+        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Data Scientist — AI Division',
-        sub: 'DataViz GmbH · Germany 🇩🇪',
-        badge: 'EU Blue Card',
-        pill: 'Python, ML/AI, Relocation',
-        price: '€70K–€95K',
-        meta: 'Full-Time · Berlin',
-        btnText: 'Apply Now',
+        title: 'GERMANY',
+        flag: 'de',
+        sub: 'AI & Data Scientist · Berlin',
+        badge: 'EU BLUE CARD',
+        col1Label: 'TYPE',
+        col1Val: 'FULL-TIME',
+        col2Label: 'PATHWAY',
+        col2Val: 'PR FAST-TRACK',
+        col3Label: 'SALARY',
+        col3Val: '€85K/yr',
         href: '/jobs',
-        img: '/images/job_data_scientist_berlin.png'
+        img: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'University Lecturer — Business',
-        sub: 'Auckland University · New Zealand 🇳🇿',
-        badge: 'Work Visa NZ',
-        pill: 'Family Visa Support',
-        price: 'NZD $80K–$110K',
-        meta: 'Full-Time · Auckland',
-        btnText: 'Apply Now',
+        title: 'NEW ZEALAND',
+        flag: 'nz',
+        sub: 'Business Faculty · Auckland',
+        badge: 'WORK RESIDENCE',
+        col1Label: 'TYPE',
+        col1Val: 'ACADEMIC',
+        col2Label: 'FAMILY',
+        col2Val: 'INCLUDED',
+        col3Label: 'SALARY',
+        col3Val: 'NZD $95K',
         href: '/jobs',
-        img: '/images/job_university_lecturer_auckland.png'
+        img: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=800&h=1200&fit=crop&q=90'
       }
     ]
   },
@@ -1437,70 +1629,88 @@ const SHOWCASE_DATA = {
     viewAllText: 'Show all universities (200+)',
     items: [
       {
-        title: 'Study In Cyprus (October Intake)',
-        sub: 'Cyprus, Europe 🇨🇾 · Multi-Discipline',
-        badge: '100% Visa Support',
-        pill: 'Zero Apostille Charges',
-        price: '€3,300–€5,000/yr',
-        meta: 'Foundation / Bachelor / Master',
-        btnText: 'Explore Course',
+        title: 'CYPRUS',
+        flag: 'cy',
+        sub: 'October Intake · Multi-Discipline',
+        badge: '100% VISA SUPPORT',
+        col1Label: 'DEGREE',
+        col1Val: 'BS / MS',
+        col2Label: 'APOSTILLE',
+        col2Val: 'ZERO FEE',
+        col3Label: 'TUITION',
+        col3Val: '€3,300/yr',
         href: '/universities',
-        img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'University of Toronto',
-        sub: 'Toronto, Canada 🇨🇦 · Engineering',
-        badge: '#21 Global Rank',
-        pill: 'PGWP Eligible · Co-op',
-        price: 'CAD $38K–$52K/yr',
-        meta: 'Engineering & Computing',
-        btnText: 'Explore Course',
+        title: 'CANADA',
+        flag: 'ca',
+        sub: 'University of Toronto · QS #21',
+        badge: 'PGWP ELIGIBLE',
+        col1Label: 'DEGREE',
+        col1Val: 'ENGINEERING',
+        col2Label: 'WORK PERMIT',
+        col2Val: '3 YEARS',
+        col3Label: 'TUITION',
+        col3Val: 'CAD $38K',
         href: '/universities',
-        img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'University of Melbourne',
-        sub: 'Melbourne, Australia 🇦🇺 · Business',
-        badge: '#14 Global Rank',
-        pill: 'Post-Study Work Rights',
-        price: 'AUD $36K–$48K/yr',
-        meta: 'Business & Management',
-        btnText: 'Explore Course',
+        title: 'AUSTRALIA',
+        flag: 'au',
+        sub: 'Univ. of Melbourne · QS #14',
+        badge: 'POST-STUDY PR',
+        col1Label: 'DEGREE',
+        col1Val: 'BUSINESS / IT',
+        col2Label: 'STAY BACK',
+        col2Val: '4 YEARS',
+        col3Label: 'TUITION',
+        col3Val: 'AUD $36K',
         href: '/universities',
-        img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Technical University of Munich',
-        sub: 'Munich, Germany 🇩🇪 · Technology',
-        badge: 'Top Tech in Europe',
-        pill: 'EU Blue Card Pathway',
-        price: '€0 Tuition (Public)',
-        meta: 'Engineering & Computing',
-        btnText: 'Explore Course',
+        title: 'GERMANY',
+        flag: 'de',
+        sub: 'TU Munich · Top Tech in Europe',
+        badge: 'ZERO TUITION',
+        col1Label: 'DEGREE',
+        col1Val: 'M.SC AI / TECH',
+        col2Label: 'BLUE CARD',
+        col2Val: 'ELIGIBLE',
+        col3Label: 'TUITION',
+        col3Val: '€0 (FREE)',
         href: '/universities',
-        img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'University of Oxford',
-        sub: 'Oxford, United Kingdom 🇬🇧',
-        badge: 'World #1 Research',
-        pill: 'Graduate Route Visa',
-        price: 'GBP £28K–£42K/yr',
-        meta: 'All Major Disciplines',
-        btnText: 'Explore Course',
+        title: 'UNITED KINGDOM',
+        flag: 'gb',
+        sub: 'University of Oxford · World #1',
+        badge: 'PRESTIGE ADMISSION',
+        col1Label: 'DEGREE',
+        col1Val: 'ALL MAJORS',
+        col2Label: 'GRAD ROUTE',
+        col2Val: '2 YEARS',
+        col3Label: 'TUITION',
+        col3Val: '£28K/yr',
         href: '/universities',
-        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'National University of Singapore',
-        sub: 'Singapore 🇸🇬 · Science & AI',
-        badge: '#8 Global Rank',
-        pill: 'High Employment Rate',
-        price: 'SGD $32K–$45K/yr',
-        meta: 'Science & Computing',
-        btnText: 'Explore Course',
+        title: 'SINGAPORE',
+        flag: 'sg',
+        sub: 'National Univ of Singapore · QS #8',
+        badge: 'TOP ASIA TECH',
+        col1Label: 'DEGREE',
+        col1Val: 'CS / MBA',
+        col2Label: 'EMPLOYMENT',
+        col2Val: '96%',
+        col3Label: 'TUITION',
+        col3Val: 'SGD $32K',
         href: '/universities',
-        img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800&h=1200&fit=crop&q=90'
       }
     ]
   },
@@ -1511,70 +1721,88 @@ const SHOWCASE_DATA = {
     viewAllText: 'Show all tours & packages',
     items: [
       {
-        title: 'Escorted Tour By Partners',
-        sub: 'Europamundo | Cosmos | Globus',
-        badge: 'Schengen Visa Support',
-        pill: '8 Countries · 15 Days',
-        price: 'From ₹1,45,000',
-        meta: 'Guided Multi-Country',
-        btnText: 'View Package',
-        href: '/tours',
-        img: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&h=380&fit=crop&q=90'
+        title: 'THAILAND',
+        flag: 'th',
+        sub: 'Bangkok, Phuket & Phi Phi Island',
+        badge: 'FREE VISA ON ARRIVAL',
+        col1Label: 'TYPE',
+        col1Val: 'E-VISA / VOA',
+        col2Label: 'VALID',
+        col2Val: '60 DAYS',
+        col3Label: 'FEES',
+        col3Val: '₹2,500',
+        href: '/tours?destination=Thailand',
+        img: 'https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Dubai Luxury Wonder & Safari',
-        sub: 'Dubai, UAE 🇦🇪 · 5 Days',
-        badge: '100% Visa Guarantee',
-        pill: '5 Days / 4 Nights',
-        price: 'Starting ₹34,500',
-        meta: 'Desert Safari + Marina Stay',
-        btnText: 'View Package',
+        title: 'UNITED ARAB EMIRATES',
+        flag: 'ae',
+        sub: 'Dubai Luxury Safari & Marina',
+        badge: '100% VISA GUARANTEE',
+        col1Label: 'TYPE',
+        col1Val: 'TOURIST VISA',
+        col2Label: 'VALID',
+        col2Val: '30 DAYS',
+        col3Label: 'FEES',
+        col3Val: '₹6,499',
         href: '/tours?destination=Dubai',
-        img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Switzerland Alps & Glacier Express',
-        sub: 'Zurich & Lucerne, Switzerland 🇨🇭',
-        badge: 'Group Escorted',
-        pill: '7 Days / 6 Nights',
-        price: 'From ₹1,85,000',
-        meta: 'Alpine Rail + Mountain Stay',
-        btnText: 'View Package',
-        href: '/tours',
-        img: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=600&h=380&fit=crop&q=90'
+        title: 'SWITZERLAND',
+        flag: 'ch',
+        sub: 'Zurich, Alps & Glacier Express',
+        badge: 'ESCORTED LUXURY',
+        col1Label: 'TYPE',
+        col1Val: 'SCHENGEN',
+        col2Label: 'VALID',
+        col2Val: '90 DAYS',
+        col3Label: 'PACKAGE',
+        col3Val: '₹1.85L',
+        href: '/tours?destination=Switzerland',
+        img: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Singapore & Malaysia Twin City',
-        sub: 'Singapore & Kuala Lumpur 🇸🇬 🇲🇾',
-        badge: 'Fast eVisa Included',
-        pill: '6 Days / 5 Nights',
-        price: 'From ₹52,000',
-        meta: 'Sentosa + Genting Highlands',
-        btnText: 'View Package',
-        href: '/tours',
-        img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&h=380&fit=crop&q=90'
+        title: 'SINGAPORE',
+        flag: 'sg',
+        sub: 'Marina Bay & Sentosa Luxury',
+        badge: 'FAST 24H EVISA',
+        col1Label: 'TYPE',
+        col1Val: 'EVISA',
+        col2Label: 'VALID',
+        col2Val: '30 DAYS',
+        col3Label: 'FEES',
+        col3Val: '₹2,999',
+        href: '/tours?destination=Singapore',
+        img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'UK & Scottish Highlands Tour',
-        sub: 'London, Manchester & Edinburgh 🇬🇧',
-        badge: 'Standard Visitor Visa Help',
-        pill: '9 Days / 8 Nights',
-        price: 'From ₹1,65,000',
-        meta: 'Castle Tours + Lake District',
-        btnText: 'View Package',
-        href: '/tours',
-        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=380&fit=crop&q=90'
+        title: 'JAPAN',
+        flag: 'jp',
+        sub: 'Tokyo, Kyoto & Mt. Fuji Discovery',
+        badge: 'TOURIST VISA HELP',
+        col1Label: 'TYPE',
+        col1Val: 'EVISA',
+        col2Label: 'VALID',
+        col2Val: '90 DAYS',
+        col3Label: 'FEES',
+        col3Val: '₹3,200',
+        href: '/tours?destination=Japan',
+        img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Japan Golden Route Discovery',
-        sub: 'Tokyo, Kyoto & Osaka 🇯🇵',
-        badge: 'Tourist Visa Included',
-        pill: '8 Days / 7 Nights',
-        price: 'From ₹1,95,000',
-        meta: 'Bullet Train Experience',
-        btnText: 'View Package',
-        href: '/tours',
-        img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&h=380&fit=crop&q=90'
+        title: 'UNITED KINGDOM',
+        flag: 'gb',
+        sub: 'London & Scottish Highlands',
+        badge: 'VISA ASSISTANCE',
+        col1Label: 'TYPE',
+        col1Val: 'STANDARD VISIT',
+        col2Label: 'VALID',
+        col2Val: '6 MONTHS',
+        col3Label: 'FEES',
+        col3Val: '₹12,499',
+        href: '/tours?destination=UK',
+        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=1200&fit=crop&q=90'
       }
     ]
   },
@@ -1585,70 +1813,88 @@ const SHOWCASE_DATA = {
     viewAllText: 'Explore all offers & classifieds',
     items: [
       {
-        title: 'Buy Forex & Earn Travel Rewards',
-        sub: 'Currency Exchange & Cards',
-        badge: 'Loyalty Points',
-        pill: 'Up to ₹3,000 Rewards',
-        price: 'Best FX Rates',
-        meta: 'Instant Dispatch',
-        btnText: 'Explore Deals',
+        title: 'MULTI-CURRENCY FOREX',
+        flag: 'us',
+        sub: 'Zero Extra Markup & Instant Card',
+        badge: 'ZERO CONVENIENCE FEE',
+        col1Label: 'TYPE',
+        col1Val: 'FOREX CARD',
+        col2Label: 'SAVINGS',
+        col2Val: 'UP TO ₹3K',
+        col3Label: 'FEES',
+        col3Val: '₹0 FREE',
         href: '/forex',
-        img: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Order Forex Online Zero Fee',
-        sub: 'Doorstep Delivery Pan-India',
-        badge: 'Zero Convenience Fee',
-        pill: 'Same-Day Delivery',
-        price: 'Zero Extra Fee',
-        meta: 'TravlTik Verified Partner',
-        btnText: 'Order Forex',
-        href: '/forex',
-        img: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=600&h=380&fit=crop&q=90'
-      },
-      {
-        title: 'Looking for Flights? Best Fares',
-        sub: 'International Student & PR Fares',
-        badge: 'Fly More, Pay Less',
-        pill: 'Extra Baggage Perks',
-        price: 'Exclusive Discount',
-        meta: 'Direct Airlines Partner',
-        btnText: 'Book Flight',
+        title: 'GLOBAL FLIGHTS',
+        flag: 'ca',
+        sub: 'Student Baggage & PR Fares',
+        badge: 'EXCLUSIVE DISCOUNTS',
+        col1Label: 'TYPE',
+        col1Val: 'AIRLINE TICKET',
+        col2Label: 'EXTRA',
+        col2Val: '+23KG BAG',
+        col3Label: 'OFFER',
+        col3Val: '15% OFF',
         href: '/flights',
-        img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Skilled Work Permits & Jobs',
-        sub: 'Germany, UK & Gulf Opportunities',
-        badge: 'Verified Contracts',
-        pill: 'Opportunity Card Support',
-        price: 'Direct Openings',
-        meta: 'Work Relocation',
-        btnText: 'Explore Jobs',
-        href: '/jobs',
-        img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=380&fit=crop&q=90'
-      },
-      {
-        title: 'Escorted Tour By Partners',
-        sub: 'Europamundo, Cosmos, Trafalgar',
-        badge: 'Early Bird 15% OFF',
-        pill: 'All Inclusive Packages',
-        price: 'Special Rates',
-        meta: 'Worldwide Tours',
-        btnText: 'View Tour Deals',
+        title: 'EUROPE TOUR DEAL',
+        flag: 'eu',
+        sub: 'Cosmos & Europamundo Packages',
+        badge: 'EARLY BIRD 15% OFF',
+        col1Label: 'TYPE',
+        col1Val: 'TOUR COMBO',
+        col2Label: 'COUNTRIES',
+        col2Val: '8 NATIONS',
+        col3Label: 'SAVING',
+        col3Val: '₹22,000',
         href: '/tours',
-        img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'Dubai Special Experience',
-        sub: 'Feel the Wonder, Live the Luxury',
-        badge: 'Starting ₹34,500',
-        pill: 'Visa + Stay + Tours',
-        price: '₹34,500 Flat',
-        meta: 'Limited Slots',
-        btnText: 'Claim Deal',
+        title: 'DUBAI EXPERIENCE',
+        flag: 'ae',
+        sub: 'Luxury Stay, Safari & Visa Combo',
+        badge: 'FLAT ₹34,500 DEAL',
+        col1Label: 'TYPE',
+        col1Val: '5D/4N PACK',
+        col2Label: 'HOTEL',
+        col2Val: '4-STAR STAY',
+        col3Label: 'PRICE',
+        col3Val: '₹34,500',
         href: '/tours?destination=Dubai',
-        img: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=600&h=380&fit=crop&q=90'
+        img: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'GERMANY CHANCENKARTE',
+        flag: 'de',
+        sub: 'Opportunity Card Job Search Visa',
+        badge: 'PR DIRECT ROUTE',
+        col1Label: 'TYPE',
+        col1Val: 'JOB SEEKER',
+        col2Label: 'VALID',
+        col2Val: '1 YEAR',
+        col3Label: 'CONSULT',
+        col3Val: 'ESCROW 100%',
+        href: '/jobs',
+        img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'SINGAPORE ONE PASS',
+        flag: 'sg',
+        sub: 'Tech & Leadership Work Pass',
+        badge: 'FAST PROCESSING',
+        col1Label: 'TYPE',
+        col1Val: '5-YR PERMIT',
+        col2Label: 'FAMILY',
+        col2Val: 'DEPENDENT PASS',
+        col3Label: 'SUPPORT',
+        col3Val: 'END-TO-END',
+        href: '/find-experts',
+        img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=1200&fit=crop&q=90'
       }
     ]
   }
@@ -1673,39 +1919,41 @@ function renderShowcase(tab, filterQuery = '') {
     items = items.filter(it => 
       it.title.toLowerCase().includes(q) || 
       it.sub.toLowerCase().includes(q) || 
-      it.badge.toLowerCase().includes(q) || 
-      it.pill.toLowerCase().includes(q)
+      it.badge.toLowerCase().includes(q) ||
+      (it.col1Val && it.col1Val.toLowerCase().includes(q)) ||
+      (it.col2Val && it.col2Val.toLowerCase().includes(q)) ||
+      (it.col3Val && it.col3Val.toLowerCase().includes(q))
     );
   }
 
   if (gridEl) {
     if (items.length === 0) {
-      gridEl.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:36px;color:#64748b;font-weight:600;">No listings found matching "${filterQuery}". <button type="button" style="color:#00b070;font-weight:700;background:none;border:none;cursor:pointer;text-decoration:underline;" onclick="if($('#q')){$('#q').value='';renderShowcase('${tab}');}">Clear search</button></div>`;
+      gridEl.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:#64748b;font-weight:600;font-size:15px;">No listings found matching "${filterQuery}". <button type="button" style="color:var(--p2);font-weight:700;background:none;border:none;cursor:pointer;text-decoration:underline;" onclick="if($('#q')){$('#q').value='';renderShowcase('${tab}');}">Clear search</button></div>`;
       return;
     }
 
     gridEl.innerHTML = items.map(it => `
-      <article class="sc-card" onclick="window.location.href='${it.href}'">
-        <div class="sc-card-img-box">
-          <img src="${it.img}" alt="${it.title}" class="sc-card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&h=380&fit=crop&q=90'"/>
-          <span class="sc-card-badge-top ${tab === 'experts' || tab === 'jobs' ? 'sc-card-badge-green' : ''}">
-            ${it.badge}
-          </span>
-        </div>
-        <div class="sc-card-body">
-          <div class="sc-card-tag-row">
-            <span class="sc-pill sc-pill-green">${it.pill}</span>
-          </div>
-          <h3 class="sc-card-title">${it.title}</h3>
-          <p class="sc-card-sub">${it.sub}</p>
-          <div class="sc-card-meta">
-            <div>
-              <span class="sc-card-price">${it.price}</span>
-              <span style="display:block;font-size:11px;color:#94a3b8;font-weight:600;">${it.meta}</span>
+      <article class="atlys-card" onclick="window.location.href='${it.href}'">
+        <img src="${it.img}" alt="${it.title}" class="atlys-card-bg" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=1200&fit=crop&q=90'"/>
+        <div class="atlys-card-gradient"></div>
+        <div class="atlys-card-top-pill">${it.badge}</div>
+        <div class="atlys-card-content">
+          ${it.flag ? `<img src="https://flagcdn.com/w40/${it.flag}.png" class="atlys-flag-icon" alt="${it.title}"/>` : ''}
+          <h3 class="atlys-card-title">${it.title}</h3>
+          <p class="atlys-card-subtitle">${it.sub}</p>
+          <div class="atlys-meta-row">
+            <div class="atlys-meta-col">
+              <span class="atlys-meta-label">${it.col1Label}</span>
+              <span class="atlys-meta-val">${it.col1Val}</span>
             </div>
-            <button type="button" class="sc-card-btn" onclick="event.stopPropagation();window.location.href='${it.href}'">
-              ${it.btnText} →
-            </button>
+            <div class="atlys-meta-col">
+              <span class="atlys-meta-label">${it.col2Label}</span>
+              <span class="atlys-meta-val">${it.col2Val}</span>
+            </div>
+            <div class="atlys-meta-col">
+              <span class="atlys-meta-label">${it.col3Label}</span>
+              <span class="atlys-meta-val">${it.col3Val}</span>
+            </div>
           </div>
         </div>
       </article>
