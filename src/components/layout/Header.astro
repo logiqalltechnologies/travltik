@@ -54,24 +54,24 @@ const ICONS: Record<string, any> = {
   </div>
 </div>
 
-<header id="main-header" class="sticky top-0 left-0 w-full z-50 transition-all duration-300 border-b border-slate-200/80 shadow-xs" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); border-bottom: 1px solid rgba(0, 0, 0, 0.08);">
-    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between gap-6 xl:gap-8 h-[82px]">
+<header id="main-header" class="sticky top-0 left-0 w-full z-50 transition-all duration-300 border-b border-slate-200 shadow-sm bg-white">
+    <div class="max-w-[1440px] mx-auto px-4 lg:px-8 relative flex items-center justify-between gap-8 h-[80px]">
         
         <!-- 1. LEFT: Logo -->
         <div class="flex items-center shrink-0 py-1 pointer-events-auto">
             <a href="/" class="flex items-center gap-2 focus:outline-none" aria-label="TravlTik Home">
-                <img id="header-logo-img" src="/logo.png?v=8" class="h-9 sm:h-10 lg:h-[44px] max-h-[46px] w-auto max-w-[140px] sm:max-w-[170px] lg:max-w-none object-contain transition-all duration-200" alt="TravlTik Logo" />
+                <img id="header-logo-img" src="/logo.png?v=8" class="h-9 sm:h-10 lg:h-[42px] max-h-[44px] w-auto max-w-[140px] sm:max-w-[170px] lg:max-w-none object-contain transition-all duration-200" alt="TravlTik Logo" />
             </a>
         </div>
 
         <!-- 2. CENTER: Navigation Links (Locked in center with flex-1 justify-center) -->
-        <nav aria-label="Main navigation" class="hidden lg:flex items-center flex-1 justify-center gap-6 xl:gap-8 font-plus-jakarta">
+        <nav aria-label="Main navigation" class="hidden lg:flex items-center flex-1 justify-center gap-8 font-plus-jakarta">
             {MAIN_NAV.map((item) => (
                 item.children && item.children.length > 0 ? (
                     <div class="relative py-3 group">
-                        <button class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-700 hover:text-[#00a896] whitespace-nowrap transition-colors flex items-center gap-1 focus:outline-none cursor-pointer">
+                        <button class="font-plus-jakarta text-sm font-semibold text-slate-700 hover:text-slate-900 whitespace-nowrap transition-colors flex items-center gap-1 focus:outline-none cursor-pointer">
                             {item.label}
-                            <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-[#00a896] transition-all duration-200 group-hover:rotate-180" />
+                            <ChevronDown class="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-900 transition-all duration-200 group-hover:rotate-180" />
                         </button>
                         <div class="absolute top-full left-0 pt-2 w-[280px] opacity-0 scale-95 -translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 transform origin-top-left z-50">
                             <div class="bg-white rounded-2xl border border-slate-100 shadow-xl p-3 flex flex-col gap-1 text-slate-800">
@@ -106,7 +106,7 @@ const ICONS: Record<string, any> = {
                     </div>
                 ) : (
                     <div class="py-3">
-                        <a href={item.href} class="font-plus-jakarta text-[14px] xl:text-[15px] font-semibold text-slate-700 hover:text-[#00a896] whitespace-nowrap transition-colors flex items-center gap-1 focus:outline-none cursor-pointer">
+                        <a href={item.href} class="font-plus-jakarta text-sm font-semibold text-slate-700 hover:text-slate-900 whitespace-nowrap transition-colors flex items-center gap-1 focus:outline-none cursor-pointer">
                             {item.label}
                         </a>
                     </div>
@@ -115,21 +115,21 @@ const ICONS: Record<string, any> = {
         </nav>
 
         <!-- 3. RIGHT: Auth & CTA Buttons (Desktop) -->
-        <div class="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0 z-50 font-plus-jakarta">
+        <div class="hidden lg:flex items-center gap-3 shrink-0 z-50 font-plus-jakarta">
             <!-- Contact Link -->
-            <a href="/support" id="contact-btn" class="text-[14px] font-bold text-[#4b4268] hover:text-[#00a896] transition-colors px-3 py-2">
+            <a href="/support" id="contact-btn" class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors px-3 py-2">
                 Contact
             </a>
 
             <!-- Subtle Divider (shown only when logged in) -->
-            <div id="nav-logged-in-divider" class="w-px h-5 shrink-0 mx-1.5 hidden bg-slate-200"></div>
+            <div id="nav-logged-in-divider" class="w-px h-5 shrink-0 mx-1 hidden bg-slate-200"></div>
 
             <!-- Auth Buttons Wrapper -->
             <div class="flex items-center gap-2" id="nav-auth-buttons-wrapper">
-                <a href="/login" id="login-btn" class="text-[14.5px] font-bold text-[#430f7a] hover:text-[#00a896] transition-colors px-3 py-2 whitespace-nowrap cursor-pointer">
+                <a href="/login" id="login-btn" class="px-4 py-2 rounded-full text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition whitespace-nowrap cursor-pointer">
                     Log in
                 </a>
-                <a href="/signup" id="signup-btn" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#00b070] hover:bg-[#009282] text-white text-[14px] font-bold transition-all shadow-md shadow-emerald-500/25 active:scale-95 whitespace-nowrap">
+                <a href="/signup" id="signup-btn" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#00b070] hover:bg-[#008f5a] text-white text-sm font-semibold transition-all shadow-sm active:scale-95 whitespace-nowrap">
                     <span>Get started</span>
                     <span class="text-base leading-none">→</span>
                 </a>

@@ -46,18 +46,18 @@ section{padding:96px 0;position:relative}
 .bdg{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--gl);color:var(--g2);white-space:nowrap}
 .bdg.p{background:var(--l2);color:var(--p)}.bdg svg{font-size:13px}
 .av{border-radius:50%;flex:none;display:block}
-/* Nav menu with dropdowns - 3-column flex layout (flex-1 justify-center) */
-.nav-menu{display:flex;align-items:center;justify-content:center;flex:1;gap:6px;list-style:none;margin:0;padding:0;z-index:10}
+/* Nav menu with dropdowns - Airbnb clean layout */
+.nav-menu{display:flex;align-items:center;justify-content:center;flex:1;gap:28px;list-style:none;margin:0;padding:0;z-index:10}
 .nav-item{position:relative;padding:10px 0}
-.nav-link{display:inline-flex;align-items:center;gap:4px;font-weight:600;font-size:14px;color:#352c50;padding:7px 12px;border-radius:99px;transition:.2s;text-decoration:none;white-space:nowrap}
-.nav-link:hover, .nav-item:hover .nav-link{color:var(--g2);background:var(--l1)}
+.nav-link{display:inline-flex;align-items:center;gap:4px;font-weight:600;font-size:14px;color:#334155;padding:8px 12px;border-radius:9999px;transition:.2s;text-decoration:none;white-space:nowrap}
+.nav-link:hover, .nav-item:hover .nav-link{color:#0f172a;background:#f8fafc}
 .nav-link.planner-link{color:var(--g2);font-weight:800}
-.nav-link svg.chv{width:12px;height:12px;transition:transform .2s;color:#7e749a}
-.nav-item:hover .nav-link svg.chv{transform:rotate(180deg);color:var(--g2)}
-.nav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);min-width:240px;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:0 18px 40px -12px rgba(67,15,122,.22);padding:8px;opacity:0;visibility:hidden;transition:.2s cubic-bezier(.2,.7,.2,1);z-index:100;pointer-events:none}
+.nav-link svg.chv{width:12px;height:12px;transition:transform .2s;color:#94a3b8}
+.nav-item:hover .nav-link svg.chv{transform:rotate(180deg);color:#0f172a}
+.nav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);min-width:240px;background:#fff;border-radius:18px;border:1px solid #e2e8f0;box-shadow:0 18px 40px -12px rgba(0,0,0,.12);padding:8px;opacity:0;visibility:hidden;transition:.2s cubic-bezier(.2,.7,.2,1);z-index:100;pointer-events:none}
 .nav-item:hover .nav-drop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}
-.nav-drop a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13.5px;font-weight:600;color:#352c50;text-decoration:none;transition:.15s;white-space:nowrap}
-.nav-drop a:hover{background:var(--l1);color:var(--g2);transform:translateX(3px)}
+.nav-drop a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13.5px;font-weight:600;color:#334155;text-decoration:none;transition:.15s;white-space:nowrap}
+.nav-drop a:hover{background:#f1f5f9;color:#0f172a;transform:translateX(3px)}
 @media(max-width:1120px){.nav-menu{display:none}.burger{display:flex}}
 /* top bar + header */
 .tb{background:linear-gradient(90deg,var(--l2),var(--l1) 50%,var(--gl));font-size:13px;font-weight:600;color:var(--p);overflow:hidden}
@@ -81,17 +81,19 @@ section{padding:96px 0;position:relative}
   .tb .r-lang{display:none !important}
   .tb .wrap{justify-content:center}
 }
-header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:20px;height:82px;position:relative}.nav>a{flex-shrink:0;position:relative;z-index:2;display:flex;align-items:center}.nav img{height:44px;display:block}
+header{position:sticky;top:0;z-index:60;background:#ffffff;border-bottom:1px solid #e2e8f0;box-shadow:0 1px 2px 0 rgba(0,0,0,0.05)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:32px;height:80px;position:relative}.nav>a{flex-shrink:0;position:relative;z-index:2;display:flex;align-items:center}.nav img{height:40px;display:block}
 .links{display:flex;gap:6px;background:var(--l1);padding:6px;border-radius:99px;border:1px solid var(--line)}
 .links a{font-weight:600;font-size:14px;color:#4b4268;padding:9px 16px;white-space:nowrap;border-radius:99px;transition:.25s}.links a:hover,.links a.on{background:#fff;color:var(--p);box-shadow:0 6px 16px -8px rgba(67,15,122,.5)}
-.nr{flex-shrink:0;display:flex;gap:12px;align-items:center;position:relative;z-index:2}.nr .lg{white-space:nowrap;font-weight:700;font-size:14.5px;color:var(--p);padding:10px 14px}
+.nr{flex-shrink:0;display:flex;gap:12px;align-items:center;position:relative;z-index:2}
+.nr .lg{white-space:nowrap;font-weight:600;font-size:14px;color:#334155;padding:8px 16px;border-radius:9999px;transition:all .2s;text-decoration:none}
+.nr .lg:hover{color:#0f172a;background:#f1f5f9}
+.btn.g.s{background:#00b070;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.1);border-radius:9999px;padding:9px 18px;font-size:14px;font-weight:600;transition:all .2s;border:none}
+.btn.g.s:hover{background:#008f5a}
 .burger{display:none;width:46px;height:46px;border-radius:50%;background:var(--l2);font-size:21px;align-items:center;justify-content:center;color:var(--p)}
 .mm{display:none;padding:6px 0 20px}.mm.o{display:block}.mm a{display:block;padding:14px 2px;font-weight:700;border-bottom:1px solid var(--line)}
-/* hero */
-.hero{padding:34px 0 140px;background:radial-gradient(900px 500px at 85% 0%,var(--l2),transparent 70%),radial-gradient(700px 500px at 0% 30%,var(--gl2),transparent 70%),#fff;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none}
-.blob.a{width:420px;height:420px;background:var(--g);opacity:.25;right:-80px;top:80px}.blob.b{width:460px;height:460px;background:var(--p3);opacity:.32;right:240px;bottom:-60px}.blob.c{width:300px;height:300px;background:#6fe0b4;opacity:.3;left:-100px;top:340px}
+/* hero - Airbnb clean pure white */
+.hero{padding:40px 0 80px;background:#ffffff;overflow:hidden}
 .hg{display:grid;grid-template-columns:1fr 1.04fr;gap:20px;align-items:center;position:relative;z-index:2}
 .live{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border:1px solid var(--line);padding:7px 18px 7px 8px;border-radius:99px;font-size:13.5px;font-weight:700;color:var(--p);box-shadow:0 10px 26px -14px rgba(67,15,122,.45);margin-bottom:26px}
 .avs{display:flex}.avs .av{border:2.5px solid #fff;margin-left:-9px}.avs .av:first-child{margin-left:0}
@@ -103,7 +105,7 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 .tc{display:flex;gap:12px;align-items:center;font-size:13.5px;font-weight:700;line-height:1.3}.tc i{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#fff;color:var(--g2);font-size:19px;box-shadow:0 8px 18px -10px rgba(67,15,122,.5);border:1px solid var(--line);flex:none}.tc small{display:block;font-weight:500;color:var(--mut);font-size:12px}
 .hv{position:relative;height:580px}
 .map{position:absolute;left:-60px;top:122px;width:800px}
-.glass{position:absolute;background:rgba(255,255,255,.74);backdrop-filter:blur(16px) saturate(1.5);border:1px solid rgba(255,255,255,.9);border-radius:22px;box-shadow:0 30px 60px -28px rgba(67,15,122,.5),0 0 0 1px rgba(67,15,122,.06)}
+.glass{position:absolute;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border:1px solid #e2e8f0;border-radius:22px;box-shadow:0 20px 40px -20px rgba(0,0,0,.1),0 0 0 1px rgba(0,0,0,.03)}
 .f1{animation:fl 6s ease-in-out infinite}.f2{animation:fl 7s ease-in-out -2s infinite}.f3{animation:fl 8s ease-in-out -4s infinite}
 .cA{right:0;top:-16px;width:280px;padding:18px}
 .cA .t{display:flex;gap:13px;align-items:center}.cA b{display:block;font-size:15px;line-height:1.25}.cA small{font-size:12px;color:var(--mut)}
@@ -128,28 +130,42 @@ header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.82);backdro
 /* marquee */
 .mqs{padding:70px 0 20px;overflow:hidden}
 .mq{display:flex;gap:14px;width:max-content;animation:mq 60s linear infinite;margin-bottom:14px}.mq.r{animation:mq2 70s linear infinite}
-.mc{display:inline-flex;align-items:center;gap:10px;padding:11px 20px 11px 12px;border-radius:99px;background:#fff;border:1px solid var(--line);font-weight:700;font-size:14px;box-shadow:0 8px 20px -14px rgba(67,15,122,.4);white-space:nowrap}
+.mc{display:inline-flex;align-items:center;gap:10px;padding:11px 20px 11px 12px;border-radius:9999px;background:#fff;border:1px solid var(--line);font-weight:700;font-size:14px;box-shadow:0 8px 20px -14px rgba(67,15,122,.4);white-space:nowrap}
 .mc i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:10.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--g),var(--p3))}.mc small{color:var(--mut);font-weight:600;font-size:12.5px}
 .mc.alt{background:var(--l1)}.mc.alt i{background:linear-gradient(135deg,var(--p3),var(--p))}
-/* search */
-.srch{background:linear-gradient(180deg,#fff,var(--l1) 20%,var(--l1) 85%,#fff);padding-bottom:10px}
-/* Easy Search (Top) */
-.sbox{padding:30px 32px;border-radius:32px;background:#fff;border:1px solid var(--line);box-shadow:0 40px 80px -40px rgba(67,15,122,.28);margin-bottom:28px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.tab{display:inline-flex;align-items:center;gap:9px;padding:10px 20px;border-radius:99px;font-weight:700;font-size:14px;color:#5a5174;background:var(--l1);border:1px solid transparent;transition:.25s;cursor:pointer}
-.tab:hover{background:var(--l2)}
-.tab.on{background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;box-shadow:0 12px 22px -12px rgba(67,15,122,.8)}
-.tab svg{font-size:16px;width:16px;height:16px}
-.sfm{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:12px;align-items:stretch;padding:10px;border-radius:24px;background:var(--l1);border:1px solid var(--l2)}
-@media(max-width:980px){.sfm{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.sfm{grid-template-columns:1fr}}
-.fld{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:10px 18px;border:1.5px solid transparent;transition:.2s;position:relative}
-.fld:hover{border-color:var(--p3)}
-.fld:focus-within{border-color:var(--g)}
-.fld>svg{color:var(--g2);font-size:20px;width:20px;height:20px;flex-shrink:0}
-.fld label{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);line-height:1.2}
-.fld input{border:0;outline:0;width:100%;font-weight:600;font-size:14.5px;background:transparent;color:var(--ink);padding:2px 0}
-.sfm .btn{border-radius:16px;padding:0 34px}
+/* search - Airbnb clean style */
+.srch{background:#ffffff;padding-bottom:10px}
+/* Airbnb Category Tabs */
+.airbnb-cat-tabs{display:flex;align-items:center;justify-content:center;gap:28px;margin-bottom:28px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.airbnb-cat-tabs::-webkit-scrollbar{display:none}
+.airbnb-cat-tab{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 8px 10px;border-bottom:2px solid transparent;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s ease;color:#64748b;font-size:13.5px;font-weight:600;white-space:nowrap}
+.airbnb-cat-tab .tab-icon{font-size:24px;line-height:1}
+.airbnb-cat-tab:hover{color:#0f172a}
+.airbnb-cat-tab.active{border-bottom:2px solid #0f172a;color:#0f172a;font-weight:700}
+
+/* Airbnb Pill Search Bar */
+.airbnb-search-wrap{width:100%;max-width:896px;margin:0 auto 36px}
+.airbnb-search-bar{width:100%;background:#ffffff;border-radius:9999px;border:1px solid #cbd5e1;box-shadow:0 4px 20px -2px rgba(0,0,0,0.08),0 2px 6px -1px rgba(0,0,0,0.04);display:flex;align-items:center;padding:8px 8px 8px 22px;transition:all .25s ease;box-sizing:border-box}
+.airbnb-search-bar:focus-within{border-color:#94a3b8;box-shadow:0 10px 30px -4px rgba(0,0,0,0.12)}
+.airbnb-field{flex:1;padding:4px 16px;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.airbnb-divider{width:1px;height:36px;background-color:#e2e8f0;flex-shrink:0}
+.airbnb-label{display:block;font-size:11px;font-weight:800;color:#0f172a;letter-spacing:.02em;margin-bottom:2px;text-transform:none}
+.airbnb-input{width:100%;border:none;outline:none;background:transparent;font-size:14px;color:#334155;font-weight:500;padding:0;line-height:1.4}
+.airbnb-input::placeholder{color:#94a3b8;font-weight:400}
+.airbnb-select{width:100%;border:none;outline:none;background:transparent;font-size:14px;color:#334155;font-weight:500;cursor:pointer;padding:0;line-height:1.4}
+.airbnb-btn-box{flex-shrink:0;margin-left:8px}
+.airbnb-search-btn{background:#00b070;color:#ffffff;font-weight:700;font-size:15px;padding:12px 26px;border-radius:9999px;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(0,176,112,0.35);transition:all .2s ease;white-space:nowrap}
+.airbnb-search-btn:hover{background:#008f5a;transform:scale(1.02);box-shadow:0 4px 14px rgba(0,176,112,0.45)}
+.airbnb-search-btn:active{transform:scale(0.98)}
+
+@media(max-width:768px){
+  .airbnb-cat-tabs{gap:16px;justify-content:flex-start;padding-left:4px;padding-right:4px}
+  .airbnb-search-bar{flex-direction:column;border-radius:24px;padding:12px;align-items:stretch;gap:8px}
+  .airbnb-field{padding:6px 8px;border-bottom:1px solid #f1f5f9}
+  .airbnb-divider{display:none}
+  .airbnb-btn-box{margin-left:0;margin-top:4px}
+  .airbnb-search-btn{width:100%;padding:14px;border-radius:9999px}
+}
 
 /* Quick Search (Bottom) */
 .qs-card{background:#fff;border-radius:32px;padding:32px 34px 28px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(67,15,122,.18),0 0 1px rgba(0,0,0,.06);font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px}
@@ -498,7 +514,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 </div></div></header>
 <main>
 <!-- HERO -->
-<section class="hero" style="position:relative"><div class="blob a"></div><div class="blob b"></div><div class="blob c"></div>
+<section class="hero" style="position:relative">
 <div class="wrap hg"><div class="hl rv">
 <a href="/find-experts" class="live" style="cursor:pointer;text-decoration:none;color:inherit"><span class="avs" id="hav"></span><span class="pulse"></span><span><b id="onl">18</b> licensed consultants available now</span></a>
 <h1 class="font-display">Move abroad.<br>Pay <span class="hi grad">safely.<svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M3 11C40 3 90 3 140 8s45 2 57-3" fill="none" stroke="#00b070" stroke-width="4.500" stroke-linecap="round"/></svg></span><br>Land <span class="ser" style="color:var(--p2);font-weight:600">confident.</span></h1>
@@ -528,66 +544,89 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <div class="wrap">
     <div class="sh c rv"><span class="eyebrow">Easy search</span><h2>Find the right path in <span class="grad">under two minutes</span></h2><p>Search verified visa routes, licensed experts, study programs and stays across 193+ countries.</p></div>
 
-    <!-- Easy Search Bar (Top) -->
-    <div class="sbox rv">
-      <div class="tabs" id="tabs"></div>
-      <div class="sfm">
-        <div class="fld c-drop" id="need-drop">
-          <svg class="i"><use href="#search"/></svg>
-          <div style="flex:1">
-            <label>What do you need?</label>
-            <button type="button" class="c-drop-trigger" id="need-btn">
-              <span class="c-drop-val" id="need-val-text"><span class="flag-icon" style="font-size:16px">📑</span> PR Visa</span>
-              <svg class="i chv"><use href="#chevron-down"/></svg>
-            </button>
-            <input type="hidden" id="q" value="PR Visa">
-            <div class="c-drop-menu" id="need-menu">
-              <div class="c-drop-opt on" data-v="PR Visa" data-icon="📑"><span class="flag-icon" style="font-size:16px">📑</span> PR Visa <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Job Visa" data-icon="💼"><span class="flag-icon" style="font-size:16px">💼</span> Job Visa <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Student Visa" data-icon="🎓"><span class="flag-icon" style="font-size:16px">🎓</span> Student Visa <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Tourist Visa" data-icon="✈️"><span class="flag-icon" style="font-size:16px">✈️</span> Tourist Visa <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Business Visa" data-icon="🏢"><span class="flag-icon" style="font-size:16px">🏢</span> Business Visa <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Work Permit" data-icon="🛠️"><span class="flag-icon" style="font-size:16px">🛠️</span> Work Permit <svg class="i chk"><use href="#check"/></svg></div>
-            </div>
-          </div>
+    <!-- Category Tabs (Airbnb Style) -->
+    <div class="airbnb-cat-tabs rv">
+      <!-- Active Tab -->
+      <button type="button" class="airbnb-cat-tab active" data-tab="experts">
+        <span class="tab-icon">⚖️</span>
+        <span>Experts</span>
+      </button>
+      
+      <!-- Inactive Tabs -->
+      <button type="button" class="airbnb-cat-tab" data-tab="jobs">
+        <span class="tab-icon">💼</span>
+        <span>Jobs</span>
+      </button>
+      
+      <button type="button" class="airbnb-cat-tab" data-tab="universities">
+        <span class="tab-icon">🎓</span>
+        <span>Universities</span>
+      </button>
+      
+      <button type="button" class="airbnb-cat-tab" data-tab="tours">
+        <span class="tab-icon">✈️</span>
+        <span>Tours</span>
+      </button>
+      
+      <button type="button" class="airbnb-cat-tab" data-tab="offers">
+        <span class="tab-icon">🏷️</span>
+        <span>Offers</span>
+      </button>
+    </div>
+
+    <!-- Search Bar (Pill Design - Airbnb Style) -->
+    <div class="airbnb-search-wrap rv">
+      <div class="airbnb-search-bar">
+        <!-- Field 1: What do you need? -->
+        <div class="airbnb-field">
+          <label class="airbnb-label">What do you need?</label>
+          <input type="text" id="q" placeholder="e.g. Canada Student Visa" class="airbnb-input" autocomplete="off" />
         </div>
-        <div class="fld c-drop" id="dest-drop">
-          <svg class="i"><use href="#map"/></svg>
-          <div style="flex:1">
-            <label>Destination</label>
-            <button type="button" class="c-drop-trigger" id="dest-btn">
-              <span class="c-drop-val" id="dest-val-text"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada"> Canada</span>
-              <svg class="i chv"><use href="#chevron-down"/></svg>
-            </button>
-            <input type="hidden" id="dest-val" value="Canada">
-            <div class="c-drop-menu" id="dest-menu">
-              <div class="c-drop-opt on" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada"> Canada <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK"> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia"> Australia <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE"> UAE <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Germany" data-f="de"><img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany"> Germany <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Japan" data-f="jp"><img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan"> Japan <svg class="i chk"><use href="#check"/></svg></div>
-            </div>
-          </div>
+
+        <div class="airbnb-divider"></div>
+
+        <!-- Field 2: Destination -->
+        <div class="airbnb-field">
+          <label class="airbnb-label">Destination</label>
+          <select id="dest-val" class="airbnb-select">
+            <option value="">Select Country</option>
+            <option value="Canada">Canada</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="Australia">Australia</option>
+            <option value="USA">USA</option>
+            <option value="UAE">UAE</option>
+            <option value="Germany">Germany</option>
+            <option value="Japan">Japan</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Ireland">Ireland</option>
+            <option value="France">France</option>
+            <option value="New Zealand">New Zealand</option>
+          </select>
         </div>
-        <div class="fld c-drop" id="from-drop">
-          <svg class="i"><use href="#flag"/></svg>
-          <div style="flex:1">
-            <label>Moving from</label>
-            <button type="button" class="c-drop-trigger" id="from-btn">
-              <span class="c-drop-val" id="from-val-text"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India</span>
-              <svg class="i chv"><use href="#chevron-down"/></svg>
-            </button>
-            <input type="hidden" id="from-val" value="India">
-            <div class="c-drop-menu" id="from-menu">
-              <div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria"> Nigeria <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines"> Philippines <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan"> Pakistan <svg class="i chk"><use href="#check"/></svg></div>
-            </div>
-          </div>
+
+        <div class="airbnb-divider"></div>
+
+        <!-- Field 3: Moving from -->
+        <div class="airbnb-field">
+          <label class="airbnb-label">Moving from</label>
+          <select id="from-val" class="airbnb-select">
+            <option value="India">India</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Philippines">Philippines</option>
+            <option value="Pakistan">Pakistan</option>
+            <option value="Bangladesh">Bangladesh</option>
+            <option value="Nepal">Nepal</option>
+            <option value="Sri Lanka">Sri Lanka</option>
+            <option value="UAE">UAE</option>
+          </select>
         </div>
-        <button class="btn g" id="go"><svg class="i"><use href="#search"/></svg>Search</button>
+
+        <!-- Search Button -->
+        <div class="airbnb-btn-box">
+          <button type="button" id="go" class="airbnb-search-btn">
+            <span>🔍</span> <span class="hidden md:inline">Search</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1146,62 +1185,43 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
   });
 }
 
-/* easy search tabs (Top Bar) */
-const T = {
-  Visas: { ph: 'e.g. PR Visa, Student Visa, Work Permit', ic: 'file' },
-  Jobs: { ph: 'e.g. Software engineer, Registered nurse', ic: 'brief' },
-  Stays: { ph: 'e.g. Room near campus, 1BHK furnished', ic: 'home' },
-  Tours: { ph: 'e.g. Europe tour, Dubai luxury package', ic: 'plane' },
-  Experts: { ph: 'e.g. MARA consultant, RCIC counsel', ic: 'users' }
+// Airbnb Category Tabs & Search Handler
+let activeAirbnbTab = 'experts';
+const airbnbPlaceholders = {
+  experts: 'e.g. Canada Student Visa',
+  jobs: 'e.g. Software Engineer, Healthcare in UK',
+  universities: 'e.g. University of Toronto, Oxford admissions',
+  tours: 'e.g. Europe tour, Dubai luxury stay',
+  offers: 'e.g. Milestone escrow cashback, discounts'
 };
-let cur = 'Visas';
-const drawTabs = () => {
-  const tb = $('#tabs');
-  if (tb) {
-    tb.innerHTML = Object.keys(T).map(k => `<button type="button" class="tab ${k === cur ? 'on' : ''}" data-k="${k}">${ic(T[k].ic)}${k}</button>`).join('');
-    $$('.tab').forEach(b => b.onclick = () => {
-      cur = b.dataset.k;
-      drawTabs();
-    });
-  }
-};
-drawTabs();
 
-// Easy search dropdowns
-initCustomDropdown('#need-drop', '#q', '#need-val-text');
-initCustomDropdown('#dest-drop', '#dest-val', '#dest-val-text');
-initCustomDropdown('#from-drop', '#from-val', '#from-val-text');
+$$('.airbnb-cat-tab').forEach(btn => {
+  btn.onclick = () => {
+    $$('.airbnb-cat-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeAirbnbTab = btn.dataset.tab;
+    const qInp = $('#q');
+    if (qInp && airbnbPlaceholders[activeAirbnbTab]) {
+      qInp.placeholder = airbnbPlaceholders[activeAirbnbTab];
+    }
+  };
+});
 
-// Easy search submit
+// Search submit
 const goBtn = $('#go');
 if (goBtn) {
   goBtn.onclick = () => {
     const qVal = ($('#q') ? $('#q').value.trim() : '');
-    const destVal = ($('#dest-val') ? $('#dest-val').value : 'Canada');
+    const destVal = ($('#dest-val') ? $('#dest-val').value : '');
     const fromVal = ($('#from-val') ? $('#from-val').value : 'India');
 
-    if (cur === 'Visas') {
-      const destSlugMap = {
-        'Canada': 'canada',
-        'United Kingdom': 'uk',
-        'Australia': 'australia',
-        'UAE': 'uae',
-        'Germany': 'germany',
-        'Japan': 'japan'
-      };
-      const countrySlug = destSlugMap[destVal] || (destVal ? destVal.toLowerCase().replace(/\s+/g, '-') : 'canada');
-      const purpose = qVal || 'Express Entry PR';
-      window.location.href = `/visa/${encodeURIComponent(countrySlug)}?passport=${encodeURIComponent(fromVal)}&from=${encodeURIComponent(fromVal)}&purpose=${encodeURIComponent(purpose)}`;
-      return;
-    }
-
-    if (cur === 'Jobs') {
+    if (activeAirbnbTab === 'jobs') {
       const jParams = new URLSearchParams();
       if (qVal) {
         jParams.set('search', qVal);
         jParams.set('q', qVal);
       }
-      if (destVal && destVal !== 'All Countries') {
+      if (destVal && destVal !== 'Select Country') {
         jParams.set('country', destVal);
         jParams.set('destination', destVal);
       }
@@ -1209,28 +1229,55 @@ if (goBtn) {
       return;
     }
 
-    if (cur === 'Tours') {
+    if (activeAirbnbTab === 'universities') {
+      const uParams = new URLSearchParams();
+      if (qVal) {
+        uParams.set('search', qVal);
+        uParams.set('q', qVal);
+      }
+      if (destVal && destVal !== 'Select Country') {
+        uParams.set('country', destVal);
+        uParams.set('destination', destVal);
+      }
+      window.location.href = '/universities' + (uParams.toString() ? '?' + uParams.toString() : '');
+      return;
+    }
+
+    if (activeAirbnbTab === 'tours') {
       window.location.href = '/tours' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
       return;
     }
 
-    if (cur === 'Stays') {
-      window.location.href = '/find-experts?category=Housing' + (destVal ? '&destination=' + encodeURIComponent(destVal) : '');
+    if (activeAirbnbTab === 'offers') {
+      window.location.href = '/find-experts?filter=offers' + (qVal ? '&q=' + encodeURIComponent(qVal) : '');
       return;
     }
 
-    // Experts tab
+    // Default: Experts tab
     const params = new URLSearchParams();
     if (qVal) {
       params.set('q', qVal);
       params.set('search', qVal);
     }
-    if (destVal) {
+    if (destVal && destVal !== 'Select Country') {
       params.set('country', destVal);
       params.set('destination', destVal);
     }
+    if (fromVal) {
+      params.set('from', fromVal);
+    }
     window.location.href = '/find-experts' + (params.toString() ? '?' + params.toString() : '');
   };
+}
+
+const mainQ = $('#q');
+if (mainQ) {
+  mainQ.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (goBtn) goBtn.click();
+    }
+  });
 }
 
 // Quick search dropdowns
