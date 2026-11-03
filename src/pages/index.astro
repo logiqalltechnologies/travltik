@@ -63,17 +63,17 @@ section{padding:96px 0;position:relative}
 .airbnb-host-link:hover{background-color:rgba(0,0,0,0.04)}
 .airbnb-globe-pill{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#222222;background:none;border:none;cursor:pointer;transition:background-color .15s ease}
 .airbnb-globe-pill:hover{background-color:rgba(0,0,0,0.04)}
-.airbnb-user-pill-btn{display:inline-flex;align-items:center;gap:12px;padding:6px 14px 6px 14px;background:#ffffff;border:1px solid #dddddd;border-radius:9999px;cursor:pointer;transition:box-shadow .2s ease,border-color .2s ease;color:#595959}
-.airbnb-user-pill-btn:hover{box-shadow:0 2px 8px rgba(0,0,0,0.12);border-color:#b5b5b5}
-.airbnb-user-pill-btn svg.i{width:16px;height:16px;stroke-width:2.3;color:#222222}
-.airbnb-user-avatar{width:28px;height:28px;border-radius:50%;background:#717171;color:#ffffff;display:grid;place-items:center;font-size:13px;font-weight:700}
-
-.airbnb-dropdown-menu{position:absolute;top:calc(100% + 12px);right:0;width:240px;background:#ffffff;border-radius:18px;border:1px solid #ebebeb;box-shadow:0 10px 30px rgba(0,0,0,0.12);padding:8px 0;display:none;flex-direction:column;z-index:200}
+.airbnb-user-pill-btn{display:inline-flex;align-items:center;gap:10px;padding:5px 7px 5px 14px;background:#ffffff;border:1px solid #ede9f6;border-radius:9999px;cursor:pointer;transition:all .2s ease;color:#1b1233}
+.airbnb-user-pill-btn:hover{box-shadow:0 4px 16px rgba(67,15,122,0.12);border-color:#dccaf7}
+.airbnb-user-pill-btn svg.i{width:16px;height:16px;stroke-width:2.4;color:#1b1233}
+.airbnb-user-avatar{width:28px;height:28px;border-radius:50%;background:#370c63;color:#ffffff;display:grid;place-items:center;font-size:12px;font-weight:700;overflow:hidden}
+.airbnb-dropdown-menu{position:absolute;top:calc(100% + 12px);right:0;width:256px;background:#ffffff;border-radius:20px;border:1px solid #ede9f6;box-shadow:0 12px 36px rgba(67,15,122,0.15);padding:6px 0;display:none;flex-direction:column;z-index:200;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
 .airbnb-dropdown-menu.open{display:flex}
-.airbnb-dropdown-menu a{padding:10px 20px;font-size:14px;color:#334155;font-weight:500;text-decoration:none;transition:background-color .15s ease,color .15s ease}
-.airbnb-dropdown-menu a:hover{background-color:#f8fafc;color:#0f172a}
-.airbnb-dropdown-menu a.bold-link{font-weight:700;color:#0f172a}
-.airbnb-dropdown-divider{height:1px;background:#f1f5f9;margin:6px 0}
+.airbnb-dropdown-menu a{padding:8px 14px;font-size:13px;color:#4b4268;font-weight:600;text-decoration:none;transition:all .15s ease;border-radius:12px;margin:1px 6px;display:flex;align-items:center;gap:10px}
+.airbnb-dropdown-menu a:hover{background-color:#f7f2fe;color:#430f7a}
+.airbnb-dropdown-menu a.bold-link{font-weight:800;color:#1b1233}
+.airbnb-dropdown-menu a.bold-link:hover{background-color:#faf8fc;color:#1b1233}
+.airbnb-dropdown-divider{height:1px;background:#ede9f6;margin:5px 0}
 
 /* TravlTik Top Purple Escrow Banner (Atlys Style) */
 .travltik-top-banner{
@@ -945,27 +945,54 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <div class="airbnb-right-box">
         <a href="/support" class="airbnb-host-link" title="Contact Us & 24/7 Support">Contact</a>
         <button type="button" class="airbnb-user-pill-btn" id="airbnb-user-pill-btn" aria-label="User Menu" aria-haspopup="true">
-          <svg class="i"><use href="#menu"/></svg>
-          <div class="airbnb-user-avatar">
-            <svg class="i" style="width:16px;height:16px;color:#fff"><use href="#user-check"/></svg>
+          <svg class="i" style="width:16px;height:16px;"><use href="#menu"/></svg>
+          <div class="airbnb-user-avatar" id="home-user-avatar-circle">
+            <svg id="home-user-default-icon" class="i" style="width:16px;height:16px;color:#fff"><use href="#user-check"/></svg>
+            <span id="home-user-avatar-letters" style="display:none;color:#fff;font-weight:700;font-size:12px;"></span>
           </div>
         </button>
 
         <!-- Dropdown Menu -->
         <div class="airbnb-dropdown-menu" id="airbnb-dropdown-menu">
-          <a href="/login" class="bold-link">Log in</a>
-          <a href="/signup" class="bold-link" style="color:#00b070">Get started / Sign up</a>
-          <div class="airbnb-dropdown-divider"></div>
-          <a href="/biz">List your practice</a>
-          <a href="/find-experts">Find Verified Experts</a>
-          <a href="/visa-services">Visa Services</a>
-          <a href="/ai-tools">AI Tools &amp; Photo Resizer</a>
-          <a href="/jobs">Jobs &amp; Careers</a>
-          <a href="/universities">Global Universities</a>
-          <a href="/tours">Tours &amp; Stays</a>
-          <div class="airbnb-dropdown-divider"></div>
-          <a href="/escrow">Milestone Escrow Guide</a>
-          <a href="/support">Help &amp; Support</a>
+          <!-- 1. Logged Out View -->
+          <div id="home-menu-logged-out" style="display:flex;flex-direction:column;">
+            <div style="padding:4px 6px;">
+              <a href="/signup" class="bold-link" style="color:#00b070;font-weight:800;">Sign up</a>
+              <a href="/login" style="color:#1b1233;font-weight:600;">Log in</a>
+            </div>
+            <div class="airbnb-dropdown-divider"></div>
+            <div style="padding:2px 6px;">
+              <a href="/find-experts"><span>👨‍⚖️</span><span>Find Verified Experts</span></a>
+              <a href="/ai-tools"><span>⚡</span><span>AI Immigration Tools</span></a>
+              <a href="/jobs"><span>💼</span><span>International Jobs</span></a>
+              <a href="/universities"><span>🎓</span><span>Global Universities</span></a>
+              <a href="/escrow"><span>🔒</span><span>Milestone Escrow Protection</span></a>
+            </div>
+            <div class="airbnb-dropdown-divider"></div>
+            <div style="padding:2px 6px 4px;">
+              <a href="/support"><span>💬</span><span>Help &amp; Support</span></a>
+            </div>
+          </div>
+
+          <!-- 2. Logged In View -->
+          <div id="home-menu-logged-in" style="display:none;flex-direction:column;">
+            <div style="padding:10px 14px;border-bottom:1px solid #ede9f6;background:#faf8fc;border-radius:14px 14px 0 0;">
+              <div style="font-size:10px;color:#8b82a3;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;">Signed in as</div>
+              <div id="home-menu-username" style="font-size:13px;font-weight:800;color:#1b1233;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">User</div>
+            </div>
+            <div style="padding:4px 6px;">
+              <a id="home-menu-dashboard-link" href="/traveller/dashboard"><span>📊</span><span>My Dashboard</span></a>
+              <a href="/find-experts"><span>👨‍⚖️</span><span>Find Verified Experts</span></a>
+              <a href="/ai-tools"><span>⚡</span><span>AI Immigration Tools</span></a>
+              <a href="/support"><span>💬</span><span>Help &amp; Support</span></a>
+            </div>
+            <div class="airbnb-dropdown-divider"></div>
+            <div style="padding:2px 6px 4px;">
+              <button id="home-menu-logout-btn" type="button" style="display:flex;align-items:center;gap:10px;width:calc(100% - 12px);margin:2px 6px;padding:8px 14px;font-size:13px;color:#e11d48;font-weight:700;border-radius:12px;background:none;border:none;cursor:pointer;text-align:left;">
+                <span>🚪</span><span>Log out</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2753,7 +2780,7 @@ $$('.apps a').forEach(a => {
   });
 });
 
-// Airbnb User Dropdown Menu Toggle
+// Airbnb User Dropdown Menu Toggle & Auth Sync
 const userPillBtn = document.getElementById('airbnb-user-pill-btn');
 const userMenu = document.getElementById('airbnb-dropdown-menu');
 if (userPillBtn && userMenu) {
@@ -2766,6 +2793,80 @@ if (userPillBtn && userMenu) {
       userMenu.classList.remove('open');
     }
   });
+
+  // Sync Auth State
+  function syncHomeAuth() {
+    const seekerFirst = localStorage.getItem('seeker_firstName');
+    const expertBusiness = localStorage.getItem('expert_businessName');
+    const userStr = localStorage.getItem('travltik_user');
+    const isLoggedIn = Boolean(seekerFirst || expertBusiness || (userStr && userStr !== 'null' && userStr !== 'undefined'));
+
+    const loggedOutView = document.getElementById('home-menu-logged-out');
+    const loggedInView = document.getElementById('home-menu-logged-in');
+    const usernameEl = document.getElementById('home-menu-username');
+    const dashLink = document.getElementById('home-menu-dashboard-link');
+    const avatarLetters = document.getElementById('home-user-avatar-letters');
+    const defaultIcon = document.getElementById('home-user-default-icon');
+
+    if (isLoggedIn) {
+      let displayName = 'User';
+      let displayLetters = 'U';
+      let dashboardHref = '/traveller/dashboard';
+
+      if (expertBusiness) {
+        displayName = expertBusiness;
+        displayLetters = expertBusiness.charAt(0).toUpperCase();
+        dashboardHref = '/service-provider/dashboard';
+      } else if (seekerFirst) {
+        displayName = seekerFirst + ' ' + (localStorage.getItem('seeker_lastName') || '');
+        displayLetters = seekerFirst.charAt(0).toUpperCase();
+        dashboardHref = '/traveller/dashboard';
+      } else if (userStr) {
+        try {
+          const u = JSON.parse(userStr);
+          if (u?.displayName) {
+            displayName = u.displayName;
+            displayLetters = u.displayName.charAt(0).toUpperCase();
+          } else if (u?.email) {
+            displayName = u.email;
+            displayLetters = u.email.charAt(0).toUpperCase();
+          }
+          if (u?.type === 'expert') dashboardHref = '/service-provider/dashboard';
+        } catch(e) {}
+      }
+
+      if (loggedOutView) loggedOutView.style.display = 'none';
+      if (loggedInView) loggedInView.style.display = 'flex';
+      if (usernameEl) usernameEl.textContent = displayName;
+      if (dashLink) dashLink.setAttribute('href', dashboardHref);
+      if (defaultIcon) defaultIcon.style.display = 'none';
+      if (avatarLetters) {
+        avatarLetters.style.display = 'block';
+        avatarLetters.textContent = displayLetters;
+      }
+    } else {
+      if (loggedOutView) loggedOutView.style.display = 'flex';
+      if (loggedInView) loggedInView.style.display = 'none';
+      if (defaultIcon) defaultIcon.style.display = 'block';
+      if (avatarLetters) avatarLetters.style.display = 'none';
+    }
+  }
+
+  const logoutBtn = document.getElementById('home-menu-logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('travltik_user');
+      localStorage.removeItem('seeker_firstName');
+      localStorage.removeItem('seeker_lastName');
+      localStorage.removeItem('seeker_profilePhoto');
+      localStorage.removeItem('expert_businessName');
+      localStorage.removeItem('expert_profilePhoto');
+      window.location.href = '/login';
+    });
+  }
+
+  syncHomeAuth();
+  document.addEventListener('astro:page-load', syncHomeAuth);
 }
 
 // Close mobile menu on outside click or nav click
