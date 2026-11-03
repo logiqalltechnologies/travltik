@@ -151,7 +151,7 @@ export function ForgotPasswordPortal() {
                     <ArrowLeft className="w-3.5 h-3.5" /> <span>Back to Login</span>
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-6 sm:h-7 w-auto object-contain" />
+                    <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-6 sm:h-7 w-auto object-contain" />
                 </a>
             </div>
 
@@ -161,7 +161,7 @@ export function ForgotPasswordPortal() {
                 {/* Centered Logo */}
                 <div className="flex justify-center pt-1">
                     <a href="/" className="inline-block">
-                        <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+                        <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
                     </a>
                 </div>
 

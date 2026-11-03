@@ -842,7 +842,7 @@ export default function ChannelPartnerDashboard() {
               <Menu className="w-6 h-6 stroke-[2]" />
             </button>
             <div className="lg:hidden flex items-center gap-2">
-              <img src="/logo.png?v=3" alt="TravlTik" className="h-8 sm:h-9 w-auto object-contain" />
+              <img src="/logo.png?v=16" alt="TravlTik" className="h-8 sm:h-9 w-auto object-contain" />
             </div>
           </div>
 

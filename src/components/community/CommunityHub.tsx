@@ -685,7 +685,7 @@ export default function CommunityHub() {
           {/* Travltik Official Brand Logo */}
           <a href="/" className="flex items-center gap-2.5 mr-2 sm:mr-4 shrink-0 group" title="Return to Travltik Home">
             <img
-              src="/logo.png?v=8"
+              src="/logo.png?v=16"
               alt="TravlTik"
               className="h-8 sm:h-9 w-auto max-h-[38px] object-contain transition-transform duration-200 group-hover:scale-105"
             />

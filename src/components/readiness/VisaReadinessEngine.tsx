@@ -537,7 +537,7 @@ export default function VisaReadinessEngine() {
             <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to </span>Home
           </a>
           <a href="/" className="shrink-0">
-            <img src="/logo.png?v=8" alt="TravlTik" className="h-6 sm:h-7 w-auto object-contain" />
+            <img src="/logo.png?v=16" alt="TravlTik" className="h-6 sm:h-7 w-auto object-contain" />
           </a>
         </div>
 
@@ -555,7 +555,7 @@ export default function VisaReadinessEngine() {
 
           {/* Centered Logo & Title Banner */}
           <div className="flex justify-center pt-1 mb-2">
-            <img src="/logo.png" alt="TravlTik" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
+            <img src="/logo.png?v=16" alt="TravlTik" className="h-8 sm:h-9 w-auto max-h-[38px] object-contain mx-auto" />
           </div>
 
           <div className="mb-4 border-b border-slate-100 pb-3 text-center font-sans">

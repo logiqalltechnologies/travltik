@@ -49,7 +49,7 @@ export function DashboardHeader({
           <Menu className="w-6 h-6 stroke-[2]" />
         </button>
         <a href="/" className="flex items-center gap-2">
-          <img src="/logo.png?v=3" alt="TravlTik Logo" className="h-9 sm:h-11 max-h-[46px] w-auto object-contain" />
+          <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-9 sm:h-11 max-h-[46px] w-auto object-contain" />
         </a>
       </div>
 

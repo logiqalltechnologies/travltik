@@ -218,7 +218,7 @@ function LoginPortalContent() {
                             <span className="w-2 h-2 rounded-full bg-[#00b070]"></span> Escrow Secured
                         </span>
                         <a href="/" className="shrink-0 flex items-center">
-                            <img src="/logo.png?v=8" alt="TravlTik" className="h-7 sm:h-8 w-auto object-contain" />
+                            <img src="/logo.png?v=16" alt="TravlTik" className="h-7 sm:h-8 w-auto object-contain" />
                         </a>
                     </div>
                 </div>
@@ -259,7 +259,7 @@ function LoginPortalContent() {
 
                     {/* Logo Centered with Subtle Glow */}
                     <div className="flex justify-center pt-1">
-                        <img src="/logo.png?v=8" alt="TravlTik Logo" className="h-9 sm:h-10 w-auto max-h-[44px] object-contain mx-auto" />
+                        <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-9 sm:h-10 w-auto max-h-[44px] object-contain mx-auto" />
                     </div>
 
                     {/* Title */}

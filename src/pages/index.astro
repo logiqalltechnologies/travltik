@@ -226,6 +226,7 @@ section{padding:96px 0;position:relative}
 /* Category Navigation: Desktop vs Mobile */
 .airbnb-desktop-cat-nav{display:flex;align-items:center;justify-content:center;flex:1}
 .airbnb-mobile-cat-row{display:none}
+.airbnb-mobile-search-pill{display:none}
 
 /* Airbnb Mobile Bottom Navigation Bar */
 .airbnb-mobile-bottom-bar{display:none}
@@ -242,103 +243,57 @@ section{padding:96px 0;position:relative}
   .airbnb-user-pill-btn svg.i{width:15px;height:15px}
   .airbnb-user-avatar{width:28px;height:28px;font-size:11px}
   
-  /* Row 2: Search Bar directly below Logo (Yelp style) */
-  .airbnb-search-bar-row{padding:4px 0 10px !important;width:100% !important}
-  .airbnb-pill-search{
-    border-radius:9999px !important;
-    flex-direction:row !important;
-    padding:4px 6px 4px 14px !important;
-    align-items:center !important;
-    gap:2px !important;
-    box-shadow:0 4px 18px -4px rgba(67,15,122,0.12),0 2px 6px rgba(0,0,0,0.03) !important;
-    border:1.5px solid rgba(67,15,122,0.14) !important;
-    width:100% !important;
-    min-height:50px !important;
-    background:#ffffff !important;
-  }
-  .airbnb-pill-segment{
-    padding:2px 6px !important;
-    border:none !important;
-    min-width:0 !important;
-    flex:1.2 !important;
-  }
-  .airbnb-pill-segment.c-drop{
-    flex:0.85 !important;
-  }
-  .airbnb-pill-segment label{
-    font-size:8.5px !important;
-    font-weight:800 !important;
-    letter-spacing:0.04em !important;
-    margin-bottom:1px !important;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    color:#64748b !important;
-    text-transform:uppercase !important;
-    display:block !important;
-  }
-  .airbnb-pill-segment input{
-    font-size:12.5px !important;
-    font-weight:600 !important;
-    line-height:1.2 !important;
-    color:#1b1233 !important;
-  }
-  .pill-drop-btn{
-    padding:0 !important;
-  }
-  .pill-drop-val{
-    font-size:12px !important;
-    font-weight:600 !important;
-    gap:4px !important;
-    color:#1b1233 !important;
-  }
-  .pill-drop-val .flag-icon{
-    width:15px !important;
-    height:11px !important;
-  }
-  .pill-drop-chv{
-    width:10px !important;
-    height:10px !important;
-    margin-left:2px !important;
-  }
-  .pill-drop-menu{
-    max-width:min(280px, 92vw) !important;
-  }
-  .airbnb-pill-divider{
-    display:block !important;
-    width:1px !important;
-    height:22px !important;
-    background-color:#ede9f6 !important;
-    flex-shrink:0 !important;
-  }
-  .airbnb-pill-btn-box{
-    margin-left:4px !important;
-    flex-shrink:0 !important;
-  }
-  .airbnb-round-search-btn{
-    width:38px !important;
-    height:38px !important;
-    min-width:38px !important;
-    border-radius:50% !important;
-    margin:0 !important;
-    padding:0 !important;
+  /* Row 2: Clean Mobile Search Pill (Airbnb "Start your search") */
+  .airbnb-search-bar-row{padding:4px 0 8px !important;width:100% !important}
+  .airbnb-pill-search{display:none !important}
+  .airbnb-mobile-search-pill{display:block !important;width:100% !important}
+  .mob-pill-inner{
     display:flex !important;
     align-items:center !important;
     justify-content:center !important;
-    background:#00b070 !important;
-    box-shadow:0 3px 12px rgba(0,176,112,0.35) !important;
+    gap:9px !important;
+    width:100% !important;
+    height:50px !important;
+    border-radius:9999px !important;
+    background:#ffffff !important;
+    border:1.5px solid #ececec !important;
+    box-shadow:0 4px 16px -2px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.02) !important;
+    padding:0 18px !important;
+    box-sizing:border-box !important;
+    cursor:pointer !important;
+    transition:all 0.2s ease !important;
   }
-  .airbnb-round-search-btn span{
-    display: none !important;
+  .mob-pill-inner:focus-within{
+    border-color:rgba(0,0,0,0.2) !important;
+    box-shadow:0 4px 18px rgba(0,0,0,0.12) !important;
   }
-  .airbnb-round-search-btn svg{
-    width:15px !important;
-    height:15px !important;
-    color:#ffffff !important;
+  .mob-search-icon{
+    width:16px !important;
+    height:16px !important;
+    stroke:#222222 !important;
     stroke-width:2.6 !important;
+    flex-shrink:0 !important;
+  }
+  .mob-search-input{
+    border:none !important;
+    outline:none !important;
+    background:transparent !important;
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif !important;
+    font-size:14px !important;
+    font-weight:600 !important;
+    color:#222222 !important;
+    width:145px !important;
+    text-align:left !important;
+    padding:0 !important;
+    margin:0 !important;
+  }
+  .mob-search-input::placeholder{
+    color:#222222 !important;
+    font-weight:600 !important;
+    opacity:1 !important;
   }
 
-  /* Row 3: Mobile Category Chips (below Search Bar, like Airbnb Image 1 & Yelp Image 2) */
+  /* Row 3: Mobile Category Chips (Exact match to Airbnb Mobile reference image) */
   .airbnb-mobile-cat-row{
     display:block !important;
     width:100% !important;
@@ -352,7 +307,7 @@ section{padding:96px 0;position:relative}
     display:flex !important;
     align-items:center !important;
     gap:8px !important;
-    padding:0 2px 4px !important;
+    padding:2px 2px 6px !important;
     overflow-x:auto !important;
     flex-wrap:nowrap !important;
     justify-content:flex-start !important;
@@ -364,23 +319,30 @@ section{padding:96px 0;position:relative}
   .airbnb-mobile-cat-row .airbnb-cat-tab{
     flex-shrink:0 !important;
     white-space:nowrap !important;
-    padding:8px 16px !important;
-    font-size:12.5px !important;
-    font-weight:700 !important;
+    padding:7px 15px !important;
+    font-size:13px !important;
+    font-weight:600 !important;
     gap:7px !important;
     border-radius:9999px !important;
-    background:#f7f3fd !important;
-    border:1.5px solid #e8ddf7 !important;
-    color:#4b4268 !important;
-    box-shadow:0 1px 3px rgba(0,0,0,0.03) !important;
-    transition:all .2s ease !important;
+    background:#ffffff !important;
+    border:1px solid #e5e5e5 !important;
+    color:#222222 !important;
+    box-shadow:0 2px 6px rgba(0,0,0,0.04) !important;
+    transition:all .18s ease !important;
     cursor:pointer !important;
+    display:inline-flex !important;
+    align-items:center !important;
   }
+  .airbnb-mobile-cat-row .airbnb-cat-tab .tab-icon{
+    font-size:15px !important;
+  }
+  /* Inset active state matching screenshot */
   .airbnb-mobile-cat-row .airbnb-cat-tab.active{
-    background:#370c63 !important;
-    color:#ffffff !important;
-    border-color:#370c63 !important;
-    box-shadow:0 4px 14px -2px rgba(55,12,99,0.45) !important;
+    background:#efefef !important;
+    color:#111111 !important;
+    border:1.5px solid #cfcfcf !important;
+    box-shadow:inset 0 2px 4px rgba(0,0,0,0.07) !important;
+    font-weight:700 !important;
   }
 
   /* Fixed Airbnb-Style Mobile Bottom Navigation Bar */
@@ -1024,14 +986,20 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <!-- Row 1: Logo | Category Tabs | User Pill -->
     <div class="airbnb-top-row">
       <div class="airbnb-logo">
-        <a href="/"><img src="/logo.png?v=14" alt="TravlTik" /></a>
+        <a href="/"><img src="/logo.png?v=16" alt="TravlTik" /></a>
       </div>
 
       <!-- Center Category Navigation (Airbnb Desktop Style) -->
       <nav class="airbnb-desktop-cat-nav" aria-label="Categories">
         <ul class="airbnb-cat-tabs">
           <li>
-            <button type="button" class="airbnb-cat-tab active" data-tab="experts">
+            <button type="button" class="airbnb-cat-tab active" data-tab="all">
+              <span class="tab-icon">🌎</span>
+              <span>All</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="airbnb-cat-tab" data-tab="experts">
               <span class="tab-icon">⚖️</span>
               <span>Experts</span>
             </button>
@@ -1193,13 +1161,33 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           </button>
         </div>
       </div>
+
+      <!-- Mobile Clean Search Pill (Exact match to Airbnb Mobile reference image) -->
+      <div class="airbnb-mobile-search-pill" id="mobile-search-pill">
+        <div class="mob-pill-inner">
+          <svg class="i mob-search-icon"><use href="#search"/></svg>
+          <input 
+            type="text" 
+            id="mob-search-input" 
+            placeholder="Start your search" 
+            autocomplete="off" 
+            class="mob-search-input"
+          />
+        </div>
+      </div>
     </div>
 
     <!-- Row 3: Mobile Category Chips (Directly below Search Bar, Airbnb & Yelp style) -->
     <nav class="airbnb-mobile-cat-row" aria-label="Categories Mobile">
       <ul class="airbnb-cat-tabs">
         <li>
-          <button type="button" class="airbnb-cat-tab active" data-tab="experts">
+          <button type="button" class="airbnb-cat-tab active" data-tab="all">
+            <span class="tab-icon">🌎</span>
+            <span>All</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="experts">
             <span class="tab-icon">⚖️</span>
             <span>Experts</span>
           </button>
@@ -1652,7 +1640,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <section class="cta" style="padding-top:90px;background:linear-gradient(180deg,var(--l1),#fff 30%)"><div class="wrap"><div class="ctb rv"><div class="o1"></div><div class="o2"></div><div><h2>Your next country is one<br>conversation away.</h2><p>Create a free account, compare verified experts and start your move with escrow protection from day one.</p><div style="display:flex;gap:14px;flex-wrap:wrap"><a class="btn w" href="/signup">Get started free <svg class="i ar"><use href="#arrow"/></svg></a><a class="btn o" href="/find-experts">Search experts</a></div></div>
 <div class="ctc"><h4>Your move, simplified <span class="bdg"><svg class="i"><use href="#lock"/></svg>Escrow on</span></h4><div class="ln"><i>&#10003;</i>Pick destination &amp; visa<em>Done</em></div><div class="ln"><i>&#10003;</i>Match with verified expert<em>Done</em></div><div class="ln h"><i>3</i>Pay into escrow<em>Next</em></div><div class="ln h"><i>4</i>Track your application<em></em></div></div></div></div></section>
 </main>
-<footer><div class="wrap"><div class="fg"><div><img src="/logo.png?v=14" alt="TravlTik"><p class="ab">The global marketplace for visas, jobs, study and relocation, with licensed experts and escrow-protected payments.</p>
+<footer><div class="wrap"><div class="fg"><div><img src="/logo.png?v=16" alt="TravlTik"><p class="ab">The global marketplace for visas, jobs, study and relocation, with licensed experts and escrow-protected payments.</p>
 <form id="nl-form" class="nl" onsubmit="return false;"><input id="nl-email" type="email" required placeholder="Your email for visa news"><button type="submit" id="nl-btn" class="btn g s">Subscribe</button></form>
 <div class="so"><a href="https://facebook.com/travltik" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="i"><use href="#fb"/></svg></a><a href="https://twitter.com/travltik" target="_blank" rel="noopener noreferrer" aria-label="X"><svg class="i"><use href="#tw"/></svg></a><a href="https://instagram.com/travltik" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg class="i"><use href="#ig"/></svg></a><a href="https://linkedin.com/company/travltik" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg class="i"><use href="#li"/></svg></a><a href="https://youtube.com/@travltik" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg class="i"><use href="#yt"/></svg></a></div></div>
 <div><h5>Services</h5><ul><li><a href="/find-experts">Visas &amp; PR</a></li><li><a href="/find-experts?category=student">Study abroad</a></li><li><a href="/jobs">Jobs abroad</a></li><li><a href="/tours">Tours &amp; packages</a></li><li><a href="/find-experts">Housing</a></li></ul></div>
@@ -1941,6 +1929,84 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
 
 // Airbnb Showcase Data (Atlys Luxury Style - Billion-Dollar Marketplace)
 const SHOWCASE_DATA = {
+  all: {
+    title: '<span>🌎</span> Explore Everything on TravlTik',
+    subtitle: 'Licensed experts, global jobs, top universities, tours & escrow-backed services',
+    viewAllHref: '/find-experts',
+    viewAllText: 'Explore all services (500+)',
+    items: [
+      {
+        title: 'ARJUN MEHTA',
+        flag: 'ca',
+        sub: 'Canada PR & Study · Hyderabad',
+        badge: '👑 TOP RATED RCIC',
+        col1Label: 'TYPE',
+        col1Val: 'EXPRESS ENTRY',
+        col2Label: 'EXP',
+        col2Val: '10+ YRS',
+        col3Label: 'RATING',
+        col3Val: '★ 4.9 (312)',
+        href: '/expert/d1',
+        img: '/experts/arjun_mehta.jpg'
+      },
+      {
+        title: 'UNITED KINGDOM',
+        flag: 'gb',
+        sub: 'NHS Registered Nurse · Sponsorship',
+        badge: 'TIER-2 SPONSORED',
+        col1Label: 'TYPE',
+        col1Val: 'HEALTHCARE',
+        col2Label: 'VISA',
+        col2Val: 'VERIFIED',
+        col3Label: 'SALARY',
+        col3Val: '£65K/YR',
+        href: '/jobs',
+        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'GERMANY',
+        flag: 'de',
+        sub: 'TU Munich · Top Tech in Europe',
+        badge: 'ZERO TUITION',
+        col1Label: 'DEGREE',
+        col1Val: 'M.SC AI / TECH',
+        col2Label: 'BLUE CARD',
+        col2Val: 'ELIGIBLE',
+        col3Label: 'TUITION',
+        col3Val: '€0 (FREE)',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'JAPAN',
+        flag: 'jp',
+        sub: 'Tokyo, Kyoto & Mt. Fuji Discovery',
+        badge: 'TOURIST VISA HELP',
+        col1Label: 'TYPE',
+        col1Val: 'E-VISA',
+        col2Label: 'VALID',
+        col2Val: '90 DAYS',
+        col3Label: 'FEES',
+        col3Val: '₹3,200',
+        href: '/tours?destination=Japan',
+        img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'MULTI-CURRENCY FOREX',
+        flag: 'us',
+        sub: 'Zero Extra Markup & Instant Card',
+        badge: 'ZERO CONVENIENCE FEE',
+        col1Label: 'TYPE',
+        col1Val: 'FOREX CARD',
+        col2Label: 'SAVINGS',
+        col2Val: 'UP TO ₹3K',
+        col3Label: 'FEES',
+        col3Val: '₹0 FREE',
+        href: '#classifieds',
+        img: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&h=1200&fit=crop&q=90'
+      }
+    ]
+  },
   experts: {
     title: '<span>⚖️</span> Verified Visa &amp; Immigration Experts',
     subtitle: 'Compare licensed MARA, RCIC, OISC consultants and lawyers with milestone escrow protection',
@@ -2521,11 +2587,12 @@ function renderShowcase(tab, filterQuery = '') {
 }
 
 // Initial showcase render
-renderShowcase('experts');
+renderShowcase('all');
 
 // Airbnb Category Tabs & Search Handler
-let activeAirbnbTab = 'experts';
+let activeAirbnbTab = 'all';
 const airbnbPlaceholders = {
+  all: 'Start your search',
   experts: 'e.g. Canada Student Visa',
   jobs: 'e.g. Software Engineer, Healthcare in UK',
   universities: 'e.g. University of Toronto, Oxford admissions',
@@ -2548,6 +2615,10 @@ $$('.airbnb-cat-tab').forEach(btn => {
     if (qInp && airbnbPlaceholders[activeAirbnbTab]) {
       qInp.placeholder = airbnbPlaceholders[activeAirbnbTab];
     }
+    const mobInp = $('#mob-search-input');
+    if (mobInp && airbnbPlaceholders[activeAirbnbTab]) {
+      mobInp.placeholder = airbnbPlaceholders[activeAirbnbTab];
+    }
     // Showcase all cards for this category right there!
     renderShowcase(activeAirbnbTab, qInp ? qInp.value.trim() : '');
     const scEl = $('#airbnb-showcase');
@@ -2557,11 +2628,27 @@ $$('.airbnb-cat-tab').forEach(btn => {
   };
 });
 
-// Live filter showcase when typing in search input
+// Live filter showcase when typing in search input (desktop + mobile)
 const liveQ = $('#q');
 if (liveQ) {
   liveQ.addEventListener('input', () => {
+    const mobInp = $('#mob-search-input');
+    if (mobInp) mobInp.value = liveQ.value;
     renderShowcase(activeAirbnbTab, liveQ.value.trim());
+  });
+}
+const mobLiveQ = $('#mob-search-input');
+if (mobLiveQ) {
+  mobLiveQ.addEventListener('input', () => {
+    const val = mobLiveQ.value.trim();
+    if (liveQ) liveQ.value = val;
+    renderShowcase(activeAirbnbTab, val);
+  });
+  mobLiveQ.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if ($('#go')) $('#go').click();
+    }
   });
 }
 
