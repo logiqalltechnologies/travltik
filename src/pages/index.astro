@@ -916,7 +916,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <!-- Row 1: Logo | Category Tabs | User Pill -->
     <div class="airbnb-top-row">
       <div class="airbnb-logo">
-        <a href="/"><img src="/logo.png?v=11" alt="TravlTik" /></a>
+        <a href="/"><img src="/logo.png?v=12" alt="TravlTik" /></a>
       </div>
 
       <!-- Center Category Navigation (Airbnb Style) -->
@@ -1010,18 +1010,110 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         </div>
       </div>
     </div>
+    <!-- Row 2: Centered Floating Search Pill Bar -->
+    <div class="airbnb-search-bar-row">
+      <div class="airbnb-pill-search">
+        <!-- Field 1: Service -->
+        <div class="airbnb-pill-segment">
+          <div class="pill-label-row">
+            <svg class="i pill-segment-icon"><use href="#search"/></svg>
+            <label for="q">Service</label>
+          </div>
+          <input type="text" id="q" placeholder="e.g. Canada Student Visa" autocomplete="off" />
+        </div>
+
+        <div class="airbnb-pill-divider"></div>
+
+        <!-- Field 2: Destination -->
+        <div class="airbnb-pill-segment c-drop" id="pill-dest-drop">
+          <div class="pill-label-row">
+            <svg class="i pill-segment-icon"><use href="#map"/></svg>
+            <label>Destination</label>
+          </div>
+          <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-dest-btn">
+            <span class="pill-drop-val" id="pill-dest-val-text"><span class="pill-placeholder">Select Country</span></span>
+            <svg class="i pill-drop-chv"><use href="#chevron-down"/></svg>
+          </button>
+          <input type="hidden" id="dest-val" value="" />
+          <div class="pill-drop-menu" id="pill-dest-menu">
+            <div class="c-drop-opt on" data-v=""><span class="flag-icon" style="font-size:16px">🌐</span> All Countries <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada" /> Canada <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia" /> Australia <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="USA" data-f="us"><img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="USA" /> USA <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Germany" data-f="de"><img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany" /> Germany <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Japan" data-f="jp"><img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan" /> Japan <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Singapore" data-f="sg"><img src="https://flagcdn.com/w40/sg.png" class="flag-icon" alt="Singapore" /> Singapore <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Ireland" data-f="ie"><img src="https://flagcdn.com/w40/ie.png" class="flag-icon" alt="Ireland" /> Ireland <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="France" data-f="fr"><img src="https://flagcdn.com/w40/fr.png" class="flag-icon" alt="France" /> France <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="New Zealand" data-f="nz"><img src="https://flagcdn.com/w40/nz.png" class="flag-icon" alt="NZ" /> New Zealand <svg class="i chk"><use href="#check"/></svg></div>
+          </div>
+        </div>
+
+        <div class="airbnb-pill-divider"></div>
+
+        <!-- Field 3: Location -->
+        <div class="airbnb-pill-segment c-drop" id="pill-from-drop">
+          <div class="pill-label-row">
+            <svg class="i pill-segment-icon"><use href="#flag"/></svg>
+            <label>Location</label>
+          </div>
+          <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-from-btn">
+            <span class="pill-drop-val" id="pill-from-val-text"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India</span>
+            <svg class="i pill-drop-chv"><use href="#chevron-down"/></svg>
+          </button>
+          <input type="hidden" id="from-val" value="India" />
+          <div class="pill-drop-menu" id="pill-from-menu" style="left:auto;right:0;">
+            <div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India" /> India <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria" /> Nigeria <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines" /> Philippines <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan" /> Pakistan <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Bangladesh" data-f="bd"><img src="https://flagcdn.com/w40/bd.png" class="flag-icon" alt="Bangladesh" /> Bangladesh <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Nepal" data-f="np"><img src="https://flagcdn.com/w40/np.png" class="flag-icon" alt="Nepal" /> Nepal <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Sri Lanka" data-f="lk"><img src="https://flagcdn.com/w40/lk.png" class="flag-icon" alt="Sri Lanka" /> Sri Lanka <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Search Button (Brand Green Button) -->
+        <div class="airbnb-pill-btn-box">
+          <button type="button" id="go" class="airbnb-round-search-btn" aria-label="Search">
+            <svg class="i" style="width:16px;height:16px;stroke:#fff;stroke-width:2.8"><use href="#search"/></svg>
+            <span>Search</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 <main>
-<!-- 1. HERO SECTION: Get Your Visa Done (Exact Theme & Layout matching Screenshot) -->
+<!-- AIRBNB IMMEDIATE CONTENT SHOWCASE (Switches instantly when category tabs: Experts, Jobs, Universities, Tours, Offers are clicked) -->
+<section id="airbnb-showcase" style="padding:20px 0 36px;background:#ffffff;border-bottom:1px solid #f1f5f9;">
+  <div class="wrap">
+    <!-- The Dynamic Showcase Grid (Pure Airbnb / Atlys Luxury Style) -->
+    <div id="showcase-grid" class="atlys-grid"></div>
+
+    <!-- Clean Bottom View-All CTA (Dynamic per category) -->
+    <div style="display:flex;justify-content:center;margin-top:28px;">
+      <a id="showcase-view-all" href="/find-experts" style="font-size:14px;font-weight:700;color:#370c63;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:9999px;background:#f7f2fe;border:1.5px solid #dccaf7;box-shadow:0 4px 16px rgba(67,15,122,0.06);transition:all .2s ease;">
+        <span id="showcase-view-all-text">Show all experts (150+)</span>
+        <span style="font-size:16px;line-height:1;">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- GET YOUR VISA DONE SECTION (Below Cards) -->
 <section class="visa-done-section" id="visa-done" style="padding:48px 0 20px;background:#ffffff;">
   <div class="wrap">
     <div class="sh c rv" style="margin-bottom:28px;">
-      <span class="eyebrow" style="display:inline-flex;align-items:center;padding:5px 16px;border-radius:99px;font-size:11.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#430f7a;background:#f4eff9;border:1px solid rgba(67,15,122,0.12);margin-bottom:12px;">Quick Directory</span>
-      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(34px,5.5vw,54px);font-weight:800;letter-spacing:-0.03em;color:#1b1233;margin:0 0 12px;line-height:1.15;">
-        Get Your <span style="color:#00b070;">Visa</span> <span style="color:#430f7a;">Done</span>
-      </h1>
-      <p style="font-size:16.5px;color:#675f80;max-width:620px;margin:0 auto;line-height:1.5;font-weight:500;">
+      <span class="eyebrow" style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--p2);display:inline-block;margin-bottom:8px;">Quick Directory</span>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(30px,5vw,46px);font-weight:800;letter-spacing:-0.03em;color:#1b1233;margin:0 0 12px;line-height:1.15;">
+        Get Your <span class="grad">Visa Done</span>
+      </h2>
+      <p style="font-size:16px;color:#675f80;max-width:620px;margin:0 auto;line-height:1.5;">
         Search verified visa routes, licensed experts, study programs and stays across 193+ countries.
       </p>
     </div>
@@ -1095,24 +1187,6 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <!-- Floating Cards Marquee Strip (Below Search Box) -->
   <div class="mqs" style="padding:10px 0 26px;overflow:hidden;"><div class="mq" id="mq1"></div><div class="mq r" id="mq2"></div></div>
 </section>
-
-<!-- 2. SHOWCASE SECTION (Featured Verified Experts, Jobs, Universities) -->
-<section id="airbnb-showcase" style="padding:24px 0 44px;background:#ffffff;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;">
-  <div class="wrap">
-    <!-- The Dynamic Showcase Grid (Pure Airbnb / Atlys Luxury Style) -->
-    <div id="showcase-grid" class="atlys-grid"></div>
-
-    <!-- Clean Bottom View-All CTA (Dynamic per category) -->
-    <div style="display:flex;justify-content:center;margin-top:28px;">
-      <a id="showcase-view-all" href="/find-experts" style="font-size:14px;font-weight:700;color:#370c63;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:9999px;background:#f7f2fe;border:1.5px solid #dccaf7;box-shadow:0 4px 16px rgba(67,15,122,0.06);transition:all .2s ease;">
-        <span id="showcase-view-all-text">Show all experts (150+)</span>
-        <span style="font-size:16px;line-height:1;">→</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-
 
 <!-- STATS -->
 <div class="stats" style="position:relative;z-index:5;"><div class="wrap"><div class="sg rv">
@@ -1417,7 +1491,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <section class="cta" style="padding-top:90px;background:linear-gradient(180deg,var(--l1),#fff 30%)"><div class="wrap"><div class="ctb rv"><div class="o1"></div><div class="o2"></div><div><h2>Your next country is one<br>conversation away.</h2><p>Create a free account, compare verified experts and start your move with escrow protection from day one.</p><div style="display:flex;gap:14px;flex-wrap:wrap"><a class="btn w" href="/signup">Get started free <svg class="i ar"><use href="#arrow"/></svg></a><a class="btn o" href="/find-experts">Search experts</a></div></div>
 <div class="ctc"><h4>Your move, simplified <span class="bdg"><svg class="i"><use href="#lock"/></svg>Escrow on</span></h4><div class="ln"><i>&#10003;</i>Pick destination &amp; visa<em>Done</em></div><div class="ln"><i>&#10003;</i>Match with verified expert<em>Done</em></div><div class="ln h"><i>3</i>Pay into escrow<em>Next</em></div><div class="ln h"><i>4</i>Track your application<em></em></div></div></div></div></section>
 </main>
-<footer><div class="wrap"><div class="fg"><div><img src="/logo.png" alt="TravlTik"><p class="ab">The global marketplace for visas, jobs, study and relocation, with licensed experts and escrow-protected payments.</p>
+<footer><div class="wrap"><div class="fg"><div><img src="/logo.png?v=12" alt="TravlTik"><p class="ab">The global marketplace for visas, jobs, study and relocation, with licensed experts and escrow-protected payments.</p>
 <form id="nl-form" class="nl" onsubmit="return false;"><input id="nl-email" type="email" required placeholder="Your email for visa news"><button type="submit" id="nl-btn" class="btn g s">Subscribe</button></form>
 <div class="so"><a href="https://facebook.com/travltik" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="i"><use href="#fb"/></svg></a><a href="https://twitter.com/travltik" target="_blank" rel="noopener noreferrer" aria-label="X"><svg class="i"><use href="#tw"/></svg></a><a href="https://instagram.com/travltik" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg class="i"><use href="#ig"/></svg></a><a href="https://linkedin.com/company/travltik" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg class="i"><use href="#li"/></svg></a><a href="https://youtube.com/@travltik" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg class="i"><use href="#yt"/></svg></a></div></div>
 <div><h5>Services</h5><ul><li><a href="/find-experts">Visas &amp; PR</a></li><li><a href="/find-experts?category=student">Study abroad</a></li><li><a href="/jobs">Jobs abroad</a></li><li><a href="/tours">Tours &amp; packages</a></li><li><a href="/find-experts">Housing</a></li></ul></div>
