@@ -397,7 +397,7 @@ export function ExpertProfileDetail({
               <div className="flex flex-col sm:flex-row items-center gap-3 mt-6 pt-5 border-t border-[rgba(67,15,122,0.08)]">
                 <button
                   onClick={() => setQuoteModalOpen(true)}
-                  className="w-full sm:w-auto bg-[#00b070] hover:bg-[#009660] active:scale-95 text-white font-extrabold text-xs px-7 py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(0,176,112,0.4)] hover:shadow-[0_12px_24px_-6px_rgba(0,176,112,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] active:scale-95 text-white font-extrabold text-xs px-7 py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(55,12,99,0.45)] hover:shadow-[0_12px_24px_-6px_rgba(55,12,99,0.6)] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Contact Provider</span>
@@ -767,7 +767,7 @@ export function ExpertProfileDetail({
                   </div>
                   <button
                     onClick={() => setReviewModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 bg-[#00b070] hover:bg-[#009660] text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer mt-2"
+                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-[0_4px_14px_-3px_rgba(55,12,99,0.4)] transition-all cursor-pointer mt-2"
                   >
                     <Star className="w-3.5 h-3.5 fill-white" />
                     <span>Be the first to review</span>
@@ -873,7 +873,7 @@ export function ExpertProfileDetail({
               <div className="space-y-3">
                 <button
                   onClick={() => setQuoteModalOpen(true)}
-                  className="w-full bg-[#00b070] hover:bg-[#009660] active:scale-95 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(0,176,112,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] active:scale-95 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(55,12,99,0.45)] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Contact Provider</span>

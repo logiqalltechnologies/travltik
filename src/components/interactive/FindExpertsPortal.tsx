@@ -1086,7 +1086,7 @@ export function FindExpertsPortal() {
                             </div>
                             <h3 className="font-plus-jakarta font-extrabold text-slate-900 text-lg">No Registered Experts Found</h3>
                             <p className="text-xs text-slate-500 max-w-sm mx-auto">Register as an expert consultant to get listed and connect with global applicants.</p>
-                            <a href="/register/expert" className="inline-block mt-2 bg-[#00b070] text-white text-xs font-extrabold px-6 py-2.5 rounded-xl shadow-md hover:bg-[#008f5a] transition-all">Register as Expert →</a>
+                            <a href="/register/expert" className="inline-block mt-2 bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white text-xs font-extrabold px-6 py-2.5 rounded-xl shadow-[0_6px_16px_-4px_rgba(55,12,99,0.45)] transition-all">Register as Expert →</a>
                         </div>
                     )}
 
@@ -1428,7 +1428,7 @@ export function FindExpertsPortal() {
                         <div className="pt-2 space-y-2">
                             <a
                                 href="/login?redirect=/find-experts"
-                                className="block w-full bg-[#00b070] hover:bg-[#008f5a] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all text-center"
+                                className="block w-full bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(55,12,99,0.45)] transition-all text-center"
                             >
                                 Log In Now
                             </a>
