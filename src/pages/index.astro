@@ -222,38 +222,48 @@ section{padding:96px 0;position:relative}
   .airbnb-host-link{display:inline-flex;padding:7px 12px;font-size:13px}
   .airbnb-globe-pill{display:none}
 }
+
+/* Category Navigation: Desktop vs Mobile */
+.airbnb-desktop-cat-nav{display:flex;align-items:center;justify-content:center;flex:1}
+.airbnb-mobile-cat-row{display:none}
+
+/* Airbnb Mobile Bottom Navigation Bar */
+.airbnb-mobile-bottom-bar{display:none}
+
 @media(max-width:768px){
+  body{padding-bottom:70px !important}
   .airbnb-header-inner{padding:0 14px}
-  .airbnb-top-row{min-height:58px;padding:6px 0;gap:10px}
-  .airbnb-logo{flex:0 0 auto}
-  .airbnb-logo img{height:38px;max-height:42px;width:auto}
-  .airbnb-host-link{padding:6px 10px;font-size:12px;font-weight:700}
-  .airbnb-user-pill-btn{padding:5px 6px 5px 12px;gap:8px;min-height:40px}
-  .airbnb-user-pill-btn svg.i{width:16px;height:16px}
+  .airbnb-top-row{min-height:52px;padding:6px 0 2px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .airbnb-logo{flex:0 0 auto;display:flex;align-items:center}
+  .airbnb-logo img{height:38px;max-height:42px;width:auto;display:block}
+  .airbnb-desktop-cat-nav{display:none !important}
+  .airbnb-host-link{padding:5px 10px;font-size:12px;font-weight:700}
+  .airbnb-user-pill-btn{padding:5px 6px 5px 12px;gap:8px;min-height:38px}
+  .airbnb-user-pill-btn svg.i{width:15px;height:15px}
   .airbnb-user-avatar{width:28px;height:28px;font-size:11px}
-  .airbnb-cat-tabs{gap:8px;padding:4px 0 8px;overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .airbnb-cat-tabs::-webkit-scrollbar{display:none}
-  .airbnb-cat-tab{flex-shrink:0;white-space:nowrap;padding:7px 14px;font-size:12.5px;gap:6px;border-radius:9999px}
-  .airbnb-cat-tab .tab-icon{font-size:15px}
   
-  .airbnb-search-bar-row{padding:6px 0 16px}
+  /* Row 2: Search Bar directly below Logo (Yelp style) */
+  .airbnb-search-bar-row{padding:4px 0 10px !important;width:100% !important}
   .airbnb-pill-search{
     border-radius:9999px !important;
     flex-direction:row !important;
     padding:4px 6px 4px 14px !important;
     align-items:center !important;
     gap:2px !important;
-    box-shadow:0 4px 16px -4px rgba(67,15,122,0.12),0 2px 6px rgba(0,0,0,0.04) !important;
-    border:1.5px solid #e2e8f0 !important;
+    box-shadow:0 4px 18px -4px rgba(67,15,122,0.12),0 2px 6px rgba(0,0,0,0.03) !important;
+    border:1.5px solid rgba(67,15,122,0.14) !important;
     width:100% !important;
-    min-height:52px !important;
+    min-height:50px !important;
     background:#ffffff !important;
   }
   .airbnb-pill-segment{
     padding:2px 6px !important;
     border:none !important;
     min-width:0 !important;
-    flex:1 !important;
+    flex:1.2 !important;
+  }
+  .airbnb-pill-segment.c-drop{
+    flex:0.85 !important;
   }
   .airbnb-pill-segment label{
     font-size:8.5px !important;
@@ -268,10 +278,10 @@ section{padding:96px 0;position:relative}
     display:block !important;
   }
   .airbnb-pill-segment input{
-    font-size:12px !important;
+    font-size:12.5px !important;
     font-weight:600 !important;
     line-height:1.2 !important;
-    color:#0f172a !important;
+    color:#1b1233 !important;
   }
   .pill-drop-btn{
     padding:0 !important;
@@ -279,12 +289,12 @@ section{padding:96px 0;position:relative}
   .pill-drop-val{
     font-size:12px !important;
     font-weight:600 !important;
-    gap:3px !important;
-    color:#0f172a !important;
+    gap:4px !important;
+    color:#1b1233 !important;
   }
   .pill-drop-val .flag-icon{
-    width:14px !important;
-    height:10px !important;
+    width:15px !important;
+    height:11px !important;
   }
   .pill-drop-chv{
     width:10px !important;
@@ -316,7 +326,7 @@ section{padding:96px 0;position:relative}
     align-items:center !important;
     justify-content:center !important;
     background:#00b070 !important;
-    box-shadow:0 3px 10px rgba(0,176,112,0.3) !important;
+    box-shadow:0 3px 12px rgba(0,176,112,0.35) !important;
   }
   .airbnb-round-search-btn span{
     display: none !important;
@@ -325,7 +335,103 @@ section{padding:96px 0;position:relative}
     width:15px !important;
     height:15px !important;
     color:#ffffff !important;
-    stroke-width:2.5 !important;
+    stroke-width:2.6 !important;
+  }
+
+  /* Row 3: Mobile Category Chips (below Search Bar, like Airbnb Image 1 & Yelp Image 2) */
+  .airbnb-mobile-cat-row{
+    display:block !important;
+    width:100% !important;
+    padding:2px 0 10px !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-width:none !important;
+  }
+  .airbnb-mobile-cat-row::-webkit-scrollbar{display:none !important}
+  .airbnb-mobile-cat-row .airbnb-cat-tabs{
+    display:flex !important;
+    align-items:center !important;
+    gap:8px !important;
+    padding:0 2px 4px !important;
+    overflow-x:auto !important;
+    flex-wrap:nowrap !important;
+    justify-content:flex-start !important;
+    scrollbar-width:none !important;
+    list-style:none !important;
+    margin:0 !important;
+  }
+  .airbnb-mobile-cat-row .airbnb-cat-tabs::-webkit-scrollbar{display:none !important}
+  .airbnb-mobile-cat-row .airbnb-cat-tab{
+    flex-shrink:0 !important;
+    white-space:nowrap !important;
+    padding:8px 16px !important;
+    font-size:12.5px !important;
+    font-weight:700 !important;
+    gap:7px !important;
+    border-radius:9999px !important;
+    background:#f7f3fd !important;
+    border:1.5px solid #e8ddf7 !important;
+    color:#4b4268 !important;
+    box-shadow:0 1px 3px rgba(0,0,0,0.03) !important;
+    transition:all .2s ease !important;
+    cursor:pointer !important;
+  }
+  .airbnb-mobile-cat-row .airbnb-cat-tab.active{
+    background:#370c63 !important;
+    color:#ffffff !important;
+    border-color:#370c63 !important;
+    box-shadow:0 4px 14px -2px rgba(55,12,99,0.45) !important;
+  }
+
+  /* Fixed Airbnb-Style Mobile Bottom Navigation Bar */
+  .airbnb-mobile-bottom-bar{
+    display:flex !important;
+    position:fixed !important;
+    bottom:0 !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    height:60px !important;
+    background:rgba(255,255,255,0.96) !important;
+    backdrop-filter:blur(16px) !important;
+    -webkit-backdrop-filter:blur(16px) !important;
+    border-top:1px solid rgba(67,15,122,0.12) !important;
+    box-shadow:0 -4px 20px rgba(0,0,0,0.05) !important;
+    z-index:999 !important;
+    align-items:center !important;
+    justify-content:space-around !important;
+    padding:0 8px calc(env(safe-area-inset-bottom, 0px) + 2px) !important;
+    box-sizing:border-box !important;
+  }
+  .mobile-bar-item{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex:1 !important;
+    height:100% !important;
+    text-decoration:none !important;
+    color:#675f80 !important;
+    transition:all 0.2s ease !important;
+    gap:3px !important;
+  }
+  .mobile-bar-item svg{
+    width:20px !important;
+    height:20px !important;
+    stroke-width:2.2 !important;
+    transition:transform 0.2s ease,color 0.2s ease !important;
+  }
+  .mobile-bar-item span{
+    font-size:10px !important;
+    font-weight:700 !important;
+    letter-spacing:-0.01em !important;
+  }
+  .mobile-bar-item.active{
+    color:#370c63 !important;
+  }
+  .mobile-bar-item.active svg{
+    color:#00b070 !important;
+    transform:scale(1.08) !important;
   }
 }
 /* hero - Airbnb clean pure white */
@@ -908,6 +1014,8 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <symbol id="grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
 <symbol id="user-check" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>
 <symbol id="crosshair" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+<symbol id="sparkles" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></symbol>
+<symbol id="user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
 </defs></svg>
 
 <!-- Airbnb Unified Header -->
@@ -919,8 +1027,8 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         <a href="/"><img src="/logo.png?v=14" alt="TravlTik" /></a>
       </div>
 
-      <!-- Center Category Navigation (Airbnb Style) -->
-      <nav aria-label="Categories">
+      <!-- Center Category Navigation (Airbnb Desktop Style) -->
+      <nav class="airbnb-desktop-cat-nav" aria-label="Categories">
         <ul class="airbnb-cat-tabs">
           <li>
             <button type="button" class="airbnb-cat-tab active" data-tab="experts">
@@ -1086,18 +1194,71 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         </div>
       </div>
     </div>
+
+    <!-- Row 3: Mobile Category Chips (Directly below Search Bar, Airbnb & Yelp style) -->
+    <nav class="airbnb-mobile-cat-row" aria-label="Categories Mobile">
+      <ul class="airbnb-cat-tabs">
+        <li>
+          <button type="button" class="airbnb-cat-tab active" data-tab="experts">
+            <span class="tab-icon">⚖️</span>
+            <span>Experts</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="jobs">
+            <span class="tab-icon">💼</span>
+            <span>Jobs</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="universities">
+            <span class="tab-icon">🎓</span>
+            <span>Universities</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="tours">
+            <span class="tab-icon">✈️</span>
+            <span>Tours</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="offers">
+            <span class="tab-icon">🏷️</span>
+            <span>Offers</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </header>
 <main>
 <!-- AIRBNB IMMEDIATE CONTENT SHOWCASE (Switches instantly when category tabs: Experts, Jobs, Universities, Tours, Offers are clicked) -->
-<section id="airbnb-showcase" style="padding:20px 0 36px;background:#ffffff;border-bottom:1px solid #f1f5f9;">
+<section id="airbnb-showcase" style="padding:16px 0 32px;background:#ffffff;border-bottom:1px solid #f1f5f9;">
   <div class="wrap">
+    <!-- Showcase Section Header Row (Airbnb Style) -->
+    <div class="showcase-header-row" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <h2 id="showcase-title" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(19px,4.2vw,24px);font-weight:800;color:#1b1233;margin:0;letter-spacing:-0.02em;">Top Verified Experts & Advisors</h2>
+        <p id="showcase-subtitle" style="font-size:13px;color:#675f80;margin:3px 0 0;font-weight:500;">Travellers rate these licensed specialists 4.9+ stars</p>
+      </div>
+      <a id="showcase-arrow-btn" href="/find-experts" style="width:38px;height:38px;border-radius:50%;background:#f7f3fd;border:1.5px solid rgba(67,15,122,0.12);display:flex;align-items:center;justify-content:center;color:#370c63;font-size:17px;font-weight:800;text-decoration:none;transition:all .2s ease;flex-shrink:0;" aria-label="View all items">→</a>
+    </div>
+
     <!-- The Dynamic Showcase Grid (Pure Airbnb / Atlys Luxury Style) -->
     <div id="showcase-grid" class="atlys-grid"></div>
 
+    <!-- Airbnb-Style Floating Feature Pill ("Prices include all fees" style) -->
+    <div class="airbnb-floating-badge-pill" style="display:flex;justify-content:center;margin-top:20px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:9999px;background:#ffffff;border:1.5px solid rgba(67,15,122,0.14);box-shadow:0 8px 24px -6px rgba(67,15,122,0.14),0 2px 6px rgba(0,0,0,0.02);font-size:12px;font-weight:800;color:#1b1233;">
+        <span style="color:#00b070;font-size:14px;">🔒</span>
+        <span>100% Milestone Escrow Protected</span>
+      </div>
+    </div>
+
     <!-- Clean Bottom View-All CTA (Dynamic per category) -->
-    <div style="display:flex;justify-content:center;margin-top:28px;">
-      <a id="showcase-view-all" href="/find-experts" style="font-size:14px;font-weight:700;color:#370c63;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:9999px;background:#f7f2fe;border:1.5px solid #dccaf7;box-shadow:0 4px 16px rgba(67,15,122,0.06);transition:all .2s ease;">
+    <div style="display:flex;justify-content:center;margin-top:16px;">
+      <a id="showcase-view-all" href="/find-experts" style="font-size:13.5px;font-weight:700;color:#370c63;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:9999px;background:#f7f2fe;border:1.5px solid #dccaf7;box-shadow:0 4px 16px rgba(67,15,122,0.06);transition:all .2s ease;">
         <span id="showcase-view-all-text">Show all experts (150+)</span>
         <span style="font-size:16px;line-height:1;">→</span>
       </a>
@@ -1499,6 +1660,27 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <div><h5>Company</h5><ul><li><a href="/channel-partner">Become a consultant</a></li><li><a href="/add-business">Add Your Business</a></li><li><a href="/biz/claim">Claim Your Business</a></li><li><a href="/escrow">Escrow Protection</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/support">Contact &amp; Support</a></li></ul></div>
 <div><h5>Get the app</h5><div class="apps" style="flex-direction:column"><a href="javascript:void(0)" aria-label="Download on App Store - Coming Soon"><div class="app-inner"><svg class="i f"><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></div><div class="app-hover-label"><span style="width:7px;height:7px;border-radius:50%;background:#00b070;display:inline-block"></span><span>Coming Soon</span></div></a><a href="javascript:void(0)" aria-label="Get it on Google Play - Coming Soon"><div class="app-inner"><svg class="i f"><use href="#play"/></svg><span><small>Get it on</small><b>Google Play</b></span></div><div class="app-hover-label"><span style="width:7px;height:7px;border-radius:50%;background:#00b070;display:inline-block"></span><span>Coming Soon</span></div></a></div></div></div>
 <div class="fb"><span>© 2026 TravlTik. All rights reserved. <a href="/terms" style="text-decoration:underline">Terms</a> · <a href="/privacy" style="text-decoration:underline">Privacy</a> · <a href="/escrow" style="text-decoration:underline">Escrow policy</a></span><div class="tr"><span><svg class="i"><use href="#lock"/></svg>Escrow secured</span><span><svg class="i"><use href="#shield"/></svg>Licence verified</span></div></div></div></footer>
+
+<!-- Airbnb-Style Fixed Mobile Bottom Navigation Bar (Explore, Experts, AI Tools, Account) -->
+<nav id="airbnb-mobile-bottom-bar" class="airbnb-mobile-bottom-bar" aria-label="Mobile Navigation">
+  <a href="/" class="mobile-bar-item active">
+    <svg class="i"><use href="#search"/></svg>
+    <span>Explore</span>
+  </a>
+  <a href="/find-experts" class="mobile-bar-item">
+    <svg class="i"><use href="#user-check"/></svg>
+    <span>Experts</span>
+  </a>
+  <a href="/ai-tools" class="mobile-bar-item">
+    <svg class="i"><use href="#sparkles"/></svg>
+    <span>AI Tools</span>
+  </a>
+  <a href="/login" class="mobile-bar-item" id="mobile-bar-account-link">
+    <svg class="i"><use href="#user"/></svg>
+    <span id="mobile-bar-account-label">Log in</span>
+  </a>
+</nav>
+
 <script is:inline>
 /* ── AUTH GUARD: Find my expert hero CTA ─────────────────────────────────── */
 (function(){
@@ -2353,9 +2535,15 @@ const airbnbPlaceholders = {
 
 $$('.airbnb-cat-tab').forEach(btn => {
   btn.onclick = () => {
-    $$('.airbnb-cat-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeAirbnbTab = btn.dataset.tab;
+    const tabKey = btn.dataset.tab;
+    $$('.airbnb-cat-tab').forEach(b => {
+      if (b.dataset.tab === tabKey) {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
+    });
+    activeAirbnbTab = tabKey;
     const qInp = $('#q');
     if (qInp && airbnbPlaceholders[activeAirbnbTab]) {
       qInp.placeholder = airbnbPlaceholders[activeAirbnbTab];
@@ -2850,11 +3038,19 @@ if (userPillBtn && userMenu) {
         avatarLetters.style.display = 'block';
         avatarLetters.textContent = displayLetters;
       }
+      const mobAccLink = document.getElementById('mobile-bar-account-link');
+      const mobAccSpan = document.getElementById('mobile-bar-account-label');
+      if (mobAccLink) mobAccLink.setAttribute('href', dashboardHref);
+      if (mobAccSpan) mobAccSpan.textContent = 'Account';
     } else {
       if (loggedOutView) loggedOutView.style.display = 'flex';
       if (loggedInView) loggedInView.style.display = 'none';
       if (defaultIcon) defaultIcon.style.display = 'block';
       if (avatarLetters) avatarLetters.style.display = 'none';
+      const mobAccLink = document.getElementById('mobile-bar-account-link');
+      const mobAccSpan = document.getElementById('mobile-bar-account-label');
+      if (mobAccLink) mobAccLink.setAttribute('href', '/login');
+      if (mobAccSpan) mobAccSpan.textContent = 'Log in';
     }
   }
 
