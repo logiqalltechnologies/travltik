@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Brand Gradients matching Landing Page Theme -->
+    <linearGradient id="travlPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#430f7a" />
+      <stop offset="100%" stop-color="#2d0852" />
+    </linearGradient>
+
+    <linearGradient id="travlGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d284" />
+      <stop offset="100%" stop-color="#00b070" />
+    </linearGradient>
+
+    <linearGradient id="trailGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00d284" stop-opacity="0.2" />
+      <stop offset="50%" stop-color="#00d284" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#00b070" stop-opacity="1" />
+    </linearGradient>
+
+    <filter id="subtleGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#430f7a" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- ==================== 1. EMBLEM: 'T' + CHECKMARK + AIRPLANE ==================== -->
+  <g id="brand-mark" transform="translate(14, 12)">
+    
+    <!-- Stylized Modern 'T' in Imperial Deep Purple -->
+    <!-- Crossbar -->
+    <path 
+      d="M 12 18 L 84 18 C 88 18 90 20 88 24 L 84 32 C 82 35 79 36 75 36 L 56 36 L 56 74 C 56 78 53 81 49 81 L 39 81 C 35 81 32 78 32 74 L 32 36 L 19 36 C 15 36 12 34 11 30 L 8 23 C 7 19 9 18 12 18 Z" 
+      fill="url(#travlPurple)"
+      filter="url(#subtleGlow)"
+    />
+
+    <!-- Dynamic Emerald Checkmark '✓' wrapping through 'T' -->
+    <!-- Left check tick -->
+    <path 
+      d="M 6 56 C 4 53 6 49 10 48 L 17 46 C 20 45 23 47 25 50 L 37 68 C 39 71 43 71 45 68 L 74 33 C 76 30 80 30 83 33 L 88 38 C 91 41 90 45 87 48 L 47 92 C 43 96 37 96 33 92 L 6 56 Z" 
+      fill="url(#travlGreen)"
+    />
+
+    <!-- Speed Contrail dashes pointing to plane -->
+    <line x1="86" y1="36" x2="94" y2="26" stroke="#00d284" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 4" />
+    <line x1="81" y1="42" x2="87" y2="34" stroke="#00d284" stroke-width="2" stroke-linecap="round" opacity="0.6" />
+
+    <!-- Sleek Supersonic Jet Taking Off (Top-Right Angle: 42 deg) -->
+    <g transform="translate(98, 20) rotate(-42) scale(0.95)">
+      <!-- Fuselage -->
+      <path 
+        d="M 0 -16 C 1.5 -12 2 -4 2 8 L 1 12 L -1 12 L -2 8 C -2 -4 -1.5 -12 0 -16 Z" 
+        fill="#430f7a" 
+      />
+      <!-- Delta Wings -->
+      <path 
+        d="M 0 -2 L 15 8 L 13 11 L 2 7 L -2 7 L -13 11 L -15 8 L 0 -2 Z" 
+        fill="#430f7a" 
+      />
+      <!-- Tail fin -->
+      <path 
+        d="M 0 5 L 6 12 L -6 12 Z" 
+        fill="#00b070" 
+      />
+      <!-- Nose tip highlight -->
+      <circle cx="0" cy="-14" r="1.2" fill="#00e08f" />
+    </g>
+  </g>
+
+  <!-- ==================== 2. WORDMARK: TravlTik ==================== -->
+  <g id="brand-text" transform="translate(138, 20)">
+    
+    <!-- 'Travl' in Vibrant Atlys Emerald Green -->
+    <text 
+      x="0" 
+      y="62" 
+      font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+      font-weight="800" 
+      font-size="62" 
+      letter-spacing="-0.035em" 
+      fill="url(#travlGreen)"
+    >Travl</text>
+
+    <!-- 'Tik' in Rich Imperial Purple -->
+    <text 
+      x="166" 
+      y="62" 
+      font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+      font-weight="800" 
+      font-size="62" 
+      letter-spacing="-0.035em" 
+      fill="url(#travlPurple)"
+    >Tik</text>
+
+    <!-- ==================== 3. SLEEK SUBTITLE LOCKUP ==================== -->
+    <g transform="translate(2, 82)">
+      <!-- Left Accent Line -->
+      <line x1="0" y1="2" x2="32" y2="2" stroke="url(#travlPurple)" stroke-width="1.8" stroke-linecap="round" opacity="0.6" />
+      
+      <!-- Subtitle Text -->
+      <text 
+        x="42" 
+        y="6" 
+        font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+        font-weight="700" 
+        font-size="11.5" 
+        letter-spacing="0.22em" 
+        fill="#554477"
+      >TRAVEL <tspan fill="#00b070" font-weight="900">|</tspan> VISA <tspan fill="#00b070" font-weight="900">|</tspan> SERVICES</text>
+      
+      <!-- Right Accent Line -->
+      <line x1="228" y1="2" x2="260" y2="2" stroke="url(#travlGreen)" stroke-width="1.8" stroke-linecap="round" opacity="0.8" />
+    </g>
+  </g>
+</svg>
