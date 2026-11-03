@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style is:global>
-:root{--g:#00b070;--g2:#008f5a;--g3:#00c985;--gl:#e2f7ee;--gl2:#f1fbf6;--p:#430f7a;--p2:#6b34b3;--p3:#9a6bdc;--l1:#f7f2fe;--l2:#eee3fc;--l3:#dccaf7;--l4:#c4a6f0;--ink:#1b1233;--mut:#675f80;--line:rgba(67,15,122,.1);--sh:0 24px 50px -28px rgba(67,15,122,.35);--r:24px}
+:root{--g:#00b070;--g2:#008f5a;--g3:#00c985;--gl:#e2f7ee;--gl2:#f1fbf6;--p:#430f7a;--p2:#6b34b3;--p3:#9a6bdc;--l1:#f7f2fe;--l2:#eee3fc;--l3:#dccaf7;--l4:#c4a6f0;--ink:#1b1233;--mut:#675f80;--line:rgba(67,15,122,.12);--sh:0 16px 44px -16px rgba(67,15,122,.14);--r:28px}
 *,*:before,*:after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:hidden;max-width:100vw;width:100%}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100vw;width:100%;position:relative}
@@ -32,7 +32,8 @@ section{padding:96px 0;position:relative}
 .btn.o{background:#fff;border-color:var(--l3);color:var(--p)}.btn.o:hover{border-color:var(--p);transform:translateY(-2px)}
 .btn.w{background:#fff;color:var(--p)}.btn.w:hover{transform:translateY(-2px)}
 .btn.s{padding:11px 22px;font-size:14px}
-.gc{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(140deg,rgba(0,176,112,.38),rgba(154,107,220,.38) 60%,rgba(67,15,122,.2)) border-box;border:1.5px solid transparent;border-radius:var(--r);box-shadow:var(--sh);transition:.35s cubic-bezier(.2,.7,.2,1)}
+.gc{background:#fff;border:1.5px solid rgba(67,15,122,.12);border-radius:28px;box-shadow:0 16px 40px -18px rgba(67,15,122,.12),0 2px 6px rgba(0,0,0,.02);transition:.35s cubic-bezier(.2,.7,.2,1)}
+.gc:hover{border-color:rgba(67,15,122,.24);box-shadow:0 24px 50px -16px rgba(67,15,122,.2)}
 .lift:hover{transform:translateY(-8px);box-shadow:0 36px 60px -26px rgba(67,15,122,.45)}
 .rv{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}.rv.on{opacity:1;transform:none}
 .pulse{width:9px;height:9px;border-radius:50%;background:var(--g);position:relative;flex:none}
@@ -372,17 +373,17 @@ section{padding:96px 0;position:relative}
 .srch{background:#ffffff;padding-bottom:10px}
 
 /* Easy Search Bar (Restored Above Quick Search) */
-.sbox{padding:26px 28px;border-radius:28px;background:#fff;border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(67,15,122,.2);margin-bottom:24px}
+.sbox{padding:26px 28px;border-radius:28px;background:#fff;border:1.5px solid rgba(67,15,122,.12);box-shadow:0 20px 48px -18px rgba(67,15,122,.14),0 2px 6px rgba(0,0,0,.02);margin-bottom:24px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
 .tab{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:99px;font-weight:700;font-size:13.5px;color:#5a5174;background:var(--l1);border:1px solid transparent;transition:.2s ease;cursor:pointer}
 .tab:hover{background:var(--l2);color:var(--ink)}
 .tab.on{background:linear-gradient(135deg,var(--p2),var(--p));color:#fff;box-shadow:0 10px 20px -10px rgba(67,15,122,.75)}
 .tab svg{font-size:15px;width:15px;height:15px}
-.sfm{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:12px;align-items:stretch;padding:10px;border-radius:22px;background:var(--l1);border:1px solid var(--l2)}
+.sfm{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:12px;align-items:stretch;padding:10px;border-radius:22px;background:#fbf9fd;border:1.5px solid #f1ebf9}
 @media(max-width:980px){.sfm{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.sfm{grid-template-columns:1fr}}
-.fld{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:10px 16px;border:1.5px solid transparent;transition:.2s;position:relative}
-.fld:hover{border-color:var(--p3)}
+.fld{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:10px 16px;border:1.5px solid rgba(67,15,122,.08);transition:.2s;position:relative}
+.fld:hover{border-color:rgba(67,15,122,.25)}
 .fld:focus-within{border-color:var(--g)}
 .fld>svg{color:var(--g2);font-size:18px;width:18px;height:18px;flex-shrink:0}
 .fld label{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);line-height:1.2}
@@ -421,8 +422,8 @@ section{padding:96px 0;position:relative}
   cursor: pointer;
   text-decoration: none;
   color: #ffffff;
-  box-shadow: 0 12px 32px -8px rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 16px 40px -15px rgba(67, 15, 122, 0.22);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
   transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s ease, border-color 0.3s ease;
   flex-shrink: 0;
   box-sizing: border-box;
@@ -437,8 +438,8 @@ section{padding:96px 0;position:relative}
 }
 .atlys-card:hover{
   transform: translateY(-8px);
-  box-shadow: 0 24px 50px -12px rgba(0,0,0,0.65);
-  border-color: rgba(255,255,255,0.25);
+  box-shadow: 0 24px 50px -12px rgba(67, 15, 122, 0.38);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .atlys-card-bg{
@@ -629,7 +630,7 @@ section{padding:96px 0;position:relative}
 }
 
 /* Quick Search (Bottom) */
-.qs-card{background:#fff;border-radius:32px;padding:32px 34px 28px;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(67,15,122,.18),0 0 1px rgba(0,0,0,.06);font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px}
+.qs-card{background:#fff;border-radius:28px;padding:32px 34px 28px;border:1.5px solid rgba(67,15,122,.12);box-shadow:0 20px 48px -18px rgba(67,15,122,.14),0 2px 6px rgba(0,0,0,.02);font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px}
 .qs-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:22px}
 .qs-title-wrap{display:flex;align-items:center;gap:14px}
 .qs-icon-box{width:46px;height:46px;border-radius:16px;background:var(--gl);border:1px solid rgba(0,176,112,.2);display:flex;align-items:center;justify-content:center;color:var(--g2);flex-shrink:0}
@@ -660,7 +661,7 @@ section{padding:96px 0;position:relative}
 .qs-col{position:relative}
 .qs-lbl{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
 .qs-lbl span{font-weight:600;text-transform:none;letter-spacing:0}
-.qs-input-box, .qs-drop-box{background:#fff;border:1.5px solid var(--l3);border-radius:18px;height:54px;padding:0 16px;display:flex;align-items:center;gap:11px;transition:all .2s ease;position:relative}
+.qs-input-box, .qs-drop-box{background:#fff;border:1.5px solid #ede8f5;border-radius:18px;height:54px;padding:0 16px;display:flex;align-items:center;gap:11px;transition:all .2s ease;position:relative}
 .qs-input-box:focus-within, .qs-drop-box.open{border-color:var(--g);box-shadow:0 0 0 3.5px rgba(0,176,112,.14);z-index:60}
 .qs-col:has(.open){z-index:60}
 .qs-fld-icon{width:19px;height:19px;color:var(--g2);flex-shrink:0}
@@ -713,7 +714,7 @@ section{padding:96px 0;position:relative}
 /* bento */
 .svc{background:linear-gradient(180deg,#fff,var(--l1) 40%,#fff)}
 .bn{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(210px,auto);gap:22px}
-.bi{padding:28px;border-radius:28px;position:relative;overflow:hidden;border:1px solid var(--line);background:#fff;transition:.35s cubic-bezier(.2,.7,.2,1);box-shadow:var(--sh)}.bi:hover{transform:translateY(-6px);box-shadow:0 36px 60px -28px rgba(67,15,122,.5)}
+.bi{padding:28px;border-radius:28px;position:relative;overflow:hidden;border:1.5px solid rgba(67,15,122,.12);background:#fff;transition:.35s cubic-bezier(.2,.7,.2,1);box-shadow:0 16px 40px -18px rgba(67,15,122,.12),0 2px 6px rgba(0,0,0,.02)}.bi:hover{transform:translateY(-6px);border-color:rgba(67,15,122,.24);box-shadow:0 24px 50px -16px rgba(67,15,122,.2)}
 .bi .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:25px;background:var(--l2);color:var(--p);margin-bottom:18px}
 .bi h3{font-size:21px;font-weight:700;margin-bottom:8px;line-height:1.2}.bi p{font-size:14.5px;color:var(--mut)}.bi .lk{display:inline-flex;gap:8px;align-items:center;font-weight:800;font-size:14px;color:var(--p);margin-top:16px}
 .b1{display:flex;flex-direction:column;grid-column:span 2;grid-row:span 2;background:linear-gradient(150deg,var(--l2),#fff 70%)}.b1 h3{font-size:30px}.b1 p{font-size:16px;max-width:380px}
@@ -735,7 +736,7 @@ section{padding:96px 0;position:relative}
 .sc2 .nb{position:absolute;left:-8px;top:-8px;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--g3),var(--g));color:#fff;font-family:Sora;font-weight:800;display:grid;place-items:center;font-size:15px;box-shadow:0 8px 18px -6px rgba(0,176,112,.8);border:3px solid #fff}
 .sc2 h3{font-size:18px;font-weight:700;margin-bottom:8px}.sc2 p{font-size:13.5px;color:var(--mut);margin-bottom:14px;min-height:84px}
 .sc2 .tg{font-size:12px;font-weight:800;color:var(--g2);background:var(--gl);padding:5px 12px;border-radius:99px;display:inline-block}
-.esc{margin-top:64px;display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;padding:48px;border-radius:36px;background:#fff;border:1px solid var(--line);box-shadow:0 50px 90px -50px rgba(67,15,122,.5);position:relative;overflow:hidden;max-width:100%;box-sizing:border-box}
+.esc{margin-top:64px;display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;padding:48px;border-radius:28px;background:#fff;border:1.5px solid rgba(67,15,122,.12);box-shadow:0 20px 48px -18px rgba(67,15,122,.14),0 2px 6px rgba(0,0,0,.02);position:relative;overflow:hidden;max-width:100%;box-sizing:border-box}
 .esc:before{content:"";position:absolute;right:-120px;top:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,var(--gl),transparent 70%)}
 .esc h3{font-size:34px;font-weight:800;line-height:1.12;margin:6px 0 16px;word-break:break-word}.esc p{color:var(--mut);font-size:16.5px;margin-bottom:22px;word-break:break-word}
 .eck{display:grid;gap:11px}.eck div{display:flex;gap:12px;align-items:center;font-weight:600;font-size:15px;word-break:break-word}.eck i{width:26px;height:26px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-size:14px;flex:none}
@@ -749,7 +750,8 @@ section{padding:96px 0;position:relative}
 .ecalc{margin-top:26px;padding:18px 20px;border-radius:18px;background:var(--l1);border:1px dashed var(--l3)}.ecalc label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:8px;color:var(--p)}
 /* consultants */
 .cg{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-.cn{padding:26px 22px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden}
+.cn{padding:26px 22px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;border-radius:28px;border:1.5px solid rgba(67,15,122,.12);box-shadow:0 16px 40px -18px rgba(67,15,122,.12),0 2px 6px rgba(0,0,0,.02);background:#fff;transition:.35s ease}
+.cn:hover{border-color:rgba(67,15,122,.28);box-shadow:0 24px 50px -16px rgba(67,15,122,.2)}
 .cn:before{content:"";position:absolute;left:0;right:0;top:0;height:92px;background:linear-gradient(135deg,var(--l2),var(--gl))}
 .cn .av{position:relative;border:4px solid #fff;margin-bottom:14px;box-shadow:0 10px 22px -10px rgba(67,15,122,.6)}.cn .on{position:absolute;right:calc(50% - 46px);top:70px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff}
 .cn h4{font-size:18px;font-weight:700;position:relative}.cn .rl{font-size:13px;color:var(--mut);font-weight:500;margin:2px 0 12px}
@@ -768,8 +770,8 @@ section{padding:96px 0;position:relative}
 .clg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 @media(max-width:980px){.clg{grid-template-columns:repeat(2,1fr);gap:18px}}
 @media(max-width:640px){.clg{grid-template-columns:1fr;gap:16px}}
-.cl-card{position:relative;min-height:360px;height:370px;border-radius:26px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:26px 24px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 12px 32px -10px rgba(0,0,0,0.12);transition:all .35s cubic-bezier(0.16,1,0.3,1);text-decoration:none;cursor:pointer;animation:in .5s both}
-.cl-card:hover{transform:translateY(-6px);box-shadow:0 26px 54px -14px rgba(0,0,0,0.24)}
+.cl-card{position:relative;min-height:360px;height:370px;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:26px 24px;border:1.5px solid rgba(67,15,122,.12);box-shadow:0 16px 40px -18px rgba(67,15,122,.12),0 2px 6px rgba(0,0,0,.02);transition:all .35s cubic-bezier(0.16,1,0.3,1);text-decoration:none;cursor:pointer;animation:in .5s both}
+.cl-card:hover{transform:translateY(-6px);border-color:rgba(67,15,122,.28);box-shadow:0 26px 54px -14px rgba(67,15,122,.24)}
 .cl-card .bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(0.16,1,0.3,1);z-index:1}
 .cl-card:hover .bg-img{transform:scale(1.05)}
 .cl-card .overlay{position:absolute;inset:0;z-index:2;pointer-events:none}
@@ -822,7 +824,7 @@ section{padding:96px 0;position:relative}
 .fq{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start}
 .fq h2{font-size:44px;line-height:1.1;font-weight:800;margin-bottom:16px}.fq .l{color:var(--mut);font-size:17px;margin-bottom:28px}
 .hlp{padding:26px;border-radius:24px;background:linear-gradient(140deg,var(--l2),var(--gl));display:flex;gap:16px;align-items:center}.hlp i{width:54px;height:54px;border-radius:18px;background:#fff;color:var(--g2);display:grid;place-items:center;font-size:26px;flex:none;box-shadow:0 10px 20px -12px rgba(67,15,122,.6)}.hlp b{display:block;font-family:Sora;font-size:16px}.hlp span{font-size:13.5px;color:var(--mut);font-weight:500}
-.qa{border-radius:22px;background:#fff;border:1.5px solid var(--l2);margin-bottom:14px;overflow:hidden;transition:.3s}.qa.on{border-color:var(--g);box-shadow:var(--sh)}
+.qa{border-radius:24px;background:#fff;border:1.5px solid rgba(67,15,122,.12);margin-bottom:14px;overflow:hidden;transition:.3s;box-shadow:0 8px 24px -14px rgba(67,15,122,.08)}.qa.on{border-color:var(--g);box-shadow:0 16px 40px -16px rgba(0,176,112,.25)}
 .qa button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 26px;font-weight:700;font-size:16.5px;text-align:left;font-family:Sora;letter-spacing:-.02em}
 .qa button i{width:34px;height:34px;border-radius:50%;background:var(--l2);display:grid;place-items:center;font-size:17px;color:var(--p);transition:.3s;flex:none}.qa.on button i{background:var(--g);color:#fff;transform:rotate(45deg)}
 .qa .an{max-height:0;overflow:hidden;transition:max-height .4s ease;color:var(--mut);font-size:15.5px;padding:0 26px}.qa.on .an{max-height:220px;padding-bottom:24px}
@@ -914,7 +916,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <!-- Row 1: Logo | Category Tabs | User Pill -->
     <div class="airbnb-top-row">
       <div class="airbnb-logo">
-        <a href="/"><img src="/logo.png?v=10" alt="TravlTik" /></a>
+        <a href="/"><img src="/logo.png?v=11" alt="TravlTik" /></a>
       </div>
 
       <!-- Center Category Navigation (Airbnb Style) -->
@@ -1008,110 +1010,18 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         </div>
       </div>
     </div>
-    <!-- Row 2: Centered Floating Search Pill Bar -->
-    <div class="airbnb-search-bar-row">
-      <div class="airbnb-pill-search">
-        <!-- Field 1: Service -->
-        <div class="airbnb-pill-segment">
-          <div class="pill-label-row">
-            <svg class="i pill-segment-icon"><use href="#search"/></svg>
-            <label for="q">Service</label>
-          </div>
-          <input type="text" id="q" placeholder="e.g. Canada Student Visa" autocomplete="off" />
-        </div>
-
-        <div class="airbnb-pill-divider"></div>
-
-        <!-- Field 2: Destination -->
-        <div class="airbnb-pill-segment c-drop" id="pill-dest-drop">
-          <div class="pill-label-row">
-            <svg class="i pill-segment-icon"><use href="#map"/></svg>
-            <label>Destination</label>
-          </div>
-          <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-dest-btn">
-            <span class="pill-drop-val" id="pill-dest-val-text"><span class="pill-placeholder">Select Country</span></span>
-            <svg class="i pill-drop-chv"><use href="#chevron-down"/></svg>
-          </button>
-          <input type="hidden" id="dest-val" value="" />
-          <div class="pill-drop-menu" id="pill-dest-menu">
-            <div class="c-drop-opt on" data-v=""><span class="flag-icon" style="font-size:16px">🌐</span> All Countries <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada" /> Canada <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia" /> Australia <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="USA" data-f="us"><img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="USA" /> USA <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Germany" data-f="de"><img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany" /> Germany <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Japan" data-f="jp"><img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan" /> Japan <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Singapore" data-f="sg"><img src="https://flagcdn.com/w40/sg.png" class="flag-icon" alt="Singapore" /> Singapore <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Ireland" data-f="ie"><img src="https://flagcdn.com/w40/ie.png" class="flag-icon" alt="Ireland" /> Ireland <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="France" data-f="fr"><img src="https://flagcdn.com/w40/fr.png" class="flag-icon" alt="France" /> France <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="New Zealand" data-f="nz"><img src="https://flagcdn.com/w40/nz.png" class="flag-icon" alt="NZ" /> New Zealand <svg class="i chk"><use href="#check"/></svg></div>
-          </div>
-        </div>
-
-        <div class="airbnb-pill-divider"></div>
-
-        <!-- Field 3: Location -->
-        <div class="airbnb-pill-segment c-drop" id="pill-from-drop">
-          <div class="pill-label-row">
-            <svg class="i pill-segment-icon"><use href="#flag"/></svg>
-            <label>Location</label>
-          </div>
-          <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-from-btn">
-            <span class="pill-drop-val" id="pill-from-val-text"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India</span>
-            <svg class="i pill-drop-chv"><use href="#chevron-down"/></svg>
-          </button>
-          <input type="hidden" id="from-val" value="India" />
-          <div class="pill-drop-menu" id="pill-from-menu" style="left:auto;right:0;">
-            <div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India" /> India <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria" /> Nigeria <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines" /> Philippines <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan" /> Pakistan <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Bangladesh" data-f="bd"><img src="https://flagcdn.com/w40/bd.png" class="flag-icon" alt="Bangladesh" /> Bangladesh <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Nepal" data-f="np"><img src="https://flagcdn.com/w40/np.png" class="flag-icon" alt="Nepal" /> Nepal <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Sri Lanka" data-f="lk"><img src="https://flagcdn.com/w40/lk.png" class="flag-icon" alt="Sri Lanka" /> Sri Lanka <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
-          </div>
-        </div>
-
-        <!-- Search Button (Brand Green Button) -->
-        <div class="airbnb-pill-btn-box">
-          <button type="button" id="go" class="airbnb-round-search-btn" aria-label="Search">
-            <svg class="i" style="width:16px;height:16px;stroke:#fff;stroke-width:2.8"><use href="#search"/></svg>
-            <span>Search</span>
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </header>
 <main>
-<!-- AIRBNB IMMEDIATE CONTENT SHOWCASE (Switches instantly when category tabs: Experts, Jobs, Universities, Tours, Offers are clicked) -->
-<section id="airbnb-showcase" style="padding:20px 0 36px;background:#ffffff;border-bottom:1px solid #f1f5f9;">
-  <div class="wrap">
-    <!-- The Dynamic Showcase Grid (Pure Airbnb / Atlys Luxury Style) -->
-    <div id="showcase-grid" class="atlys-grid"></div>
-
-    <!-- Clean Bottom View-All CTA (Dynamic per category) -->
-    <div style="display:flex;justify-content:center;margin-top:28px;">
-      <a id="showcase-view-all" href="/find-experts" style="font-size:14px;font-weight:700;color:#370c63;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:9999px;background:#f7f2fe;border:1.5px solid #dccaf7;box-shadow:0 4px 16px rgba(67,15,122,0.06);transition:all .2s ease;">
-        <span id="showcase-view-all-text">Show all experts (150+)</span>
-        <span style="font-size:16px;line-height:1;">→</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- GET YOUR VISA DONE SECTION (Below Cards) -->
+<!-- 1. HERO SECTION: Get Your Visa Done (Exact Theme & Layout matching Screenshot) -->
 <section class="visa-done-section" id="visa-done" style="padding:48px 0 20px;background:#ffffff;">
   <div class="wrap">
     <div class="sh c rv" style="margin-bottom:28px;">
-      <span class="eyebrow" style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--p2);display:inline-block;margin-bottom:8px;">Quick Directory</span>
-      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(30px,5vw,46px);font-weight:800;letter-spacing:-0.03em;color:#1b1233;margin:0 0 12px;line-height:1.15;">
-        Get Your <span class="grad">Visa Done</span>
-      </h2>
-      <p style="font-size:16px;color:#675f80;max-width:620px;margin:0 auto;line-height:1.5;">
+      <span class="eyebrow" style="display:inline-flex;align-items:center;padding:5px 16px;border-radius:99px;font-size:11.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#430f7a;background:#f4eff9;border:1px solid rgba(67,15,122,0.12);margin-bottom:12px;">Quick Directory</span>
+      <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(34px,5.5vw,54px);font-weight:800;letter-spacing:-0.03em;color:#1b1233;margin:0 0 12px;line-height:1.15;">
+        Get Your <span style="color:#00b070;">Visa</span> <span style="color:#430f7a;">Done</span>
+      </h1>
+      <p style="font-size:16.5px;color:#675f80;max-width:620px;margin:0 auto;line-height:1.5;font-weight:500;">
         Search verified visa routes, licensed experts, study programs and stays across 193+ countries.
       </p>
     </div>
@@ -1185,6 +1095,24 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <!-- Floating Cards Marquee Strip (Below Search Box) -->
   <div class="mqs" style="padding:10px 0 26px;overflow:hidden;"><div class="mq" id="mq1"></div><div class="mq r" id="mq2"></div></div>
 </section>
+
+<!-- 2. SHOWCASE SECTION (Featured Verified Experts, Jobs, Universities) -->
+<section id="airbnb-showcase" style="padding:24px 0 44px;background:#ffffff;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;">
+  <div class="wrap">
+    <!-- The Dynamic Showcase Grid (Pure Airbnb / Atlys Luxury Style) -->
+    <div id="showcase-grid" class="atlys-grid"></div>
+
+    <!-- Clean Bottom View-All CTA (Dynamic per category) -->
+    <div style="display:flex;justify-content:center;margin-top:28px;">
+      <a id="showcase-view-all" href="/find-experts" style="font-size:14px;font-weight:700;color:#370c63;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:9999px;background:#f7f2fe;border:1.5px solid #dccaf7;box-shadow:0 4px 16px rgba(67,15,122,0.06);transition:all .2s ease;">
+        <span id="showcase-view-all-text">Show all experts (150+)</span>
+        <span style="font-size:16px;line-height:1;">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
 
 <!-- STATS -->
 <div class="stats" style="position:relative;z-index:5;"><div class="wrap"><div class="sg rv">
