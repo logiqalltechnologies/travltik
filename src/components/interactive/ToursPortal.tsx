@@ -208,7 +208,7 @@ const holidayTours = [
 const sportTours = [
     { 
         id: "s5", 
-        name: "Cricket Tours — Europe | Canada (Greece Special)", 
+        name: "Greece Cricket Tour", 
         sport: "cricket", 
         country: "greece", 
         month: "Upcoming Autumn Batch", 
@@ -231,8 +231,8 @@ const sportTours = [
             "All Inclusive Package: ₹2.5 Lakhs",
             "Registration Fee: ₹10,000/-"
         ], 
-        tags: ["3 X T20 Matches", "Schengen Visa", "Risingat Sports India"], 
-        description: "Official Cricket Tour to Greece, Europe & Canada. Includes minimum 3 x T20 matches against official clubs and national level cricket boards, star hotel stays, and complete visa application assistance. Registration fee: INR 10,000. All inclusive package: INR 2.5 Lakhs.",
+        tags: ["Greece Cricket Tour", "3 X T20 Matches", "Schengen Visa", "Risingat Sports India"], 
+        description: "Official Cricket Tour to Greece, Europe & Canada with Risingat Sports India. Includes minimum 3 x T20 matches against official clubs and national level cricket boards, star hotel stays, and complete Schengen visa application assistance. Registration fee: INR 10,000. All inclusive package: INR 2.5 Lakhs.",
         partnerLogo: "/images/rising_sports_logo.jpg" 
     },
     { id: "s1", name: "FIFA World Cup 2026 — USA Package", sport: "football", country: "usa", month: "June 2025", price: 185000, originalPrice: 220000, rating: 4.9, reviews: 142, days: 11, nights: 10, image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&h=500&fit=crop", includes: ["Match tickets", "Hotel", "Visa included", "Transfers"], tags: ["Match tickets", "Hotel", "Visa included"], description: "Watch FIFA World Cup live! Includes match tickets, luxurious hotel stay, and complete USA tourist visa processing." },
@@ -569,6 +569,7 @@ export function ToursPortal() {
                                 onChange={setSportCountry} 
                                 options={[
                                     { value: "Anywhere", label: "Anywhere" },
+                                    { value: "🇬🇷 Greece", label: "🇬🇷 Greece" },
                                     { value: "🇬🇧 UK", label: "🇬🇧 UK" },
                                     { value: "🇦🇪 UAE", label: "🇦🇪 UAE" },
                                     { value: "🇺🇸 USA", label: "🇺🇸 USA" },
@@ -581,13 +582,14 @@ export function ToursPortal() {
                                 onChange={setSportMonth} 
                                 options={[
                                     { value: "Any Month", label: "Any Month" },
+                                    { value: "Upcoming Autumn Batch", label: "Upcoming Autumn Batch" },
                                     { value: "June 2025", label: "June 2025" },
                                     { value: "July 2025", label: "July 2025" },
                                     { value: "Dec 2025", label: "Dec 2025" }
                                 ]} 
                             />
                         </div>
-                        <button onClick={() => triggerToast("⚽ Searching sport tours...")} className="w-full md:w-auto bg-[#00b070] hover:bg-[#009282] text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/25 active:scale-95 self-end shrink-0 cursor-pointer">
+                        <button onClick={() => triggerToast("🏏 Searching sport tours...")} className="w-full md:w-auto bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold px-8 py-3.5 rounded-2xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-[0_6px_16px_-4px_rgba(55,12,99,0.45)] active:scale-95 self-end shrink-0 cursor-pointer">
                             <Search className="w-4 h-4" /> Search Sport Tours
                         </button>
                     </div>
@@ -889,7 +891,7 @@ export function ToursPortal() {
                                 { key: "all", label: "All Sports", emoji: "🏆" },
                                 { key: "football", label: "Football / FIFA", emoji: "⚽" },
                                 { key: "f1", label: "Formula 1", emoji: "🏎️" },
-                                { key: "cricket", label: "Cricket", emoji: "🏏" }
+                                { key: "cricket", label: "Cricket (Greece Tour)", emoji: "🏏" }
                             ].map(item => (
                                 <div 
                                     key={item.key} 
@@ -1341,7 +1343,7 @@ export function ToursPortal() {
                                     href={`https://wa.me/91${selectedTour.contactPhone || "76611989366"}?text=Hi%20Risingat%20Sports,%20I%20am%20interested%20in%20the%20${encodeURIComponent(selectedTour.name)}`}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-lg transition-all outline-none active:scale-95 shrink-0"
+                                    className="w-full sm:w-auto bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold text-xs px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(55,12,99,0.45)] transition-all outline-none active:scale-95 shrink-0"
                                 >
                                     <span>Register & Contact (+91 76611989366)</span>
                                 </a>

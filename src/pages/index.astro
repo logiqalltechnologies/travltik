@@ -1121,6 +1121,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           <input type="hidden" id="dest-val" value="" />
           <div class="pill-drop-menu" id="pill-dest-menu">
             <div class="c-drop-opt on" data-v=""><span class="flag-icon" style="font-size:16px">🌐</span> All Countries <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Greece" data-f="gr"><img src="https://flagcdn.com/w40/gr.png" class="flag-icon" alt="Greece" /> Greece <svg class="i chk"><use href="#check"/></svg></div>
             <div class="c-drop-opt" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada" /> Canada <svg class="i chk"><use href="#check"/></svg></div>
             <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
             <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia" /> Australia <svg class="i chk"><use href="#check"/></svg></div>
@@ -1433,6 +1434,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
             <div class="c-drop-menu qs-menu" id="qs-dest-menu">
               <div class="c-drop-opt on" data-v="All Countries">
                 <svg class="i" style="width:16px;height:16px;color:var(--g)"><use href="#globe"/></svg> All Countries <svg class="i chk"><use href="#check"/></svg>
+              </div>
+              <div class="c-drop-opt" data-v="Greece" data-f="gr">
+                <img src="https://flagcdn.com/w40/gr.png" class="flag-icon" alt="Greece" /> Greece <svg class="i chk"><use href="#check"/></svg>
               </div>
               <div class="c-drop-opt" data-v="Canada" data-f="ca">
                 <img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada" /> Canada <svg class="i chk"><use href="#check"/></svg>
@@ -1941,6 +1945,20 @@ const SHOWCASE_DATA = {
     viewAllText: 'Explore all services (500+)',
     items: [
       {
+        title: 'GREECE CRICKET TOUR',
+        flag: 'gr',
+        sub: 'Official Europe T20 Series · Risingat Sports',
+        badge: '🏏 FEATURED SPORT TOUR',
+        col1Label: 'EVENT',
+        col1Val: '3X T20',
+        col2Label: 'VISA',
+        col2Val: 'SCHENGEN',
+        col3Label: 'PACKAGE',
+        col3Val: '₹2.5L',
+        href: '/tours?category=sports&country=greece',
+        img: '/images/greece-cricket-ad.jpg'
+      },
+      {
         title: 'ARJUN MEHTA',
         flag: 'ca',
         sub: 'Canada PR & Study · Hyderabad',
@@ -2322,6 +2340,20 @@ const SHOWCASE_DATA = {
     viewAllHref: '/tours',
     viewAllText: 'Show all tours & packages',
     items: [
+      {
+        title: 'GREECE',
+        flag: 'gr',
+        sub: 'Greece Cricket Tour — Official Europe T20 Series',
+        badge: '🏏 SPORT TOUR · SCHENGEN',
+        col1Label: 'EVENT',
+        col1Val: '3x T20',
+        col2Label: 'VISA',
+        col2Val: 'SCHENGEN',
+        col3Label: 'PACKAGE',
+        col3Val: '₹2.5L',
+        href: '/tours?category=sports&country=greece',
+        img: '/images/greece-cricket-ad.jpg'
+      },
       {
         title: 'THAILAND',
         flag: 'th',
