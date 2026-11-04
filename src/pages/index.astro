@@ -403,6 +403,313 @@ section{padding:96px 0;position:relative}
     color:#00b070 !important;
     transform:scale(1.08) !important;
   }
+
+  /* Airbnb Mobile Full-Screen Search Sheet (Only on Mobile - Exact Reference Match) */
+  .mob-airbnb-search-overlay{
+    display:block;
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    background:#f7f7f8;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(100%);
+    transition:transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
+    padding-bottom:96px;
+    box-sizing:border-box;
+  }
+  .mob-airbnb-search-overlay.open{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+  }
+  body.mob-search-open{
+    overflow:hidden !important;
+  }
+  .mob-sheet-top-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px 8px;
+    position:sticky;
+    top:0;
+    background:#f7f7f8;
+    z-index:20;
+    border-bottom:1px solid rgba(0,0,0,0.04);
+  }
+  .mob-sheet-tabs{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .mob-sheet-tabs::-webkit-scrollbar{display:none}
+  .mob-sheet-tab{
+    background:none;
+    border:none;
+    padding:6px 2px 10px;
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    color:#717171;
+    cursor:pointer;
+    white-space:nowrap;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    position:relative;
+    transition:all 0.18s ease;
+  }
+  .mob-sheet-tab.active{
+    color:#1b1233;
+    font-weight:800;
+  }
+  .mob-sheet-tab.active::after{
+    content:"";
+    position:absolute;
+    bottom:0;
+    left:2px;
+    right:2px;
+    height:2.5px;
+    background:#1b1233;
+    border-radius:99px;
+  }
+  .mob-sheet-close-btn{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color:#1b1233;
+    flex-shrink:0;
+    margin-left:10px;
+    outline:none;
+  }
+  .mob-sheet-main-card{
+    background:#ffffff;
+    border-radius:28px;
+    padding:20px 18px 16px;
+    margin:10px 14px 10px;
+    box-shadow:0 6px 24px -6px rgba(0,0,0,0.06);
+    border:1px solid #ececec;
+  }
+  .mob-sheet-heading{
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:24px;
+    font-weight:800;
+    color:#1b1233;
+    margin:0 0 14px;
+    letter-spacing:-0.02em;
+  }
+  .mob-sheet-search-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    height:50px;
+    padding:0 16px;
+    border-radius:16px;
+    border:1.5px solid #e2e8f0;
+    background:#ffffff;
+    transition:all 0.2s ease;
+    box-shadow:0 1px 3px rgba(0,0,0,0.02);
+  }
+  .mob-sheet-search-box:focus-within{
+    border-color:#370c63;
+    box-shadow:0 0 0 3px rgba(55,12,99,0.12);
+  }
+  .mob-sheet-search-input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:15px;
+    font-weight:600;
+    color:#1b1233;
+  }
+  .mob-sheet-search-input::placeholder{
+    color:#717171;
+    font-weight:500;
+  }
+  .mob-sheet-subheading{
+    font-size:12px;
+    font-weight:800;
+    color:#717171;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    margin:18px 2px 8px;
+  }
+  .mob-sheet-dest-list{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .mob-dest-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:10px 8px;
+    border-radius:16px;
+    cursor:pointer;
+    transition:background 0.15s ease;
+    user-select:none;
+  }
+  .mob-dest-item:active, .mob-dest-item.selected{
+    background:#f4effc;
+  }
+  .mob-dest-icon-box{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:#f1f5f9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+    border:1px solid #e2e8f0;
+  }
+  .mob-dest-icon-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .mob-dest-info{
+    flex:1;
+    min-width:0;
+  }
+  .mob-dest-name{
+    font-size:14.5px;
+    font-weight:700;
+    color:#1b1233;
+    line-height:1.25;
+  }
+  .mob-dest-desc{
+    font-size:12.5px;
+    color:#64748b;
+    margin-top:2px;
+    line-height:1.3;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .mob-sheet-accordion{
+    margin:0 14px 10px;
+  }
+  .mob-sheet-collapsed-card{
+    background:#ffffff;
+    border-radius:20px;
+    padding:16px 20px;
+    box-shadow:0 2px 10px -2px rgba(0,0,0,0.04);
+    border:1px solid #ebebeb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .mob-sheet-collapsed-card:active{
+    background:#fafafa;
+  }
+  .mob-collapsed-label{
+    font-size:14px;
+    font-weight:600;
+    color:#717171;
+  }
+  .mob-collapsed-val{
+    font-size:14px;
+    font-weight:800;
+    color:#1b1233;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .mob-sheet-expanded-content{
+    background:#ffffff;
+    border-radius:0 0 20px 20px;
+    border:1px solid #ebebeb;
+    border-top:none;
+    padding:12px 16px 16px;
+    margin-top:-8px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.04);
+  }
+  .mob-quick-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .mob-chip{
+    padding:8px 14px;
+    border-radius:9999px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .mob-chip.active{
+    background:linear-gradient(135deg,#370c63,#130c3a);
+    color:#ffffff;
+    border-color:transparent;
+    font-weight:700;
+    box-shadow:0 2px 8px rgba(55,12,99,0.25);
+  }
+  .mob-sheet-bottom-bar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:#ffffff;
+    border-top:1px solid #ebebeb;
+    padding:12px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:1000000;
+    box-shadow:0 -4px 16px rgba(0,0,0,0.06);
+  }
+  .mob-sheet-clear-btn{
+    background:none;
+    border:none;
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:14.5px;
+    font-weight:700;
+    color:#1b1233;
+    text-decoration:underline;
+    cursor:pointer;
+    padding:8px 6px;
+  }
+  .mob-sheet-search-btn{
+    background:linear-gradient(135deg,#370c63,#130c3a);
+    color:#ffffff;
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:15px;
+    font-weight:700;
+    padding:13px 26px;
+    border-radius:9999px;
+    border:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 4px 16px rgba(55,12,99,0.45);
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .mob-sheet-search-btn:active{
+    transform:scale(0.97);
+  }
 }
 /* hero - Airbnb clean pure white */
 .hero{padding:40px 0 80px;background:#ffffff;overflow:hidden}
@@ -1678,6 +1985,208 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   </a>
 </nav>
 
+<!-- Airbnb Mobile Search Full-Screen Modal Sheet (Only on Mobile - Exact Match to Reference UI) -->
+<div id="mob-airbnb-search-overlay" class="mob-airbnb-search-overlay" aria-modal="true" role="dialog" aria-label="Search Destinations">
+  <!-- Top Bar: Category Switcher + Close Button -->
+  <div class="mob-sheet-top-bar">
+    <div class="mob-sheet-tabs" role="tablist">
+      <button type="button" class="mob-sheet-tab active" data-tab="all" role="tab">
+        <span style="font-size:18px">🌐</span>
+        <span>All</span>
+      </button>
+      <button type="button" class="mob-sheet-tab" data-tab="experts" role="tab">
+        <span style="font-size:18px">⚖️</span>
+        <span>Experts</span>
+      </button>
+      <button type="button" class="mob-sheet-tab" data-tab="jobs" role="tab">
+        <span style="font-size:18px">💼</span>
+        <span>Jobs</span>
+      </button>
+      <button type="button" class="mob-sheet-tab" data-tab="tours" role="tab">
+        <span style="font-size:18px">✈️</span>
+        <span>Tours</span>
+      </button>
+      <button type="button" class="mob-sheet-tab" data-tab="universities" role="tab">
+        <span style="font-size:18px">🎓</span>
+        <span>Universities</span>
+      </button>
+    </div>
+    <button type="button" class="mob-sheet-close-btn" id="mob-sheet-close-btn" aria-label="Close search">
+      <svg class="i" style="width:16px;height:16px;stroke:#1b1233;stroke-width:2.4"><use href="#x"/></svg>
+    </button>
+  </div>
+
+  <!-- Card 1: "Where?" (Main Search & Suggested Destinations) -->
+  <div class="mob-sheet-main-card">
+    <h2 class="mob-sheet-heading">Where?</h2>
+    
+    <div class="mob-sheet-search-box">
+      <svg class="i" style="width:18px;height:18px;stroke:#222;stroke-width:2.5;flex-shrink:0"><use href="#search"/></svg>
+      <input 
+        type="text" 
+        id="mob-sheet-dest-input" 
+        class="mob-sheet-search-input" 
+        placeholder="Search destinations" 
+        autocomplete="off"
+      />
+      <button type="button" id="mob-sheet-input-clear" style="display:none;background:none;border:none;padding:4px;cursor:pointer;color:#94a3b8">
+        <svg class="i" style="width:14px;height:14px;stroke-width:2.5"><use href="#x"/></svg>
+      </button>
+    </div>
+
+    <div class="mob-sheet-subheading">Suggested destinations</div>
+    
+    <div class="mob-sheet-dest-list" id="mob-sheet-dest-list">
+      <!-- Item 1: Nearby / Anywhere -->
+      <div class="mob-dest-item selected" data-dest="" data-name="Anywhere / Explore All">
+        <div class="mob-dest-icon-box" style="background:#e0f2fe;color:#0284c7">
+          <svg class="i" style="width:20px;height:20px;stroke:#0284c7;stroke-width:2.4"><use href="#compass"/></svg>
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">Nearby / Explore All</div>
+          <div class="mob-dest-desc">Find what's around you &amp; 193+ countries</div>
+        </div>
+        <svg class="i mob-dest-check" style="width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+
+      <!-- Item 2: Greece -->
+      <div class="mob-dest-item" data-dest="Greece" data-name="Greece">
+        <div class="mob-dest-icon-box">
+          <img src="https://flagcdn.com/w80/gr.png" alt="Greece" />
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">Greece</div>
+          <div class="mob-dest-desc">Greece Cricket Tour &amp; Schengen Tourist Visa</div>
+        </div>
+        <svg class="i mob-dest-check" style="display:none;width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+
+      <!-- Item 3: Canada -->
+      <div class="mob-dest-item" data-dest="Canada" data-name="Canada">
+        <div class="mob-dest-icon-box">
+          <img src="https://flagcdn.com/w80/ca.png" alt="Canada" />
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">Canada</div>
+          <div class="mob-dest-desc">Express Entry, Study Permit &amp; LMIA Work</div>
+        </div>
+        <svg class="i mob-dest-check" style="display:none;width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+
+      <!-- Item 4: United Kingdom -->
+      <div class="mob-dest-item" data-dest="United Kingdom" data-name="United Kingdom">
+        <div class="mob-dest-icon-box">
+          <img src="https://flagcdn.com/w80/gb.png" alt="United Kingdom" />
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">United Kingdom</div>
+          <div class="mob-dest-desc">Skilled Worker Sponsor, NHS &amp; Student Visa</div>
+        </div>
+        <svg class="i mob-dest-check" style="display:none;width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+
+      <!-- Item 5: Australia -->
+      <div class="mob-dest-item" data-dest="Australia" data-name="Australia">
+        <div class="mob-dest-icon-box">
+          <img src="https://flagcdn.com/w80/au.png" alt="Australia" />
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">Australia</div>
+          <div class="mob-dest-desc">Subclass 189/190 PR &amp; Working Holiday</div>
+        </div>
+        <svg class="i mob-dest-check" style="display:none;width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+
+      <!-- Item 6: Germany -->
+      <div class="mob-dest-item" data-dest="Germany" data-name="Germany">
+        <div class="mob-dest-icon-box">
+          <img src="https://flagcdn.com/w80/de.png" alt="Germany" />
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">Germany</div>
+          <div class="mob-dest-desc">Opportunity Card &amp; Tuition-Free Universities</div>
+        </div>
+        <svg class="i mob-dest-check" style="display:none;width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+
+      <!-- Item 7: Dubai, UAE -->
+      <div class="mob-dest-item" data-dest="UAE" data-name="Dubai, UAE">
+        <div class="mob-dest-icon-box">
+          <img src="https://flagcdn.com/w80/ae.png" alt="UAE" />
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">Dubai, UAE</div>
+          <div class="mob-dest-desc">10-Year Golden Visa &amp; Fast 60-Day Tourist</div>
+        </div>
+        <svg class="i mob-dest-check" style="display:none;width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+
+      <!-- Item 8: USA -->
+      <div class="mob-dest-item" data-dest="USA" data-name="United States">
+        <div class="mob-dest-icon-box">
+          <img src="https://flagcdn.com/w80/us.png" alt="USA" />
+        </div>
+        <div class="mob-dest-info">
+          <div class="mob-dest-name">United States</div>
+          <div class="mob-dest-desc">B1/B2 Tourist, H-1B &amp; EB-5 Green Card</div>
+        </div>
+        <svg class="i mob-dest-check" style="display:none;width:16px;height:16px;color:#370c63"><use href="#check"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: Accordion for "Citizenship / From" (When equivalent) -->
+  <div class="mob-sheet-accordion" id="mob-sheet-from-accordion">
+    <div class="mob-sheet-collapsed-card" id="mob-sheet-from-trigger">
+      <span class="mob-collapsed-label">Citizenship</span>
+      <span class="mob-collapsed-val" id="mob-sheet-from-val">
+        <span>India 🇮🇳</span>
+        <svg class="i" style="width:14px;height:14px;color:#64748b"><use href="#chevron-down"/></svg>
+      </span>
+    </div>
+    <div class="mob-sheet-expanded-content" id="mob-sheet-from-content" style="display:none">
+      <div class="mob-quick-chips">
+        <button type="button" class="mob-chip active" data-from="India">India 🇮🇳</button>
+        <button type="button" class="mob-chip" data-from="Pakistan">Pakistan 🇵🇰</button>
+        <button type="button" class="mob-chip" data-from="Nepal">Nepal 🇳🇵</button>
+        <button type="button" class="mob-chip" data-from="Bangladesh">Bangladesh 🇧🇩</button>
+        <button type="button" class="mob-chip" data-from="Philippines">Philippines 🇵🇭</button>
+        <button type="button" class="mob-chip" data-from="UAE">UAE 🇦🇪</button>
+        <button type="button" class="mob-chip" data-from="Other">Other / Global 🌍</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Accordion for "Category / Purpose" (Who equivalent) -->
+  <div class="mob-sheet-accordion" id="mob-sheet-purpose-accordion">
+    <div class="mob-sheet-collapsed-card" id="mob-sheet-purpose-trigger">
+      <span class="mob-collapsed-label">Purpose</span>
+      <span class="mob-collapsed-val" id="mob-sheet-purpose-val">
+        <span>All Services</span>
+        <svg class="i" style="width:14px;height:14px;color:#64748b"><use href="#chevron-down"/></svg>
+      </span>
+    </div>
+    <div class="mob-sheet-expanded-content" id="mob-sheet-purpose-content" style="display:none">
+      <div class="mob-quick-chips">
+        <button type="button" class="mob-chip active" data-cat="all">All Services</button>
+        <button type="button" class="mob-chip" data-cat="experts">PR &amp; Lawyers</button>
+        <button type="button" class="mob-chip" data-cat="jobs">Skilled Jobs</button>
+        <button type="button" class="mob-chip" data-cat="tours">Tours &amp; Cricket</button>
+        <button type="button" class="mob-chip" data-cat="universities">Study Abroad</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Sticky Action Bar -->
+  <div class="mob-sheet-bottom-bar">
+    <button type="button" class="mob-sheet-clear-btn" id="mob-sheet-clear-btn">Clear all</button>
+    <button type="button" class="mob-sheet-search-btn" id="mob-sheet-search-btn">
+      <svg class="i" style="width:16px;height:16px;stroke:#fff;stroke-width:2.6"><use href="#search"/></svg>
+      <span>Search</span>
+    </button>
+  </div>
+</div>
+
 <script is:inline>
 /* ── AUTH GUARD: Find my expert hero CTA ─────────────────────────────────── */
 (function(){
@@ -2687,6 +3196,240 @@ if (mobLiveQ) {
       if ($('#go')) $('#go').click();
     }
   });
+}
+
+// --- Airbnb Mobile Search Sheet Overlay Handler ---
+const mobSearchPill = document.getElementById('mobile-search-pill');
+const mobSearchOverlay = document.getElementById('mob-airbnb-search-overlay');
+const mobSheetClose = document.getElementById('mob-sheet-close-btn');
+const mobSheetDestInput = document.getElementById('mob-sheet-dest-input');
+const mobSheetClearInput = document.getElementById('mob-sheet-input-clear');
+const mobSheetDestList = document.getElementById('mob-sheet-dest-list');
+const mobSheetClearAll = document.getElementById('mob-sheet-clear-btn');
+const mobSheetSearchBtn = document.getElementById('mob-sheet-search-btn');
+const mobSheetTabs = document.querySelectorAll('.mob-sheet-tab');
+
+let mobSelectedDest = '';
+let mobSelectedCategory = activeAirbnbTab || 'all';
+
+function openMobileSearchSheet() {
+  if (!mobSearchOverlay) return;
+  mobSearchOverlay.classList.add('open');
+  document.body.classList.add('mob-search-open');
+  
+  // Sync category tab with active page category
+  mobSelectedCategory = activeAirbnbTab || 'all';
+  mobSheetTabs.forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === mobSelectedCategory);
+  });
+  
+  // Sync input value
+  const curQ = (mobLiveQ ? mobLiveQ.value.trim() : '') || (liveQ ? liveQ.value.trim() : '');
+  if (mobSheetDestInput) {
+    mobSheetDestInput.value = curQ;
+    if (mobSheetClearInput) mobSheetClearInput.style.display = curQ ? 'block' : 'none';
+    setTimeout(() => mobSheetDestInput.focus(), 120);
+  }
+}
+
+function closeMobileSearchSheet() {
+  if (!mobSearchOverlay) return;
+  mobSearchOverlay.classList.remove('open');
+  document.body.classList.remove('mob-search-open');
+}
+
+if (mobSearchPill) {
+  mobSearchPill.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      openMobileSearchSheet();
+    }
+  });
+}
+
+if (mobLiveQ) {
+  mobLiveQ.addEventListener('focus', (e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      mobLiveQ.blur();
+      openMobileSearchSheet();
+    }
+  });
+}
+
+if (mobSheetClose) {
+  mobSheetClose.addEventListener('click', closeMobileSearchSheet);
+}
+
+// Category tabs inside sheet
+mobSheetTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    mobSheetTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    mobSelectedCategory = tab.dataset.tab;
+    const purpVal = document.getElementById('mob-sheet-purpose-val');
+    if (purpVal && purpVal.firstElementChild) {
+      const nameMap = { all: 'All Services', experts: 'Experts', jobs: 'Jobs', tours: 'Tours', universities: 'Universities' };
+      purpVal.firstElementChild.textContent = nameMap[mobSelectedCategory] || 'All Services';
+    }
+  });
+});
+
+// Destination input filter in real time
+if (mobSheetDestInput) {
+  mobSheetDestInput.addEventListener('input', () => {
+    const q = mobSheetDestInput.value.toLowerCase().trim();
+    if (mobSheetClearInput) mobSheetClearInput.style.display = q ? 'block' : 'none';
+    
+    if (mobSheetDestList) {
+      const items = mobSheetDestList.querySelectorAll('.mob-dest-item');
+      items.forEach(it => {
+        const name = (it.dataset.name || '').toLowerCase();
+        const desc = (it.querySelector('.mob-dest-desc')?.textContent || '').toLowerCase();
+        if (!q || name.includes(q) || desc.includes(q)) {
+          it.style.display = 'flex';
+        } else {
+          it.style.display = 'none';
+        }
+      });
+    }
+  });
+
+  mobSheetDestInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      executeMobileSearchAction();
+    }
+  });
+}
+
+if (mobSheetClearInput) {
+  mobSheetClearInput.addEventListener('click', () => {
+    if (mobSheetDestInput) {
+      mobSheetDestInput.value = '';
+      mobSheetDestInput.dispatchEvent(new Event('input'));
+      mobSheetDestInput.focus();
+    }
+  });
+}
+
+// Select suggested destination item
+if (mobSheetDestList) {
+  mobSheetDestList.querySelectorAll('.mob-dest-item').forEach(item => {
+    item.addEventListener('click', () => {
+      mobSheetDestList.querySelectorAll('.mob-dest-item').forEach(it => {
+        it.classList.remove('selected');
+        const chk = it.querySelector('.mob-dest-check');
+        if (chk) chk.style.display = 'none';
+      });
+      item.classList.add('selected');
+      const chk = item.querySelector('.mob-dest-check');
+      if (chk) chk.style.display = 'block';
+
+      mobSelectedDest = item.dataset.dest || '';
+      if (mobSheetDestInput) {
+        mobSheetDestInput.value = mobSelectedDest;
+        if (mobSheetClearInput) mobSheetClearInput.style.display = mobSelectedDest ? 'block' : 'none';
+      }
+    });
+  });
+}
+
+// Accordion 1: Citizenship
+const sheetFromTrig = document.getElementById('mob-sheet-from-trigger');
+const sheetFromCont = document.getElementById('mob-sheet-from-content');
+if (sheetFromTrig && sheetFromCont) {
+  sheetFromTrig.addEventListener('click', () => {
+    const isOpen = sheetFromCont.style.display === 'block';
+    sheetFromCont.style.display = isOpen ? 'none' : 'block';
+  });
+  sheetFromCont.querySelectorAll('.mob-chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      sheetFromCont.querySelectorAll('.mob-chip').forEach(c => c.classList.remove('active'));
+      ch.classList.add('active');
+      const valEl = document.getElementById('mob-sheet-from-val');
+      if (valEl && valEl.firstElementChild) valEl.firstElementChild.textContent = ch.textContent;
+      sheetFromCont.style.display = 'none';
+    });
+  });
+}
+
+// Accordion 2: Purpose
+const sheetPurpTrig = document.getElementById('mob-sheet-purpose-trigger');
+const sheetPurpCont = document.getElementById('mob-sheet-purpose-content');
+if (sheetPurpTrig && sheetPurpCont) {
+  sheetPurpTrig.addEventListener('click', () => {
+    const isOpen = sheetPurpCont.style.display === 'block';
+    sheetPurpCont.style.display = isOpen ? 'none' : 'block';
+  });
+  sheetPurpCont.querySelectorAll('.mob-chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      sheetPurpCont.querySelectorAll('.mob-chip').forEach(c => c.classList.remove('active'));
+      ch.classList.add('active');
+      mobSelectedCategory = ch.dataset.cat || 'all';
+      mobSheetTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === mobSelectedCategory));
+      const valEl = document.getElementById('mob-sheet-purpose-val');
+      if (valEl && valEl.firstElementChild) valEl.firstElementChild.textContent = ch.textContent;
+      sheetPurpCont.style.display = 'none';
+    });
+  });
+}
+
+// Clear all
+if (mobSheetClearAll) {
+  mobSheetClearAll.addEventListener('click', () => {
+    mobSelectedDest = '';
+    if (mobSheetDestInput) {
+      mobSheetDestInput.value = '';
+      mobSheetDestInput.dispatchEvent(new Event('input'));
+    }
+    if (mobSheetDestList) {
+      mobSheetDestList.querySelectorAll('.mob-dest-item').forEach((it, i) => {
+        it.classList.toggle('selected', i === 0);
+        const chk = it.querySelector('.mob-dest-check');
+        if (chk) chk.style.display = i === 0 ? 'block' : 'none';
+        it.style.display = 'flex';
+      });
+    }
+    mobSelectedCategory = 'all';
+    mobSheetTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === 'all'));
+    const purpVal = document.getElementById('mob-sheet-purpose-val');
+    if (purpVal && purpVal.firstElementChild) purpVal.firstElementChild.textContent = 'All Services';
+  });
+}
+
+function executeMobileSearchAction() {
+  const query = mobSheetDestInput ? mobSheetDestInput.value.trim() : (mobSelectedDest || '');
+  
+  // 1. Sync category tab with main page
+  if (mobSelectedCategory && activeAirbnbTab !== mobSelectedCategory) {
+    activeAirbnbTab = mobSelectedCategory;
+    $$('.airbnb-cat-tab').forEach(b => {
+      b.classList.toggle('active', b.dataset.tab === activeAirbnbTab);
+    });
+  }
+
+  // 2. Sync input values on page
+  if (mobLiveQ) mobLiveQ.value = query;
+  if (liveQ) liveQ.value = query;
+
+  // 3. Render showcase with query
+  renderShowcase(activeAirbnbTab, query);
+
+  // 4. Close sheet
+  closeMobileSearchSheet();
+
+  // 5. Smooth scroll down to showcase results
+  const scEl = $('#airbnb-showcase');
+  if (scEl) {
+    setTimeout(() => {
+      scEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 180);
+  }
+}
+
+if (mobSheetSearchBtn) {
+  mobSheetSearchBtn.addEventListener('click', executeMobileSearchAction);
 }
 
 // Search submit button
