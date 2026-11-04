@@ -430,58 +430,78 @@ section{padding:96px 0;position:relative}
   }
   .mob-sheet-top-bar{
     display:flex;
-    align-items:center;
+    align-items:flex-end;
     justify-content:space-between;
-    padding:14px 16px 8px;
+    padding:16px 16px 0;
     position:sticky;
     top:0;
     background:#f7f7f8;
     z-index:20;
-    border-bottom:1px solid rgba(0,0,0,0.04);
+    border-bottom:1px solid rgba(0,0,0,0.06);
   }
   .mob-sheet-tabs{
     display:flex;
-    align-items:center;
-    gap:18px;
+    align-items:flex-end;
+    gap:22px;
     overflow-x:auto;
     scrollbar-width:none;
     -webkit-overflow-scrolling:touch;
+    padding:0 2px;
   }
   .mob-sheet-tabs::-webkit-scrollbar{display:none}
   .mob-sheet-tab{
     background:none;
     border:none;
-    padding:6px 2px 10px;
-    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
-    font-size:13.5px;
-    font-weight:600;
-    color:#717171;
+    padding:4px 4px 10px;
     cursor:pointer;
     white-space:nowrap;
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:3px;
+    gap:6px;
     position:relative;
     transition:all 0.18s ease;
+    -webkit-tap-highlight-color:transparent;
   }
-  .mob-sheet-tab.active{
-    color:#1b1233;
+  .mob-tab-icon{
+    font-size:26px;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:28px;
+    transition:transform 0.15s ease;
+  }
+  .mob-sheet-tab:active .mob-tab-icon{
+    transform:scale(0.92);
+  }
+  .mob-tab-label{
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:#64748b;
+    position:relative;
+    padding-bottom:8px;
+    transition:color 0.15s ease;
+    letter-spacing:-0.01em;
+  }
+  .mob-sheet-tab.active .mob-tab-label{
+    color:#111827;
     font-weight:800;
   }
-  .mob-sheet-tab.active::after{
+  .mob-sheet-tab.active .mob-tab-label::after{
     content:"";
     position:absolute;
     bottom:0;
-    left:2px;
-    right:2px;
-    height:2.5px;
-    background:#1b1233;
+    left:-2px;
+    right:-2px;
+    height:3px;
+    background:#111827;
     border-radius:99px;
   }
   .mob-sheet-close-btn{
-    width:36px;
-    height:36px;
+    width:38px;
+    height:38px;
     border-radius:50%;
     background:#ffffff;
     border:1px solid #e5e7eb;
@@ -492,7 +512,8 @@ section{padding:96px 0;position:relative}
     cursor:pointer;
     color:#1b1233;
     flex-shrink:0;
-    margin-left:10px;
+    margin-left:12px;
+    margin-bottom:10px;
     outline:none;
   }
   .mob-sheet-main-card{
@@ -1991,24 +2012,24 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <div class="mob-sheet-top-bar">
     <div class="mob-sheet-tabs" role="tablist">
       <button type="button" class="mob-sheet-tab active" data-tab="all" role="tab">
-        <span style="font-size:18px">🌐</span>
-        <span>All</span>
+        <span class="mob-tab-icon">🌐</span>
+        <span class="mob-tab-label">All</span>
       </button>
       <button type="button" class="mob-sheet-tab" data-tab="experts" role="tab">
-        <span style="font-size:18px">⚖️</span>
-        <span>Experts</span>
+        <span class="mob-tab-icon">⚖️</span>
+        <span class="mob-tab-label">Experts</span>
       </button>
       <button type="button" class="mob-sheet-tab" data-tab="jobs" role="tab">
-        <span style="font-size:18px">💼</span>
-        <span>Jobs</span>
+        <span class="mob-tab-icon">💼</span>
+        <span class="mob-tab-label">Jobs</span>
       </button>
       <button type="button" class="mob-sheet-tab" data-tab="tours" role="tab">
-        <span style="font-size:18px">✈️</span>
-        <span>Tours</span>
+        <span class="mob-tab-icon">✈️</span>
+        <span class="mob-tab-label">Tours</span>
       </button>
       <button type="button" class="mob-sheet-tab" data-tab="universities" role="tab">
-        <span style="font-size:18px">🎓</span>
-        <span>Universities</span>
+        <span class="mob-tab-icon">🎓</span>
+        <span class="mob-tab-label">Universities</span>
       </button>
     </div>
     <button type="button" class="mob-sheet-close-btn" id="mob-sheet-close-btn" aria-label="Close search">
@@ -3272,6 +3293,16 @@ mobSheetTabs.forEach(tab => {
       const nameMap = { all: 'All Services', experts: 'Experts', jobs: 'Jobs', tours: 'Tours', universities: 'Universities' };
       purpVal.firstElementChild.textContent = nameMap[mobSelectedCategory] || 'All Services';
     }
+    const placeholderMap = {
+      all: 'Search destinations, visas, jobs...',
+      experts: 'Search destination or visa counsel...',
+      jobs: 'Search jobs or country (e.g. Germany, UK)...',
+      tours: 'Search tours (e.g. Greece Cricket, Dubai)...',
+      universities: 'Search universities or countries...'
+    };
+    if (mobSheetDestInput && placeholderMap[mobSelectedCategory]) {
+      mobSheetDestInput.placeholder = placeholderMap[mobSelectedCategory];
+    }
   });
 });
 
@@ -3400,26 +3431,91 @@ if (mobSheetClearAll) {
 
 function executeMobileSearchAction() {
   const query = mobSheetDestInput ? mobSheetDestInput.value.trim() : (mobSelectedDest || '');
-  
-  // 1. Sync category tab with main page
-  if (mobSelectedCategory && activeAirbnbTab !== mobSelectedCategory) {
-    activeAirbnbTab = mobSelectedCategory;
-    $$('.airbnb-cat-tab').forEach(b => {
-      b.classList.toggle('active', b.dataset.tab === activeAirbnbTab);
-    });
+  const cat = mobSelectedCategory || 'all';
+
+  // 1. Jobs Category
+  if (cat === 'jobs') {
+    const jParams = new URLSearchParams();
+    if (query) {
+      jParams.set('search', query);
+      jParams.set('q', query);
+      jParams.set('country', query);
+    }
+    window.location.href = '/jobs' + (jParams.toString() ? '?' + jParams.toString() : '');
+    return;
   }
 
-  // 2. Sync input values on page
+  // 2. Universities Category
+  if (cat === 'universities') {
+    const uParams = new URLSearchParams();
+    if (query) {
+      uParams.set('search', query);
+      uParams.set('q', query);
+      uParams.set('country', query);
+    }
+    window.location.href = '/universities' + (uParams.toString() ? '?' + uParams.toString() : '');
+    return;
+  }
+
+  // 3. Tours Category
+  if (cat === 'tours') {
+    const isCricketOrGreece = query.toLowerCase().includes('cricket') || query.toLowerCase().includes('greece');
+    if (isCricketOrGreece) {
+      sessionStorage.setItem("auto_open_greece_tour", "true");
+      window.location.href = '/tours?category=sports&country=greece';
+      return;
+    }
+    const tParams = new URLSearchParams();
+    if (query) {
+      tParams.set('search', query);
+      tParams.set('destination', query);
+    }
+    window.location.href = '/tours' + (tParams.toString() ? '?' + tParams.toString() : '');
+    return;
+  }
+
+  // 4. Experts Category
+  if (cat === 'experts') {
+    const eParams = new URLSearchParams();
+    if (query) {
+      eParams.set('q', query);
+      eParams.set('search', query);
+      eParams.set('country', query);
+    }
+    const fromVal = ($('#mob-sheet-from-val')?.firstElementChild?.textContent || '').trim();
+    if (fromVal && !fromVal.includes('Other') && fromVal !== 'Citizenship') {
+      const cleanFrom = fromVal.replace(/[^a-zA-Z\s]/g, '').trim();
+      if (cleanFrom) eParams.set('from', cleanFrom);
+    }
+    window.location.href = '/find-experts' + (eParams.toString() ? '?' + eParams.toString() : '');
+    return;
+  }
+
+  // 5. All Category
+  // If user searched Greece or Cricket specifically
+  if (query.toLowerCase().includes('cricket') || query.toLowerCase().includes('greece cricket')) {
+    sessionStorage.setItem("auto_open_greece_tour", "true");
+    window.location.href = '/tours?category=sports&country=greece';
+    return;
+  }
+
+  // Sync category tab with main page
+  activeAirbnbTab = 'all';
+  $$('.airbnb-cat-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === 'all');
+  });
+
+  // Sync input values on page
   if (mobLiveQ) mobLiveQ.value = query;
   if (liveQ) liveQ.value = query;
 
-  // 3. Render showcase with query
-  renderShowcase(activeAirbnbTab, query);
+  // Render showcase with query
+  renderShowcase('all', query);
 
-  // 4. Close sheet
+  // Close sheet
   closeMobileSearchSheet();
 
-  // 5. Smooth scroll down to showcase results
+  // Smooth scroll down to showcase results
   const scEl = $('#airbnb-showcase');
   if (scEl) {
     setTimeout(() => {
