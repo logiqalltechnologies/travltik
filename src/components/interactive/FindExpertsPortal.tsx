@@ -23,7 +23,92 @@ const categoryFilters = [
   { id: "Digital Nomad", label: "Remote & Nomad", icon: Globe }
 ];
 
-const countryFilters = ["All", "Canada", "USA", "UK", "Australia", "Germany", "UAE", "New Zealand", "Europe", "Singapore"];
+const countryFilters = ["All", "Greece", "Schengen Countries", "Canada", "USA", "UK", "Australia", "Germany", "Europe", "UAE", "Singapore", "New Zealand"];
+
+export const SCHENGEN_DESTINATIONS = [
+  'greece', 'germany', 'france', 'italy', 'spain', 'switzerland', 'netherlands',
+  'poland', 'portugal', 'austria', 'belgium', 'czech republic', 'czechia', 'denmark',
+  'finland', 'sweden', 'norway', 'hungary', 'croatia', 'estonia', 'latvia',
+  'lithuania', 'luxembourg', 'malta', 'slovakia', 'slovenia', 'iceland', 'schengen', 'europe', 'eu'
+];
+
+export function isCountryMatched(expertCountries: any, targetCountry: string): boolean {
+  if (!targetCountry || targetCountry === "All") return true;
+  const tLower = targetCountry.toLowerCase().trim();
+  const cList = (Array.isArray(expertCountries) ? expertCountries : [expertCountries || ''])
+    .map(c => String(c).toLowerCase().trim())
+    .filter(Boolean);
+
+  if (cList.length === 0) return true;
+  if (cList.some(c => c.includes('worldwide') || c.includes('global') || c === 'all')) return true;
+
+  const isTargetSchengen = SCHENGEN_DESTINATIONS.some(sc => tLower.includes(sc) || sc.includes(tLower));
+
+  for (const c of cList) {
+    if (c.includes(tLower) || tLower.includes(c)) return true;
+
+    // Aliases
+    if ((tLower.includes('uk') || tLower.includes('united kingdom') || tLower.includes('britain')) && (c.includes('uk') || c.includes('united kingdom'))) return true;
+    if ((tLower.includes('usa') || tLower.includes('united states') || tLower.includes('america')) && (c.includes('usa') || c.includes('united states'))) return true;
+    if (tLower.includes('uae') && (c.includes('uae') || c.includes('dubai') || c.includes('emirates'))) return true;
+
+    // Schengen & European matching
+    if (isTargetSchengen) {
+      if (c.includes('schengen') || c.includes('europe') || c.includes('eu')) return true;
+      if (SCHENGEN_DESTINATIONS.some(sc => c.includes(sc))) return true;
+    }
+    if ((tLower.includes('schengen') || tLower.includes('europe')) && SCHENGEN_DESTINATIONS.some(sc => c.includes(sc))) return true;
+  }
+
+  return false;
+}
+
+export const QUERY_SYNONYM_MAP: Record<string, string[]> = {
+  tourist: ['tourist', 'tourism', 'tour', 'visitor', 'visit', 'travel', 'holiday', 'vacation', 'sightseeing', 'schengen', 'b-2', 'b2', 'super visa'],
+  tourism: ['tourist', 'tourism', 'tour', 'visitor', 'travel'],
+  tour: ['tour', 'tourist', 'travel', 'cricket tour', 'sports tour'],
+  visitor: ['visitor', 'visit', 'tourist', 'tourism', 'travel', 'holiday', 'super visa'],
+  visit: ['visit', 'visitor', 'tourist', 'tourism', 'travel'],
+  travel: ['travel', 'tourist', 'tourism', 'visitor', 'visit', 'tour', 'mobility'],
+  holiday: ['holiday', 'vacation', 'tourist', 'visitor', 'travel'],
+  vacation: ['vacation', 'holiday', 'tourist', 'visitor', 'travel'],
+  sports: ['sports', 'cricket', 'athlete', 'tournament', 'sports visa', 'athlete permits'],
+  cricket: ['cricket', 'sports', 'cricket tour', 'athlete', 'tour'],
+  work: ['work', 'job', 'employment', 'permit', 'lmia', 'skilled worker', 'blue card', 'h-1b', 'h1b', 'career', 'sol', 'sponsorship'],
+  job: ['job', 'work', 'employment', 'permit', 'lmia', 'recruitment', 'blue card'],
+  permit: ['permit', 'work permit', 'study permit', 'pgwp', 'resident permit'],
+  study: ['study', 'student', 'university', 'college', 'admission', 'sop', 'course', 'education', 'academic', 'gic', 'ielts'],
+  student: ['student', 'study', 'university', 'college', 'admission', 'sop'],
+  pr: ['pr', 'permanent residency', 'express entry', 'pnp', 'green card', 'citizenship', 'settlement', 'immigration'],
+  residency: ['residency', 'pr', 'permanent residency', 'citizenship', 'express entry'],
+  citizenship: ['citizenship', 'passport', 'golden visa', 'naturalization', 'pr'],
+  greece: ['greece', 'greek', 'schengen', 'europe', 'athens'],
+  schengen: ['schengen', 'europe', 'greece', 'germany', 'france', 'italy', 'spain', 'switzerland', 'netherlands'],
+  europe: ['europe', 'schengen', 'greece', 'germany', 'france', 'italy', 'poland', 'croatia']
+};
+
+export function isTextMatchingQuery(text: string, query: string): boolean {
+  if (!query || !query.trim()) return true;
+  const lowerText = text.toLowerCase();
+  const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+
+  return words.every(word => {
+    if (lowerText.includes(word)) return true;
+
+    const synonyms = QUERY_SYNONYM_MAP[word];
+    if (synonyms && synonyms.some(s => lowerText.includes(s))) return true;
+
+    for (const [key, synList] of Object.entries(QUERY_SYNONYM_MAP)) {
+      if (key.includes(word) || word.includes(key)) {
+        if (lowerText.includes(key) || synList.some(s => lowerText.includes(s))) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  });
+}
 const cityFilters = ["All Cities", "Hyderabad", "Mumbai", "Delhi", "Bangalore", "Chennai", "Remote"];
 const ratingFilters = ["Any", "4★+", "4.5★+", "Top Rated"];
 const availFilters = ["Anytime", "Today", "This Week", "Emergency 24/7"];
@@ -199,21 +284,21 @@ export function FindExpertsPortal() {
 
                 if (isTravelPlay) {
                     displayName = 'Travel and Play';
-                    role = 'Licensed Work & Migration Specialist';
+                    role = 'Licensed Work & Tourist Migration Specialist';
                     if (!img) img = 'https://lh3.googleusercontent.com/a/ACg8ocJmQW2u-EWw3U7kmjdmoO1wThNVBE0ybnuDQ_Gw-UtEFOVjqw=s96-c';
                 } else if (isRisingat) {
                     displayName = 'Risingat Sports';
-                    role = 'Sports & International Travel Consultant';
+                    role = 'Sports, Tourist & International Mobility Consultant';
                     if (!img) img = '/cricket-avatar.jpg';
                 } else if (isEasyVisa) {
                     displayName = 'Easy Visa Ltd';
-                    role = 'Visitor & Business Visa Consultant';
+                    role = 'Tourist, Visitor & Business Visa Consultant';
                 } else if (isChaitanya) {
                     displayName = 'Chaitanya N';
                     role = 'Study Visa & University Filing Specialist';
                 } else if (isSoul) {
                     displayName = 'Soul Overseas';
-                    role = 'European Jobs & Work Permit Specialist';
+                    role = 'European Jobs, Work & Tourist Visa Specialist';
                 } else if (isAkash) {
                     displayName = 'Akash CO';
                     role = 'USA Study Visa & Admission Advisor';
@@ -225,12 +310,14 @@ export function FindExpertsPortal() {
                 else if (typeof e.expertise_tags === 'string') {
                     try { parsedTags = JSON.parse(e.expertise_tags); } catch(err) { parsedTags = [e.expertise_tags]; }
                 }
-                if (isTravelPlay && (!parsedTags.length || parsedTags.includes('WORK'))) {
-                    parsedTags = ['Work Permit', 'LMIA / Sponsorship', 'Australia PR', 'Schengen Work'];
-                } else if (isRisingat && (!parsedTags.length || parsedTags.includes('Visitor Visa'))) {
-                    parsedTags = ['Sports Visa', 'Visitor Visa', 'Athlete Permits', 'Global Mobility'];
-                } else if (isEasyVisa && !parsedTags.length) {
-                    parsedTags = ['Visitor Visa', 'Business Visa', 'UAE Permit', 'Singapore FastTrack'];
+                if (isTravelPlay && (!parsedTags.length || parsedTags.includes('WORK') || !parsedTags.includes('Tourist Visa'))) {
+                    parsedTags = ['Work Permit', 'Tourist Visa', 'Visitor Visa', 'Schengen Tourist', 'LMIA / Sponsorship', 'Australia PR', 'Europe Mobility'];
+                } else if (isRisingat) {
+                    parsedTags = ['Sports Visa', 'Tourist Visa', 'Visitor Visa', 'Cricket Tour', 'Schengen Tourist', 'Athlete Permits', 'Global Mobility'];
+                } else if (isEasyVisa && (!parsedTags.length || !parsedTags.includes('Tourist Visa'))) {
+                    parsedTags = ['Tourist Visa', 'Visitor Visa', 'Business Visa', 'Schengen Tourist', 'UAE Permit', 'Singapore FastTrack'];
+                } else if (isSoul && (!parsedTags.length || !parsedTags.includes('Tourist Visa'))) {
+                    parsedTags = ['European Jobs', 'Work Permit', 'Tourist Visa', 'Schengen Visa', 'Poland / Croatia', 'Europe Mobility'];
                 } else if (isChaitanya && !parsedTags.length) {
                     parsedTags = ['Study Visa', 'University Filing', 'SOP Review', 'Canada / USA'];
                 }
@@ -241,12 +328,14 @@ export function FindExpertsPortal() {
                 else if (typeof e.countries_expertise === 'string') {
                     try { parsedCountries = JSON.parse(e.countries_expertise); } catch(err) { parsedCountries = [e.countries_expertise]; }
                 }
-                if (isTravelPlay && !parsedCountries.length) {
-                    parsedCountries = ['Australia', 'Schengen Countries', 'United Kingdom'];
-                } else if (isRisingat && (!parsedCountries.length || parsedCountries.includes('Worldwide'))) {
-                    parsedCountries = ['Worldwide', 'Australia', 'United Kingdom', 'UAE'];
-                } else if (isEasyVisa && !parsedCountries.length) {
-                    parsedCountries = ['UAE', 'Singapore', 'Schengen Countries'];
+                if (isTravelPlay && (!parsedCountries.length || !parsedCountries.includes('Greece'))) {
+                    parsedCountries = ['Greece', 'Schengen Countries', 'Australia', 'United Kingdom', 'Europe', 'Worldwide'];
+                } else if (isRisingat) {
+                    parsedCountries = ['Greece', 'Schengen Countries', 'Worldwide', 'Australia', 'United Kingdom', 'UAE', 'Europe'];
+                } else if (isEasyVisa && (!parsedCountries.length || !parsedCountries.includes('Greece'))) {
+                    parsedCountries = ['Greece', 'Schengen Countries', 'UAE', 'Singapore', 'Europe', 'Worldwide'];
+                } else if (isSoul && (!parsedCountries.length || !parsedCountries.includes('Greece'))) {
+                    parsedCountries = ['Greece', 'Poland', 'Croatia', 'Germany', 'Schengen Countries', 'Europe', 'Worldwide'];
                 } else if (isChaitanya && !parsedCountries.length) {
                     parsedCountries = ['Canada', 'United Kingdom', 'USA'];
                 }
@@ -319,12 +408,10 @@ export function FindExpertsPortal() {
             // 4. Combine: DB experts first, then local-only, then fallback dummies
             const combinedPool = [...enrichedDbExperts, ...localRegisteredExperts, ...dummyExperts];
 
-            // 5. Search filtering
+            // 5. Search filtering with synonym and Schengen destination mapping
             let filtered = combinedPool;
 
             if (q && q.trim()) {
-                const searchLower = q.toLowerCase().trim();
-                const searchWords = searchLower.split(/\s+/).filter(Boolean);
                 filtered = filtered.filter(e => {
                     const text = [
                         e.name || e.business_name || '',
@@ -338,17 +425,33 @@ export function FindExpertsPortal() {
                         e.phone || e.contact_number || '',
                         ...(Array.isArray(e.tags) ? e.tags : [e.tags || '']),
                         ...(Array.isArray(e.countries) ? e.countries : [e.countries || '']),
-                    ].join(' ').toLowerCase();
-                    return searchWords.every(word => text.includes(word));
+                    ].join(' ');
+                    return isTextMatchingQuery(text, q);
                 });
             }
 
             if (country && country !== "All") {
-                const cLower = country.toLowerCase();
-                filtered = filtered.filter(e => {
-                    const cList = Array.isArray(e.countries) ? e.countries : [e.countries || ''];
-                    return cList.some((c: string) => String(c).toLowerCase().includes(cLower));
+                filtered = filtered.filter(e => isCountryMatched(e.countries, country));
+            }
+
+            // Fallback: If both q and country were supplied and strict intersection yielded 0 results,
+            // relax the country constraint so users looking for e.g. "tourist" in a specific country still see
+            // top verified European / Schengen / Global consultants for that visa type.
+            if (filtered.length === 0 && country && country !== "All" && q && q.trim()) {
+                const relaxed = combinedPool.filter(e => {
+                    const text = [
+                        e.name || e.business_name || '',
+                        e.fullName || e.full_name || '',
+                        e.role || e.advisor_type || '',
+                        e.bio || e.about_me || '',
+                        ...(Array.isArray(e.tags) ? e.tags : [e.tags || '']),
+                        ...(Array.isArray(e.countries) ? e.countries : [e.countries || '']),
+                    ].join(' ');
+                    return isTextMatchingQuery(text, q);
                 });
+                if (relaxed.length > 0) {
+                    filtered = relaxed;
+                }
             }
 
             if (cityParam && cityParam !== "All Cities") {
@@ -416,7 +519,9 @@ export function FindExpertsPortal() {
                         (cLower.includes("uae") && cfLower === "uae") ||
                         (cLower.includes("australia") && cfLower === "australia") ||
                         (cLower.includes("canada") && cfLower === "canada") ||
-                        (cLower.includes("germany") && cfLower === "germany");
+                        (cLower.includes("germany") && cfLower === "germany") ||
+                        (cLower.includes("greece") && cfLower === "greece") ||
+                        (cLower.includes("schengen") && cfLower.includes("schengen"));
                 });
                 if (matchCountry) {
                     setSelectedCountry(matchCountry);
@@ -595,15 +700,13 @@ export function FindExpertsPortal() {
         }
 
         if (selectedCountry !== "All" && !isDirectNameMatch) {
-            const hasCountry = countries.some((c: string) => String(c).toLowerCase().includes(selectedCountry.toLowerCase()));
+            const hasCountry = isCountryMatched(expert.countries, selectedCountry);
             if (!hasCountry) return false;
         }
 
         if (searchText && searchText.trim() !== "") {
-            const searchWords = searchText.toLowerCase().trim().split(/\s+/).filter(Boolean);
-            const fullText = [name, role, cityStr, bio, expert.email || '', expert.phone || expert.contact_number || '', ...tags, ...countries].join(' ').toLowerCase();
-            const matchAllWords = searchWords.every(word => fullText.includes(word));
-            if (!matchAllWords) return false;
+            const fullText = [name, role, cityStr, bio, expert.email || '', expert.phone || expert.contact_number || '', ...tags, ...countries].join(' ');
+            if (!isTextMatchingQuery(fullText, searchText)) return false;
         }
 
         return true;
@@ -624,9 +727,17 @@ export function FindExpertsPortal() {
         else if (name.includes(q)) score += name.startsWith(q) ? 120 : 80;
 
         if (role.includes(q)) score += role.startsWith(q) ? 100 : 60;
+        else if (isTextMatchingQuery(role, q)) score += 50;
+
         if (tags.some((t: string) => t.includes(q))) score += 70;
+        else if (tags.some((t: string) => isTextMatchingQuery(t, q))) score += 40;
+
         if (countries.some((c: string) => c.includes(q))) score += 40;
+        else if (countries.some((c: string) => isCountryMatched(c, q))) score += 30;
+
         if (bio.includes(q)) score += 30;
+        else if (isTextMatchingQuery(bio, q)) score += 20;
+
         if (cityStr.includes(q)) score += 20;
         if (e.isVerified) score += 10;
         score += (e.rating || 0);

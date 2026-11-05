@@ -237,6 +237,53 @@ export function ExpertProfileDetail({
     ];
   }, []);
 
+  // Dynamic Classified Ads: check localStorage for any ads posted by this expert
+  const [displayedClassifieds, setDisplayedClassifieds] = useState<any[]>(classifiedOffers);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const stored = localStorage.getItem("active_classified_ads");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const expName = displayName.toLowerCase().trim();
+          const expEmail = (expert.email || '').toLowerCase().trim();
+          const matched = parsed.filter((ad: any) => {
+            const comp = (ad.company || '').toLowerCase().trim();
+            const em = (ad.expert_email || '').toLowerCase().trim();
+            return (comp && (expName.includes(comp) || comp.includes(expName))) || (em && em === expEmail);
+          });
+
+          if (matched.length > 0) {
+            const mapped = matched.map((ad: any) => ({
+              id: ad.id || `ad-${Date.now()}`,
+              title: ad.title,
+              sub: ad.description || `Special verified ad listing published directly by ${displayName}.`,
+              badge: ad.type === 'premium' ? '⚡ PREMIUM VERIFIED' : `✓ POSTED BY ${displayName.toUpperCase()}`,
+              badgeColor: ad.type === 'premium' ? 'bg-[#370c63] text-white' : 'bg-[#00b070] text-white',
+              price: ad.price || 'Free Consultation',
+              priceSub: ad.validTo ? `Valid until ${ad.validTo}` : 'Direct Verification',
+              tag1: ad.category || 'Classified Ad',
+              tag2: ad.country || 'Global Mobility',
+              tag3: 'Direct Expert Deal',
+              image: ad.cover_photo || (ad.images && ad.images[0]) || '/images/cricket_ad.jpg',
+              href: `/classifieds/${ad.id}`,
+              whatsapp: ad.contactPhone,
+              isDirectByExpert: true,
+              popular: true
+            }));
+            setDisplayedClassifieds([...mapped, ...classifiedOffers.filter(c => !mapped.some(m => m.title === c.title))]);
+            return;
+          }
+        }
+      }
+    } catch(err) {
+      console.error(err);
+    }
+    setDisplayedClassifieds(classifiedOffers);
+  }, [displayName, expert.email, classifiedOffers]);
+
   // Gallery: only real images if uploaded by expert
   const galleryImages = expert.galleryImages || [];
 
@@ -319,8 +366,20 @@ export function ExpertProfileDetail({
   const scrollToSection = (tabKey: any) => {
     setActiveTab(tabKey);
     const el = document.getElementById(`section-${tabKey}`);
-    if (el) {
-      const yOffset = -70;
+    if (!el) return;
+
+    // Check if inside modal container (overflow-y-auto)
+    const modalContainer = el.closest('.overflow-y-auto') as HTMLElement | null;
+    if (modalContainer) {
+      const containerRect = modalContainer.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const relativeTop = elRect.top - containerRect.top + modalContainer.scrollTop;
+      modalContainer.scrollTo({
+        top: Math.max(0, relativeTop - 75),
+        behavior: 'smooth'
+      });
+    } else {
+      const yOffset = -80;
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
@@ -537,8 +596,13 @@ export function ExpertProfileDetail({
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => scrollToSection(tab.id)}
-              className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                scrollToSection(tab.id);
+              }}
+              className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 select-none ${
                 activeTab === tab.id
                   ? 'bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] text-white shadow-[0_4px_14px_rgba(55,12,99,0.35)] scale-[1.02]'
                   : 'text-[#675f80] hover:text-[#1b1233] hover:bg-[#f4eff9]'
@@ -615,7 +679,7 @@ export function ExpertProfileDetail({
           <div className="lg:col-span-8 space-y-8">
             
             {/* SECTION 1: ABOUT PROVIDER */}
-            <div id="section-overview" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
+            <div id="section-overview" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
               <div>
                 <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight flex items-center gap-2">
                   <span>About {displayName}</span>
@@ -626,7 +690,7 @@ export function ExpertProfileDetail({
               </div>
 
               {/* Areas of Expertise Tag Pills */}
-              <div id="section-expertise" className="pt-4 border-t border-[rgba(67,15,122,0.08)]">
+              <div id="section-expertise" className="scroll-mt-24 sm:scroll-mt-28 pt-4 border-t border-[rgba(67,15,122,0.08)]">
                 <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#430f7a] mb-3">
                   Areas of Expertise
                 </h3>
@@ -704,7 +768,7 @@ export function ExpertProfileDetail({
             </div>
 
             {/* SECTION 2: SERVICES OFFERED GRID */}
-            <div id="section-services" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
+            <div id="section-services" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Services Offered</h2>
@@ -756,7 +820,7 @@ export function ExpertProfileDetail({
             </div>
 
             {/* SECTION: CLASSIFIEDS & SPECIAL DEALS */}
-            <div id="section-classifieds" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(55,12,99,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(55,12,99,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6 relative overflow-hidden">
+            <div id="section-classifieds" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(55,12,99,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(55,12,99,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6 relative overflow-hidden">
               {/* Subtle brand glow accent */}
               <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-[#00b070]/10 via-[#370c63]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 
@@ -787,7 +851,7 @@ export function ExpertProfileDetail({
 
               {/* Classifieds Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
-                {classifiedOffers.map((item) => (
+                {displayedClassifieds.map((item) => (
                   <div 
                     key={item.id}
                     className="group border-[1.5px] border-[rgba(55,12,99,0.10)] rounded-[24px] overflow-hidden bg-[#ffffff] hover:border-[#00b070] hover:shadow-[0_16px_36px_-12px_rgba(55,12,99,0.16)] transition-all duration-300 flex flex-col justify-between"
@@ -807,7 +871,7 @@ export function ExpertProfileDetail({
                       
                       {/* Top Badges */}
                       <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                        <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm ${item.badgeColor}`}>
+                        <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm ${item.badgeColor || 'bg-[#00b070] text-white'}`}>
                           {item.badge}
                         </span>
                         {item.popular && (
@@ -832,6 +896,13 @@ export function ExpertProfileDetail({
                     {/* Content Body */}
                     <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                       <div>
+                        {item.isDirectByExpert && (
+                          <div className="mb-2">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-black text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full">
+                              ✓ Posted by {displayName}
+                            </span>
+                          </div>
+                        )}
                         <h3 className="text-base font-extrabold text-[#1b1233] group-hover:text-[#370c63] transition-colors leading-snug">
                           {item.title}
                         </h3>
@@ -862,14 +933,26 @@ export function ExpertProfileDetail({
                           <span>View Details</span>
                           <ArrowRight className="w-3 h-3" />
                         </a>
-                        <button
-                          type="button"
-                          onClick={() => setQuoteModalOpen(true)}
-                          className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(55,12,99,0.18)] hover:border-[#370c63] text-[#370c63] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all cursor-pointer shrink-0"
-                          title={`Inquire about ${item.title}`}
-                        >
-                          Inquire
-                        </button>
+                        {item.whatsapp ? (
+                          <a
+                            href={`https://wa.me/${String(item.whatsapp).replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${displayName}! I am inquiring about your classified ad: ${item.title}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-[#00b070] hover:bg-[#009660] text-white font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all flex items-center gap-1 shadow-xs shrink-0"
+                            title="Chat on WhatsApp"
+                          >
+                            <span>WhatsApp</span>
+                          </a>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setQuoteModalOpen(true)}
+                            className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(55,12,99,0.18)] hover:border-[#370c63] text-[#370c63] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all cursor-pointer shrink-0"
+                            title={`Inquire about ${item.title}`}
+                          >
+                            Inquire
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -878,7 +961,7 @@ export function ExpertProfileDetail({
             </div>
 
             {/* SECTION 3: REVIEWS & RATINGS SCORECARD */}
-            <div id="section-reviews" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
+            <div id="section-reviews" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Reviews &amp; Ratings</h2>
@@ -997,7 +1080,7 @@ export function ExpertProfileDetail({
             </div>
 
             {/* SECTION 4: GALLERY */}
-            <div id="section-gallery" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-4">
+            <div id="section-gallery" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-4">
               <div>
                 <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Gallery &amp; Credentials</h2>
                 <p className="text-xs text-[#675f80] mt-0.5">Verified media, advisory office presence, and legal credentials.</p>
@@ -1040,7 +1123,7 @@ export function ExpertProfileDetail({
             </div>
 
             {/* SECTION 5: FAQS ACCORDION */}
-            <div id="section-faqs" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-4">
+            <div id="section-faqs" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-4">
               <div>
                 <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Frequently Asked Questions</h2>
                 <p className="text-xs text-[#675f80] mt-0.5">Quick answers regarding consultations, escrow milestones, and processing times.</p>

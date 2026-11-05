@@ -56,10 +56,10 @@ export const dummyExperts: PlatformExpert[] = [
     image: "/experts/nisha_agarwal.jpg", experienceYears: "7+ Years", languages: ["English", "Hindi"]
   },
   {
-    id: "d5", name: "Rahul Kapoor", role: "Germany Blue Card & Schengen Expert",
-    city: "Pune", bio: "Fluent in German (C1) with deep expertise in Germany Blue Card, Job Seeker Visa, and EU Blue Card applications. 7+ years in Frankfurt.",
-    tags: ["Germany Blue Card", "Job Seeker Visa", "Schengen", "EU Blue Card", "Freelancer Visa"],
-    countries: ["Germany", "Netherlands", "Austria"], rating: 4.8, reviews: 142, isVerified: true, isRemote: true, govReg: "BAMF-2023-4512",
+    id: "d5", name: "Rahul Kapoor", role: "Germany & Schengen Visa Specialist",
+    city: "Pune", bio: "Fluent in German (C1) with deep expertise in Schengen Tourist Visas, Germany Blue Card, Job Seeker Visa, and EU mobility applications. 7+ years in Frankfurt.",
+    tags: ["Schengen Visa", "Tourist Visa", "Visitor Visa", "Germany Blue Card", "Job Seeker Visa", "EU Blue Card", "Freelancer Visa"],
+    countries: ["Germany", "Greece", "Schengen Countries", "Netherlands", "Austria", "Europe"], rating: 4.8, reviews: 142, isVerified: true, isRemote: true, govReg: "BAMF-2023-4512",
     image: "/experts/rahul_kapoor.jpg", experienceYears: "7+ Years", languages: ["English", "Hindi", "German"]
   },
   {
@@ -105,11 +105,18 @@ export const dummyExperts: PlatformExpert[] = [
     image: "/experts/suresh_babu.jpg", experienceYears: "8+ Years", languages: ["English", "Tamil"]
   },
   {
-    id: "d12", name: "Ritu Malhotra", role: "Tourist & Visit Visa Consultant",
-    city: "Jaipur", bio: "Specializing in Schengen, USA B-2, Canada visitor and Super Visas. 98% success rate for tourist and family visit applications.",
-    tags: ["Schengen Visa", "USA B-2", "Canada Visitor", "Super Visa", "Travel History"],
-    countries: ["USA", "Canada", "Germany", "France", "Italy"], rating: 4.5, reviews: 445, isVerified: true, isRemote: true, govReg: "",
+    id: "d12", name: "Ritu Malhotra", role: "Tourist & Visit Visa Specialist",
+    city: "Jaipur", bio: "Specializing in Schengen Tourist Visas, Greece & European vacations, USA B-2, Canada visitor, and family visit applications. 98% success rate with fast-track slot booking.",
+    tags: ["Tourist Visa", "Visitor Visa", "Schengen Visa", "Greece Tourist", "USA B-2", "Canada Visitor", "Super Visa", "Travel History"],
+    countries: ["Greece", "Schengen Countries", "Europe", "Germany", "France", "Italy", "USA", "Canada"], rating: 4.9, reviews: 445, isVerified: true, isRemote: true, govReg: "VERIFIED-TRAVEL-ADVISOR",
     image: "/experts/ritu_malhotra.jpg", experienceYears: "10+ Years", languages: ["English", "Hindi"]
+  },
+  {
+    id: "d13", name: "Dimitris Alexiou", role: "Greece & Schengen Tourist Visa Advisor",
+    city: "Athens & Mumbai", bio: "Direct Greek travel mobility liaison facilitating Greece tourist visas, Mediterranean cultural & sports tours, golden visa inquiries, and fast European consular filing.",
+    tags: ["Greece Tourist", "Tourist Visa", "Visitor Visa", "Schengen Visa", "Europe Tour", "Sports Tour"],
+    countries: ["Greece", "Schengen Countries", "Europe", "Worldwide"], rating: 4.9, reviews: 188, isVerified: true, isRemote: true, govReg: "GNTO-EL-9082",
+    image: "/experts/amir_khan.jpg", experienceYears: "9+ Years", languages: ["English", "Greek", "Hindi"]
   },
 ];
 
