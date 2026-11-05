@@ -4,7 +4,8 @@ import {
   Building2, Users, Globe, Phone, Mail, ChevronRight, 
   ChevronDown, ExternalLink, MessageSquare, ArrowRight, 
   Share2, Bookmark, Check, Calendar, ArrowLeft, Heart,
-  Sparkles, FileText, AlertCircle, MessageCircle
+  Sparkles, FileText, AlertCircle, MessageCircle, Tag,
+  Zap, Plane, Flame, Percent
 } from 'lucide-react';
 import { RequestQuoteModal } from './RequestQuoteModal';
 import { ReviewRatingModal } from './ReviewRatingModal';
@@ -56,7 +57,7 @@ export function ExpertProfileDetail({
 }: ExpertProfileDetailProps) {
   if (!expert) return null;
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'expertise' | 'reviews' | 'gallery' | 'faqs'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'classifieds' | 'expertise' | 'reviews' | 'gallery' | 'faqs'>('overview');
   const [selectedReviewFilter, setSelectedReviewFilter] = useState<string>('All reviews');
   const [isSaved, setIsSaved] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -170,6 +171,72 @@ export function ExpertProfileDetail({
     ];
   }, [baseRate, currencySymbol]);
 
+  // Classifieds & Special Deals (Verified Partner Packages & Relocation Routes)
+  const classifiedOffers = useMemo(() => {
+    return [
+      {
+        id: 'cl-greece-cricket',
+        title: 'Greece Cricket Tour & European T20',
+        sub: 'Official Europe Series · Athens & Corfu · Risingat Sports Partner',
+        badge: '⚡ VERIFIED GROUP TOUR',
+        badgeColor: 'bg-emerald-500 text-white',
+        price: '₹1,85,000',
+        priceSub: 'All-inclusive · Visa + Flights + 4-Star Stay',
+        tag1: 'Schengen Visa',
+        tag2: 'Oct - Nov 2026 Batch',
+        tag3: 'Match Kit Included',
+        image: '/images/cricket_ad.jpg',
+        href: '/tours?category=sports&country=greece',
+        popular: true
+      },
+      {
+        id: 'cl-germany-chancenkarte',
+        title: 'Germany Opportunity Card (Chancenkarte)',
+        sub: 'Point-based Job Seeker Visa with Direct PR Pathway & Work Rights',
+        badge: '🔥 HOT ROUTE',
+        badgeColor: 'bg-[#370c63] text-white',
+        price: '₹28,000',
+        priceSub: 'Full Case Review + CV Europass',
+        tag1: 'Job Seeker',
+        tag2: '1 Year Valid',
+        tag3: 'Family Route',
+        image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&h=600&fit=crop&q=80',
+        href: '/jobs',
+        popular: false
+      },
+      {
+        id: 'cl-uk-skilled',
+        title: 'UK Skilled Worker & Care Visa Filing',
+        sub: 'COS Verification, Tier 2 Sponsorship Audit & Fast-track Embassy Booking',
+        badge: '100% ESCROW HOLD',
+        badgeColor: 'bg-emerald-600 text-white',
+        price: '₹42,000',
+        priceSub: 'Stage-wise milestone releases',
+        tag1: 'Tier-2 COS',
+        tag2: '3-5 Weeks',
+        tag3: 'NHS Eligible',
+        image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=600&fit=crop&q=80',
+        href: '/find-experts',
+        popular: false
+      },
+      {
+        id: 'cl-dubai-special',
+        title: 'Dubai 5D/4N Luxury Tour & Visa Combo',
+        sub: 'Desert Safari, Marina Dhow Cruise, 4-Star Hotel & Express E-Visa',
+        badge: 'FLAT DEAL',
+        badgeColor: 'bg-amber-500 text-white',
+        price: '₹34,500',
+        priceSub: 'Zero convenience fee · Instant issue',
+        tag1: 'Holiday Combo',
+        tag2: 'Immediate Batch',
+        tag3: '4-Star Stay',
+        image: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&h=600&fit=crop&q=80',
+        href: '/tours?destination=Dubai',
+        popular: false
+      }
+    ];
+  }, []);
+
   // Gallery: only real images if uploaded by expert
   const galleryImages = expert.galleryImages || [];
 
@@ -253,7 +320,9 @@ export function ExpertProfileDetail({
     setActiveTab(tabKey);
     const el = document.getElementById(`section-${tabKey}`);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const yOffset = -70;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
 
@@ -413,30 +482,78 @@ export function ExpertProfileDetail({
               </div>
             </div>
 
-            {/* Right Column: Signature TravlTik Luxury Purple Banner (Matches Landing Page Gradient Feel) */}
-            <div className="lg:col-span-5 relative min-h-[240px] lg:min-h-full overflow-hidden bg-gradient-to-tr from-[#240641] via-[#370c63] to-[#4a1385] flex items-center justify-center p-8">
-              {/* Subtle background aurora glow */}
-              <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#00b070]/20 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-[#6c28d9]/30 rounded-full blur-3xl pointer-events-none" />
+            {/* Right Column: Signature TravlTik Luxury Violet & Emerald Banner */}
+            <div className="lg:col-span-5 relative min-h-[250px] lg:min-h-full overflow-hidden bg-gradient-to-br from-[#1b052e] via-[#370c63] to-[#120826] flex items-center justify-center p-8">
+              {/* Aerodynamic flight trail & emerald glow */}
+              <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#00b070]/25 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-[#5b159d]/40 rounded-full blur-3xl pointer-events-none" />
               
-              <div className="relative z-10 text-center text-white px-4 space-y-3">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-widest text-[#00e599] bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-sm">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#00e599]" /> Seamless Visa Experience
-                </span>
+              {/* Subtle supersonic trail SVG motif */}
+              <svg className="absolute inset-0 w-full h-full opacity-15 pointer-events-none" viewBox="0 0 400 300" fill="none">
+                <path d="M-50,280 Q150,150 420,40" stroke="#00b070" strokeWidth="2.5" strokeDasharray="6 6" />
+                <path d="M-20,290 Q170,170 450,60" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="4 8" />
+              </svg>
+
+              <div className="relative z-10 text-center text-white px-4 space-y-3.5">
+                <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#00e599] bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-[#00e599] animate-pulse"></span>
+                  <span>TRAVLTIK VERIFIED · ESCROW BACKED</span>
+                </div>
+
                 <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-snug drop-shadow-sm font-sans">
-                  “Your Global Journey, <br /><span className="text-[#00e599]">Our Trusted Expertise</span>”
+                  “Your Global Journey, <br />
+                  <span className="bg-gradient-to-r from-[#00e599] via-[#46e8b2] to-white bg-clip-text text-transparent">
+                    Supercharged by Real Experts
+                  </span>”
                 </h3>
-                <p className="text-xs text-purple-100/90 max-w-xs mx-auto leading-relaxed">
-                  {expert.isVerified ? 'Verified immigration advisory and compliant filing support protected with TravlTik Escrow.' : 'Direct consultation and visa filing guidance.'}
+
+                <p className="text-xs text-purple-100/90 max-w-xs mx-auto leading-relaxed font-medium">
+                  {expert.isVerified ? 'Government-registered immigration advisory & audit filing with 100% milestone escrow hold.' : 'Verified direct immigration counsel and visa filing guidance.'}
                 </p>
-                <div className="pt-2 flex items-center justify-center gap-2 text-[11px] text-purple-200/80">
-                  <span className="inline-block w-2 h-2 rounded-full bg-[#00e599] animate-pulse"></span>
-                  <span>100% Escrow Protected Milestones</span>
+
+                <div className="pt-2 flex items-center justify-center gap-3 text-[11px] text-purple-200/90 font-bold">
+                  <span className="flex items-center gap-1 text-[#00e599]">
+                    <ShieldCheck className="w-3.5 h-3.5" /> 100% Escrow Protection
+                  </span>
+                  <span>•</span>
+                  <span>Direct Milestone Delivery</span>
                 </div>
               </div>
             </div>
 
           </div>
+        </div>
+
+        {/* TOP STICKY NAVIGATION TABS STRIP (Full Width, Floating Glassmorphism - Moved UP as Requested) */}
+        <div className="sticky top-2 sm:top-4 z-30 mb-8 bg-white/95 backdrop-blur-xl rounded-full border-[1.5px] border-[rgba(55,12,99,0.12)] p-1.5 shadow-[0_12px_36px_-10px_rgba(55,12,99,0.14),0_2px_6px_rgba(0,0,0,0.02)] overflow-x-auto custom-scrollbar flex items-center justify-start sm:justify-center gap-1.5 transition-all">
+          {[
+            { id: 'overview', label: 'Overview' },
+            { id: 'services', label: 'Services' },
+            { id: 'classifieds', label: 'Classifieds', badge: 'New' },
+            { id: 'expertise', label: 'Areas of Expertise' },
+            { id: 'reviews', label: `Reviews (${reviewCount})` },
+            { id: 'gallery', label: 'Gallery' },
+            { id: 'faqs', label: 'FAQs' },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => scrollToSection(tab.id)}
+              className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
+                activeTab === tab.id
+                  ? 'bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] text-white shadow-[0_4px_14px_rgba(55,12,99,0.35)] scale-[1.02]'
+                  : 'text-[#675f80] hover:text-[#1b1233] hover:bg-[#f4eff9]'
+              }`}
+            >
+              <span>{tab.label}</span>
+              {tab.badge && (
+                <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded-full font-black ${
+                  activeTab === tab.id ? 'bg-[#00b070] text-white' : 'bg-[#ecfdf5] text-[#00b070] border border-[#a7f3d0]'
+                }`}>
+                  {tab.badge}
+                </span>
+              )}
+            </button>
+          ))}
         </div>
 
         {/* MILESTONE STATS BAR (Landing Page Style) */}
@@ -497,26 +614,6 @@ export function ExpertProfileDetail({
           {/* LEFT MAIN CONTENT COLUMN */}
           <div className="lg:col-span-8 space-y-8">
             
-            {/* Sticky Navigation Tabs Strip */}
-            <div className="sticky top-4 z-20 bg-white/95 backdrop-blur-md rounded-full border-[1.5px] border-[rgba(67,15,122,0.12)] p-1.5 shadow-[0_10px_30px_-12px_rgba(67,15,122,0.12)] overflow-x-auto custom-scrollbar flex items-center gap-1.5">
-              {[
-                { id: 'overview', label: 'Overview' },
-                { id: 'services', label: 'Services' },
-                { id: 'expertise', label: 'Areas of Expertise' },
-                { id: 'reviews', label: `Reviews (${reviewCount})` },
-                { id: 'gallery', label: 'Gallery' },
-                { id: 'faqs', label: 'FAQs' },
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => scrollToSection(tab.id)}
-                  className={`px-4 sm:px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === tab.id ? 'bg-[#370c63] text-white shadow-sm' : 'text-[#675f80] hover:text-[#1b1233] hover:bg-[#f4eff9]'}`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
             {/* SECTION 1: ABOUT PROVIDER */}
             <div id="section-overview" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
               <div>
@@ -652,6 +749,128 @@ export function ExpertProfileDetail({
                         <span>Book this package</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                       </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SECTION: CLASSIFIEDS & SPECIAL DEALS */}
+            <div id="section-classifieds" className="bg-white rounded-[28px] border-[1.5px] border-[rgba(55,12,99,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(55,12,99,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6 relative overflow-hidden">
+              {/* Subtle brand glow accent */}
+              <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-[#00b070]/10 via-[#370c63]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-0.5 rounded-full shadow-2xs">
+                      <Zap className="w-3 h-3 text-[#00b070]" /> Verified Classified Deals
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-400">• Direct Partner Batches</span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight flex items-center gap-2">
+                    <span>Classifieds &amp; Special Offers</span>
+                  </h2>
+                  <p className="text-xs text-[#675f80] mt-0.5 leading-relaxed">
+                    Exclusive group tours, fast-track work routes, and verified relocation packages handled directly with {displayName}.
+                  </p>
+                </div>
+                
+                <a 
+                  href="/tours" 
+                  className="text-xs font-bold text-[#370c63] hover:text-[#00b070] flex items-center gap-1 transition-colors self-start sm:self-auto shrink-0 bg-[#f4eff9] hover:bg-[#ece2f7] px-3.5 py-1.5 rounded-xl border border-[rgba(55,12,99,0.12)]"
+                >
+                  <span>Explore all classifieds</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              {/* Classifieds Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+                {classifiedOffers.map((item) => (
+                  <div 
+                    key={item.id}
+                    className="group border-[1.5px] border-[rgba(55,12,99,0.10)] rounded-[24px] overflow-hidden bg-[#ffffff] hover:border-[#00b070] hover:shadow-[0_16px_36px_-12px_rgba(55,12,99,0.16)] transition-all duration-300 flex flex-col justify-between"
+                  >
+                    {/* Media Header */}
+                    <div className="relative h-44 w-full overflow-hidden bg-slate-900">
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/images/cricket_ad.jpg';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1b1233]/90 via-[#1b1233]/30 to-transparent" />
+                      
+                      {/* Top Badges */}
+                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                        <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm ${item.badgeColor}`}>
+                          {item.badge}
+                        </span>
+                        {item.popular && (
+                          <span className="text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider bg-white/95 backdrop-blur-md text-[#370c63] shadow-sm flex items-center gap-1">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-500" /> Spotlight
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Price Bottom Pill */}
+                      <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between text-white">
+                        <div>
+                          <div className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider">Starting from</div>
+                          <div className="text-xl font-black text-white tracking-tight">{item.price}</div>
+                        </div>
+                        <span className="text-[10px] font-bold text-slate-200 bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/25">
+                          100% Escrow
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Content Body */}
+                    <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                      <div>
+                        <h3 className="text-base font-extrabold text-[#1b1233] group-hover:text-[#370c63] transition-colors leading-snug">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-[#675f80] mt-1.5 leading-relaxed line-clamp-2">
+                          {item.sub}
+                        </p>
+
+                        {/* Feature Tags */}
+                        <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-[rgba(55,12,99,0.06)]">
+                          <span className="text-[10px] font-bold text-[#370c63] bg-[#f4eff9] border border-[rgba(55,12,99,0.12)] px-2.5 py-0.5 rounded-md">
+                            {item.tag1}
+                          </span>
+                          <span className="text-[10px] font-bold text-[#065f46] bg-[#ecfdf5] border border-[#a7f3d0] px-2.5 py-0.5 rounded-md">
+                            {item.tag2}
+                          </span>
+                          <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">
+                            {item.tag3}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="pt-3 border-t border-[rgba(55,12,99,0.08)] flex items-center justify-between gap-2">
+                        <a 
+                          href={item.href}
+                          className="flex-1 bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold text-xs py-2.5 px-4 rounded-xl shadow-[0_4px_12px_rgba(55,12,99,0.25)] flex items-center justify-center gap-1.5 transition-all text-center"
+                        >
+                          <span>View Details</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setQuoteModalOpen(true)}
+                          className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(55,12,99,0.18)] hover:border-[#370c63] text-[#370c63] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all cursor-pointer shrink-0"
+                          title={`Inquire about ${item.title}`}
+                        >
+                          Inquire
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
