@@ -1,5 +1,6 @@
 ---
 // src/pages/index.astro
+import { ALL_COUNTRIES } from '../data/countries';
 ---
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
@@ -1079,7 +1080,10 @@ section{padding:96px 0;position:relative}
 .qs-drop-trigger svg.chv{width:15px;height:15px;color:#7e749a;transition:transform .2s;flex-shrink:0}
 .qs-drop-box.open .qs-drop-trigger svg.chv{transform:rotate(180deg);color:var(--g2)}
 .c-drop-val .flag-icon, .c-drop-opt .flag-icon{width:20px;height:14px;border-radius:3px;object-fit:cover;box-shadow:0 1px 3px rgba(0,0,0,.15);flex-shrink:0}
-.c-drop-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border-radius:20px;border:1px solid var(--line);box-shadow:0 24px 50px -12px rgba(67,15,122,.28),0 0 0 1px rgba(67,15,122,.06);padding:7px;opacity:0;visibility:hidden;transform:translateY(6px);transition:.2s cubic-bezier(.2,.7,.2,1);z-index:999;display:flex;flex-direction:column;gap:3px}
+.c-drop-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;min-width:270px;max-height:340px;overflow-y:auto;scrollbar-width:thin;background:#fff;border-radius:20px;border:1px solid var(--line);box-shadow:0 24px 50px -12px rgba(67,15,122,.28),0 0 0 1px rgba(67,15,122,.06);padding:7px;opacity:0;visibility:hidden;transform:translateY(6px);transition:.2s cubic-bezier(.2,.7,.2,1);z-index:999;display:flex;flex-direction:column;gap:3px}
+.c-drop-search-wrap{position:sticky;top:0;background:#ffffff;padding:4px 4px 8px;z-index:20;border-bottom:1px solid rgba(67,15,122,0.08);margin-bottom:4px}
+.c-drop-search{width:100%;border-radius:12px;border:1.5px solid rgba(67,15,122,0.15);padding:8px 12px;font-size:12.5px;font-weight:600;outline:none;background:#fbf9fe;color:#1b1233;box-sizing:border-box;transition:border-color .2s}
+.c-drop-search:focus{border-color:#581db5;background:#ffffff;box-shadow:0 0 0 3px rgba(88,29,181,0.12)}
 .c-drop.open .c-drop-menu{opacity:1;visibility:visible;transform:none}
 .c-drop-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;font-size:13.5px;font-weight:600;color:#352c50;cursor:pointer;transition:.15s}
 .c-drop-opt:hover{background:var(--l1);color:var(--g2);transform:translateX(3px)}
@@ -1448,19 +1452,17 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           </button>
           <input type="hidden" id="dest-val" value="" />
           <div class="pill-drop-menu" id="pill-dest-menu">
+            <div class="c-drop-search-wrap">
+              <input type="text" class="c-drop-search" placeholder="Type to filter country..." onclick="event.stopPropagation()" />
+            </div>
             <div class="c-drop-opt on" data-v=""><span class="flag-icon" style="font-size:16px">🌐</span> All Countries <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Greece" data-f="gr"><img src="https://flagcdn.com/w40/gr.png" class="flag-icon" alt="Greece" /> Greece <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada" /> Canada <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia" /> Australia <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="USA" data-f="us"><img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="USA" /> USA <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Germany" data-f="de"><img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany" /> Germany <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Japan" data-f="jp"><img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan" /> Japan <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Singapore" data-f="sg"><img src="https://flagcdn.com/w40/sg.png" class="flag-icon" alt="Singapore" /> Singapore <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Ireland" data-f="ie"><img src="https://flagcdn.com/w40/ie.png" class="flag-icon" alt="Ireland" /> Ireland <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="France" data-f="fr"><img src="https://flagcdn.com/w40/fr.png" class="flag-icon" alt="France" /> France <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="New Zealand" data-f="nz"><img src="https://flagcdn.com/w40/nz.png" class="flag-icon" alt="NZ" /> New Zealand <svg class="i chk"><use href="#check"/></svg></div>
+            {ALL_COUNTRIES.map((c) => (
+              <div class="c-drop-opt" data-v={c.name} data-f={c.code}>
+                <img src={`https://flagcdn.com/w40/${c.code}.png`} class="flag-icon" alt={c.name} loading="lazy" />
+                <span>{c.name}</span>
+                <svg class="i chk"><use href="#check"/></svg>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -1478,15 +1480,16 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           </button>
           <input type="hidden" id="from-val" value="India" />
           <div class="pill-drop-menu" id="pill-from-menu" style="left:auto;right:0;">
-            <div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India" /> India <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria" /> Nigeria <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines" /> Philippines <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan" /> Pakistan <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Bangladesh" data-f="bd"><img src="https://flagcdn.com/w40/bd.png" class="flag-icon" alt="Bangladesh" /> Bangladesh <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Nepal" data-f="np"><img src="https://flagcdn.com/w40/np.png" class="flag-icon" alt="Nepal" /> Nepal <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="Sri Lanka" data-f="lk"><img src="https://flagcdn.com/w40/lk.png" class="flag-icon" alt="Sri Lanka" /> Sri Lanka <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg></div>
-            <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-search-wrap">
+              <input type="text" class="c-drop-search" placeholder="Type to filter country..." onclick="event.stopPropagation()" />
+            </div>
+            {ALL_COUNTRIES.map((c) => (
+              <div class={`c-drop-opt ${c.name === 'India' ? 'on' : ''}`} data-v={c.name} data-f={c.code}>
+                <img src={`https://flagcdn.com/w40/${c.code}.png`} class="flag-icon" alt={c.name} loading="lazy" />
+                <span>{c.name}</span>
+                <svg class="i chk"><use href="#check"/></svg>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -1636,12 +1639,16 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
             </button>
             <input type="hidden" id="easy-dest-val" value="Canada">
             <div class="c-drop-menu" id="easy-dest-menu">
-              <div class="c-drop-opt on" data-v="Canada" data-f="ca"><img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada"> Canada <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="United Kingdom" data-f="gb"><img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK"> United Kingdom <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Australia" data-f="au"><img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia"> Australia <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="UAE" data-f="ae"><img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE"> UAE <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Germany" data-f="de"><img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany"> Germany <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Japan" data-f="jp"><img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan"> Japan <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-search-wrap">
+                <input type="text" class="c-drop-search" placeholder="Type to filter country..." onclick="event.stopPropagation()" />
+              </div>
+              {ALL_COUNTRIES.map((c) => (
+                <div class={`c-drop-opt ${c.name === 'Canada' ? 'on' : ''}`} data-v={c.name} data-f={c.code}>
+                  <img src={`https://flagcdn.com/w40/${c.code}.png`} class="flag-icon" alt={c.name} loading="lazy" />
+                  <span>{c.name}</span>
+                  <svg class="i chk"><use href="#check"/></svg>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -1655,10 +1662,16 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
             </button>
             <input type="hidden" id="easy-from-val" value="India">
             <div class="c-drop-menu" id="easy-from-menu">
-              <div class="c-drop-opt on" data-v="India" data-f="in"><img src="https://flagcdn.com/w40/in.png" class="flag-icon" alt="India"> India <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Nigeria" data-f="ng"><img src="https://flagcdn.com/w40/ng.png" class="flag-icon" alt="Nigeria"> Nigeria <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Philippines" data-f="ph"><img src="https://flagcdn.com/w40/ph.png" class="flag-icon" alt="Philippines"> Philippines <svg class="i chk"><use href="#check"/></svg></div>
-              <div class="c-drop-opt" data-v="Pakistan" data-f="pk"><img src="https://flagcdn.com/w40/pk.png" class="flag-icon" alt="Pakistan"> Pakistan <svg class="i chk"><use href="#check"/></svg></div>
+              <div class="c-drop-search-wrap">
+                <input type="text" class="c-drop-search" placeholder="Type to filter country..." onclick="event.stopPropagation()" />
+              </div>
+              {ALL_COUNTRIES.map((c) => (
+                <div class={`c-drop-opt ${c.name === 'India' ? 'on' : ''}`} data-v={c.name} data-f={c.code}>
+                  <img src={`https://flagcdn.com/w40/${c.code}.png`} class="flag-icon" alt={c.name} loading="lazy" />
+                  <span>{c.name}</span>
+                  <svg class="i chk"><use href="#check"/></svg>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -1760,45 +1773,19 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
             </button>
             <input type="hidden" id="qs-dest-val" value="All Countries" />
             <div class="c-drop-menu qs-menu" id="qs-dest-menu">
+              <div class="c-drop-search-wrap">
+                <input type="text" class="c-drop-search" placeholder="Type to filter country..." onclick="event.stopPropagation()" />
+              </div>
               <div class="c-drop-opt on" data-v="All Countries">
                 <svg class="i" style="width:16px;height:16px;color:var(--g)"><use href="#globe"/></svg> All Countries <svg class="i chk"><use href="#check"/></svg>
               </div>
-              <div class="c-drop-opt" data-v="Greece" data-f="gr">
-                <img src="https://flagcdn.com/w40/gr.png" class="flag-icon" alt="Greece" /> Greece <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="Canada" data-f="ca">
-                <img src="https://flagcdn.com/w40/ca.png" class="flag-icon" alt="Canada" /> Canada <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="United Kingdom" data-f="gb">
-                <img src="https://flagcdn.com/w40/gb.png" class="flag-icon" alt="UK" /> United Kingdom <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="Australia" data-f="au">
-                <img src="https://flagcdn.com/w40/au.png" class="flag-icon" alt="Australia" /> Australia <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="USA" data-f="us">
-                <img src="https://flagcdn.com/w40/us.png" class="flag-icon" alt="USA" /> USA <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="UAE" data-f="ae">
-                <img src="https://flagcdn.com/w40/ae.png" class="flag-icon" alt="UAE" /> UAE <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="Germany" data-f="de">
-                <img src="https://flagcdn.com/w40/de.png" class="flag-icon" alt="Germany" /> Germany <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="Japan" data-f="jp">
-                <img src="https://flagcdn.com/w40/jp.png" class="flag-icon" alt="Japan" /> Japan <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="New Zealand" data-f="nz">
-                <img src="https://flagcdn.com/w40/nz.png" class="flag-icon" alt="New Zealand" /> New Zealand <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="France" data-f="fr">
-                <img src="https://flagcdn.com/w40/fr.png" class="flag-icon" alt="France" /> France <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="Singapore" data-f="sg">
-                <img src="https://flagcdn.com/w40/sg.png" class="flag-icon" alt="Singapore" /> Singapore <svg class="i chk"><use href="#check"/></svg>
-              </div>
-              <div class="c-drop-opt" data-v="Ireland" data-f="ie">
-                <img src="https://flagcdn.com/w40/ie.png" class="flag-icon" alt="Ireland" /> Ireland <svg class="i chk"><use href="#check"/></svg>
-              </div>
+              {ALL_COUNTRIES.map((c) => (
+                <div class="c-drop-opt" data-v={c.name} data-f={c.code}>
+                  <img src={`https://flagcdn.com/w40/${c.code}.png`} class="flag-icon" alt={c.name} loading="lazy" />
+                  <span>{c.name}</span>
+                  <svg class="i chk"><use href="#check"/></svg>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -2429,13 +2416,35 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
   const btn = drop.querySelector('.c-drop-trigger, .qs-drop-trigger');
   const valInput = $(valInputId);
   const textSpan = $(textSpanId);
+  const searchInput = drop.querySelector('.c-drop-search');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      drop.querySelectorAll('.c-drop-opt').forEach(opt => {
+        const text = (opt.dataset.v || opt.textContent || '').toLowerCase();
+        if (!q || text.includes(q)) {
+          opt.style.display = 'flex';
+        } else {
+          opt.style.display = 'none';
+        }
+      });
+    });
+  }
 
   if (btn) {
     btn.onclick = (e) => {
       e.stopPropagation();
       const isOpen = drop.classList.contains('open');
       $$('.c-drop').forEach(d => d.classList.remove('open'));
-      if (!isOpen) drop.classList.add('open');
+      if (!isOpen) {
+        drop.classList.add('open');
+        if (searchInput) {
+          searchInput.value = '';
+          drop.querySelectorAll('.c-drop-opt').forEach(opt => opt.style.display = 'flex');
+          setTimeout(() => searchInput.focus(), 60);
+        }
+      }
     };
   }
 
@@ -3690,10 +3699,32 @@ if (easyGoBtn) {
       const destSlugMap = {
         'Canada': 'canada',
         'United Kingdom': 'uk',
+        'UK': 'uk',
         'Australia': 'australia',
+        'United States': 'usa',
+        'USA': 'usa',
         'UAE': 'uae',
+        'United Arab Emirates': 'uae',
         'Germany': 'germany',
-        'Japan': 'japan'
+        'Japan': 'japan',
+        'Singapore': 'singapore',
+        'Ireland': 'ireland',
+        'France': 'france',
+        'New Zealand': 'new-zealand',
+        'Italy': 'italy',
+        'Spain': 'spain',
+        'Greece': 'greece',
+        'Netherlands': 'netherlands',
+        'Poland': 'poland',
+        'Switzerland': 'switzerland',
+        'Portugal': 'portugal',
+        'Luxembourg': 'luxembourg',
+        'Austria': 'austria',
+        'Belgium': 'belgium',
+        'Sweden': 'sweden',
+        'Norway': 'norway',
+        'Denmark': 'denmark',
+        'Finland': 'finland'
       };
       const countrySlug = destSlugMap[destVal] || (destVal ? destVal.toLowerCase().replace(/\s+/g, '-') : 'canada');
       window.location.href = `/visa/${encodeURIComponent(countrySlug)}?passport=${encodeURIComponent(fromVal)}&from=${encodeURIComponent(fromVal)}&purpose=${encodeURIComponent(qVal || 'Express Entry PR')}`;
