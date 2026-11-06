@@ -1434,7 +1434,7 @@ export function FindExpertsPortal() {
                                                             setPaymentExpert(e);
                                                             setPaymentModalOpen(true);
                                                         }} 
-                                                        className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-5 py-2 rounded-xl text-xs shadow-md shadow-emerald-500/20 active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap font-plus-jakarta shrink-0"
+                                                        className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-5 py-2 rounded-xl text-xs shadow-md shadow-[rgba(55,12,99,0.3)] active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap font-plus-jakarta shrink-0"
                                                     >
                                                         <span>Book Consultation</span>
                                                     </button>

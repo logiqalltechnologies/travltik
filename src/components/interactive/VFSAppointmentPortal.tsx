@@ -94,7 +94,7 @@ export function VFSAppointmentPortal() {
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={scrollToBooking}
-                  className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-8 py-4 rounded-2xl text-sm shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-all flex items-center gap-2.5 cursor-pointer"
+                  className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-8 py-4 rounded-2xl text-sm shadow-lg shadow-[rgba(55,12,99,0.35)] active:scale-[0.98] transition-all flex items-center gap-2.5 cursor-pointer"
                 >
                   <span>Request Booking Support</span>
                   <ArrowRight className="w-4 h-4" />
@@ -332,7 +332,7 @@ export function VFSAppointmentPortal() {
 
                     <button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-4 rounded-xl text-sm shadow-md shadow-emerald-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold py-4 rounded-xl text-sm shadow-md shadow-[rgba(55,12,99,0.35)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <span>Confirm Biometric Slot Booking</span>
                       <ArrowRight className="w-4 h-4" />

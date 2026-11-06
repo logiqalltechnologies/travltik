@@ -346,7 +346,7 @@ export function SupportPortal() {
                             <button 
                                 type="submit" 
                                 disabled={isSubmitting}
-                                className="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm py-4 rounded-xl shadow-md shadow-emerald-500/20 active:scale-95 transition-all cursor-pointer font-plus-jakarta flex items-center justify-center gap-2"
+                                className="w-full bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold text-sm py-4 rounded-xl shadow-md shadow-[rgba(55,12,99,0.35)] active:scale-95 transition-all cursor-pointer font-plus-jakarta flex items-center justify-center gap-2"
                             >
                                 <Send className="w-4 h-4" />
                                 <span>{isSubmitting ? "Sending Message..." : "Submit Message →"}</span>

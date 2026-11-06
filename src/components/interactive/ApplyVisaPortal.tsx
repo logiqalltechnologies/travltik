@@ -705,7 +705,7 @@ export function ApplyVisaPortal() {
 
                 <div className="flex gap-4 pt-3">
                   <button onClick={() => setStep(3)} className="px-6 py-4 border-2 border-slate-200 rounded-2xl text-xs font-black text-gray-600 hover:bg-slate-100 transition-all flex items-center gap-1.5 tracking-wider">← Back</button>
-                  <button onClick={handlePayment} className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs tracking-wider animate-shimmer">
+                  <button onClick={handlePayment} className="flex-1 bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-black py-4 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs tracking-wider animate-shimmer shadow-md shadow-[rgba(55,12,99,0.35)]">
                     <CreditCard className="w-4 h-4" /> Pay & Apply · ₹{getTotal().toLocaleString()}
                   </button>
                 </div>

@@ -1,0 +1,327 @@
+export interface LuxembourgJobVacancy {
+  sNo: number;
+  id: string;
+  category: string;
+  vacancies: number;
+  salaryMonthly: string;
+  salaryMin: number;
+  salaryMax: number;
+  sector: "Skilled Trades & Technical" | "Hospitality & Food" | "Logistics & Operations" | "Management & Corporate";
+  location: string;
+  permitType: string;
+  experienceRequired: string;
+  description: string;
+}
+
+export const LUXEMBOURG_VACANCIES_2026: LuxembourgJobVacancy[] = [
+  {
+    sNo: 1,
+    id: "lux-2026-01",
+    category: "Welder",
+    vacancies: 16,
+    salaryMonthly: "3,480 € - 4,180 €",
+    salaryMin: 3480,
+    salaryMax: 4180,
+    sector: "Skilled Trades & Technical",
+    location: "Luxembourg City & Esch-sur-Alzette",
+    permitType: "EU Blue Card / Skilled Worker Permit",
+    experienceRequired: "TIG/MIG Welding Certification · Min 1 Year Exp",
+    description: "Industrial steel fabrication, pipeline welding, structural joint inspection, adhering to European CE and ISO safety standards in modern engineering facilities."
+  },
+  {
+    sNo: 2,
+    id: "lux-2026-02",
+    category: "Manager",
+    vacancies: 24,
+    salaryMonthly: "4,020 € - 5,120 €",
+    salaryMin: 4020,
+    salaryMax: 5120,
+    sector: "Management & Corporate",
+    location: "Kirchberg, Luxembourg City",
+    permitType: "EU Blue Card / Highly Qualified Permit",
+    experienceRequired: "Degree + 3+ Years Operational Management",
+    description: "Branch operations oversight, team leadership, KPI reporting, cross-border European client relationship coordination, and budget management."
+  },
+  {
+    sNo: 3,
+    id: "lux-2026-03",
+    category: "Helper",
+    vacancies: 14,
+    salaryMonthly: "3,280 € - 3,580 €",
+    salaryMin: 3280,
+    salaryMax: 3580,
+    sector: "Logistics & Operations",
+    location: "Differdange & Dudelange",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "Freshers Welcome · Willingness to Learn",
+    description: "Assisting senior technicians and warehouse staff, material sorting, loading and unloading shipments, workshop upkeep, and general operational support."
+  },
+  {
+    sNo: 4,
+    id: "lux-2026-04",
+    category: "Food Packing",
+    vacancies: 30,
+    salaryMonthly: "3,480 € - 3,820 €",
+    salaryMin: 3480,
+    salaryMax: 3820,
+    sector: "Logistics & Operations",
+    location: "Bettembourg Logistics Hub",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "No prior experience required · Clean background",
+    description: "Automated line packaging of food items, batch quality control, labeling according to EU multilingual requirements, and palletizing in climate-controlled hubs."
+  },
+  {
+    sNo: 5,
+    id: "lux-2026-05",
+    category: "A/C Technician",
+    vacancies: 25,
+    salaryMonthly: "3,580 € - 3,980 €",
+    salaryMin: 3580,
+    salaryMax: 3980,
+    sector: "Skilled Trades & Technical",
+    location: "Luxembourg City & Strassen",
+    permitType: "Skilled Worker Permit",
+    experienceRequired: "HVAC / Refrigeration Diploma + 1 Year Exp",
+    description: "Installation, maintenance, and seasonal servicing of ventilation, air conditioning, and heat pump systems across residential complexes and corporate banks."
+  },
+  {
+    sNo: 6,
+    id: "lux-2026-06",
+    category: "Driver",
+    vacancies: 30,
+    salaryMonthly: "3,880 € - 4,020 €",
+    salaryMin: 3880,
+    salaryMax: 4020,
+    sector: "Logistics & Operations",
+    location: "Findel Airport Logistics & Capellen",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "Valid Driving License (Min 2 Years Experience)",
+    description: "Regional and urban transit driving, intra-European delivery routes (Luxembourg-France-Germany borders), vehicle safety checks, and cargo verification."
+  },
+  {
+    sNo: 7,
+    id: "lux-2026-07",
+    category: "Chef",
+    vacancies: 29,
+    salaryMonthly: "3,940 € - 4,280 €",
+    salaryMin: 3940,
+    salaryMax: 4280,
+    sector: "Hospitality & Food",
+    location: "Luxembourg City Center & Remich",
+    permitType: "EU Skilled Worker Permit",
+    experienceRequired: "Culinary Arts Degree/Certificate + 2 Years Exp",
+    description: "Menu planning, preparation of multi-course European and international dishes, supervising prep cooks, inventory management, and strict hygiene auditing."
+  },
+  {
+    sNo: 8,
+    id: "lux-2026-08",
+    category: "Waiter",
+    vacancies: 22,
+    salaryMonthly: "3,420 € - 3,680 €",
+    salaryMin: 3420,
+    salaryMax: 3680,
+    sector: "Hospitality & Food",
+    location: "Grund & Clausen Dining Districts",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "6+ Months Dining / Hospitality Experience",
+    description: "High-end restaurant guest hospitality, bilingual table service, POS order booking, wine suggestions, and maintaining pristine dining ambience."
+  },
+  {
+    sNo: 9,
+    id: "lux-2026-09",
+    category: "Supervisor",
+    vacancies: 40,
+    salaryMonthly: "4,580 € - 5,280 €",
+    salaryMin: 4580,
+    salaryMax: 5280,
+    sector: "Management & Corporate",
+    location: "Esch-Belval & Contern",
+    permitType: "EU Blue Card / Management Permit",
+    experienceRequired: "2+ Years Supervisory / Shift Lead Experience",
+    description: "Directing floor teams, scheduling shift rotas, monitoring safety and productivity compliance, handling worker queries, and reporting to division directors."
+  },
+  {
+    sNo: 10,
+    id: "lux-2026-10",
+    category: "Computer Operator",
+    vacancies: 19,
+    salaryMonthly: "4,180 € - 4,520 €",
+    salaryMin: 4180,
+    salaryMax: 4520,
+    sector: "Skilled Trades & Technical",
+    location: "Kirchberg Financial Center",
+    permitType: "EU Blue Card / IT Specialist",
+    experienceRequired: "BSc/Diploma in IT / 1+ Year System Operations",
+    description: "Monitoring data servers, system backups, managing user access privileges, logging system diagnostics, and supporting IT infrastructure operations."
+  },
+  {
+    sNo: 11,
+    id: "lux-2026-11",
+    category: "Security Guard",
+    vacancies: 16,
+    salaryMonthly: "3,480 € - 3,920 €",
+    salaryMin: 3480,
+    salaryMax: 3920,
+    sector: "Logistics & Operations",
+    location: "Luxembourg City & Senningerberg",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "Physical Fitness · Clean Criminal Record",
+    description: "Premises security, surveillance monitoring via control room consoles, visitor badge registration, and patrolling corporate headquarters and embassies."
+  },
+  {
+    sNo: 12,
+    id: "lux-2026-12",
+    category: "Cook",
+    vacancies: 45,
+    salaryMonthly: "3,880 € - 4,120 €",
+    salaryMin: 3880,
+    salaryMax: 4120,
+    sector: "Hospitality & Food",
+    location: "Mamer, Bertrange & Luxembourg City",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "1+ Year Kitchen Experience",
+    description: "Preparing banquet hot meals, breakfast stations, salads, and butchery prep in star hotels, corporate cafeterias, and institutional dining halls."
+  },
+  {
+    sNo: 13,
+    id: "lux-2026-13",
+    category: "Hotel Manager",
+    vacancies: 26,
+    salaryMonthly: "4,280 € - 4,590 €",
+    salaryMin: 4280,
+    salaryMax: 4590,
+    sector: "Hospitality & Food",
+    location: "Luxembourg City & Vianden",
+    permitType: "EU Blue Card",
+    experienceRequired: "Hotel Management Degree + 2+ Years Exp",
+    description: "Leading hotel operations, overseeing guest reservations and concierge service, managing front-desk budgets, and coordinating with European tour operators."
+  },
+  {
+    sNo: 14,
+    id: "lux-2026-14",
+    category: "Plumber",
+    vacancies: 30,
+    salaryMonthly: "3,480 € - 3,680 €",
+    salaryMin: 3480,
+    salaryMax: 3680,
+    sector: "Skilled Trades & Technical",
+    location: "Wiltz & Diekirch",
+    permitType: "Skilled Worker Permit",
+    experienceRequired: "Plumbing Trade Certificate + 1+ Year Exp",
+    description: "Commercial plumbing installation, pressure testing piping networks, water heaters and sanitary fixtures fitting in new European residential builds."
+  },
+  {
+    sNo: 15,
+    id: "lux-2026-15",
+    category: "Carpenter",
+    vacancies: 18,
+    salaryMonthly: "3,680 € - 4,180 €",
+    salaryMin: 3680,
+    salaryMax: 4180,
+    sector: "Skilled Trades & Technical",
+    location: "Grevenmacher & Echternach",
+    permitType: "Skilled Worker Permit",
+    experienceRequired: "Carpentry / Joinery Trade + 1 Year Exp",
+    description: "Framing timber structures, installing architectural door and window casements, parquet flooring, customized cabinetry, and reading structural drawings."
+  },
+  {
+    sNo: 16,
+    id: "lux-2026-16",
+    category: "Tile Mason",
+    vacancies: 23,
+    salaryMonthly: "3,840 € - 4,020 €",
+    salaryMin: 3840,
+    salaryMax: 4020,
+    sector: "Skilled Trades & Technical",
+    location: "Luxembourg City & Dudelange",
+    permitType: "Skilled Worker Permit",
+    experienceRequired: "Tiling / Masonry Trade Experience",
+    description: "High-precision ceramic, marble, and granite tiling for modern bathrooms, luxury terraces, and corporate building lobbies across the Grand Duchy."
+  },
+  {
+    sNo: 17,
+    id: "lux-2026-17",
+    category: "Housekeeping",
+    vacancies: 15,
+    salaryMonthly: "4,120 € - 4,580 €",
+    salaryMin: 4120,
+    salaryMax: 4580,
+    sector: "Hospitality & Food",
+    location: "Kirchberg & Mondorf-les-Bains",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "Freshers Welcome · High Attention to Detail",
+    description: "Suite preparation, housekeeping servicing, sanitization of luxury resort facilities, linen management, and maintaining European 5-star service standards."
+  },
+  {
+    sNo: 18,
+    id: "lux-2026-18",
+    category: "Electrician",
+    vacancies: 29,
+    salaryMonthly: "4,180 € - 4,480 €",
+    salaryMin: 4180,
+    salaryMax: 4480,
+    sector: "Skilled Trades & Technical",
+    location: "Schifflange & Luxembourg City",
+    permitType: "Skilled Worker Permit",
+    experienceRequired: "Electrical Certification / Diploma + 1 Year Exp",
+    description: "Residential and commercial electrical panel termination, solar inverter wiring, low-voltage cabling, circuit diagnosis, and European safety compliance."
+  },
+  {
+    sNo: 19,
+    id: "lux-2026-19",
+    category: "Data Entry",
+    vacancies: 25,
+    salaryMonthly: "4,220 € - 4,390 €",
+    salaryMin: 4220,
+    salaryMax: 4390,
+    sector: "Management & Corporate",
+    location: "Luxembourg City Financial Hub",
+    permitType: "EU Blue Card / Qualified Worker",
+    experienceRequired: "Computer Literacy · Good Typing Speed",
+    description: "Processing financial documents, data indexing in banking software, verification of invoice fields, auditing alphanumeric records with high accuracy."
+  },
+  {
+    sNo: 20,
+    id: "lux-2026-20",
+    category: "Accountant",
+    vacancies: 10,
+    salaryMonthly: "4,280 € - 4,520 €",
+    salaryMin: 4280,
+    salaryMax: 4520,
+    sector: "Management & Corporate",
+    location: "Kirchberg & Cloche d'Or",
+    permitType: "EU Blue Card",
+    experienceRequired: "B.Com / Accounting Degree + 1+ Year Exp",
+    description: "Accounts payable, general ledger reconciliation, assisting with Luxembourgish VAT filings, payroll calculations, and quarterly audit preparation."
+  },
+  {
+    sNo: 21,
+    id: "lux-2026-21",
+    category: "Store Keeper",
+    vacancies: 18,
+    salaryMonthly: "3,580 € - 4,090 €",
+    salaryMin: 3580,
+    salaryMax: 4090,
+    sector: "Logistics & Operations",
+    location: "Contern & Bettembourg Logistics Center",
+    permitType: "Work Permit (Salarié)",
+    experienceRequired: "1+ Year Stockroom / Warehouse Experience",
+    description: "Managing inventory receipts, checking delivery bills against purchase orders, bin allocation, tracking parts via ERP barcode scanners, and inventory audits."
+  },
+  {
+    sNo: 22,
+    id: "lux-2026-22",
+    category: "Store Incharge",
+    vacancies: 34,
+    salaryMonthly: "4,180 € - 4,380 €",
+    salaryMin: 4180,
+    salaryMax: 4380,
+    sector: "Logistics & Operations",
+    location: "Bettembourg & Luxembourg Airport",
+    permitType: "EU Skilled Worker Permit",
+    experienceRequired: "2+ Years Store / Inventory Leadership",
+    description: "Overall warehouse department management, leading store keeping teams, logistics dispatch coordination, vendor communications, and inventory stock reconciliation."
+  }
+];
+
+export const TOTAL_LUXEMBOURG_2026_VACANCIES = LUXEMBOURG_VACANCIES_2026.reduce((acc, j) => acc + j.vacancies, 0);

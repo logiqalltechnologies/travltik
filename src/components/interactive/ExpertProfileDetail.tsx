@@ -185,7 +185,7 @@ export function ExpertProfileDetail({
         tag1: 'Schengen Visa',
         tag2: 'Oct - Nov 2026 Batch',
         tag3: 'Match Kit Included',
-        image: '/images/cricket_ad.jpg',
+        image: '/images/greece-cricket-card.png',
         href: '/tours?category=sports&country=greece',
         popular: true
       },
@@ -808,7 +808,7 @@ export function ExpertProfileDetail({
                     <div className="mt-4 pt-3 border-t border-[rgba(67,15,122,0.08)] flex items-center justify-between">
                       <button 
                         onClick={() => setPaymentModalOpen(true)}
-                        className="text-xs font-bold text-[#00b070] hover:text-[#009660] flex items-center gap-1 group/btn cursor-pointer"
+                        className="text-xs font-bold text-[#370c63] hover:text-[#4a1285] flex items-center gap-1 group/btn cursor-pointer"
                       >
                         <span>Book this package</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
@@ -938,7 +938,7 @@ export function ExpertProfileDetail({
                             href={`https://wa.me/${String(item.whatsapp).replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${displayName}! I am inquiring about your classified ad: ${item.title}`)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-[#00b070] hover:bg-[#009660] text-white font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all flex items-center gap-1 shadow-xs shrink-0"
+                            className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(55,12,99,0.2)] hover:border-[#370c63] text-[#370c63] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all flex items-center gap-1 shadow-2xs shrink-0"
                             title="Chat on WhatsApp"
                           >
                             <span>WhatsApp</span>

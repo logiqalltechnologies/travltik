@@ -5537,7 +5537,7 @@ return (
                   type="button"
                   onClick={() => handleProceedToPayment()}
                   disabled={isPaymentProcessing}
-                  className="w-full py-3 sm:py-3.5 px-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+                  className="w-full py-3 sm:py-3.5 px-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold text-sm shadow-md shadow-[rgba(55,12,99,0.35)] flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
                 >
                   {isPaymentProcessing ? (
                     <>
@@ -5631,7 +5631,7 @@ return (
               <button
                 type="button"
                 onClick={handleUnlockAndNavigate}
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm shadow-md transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-bold text-sm shadow-md shadow-[rgba(55,12,99,0.35)] transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
               >
                 <span>Access Your Visa Pathway Now</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />

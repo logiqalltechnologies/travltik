@@ -90,7 +90,7 @@ export function VisaFormFilingPortal() {
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={scrollToForm}
-                  className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-8 py-4 rounded-2xl text-sm shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-all flex items-center gap-2.5 cursor-pointer"
+                  className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-8 py-4 rounded-2xl text-sm shadow-lg shadow-[rgba(55,12,99,0.35)] active:scale-[0.98] transition-all flex items-center gap-2.5 cursor-pointer"
                 >
                   <span>Get Your Form Filled</span>
                   <ArrowRight className="w-4 h-4" />
@@ -300,7 +300,7 @@ export function VisaFormFilingPortal() {
                           <button
                             type="button"
                             onClick={() => nextStep(2)}
-                            className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-7 py-3 rounded-xl text-xs sm:text-sm shadow-md shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer"
+                            className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-7 py-3 rounded-xl text-xs sm:text-sm shadow-md shadow-[rgba(55,12,99,0.3)] transition-all flex items-center gap-2 cursor-pointer"
                           >
                             <span>Next: Visa Details</span>
                             <ArrowRight className="w-4 h-4" />
@@ -365,7 +365,7 @@ export function VisaFormFilingPortal() {
                           <button
                             type="button"
                             onClick={() => setStep(3)}
-                            className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-7 py-3 rounded-xl text-xs sm:text-sm shadow-md shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer"
+                            className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-7 py-3 rounded-xl text-xs sm:text-sm shadow-md shadow-[rgba(55,12,99,0.3)] transition-all flex items-center gap-2 cursor-pointer"
                           >
                             <span>Next: Upload Documents</span>
                             <ArrowRight className="w-4 h-4" />
@@ -395,7 +395,7 @@ export function VisaFormFilingPortal() {
                           <button
                             type="button"
                             onClick={() => setStep(4)}
-                            className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-7 py-3 rounded-xl text-xs sm:text-sm shadow-md shadow-emerald-500/20 transition-all flex items-center gap-2 cursor-pointer"
+                            className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-7 py-3 rounded-xl text-xs sm:text-sm shadow-md shadow-[rgba(55,12,99,0.3)] transition-all flex items-center gap-2 cursor-pointer"
                           >
                             <span>Next: Review & Confirm</span>
                             <ArrowRight className="w-4 h-4" />
@@ -437,7 +437,7 @@ export function VisaFormFilingPortal() {
                           </button>
                           <button
                             type="submit"
-                            className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold px-8 py-3.5 rounded-xl text-sm shadow-md shadow-emerald-500/25 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer"
+                            className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-8 py-3.5 rounded-xl text-sm shadow-md shadow-[rgba(55,12,99,0.35)] active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer"
                           >
                             <span>Confirm Order & Start Filing →</span>
                           </button>

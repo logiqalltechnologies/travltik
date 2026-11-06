@@ -527,7 +527,7 @@ export function AgentsPortal() {
                 ? <button onClick={() => setRegStep(regStep + 1)} className="bg-[#0c1a2e] hover:bg-[#0f2a40] text-white font-bold px-6 py-3 rounded-xl text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.97] flex items-center gap-2 outline-none">
                     Continue <ArrowRight className="w-4 h-4" />
                   </button>
-                : <button onClick={() => setRegDone(true)} className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.97] flex items-center gap-2 outline-none">
+                : <button onClick={() => setRegDone(true)} className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-bold px-6 py-3 rounded-xl text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.97] flex items-center gap-2 outline-none shadow-[rgba(55,12,99,0.35)]">
                     <CheckCircle className="w-4 h-4" /> Submit Application
                   </button>
               }

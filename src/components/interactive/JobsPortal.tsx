@@ -7,6 +7,7 @@ import {
   AlertCircle, AlertTriangle, CheckCircle2, Lock, X, Mail, Phone, User, Loader2,
 } from "lucide-react";
 import { JobSchema } from "../seo/JobSchema";
+import { InternationalJobDriveShowcase } from "./InternationalJobDriveShowcase";
 
 const initialJobs = [
   {
@@ -619,6 +620,11 @@ export function JobsPortal() {
 
   const filterByChip = (chip: string) => {
     setActiveChip(chip);
+    if (chip === "🍁 Canada 2026" || chip === "🇱🇺 Luxembourg 2026") {
+      const el = document.getElementById("international-job-drives-2026");
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
     if (chip === "All Jobs") { setJobs(allLoadedJobs); return; }
     const map: Record<string,string> = {
       "IT & Tech": "IT & Tech", "Healthcare": "Healthcare",
@@ -923,7 +929,7 @@ export function JobsPortal() {
 
           {/* Chips */}
           <div className="flex gap-2 flex-wrap mt-5 justify-center">
-            {["All Jobs","IT & Tech","Healthcare","Engineering","Hospitality","Education","New Today"].map(chip => (
+            {["All Jobs", "🍁 Canada 2026", "🇱🇺 Luxembourg 2026", "IT & Tech", "Healthcare", "Engineering", "Hospitality", "Education", "New Today"].map(chip => (
               <button
                 key={chip}
                 onClick={() => filterByChip(chip)}
@@ -972,7 +978,7 @@ export function JobsPortal() {
                 <span className="text-[11px] font-semibold text-[#00b070] tracking-wider block mb-1">Browse by Destination</span>
                 <h2 className="font-sans font-extrabold text-[#0c1a2e] text-2xl">Where Do You Want to Work?</h2>
               </div>
-              <button onClick={clearFilters} className="text-xs font-bold text-[#00b070] hover:underline outline-none">View All →</button>
+              <button onClick={clearFilters} className="text-xs font-bold text-[#370c63] hover:underline outline-none">View All →</button>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -994,6 +1000,11 @@ export function JobsPortal() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* INTERNATIONAL JOB DRIVES (CANADA & LUXEMBOURG 2026) */}
+          <div className="max-w-6xl mx-auto px-6">
+            <InternationalJobDriveShowcase />
           </div>
 
           {/* MAIN LISTINGS GRID */}
@@ -1106,7 +1117,7 @@ export function JobsPortal() {
                   <Briefcase className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                   <h3 className="font-sans font-extrabold text-[#0c1a2e] text-sm mb-1">No Jobs Found</h3>
                   <p className="text-xs text-[#94b0c4] font-semibold mb-4">Try clearing filters to broaden your search.</p>
-                  <button onClick={clearFilters} className="text-xs font-bold text-[#00b070] hover:underline outline-none">Clear All Filters</button>
+                  <button onClick={clearFilters} className="text-xs font-bold text-[#370c63] hover:underline outline-none">Clear All Filters</button>
                 </div>
               ) : jobs.map(job => {
                 const JobIcon = job.icon;

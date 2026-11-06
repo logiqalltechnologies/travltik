@@ -430,7 +430,7 @@ export function HeroSection() {
                     }
                   }}
                 >
-                  <img src="/images/greece.jpg" alt="Greece Cricket Tours" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                  <img src="/images/greece-cricket-card.png" alt="Greece Cricket Tours" className="absolute inset-0 object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
                   <div className="relative z-10 p-2 flex items-center justify-between gap-1">
