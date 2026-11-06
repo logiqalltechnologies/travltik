@@ -784,7 +784,7 @@ export function JobsPortal() {
             <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-100">
               <button
                 onClick={() => handleInitiateApplication(activeJob)}
-                className="bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold text-sm px-7 py-3.5 rounded-2xl shadow-md shadow-purple-950/25 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center gap-2 outline-none"
+                className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold text-sm px-7 py-3.5 rounded-2xl shadow-md shadow-purple-950/25 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center gap-2 outline-none"
               >
                 Submit Application <ArrowRight className="w-4 h-4" />
               </button>
@@ -904,7 +904,7 @@ export function JobsPortal() {
               <div className="md:col-span-1">
                 <button
                   onClick={applyFilters}
-                  className="w-full h-[42px] bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold rounded-xl shadow-md shadow-purple-950/25 active:scale-[0.98] transition-all flex items-center justify-center outline-none cursor-pointer"
+                  className="w-full h-[42px] bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold rounded-xl shadow-md shadow-purple-950/25 active:scale-[0.98] transition-all flex items-center justify-center outline-none cursor-pointer"
                 >
                   <Search className="w-4 h-4" />
                 </button>
@@ -1084,7 +1084,7 @@ export function JobsPortal() {
 
                 <button
                   onClick={applyFilters}
-                  className="w-full bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold py-3 rounded-xl text-xs shadow-md shadow-purple-950/20 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all outline-none"
+                  className="w-full bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold py-3 rounded-xl text-xs shadow-md shadow-purple-950/20 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all outline-none"
                 >
                   Apply Filters
                 </button>
@@ -1207,7 +1207,7 @@ export function JobsPortal() {
                         </div>
                         <button
                           onClick={e => { e.stopPropagation(); setActiveJob(job); window.scrollTo(0, 0); }}
-                          className="bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md shadow-purple-950/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all flex items-center gap-1.5 group/btn outline-none"
+                          className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md shadow-purple-950/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all flex items-center gap-1.5 group/btn outline-none"
                         >
                           Apply Now <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                         </button>
@@ -1406,7 +1406,7 @@ export function JobsPortal() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold text-xs px-6 py-2.5 rounded-xl shadow-md shadow-purple-950/20 hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+                      className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold text-xs px-6 py-2.5 rounded-xl shadow-md shadow-purple-950/20 hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <>

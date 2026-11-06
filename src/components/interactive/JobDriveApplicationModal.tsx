@@ -523,7 +523,7 @@ export function JobDriveApplicationModal({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white text-xs sm:text-sm font-black px-7 py-3 rounded-xl shadow-md shadow-[rgba(55,12,99,0.35)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+                  className="w-full sm:w-auto bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white text-xs sm:text-sm font-black px-7 py-3 rounded-xl shadow-md shadow-[rgba(88,29,181,0.35)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <span>Submitting Application...</span>

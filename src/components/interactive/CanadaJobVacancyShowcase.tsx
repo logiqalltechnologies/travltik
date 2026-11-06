@@ -79,7 +79,7 @@ export function CanadaJobVacancyShowcase() {
                 setSelectedJobForModal(CANADA_VACANCIES_2026[0]);
                 setIsModalOpen(true);
               }}
-              className="w-full sm:w-auto bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-black text-xs sm:text-sm px-6 py-4 rounded-2xl shadow-md shadow-[rgba(55,12,99,0.35)] transition-all cursor-pointer flex items-center justify-center gap-2"
+              className="w-full sm:w-auto bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-black text-xs sm:text-sm px-6 py-4 rounded-2xl shadow-md shadow-[rgba(55,12,99,0.35)] transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               <span>Apply for Any Role</span>
               <ArrowRight className="w-4 h-4" />
@@ -193,7 +193,7 @@ export function CanadaJobVacancyShowcase() {
                       <button
                         type="button"
                         onClick={() => handleApply(job)}
-                        className="inline-flex items-center gap-1 bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold text-xs px-3.5 py-1.5 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap"
+                        className="inline-flex items-center gap-1 bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold text-xs px-3.5 py-1.5 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap"
                       >
                         <span>Apply</span>
                         <ArrowRight className="w-3 h-3" />

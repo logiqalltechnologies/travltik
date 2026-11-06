@@ -525,7 +525,7 @@ export function ExpertProfileDetail({
               <div className="flex flex-col sm:flex-row items-center gap-3 mt-6 pt-5 border-t border-[rgba(67,15,122,0.08)]">
                 <button
                   onClick={() => setQuoteModalOpen(true)}
-                  className="w-full sm:w-auto bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] active:scale-95 text-white font-extrabold text-xs px-7 py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(55,12,99,0.45)] hover:shadow-[0_12px_24px_-6px_rgba(55,12,99,0.6)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] active:scale-95 text-white font-extrabold text-xs px-7 py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(88,29,181,0.5)] hover:shadow-[0_12px_24px_-6px_rgba(88,29,181,0.65)] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Contact Provider</span>
@@ -533,19 +533,20 @@ export function ExpertProfileDetail({
 
                 <button
                   onClick={() => setPaymentModalOpen(true)}
-                  className="w-full sm:w-auto bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(67,15,122,0.18)] text-[#370c63] font-extrabold text-xs px-6 py-3.5 rounded-2xl shadow-2xs hover:border-[#370c63] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(88,29,181,0.22)] text-[#581db5] hover:text-[#430f7a] font-extrabold text-xs px-6 py-3.5 rounded-2xl shadow-2xs hover:border-[#581db5] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Calendar className="w-4 h-4 text-[#00b070]" />
+                  <Calendar className="w-4 h-4 text-[#581db5]" />
                   <span>Request a Consultation</span>
                 </button>
               </div>
             </div>
 
             {/* Right Column: Signature TravlTik Luxury Violet & Emerald Banner */}
-            <div className="lg:col-span-5 relative min-h-[250px] lg:min-h-full overflow-hidden bg-gradient-to-br from-[#1b052e] via-[#370c63] to-[#120826] flex items-center justify-center p-8">
+            <div className="lg:col-span-5 relative min-h-[250px] lg:min-h-full overflow-hidden bg-gradient-to-br from-[#2a084e] via-[#430f7a] to-[#581db5] flex items-center justify-center p-8">
               {/* Aerodynamic flight trail & emerald glow */}
               <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#00b070]/25 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-[#5b159d]/40 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-[#7525ca]/45 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#6c22c3]/25 rounded-full blur-3xl pointer-events-none" />
               
               {/* Subtle supersonic trail SVG motif */}
               <svg className="absolute inset-0 w-full h-full opacity-15 pointer-events-none" viewBox="0 0 400 300" fill="none">
@@ -604,7 +605,7 @@ export function ExpertProfileDetail({
               }}
               className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-extrabold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 select-none ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] text-white shadow-[0_4px_14px_rgba(55,12,99,0.35)] scale-[1.02]'
+                  ? 'bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] text-white shadow-[0_4px_14px_rgba(88,29,181,0.35)] scale-[1.02]'
                   : 'text-[#675f80] hover:text-[#1b1233] hover:bg-[#f4eff9]'
               }`}
             >
@@ -928,7 +929,7 @@ export function ExpertProfileDetail({
                       <div className="pt-3 border-t border-[rgba(55,12,99,0.08)] flex items-center justify-between gap-2">
                         <a 
                           href={item.href}
-                          className="flex-1 bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold text-xs py-2.5 px-4 rounded-xl shadow-[0_4px_12px_rgba(55,12,99,0.25)] flex items-center justify-center gap-1.5 transition-all text-center"
+                          className="flex-1 bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold text-xs py-2.5 px-4 rounded-xl shadow-[0_4px_12px_rgba(88,29,181,0.25)] flex items-center justify-center gap-1.5 transition-all text-center"
                         >
                           <span>View Details</span>
                           <ArrowRight className="w-3 h-3" />
@@ -938,7 +939,7 @@ export function ExpertProfileDetail({
                             href={`https://wa.me/${String(item.whatsapp).replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${displayName}! I am inquiring about your classified ad: ${item.title}`)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(55,12,99,0.2)] hover:border-[#370c63] text-[#370c63] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all flex items-center gap-1 shadow-2xs shrink-0"
+                            className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(88,29,181,0.2)] hover:border-[#581db5] text-[#581db5] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all flex items-center gap-1 shadow-2xs shrink-0"
                             title="Chat on WhatsApp"
                           >
                             <span>WhatsApp</span>
@@ -947,7 +948,7 @@ export function ExpertProfileDetail({
                           <button
                             type="button"
                             onClick={() => setQuoteModalOpen(true)}
-                            className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(55,12,99,0.18)] hover:border-[#370c63] text-[#370c63] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all cursor-pointer shrink-0"
+                            className="bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(88,29,181,0.18)] hover:border-[#581db5] text-[#581db5] font-bold text-xs py-2.5 px-3.5 rounded-xl transition-all cursor-pointer shrink-0"
                             title={`Inquire about ${item.title}`}
                           >
                             Inquire
@@ -1069,7 +1070,7 @@ export function ExpertProfileDetail({
                   </div>
                   <button
                     onClick={() => setReviewModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-[0_4px_14px_-3px_rgba(55,12,99,0.4)] transition-all cursor-pointer mt-2"
+                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-[0_4px_14px_-3px_rgba(88,29,181,0.4)] transition-all cursor-pointer mt-2"
                   >
                     <Star className="w-3.5 h-3.5 fill-white" />
                     <span>Be the first to review</span>
@@ -1175,7 +1176,7 @@ export function ExpertProfileDetail({
               <div className="space-y-3">
                 <button
                   onClick={() => setQuoteModalOpen(true)}
-                  className="w-full bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] active:scale-95 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(55,12,99,0.45)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] active:scale-95 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(88,29,181,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Contact Provider</span>
@@ -1183,9 +1184,9 @@ export function ExpertProfileDetail({
 
                 <button
                   onClick={() => setPaymentModalOpen(true)}
-                  className="w-full bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(67,15,122,0.18)] active:scale-95 text-[#370c63] font-extrabold text-xs py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer hover:border-[#370c63]"
+                  className="w-full bg-white hover:bg-[#faf6fe] border-[1.5px] border-[rgba(88,29,181,0.22)] active:scale-95 text-[#581db5] hover:text-[#430f7a] font-extrabold text-xs py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer hover:border-[#581db5]"
                 >
-                  <Phone className="w-4 h-4 text-[#00b070]" />
+                  <Phone className="w-4 h-4 text-[#581db5]" />
                   <span>Request a callback</span>
                 </button>
               </div>

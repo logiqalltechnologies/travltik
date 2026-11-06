@@ -129,7 +129,7 @@ export function InternationalJobDriveShowcase() {
               onClick={() => { setSelectedCountry("Canada"); setSearchQuery(""); }}
               className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
                 selectedCountry === "Canada"
-                  ? "bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] text-white shadow-md shadow-[rgba(55,12,99,0.3)]"
+                  ? "bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] text-white shadow-md shadow-[rgba(55,12,99,0.3)]"
                   : "text-[#4b3d69] hover:bg-slate-100 hover:text-slate-900"
               }`}
             >
@@ -147,7 +147,7 @@ export function InternationalJobDriveShowcase() {
               onClick={() => { setSelectedCountry("Luxembourg"); setSearchQuery(""); }}
               className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer ${
                 selectedCountry === "Luxembourg"
-                  ? "bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] text-white shadow-md shadow-[rgba(55,12,99,0.3)]"
+                  ? "bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] text-white shadow-md shadow-[rgba(55,12,99,0.3)]"
                   : "text-[#4b3d69] hover:bg-slate-100 hover:text-slate-900"
               }`}
             >
@@ -202,7 +202,7 @@ export function InternationalJobDriveShowcase() {
             <button
               type="button"
               onClick={handleApplyGeneric}
-              className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-black text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-md shadow-[rgba(55,12,99,0.3)] transition-all cursor-pointer flex items-center justify-center gap-2 self-start lg:self-auto shrink-0"
+              className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#481180] hover:to-[#1a104c] text-white font-black text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-md shadow-[rgba(55,12,99,0.3)] transition-all cursor-pointer flex items-center justify-center gap-2 self-start lg:self-auto shrink-0"
             >
               <span>Apply for {selectedCountry} Roles</span>
               <ArrowRight className="w-4 h-4" />
@@ -311,7 +311,7 @@ export function InternationalJobDriveShowcase() {
                         <button
                           type="button"
                           onClick={() => handleApplyCanada(job)}
-                          className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-black text-xs px-4 py-2 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer"
+                          className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#481180] hover:to-[#1a104c] text-white font-black text-xs px-4 py-2 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer"
                         >
                           <span>Apply Now</span>
                           <ArrowRight className="w-3 h-3" />
@@ -362,7 +362,7 @@ export function InternationalJobDriveShowcase() {
                     <button
                       type="button"
                       onClick={() => handleApplyCanada(job)}
-                      className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] text-white font-black text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1"
+                      className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] text-white font-black text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1"
                     >
                       <span>Apply</span>
                       <ArrowRight className="w-3 h-3" />
@@ -433,7 +433,7 @@ export function InternationalJobDriveShowcase() {
                         <button
                           type="button"
                           onClick={() => handleApplyLuxembourg(job)}
-                          className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-black text-xs px-4 py-2 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer"
+                          className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#481180] hover:to-[#1a104c] text-white font-black text-xs px-4 py-2 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer"
                         >
                           <span>Apply Now</span>
                           <ArrowRight className="w-3 h-3" />
@@ -484,7 +484,7 @@ export function InternationalJobDriveShowcase() {
                     <button
                       type="button"
                       onClick={() => handleApplyLuxembourg(job)}
-                      className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] text-white font-black text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1"
+                      className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] text-white font-black text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1"
                     >
                       <span>Apply</span>
                       <ArrowRight className="w-3 h-3" />

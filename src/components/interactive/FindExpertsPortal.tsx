@@ -1197,7 +1197,7 @@ export function FindExpertsPortal() {
                             </div>
                             <h3 className="font-plus-jakarta font-extrabold text-slate-900 text-lg">No Registered Experts Found</h3>
                             <p className="text-xs text-slate-500 max-w-sm mx-auto">Register as an expert consultant to get listed and connect with global applicants.</p>
-                            <a href="/register/expert" className="inline-block mt-2 bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white text-xs font-extrabold px-6 py-2.5 rounded-xl shadow-[0_6px_16px_-4px_rgba(55,12,99,0.45)] transition-all">Register as Expert →</a>
+                            <a href="/register/expert" className="inline-block mt-2 bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white text-xs font-extrabold px-6 py-2.5 rounded-xl shadow-[0_6px_16px_-4px_rgba(55,12,99,0.45)] transition-all">Register as Expert →</a>
                         </div>
                     )}
 
@@ -1434,7 +1434,7 @@ export function FindExpertsPortal() {
                                                             setPaymentExpert(e);
                                                             setPaymentModalOpen(true);
                                                         }} 
-                                                        className="bg-gradient-to-r from-[#370c63] via-[#2d0950] to-[#130c3a] hover:from-[#481180] hover:to-[#1a104c] text-white font-extrabold px-5 py-2 rounded-xl text-xs shadow-md shadow-[rgba(55,12,99,0.3)] active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap font-plus-jakarta shrink-0"
+                                                        className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold px-5 py-2 rounded-xl text-xs shadow-md shadow-[rgba(88,29,181,0.3)] active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap font-plus-jakarta shrink-0"
                                                     >
                                                         <span>Book Consultation</span>
                                                     </button>
@@ -1539,7 +1539,7 @@ export function FindExpertsPortal() {
                         <div className="pt-2 space-y-2">
                             <a
                                 href="/login?redirect=/find-experts"
-                                className="block w-full bg-gradient-to-r from-[#370c63] to-[#130c3a] hover:from-[#4a1285] hover:to-[#1a104f] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(55,12,99,0.45)] transition-all text-center"
+                                className="block w-full bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-[0_8px_20px_-6px_rgba(55,12,99,0.45)] transition-all text-center"
                             >
                                 Log In Now
                             </a>
