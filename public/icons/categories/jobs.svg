@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <!-- Rich Cognac Leather Gradients -->
+    <linearGradient id="leatherMain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="30%" stop-color="#c2410c"/>
+      <stop offset="85%" stop-color="#9a3412"/>
+      <stop offset="100%" stop-color="#7c2d12"/>
+    </linearGradient>
+    <linearGradient id="leatherFlap" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="40%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#9a3412"/>
+    </linearGradient>
+    <!-- Brushed Gold Hardware -->
+    <linearGradient id="brassGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="40%" stop-color="#fbbf24"/>
+      <stop offset="85%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#92400e"/>
+    </linearGradient>
+    <linearGradient id="brassLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <!-- Soft Leather Sheen -->
+    <linearGradient id="leatherGloss" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="jobShadow" x="-10%" y="-10%" width="130%" height="135%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="3.5" stdDeviation="2.5" flood-color="#431407" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#jobShadow)">
+    <!-- Handle (Curved Arch on Top) -->
+    <path d="M24 18 C24 11 40 11 40 18" stroke="url(#leatherFlap)" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M24 17.5 C24 12 40 12 40 17.5" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+    <!-- Handle Brass Mount Brackets -->
+    <rect x="22" y="16" width="4.5" height="4.5" rx="1.2" fill="url(#brassGold)"/>
+    <rect x="37.5" y="16" width="4.5" height="4.5" rx="1.2" fill="url(#brassGold)"/>
+
+    <!-- Briefcase Body (Main Box) -->
+    <rect x="8" y="19" width="48" height="36" rx="6" fill="url(#leatherMain)"/>
+    
+    <!-- Top Flap (Covering Top Half) -->
+    <path d="M8 24 C8 21.5 10 19 13 19 L51 19 C54 19 56 21.5 56 24 L56 36 C56 37 55 38 54 38 L38 38 L35 41 C33.5 42.5 30.5 42.5 29 41 L26 38 L10 38 C9 38 8 37 8 36 Z" 
+          fill="url(#leatherFlap)"/>
+    
+    <!-- Flap Bottom Edge Stitches (Dotted Line) -->
+    <path d="M9 36.5 L26 36.5 L29 39.5 C30.5 41 33.5 41 35 39.5 L38 36.5 L55 36.5" 
+          stroke="#fef08a" stroke-width="0.8" stroke-dasharray="1.5 1.5" stroke-opacity="0.65" fill="none"/>
+
+    <!-- Flap Subtle Top Highlight -->
+    <rect x="10" y="20.5" width="44" height="2" rx="1" fill="#ffffff" opacity="0.25"/>
+
+    <!-- Center Brass Lock Clasp -->
+    <rect x="29" y="34" width="6" height="8" rx="1.5" fill="url(#brassGold)"/>
+    <circle cx="32" cy="37.5" r="1.3" fill="#431407"/>
+    <rect x="31.3" y="38" width="1.4" height="2.5" rx="0.5" fill="#431407"/>
+    <rect x="29.8" y="34.8" width="4.4" height="1.2" rx="0.5" fill="url(#brassLight)"/>
+
+    <!-- Left & Right Vertical Leather Straps with Brass Buckles -->
+    <!-- Left Strap -->
+    <rect x="15" y="19" width="3.5" height="36" fill="#7c2d12" opacity="0.45"/>
+    <rect x="15.5" y="19" width="2.5" height="36" fill="url(#leatherFlap)"/>
+    <rect x="14.5" y="35" width="4.5" height="5" rx="1" fill="url(#brassGold)"/>
+    <!-- Right Strap -->
+    <rect x="45.5" y="19" width="3.5" height="36" fill="#7c2d12" opacity="0.45"/>
+    <rect x="46" y="19" width="2.5" height="36" fill="url(#leatherFlap)"/>
+    <rect x="45" y="35" width="4.5" height="5" rx="1" fill="url(#brassGold)"/>
+
+    <!-- Brass Corner Guards (Bottom Left & Right) -->
+    <path d="M8 49 L14 49 C14 51.5 12 55 8 55 Z" fill="url(#brassGold)"/>
+    <path d="M56 49 L50 49 C50 51.5 52 55 56 55 Z" fill="url(#brassGold)"/>
+
+    <!-- 3D Surface Lighting Overlay -->
+    <rect x="8" y="19" width="48" height="36" rx="6" fill="url(#leatherGloss)"/>
+  </g>
+</svg>

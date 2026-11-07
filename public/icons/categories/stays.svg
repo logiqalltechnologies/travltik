@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <!-- Roof Modern Slate Gradient -->
+    <linearGradient id="roofGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <!-- Wall Clean Concrete / Stucco Gradient -->
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="60%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="wallSide" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <!-- Door Ruby Red -->
+    <linearGradient id="doorRed" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="40%" stop-color="#e11d48"/>
+      <stop offset="100%" stop-color="#9f1239"/>
+    </linearGradient>
+    <!-- Window Sky Cyan Gradient -->
+    <linearGradient id="winCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="50%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <!-- Tree Lush Foliage Gradients -->
+    <radialGradient id="treeTop" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="40%" stop-color="#22c55e"/>
+      <stop offset="85%" stop-color="#15803d"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </radialGradient>
+    <linearGradient id="trunkBrown" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="50%" stop-color="#78350f"/>
+      <stop offset="100%" stop-color="#451a03"/>
+    </linearGradient>
+    <filter id="stayShadow" x="-10%" y="-10%" width="130%" height="135%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="3.5" stdDeviation="2.5" flood-color="#0f172a" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#stayShadow)">
+    <!-- Tree (Behind House on the Right) -->
+    <!-- Trunk -->
+    <path d="M46 32 L49 32 L51 55 L45 55 Z" fill="url(#trunkBrown)"/>
+    <!-- Lush Tree Canopy Foliage (Overlapping organic spheres) -->
+    <circle cx="49" cy="23" r="11" fill="url(#treeTop)"/>
+    <circle cx="42" cy="27" r="8" fill="url(#treeTop)"/>
+    <circle cx="53" cy="29" r="7.5" fill="url(#treeTop)"/>
+    <!-- Foliage Highlights -->
+    <circle cx="46" cy="19" r="4.5" fill="#86efac" opacity="0.35"/>
+    <circle cx="40" cy="25" r="3" fill="#86efac" opacity="0.35"/>
+
+    <!-- Chimney on Left -->
+    <rect x="14" y="16" width="4.5" height="12" fill="#64748b"/>
+    <rect x="13" y="15" width="6.5" height="2" rx="0.8" fill="#334155"/>
+    <!-- Smoke puff -->
+    <circle cx="16" cy="11" r="2.2" fill="#cbd5e1" opacity="0.6"/>
+    <circle cx="17.5" cy="7.5" r="3" fill="#cbd5e1" opacity="0.4"/>
+
+    <!-- House Main Structure -->
+    <!-- Main Wall Block -->
+    <path d="M11 25 L41 18 L41 55 L11 55 Z" fill="url(#wallGrad)"/>
+    <!-- Side Wall Block (3D Perspective Return) -->
+    <path d="M41 18 L46 22 L46 54 L41 55 Z" fill="url(#wallSide)"/>
+
+    <!-- Slanted Modern Mono-pitch Roof (Architectural Wedge) -->
+    <path d="M8 26 L42 17 L47 21 L12 30 Z" fill="url(#roofGrad)"/>
+    <!-- Roof Edge Specular Line -->
+    <line x1="8.5" y1="26" x2="42" y2="17" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+
+    <!-- Round Porch Light / Porthole Window -->
+    <circle cx="28" cy="28" r="4" fill="url(#winCyan)"/>
+    <circle cx="28" cy="28" r="4" fill="none" stroke="#475569" stroke-width="1"/>
+    <line x1="28" y1="24" x2="28" y2="32" stroke="#ffffff" stroke-width="0.8" opacity="0.7"/>
+    <line x1="24" y1="28" x2="32" y2="28" stroke="#ffffff" stroke-width="0.8" opacity="0.7"/>
+
+    <!-- Modern Ruby Red Front Door -->
+    <rect x="18" y="36" width="11" height="19" rx="1.5" fill="url(#doorRed)"/>
+    <!-- Door Frame -->
+    <rect x="17.2" y="35.2" width="12.6" height="19.8" rx="1.8" fill="none" stroke="#475569" stroke-width="0.9"/>
+    <!-- Door Handle -->
+    <circle cx="27" cy="46" r="1.1" fill="#fde68a"/>
+    <rect x="19.5" y="38" width="8" height="6" rx="0.8" fill="#ffffff" opacity="0.2"/>
+
+    <!-- Ground Patio / Base Rim -->
+    <rect x="8" y="54" width="46" height="3" rx="1.5" fill="#94a3b8"/>
+  </g>
+</svg>

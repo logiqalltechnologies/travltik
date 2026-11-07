@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <!-- Stand metallic gold gradient -->
+    <linearGradient id="standGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="45%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <!-- Base 3D shadow gradient -->
+    <linearGradient id="baseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="50%" stop-color="#92400e"/>
+      <stop offset="100%" stop-color="#78350f"/>
+    </linearGradient>
+    <!-- Ocean 3D sphere radial gradient -->
+    <radialGradient id="oceanSphere" cx="38%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="25%" stop-color="#38bdf8"/>
+      <stop offset="65%" stop-color="#0284c7"/>
+      <stop offset="90%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#075985"/>
+    </radialGradient>
+    <!-- Land continent gradient -->
+    <linearGradient id="landGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="50%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <!-- Glass gloss highlight -->
+    <linearGradient id="globeGloss" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Drop shadow -->
+    <filter id="globeShadow" x="-10%" y="-10%" width="130%" height="135%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#0f172a" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#globeShadow)">
+    <!-- Stand Base (ellipse with thickness) -->
+    <ellipse cx="32" cy="58" rx="16" ry="4.5" fill="#78350f" opacity="0.4"/>
+    <ellipse cx="32" cy="56.5" rx="15" ry="4" fill="url(#baseGrad)"/>
+    <ellipse cx="32" cy="55.5" rx="13" ry="3.2" fill="url(#standGold)"/>
+    
+    <!-- Vertical Pillar -->
+    <path d="M30 45 L34 45 L33.5 55.5 L30.5 55.5 Z" fill="url(#baseGrad)"/>
+    <rect x="30.8" y="45" width="2.4" height="10.5" rx="1.2" fill="url(#standGold)"/>
+    
+    <!-- Curved Meridian Arc -->
+    <path d="M12 28 C12 41 22 50 32 47.5 C32 45 23 42 16 30 C13 24 13.5 16 19 9" 
+          stroke="url(#standGold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Top & bottom axis pins -->
+    <circle cx="21" cy="8" r="2.2" fill="url(#standGold)"/>
+    <circle cx="32" cy="46" r="2" fill="url(#standGold)"/>
+
+    <!-- Globe Sphere -->
+    <g transform="rotate(-15 32 27)">
+      <!-- Ocean Base -->
+      <circle cx="32" cy="27" r="18" fill="url(#oceanSphere)"/>
+      
+      <!-- Latitude / Longitude lines subtle -->
+      <ellipse cx="32" cy="27" rx="18" ry="7.5" fill="none" stroke="#ffffff" stroke-width="0.75" stroke-opacity="0.25"/>
+      <ellipse cx="32" cy="27" rx="9" ry="18" fill="none" stroke="#ffffff" stroke-width="0.75" stroke-opacity="0.25"/>
+
+      <!-- Continents (Stylized vector landmasses) -->
+      <!-- Americas -->
+      <path d="M22 17 C23 15 27 15 28 17 C29 19 27 21 28 24 C29 26 27 30 25 31 C24 32 22 30 23 27 C22 25 20 22 21 19 Z" 
+            fill="url(#landGreen)"/>
+      <!-- South America -->
+      <path d="M26 31 C28 31 30 34 29 37 C28 40 26 43 25 41 C24 39 25 35 26 31 Z" 
+            fill="url(#landGreen)"/>
+      <!-- Eurasia / Africa -->
+      <path d="M34 14 C37 13 42 14 44 17 C46 20 44 24 41 24 C38 24 36 21 34 18 Z" 
+            fill="url(#landGreen)"/>
+      <path d="M35 25 C39 24 43 27 41 33 C39 37 36 38 34 35 C33 32 34 28 35 25 Z" 
+            fill="url(#landGreen)"/>
+      <!-- Australia -->
+      <path d="M43 35 C46 34 48 37 47 40 C45 41 42 40 42 38 Z" 
+            fill="url(#landGreen)"/>
+
+      <!-- Sphere Top Specular Gloss Highlight -->
+      <path d="M16 23 C18 14 26 10 35 11 C26 13 20 18 18 25 C17 29 15 27 16 23 Z" fill="url(#globeGloss)"/>
+      <ellipse cx="27" cy="17" rx="6" ry="3.5" transform="rotate(-20 27 17)" fill="#ffffff" opacity="0.45"/>
+    </g>
+  </g>
+</svg>

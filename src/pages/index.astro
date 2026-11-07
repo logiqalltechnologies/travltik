@@ -49,19 +49,19 @@ section{padding:96px 0;position:relative}
 .bdg.p{background:var(--l2);color:var(--p)}.bdg svg{font-size:13px}
 .av{border-radius:50%;flex:none;display:block}
 /* Airbnb Unified Header */
-.airbnb-header-wrap{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#ffffff 0%,#faf8fc 50%,#f4eff9 100%);border-bottom:1px solid rgba(67,15,122,0.08);box-shadow:0 4px 20px -8px rgba(67,15,122,0.08);transition:all .2s ease}
+.airbnb-header-wrap{position:sticky;top:0;z-index:100;background:#ffffff;border-bottom:1px solid rgba(67,15,122,0.08);box-shadow:0 4px 20px -8px rgba(67,15,122,0.08);transition:all .2s ease}
 .airbnb-header-inner{max-width:1440px;width:100%;margin:0 auto;padding:0 36px;box-sizing:border-box}
 .airbnb-top-row{display:flex;align-items:center;justify-content:space-between;min-height:76px;padding:12px 0 6px;gap:20px}
 .airbnb-logo{display:flex;align-items:center;flex:0 0 170px}
 .airbnb-logo img{height:44px;max-height:48px;width:auto;display:block}
-.airbnb-cat-tabs{display:flex;align-items:center;justify-content:center;gap:36px;margin:0;padding:0;list-style:none;flex:1}
-.airbnb-cat-tab{display:inline-flex;align-items:center;gap:9px;padding:8px 4px 12px 4px;background:transparent;border:none;color:#675f80;font-weight:600;font-size:14.5px;position:relative;cursor:pointer;transition:color .2s ease,opacity .2s ease;white-space:nowrap;user-select:none}
+.airbnb-cat-tabs{display:flex;align-items:center;justify-content:center;gap:28px;margin:0;padding:0;list-style:none;flex:1}
+.airbnb-cat-tab{display:inline-flex;align-items:center;gap:8.5px;padding:8px 3px 12px 3px;background:transparent;border:none;color:#675f80;font-weight:600;font-size:14px;position:relative;cursor:pointer;transition:color .2s ease,opacity .2s ease;white-space:nowrap;user-select:none}
 .airbnb-cat-tab:hover{color:#1b1233;background:transparent}
 .airbnb-cat-tab.active{color:#1b1233;font-weight:700;background:transparent;box-shadow:none;border:none}
 .airbnb-cat-tab::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2.5px;background:#1b1233;border-radius:99px;transform:scaleX(0);transition:transform .22s cubic-bezier(.2,0,0,1)}
 .airbnb-cat-tab.active::after{transform:scaleX(1)}
-.cat-nav-icon{height:28px;width:auto;max-width:36px;max-height:30px;object-fit:contain;display:block;flex-shrink:0;transition:transform .2s ease}
-.airbnb-cat-tab:hover .cat-nav-icon{transform:translateY(-1px) scale(1.05)}
+.cat-nav-icon{height:28px;width:auto;max-width:32px;max-height:28px;object-fit:contain;display:block;flex-shrink:0;transition:transform .2s ease}
+.airbnb-cat-tab:hover .cat-nav-icon{transform:translateY(-1px) scale(1.06)}
 .cat-nav-label{font-family:'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.01em;line-height:1}
 
 .airbnb-right-box{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:0 0 auto;position:relative}
@@ -1337,31 +1337,43 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         <a href="/"><img src="/logo.png?v=16" alt="TravlTik" /></a>
       </div>
 
-      <!-- Center Category Navigation (Airbnb Desktop Style) -->
+      <!-- Center Category Navigation (TravlTik Core Platform Categories with Custom 3D Icons) -->
       <nav class="airbnb-desktop-cat-nav" aria-label="Categories">
         <ul class="airbnb-cat-tabs">
           <li>
             <button type="button" class="airbnb-cat-tab active" data-tab="all" aria-label="All categories">
-              <img src="/icons/nav/all-globe.png" class="cat-nav-icon" alt="All" />
+              <img src="/icons/categories/all.svg" class="cat-nav-icon" alt="All" />
               <span class="cat-nav-label">All</span>
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="homes" aria-label="Homes & Stays">
-              <img src="/icons/nav/homes.png" class="cat-nav-icon" alt="Homes" />
-              <span class="cat-nav-label">Homes</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="visas" aria-label="Visas">
+              <img src="/icons/categories/visas.svg" class="cat-nav-icon" alt="Visas" />
+              <span class="cat-nav-label">Visas</span>
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="experiences" aria-label="Experiences & Tours">
-              <img src="/icons/nav/experiences.png" class="cat-nav-icon" alt="Experiences" />
-              <span class="cat-nav-label">Experiences</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="jobs" aria-label="Jobs">
+              <img src="/icons/categories/jobs.svg" class="cat-nav-icon" alt="Jobs" />
+              <span class="cat-nav-label">Jobs</span>
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="services" aria-label="Visa & Expert Services">
-              <img src="/icons/nav/services.png" class="cat-nav-icon" alt="Services" />
-              <span class="cat-nav-label">Services</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="stays" aria-label="Stays">
+              <img src="/icons/categories/stays.svg" class="cat-nav-icon" alt="Stays" />
+              <span class="cat-nav-label">Stays</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="airbnb-cat-tab" data-tab="tours" aria-label="Tours">
+              <img src="/icons/categories/tours.svg" class="cat-nav-icon" alt="Tours" />
+              <span class="cat-nav-label">Tours</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="airbnb-cat-tab" data-tab="experts" aria-label="Experts">
+              <img src="/icons/categories/experts.svg" class="cat-nav-icon" alt="Experts" />
+              <span class="cat-nav-label">Experts</span>
             </button>
           </li>
         </ul>
@@ -1518,26 +1530,38 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <ul class="airbnb-cat-tabs">
         <li>
           <button type="button" class="airbnb-cat-tab active" data-tab="all" aria-label="All categories">
-            <img src="/icons/nav/all-globe.png" class="cat-nav-icon" alt="All" />
+            <img src="/icons/categories/all.svg" class="cat-nav-icon" alt="All" />
             <span class="cat-nav-label">All</span>
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="homes" aria-label="Homes & Stays">
-            <img src="/icons/nav/homes.png" class="cat-nav-icon" alt="Homes" />
-            <span class="cat-nav-label">Homes</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="visas" aria-label="Visas">
+            <img src="/icons/categories/visas.svg" class="cat-nav-icon" alt="Visas" />
+            <span class="cat-nav-label">Visas</span>
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="experiences" aria-label="Experiences & Tours">
-            <img src="/icons/nav/experiences.png" class="cat-nav-icon" alt="Experiences" />
-            <span class="cat-nav-label">Experiences</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="jobs" aria-label="Jobs">
+            <img src="/icons/categories/jobs.svg" class="cat-nav-icon" alt="Jobs" />
+            <span class="cat-nav-label">Jobs</span>
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="services" aria-label="Visa & Expert Services">
-            <img src="/icons/nav/services.png" class="cat-nav-icon" alt="Services" />
-            <span class="cat-nav-label">Services</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="stays" aria-label="Stays">
+            <img src="/icons/categories/stays.svg" class="cat-nav-icon" alt="Stays" />
+            <span class="cat-nav-label">Stays</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="tours" aria-label="Tours">
+            <img src="/icons/categories/tours.svg" class="cat-nav-icon" alt="Tours" />
+            <span class="cat-nav-label">Tours</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="experts" aria-label="Experts">
+            <img src="/icons/categories/experts.svg" class="cat-nav-icon" alt="Experts" />
+            <span class="cat-nav-label">Experts</span>
           </button>
         </li>
       </ul>
@@ -1983,20 +2007,28 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <div class="mob-sheet-top-bar">
     <div class="mob-sheet-tabs" role="tablist">
       <button type="button" class="mob-sheet-tab active" data-tab="all" role="tab">
-        <img src="/icons/nav/all-globe.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="All" />
+        <img src="/icons/categories/all.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="All" />
         <span class="mob-tab-label">All</span>
       </button>
-      <button type="button" class="mob-sheet-tab" data-tab="homes" role="tab">
-        <img src="/icons/nav/homes.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Homes" />
-        <span class="mob-tab-label">Homes</span>
+      <button type="button" class="mob-sheet-tab" data-tab="visas" role="tab">
+        <img src="/icons/categories/visas.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Visas" />
+        <span class="mob-tab-label">Visas</span>
       </button>
-      <button type="button" class="mob-sheet-tab" data-tab="experiences" role="tab">
-        <img src="/icons/nav/experiences.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Experiences" />
-        <span class="mob-tab-label">Experiences</span>
+      <button type="button" class="mob-sheet-tab" data-tab="jobs" role="tab">
+        <img src="/icons/categories/jobs.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Jobs" />
+        <span class="mob-tab-label">Jobs</span>
       </button>
-      <button type="button" class="mob-sheet-tab" data-tab="services" role="tab">
-        <img src="/icons/nav/services.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Services" />
-        <span class="mob-tab-label">Services</span>
+      <button type="button" class="mob-sheet-tab" data-tab="stays" role="tab">
+        <img src="/icons/categories/stays.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Stays" />
+        <span class="mob-tab-label">Stays</span>
+      </button>
+      <button type="button" class="mob-sheet-tab" data-tab="tours" role="tab">
+        <img src="/icons/categories/tours.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Tours" />
+        <span class="mob-tab-label">Tours</span>
+      </button>
+      <button type="button" class="mob-sheet-tab" data-tab="experts" role="tab">
+        <img src="/icons/categories/experts.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Experts" />
+        <span class="mob-tab-label">Experts</span>
       </button>
     </div>
     <button type="button" class="mob-sheet-close-btn" id="mob-sheet-close-btn" aria-label="Close search">
@@ -3184,10 +3216,89 @@ const SHOWCASE_DATA = {
         img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1200&fit=crop&q=90'
       }
     ]
+  },
+  visas: {
+    title: 'Verified Visas &amp; <span class="sh-grad">PR Pathways</span>',
+    subtitle: 'Government recognized immigration streams, Express Entry, work permits, and golden visas across 193+ countries.',
+    viewAllHref: '/find-experts',
+    viewAllText: 'Explore all visa pathways (300+)',
+    items: [
+      {
+        title: 'CANADA EXPRESS ENTRY PR',
+        flag: 'ca',
+        sub: 'Federal Skilled Worker · Direct PR Status',
+        badge: 'FAST-TRACK PR',
+        col1Label: 'TYPE',
+        col1Val: 'PERMANENT',
+        col2Label: 'TIMELINE',
+        col2Val: '6 MONTHS',
+        col3Label: 'PROTECT',
+        col3Val: '100% ESCROW',
+        href: '/visa/canada?purpose=Express+Entry+PR',
+        img: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'GERMANY CHANCENKARTE',
+        flag: 'de',
+        sub: 'Opportunity Card Job Search Visa',
+        badge: 'PR DIRECT ROUTE',
+        col1Label: 'TYPE',
+        col1Val: 'JOB SEEKER',
+        col2Label: 'VALID',
+        col2Val: '1 YEAR',
+        col3Label: 'CONSULT',
+        col3Val: 'ESCROW 100%',
+        href: '/visa/germany?purpose=Opportunity+Card',
+        img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'UK SKILLED WORKER',
+        flag: 'gb',
+        sub: 'NHS & Tech Sponsorship Permits',
+        badge: 'TIER-2 SPONSORED',
+        col1Label: 'TYPE',
+        col1Val: 'WORK VISA',
+        col2Label: 'DURATION',
+        col2Val: '5 YEARS',
+        col3Label: 'PR ROUTE',
+        col3Val: 'ELIGIBLE',
+        href: '/visa/uk?purpose=Skilled+Worker',
+        img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'AUSTRALIA SUBCLASS 189/190',
+        flag: 'au',
+        sub: 'Permanent Residency Points Assessment',
+        badge: 'POINTS TESTED PR',
+        col1Label: 'TYPE',
+        col1Val: 'AUSTRALIA PR',
+        col2Label: 'FAMILY',
+        col2Val: 'INCLUDED',
+        col3Label: 'STATUS',
+        col3Val: 'PERMANENT',
+        href: '/visa/australia?purpose=PR+Subclass+189',
+        img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'SINGAPORE ONE PASS',
+        flag: 'sg',
+        sub: 'Tech & Leadership Talent Pass',
+        badge: 'FAST PROCESSING',
+        col1Label: 'TYPE',
+        col1Val: '5-YR PERMIT',
+        col2Label: 'FAMILY',
+        col2Val: 'DEPENDENT PASS',
+        col3Label: 'SUPPORT',
+        col3Val: 'END-TO-END',
+        href: '/visa/singapore?purpose=ONE+Pass',
+        img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800&h=1200&fit=crop&q=90'
+      }
+    ]
   }
 };
 
-// Aliases for 3D Icon Categories
+// Aliases for 3D Category Tabs
+SHOWCASE_DATA.stays = SHOWCASE_DATA.homes;
 SHOWCASE_DATA.services = SHOWCASE_DATA.experts;
 SHOWCASE_DATA.experiences = SHOWCASE_DATA.tours;
 
@@ -3195,6 +3306,7 @@ function renderShowcase(tab, filterQuery = '') {
   let lookupTab = tab;
   if (lookupTab === 'services') lookupTab = 'experts';
   if (lookupTab === 'experiences') lookupTab = 'tours';
+  if (lookupTab === 'homes') lookupTab = 'stays';
   const data = SHOWCASE_DATA[lookupTab] || SHOWCASE_DATA.all || SHOWCASE_DATA.experts;
   const titleEl = $('#showcase-title');
   const subEl = $('#showcase-subtitle');
@@ -3262,14 +3374,16 @@ renderShowcase('all');
 let activeAirbnbTab = 'all';
 const airbnbPlaceholders = {
   all: 'Start your search',
-  homes: 'Search student housing, relocation flats, expat stays...',
-  experiences: 'Search cricket tours, Europe packages, Dubai experiences...',
-  services: 'Search verified RCIC & MARA immigration experts, visa legal counsel...',
-  experts: 'e.g. Canada Student Visa',
-  jobs: 'e.g. Software Engineer, Healthcare in UK',
-  universities: 'e.g. University of Toronto, Oxford admissions',
-  tours: 'e.g. Europe tour, Dubai luxury stay',
-  offers: 'e.g. Milestone escrow cashback, discounts'
+  visas: 'e.g. Canada Express Entry PR, Germany Chancenkarte...',
+  jobs: 'e.g. Software Engineer, Healthcare in UK...',
+  stays: 'e.g. London student loft, Toronto expat condo...',
+  tours: 'e.g. Europe tour, Greece Cricket series...',
+  experts: 'e.g. Canada Student Visa, Arjun Mehta RCIC...',
+  homes: 'e.g. London student loft, Toronto expat condo...',
+  services: 'e.g. Regulated RCIC / MARA consultant...',
+  experiences: 'e.g. Europe tour, Dubai luxury stay...',
+  universities: 'e.g. University of Toronto, Oxford admissions...',
+  offers: 'e.g. Milestone escrow cashback, discounts...'
 };
 
 $$('.airbnb-cat-tab').forEach(btn => {
@@ -3735,17 +3849,21 @@ const drawEasyTabs = () => {
     $$('#tabs .tab').forEach(b => b.onclick = () => {
       curEasy = b.dataset.k;
       drawEasyTabs();
-      if (curEasy === 'Jobs') {
-        renderShowcase('jobs');
-      } else if (curEasy === 'Experts') {
-        const servTab = document.querySelector('.airbnb-cat-tab[data-tab="services"]');
-        if (servTab) servTab.click();
-      } else if (curEasy === 'Tours') {
-        const expTab = document.querySelector('.airbnb-cat-tab[data-tab="experiences"]');
-        if (expTab) expTab.click();
+      if (curEasy === 'Visas') {
+        const vTab = document.querySelector('.airbnb-cat-tab[data-tab="visas"]');
+        if (vTab) vTab.click();
+      } else if (curEasy === 'Jobs') {
+        const jTab = document.querySelector('.airbnb-cat-tab[data-tab="jobs"]');
+        if (jTab) jTab.click();
       } else if (curEasy === 'Stays') {
-        const homeTab = document.querySelector('.airbnb-cat-tab[data-tab="homes"]');
-        if (homeTab) homeTab.click();
+        const sTab = document.querySelector('.airbnb-cat-tab[data-tab="stays"]');
+        if (sTab) sTab.click();
+      } else if (curEasy === 'Tours') {
+        const tTab = document.querySelector('.airbnb-cat-tab[data-tab="tours"]');
+        if (tTab) tTab.click();
+      } else if (curEasy === 'Experts') {
+        const expTab = document.querySelector('.airbnb-cat-tab[data-tab="experts"]');
+        if (expTab) expTab.click();
       }
     });
   }
