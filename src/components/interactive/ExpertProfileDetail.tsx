@@ -171,74 +171,13 @@ export function ExpertProfileDetail({
     ];
   }, [baseRate, currencySymbol]);
 
-  // Classifieds & Special Deals (Verified Partner Packages & Relocation Routes)
-  const classifiedOffers = useMemo(() => {
-    return [
-      {
-        id: 'cl-greece-cricket',
-        title: 'Greece Cricket Tour & European T20',
-        sub: 'Official Europe Series · Athens & Corfu · Risingat Sports Partner',
-        badge: '⚡ VERIFIED GROUP TOUR',
-        badgeColor: 'bg-emerald-500 text-white',
-        price: '₹1,85,000',
-        priceSub: 'All-inclusive · Visa + Flights + 4-Star Stay',
-        tag1: 'Schengen Visa',
-        tag2: 'Oct - Nov 2026 Batch',
-        tag3: 'Match Kit Included',
-        image: '/images/greece-cricket-card.png',
-        href: '/tours?category=sports&country=greece',
-        popular: true
-      },
-      {
-        id: 'cl-germany-chancenkarte',
-        title: 'Germany Opportunity Card (Chancenkarte)',
-        sub: 'Point-based Job Seeker Visa with Direct PR Pathway & Work Rights',
-        badge: '🔥 HOT ROUTE',
-        badgeColor: 'bg-[#370c63] text-white',
-        price: '₹28,000',
-        priceSub: 'Full Case Review + CV Europass',
-        tag1: 'Job Seeker',
-        tag2: '1 Year Valid',
-        tag3: 'Family Route',
-        image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&h=600&fit=crop&q=80',
-        href: '/jobs',
-        popular: false
-      },
-      {
-        id: 'cl-uk-skilled',
-        title: 'UK Skilled Worker & Care Visa Filing',
-        sub: 'COS Verification, Tier 2 Sponsorship Audit & Fast-track Embassy Booking',
-        badge: '100% ESCROW HOLD',
-        badgeColor: 'bg-emerald-600 text-white',
-        price: '₹42,000',
-        priceSub: 'Stage-wise milestone releases',
-        tag1: 'Tier-2 COS',
-        tag2: '3-5 Weeks',
-        tag3: 'NHS Eligible',
-        image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&h=600&fit=crop&q=80',
-        href: '/find-experts',
-        popular: false
-      },
-      {
-        id: 'cl-dubai-special',
-        title: 'Dubai 5D/4N Luxury Tour & Visa Combo',
-        sub: 'Desert Safari, Marina Dhow Cruise, 4-Star Hotel & Express E-Visa',
-        badge: 'FLAT DEAL',
-        badgeColor: 'bg-amber-500 text-white',
-        price: '₹34,500',
-        priceSub: 'Zero convenience fee · Instant issue',
-        tag1: 'Holiday Combo',
-        tag2: 'Immediate Batch',
-        tag3: '4-Star Stay',
-        image: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&h=600&fit=crop&q=80',
-        href: '/tours?destination=Dubai',
-        popular: false
-      }
-    ];
-  }, []);
-
-  // Dynamic Classified Ads: check localStorage for any ads posted by this expert
-  const [displayedClassifieds, setDisplayedClassifieds] = useState<any[]>(classifiedOffers);
+  // Dynamic Classified Ads: ONLY show genuine ads if actually posted by / owned by this expert
+  const [displayedClassifieds, setDisplayedClassifieds] = useState<any[]>(() => {
+    if (expert.classifieds && Array.isArray(expert.classifieds)) {
+      return expert.classifieds;
+    }
+    return [];
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -249,10 +188,12 @@ export function ExpertProfileDetail({
         if (Array.isArray(parsed) && parsed.length > 0) {
           const expName = displayName.toLowerCase().trim();
           const expEmail = (expert.email || '').toLowerCase().trim();
+          const expId = String(expert.id || '').toLowerCase().trim();
           const matched = parsed.filter((ad: any) => {
             const comp = (ad.company || '').toLowerCase().trim();
             const em = (ad.expert_email || '').toLowerCase().trim();
-            return (comp && (expName.includes(comp) || comp.includes(expName))) || (em && em === expEmail);
+            const aid = String(ad.expert_id || '').toLowerCase().trim();
+            return (aid && aid === expId) || (comp && (expName.includes(comp) || comp.includes(expName))) || (em && em === expEmail);
           });
 
           if (matched.length > 0) {
@@ -261,19 +202,20 @@ export function ExpertProfileDetail({
               title: ad.title,
               sub: ad.description || `Special verified ad listing published directly by ${displayName}.`,
               badge: ad.type === 'premium' ? '⚡ PREMIUM VERIFIED' : `✓ POSTED BY ${displayName.toUpperCase()}`,
-              badgeColor: ad.type === 'premium' ? 'bg-[#370c63] text-white' : 'bg-[#00b070] text-white',
+              badgeColor: ad.type === 'premium' ? 'bg-[#581db5] text-white' : 'bg-[#00b070] text-white',
               price: ad.price || 'Free Consultation',
               priceSub: ad.validTo ? `Valid until ${ad.validTo}` : 'Direct Verification',
               tag1: ad.category || 'Classified Ad',
               tag2: ad.country || 'Global Mobility',
               tag3: 'Direct Expert Deal',
-              image: ad.cover_photo || (ad.images && ad.images[0]) || '/images/cricket_ad.jpg',
+              image: ad.cover_photo || (ad.images && ad.images[0]) || '/images/greece-cricket-card.png',
               href: `/classifieds/${ad.id}`,
               whatsapp: ad.contactPhone,
               isDirectByExpert: true,
               popular: true
             }));
-            setDisplayedClassifieds([...mapped, ...classifiedOffers.filter(c => !mapped.some(m => m.title === c.title))]);
+            const baseClassifieds = (expert.classifieds && Array.isArray(expert.classifieds)) ? expert.classifieds : [];
+            setDisplayedClassifieds([...mapped, ...baseClassifieds.filter((c: any) => !mapped.some(m => m.title === c.title))]);
             return;
           }
         }
@@ -281,8 +223,9 @@ export function ExpertProfileDetail({
     } catch(err) {
       console.error(err);
     }
-    setDisplayedClassifieds(classifiedOffers);
-  }, [displayName, expert.email, classifiedOffers]);
+    // Only real classifieds for this specific expert - never fake/generic ones
+    setDisplayedClassifieds((expert.classifieds && Array.isArray(expert.classifieds)) ? expert.classifieds : []);
+  }, [displayName, expert.email, expert.id, expert.classifieds]);
 
   // Gallery: only real images if uploaded by expert
   const galleryImages = expert.galleryImages || [];
@@ -589,7 +532,7 @@ export function ExpertProfileDetail({
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'services', label: 'Services' },
-            { id: 'classifieds', label: 'Classifieds', badge: 'New' },
+            ...(displayedClassifieds && displayedClassifieds.length > 0 ? [{ id: 'classifieds', label: 'Classifieds', badge: `${displayedClassifieds.length}` }] : []),
             { id: 'expertise', label: 'Areas of Expertise' },
             { id: 'reviews', label: `Reviews (${reviewCount})` },
             { id: 'gallery', label: 'Gallery' },
@@ -820,8 +763,9 @@ export function ExpertProfileDetail({
               </div>
             </div>
 
-            {/* SECTION: CLASSIFIEDS & SPECIAL DEALS */}
-            <div id="section-classifieds" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(55,12,99,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(55,12,99,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6 relative overflow-hidden">
+            {/* SECTION: CLASSIFIEDS & SPECIAL DEALS (ONLY SHOWN IF EXPERT HAS AUTHENTIC LISTINGS) */}
+            {displayedClassifieds && displayedClassifieds.length > 0 && (
+              <div id="section-classifieds" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(55,12,99,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(55,12,99,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6 relative overflow-hidden">
               {/* Subtle brand glow accent */}
               <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-[#00b070]/10 via-[#370c63]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 
@@ -960,6 +904,7 @@ export function ExpertProfileDetail({
                 ))}
               </div>
             </div>
+            )}
 
             {/* SECTION 3: REVIEWS & RATINGS SCORECARD */}
             <div id="section-reviews" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">

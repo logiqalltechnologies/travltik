@@ -23,7 +23,30 @@ const isHome = pathname === '/' || pathname === '';
       </a>
     </div>
 
-    <!-- 2. RIGHT: Compact Search Button + Airbnb-Style Menu Pill -->
+    <!-- 2. CENTER: Airbnb 3D Category Navigation (Exact Format) -->
+    <nav class="hidden md:flex items-center justify-center gap-7 lg:gap-9" aria-label="Categories">
+      <a href="/?tab=all" class={`flex items-center gap-2.5 py-2.5 relative font-bold text-sm transition-colors ${isHome ? 'text-[#1b1233]' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
+        <img src="/icons/nav/all-globe.png" class="h-6 w-auto max-w-[28px] object-contain transition-transform hover:scale-105" alt="All" />
+        <span>All</span>
+        {isHome && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+      </a>
+      <a href="/?tab=homes" class="flex items-center gap-2.5 py-2.5 relative font-semibold text-sm text-[#675f80] hover:text-[#1b1233] transition-colors">
+        <img src="/icons/nav/homes.png" class="h-6 w-auto max-w-[28px] object-contain transition-transform hover:scale-105" alt="Homes" />
+        <span>Homes</span>
+      </a>
+      <a href="/tours" class={`flex items-center gap-2.5 py-2.5 relative font-semibold text-sm transition-colors ${pathname.startsWith('/tours') ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
+        <img src="/icons/nav/experiences.png" class="h-6 w-auto max-w-[28px] object-contain transition-transform hover:scale-105" alt="Experiences" />
+        <span>Experiences</span>
+        {pathname.startsWith('/tours') && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+      </a>
+      <a href="/find-experts" class={`flex items-center gap-2.5 py-2.5 relative font-semibold text-sm transition-colors ${(pathname.startsWith('/find-experts') || pathname.startsWith('/expert')) ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
+        <img src="/icons/nav/services.png" class="h-6 w-auto max-w-[28px] object-contain transition-transform hover:scale-105" alt="Services" />
+        <span>Services</span>
+        {(pathname.startsWith('/find-experts') || pathname.startsWith('/expert')) && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+      </a>
+    </nav>
+
+    <!-- 3. RIGHT: Compact Search Button + Airbnb-Style Menu Pill -->
     <div class="flex items-center gap-2 sm:gap-3 shrink-0 font-sans">
       
       <!-- Compact Search Button -->

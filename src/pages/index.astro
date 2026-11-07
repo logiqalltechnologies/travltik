@@ -54,11 +54,15 @@ section{padding:96px 0;position:relative}
 .airbnb-top-row{display:flex;align-items:center;justify-content:space-between;min-height:76px;padding:12px 0 6px;gap:20px}
 .airbnb-logo{display:flex;align-items:center;flex:0 0 170px}
 .airbnb-logo img{height:44px;max-height:48px;width:auto;display:block}
-.airbnb-cat-tabs{display:flex;align-items:center;justify-content:center;gap:10px;margin:0;padding:0;list-style:none;flex:1}
-.airbnb-cat-tab{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:9999px;font-weight:700;font-size:13.5px;color:#4b4268;background:#f7f5fa;border:1px solid #ede9f6;transition:all .2s ease;cursor:pointer}
-.airbnb-cat-tab:hover{background:#ede8f5;color:#1e1338}
-.airbnb-cat-tab.active{background:#370c63;color:#ffffff;border-color:#370c63;box-shadow:0 6px 18px -4px rgba(55,12,99,0.45)}
-.airbnb-cat-tab .tab-icon{font-size:16px;line-height:1}
+.airbnb-cat-tabs{display:flex;align-items:center;justify-content:center;gap:36px;margin:0;padding:0;list-style:none;flex:1}
+.airbnb-cat-tab{display:inline-flex;align-items:center;gap:9px;padding:8px 4px 12px 4px;background:transparent;border:none;color:#675f80;font-weight:600;font-size:14.5px;position:relative;cursor:pointer;transition:color .2s ease,opacity .2s ease;white-space:nowrap;user-select:none}
+.airbnb-cat-tab:hover{color:#1b1233;background:transparent}
+.airbnb-cat-tab.active{color:#1b1233;font-weight:700;background:transparent;box-shadow:none;border:none}
+.airbnb-cat-tab::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2.5px;background:#1b1233;border-radius:99px;transform:scaleX(0);transition:transform .22s cubic-bezier(.2,0,0,1)}
+.airbnb-cat-tab.active::after{transform:scaleX(1)}
+.cat-nav-icon{height:28px;width:auto;max-width:36px;max-height:30px;object-fit:contain;display:block;flex-shrink:0;transition:transform .2s ease}
+.airbnb-cat-tab:hover .cat-nav-icon{transform:translateY(-1px) scale(1.05)}
+.cat-nav-label{font-family:'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.01em;line-height:1}
 
 .airbnb-right-box{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:0 0 auto;position:relative}
 .airbnb-host-link{font-size:14px;font-weight:600;color:#222222;padding:10px 14px;border-radius:9999px;text-decoration:none;transition:background-color .15s ease;white-space:nowrap}
@@ -185,7 +189,7 @@ section{padding:96px 0;position:relative}
   .airbnb-cat-tabs{
     display:flex;
     justify-content:flex-start;
-    gap:10px;
+    gap:24px;
     padding:4px 0 8px;
     width:100%;
     overflow-x:auto;
@@ -198,27 +202,27 @@ section{padding:96px 0;position:relative}
     display:inline-flex;
     flex-direction:row;
     align-items:center;
-    gap:6px;
-    padding:6px 14px;
-    border-radius:9999px;
-    background:#f8fafc;
-    border:1px solid #e2e8f0;
-    font-size:13px;
+    gap:8px;
+    padding:6px 2px 10px 2px;
+    background:transparent;
+    border:none;
+    font-size:13.5px;
     font-weight:600;
-    color:#475569;
+    color:#675f80;
     flex-shrink:0;
     white-space:nowrap;
+    position:relative;
   }
-  .airbnb-cat-tab .tab-icon{font-size:16px}
+  .airbnb-cat-tab .cat-nav-icon{height:24px;max-width:30px}
   .airbnb-cat-tab.active{
-    background:#0f172a;
-    color:#ffffff;
-    border-color:#0f172a;
+    background:transparent;
+    color:#1b1233;
+    border:none;
     font-weight:700;
   }
   .airbnb-cat-tab:hover{
-    background:#f1f5f9;
-    color:#0f172a;
+    background:transparent;
+    color:#1b1233;
   }
   .airbnb-host-link{display:inline-flex;padding:7px 12px;font-size:13px}
   .airbnb-globe-pill{display:none}
@@ -315,8 +319,8 @@ section{padding:96px 0;position:relative}
   .airbnb-mobile-cat-row .airbnb-cat-tabs{
     display:flex !important;
     align-items:center !important;
-    gap:8px !important;
-    padding:2px 2px 6px !important;
+    gap:22px !important;
+    padding:4px 14px 8px !important;
     overflow-x:auto !important;
     flex-wrap:nowrap !important;
     justify-content:flex-start !important;
@@ -328,30 +332,34 @@ section{padding:96px 0;position:relative}
   .airbnb-mobile-cat-row .airbnb-cat-tab{
     flex-shrink:0 !important;
     white-space:nowrap !important;
-    padding:7px 15px !important;
+    padding:6px 2px 10px 2px !important;
     font-size:13px !important;
     font-weight:600 !important;
-    gap:7px !important;
-    border-radius:9999px !important;
-    background:#ffffff !important;
-    border:1px solid #e5e5e5 !important;
-    color:#222222 !important;
-    box-shadow:0 2px 6px rgba(0,0,0,0.04) !important;
+    gap:8px !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    border:none !important;
+    color:#675f80 !important;
+    box-shadow:none !important;
     transition:all .18s ease !important;
     cursor:pointer !important;
     display:inline-flex !important;
     align-items:center !important;
+    position:relative !important;
   }
-  .airbnb-mobile-cat-row .airbnb-cat-tab .tab-icon{
-    font-size:15px !important;
+  .airbnb-mobile-cat-row .airbnb-cat-tab .cat-nav-icon{
+    height:22px !important;
+    max-width:28px !important;
   }
-  /* Inset active state matching screenshot */
   .airbnb-mobile-cat-row .airbnb-cat-tab.active{
-    background:#efefef !important;
-    color:#111111 !important;
-    border:1.5px solid #cfcfcf !important;
-    box-shadow:inset 0 2px 4px rgba(0,0,0,0.07) !important;
+    background:transparent !important;
+    color:#1b1233 !important;
+    border:none !important;
+    box-shadow:none !important;
     font-weight:700 !important;
+  }
+  .airbnb-mobile-cat-row .airbnb-cat-tab.active::after{
+    transform:scaleX(1) !important;
   }
 
   /* Fixed Airbnb-Style Mobile Bottom Navigation Bar */
@@ -1333,39 +1341,27 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <nav class="airbnb-desktop-cat-nav" aria-label="Categories">
         <ul class="airbnb-cat-tabs">
           <li>
-            <button type="button" class="airbnb-cat-tab active" data-tab="all">
-              <span class="tab-icon">🌎</span>
-              <span>All</span>
+            <button type="button" class="airbnb-cat-tab active" data-tab="all" aria-label="All categories">
+              <img src="/icons/nav/all-globe.png" class="cat-nav-icon" alt="All" />
+              <span class="cat-nav-label">All</span>
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="experts">
-              <span class="tab-icon">⚖️</span>
-              <span>Experts</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="homes" aria-label="Homes & Stays">
+              <img src="/icons/nav/homes.png" class="cat-nav-icon" alt="Homes" />
+              <span class="cat-nav-label">Homes</span>
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="jobs">
-              <span class="tab-icon">💼</span>
-              <span>Jobs</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="experiences" aria-label="Experiences & Tours">
+              <img src="/icons/nav/experiences.png" class="cat-nav-icon" alt="Experiences" />
+              <span class="cat-nav-label">Experiences</span>
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="universities">
-              <span class="tab-icon">🎓</span>
-              <span>Universities</span>
-            </button>
-          </li>
-          <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="tours">
-              <span class="tab-icon">✈️</span>
-              <span>Tours</span>
-            </button>
-          </li>
-          <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="offers">
-              <span class="tab-icon">🏷️</span>
-              <span>Offers</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="services" aria-label="Visa & Expert Services">
+              <img src="/icons/nav/services.png" class="cat-nav-icon" alt="Services" />
+              <span class="cat-nav-label">Services</span>
             </button>
           </li>
         </ul>
@@ -1521,39 +1517,27 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <nav class="airbnb-mobile-cat-row" aria-label="Categories Mobile">
       <ul class="airbnb-cat-tabs">
         <li>
-          <button type="button" class="airbnb-cat-tab active" data-tab="all">
-            <span class="tab-icon">🌎</span>
-            <span>All</span>
+          <button type="button" class="airbnb-cat-tab active" data-tab="all" aria-label="All categories">
+            <img src="/icons/nav/all-globe.png" class="cat-nav-icon" alt="All" />
+            <span class="cat-nav-label">All</span>
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="experts">
-            <span class="tab-icon">⚖️</span>
-            <span>Experts</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="homes" aria-label="Homes & Stays">
+            <img src="/icons/nav/homes.png" class="cat-nav-icon" alt="Homes" />
+            <span class="cat-nav-label">Homes</span>
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="jobs">
-            <span class="tab-icon">💼</span>
-            <span>Jobs</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="experiences" aria-label="Experiences & Tours">
+            <img src="/icons/nav/experiences.png" class="cat-nav-icon" alt="Experiences" />
+            <span class="cat-nav-label">Experiences</span>
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="universities">
-            <span class="tab-icon">🎓</span>
-            <span>Universities</span>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="tours">
-            <span class="tab-icon">✈️</span>
-            <span>Tours</span>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="offers">
-            <span class="tab-icon">🏷️</span>
-            <span>Offers</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="services" aria-label="Visa & Expert Services">
+            <img src="/icons/nav/services.png" class="cat-nav-icon" alt="Services" />
+            <span class="cat-nav-label">Services</span>
           </button>
         </li>
       </ul>
@@ -1999,24 +1983,20 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   <div class="mob-sheet-top-bar">
     <div class="mob-sheet-tabs" role="tablist">
       <button type="button" class="mob-sheet-tab active" data-tab="all" role="tab">
-        <span class="mob-tab-icon">🌐</span>
+        <img src="/icons/nav/all-globe.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="All" />
         <span class="mob-tab-label">All</span>
       </button>
-      <button type="button" class="mob-sheet-tab" data-tab="experts" role="tab">
-        <span class="mob-tab-icon">⚖️</span>
-        <span class="mob-tab-label">Experts</span>
+      <button type="button" class="mob-sheet-tab" data-tab="homes" role="tab">
+        <img src="/icons/nav/homes.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Homes" />
+        <span class="mob-tab-label">Homes</span>
       </button>
-      <button type="button" class="mob-sheet-tab" data-tab="jobs" role="tab">
-        <span class="mob-tab-icon">💼</span>
-        <span class="mob-tab-label">Jobs</span>
+      <button type="button" class="mob-sheet-tab" data-tab="experiences" role="tab">
+        <img src="/icons/nav/experiences.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Experiences" />
+        <span class="mob-tab-label">Experiences</span>
       </button>
-      <button type="button" class="mob-sheet-tab" data-tab="tours" role="tab">
-        <span class="mob-tab-icon">✈️</span>
-        <span class="mob-tab-label">Tours</span>
-      </button>
-      <button type="button" class="mob-sheet-tab" data-tab="universities" role="tab">
-        <span class="mob-tab-icon">🎓</span>
-        <span class="mob-tab-label">Universities</span>
+      <button type="button" class="mob-sheet-tab" data-tab="services" role="tab">
+        <img src="/icons/nav/services.png" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Services" />
+        <span class="mob-tab-label">Services</span>
       </button>
     </div>
     <button type="button" class="mob-sheet-close-btn" id="mob-sheet-close-btn" aria-label="Close search">
@@ -3126,11 +3106,96 @@ const SHOWCASE_DATA = {
         img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&h=1200&fit=crop&q=90'
       }
     ]
+  },
+  homes: {
+    title: 'Verified Stays &amp; <span class="sh-grad">Relocation Homes</span>',
+    subtitle: 'Furnished student residences, expat flats, and verified long-term rentals with milestone escrow protection worldwide.',
+    viewAllHref: '/self-apply',
+    viewAllText: 'Explore all relocation stays (180+)',
+    items: [
+      {
+        title: 'LONDON STUDENT RESIDENCE',
+        flag: 'gb',
+        sub: 'Bloomsbury Studio · Near UCL & KCL',
+        badge: 'STUDENT ACCREDITED',
+        col1Label: 'TYPE',
+        col1Val: 'STUDIO',
+        col2Label: 'BILLS',
+        col2Val: 'INCLUDED',
+        col3Label: 'FROM',
+        col3Val: '£280/WK',
+        href: '/self-apply',
+        img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'TORONTO DOWNTOWN EXPAT FLAT',
+        flag: 'ca',
+        sub: 'Waterfront Condo · PR & Work Permit Ready',
+        badge: 'INSTANT MOVE-IN',
+        col1Label: 'TYPE',
+        col1Val: '1-BED CONDO',
+        col2Label: 'LEASE',
+        col2Val: 'FLEXIBLE',
+        col3Label: 'FROM',
+        col3Val: 'C$2,100/MO',
+        href: '/self-apply',
+        img: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'BERLIN MITTE TECH LIVING',
+        flag: 'de',
+        sub: 'Furnished Loft · Anmeldung Registration',
+        badge: 'ANMELDUNG READY',
+        col1Label: 'TYPE',
+        col1Val: 'LOFT',
+        col2Label: 'CITY',
+        col2Val: 'CENTRAL',
+        col3Label: 'FROM',
+        col3Val: '€1,250/MO',
+        href: '/self-apply',
+        img: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'MELBOURNE CARLTON RESIDENCE',
+        flag: 'au',
+        sub: 'University Hub · Steps to UniMelb & RMIT',
+        badge: 'VERIFIED CAMPUS',
+        col1Label: 'TYPE',
+        col1Val: 'STUDENT APARTMENT',
+        col2Label: 'ESCROW',
+        col2Val: 'PROTECTED',
+        col3Label: 'FROM',
+        col3Val: 'A$390/WK',
+        href: '/self-apply',
+        img: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'DUBAI MARINA SUITE',
+        flag: 'ae',
+        sub: 'Marina View Residence · Golden Visa Friendly',
+        badge: 'LUXURY SERVICED',
+        col1Label: 'TYPE',
+        col1Val: 'SERVICED APT',
+        col2Label: 'DURATION',
+        col2Val: 'MONTHLY',
+        col3Label: 'FROM',
+        col3Val: 'AED 6,500/MO',
+        href: '/self-apply',
+        img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=1200&fit=crop&q=90'
+      }
+    ]
   }
 };
 
+// Aliases for 3D Icon Categories
+SHOWCASE_DATA.services = SHOWCASE_DATA.experts;
+SHOWCASE_DATA.experiences = SHOWCASE_DATA.tours;
+
 function renderShowcase(tab, filterQuery = '') {
-  const data = SHOWCASE_DATA[tab] || SHOWCASE_DATA.experts;
+  let lookupTab = tab;
+  if (lookupTab === 'services') lookupTab = 'experts';
+  if (lookupTab === 'experiences') lookupTab = 'tours';
+  const data = SHOWCASE_DATA[lookupTab] || SHOWCASE_DATA.all || SHOWCASE_DATA.experts;
   const titleEl = $('#showcase-title');
   const subEl = $('#showcase-subtitle');
   const viewAllEl = $('#showcase-view-all');
@@ -3197,6 +3262,9 @@ renderShowcase('all');
 let activeAirbnbTab = 'all';
 const airbnbPlaceholders = {
   all: 'Start your search',
+  homes: 'Search student housing, relocation flats, expat stays...',
+  experiences: 'Search cricket tours, Europe packages, Dubai experiences...',
+  services: 'Search verified RCIC & MARA immigration experts, visa legal counsel...',
   experts: 'e.g. Canada Student Visa',
   jobs: 'e.g. Software Engineer, Healthcare in UK',
   universities: 'e.g. University of Toronto, Oxford admissions',
@@ -3668,19 +3736,32 @@ const drawEasyTabs = () => {
       curEasy = b.dataset.k;
       drawEasyTabs();
       if (curEasy === 'Jobs') {
-        const jobsTab = document.querySelector('.airbnb-cat-tab[data-tab="jobs"]');
-        if (jobsTab) jobsTab.click();
+        renderShowcase('jobs');
       } else if (curEasy === 'Experts') {
-        const expTab = document.querySelector('.airbnb-cat-tab[data-tab="experts"]');
-        if (expTab) expTab.click();
+        const servTab = document.querySelector('.airbnb-cat-tab[data-tab="services"]');
+        if (servTab) servTab.click();
       } else if (curEasy === 'Tours') {
-        const tourTab = document.querySelector('.airbnb-cat-tab[data-tab="tours"]');
-        if (tourTab) tourTab.click();
+        const expTab = document.querySelector('.airbnb-cat-tab[data-tab="experiences"]');
+        if (expTab) expTab.click();
+      } else if (curEasy === 'Stays') {
+        const homeTab = document.querySelector('.airbnb-cat-tab[data-tab="homes"]');
+        if (homeTab) homeTab.click();
       }
     });
   }
 };
 drawEasyTabs();
+
+// URL Tab query parameter check (e.g., /?tab=services)
+try {
+  const urlTab = new URLSearchParams(window.location.search).get('tab');
+  if (urlTab) {
+    const targetTab = document.querySelector(`.airbnb-cat-tab[data-tab="${urlTab}"]`);
+    if (targetTab) {
+      targetTab.click();
+    }
+  }
+} catch (e) {}
 
 // Easy search dropdowns
 initCustomDropdown('#easy-need-drop', '#easy-q', '#easy-need-val-text');
