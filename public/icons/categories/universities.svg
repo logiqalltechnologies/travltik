@@ -1,77 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" shape-rendering="geometricPrecision">
   <defs>
-    <!-- Cap Deep Midnight / Navy Indigo Gradient -->
-    <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4338ca"/>
-      <stop offset="35%" stop-color="#312e81"/>
-      <stop offset="100%" stop-color="#1e1b4b"/>
+    <!-- Cap Royal Navy/Purple Velvet Gradient -->
+    <linearGradient id="uniCap" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#370c63"/>
+      <stop offset="50%" stop-color="#1e1035"/>
+      <stop offset="100%" stop-color="#0f071d"/>
     </linearGradient>
-    <linearGradient id="capUnder" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#1e1b4b"/>
-      <stop offset="100%" stop-color="#0f0d2e"/>
-    </linearGradient>
-    <!-- Gold Tassel Silk Gradient -->
-    <linearGradient id="tasselGold" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Gold Silk Tassel Gradient -->
+    <linearGradient id="uniGold" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fef08a"/>
-      <stop offset="40%" stop-color="#fbbf24"/>
+      <stop offset="35%" stop-color="#f59e0b"/>
       <stop offset="85%" stop-color="#d97706"/>
-      <stop offset="100%" stop-color="#92400e"/>
+      <stop offset="100%" stop-color="#78350f"/>
     </linearGradient>
-    <!-- Diploma Parchment Gradient -->
-    <linearGradient id="parchment" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#fef9c3"/>
-      <stop offset="50%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#fef08a"/>
+    <!-- Parchment Diploma Scroll -->
+    <linearGradient id="uniScroll" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fefce8"/>
+      <stop offset="50%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
     </linearGradient>
-    <!-- Diploma Ribbon Red/Emerald -->
-    <linearGradient id="dipRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#34d399"/>
-      <stop offset="50%" stop-color="#00b070"/>
-      <stop offset="100%" stop-color="#065f46"/>
-    </linearGradient>
-    <filter id="univShadow" x="-10%" y="-10%" width="130%" height="135%" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="3.5" stdDeviation="2.5" flood-color="#0f172a" flood-opacity="0.25"/>
-    </filter>
+    <radialGradient id="uniShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
-  <g filter="url(#univShadow)">
-    <!-- Rolled Diploma Scroll (Sitting below the cap) -->
-    <g transform="translate(10, 43)">
-      <!-- Scroll Tube -->
-      <rect x="6" y="2" width="34" height="9" rx="2" fill="url(#parchment)"/>
-      <ellipse cx="6" cy="6.5" rx="2.5" ry="4.5" fill="#fde047"/>
-      <ellipse cx="6" cy="6.5" rx="1.5" ry="3" fill="#ca8a04"/>
-      <ellipse cx="40" cy="6.5" rx="2.5" ry="4.5" fill="url(#parchment)"/>
-      <!-- Ribbon tie -->
-      <rect x="21" y="1" width="4" height="11" rx="1" fill="url(#dipRibbon)"/>
-      <!-- Ribbon tail -->
-      <path d="M22 12 L19 18 L23 16 L27 18 L24 12 Z" fill="url(#dipRibbon)"/>
-    </g>
+  <!-- Ambient Ground Shadow -->
+  <ellipse cx="32" cy="58" rx="20" ry="4" fill="url(#uniShadow)"/>
 
-    <!-- Skull Cap Base (Under the board) -->
-    <path d="M22 28 C22 36 26 42 32 42 C38 42 42 36 42 28 Z" fill="url(#capUnder)"/>
-    <!-- Rim Highlight -->
-    <ellipse cx="32" cy="28" rx="10" ry="3.5" fill="#4338ca" opacity="0.4"/>
-
-    <!-- Diamond Mortarboard (3D Angled Rhombus) -->
-    <!-- Lower bevel edge -->
-    <polygon points="32,15 54,23 32,31 10,23" fill="#1e1b4b"/>
-    <!-- Top Face with Gradient -->
-    <polygon points="32,13 54,21 32,29 10,21" fill="url(#capGrad)"/>
-    <!-- Top Face Specular Highlight Edge -->
-    <polyline points="10.5,21 32,13.5 53.5,21" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
-
-    <!-- Center Button Pin -->
-    <ellipse cx="32" cy="21" rx="2.2" ry="1.4" fill="url(#tasselGold)"/>
-
-    <!-- Golden Silk Tassel (Draping down to the left) -->
-    <!-- Tassel String -->
-    <path d="M32 21 C26 21 17 24 14 30 C13 32 12 35 12 38" 
-          stroke="url(#tasselGold)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-    <!-- Tassel Band Ring -->
-    <rect x="10.5" y="38" width="3" height="1.8" rx="0.5" fill="url(#tasselGold)"/>
-    <!-- Tassel Fringe Brush (Silk Tuft) -->
-    <path d="M11 39.8 L8.5 49 C8.5 50 15.5 50 15.5 49 L13 39.8 Z" fill="url(#tasselGold)"/>
-    <ellipse cx="12" cy="49" rx="3.5" ry="1.2" fill="#d97706"/>
+  <!-- DIPLOMA SCROLL (Resting on Ground at Angle) -->
+  <g transform="translate(32, 51) rotate(-8) translate(-32, -51)">
+    <!-- Scroll Cylinder -->
+    <rect x="14" y="47" width="36" height="8.5" rx="4.2" fill="url(#uniScroll)"/>
+    <!-- Scroll End Curl Rolled Paper -->
+    <ellipse cx="14" cy="51.2" rx="2.5" ry="4.2" fill="#fde68a"/>
+    <ellipse cx="14" cy="51.2" rx="1.5" ry="3" fill="#b45309" opacity="0.3"/>
+    <ellipse cx="50" cy="51.2" rx="2.5" ry="4.2" fill="#fde68a"/>
+    <!-- Red/Gold Silk Ribbon Tied in Center -->
+    <rect x="30" y="46.5" width="4.5" height="9.5" rx="1.2" fill="#dc2626"/>
+    <path d="M32 56 L29 61 L32 59 L35 61 Z" fill="#b91c1c"/>
   </g>
+
+  <!-- MORTARBOARD CAP (ACADEMIC GRADUATION HAT) -->
+  <!-- Skullcap (Base fitting on head) -->
+  <path d="M21 28 C21 28 21 41 32 41 C43 41 43 28 43 28 Z" fill="url(#uniCap)"/>
+  <path d="M22 28.5 C22 39 42 39 42 28.5" stroke="#7c3aed" stroke-width="1.2" fill="none" opacity="0.6"/>
+
+  <!-- Flat Diamond Board (Mortarboard Top) -->
+  <polygon points="32,10 58,22 32,34 6,22" fill="#090514"/>
+  <!-- 3D Edge Thickness -->
+  <polygon points="6,22 32,34 32,37 6,25" fill="#1e1035"/>
+  <polygon points="58,22 32,34 32,37 58,25" fill="#2d174d"/>
+  <!-- Diamond Top Surface -->
+  <polygon points="32,9 58,21 32,33 6,21" fill="url(#uniCap)"/>
+
+  <!-- Top Surface Highlight Crease -->
+  <line x1="6" y1="21" x2="58" y2="21" stroke="#7c3aed" stroke-width="1" opacity="0.4"/>
+  <line x1="32" y1="9" x2="32" y2="33" stroke="#a78bfa" stroke-width="1.2" opacity="0.6"/>
+
+  <!-- Center Metallic Gold Button -->
+  <ellipse cx="32" cy="21" rx="2.8" ry="2" fill="url(#uniGold)"/>
+  <ellipse cx="32" cy="20.5" rx="1.4" ry="1" fill="#fef08a"/>
+
+  <!-- Hanging Silk Tassel Cord -->
+  <path d="M32 21 C36 21 44 24 45 32" stroke="url(#uniGold)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  
+  <!-- Tassel Ring Band & Fringe -->
+  <rect x="43" y="32" width="4.5" height="2.5" rx="1" fill="url(#uniGold)"/>
+  <path d="M43 34.5 L41 47 L49.5 47 L47.5 34.5 Z" fill="url(#uniGold)"/>
+  <!-- Tassel threads texture -->
+  <line x1="43.5" y1="36" x2="42.5" y2="46" stroke="#fef08a" stroke-width="0.8"/>
+  <line x1="45.2" y1="36" x2="45.2" y2="46" stroke="#fef08a" stroke-width="0.8"/>
+  <line x1="47" y1="36" x2="48" y2="46" stroke="#fef08a" stroke-width="0.8"/>
 </svg>

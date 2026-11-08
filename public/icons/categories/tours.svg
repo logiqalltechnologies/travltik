@@ -1,101 +1,107 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" shape-rendering="geometricPrecision">
   <defs>
-    <!-- Plane Fuselage Pearl White to Silver Gradient -->
-    <linearGradient id="planeBody" x1="0%" y1="0%" x2="0%" y2="100%">
+    <!-- Plane Fuselage Pearl 3D Gradient -->
+    <linearGradient id="tourBody" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="45%" stop-color="#f1f5f9"/>
-      <stop offset="85%" stop-color="#cbd5e1"/>
+      <stop offset="35%" stop-color="#f8fafc"/>
+      <stop offset="75%" stop-color="#e2e8f0"/>
       <stop offset="100%" stop-color="#94a3b8"/>
     </linearGradient>
-    <!-- Wings Upper Gradient -->
-    <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="60%" stop-color="#e2e8f0"/>
-      <stop offset="100%" stop-color="#94a3b8"/>
+    <!-- Brand Royal Purple/Violet Wing Gradient -->
+    <linearGradient id="tourPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="45%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#370c63"/>
     </linearGradient>
-    <!-- Jet Engine Turbine Glow -->
-    <linearGradient id="jetTurbine" x1="0%" y1="0%" x2="100%" y2="0%">
+    <!-- Turquoise / Emerald Jet Engine Glow -->
+    <linearGradient id="tourJet" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="50%" stop-color="#0284c7"/>
-      <stop offset="100%" stop-color="#0369a1"/>
+      <stop offset="50%" stop-color="#00b070"/>
+      <stop offset="100%" stop-color="#047857"/>
     </linearGradient>
-    <!-- Brand Royal Purple Stripe -->
-    <linearGradient id="airlineStripe" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="60%" stop-color="#581db5"/>
-      <stop offset="100%" stop-color="#430f7a"/>
+    <!-- Thick High-Visibility Contrail Vapor Arc -->
+    <linearGradient id="tourContrail" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00b070" stop-opacity="0"/>
+      <stop offset="35%" stop-color="#06b6d4" stop-opacity="0.5"/>
+      <stop offset="75%" stop-color="#8b5cf6" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
     </linearGradient>
-    <!-- Flight Vapor Contrail Gradient -->
-    <linearGradient id="vaporTrail" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0"/>
-      <stop offset="40%" stop-color="#38bdf8" stop-opacity="0.35"/>
-      <stop offset="80%" stop-color="#00b070" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.8"/>
-    </linearGradient>
-    <filter id="planeShadow" x="-10%" y="-10%" width="130%" height="135%" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.25"/>
-    </filter>
+    <!-- Soft Contact Shadow -->
+    <radialGradient id="tourShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
-  <g filter="url(#planeShadow)">
-    <!-- Vapor Flight Trail (Curved supersonic arc from bottom left) -->
-    <path d="M6 56 C14 54 22 46 29 38 C34 32 38 27 42 22" 
-          stroke="url(#vaporTrail)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-    <path d="M12 55 C18 52 24 45 30 38" 
-          stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.6" fill="none"/>
+  <!-- Ambient Ground/Cloud Shadow -->
+  <ellipse cx="28" cy="56" rx="20" ry="4" fill="url(#tourShadow)"/>
 
-    <!-- Airplane (Angled 35deg soaring up to the top right) -->
-    <g transform="translate(6, 2) rotate(-5 32 32)">
-      <!-- Left (Far) Wing -->
-      <polygon points="26,24 14,14 18,13 33,21" fill="#94a3b8"/>
-      <polygon points="14,14 12,11 15,11 18,13" fill="url(#airlineStripe)"/>
+  <!-- Thick High-Contrast Flight Vapor Trails (Two parallel contrails) -->
+  <path d="M5 54 C13 52 23 44 32 32 C38 24 43 18 47 14" 
+        stroke="url(#tourContrail)" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M9 56 C16 53 25 45 33 34" 
+        stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.8" fill="none"/>
 
-      <!-- Far Engine -->
-      <ellipse cx="23" cy="18" rx="2" ry="4" transform="rotate(45 23 18)" fill="url(#jetTurbine)"/>
+  <!-- The Soaring Jetliner (Rotated -32deg for high-energy climb) -->
+  <g transform="translate(34, 30) rotate(-32) translate(-34, -30)">
+    
+    <!-- LEFT (FAR) WING - Large & Sharp -->
+    <polygon points="28,24 8,24 14,20 31,18" fill="url(#tourPurple)"/>
+    <polygon points="8,24 6,22 10,21 14,20" fill="#00b070"/>
+    <!-- Left Engine Nacelle -->
+    <ellipse cx="19" cy="22" rx="3.5" ry="1.8" fill="url(#tourJet)"/>
 
-      <!-- Tail Fin (Vertical Stabilizer) -->
-      <polygon points="11,43 7,33 13,32 17,40" fill="url(#airlineStripe)"/>
-      <polygon points="7,33 6,30 9,30 13,32" fill="#00b070"/>
-      <!-- Tail Horizontal Stabilizers -->
-      <polygon points="12,44 6,48 8,50 16,45" fill="#94a3b8"/>
+    <!-- VERTICAL TAIL FIN (Royal Purple with Emerald Tip) -->
+    <polygon points="46,31 56,31 59,20 52,20" fill="url(#tourPurple)"/>
+    <polygon points="59,20 60,17 56,17 52,20" fill="#00b070"/>
+    <!-- Tail Fin Edge Highlight -->
+    <line x1="52" y1="20" x2="46" y2="31" stroke="#c4b5fd" stroke-width="0.8"/>
 
-      <!-- Main Aerodynamic Fuselage (Body) -->
-      <path d="M50 12 C52 14 51 17 48 20 L16 45 C13 47 10 47 9 45 C8 44 9 41 12 39 L44 14 C47 11 49 11 50 12 Z" 
-            fill="url(#planeBody)"/>
+    <!-- Horizontal Stabilizers (Tail Wings) -->
+    <polygon points="47,33 58,37 59,35 49,31" fill="#64748b"/>
+    <polygon points="47,27 58,23 59,25 49,29" fill="#94a3b8"/>
 
-      <!-- Cockpit Windshield (Sleek Aviator Glass) -->
-      <path d="M46 13.5 C48 12.5 49.5 13 49 14.5 C48 16 46 17 44 16 Z" fill="#0f172a"/>
-      <path d="M46.5 13.8 C47.5 13.2 48.5 13.5 48.2 14.2 C47.5 15.2 46.2 15.8 45 15.2 Z" fill="#38bdf8"/>
+    <!-- MAIN FUSELAGE (Cylindrical Aircraft Body with 3D Shading) -->
+    <!-- Nosecone to tail cone -->
+    <path d="M10 30 C12 26 25 25 48 26 C54 26 58 29 57 30 C58 31 54 34 48 34 C25 35 12 34 10 30 Z" 
+          fill="url(#tourBody)"/>
 
-      <!-- Passenger Cabin Windows (Clean Pill Array) -->
-      <g fill="#334155" opacity="0.75">
-        <circle cx="43" cy="19" r="0.9"/>
-        <circle cx="40" cy="21.5" r="0.9"/>
-        <circle cx="37" cy="24" r="0.9"/>
-        <circle cx="34" cy="26.5" r="0.9"/>
-        <circle cx="31" cy="29" r="0.9"/>
-        <circle cx="28" cy="31.5" r="0.9"/>
-        <circle cx="25" cy="34" r="0.9"/>
-        <circle cx="22" cy="36.5" r="0.9"/>
-      </g>
+    <!-- Aerodynamic Royal Purple Fuselage Cheatline (Speed Stripe) -->
+    <path d="M13 30 C18 29.5 35 29.5 56 29.5 L56 31 C35 31 18 31 13 30 Z" fill="url(#tourPurple)"/>
 
-      <!-- Royal Violet & Emerald Flight Speedline -->
-      <path d="M47 18 L15 43.5 L14 42.5 L46 17 Z" fill="url(#airlineStripe)"/>
+    <!-- Cockpit Windshield (Aviator Dark Glass) -->
+    <path d="M12 29 C14 27 18 27.5 19 29 C18 30 14 30.5 12 29 Z" fill="#0f172a"/>
+    <path d="M13 28.8 C14.5 27.8 17 28.2 17.5 29 C16.5 29.6 14 29.6 13 28.8 Z" fill="#38bdf8"/>
 
-      <!-- Right (Near) Swept Wing -->
-      <polygon points="34,26 42,46 38,47 26,32" fill="url(#wingGrad)"/>
-      <!-- Winglet tip in brand emerald green -->
-      <polygon points="42,46 45,49 42,50 38,47" fill="#00b070"/>
-      <!-- Wing Specular Edge -->
-      <line x1="34" y1="26" x2="42" y2="46" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
-
-      <!-- Near Jet Engine Nacelle Under Wing -->
-      <ellipse cx="32" cy="34" rx="3.5" ry="6" transform="rotate(45 32 34)" fill="#475569"/>
-      <ellipse cx="33.5" cy="32.5" rx="2" ry="4.5" transform="rotate(45 33.5 32.5)" fill="url(#jetTurbine)"/>
-      <circle cx="34.5" cy="31.5" r="1.5" fill="#bae6fd"/>
-
-      <!-- Fuselage Top Specular Reflection Highlight -->
-      <path d="M48 13 C45 15 20 35 15 40 C19 36 43 17 48 13 Z" fill="#ffffff" opacity="0.65"/>
+    <!-- Cabin Passenger Windows (Clear Row of Circles) -->
+    <g fill="#1e293b" opacity="0.85">
+      <circle cx="23" cy="30" r="1"/>
+      <circle cx="26" cy="30" r="1"/>
+      <circle cx="29" cy="30" r="1"/>
+      <circle cx="32" cy="30" r="1"/>
+      <circle cx="35" cy="30" r="1"/>
+      <circle cx="38" cy="30" r="1"/>
+      <circle cx="41" cy="30" r="1"/>
+      <circle cx="44" cy="30" r="1"/>
     </g>
+
+    <!-- RIGHT (NEAR / FOREGROUND) WING (Swept Back Modern Wing) -->
+    <polygon points="30,34 14,46 19,48 37,36" fill="url(#tourPurple)"/>
+    <!-- Winglet on wingtip (Emerald Green Accent) -->
+    <polygon points="14,46 12,47 15,50 19,48" fill="#00b070"/>
+    <!-- Wing Top Highlight Edge -->
+    <line x1="30" y1="34" x2="14" y2="46" stroke="#c4b5fd" stroke-width="1.2"/>
+
+    <!-- Right Engine Nacelle (High-Bypass Turbofan) -->
+    <!-- Engine pylon -->
+    <rect x="23" y="36" width="3" height="3" fill="#64748b"/>
+    <!-- Engine cowl -->
+    <ellipse cx="24" cy="39" rx="4.5" ry="2.4" fill="url(#tourJet)"/>
+    <!-- Turbine intake rim -->
+    <ellipse cx="21" cy="39" rx="1.5" ry="2.2" fill="#0f172a"/>
+    <ellipse cx="21" cy="39" rx="1" ry="1.6" fill="#38bdf8"/>
+
+    <!-- Specular Highlight Arc Across Top of Fuselage -->
+    <path d="M15 28 C25 26.5 40 26.5 50 27" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
   </g>
 </svg>

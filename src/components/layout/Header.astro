@@ -24,36 +24,36 @@ const isHome = pathname === '/' || pathname === '';
     </div>
 
     <!-- 2. CENTER: TravlTik Core Platform Categories Navigation with Custom 3D Icons -->
-    <nav class="hidden md:flex items-center justify-center gap-5 lg:gap-7" aria-label="Categories">
-      <a href="/?tab=all" class={`flex items-center gap-2 py-2.5 relative font-semibold text-sm transition-colors ${isHome && (!Astro.url.searchParams.get('tab') || Astro.url.searchParams.get('tab') === 'all') ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
-        <img src="/icons/categories/all.svg" class="h-6 w-auto max-w-[26px] object-contain transition-transform hover:scale-105" alt="All" />
+    <nav class="hidden md:flex items-center justify-center gap-6 lg:gap-8" aria-label="Categories">
+      <a href="/?tab=all" class={`flex items-center gap-2.5 py-2 relative text-[15px] transition-all group ${isHome && (!Astro.url.searchParams.get('tab') || Astro.url.searchParams.get('tab') === 'all') ? 'text-[#1b1233] font-extrabold' : 'text-[#4b4268] font-semibold hover:text-[#1b1233]'}`}>
+        <img src="/icons/categories/all.svg" class="h-8 w-8 sm:h-9 sm:w-9 max-w-[38px] object-contain transition-transform duration-200 group-hover:scale-110 drop-shadow-xs" alt="All" />
         <span>All</span>
-        {isHome && (!Astro.url.searchParams.get('tab') || Astro.url.searchParams.get('tab') === 'all') && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+        {isHome && (!Astro.url.searchParams.get('tab') || Astro.url.searchParams.get('tab') === 'all') && <span class="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#1b1233] rounded-full"></span>}
       </a>
-      <a href="/?tab=visas" class={`flex items-center gap-2 py-2.5 relative font-semibold text-sm transition-colors ${(pathname.startsWith('/visa') || Astro.url.searchParams.get('tab') === 'visas') ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
-        <img src="/icons/categories/visas.svg" class="h-6 w-auto max-w-[26px] object-contain transition-transform hover:scale-105" alt="Visas" />
+      <a href="/?tab=visas" class={`flex items-center gap-2.5 py-2 relative text-[15px] transition-all group ${(pathname.startsWith('/visa') || Astro.url.searchParams.get('tab') === 'visas') ? 'text-[#1b1233] font-extrabold' : 'text-[#4b4268] font-semibold hover:text-[#1b1233]'}`}>
+        <img src="/icons/categories/visas.svg" class="h-8 w-8 sm:h-9 sm:w-9 max-w-[38px] object-contain transition-transform duration-200 group-hover:scale-110 drop-shadow-xs" alt="Visas" />
         <span>Visas</span>
-        {(pathname.startsWith('/visa') || Astro.url.searchParams.get('tab') === 'visas') && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+        {(pathname.startsWith('/visa') || Astro.url.searchParams.get('tab') === 'visas') && <span class="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#1b1233] rounded-full"></span>}
       </a>
-      <a href="/jobs" class={`flex items-center gap-2 py-2.5 relative font-semibold text-sm transition-colors ${(pathname.startsWith('/jobs') || Astro.url.searchParams.get('tab') === 'jobs') ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
-        <img src="/icons/categories/jobs.svg" class="h-6 w-auto max-w-[26px] object-contain transition-transform hover:scale-105" alt="Jobs" />
+      <a href="/jobs" class={`flex items-center gap-2.5 py-2 relative text-[15px] transition-all group ${(pathname.startsWith('/jobs') || Astro.url.searchParams.get('tab') === 'jobs') ? 'text-[#1b1233] font-extrabold' : 'text-[#4b4268] font-semibold hover:text-[#1b1233]'}`}>
+        <img src="/icons/categories/jobs.svg" class="h-8 w-8 sm:h-9 sm:w-9 max-w-[38px] object-contain transition-transform duration-200 group-hover:scale-110 drop-shadow-xs" alt="Jobs" />
         <span>Jobs</span>
-        {(pathname.startsWith('/jobs') || Astro.url.searchParams.get('tab') === 'jobs') && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+        {(pathname.startsWith('/jobs') || Astro.url.searchParams.get('tab') === 'jobs') && <span class="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#1b1233] rounded-full"></span>}
       </a>
-      <a href="/?tab=stays" class={`flex items-center gap-2 py-2.5 relative font-semibold text-sm transition-colors ${Astro.url.searchParams.get('tab') === 'stays' ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
-        <img src="/icons/categories/stays.svg" class="h-6 w-auto max-w-[26px] object-contain transition-transform hover:scale-105" alt="Stays" />
+      <a href="/?tab=stays" class={`flex items-center gap-2.5 py-2 relative text-[15px] transition-all group ${Astro.url.searchParams.get('tab') === 'stays' ? 'text-[#1b1233] font-extrabold' : 'text-[#4b4268] font-semibold hover:text-[#1b1233]'}`}>
+        <img src="/icons/categories/stays.svg" class="h-8 w-8 sm:h-9 sm:w-9 max-w-[38px] object-contain transition-transform duration-200 group-hover:scale-110 drop-shadow-xs" alt="Stays" />
         <span>Stays</span>
-        {Astro.url.searchParams.get('tab') === 'stays' && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+        {Astro.url.searchParams.get('tab') === 'stays' && <span class="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#1b1233] rounded-full"></span>}
       </a>
-      <a href="/tours" class={`flex items-center gap-2 py-2.5 relative font-semibold text-sm transition-colors ${(pathname.startsWith('/tours') || Astro.url.searchParams.get('tab') === 'tours') ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
-        <img src="/icons/categories/tours.svg" class="h-6 w-auto max-w-[26px] object-contain transition-transform hover:scale-105" alt="Tours" />
+      <a href="/tours" class={`flex items-center gap-2.5 py-2 relative text-[15px] transition-all group ${(pathname.startsWith('/tours') || Astro.url.searchParams.get('tab') === 'tours') ? 'text-[#1b1233] font-extrabold' : 'text-[#4b4268] font-semibold hover:text-[#1b1233]'}`}>
+        <img src="/icons/categories/tours.svg" class="h-8 w-8 sm:h-9 sm:w-9 max-w-[38px] object-contain transition-transform duration-200 group-hover:scale-110 drop-shadow-xs" alt="Tours" />
         <span>Tours</span>
-        {(pathname.startsWith('/tours') || Astro.url.searchParams.get('tab') === 'tours') && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+        {(pathname.startsWith('/tours') || Astro.url.searchParams.get('tab') === 'tours') && <span class="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#1b1233] rounded-full"></span>}
       </a>
-      <a href="/find-experts" class={`flex items-center gap-2 py-2.5 relative font-semibold text-sm transition-colors ${(pathname.startsWith('/find-experts') || pathname.startsWith('/expert') || Astro.url.searchParams.get('tab') === 'experts') ? 'text-[#1b1233] font-bold' : 'text-[#675f80] hover:text-[#1b1233]'}`}>
-        <img src="/icons/categories/experts.svg" class="h-6 w-auto max-w-[26px] object-contain transition-transform hover:scale-105" alt="Experts" />
+      <a href="/find-experts" class={`flex items-center gap-2.5 py-2 relative text-[15px] transition-all group ${(pathname.startsWith('/find-experts') || pathname.startsWith('/expert') || Astro.url.searchParams.get('tab') === 'experts') ? 'text-[#1b1233] font-extrabold' : 'text-[#4b4268] font-semibold hover:text-[#1b1233]'}`}>
+        <img src="/icons/categories/experts.svg" class="h-8 w-8 sm:h-9 sm:w-9 max-w-[38px] object-contain transition-transform duration-200 group-hover:scale-110 drop-shadow-xs" alt="Experts" />
         <span>Experts</span>
-        {(pathname.startsWith('/find-experts') || pathname.startsWith('/expert') || Astro.url.searchParams.get('tab') === 'experts') && <span class="absolute -bottom-2.5 left-0 right-0 h-[2.5px] bg-[#1b1233] rounded-full"></span>}
+        {(pathname.startsWith('/find-experts') || pathname.startsWith('/expert') || Astro.url.searchParams.get('tab') === 'experts') && <span class="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#1b1233] rounded-full"></span>}
       </a>
     </nav>
 

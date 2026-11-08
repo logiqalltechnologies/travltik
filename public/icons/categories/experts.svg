@@ -1,87 +1,109 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" shape-rendering="geometricPrecision">
   <defs>
-    <!-- Gold gradient -->
+    <!-- Heavy Solid Gold Gradient -->
     <linearGradient id="expGold" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fef08a"/>
       <stop offset="35%" stop-color="#f59e0b"/>
-      <stop offset="85%" stop-color="#d97706"/>
+      <stop offset="80%" stop-color="#d97706"/>
       <stop offset="100%" stop-color="#92400e"/>
     </linearGradient>
-    <linearGradient id="expGoldLight" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="60%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#d97706"/>
+    <linearGradient id="expBaseGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="60%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#78350f"/>
     </linearGradient>
-    <!-- Royal violet accent gradient -->
-    <linearGradient id="expPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Royal Violet Pedestal Base -->
+    <linearGradient id="expPedestal" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="50%" stop-color="#581db5"/>
-      <stop offset="100%" stop-color="#3b0764"/>
+      <stop offset="50%" stop-color="#4c1d95"/>
+      <stop offset="100%" stop-color="#2e1065"/>
     </linearGradient>
-    <!-- Emerald check badge -->
-    <linearGradient id="expGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Emerald Verified Star Badge -->
+    <linearGradient id="expBadge" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#34d399"/>
-      <stop offset="100%" stop-color="#059669"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
     </linearGradient>
-    <!-- Pan inner shadow -->
-    <linearGradient id="panInner" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#b45309"/>
-      <stop offset="40%" stop-color="#d97706"/>
-      <stop offset="100%" stop-color="#fef3c7"/>
-    </linearGradient>
-    <!-- Drop Shadow -->
-    <filter id="expShadow" x="-10%" y="-10%" width="130%" height="135%" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#3b0764" flood-opacity="0.25"/>
-    </filter>
+    <!-- Ground Shadow -->
+    <radialGradient id="expShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
-  <g filter="url(#expShadow)">
-    <!-- Base Pedestal (3D Stepped Ellipses) -->
-    <ellipse cx="32" cy="57" rx="17" ry="4.5" fill="#1e1035" opacity="0.35"/>
-    <ellipse cx="32" cy="55.5" rx="16" ry="4" fill="url(#expPurple)"/>
-    <ellipse cx="32" cy="54" rx="14" ry="3.2" fill="url(#expGold)"/>
-    <ellipse cx="32" cy="52.8" rx="11" ry="2.5" fill="url(#expGoldLight)"/>
+  <!-- Ground Ambient Contact Shadow -->
+  <ellipse cx="32" cy="59.5" rx="19" ry="3.8" fill="url(#expShadow)"/>
 
-    <!-- Central Pillar Column (Molded Classical Pillar) -->
-    <path d="M29.5 22 L34.5 22 L33.5 53 L30.5 53 Z" fill="url(#expPurple)"/>
-    <rect x="30.5" y="24" width="3" height="28" rx="1" fill="url(#expGold)"/>
-    <!-- Pillar Rings -->
-    <rect x="29" y="27" width="6" height="2" rx="0.8" fill="url(#expGoldLight)"/>
-    <rect x="29" y="47" width="6" height="2" rx="0.8" fill="url(#expGoldLight)"/>
+  <!-- Tiered Pedestal Base -->
+  <ellipse cx="32" cy="57" rx="17" ry="4" fill="#1e1b4b"/>
+  <ellipse cx="32" cy="55.5" rx="16" ry="3.6" fill="url(#expPedestal)"/>
+  <ellipse cx="32" cy="54" rx="14" ry="3" fill="url(#expBaseGold)"/>
+  <ellipse cx="32" cy="53" rx="12" ry="2.5" fill="url(#expGold)"/>
 
-    <!-- Pillar Top Finial (Diamond / Sphere with Star) -->
-    <circle cx="32" cy="18" r="4.5" fill="url(#expGold)"/>
-    <circle cx="32" cy="18" r="3" fill="url(#expGoldLight)"/>
-    <polygon points="32,14.5 33.2,17.2 36,17.5 33.8,19.3 34.5,22 32,20.4 29.5,22 30.2,19.3 28,17.5 30.8,17.2" fill="#ffffff" opacity="0.95"/>
+  <!-- Center Classical Fluted Column (Pillar of Justice) -->
+  <path d="M29.5 21 L34.5 21 L34 53 L30 53 Z" fill="url(#expBaseGold)"/>
+  <rect x="30" y="21" width="4" height="32" rx="1.8" fill="url(#expGold)"/>
+  <!-- Highlight on central column -->
+  <line x1="31.2" y1="21" x2="31.2" y2="52" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round"/>
 
-    <!-- Main Balance Beam (Aerodynamic 3D Tapered Bar) -->
-    <path d="M10 23.5 C10 22.5 13 21 32 21 C51 21 54 22.5 54 23.5 C54 24.5 51 25.5 32 25.5 C13 25.5 10 24.5 10 23.5 Z" 
-          fill="url(#expGold)"/>
-    <path d="M12 23 C14 22 28 21.8 32 21.8 C36 21.8 50 22 52 23 C50 23.6 36 24 32 24 C28 24 14 23.6 12 23 Z" 
-          fill="url(#expGoldLight)"/>
-    <circle cx="32" cy="23.5" r="2.5" fill="url(#expPurple)"/>
-    <circle cx="32" cy="23.5" r="1.2" fill="#ffffff"/>
+  <!-- Decorative Pillar Capital Rings -->
+  <ellipse cx="32" cy="22" rx="4.5" ry="1.6" fill="#fef08a"/>
+  <ellipse cx="32" cy="23.5" rx="3.5" ry="1.2" fill="#d97706"/>
+  <ellipse cx="32" cy="51" rx="4.2" ry="1.4" fill="#b45309"/>
 
-    <!-- Left Scale Pan Suspensions (Chains) -->
-    <line x1="14" y1="24" x2="8" y2="39" stroke="url(#expGold)" stroke-width="1.2" stroke-linecap="round"/>
-    <line x1="14" y1="24" x2="14" y2="39" stroke="url(#expGold)" stroke-width="1.2" stroke-linecap="round"/>
-    <line x1="14" y1="24" x2="20" y2="39" stroke="url(#expGold)" stroke-width="1.2" stroke-linecap="round"/>
-    <!-- Left Pan (3D Bowl) -->
-    <ellipse cx="14" cy="40" rx="9" ry="3" fill="url(#panInner)"/>
-    <path d="M5 40 C5 44 9 47 14 47 C19 47 23 44 23 40 Z" fill="url(#expGold)"/>
-    <ellipse cx="14" cy="40" rx="8" ry="2" fill="url(#expGoldLight)" opacity="0.75"/>
+  <!-- Top Finial Orb -->
+  <circle cx="32" cy="12" r="3.8" fill="url(#expGold)"/>
+  <circle cx="31" cy="11" r="1.4" fill="#fef08a"/>
 
-    <!-- Right Scale Pan Suspensions (Chains) -->
-    <line x1="50" y1="24" x2="44" y2="39" stroke="url(#expGold)" stroke-width="1.2" stroke-linecap="round"/>
-    <line x1="50" y1="24" x2="50" y2="39" stroke="url(#expGold)" stroke-width="1.2" stroke-linecap="round"/>
-    <line x1="50" y1="24" x2="56" y2="39" stroke="url(#expGold)" stroke-width="1.2" stroke-linecap="round"/>
-    <!-- Right Pan (3D Bowl) -->
-    <ellipse cx="50" cy="40" rx="9" ry="3" fill="url(#panInner)"/>
-    <path d="M41 40 C41 44 45 47 50 47 C55 47 59 44 59 40 Z" fill="url(#expGold)"/>
-    <ellipse cx="50" cy="40" rx="8" ry="2" fill="url(#expGoldLight)" opacity="0.75"/>
+  <!-- Horizontal Beam Balance (Thick, curved solid brass bar) -->
+  <path d="M12 21 C22 17.5 42 17.5 52 21 C42 19 22 19 12 21 Z" fill="#78350f"/>
+  <path d="M11 20 C22 16.5 42 16.5 53 20 L53 22 C42 18.5 22 18.5 11 22 Z" fill="url(#expGold)"/>
+  <!-- Beam center pivot ring -->
+  <circle cx="32" cy="19" r="4.2" fill="url(#expBaseGold)"/>
+  <circle cx="32" cy="19" r="3.2" fill="url(#expGold)"/>
+  <circle cx="32" cy="19" r="1.5" fill="#fef08a"/>
 
-    <!-- Verified Badge Checkmark at center bottom -->
-    <circle cx="32" cy="38" r="5" fill="url(#expGreen)"/>
-    <path d="M29.5 38 L31.2 39.8 L34.5 36.2" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Beam End Rings -->
+  <circle cx="12" cy="21" r="2.8" fill="url(#expGold)"/>
+  <circle cx="12" cy="21" r="1.2" fill="#78350f"/>
+  <circle cx="52" cy="21" r="2.8" fill="url(#expGold)"/>
+  <circle cx="52" cy="21" r="1.2" fill="#78350f"/>
+
+  <!-- LEFT SCALE PAN & SUSPENSION CHAINS -->
+  <!-- Left Outer Chain -->
+  <line x1="12" y1="23" x2="6" y2="39" stroke="url(#expGold)" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Left Inner Chain -->
+  <line x1="12" y1="23" x2="18" y2="39" stroke="url(#expGold)" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Left Center Chain -->
+  <line x1="12" y1="23" x2="12" y2="39" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+  
+  <!-- Left Brass Pan Bowl (3D Depth) -->
+  <ellipse cx="12" cy="39" rx="8.5" ry="2.6" fill="#78350f"/>
+  <path d="M3.5 39 C3.5 44 20.5 44 20.5 39 Z" fill="url(#expBaseGold)"/>
+  <ellipse cx="12" cy="39" rx="8.5" ry="2.2" fill="url(#expGold)"/>
+  <ellipse cx="12" cy="38.5" rx="7.2" ry="1.6" fill="#fef08a" opacity="0.6"/>
+
+  <!-- RIGHT SCALE PAN & SUSPENSION CHAINS -->
+  <!-- Right Outer Chain -->
+  <line x1="52" y1="23" x2="46" y2="39" stroke="url(#expGold)" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Right Inner Chain -->
+  <line x1="52" y1="23" x2="58" y2="39" stroke="url(#expGold)" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Right Center Chain -->
+  <line x1="52" y1="23" x2="52" y2="39" stroke="#fef08a" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Right Brass Pan Bowl (3D Depth) -->
+  <ellipse cx="52" cy="39" rx="8.5" ry="2.6" fill="#78350f"/>
+  <path d="M43.5 39 C43.5 44 60.5 44 60.5 39 Z" fill="url(#expBaseGold)"/>
+  <ellipse cx="52" cy="39" rx="8.5" ry="2.2" fill="url(#expGold)"/>
+  <ellipse cx="52" cy="38.5" rx="7.2" ry="1.6" fill="#fef08a" opacity="0.6"/>
+
+  <!-- CENTER VERIFIED EMBLEM STAR BADGE (Mounted on Pillar - Clear Trust Indicator) -->
+  <g transform="translate(32, 33)">
+    <!-- White Contrast Border -->
+    <circle cx="0" cy="0" r="7.5" fill="#ffffff"/>
+    <circle cx="0" cy="0" r="6.5" fill="url(#expBadge)"/>
+    <!-- Crisp White Checkmark / Shield -->
+    <path d="M-2.8 -0.2 L-0.8 2 L3 -2.2" 
+          stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
   </g>
 </svg>
