@@ -1065,10 +1065,10 @@ export function ExpertProfileDetail({
                 </div>
                 <button
                   onClick={() => setReviewModalOpen(true)}
-                  className="bg-[#370c63] hover:bg-[#430f7a] text-white text-xs font-extrabold px-4.5 py-2.5 rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                  className="bg-black hover:bg-[#1b1233] text-white text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer border border-white/20 whitespace-nowrap shrink-0 active:scale-95"
                 >
-                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  <span>Write a Review</span>
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
+                  <span className="whitespace-nowrap">Write a Review</span>
                 </button>
               </div>
 
@@ -1455,7 +1455,7 @@ export function ExpertProfileDetail({
               </div>
 
               {/* Why choose this provider? Box */}
-              <div className="bg-[#faf8fd] rounded-2xl p-4.5 border border-[rgba(67,15,122,0.08)] space-y-2.5">
+              <div className="bg-[#faf8fd] rounded-2xl p-5 border border-[rgba(67,15,122,0.08)] space-y-2.5">
                 <h4 className="text-xs font-extrabold text-[#1b1233]">Why choose this provider?</h4>
                 <ul className="space-y-2 text-[11px] text-[#675f80]">
                   <li className="flex items-center gap-2">
