@@ -151,22 +151,26 @@ export function CanadaJobVacancyModal({
         className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-auto transform transition-all font-sans text-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Header Banner with Canadian Maple Leaf theme */}
-        <div className="relative bg-gradient-to-r from-[#8b0000] via-[#c4151c] to-[#370c63] text-white p-5 sm:p-6 overflow-hidden">
+        {/* Top Header Banner with Deep Obsidian Black & Royal Purple */}
+        <div className="relative bg-gradient-to-br from-[#060205] via-[#14050e] via-35% to-[#2c0919] text-white p-5 sm:p-6 overflow-hidden">
+          {/* Subtle ambient lighting */}
+          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-[#370c63]/40 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-52 h-52 rounded-full bg-black/60 blur-2xl pointer-events-none" />
+
           {/* Subtle watermark silhouettes */}
-          <div className="absolute top-2 right-4 text-6xl opacity-15 select-none pointer-events-none">🍁</div>
-          <div className="absolute -bottom-6 -left-6 text-7xl opacity-10 select-none pointer-events-none">🍁</div>
+          <div className="absolute top-2 right-4 text-6xl opacity-10 select-none pointer-events-none">🍁</div>
+          <div className="absolute -bottom-6 -left-6 text-7xl opacity-5 select-none pointer-events-none">🍁</div>
 
           <div className="relative z-10 flex items-start justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md text-white text-[11px] font-black uppercase px-3 py-1 rounded-full mb-2 tracking-wider border border-white/30">
+              <div className="inline-flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-[11px] font-black uppercase px-3 py-1 rounded-full mb-2 tracking-wider border border-white/15 shadow-inner">
                 <span>🍁 CANADA JOB VACANCY 2026</span>
                 <span className="text-amber-300">• 980+ OPENINGS</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight font-sora">
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight font-sora text-white drop-shadow-md">
                 Application for {activeJob.title}
               </h2>
-              <p className="text-xs text-white/90 mt-1 max-w-lg leading-relaxed">
+              <p className="text-xs text-slate-300 mt-1 max-w-lg leading-relaxed">
                 Direct employer sponsorship under Canadian LMIA regulations. Complete your applicant profile below to secure verification priority.
               </p>
             </div>
@@ -174,26 +178,26 @@ export function CanadaJobVacancyModal({
             <button
               type="button"
               onClick={onClose}
-              className="text-white/80 hover:text-white bg-black/20 hover:bg-black/35 p-2 rounded-full transition-all cursor-pointer shrink-0"
+              className="text-white/80 hover:text-white bg-black/40 hover:bg-black/70 border border-white/15 p-2 rounded-full transition-all cursor-pointer shrink-0 shadow-md"
               aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Quick Metrics Strip */}
-          <div className="relative z-10 grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-white/20 text-center">
-            <div className="bg-white/10 rounded-xl p-2 backdrop-blur-xs">
-              <div className="text-[10px] text-white/80 font-bold uppercase">Monthly Salary</div>
-              <div className="text-sm sm:text-base font-black text-amber-300">{activeJob.salaryMonthly}</div>
+          {/* Quick Metrics Strip with Obsidian Black Depth */}
+          <div className="relative z-10 grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-white/15 text-center">
+            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
+              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Monthly Salary</div>
+              <div className="text-sm sm:text-base font-black text-amber-300 mt-0.5">{activeJob.salaryMonthly}</div>
             </div>
-            <div className="bg-white/10 rounded-xl p-2 backdrop-blur-xs">
-              <div className="text-[10px] text-white/80 font-bold uppercase">Available Openings</div>
-              <div className="text-sm sm:text-base font-black text-white">{activeJob.vacancies} Seats</div>
+            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
+              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Available Openings</div>
+              <div className="text-sm sm:text-base font-black text-white mt-0.5">{activeJob.vacancies} Seats</div>
             </div>
-            <div className="bg-white/10 rounded-xl p-2 backdrop-blur-xs">
-              <div className="text-[10px] text-white/80 font-bold uppercase">Status</div>
-              <div className="text-xs sm:text-sm font-extrabold text-white">LMIA Approved</div>
+            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
+              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Status</div>
+              <div className="text-xs sm:text-sm font-black text-white mt-0.5">LMIA Approved</div>
             </div>
           </div>
         </div>
@@ -368,15 +372,17 @@ export function CanadaJobVacancyModal({
                 {errors.whyWantJob && <p className="text-[11px] text-red-500 mt-0.5 font-bold">{errors.whyWantJob}</p>}
               </div>
 
-              {/* Trust Box */}
-              <div className="p-3.5 rounded-2xl bg-[#faf8fd] border border-[#dccaf7] flex items-start gap-2.5 text-[11px] text-[#430f7a] leading-relaxed">
-                <Shield className="w-4 h-4 text-[#370c63] shrink-0 mt-0.5" />
+              {/* Trust Box with Black & Obsidian accent */}
+              <div className="p-3.5 rounded-2xl bg-[#faf8fd] border border-slate-200/90 flex items-start gap-3 text-[11px] text-slate-700 leading-relaxed shadow-2xs">
+                <div className="w-6 h-6 rounded-lg bg-[#1b1233] flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                  <Shield className="w-3.5 h-3.5 text-amber-300" />
+                </div>
                 <div>
-                  <strong>TravlTik Milestone Protection:</strong> All Canada Job Vacancy positions are mapped to registered Canadian employers. Zero recruitment fees deducted from salary; documentation processed under Canadian IRCC compliance.
+                  <strong className="text-[#1b1233]">TravlTik Milestone Protection:</strong> All Canada Job Vacancy positions are mapped to registered Canadian employers. Zero recruitment fees deducted from salary; documentation processed under Canadian IRCC compliance.
                 </div>
               </div>
 
-              {/* Form Action Buttons (NO GREENISH BUTTONS) */}
+              {/* Form Action Buttons with Black & Royal Purple gradient */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-end gap-2.5">
                 <button
                   type="button"
@@ -388,7 +394,7 @@ export function CanadaJobVacancyModal({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white text-xs sm:text-sm font-black px-7 py-3 rounded-xl shadow-md shadow-[rgba(88,29,181,0.35)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+                  className="w-full sm:w-auto bg-gradient-to-r from-[#0a0515] via-[#1b1233] to-[#370c63] hover:from-[#1b1233] hover:to-[#430f7a] text-white text-xs sm:text-sm font-black px-7 py-3 rounded-xl shadow-md shadow-[rgba(10,5,20,0.4)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <span>Submitting Application...</span>

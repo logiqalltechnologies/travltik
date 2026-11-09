@@ -163,7 +163,7 @@ export function InternationalJobDrivesPage() {
         <div className="text-center max-w-3xl mx-auto space-y-2.5">
           <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#1b1233] tracking-tight leading-tight">
             Direct Overseas Recruitment Drives{" "}
-            <span className="bg-gradient-to-r from-[#1b1233] via-[#370c63] to-[#581db5] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-black via-[#1b1233] to-[#370c63] bg-clip-text text-transparent">
               2026
             </span>
           </h1>
@@ -469,7 +469,7 @@ export function InternationalJobDrivesPage() {
                             {/* Title & Sponsorship Tag */}
                             <div>
                               <div className="flex items-center gap-2 mb-1.5">
-                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#430f7a] bg-purple-50/90 px-2 py-0.5 rounded-md border border-purple-100">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#1b1233] bg-[#f8f6fc] px-2 py-0.5 rounded-md border border-[rgba(27,18,51,0.12)]">
                                   <ShieldCheck className="w-3 h-3 text-emerald-600" />
                                   {job.lmiaStatus.includes("LMIA") ? "LMIA Approved" : job.lmiaStatus}
                                 </span>
@@ -592,7 +592,7 @@ export function InternationalJobDrivesPage() {
                             {/* Title & Sponsorship Tag */}
                             <div>
                               <div className="flex items-center gap-2 mb-1.5">
-                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#430f7a] bg-purple-50/90 px-2 py-0.5 rounded-md border border-purple-100">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#1b1233] bg-[#f8f6fc] px-2 py-0.5 rounded-md border border-[rgba(27,18,51,0.12)]">
                                   <ShieldCheck className="w-3 h-3 text-emerald-600" />
                                   {job.permitType}
                                 </span>
