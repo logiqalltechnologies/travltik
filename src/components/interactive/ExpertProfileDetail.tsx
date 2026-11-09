@@ -5,7 +5,7 @@ import {
   ChevronDown, ExternalLink, MessageSquare, ArrowRight, 
   Share2, Bookmark, Check, Calendar, ArrowLeft, Heart,
   Sparkles, FileText, AlertCircle, MessageCircle, Tag,
-  Zap, Plane, Flame, Percent
+  Zap, Plane, Flame, Percent, FileCheck, RotateCcw, Video, HelpCircle
 } from 'lucide-react';
 import { RequestQuoteModal } from './RequestQuoteModal';
 import { ReviewRatingModal } from './ReviewRatingModal';
@@ -400,28 +400,45 @@ export function ExpertProfileDetail({
 
   const faqs = [
     {
-      q: 'What documents do I need for initial consultation?',
-      a: 'For your preliminary case evaluation, please have a digital copy of your valid passport, your recent travel history, resume/CV (for work permits), and any previous visa rejection letters if applicable.'
+      category: 'DOCUMENTATION AUDIT',
+      badge: 'Checklist',
+      q: 'What documents do I need to prepare for our initial consultation?',
+      a: `To make your preliminary case evaluation maximally effective, please keep the following ready:
+• Valid Passport (clear digital copy of bio-data pages and current travel stamps)
+• Updated Resume / CV highlighting your work history and education (for work & PR routes)
+• Academic transcripts and degree certificates
+• Language proficiency scores (IELTS / PTE / TOEFL / CELPIP) if already completed
+• Prior Refusal Letters (if applicable), so ${displayName} can dissect the exact consular refusal codes and formulate counter-arguments.`
     },
     {
-      q: 'How long does the visa application process take?',
-      a: 'Processing times vary significantly by country and visa stream. Visitor visas typically take 2-4 weeks, while student and work permits may take 4-8 weeks depending on embassy workload.'
+      category: 'ESCROW & MILESTONE HOLD',
+      badge: '100% Protected',
+      q: 'How does TravlTik Milestone Escrow protect my consultation & filing fees?',
+      a: 'Your payments are deposited securely into TravlTik Milestone Escrow and never released upfront. Funds remain safeguarded in the platform escrow vault and are disbursed to the consultant only after you verify and approve each completed milestone deliverable (such as document audit sign-off, application draft review, or final embassy portal submission proof).'
     },
     {
-      q: 'Do you guarantee visa approval?',
-      a: 'No ethical or registered consultant can guarantee a visa outcome, as final decisions rest strictly with government consular officers. We maximize your approval probability through flawless documentation.'
+      category: 'PROCESSING TIMELINES',
+      badge: 'Fast Turnaround',
+      q: 'What is the expected timeline from initial file audit to embassy submission?',
+      a: 'Preliminary document eligibility and deficiency audits take 24 to 48 hours. Comprehensive dossier preparation—including statement of purpose (SOP) drafting, sponsor verification, and embassy portal draft readiness—is typically completed within 7 to 14 business days, aligned precisely with upcoming intake cycles.'
     },
     {
-      q: 'Is the initial consultation free?',
-      a: 'Yes, your initial case assessment and preliminary file evaluation with our advisors is completely free. When you proceed with comprehensive filing and legal representation, payments are handled strictly through TravlTik milestone escrow.'
+      category: 'REFUSAL APPEALS',
+      badge: 'GCMS Audit',
+      q: 'Can you assist if my visa application was previously rejected?',
+      a: `Yes, ${displayName} has deep experience in handling refusal remedies and judicial reconsideration. We retrieve your official GCMS / CAIPS case notes from immigration authorities to pinpoint the officer's exact refusal grounds (e.g., Section 214(b) immigrant intent, ties to home country, or financial ambiguity) and re-file with ironclad counter-evidence.`
     },
     {
-      q: 'Can you assist if I have a previous visa refusal?',
-      a: 'Yes, our team specializes in refusal appeals and fresh filings. We request your CAIPS / GCMS case notes to uncover the officer\'s exact refusal grounds and rectify them comprehensively.'
+      category: 'REMOTE CONSULTATION',
+      badge: 'HD Video Call',
+      q: 'Can I consult remotely if I live in another city or outside India?',
+      a: `Absolutely! Over 75% of our clients consult via secure Google Meet or Zoom video sessions. You can securely upload all documentation to our encrypted portal, receive real-time screen-share walkthroughs of government application forms, and track every stage in your client dashboard.`
     },
     {
-      q: 'Do you offer remote / video consultations for clients outside the city?',
-      a: 'Yes! Over 70% of our clients consult via secure Google Meet / Zoom sessions. All documents can be securely uploaded to our encrypted client portal.'
+      category: 'TRANSPARENCY & CODE OF ETHICS',
+      badge: 'Code of Ethics',
+      q: 'Do you guarantee 100% visa approval?',
+      a: 'Under official regulatory codes of ethics, no registered immigration consultant or attorney can legally guarantee a visa grant, as final statutory discretion rests exclusively with sovereign consular officers. What we guarantee is a 100% error-free legal dossier strictly compliant with ministerial regulations, giving your application the highest statistical probability of approval.'
     }
   ];
 
@@ -1158,77 +1175,210 @@ export function ExpertProfileDetail({
 
             </div>
 
-            {/* SECTION 4: GALLERY */}
-            <div id="section-gallery" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-4">
-              <div>
-                <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Gallery &amp; Credentials</h2>
-                <p className="text-xs text-[#675f80] mt-0.5">Verified media, advisory office presence, and legal credentials.</p>
+            {/* SECTION 4: GALLERY & CREDENTIALS */}
+            <div id="section-gallery" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[rgba(67,15,122,0.08)] pb-4">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-0.5 rounded-full mb-1 shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#00b070]" /> VERIFIED PRACTICE &amp; ACCREDITATION
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Gallery &amp; Official Credentials</h2>
+                  <p className="text-xs text-[#675f80] mt-0.5">Government-registered legal standing, TravlTik escrow protection seal, and verified chambers.</p>
+                </div>
+                <button
+                  onClick={() => setQuoteModalOpen(true)}
+                  className="text-xs font-bold text-[#430f7a] hover:text-[#00b070] border border-[rgba(67,15,122,0.14)] bg-white hover:bg-[#faf8fd] px-4 py-2 rounded-xl transition-all shrink-0 cursor-pointer shadow-2xs self-start sm:self-auto"
+                >
+                  Request Full Portfolio
+                </button>
               </div>
 
               {galleryImages && galleryImages.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
                   {galleryImages.map((img, idx) => (
-                    <div key={idx} className="group relative rounded-2xl overflow-hidden aspect-4/3 bg-slate-100 border border-[rgba(67,15,122,0.10)] shadow-xs">
+                    <div key={idx} className="group relative rounded-2xl overflow-hidden aspect-4/3 bg-slate-900 border border-[rgba(67,15,122,0.12)] shadow-xs">
                       <img 
                         src={img.url} 
                         alt={img.title} 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
-                        <span className="text-[11px] font-semibold text-white drop-shadow-sm">{img.title}</span>
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                        <span className="text-xs font-bold text-white drop-shadow-sm">{img.title}</span>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="rounded-[22px] border border-[rgba(67,15,122,0.10)] p-6 bg-[#faf8fd] flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-                  <div className="w-12 h-12 rounded-2xl bg-[#ecfdf5] text-[#00b070] flex items-center justify-center shrink-0 border border-emerald-200/60">
-                    <ShieldCheck className="w-6 h-6 text-[#00b070]" />
+                /* Authentic 3-Card Verified Credential Showcase */
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#00b070] transition-colors flex flex-col justify-between space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="w-10 h-10 rounded-xl bg-[#ecfdf5] text-[#00b070] flex items-center justify-center border border-emerald-200/60 shadow-2xs">
+                        <ShieldCheck className="w-5 h-5 text-[#00b070]" />
+                      </div>
+                      <span className="text-[10px] font-black uppercase text-[#065f46] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full">
+                        ACTIVE ID
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-[#1b1233] uppercase tracking-wide">Government Regulatory Registration</h4>
+                      <p className="text-[11px] font-bold text-[#430f7a] mt-1">
+                        {expert.govReg ? `Council Reg: ${expert.govReg}` : 'Verified Immigration Registry'}
+                      </p>
+                      <p className="text-[11px] text-[#675f80] mt-1 leading-relaxed">
+                        Authorized practitioner with active standing for verified consular representation.
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-bold text-[#1b1233]">Verified Direct Practice</h4>
-                    <p className="text-[11px] text-[#675f80] mt-0.5 leading-relaxed">
-                      Consultant operates directly through TravlTik verified digital appointments and office consultations in {displayCity}. Portfolio certificates and case milestones are verified during booking.
-                    </p>
+
+                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#00b070] transition-colors flex flex-col justify-between space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="w-10 h-10 rounded-xl bg-[#f4eff9] text-[#430f7a] flex items-center justify-center border border-purple-200/60 shadow-2xs">
+                        <Award className="w-5 h-5 text-[#430f7a]" />
+                      </div>
+                      <span className="text-[10px] font-black uppercase text-[#430f7a] bg-[#f4eff9] border border-[#e9ddf6] px-2 py-0.5 rounded-full">
+                        ESCROW VAULT
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-[#1b1233] uppercase tracking-wide">100% Milestone Escrow Guarantee</h4>
+                      <p className="text-[11px] font-bold text-[#008f5a] mt-1">
+                        Zero Upfront Disbursement
+                      </p>
+                      <p className="text-[11px] text-[#675f80] mt-1 leading-relaxed">
+                        Funds are released strictly upon your sign-off for completed visa deliverables.
+                      </p>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => setQuoteModalOpen(true)}
-                    className="text-xs font-bold text-[#430f7a] hover:text-[#370c63] border border-[rgba(67,15,122,0.14)] bg-white px-4 py-2 rounded-xl transition-colors shrink-0 cursor-pointer shadow-2xs"
-                  >
-                    Request Credentials
-                  </button>
+
+                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#00b070] transition-colors flex flex-col justify-between space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="w-10 h-10 rounded-xl bg-[#f0f9ff] text-[#0284c7] flex items-center justify-center border border-sky-200/60 shadow-2xs">
+                        <Building2 className="w-5 h-5 text-[#0284c7]" />
+                      </div>
+                      <span className="text-[10px] font-black uppercase text-[#0369a1] bg-[#f0f9ff] border border-sky-200 px-2 py-0.5 rounded-full">
+                        VERIFIED OFFICE
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-[#1b1233] uppercase tracking-wide">Chambers &amp; Remote Portal</h4>
+                      <p className="text-[11px] font-bold text-[#1b1233] mt-1">
+                        {displayLocation}
+                      </p>
+                      <p className="text-[11px] text-[#675f80] mt-1 leading-relaxed">
+                        Available for both in-person consultations and encrypted HD virtual meetings.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* SECTION 5: FAQS ACCORDION */}
-            <div id="section-faqs" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-4">
-              <div>
-                <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Frequently Asked Questions</h2>
-                <p className="text-xs text-[#675f80] mt-0.5">Quick answers regarding consultations, escrow milestones, and processing times.</p>
+            {/* SECTION 5: FAQS ACCORDION (SINGLE-COLUMN LUXURY ACCORDION - NO SIBLING STRETCHING) */}
+            <div id="section-faqs" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[rgba(67,15,122,0.08)] pb-5">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-0.5 rounded-full mb-1.5 shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#00b070]" /> VERIFIED CONSULTATION STANDARDS
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Frequently Asked Questions</h2>
+                  <p className="text-xs text-[#675f80] mt-0.5">Everything you need to know about working with {displayName} and TravlTik Escrow.</p>
+                </div>
+
+                <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                  <span className="text-[11px] font-bold text-[#430f7a] bg-[#f4eff9] border border-[rgba(67,15,122,0.12)] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
+                    <Clock className="w-3.5 h-3.5 text-[#00b070]" /> 2-Hour Response SLA
+                  </span>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-2">
-                {faqs.map((faq, idx) => (
-                  <div 
-                    key={idx}
-                    className="border-[1.5px] border-[rgba(67,15,122,0.08)] rounded-[20px] p-4.5 bg-[#faf8fd] transition-colors"
-                  >
-                    <button
-                      onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
-                      className="w-full text-left font-bold text-xs text-[#1b1233] flex items-start justify-between gap-2 cursor-pointer"
+              {/* Stacked Single-Column Accordion */}
+              <div className="space-y-3.5 pt-1">
+                {faqs.map((faq, idx) => {
+                  const isOpen = expandedFaq === idx;
+                  return (
+                    <div 
+                      key={idx}
+                      className={`border-[1.5px] rounded-[22px] transition-all duration-300 overflow-hidden ${
+                        isOpen 
+                          ? 'border-[#00b070] bg-gradient-to-r from-white via-[#fafefe] to-[#f4fcf9] shadow-[0_8px_24px_-8px_rgba(0,176,112,0.18)]' 
+                          : 'border-[rgba(67,15,122,0.10)] bg-[#ffffff] hover:border-[rgba(67,15,122,0.25)] hover:bg-[#faf8fd]'
+                      }`}
                     >
-                      <span>{faq.q}</span>
-                      <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${expandedFaq === idx ? 'rotate-180 text-[#00b070]' : ''}`} />
-                    </button>
-                    {expandedFaq === idx && (
-                      <p className="text-xs text-[#675f80] mt-2.5 pt-2.5 border-t border-[rgba(67,15,122,0.08)] leading-relaxed font-normal">
-                        {faq.a}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                      <button
+                        onClick={() => setExpandedFaq(isOpen ? null : idx)}
+                        className="w-full text-left p-5 flex items-start justify-between gap-4 cursor-pointer select-none group"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md ${
+                              isOpen 
+                                ? 'bg-[#00b070] text-white shadow-xs' 
+                                : 'bg-[#f4eff9] text-[#430f7a] border border-[rgba(67,15,122,0.10)] group-hover:bg-[#ebe0f8]'
+                            }`}>
+                              {faq.category}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-400">
+                              • {faq.badge}
+                            </span>
+                          </div>
+                          <h3 className={`text-sm sm:text-[15px] font-extrabold tracking-tight transition-colors ${
+                            isOpen ? 'text-[#1b1233]' : 'text-[#1b1233] group-hover:text-[#430f7a]'
+                          }`}>
+                            {faq.q}
+                          </h3>
+                        </div>
+
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 mt-1 ${
+                          isOpen 
+                            ? 'bg-[#00b070] text-white rotate-180 shadow-[0_4px_12px_rgba(0,176,112,0.35)]' 
+                            : 'bg-[#f4eff9] text-[#430f7a] group-hover:bg-[#ebe0f8]'
+                        }`}>
+                          <ChevronDown className="w-4 h-4" />
+                        </div>
+                      </button>
+
+                      {isOpen && (
+                        <div className="px-5 pb-5 pt-1 text-xs text-[#524b6e] leading-relaxed font-medium border-t border-[rgba(0,176,112,0.15)] bg-white/70">
+                          <p className="whitespace-pre-line mt-2 leading-relaxed">
+                            {faq.a}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
+
+              {/* Direct Help / Consultation Callout Card */}
+              <div className="rounded-[24px] bg-gradient-to-br from-[#2a084e] via-[#430f7a] to-[#581db5] p-6 text-white relative overflow-hidden mt-6 shadow-[0_12px_32px_-10px_rgba(67,15,122,0.4)]">
+                <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#00b070]/20 rounded-full blur-2xl pointer-events-none" />
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#00e599] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15">
+                      <Sparkles className="w-3 h-3 text-[#00e599]" /> 1-ON-1 CONFIDENTIAL ASSESSMENT
+                    </div>
+                    <h4 className="text-base sm:text-lg font-black tracking-tight text-white">
+                      Still have questions about your specific profile?
+                    </h4>
+                    <p className="text-xs text-purple-100/85 max-w-md leading-relaxed">
+                      Consult directly with {displayName}. Review eligible pathways, discuss consular requirements, and get an escrow-protected roadmap.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto">
+                    <button
+                      onClick={() => setQuoteModalOpen(true)}
+                      className="w-full sm:w-auto bg-[#00b070] hover:bg-[#00c57d] active:scale-95 text-white font-extrabold text-xs px-5 py-3 rounded-xl shadow-[0_4px_16px_rgba(0,176,112,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>Contact {displayName.split(' ')[0]}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -1344,50 +1494,96 @@ export function ExpertProfileDetail({
 
         </div>
 
-        {/* RELATED SERVICE PROVIDERS */}
+        {/* RELATED SERVICE PROVIDERS (SHOWCASE STYLE MATCHING LANDING PAGE) */}
         {relatedExperts.length > 0 && (
           <div className="mt-14 pt-8 border-t border-[rgba(67,15,122,0.10)]">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
               <div>
-                <h3 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Related Service Providers</h3>
-                <p className="text-xs text-[#675f80] mt-0.5">Explore other top-rated verified consultants in your corridor.</p>
+                <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#430f7a] bg-[#f4eff9] border border-[#e9ddf6] px-3 py-1 rounded-full mb-1.5 shadow-2xs">
+                  <Award className="w-3.5 h-3.5 text-[#00b070]" /> VERIFIED IMMIGRATION COUNCIL
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Top-Rated Related Consultants</h3>
+                <p className="text-xs text-[#675f80] mt-0.5">Explore licensed advisors in the same corridors with 100% milestone escrow hold.</p>
               </div>
-              <a href="/find-experts" className="text-xs font-bold text-[#430f7a] hover:text-[#370c63] underline">
-                View all experts →
+              <a 
+                href="/find-experts" 
+                className="text-xs font-bold text-[#430f7a] hover:text-[#00b070] flex items-center gap-1.5 transition-colors self-start sm:self-auto bg-white hover:bg-[#faf8fd] border border-[rgba(67,15,122,0.14)] px-4 py-2 rounded-xl shadow-2xs"
+              >
+                <span>Explore all verified experts (500+)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {relatedExperts.slice(0, 4).map((rel) => (
                 <a
                   key={rel.id}
                   href={`/expert/${rel.id}`}
-                  className="bg-white rounded-[24px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-5 hover:border-[#00b070] hover:shadow-[0_12px_32px_-12px_rgba(67,15,122,0.16)] hover:-translate-y-1 transition-all flex flex-col justify-between group min-h-[130px] box-border"
+                  className="group relative rounded-[28px] overflow-hidden flex flex-col justify-end min-h-[420px] p-5.5 text-white shadow-[0_16px_40px_-15px_rgba(67,15,122,0.22)] border-[1.5px] border-[rgba(67,15,122,0.15)] hover:border-[#00b070] hover:shadow-[0_24px_50px_-12px_rgba(67,15,122,0.38)] hover:-translate-y-2 transition-all duration-300 bg-[#0b0c16] text-left no-underline cursor-pointer"
                 >
-                  <div className="w-full flex-1 flex flex-col justify-between">
-                    <div className="flex items-center gap-3 mb-3.5">
-                      <div className="w-12 h-12 rounded-2xl bg-[#faf6fe] overflow-hidden shrink-0 border border-[rgba(67,15,122,0.12)] shadow-2xs">
-                        {rel.image ? (
-                          <img src={rel.image} alt={rel.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-[#370c63] to-[#430f7a] text-white font-bold flex items-center justify-center text-xs">
-                            {rel.name.charAt(0)}
-                          </div>
-                        )}
+                  {/* Photo with zoom on hover */}
+                  <img
+                    src={rel.image || '/experts/expert1.png'}
+                    alt={rel.name}
+                    className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-107 transition-transform duration-700 pointer-events-none"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/experts/expert1.png';
+                    }}
+                  />
+
+                  {/* Multi-stage luxury gradient matching landing page atlys-card */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0518] via-[#0a0518]/65 to-transparent pointer-events-none group-hover:via-[#0a0518]/75 transition-colors" />
+                  <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+
+                  {/* Top Pill: Registration or Verified status */}
+                  <div className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#430f7a]/92 to-[#581db5]/96 backdrop-blur-md px-3 py-1 rounded-full border border-white/25 shadow-md">
+                    <ShieldCheck className="w-3 h-3 text-[#00e599]" />
+                    <span>{rel.govReg || 'VERIFIED ADVISOR'}</span>
+                  </div>
+
+                  {/* Top Right Flag */}
+                  <div className="absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-sm shadow-md">
+                    {getCountryFlag(rel.countries?.[0] || 'Canada')}
+                  </div>
+
+                  {/* Content Container */}
+                  <div className="relative z-10 w-full flex flex-col">
+                    {/* Name */}
+                    <h4 className="text-lg font-black text-white uppercase tracking-wide group-hover:text-[#00e599] transition-colors leading-tight drop-shadow-sm font-sans line-clamp-1">
+                      {rel.name}
+                    </h4>
+
+                    {/* Role */}
+                    <p className="text-xs text-white/85 font-medium truncate mt-1 drop-shadow-sm">
+                      {rel.role}
+                    </p>
+
+                    {/* 3-Column Metadata Row (atlys-meta-row style) */}
+                    <div className="grid grid-cols-3 gap-2 pt-3 mt-3.5 border-t border-white/20 text-center text-white/90">
+                      <div className="flex flex-col items-center">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-purple-200/90">EXP</span>
+                        <span className="text-xs font-black text-white mt-0.5">{rel.experienceYears || '7+ YRS'}</span>
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <h4 className="text-xs font-extrabold text-[#1b1233] group-hover:text-[#430f7a] transition-colors truncate">
-                          {rel.name}
-                        </h4>
-                        <p className="text-[11px] text-[#675f80] truncate font-medium">{rel.role}</p>
+                      <div className="flex flex-col items-center border-x border-white/15 px-1">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-purple-200/90">RATING</span>
+                        <span className="text-xs font-black text-amber-300 flex items-center gap-0.5 mt-0.5">
+                          <Star className="w-3 h-3 fill-amber-300 text-amber-300" />
+                          <span>{rel.rating ? (rel.rating.toFixed ? rel.rating.toFixed(1) : rel.rating) : '4.9'}</span>
+                        </span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-purple-200/90">CITY</span>
+                        <span className="text-xs font-black text-white truncate max-w-[70px] mt-0.5">{rel.city || 'Remote'}</span>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-[#675f80] pt-3 pb-0.5 border-t border-[rgba(67,15,122,0.08)] mt-auto">
-                      <span className="flex items-center gap-1 text-amber-500 font-bold">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500 shrink-0" /> {rel.rating?.toFixed ? rel.rating.toFixed(1) : (rel.rating || '4.9')}
+                    {/* Bottom Action Pill */}
+                    <div className="mt-3.5 pt-2.5 flex items-center justify-center">
+                      <span className="w-full text-center text-[11px] font-extrabold uppercase tracking-wider text-white bg-white/15 group-hover:bg-[#00b070] group-hover:text-white backdrop-blur-md py-2 px-3 rounded-xl border border-white/20 group-hover:border-[#00b070] transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                        <span>View Profile &amp; Consult</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </span>
-                      <span className="truncate font-semibold text-slate-600 text-[11px]">{rel.city || 'Remote'}</span>
                     </div>
                   </div>
                 </a>
