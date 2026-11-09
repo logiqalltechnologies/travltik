@@ -13,7 +13,7 @@ import { JobDriveApplicationModal, type DriveJobItem } from "./JobDriveApplicati
 const canadaRoleImages: Record<string, string> = {
   "can-2026-01": "/images/job_tech_engineer.png",
   "can-2026-02": "/images/construction_site.png",
-  "can-2026-03": "/images/dest_canada_cold.png",
+  "can-2026-03": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=600&auto=format&fit=crop",
   "can-2026-04": "/images/construction_worker.png",
   "can-2026-05": "/images/luggage_hero_hd.png",
   "can-2026-06": "/images/job_chef_london.png",
@@ -182,9 +182,9 @@ export function InternationalJobDrivesPage() {
           >
             {/* Background Image */}
             <img 
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200&auto=format&fit=crop" 
+              src="/images/dest_canada_cold.png" 
               alt="Canada 2026 Recruitment Drive" 
-              className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+              className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 pointer-events-none"
             />
             {/* Multi-stage Luxury Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#070312] via-[#070312]/75 via-50% to-black/35 pointer-events-none" />
@@ -423,82 +423,112 @@ export function InternationalJobDrivesPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredCanada.map((job) => (
                       <div
                         key={job.id}
-                        className="group bg-white rounded-[24px] border-[1.5px] border-[rgba(67,15,122,0.12)] hover:border-black shadow-[0_8px_24px_-12px_rgba(67,15,122,0.08)] hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.16)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                        className="group bg-white rounded-[26px] border border-slate-200/90 hover:border-black/70 shadow-[0_4px_20px_-6px_rgba(27,18,51,0.06)] hover:shadow-[0_20px_45px_-12px_rgba(27,18,51,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
                       >
-                        {/* Photographic Card Header */}
-                        <div className="relative h-44 overflow-hidden bg-slate-900">
-                          <img 
-                            src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
-                            alt={job.title}
-                            className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/40 to-transparent pointer-events-none" />
+                        {/* Mounted Photographic Card Header */}
+                        <div className="p-3 pb-0">
+                          <div className="relative h-44 sm:h-48 rounded-2xl overflow-hidden bg-slate-950 shadow-inner group-hover:shadow-md transition-shadow">
+                            <img 
+                              src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
+                              alt={job.title}
+                              className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
 
-                          {/* Top Badges */}
-                          <div className="absolute top-2.5 inset-x-2.5 flex items-center justify-between z-10">
-                            <span className="bg-black/75 backdrop-blur-md text-white text-[9.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-white/20">
-                              #{String(job.sNo).padStart(2, '0')} · {job.category}
-                            </span>
-                            <div className="flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20 text-white text-[10.5px] font-bold">
-                              <img src="https://flagcdn.com/w40/ca.png" alt="Canada" className="w-3.5 h-2.5 object-cover rounded-xs" />
-                              <span>Canada</span>
+                            {/* Top Badges */}
+                            <div className="absolute top-2.5 left-2.5 z-10">
+                              <span className="bg-black/70 backdrop-blur-md text-white/95 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20 shadow-sm flex items-center gap-1.5">
+                                #{String(job.sNo).padStart(2, '0')} · {job.category}
+                              </span>
                             </div>
-                          </div>
+                            <div className="absolute top-2.5 right-2.5 z-10">
+                              <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[10.5px] font-black shadow-sm">
+                                <img src="https://flagcdn.com/w40/ca.png" alt="Canada" className="w-4 h-2.5 object-cover rounded-[2px]" />
+                                <span>Canada</span>
+                              </div>
+                            </div>
 
-                          {/* Job Title on bottom of image */}
-                          <div className="absolute bottom-2.5 inset-x-3 z-10">
-                            <h4 className="text-base sm:text-[17px] font-black text-white uppercase tracking-wide drop-shadow-md line-clamp-1">
-                              {job.title}
-                            </h4>
+                            {/* Bottom Live Seats Floating Pill */}
+                            <div className="absolute bottom-2.5 right-2.5 z-10">
+                              <span className="bg-white/95 backdrop-blur-md text-[#1b1233] text-[10.5px] font-black px-2.5 py-1 rounded-full shadow-lg border border-white/80 flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                {job.vacancies} Seats Available
+                              </span>
+                            </div>
                           </div>
                         </div>
 
                         {/* Card Body */}
-                        <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
-                          <div className="space-y-3">
-                            {/* Metrics Bar */}
-                            <div className="grid grid-cols-2 gap-2 bg-[#faf8fd] p-2.5 rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
+                        <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                          <div className="space-y-3.5">
+                            {/* Title & Sponsorship Tag */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#430f7a] bg-purple-50/90 px-2 py-0.5 rounded-md border border-purple-100">
+                                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                                  {job.lmiaStatus.includes("LMIA") ? "LMIA Approved" : job.lmiaStatus}
+                                </span>
+                                <span className="text-[11px] text-slate-400 font-semibold">· Direct Employer</span>
+                              </div>
+                              <h3 className="font-serif text-lg sm:text-[19px] font-black text-[#1b1233] group-hover:text-[#430f7a] transition-colors tracking-tight line-clamp-1 leading-snug">
+                                {job.title}
+                              </h3>
+                            </div>
+
+                            {/* Compensation & Sponsorship Banner */}
+                            <div className="bg-[#faf8fd] border border-[rgba(67,15,122,0.08)] rounded-2xl p-3 flex items-center justify-between">
                               <div>
-                                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">MONTHLY SALARY</span>
-                                <span className="text-xs sm:text-sm font-black text-[#1b1233]">{job.salaryMonthly}</span>
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">Monthly Comp</span>
+                                <div className="flex items-baseline gap-1 mt-0.5">
+                                  <span className="text-base sm:text-[17px] font-black text-[#1b1233] tracking-tight">{job.salaryMonthly}</span>
+                                  <span className="text-[10px] text-slate-600 font-semibold">/mo</span>
+                                </div>
                               </div>
-                              <div className="border-l border-[rgba(67,15,122,0.1)]">
-                                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">OPEN VACANCIES</span>
-                                <span className="text-xs sm:text-sm font-black text-[#430f7a]">{job.vacancies} Seats</span>
+                              <div className="text-right border-l border-[rgba(67,15,122,0.1)] pl-3">
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">Work Permit</span>
+                                <span className="text-xs font-black text-emerald-700 flex items-center justify-end gap-1 mt-0.5">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                  Sponsored
+                                </span>
                               </div>
                             </div>
 
-                            {/* Info Pills */}
-                            <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-bold">
-                              <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.12)] px-2 py-0.5 rounded-lg flex items-center gap-1">
-                                <ShieldCheck className="w-3 h-3 text-[#1b1233]" /> {job.lmiaStatus}
-                              </span>
-                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-lg flex items-center gap-1">
-                                <MapPin className="w-3 h-3 text-slate-400" /> {job.location}
-                              </span>
-                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-lg flex items-center gap-1">
-                                <Clock className="w-3 h-3 text-slate-400" /> {job.experienceRequired}
-                              </span>
+                            {/* Location & Experience Badges */}
+                            <div className="grid grid-cols-2 gap-2 text-[11px] font-medium text-slate-600">
+                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.location}>
+                                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                <span className="truncate">{job.location}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.experienceRequired}>
+                                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                <span className="truncate">{job.experienceRequired}</span>
+                              </div>
                             </div>
 
-                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                            {/* Description */}
+                            <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
                               {job.description}
                             </p>
                           </div>
 
                           {/* Apply Button */}
-                          <div className="pt-2.5 border-t border-[rgba(67,15,122,0.08)]">
+                          <div className="pt-2 border-t border-[rgba(67,15,122,0.08)]">
                             <button
                               onClick={() => handleApplyCanada(job)}
-                              className="w-full bg-black hover:bg-[#1b1233] text-white text-xs font-black uppercase tracking-wider py-2.5 px-4 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
+                              className="w-full relative group/btn bg-[#1b1233] hover:bg-[#370c63] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-between cursor-pointer"
                             >
-                              <span>Apply for Canada Role</span>
-                              <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                              <span className="flex items-center gap-2">
+                                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                                <span>Apply for Canada Role</span>
+                              </span>
+                              <span className="w-6 h-6 rounded-lg bg-white/10 group-hover/btn:bg-white group-hover/btn:text-black flex items-center justify-center transition-all">
+                                <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                              </span>
                             </button>
                           </div>
                         </div>
@@ -516,82 +546,112 @@ export function InternationalJobDrivesPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredLuxembourg.map((job) => (
                       <div
                         key={job.id}
-                        className="group bg-white rounded-[24px] border-[1.5px] border-[rgba(67,15,122,0.12)] hover:border-black shadow-[0_8px_24px_-12px_rgba(67,15,122,0.08)] hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.16)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                        className="group bg-white rounded-[26px] border border-slate-200/90 hover:border-black/70 shadow-[0_4px_20px_-6px_rgba(27,18,51,0.06)] hover:shadow-[0_20px_45px_-12px_rgba(27,18,51,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
                       >
-                        {/* Photographic Card Header */}
-                        <div className="relative h-44 overflow-hidden bg-slate-900">
-                          <img 
-                            src={luxembourgRoleImages[job.id] || "/images/construction_worker.png"} 
-                            alt={job.category}
-                            className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/40 to-transparent pointer-events-none" />
+                        {/* Mounted Photographic Card Header */}
+                        <div className="p-3 pb-0">
+                          <div className="relative h-44 sm:h-48 rounded-2xl overflow-hidden bg-slate-950 shadow-inner group-hover:shadow-md transition-shadow">
+                            <img 
+                              src={luxembourgRoleImages[job.id] || "/images/construction_worker.png"} 
+                              alt={job.category}
+                              className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
 
-                          {/* Top Badges */}
-                          <div className="absolute top-2.5 inset-x-2.5 flex items-center justify-between z-10">
-                            <span className="bg-black/75 backdrop-blur-md text-white text-[9.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-white/20">
-                              #{String(job.sNo).padStart(2, '0')} · {job.sector}
-                            </span>
-                            <div className="flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20 text-white text-[10.5px] font-bold">
-                              <img src="https://flagcdn.com/w40/lu.png" alt="Luxembourg" className="w-3.5 h-2.5 object-cover rounded-xs" />
-                              <span>Luxembourg</span>
+                            {/* Top Badges */}
+                            <div className="absolute top-2.5 left-2.5 z-10">
+                              <span className="bg-black/70 backdrop-blur-md text-white/95 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20 shadow-sm flex items-center gap-1.5">
+                                #{String(job.sNo).padStart(2, '0')} · {job.sector}
+                              </span>
                             </div>
-                          </div>
+                            <div className="absolute top-2.5 right-2.5 z-10">
+                              <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[10.5px] font-black shadow-sm">
+                                <img src="https://flagcdn.com/w40/lu.png" alt="Luxembourg" className="w-4 h-2.5 object-cover rounded-[2px]" />
+                                <span>Luxembourg</span>
+                              </div>
+                            </div>
 
-                          {/* Job Title on bottom of image */}
-                          <div className="absolute bottom-2.5 inset-x-3 z-10">
-                            <h4 className="text-base sm:text-[17px] font-black text-white uppercase tracking-wide drop-shadow-md line-clamp-1">
-                              {job.category}
-                            </h4>
+                            {/* Bottom Live Seats Floating Pill */}
+                            <div className="absolute bottom-2.5 right-2.5 z-10">
+                              <span className="bg-white/95 backdrop-blur-md text-[#1b1233] text-[10.5px] font-black px-2.5 py-1 rounded-full shadow-lg border border-white/80 flex items-center gap-1.5">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                {job.vacancies} Seats Available
+                              </span>
+                            </div>
                           </div>
                         </div>
 
                         {/* Card Body */}
-                        <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
-                          <div className="space-y-3">
-                            {/* Metrics Bar */}
-                            <div className="grid grid-cols-2 gap-2 bg-[#faf8fd] p-2.5 rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
+                        <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                          <div className="space-y-3.5">
+                            {/* Title & Sponsorship Tag */}
+                            <div>
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#430f7a] bg-purple-50/90 px-2 py-0.5 rounded-md border border-purple-100">
+                                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                                  {job.permitType}
+                                </span>
+                                <span className="text-[11px] text-slate-400 font-semibold">· Direct EU Intake</span>
+                              </div>
+                              <h3 className="font-serif text-lg sm:text-[19px] font-black text-[#1b1233] group-hover:text-[#430f7a] transition-colors tracking-tight line-clamp-1 leading-snug">
+                                {job.category}
+                              </h3>
+                            </div>
+
+                            {/* Compensation & Sponsorship Banner */}
+                            <div className="bg-[#faf8fd] border border-[rgba(67,15,122,0.08)] rounded-2xl p-3 flex items-center justify-between">
                               <div>
-                                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">MONTHLY SALARY</span>
-                                <span className="text-xs sm:text-sm font-black text-[#1b1233]">{job.salaryMonthly}</span>
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">Monthly Comp</span>
+                                <div className="flex items-baseline gap-1 mt-0.5">
+                                  <span className="text-base sm:text-[17px] font-black text-[#1b1233] tracking-tight">{job.salaryMonthly}</span>
+                                  <span className="text-[10px] text-slate-600 font-semibold">/mo</span>
+                                </div>
                               </div>
-                              <div className="border-l border-[rgba(67,15,122,0.1)]">
-                                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">OPEN VACANCIES</span>
-                                <span className="text-xs sm:text-sm font-black text-[#430f7a]">{job.vacancies} Seats</span>
+                              <div className="text-right border-l border-[rgba(67,15,122,0.1)] pl-3">
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">EU Work Visa</span>
+                                <span className="text-xs font-black text-emerald-700 flex items-center justify-end gap-1 mt-0.5">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                  Sponsored
+                                </span>
                               </div>
                             </div>
 
-                            {/* Info Pills */}
-                            <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-bold">
-                              <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.12)] px-2 py-0.5 rounded-lg flex items-center gap-1">
-                                <ShieldCheck className="w-3 h-3 text-[#1b1233]" /> {job.permitType}
-                              </span>
-                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-lg flex items-center gap-1">
-                                <MapPin className="w-3 h-3 text-slate-400" /> {job.location}
-                              </span>
-                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-lg flex items-center gap-1">
-                                <Clock className="w-3 h-3 text-slate-400" /> {job.experienceRequired}
-                              </span>
+                            {/* Location & Experience Badges */}
+                            <div className="grid grid-cols-2 gap-2 text-[11px] font-medium text-slate-600">
+                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.location}>
+                                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                <span className="truncate">{job.location}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.experienceRequired}>
+                                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                                <span className="truncate">{job.experienceRequired}</span>
+                              </div>
                             </div>
 
-                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                            {/* Description */}
+                            <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
                               {job.description}
                             </p>
                           </div>
 
                           {/* Apply Button */}
-                          <div className="pt-2.5 border-t border-[rgba(67,15,122,0.08)]">
+                          <div className="pt-2 border-t border-[rgba(67,15,122,0.08)]">
                             <button
                               onClick={() => handleApplyLuxembourg(job)}
-                              className="w-full bg-black hover:bg-[#1b1233] text-white text-xs font-black uppercase tracking-wider py-2.5 px-4 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
+                              className="w-full relative group/btn bg-[#1b1233] hover:bg-[#370c63] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-between cursor-pointer"
                             >
-                              <span>Apply for Luxembourg Role</span>
-                              <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                              <span className="flex items-center gap-2">
+                                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                                <span>Apply for Luxembourg Role</span>
+                              </span>
+                              <span className="w-6 h-6 rounded-lg bg-white/10 group-hover/btn:bg-white group-hover/btn:text-black flex items-center justify-center transition-all">
+                                <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                              </span>
                             </button>
                           </div>
                         </div>
