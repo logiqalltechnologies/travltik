@@ -491,6 +491,19 @@ export function ExpertProfileDetail({
     return map[cName] || '🌐';
   };
 
+  const getCountryCode = (cName: string) => {
+    const map: Record<string, string> = {
+      'India': 'in', 'UK': 'gb', 'United Kingdom': 'gb',
+      'Canada': 'ca', 'Australia': 'au', 'Germany': 'de',
+      'USA': 'us', 'United States': 'us', 'Poland': 'pl',
+      'New Zealand': 'nz', 'UAE': 'ae', 'Singapore': 'sg',
+      'France': 'fr', 'Italy': 'it', 'Netherlands': 'nl',
+      'Greece': 'gr', 'Portugal': 'pt', 'Qatar': 'qa',
+      'Saudi Arabia': 'sa', 'Kuwait': 'kw'
+    };
+    return map[cName] || 'ca';
+  };
+
   return (
     <div className={`w-full bg-transparent text-slate-800 font-sans ${isModal ? 'p-0' : 'min-h-screen py-4 sm:py-6'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -813,7 +826,12 @@ export function ExpertProfileDetail({
                       key={idx}
                       className="flex items-center gap-2 p-2.5 rounded-xl border border-[rgba(67,15,122,0.10)] bg-[#faf8fd] text-xs font-bold text-[#1b1233]"
                     >
-                      <span className="text-base">{getCountryFlag(cName)}</span>
+                      <img 
+                        src={`https://flagcdn.com/w40/${getCountryCode(cName)}.png`} 
+                        alt={cName} 
+                        className="w-5 h-3.5 object-cover rounded-xs shadow-2xs shrink-0" 
+                        loading="lazy" 
+                      />
                       <span className="truncate">{cName}</span>
                     </div>
                   ))}
@@ -1183,7 +1201,7 @@ export function ExpertProfileDetail({
                     <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> VERIFIED PRACTICE &amp; ACCREDITATION
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Gallery &amp; Official Credentials</h2>
-                  <p className="text-xs text-[#675f80] mt-0.5">Government-registered legal standing, TravlTik escrow protection seal, and verified chambers.</p>
+                  <p className="text-xs text-[#675f80] mt-0.5">Government-licensed standing and TravlTik Escrow verified.</p>
                 </div>
                 <button
                   onClick={() => setQuoteModalOpen(true)}
@@ -1209,65 +1227,50 @@ export function ExpertProfileDetail({
                   ))}
                 </div>
               ) : (
-                /* Authentic 3-Card Verified Credential Showcase */
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex flex-col justify-between space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-[#f4eff9] text-[#1b1233] flex items-center justify-center border border-purple-200/60 shadow-2xs">
-                        <ShieldCheck className="w-5 h-5 text-[#1b1233]" />
-                      </div>
-                      <span className="text-[10px] font-black uppercase text-[#1b1233] bg-white border border-[rgba(55,12,99,0.14)] px-2 py-0.5 rounded-full">
-                        ACTIVE ID
-                      </span>
+                /* Ultra-Clean, High-Quality 3-Badge Credential Showcase (No paragraph clutter) */
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+                  <div className="rounded-2xl border-[1.5px] border-[rgba(67,15,122,0.10)] p-4 sm:p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-sm">
+                      <ShieldCheck className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <h4 className="text-xs font-black text-[#1b1233] uppercase tracking-wide">Government Regulatory Registration</h4>
-                      <p className="text-[11px] font-bold text-[#430f7a] mt-1">
-                        {expert.govReg ? `Council Reg: ${expert.govReg}` : 'Verified Immigration Registry'}
-                      </p>
-                      <p className="text-[11px] text-[#675f80] mt-1 leading-relaxed">
-                        Authorized practitioner with active standing for verified consular representation.
-                      </p>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider">REGISTRATION</span>
+                        <span className="text-[9.5px] font-black uppercase text-[#1b1233] bg-white border border-[rgba(55,12,99,0.14)] px-2 py-0.5 rounded-full shrink-0">ACTIVE</span>
+                      </div>
+                      <h4 className="text-xs sm:text-[13px] font-black text-[#1b1233] mt-0.5 truncate">
+                        {expert.govReg ? `Reg: ${expert.govReg}` : 'Licensed Immigration Practitioner'}
+                      </h4>
                     </div>
                   </div>
 
-                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex flex-col justify-between space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-[#f4eff9] text-[#430f7a] flex items-center justify-center border border-purple-200/60 shadow-2xs">
-                        <Award className="w-5 h-5 text-[#430f7a]" />
-                      </div>
-                      <span className="text-[10px] font-black uppercase text-[#430f7a] bg-[#f4eff9] border border-[#e9ddf6] px-2 py-0.5 rounded-full">
-                        ESCROW VAULT
-                      </span>
+                  <div className="rounded-2xl border-[1.5px] border-[rgba(67,15,122,0.10)] p-4 sm:p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-[#1b1233] text-white flex items-center justify-center shrink-0 shadow-sm">
+                      <Award className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <h4 className="text-xs font-black text-[#1b1233] uppercase tracking-wide">100% Milestone Escrow Guarantee</h4>
-                      <p className="text-[11px] font-bold text-[#1b1233] mt-1">
-                        Zero Upfront Disbursement
-                      </p>
-                      <p className="text-[11px] text-[#675f80] mt-1 leading-relaxed">
-                        Funds are released strictly upon your sign-off for completed visa deliverables.
-                      </p>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider">PAYMENT SECURITY</span>
+                        <span className="text-[9.5px] font-black uppercase text-[#430f7a] bg-[#f4eff9] border border-[#e9ddf6] px-2 py-0.5 rounded-full shrink-0">ESCROW</span>
+                      </div>
+                      <h4 className="text-xs sm:text-[13px] font-black text-[#1b1233] mt-0.5 truncate">
+                        100% Milestone Protection
+                      </h4>
                     </div>
                   </div>
 
-                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex flex-col justify-between space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-[#f0f9ff] text-[#0284c7] flex items-center justify-center border border-sky-200/60 shadow-2xs">
-                        <Building2 className="w-5 h-5 text-[#0284c7]" />
-                      </div>
-                      <span className="text-[10px] font-black uppercase text-[#0369a1] bg-[#f0f9ff] border border-sky-200 px-2 py-0.5 rounded-full">
-                        VERIFIED OFFICE
-                      </span>
+                  <div className="rounded-2xl border-[1.5px] border-[rgba(67,15,122,0.10)] p-4 sm:p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-[#370c63] text-white flex items-center justify-center shrink-0 shadow-sm">
+                      <Building2 className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <h4 className="text-xs font-black text-[#1b1233] uppercase tracking-wide">Chambers &amp; Remote Portal</h4>
-                      <p className="text-[11px] font-bold text-[#1b1233] mt-1">
-                        {displayLocation}
-                      </p>
-                      <p className="text-[11px] text-[#675f80] mt-1 leading-relaxed">
-                        Available for both in-person consultations and encrypted HD virtual meetings.
-                      </p>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider">LOCATION</span>
+                        <span className="text-[9.5px] font-black uppercase text-[#1b1233] bg-white border border-[rgba(55,12,99,0.14)] px-2 py-0.5 rounded-full shrink-0">VERIFIED</span>
+                      </div>
+                      <h4 className="text-xs sm:text-[13px] font-black text-[#1b1233] mt-0.5 truncate">
+                        {displayLocation} · Hybrid Chambers
+                      </h4>
                     </div>
                   </div>
                 </div>
@@ -1514,12 +1517,18 @@ export function ExpertProfileDetail({
               </a>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {/* Mobile swipe hint */}
+            <div className="sm:hidden flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2 px-1">
+              <span>Swipe to view all advisors</span>
+              <span className="text-[#430f7a] flex items-center gap-1 font-semibold">Swipe →</span>
+            </div>
+
+            <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible pb-4 sm:pb-0 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none snap-x snap-mandatory">
               {relatedExperts.slice(0, 4).map((rel) => (
                 <a
                   key={rel.id}
                   href={`/expert/${rel.id}`}
-                  className="group relative rounded-[28px] overflow-hidden flex flex-col justify-end min-h-[440px] h-[440px] p-6 pb-6 text-white shadow-[0_16px_40px_-15px_rgba(67,15,122,0.25)] border-[1.5px] border-[rgba(255,255,255,0.22)] hover:border-white/50 hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-300 bg-[#090d16] text-left no-underline cursor-pointer box-border"
+                  className="group relative rounded-[28px] overflow-hidden flex flex-col justify-end w-[82vw] max-w-[300px] sm:w-auto shrink-0 snap-start min-h-[420px] h-[420px] sm:min-h-[440px] sm:h-[440px] p-5 sm:p-6 pb-5 sm:pb-6 text-white shadow-[0_16px_40px_-15px_rgba(67,15,122,0.25)] border-[1.5px] border-[rgba(255,255,255,0.22)] hover:border-white/50 hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-300 bg-[#090d16] text-left no-underline cursor-pointer box-border"
                 >
                   {/* Photo with zoom on hover */}
                   <img
@@ -1537,20 +1546,25 @@ export function ExpertProfileDetail({
                   <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black/55 to-transparent pointer-events-none" />
 
                   {/* Top Pill: Registration or Verified status */}
-                  <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 text-[10.5px] font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#430f7a]/95 to-[#581db5]/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/25 shadow-md">
-                    <ShieldCheck className="w-3 h-3 text-white" />
-                    <span>{rel.govReg || 'VERIFIED ADVISOR'}</span>
+                  <div className="absolute top-3.5 sm:top-4 left-3.5 sm:left-4 z-10 inline-flex items-center gap-1.5 text-[10px] sm:text-[10.5px] font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#430f7a]/95 to-[#581db5]/95 backdrop-blur-md px-3 sm:px-3.5 py-1.5 rounded-full border border-white/25 shadow-md">
+                    <ShieldCheck className="w-3 h-3 text-white shrink-0" />
+                    <span className="truncate max-w-[140px] sm:max-w-none">{rel.govReg || 'VERIFIED ADVISOR'}</span>
                   </div>
 
-                  {/* Top Right Flag */}
-                  <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-sm shadow-md">
-                    {getCountryFlag(rel.countries?.[0] || 'Canada')}
+                  {/* Top Right Flag CDN Circular Badge (Prevents Windows 'GB' text glitch) */}
+                  <div className="absolute top-3.5 sm:top-4 right-3.5 sm:right-4 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center shadow-md shrink-0">
+                    <img 
+                      src={`https://flagcdn.com/w40/${getCountryCode(rel.countries?.[0] || 'Canada')}.png`} 
+                      alt={rel.countries?.[0] || 'Flag'} 
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
                   </div>
 
                   {/* Content Container */}
                   <div className="relative z-10 w-full flex flex-col pointer-events-none">
                     {/* Name */}
-                    <h4 className="text-[19px] font-black text-white uppercase tracking-wide group-hover:text-purple-200 transition-colors leading-snug drop-shadow-md font-sans line-clamp-1">
+                    <h4 className="text-lg sm:text-[19px] font-black text-white uppercase tracking-wide group-hover:text-purple-200 transition-colors leading-snug drop-shadow-md font-sans line-clamp-1">
                       {rel.name}
                     </h4>
 
@@ -1559,22 +1573,22 @@ export function ExpertProfileDetail({
                       {rel.role}
                     </p>
 
-                    {/* 3-Column Metadata Row (atlys-meta-row style) */}
-                    <div className="grid grid-cols-3 gap-2 pt-3 mt-3.5 border-t border-white/20 text-center text-white/90">
+                    {/* 3-Column Metadata Row (frosted glass matching landing page) */}
+                    <div className="grid grid-cols-3 gap-1 py-2 px-2 mt-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 text-center text-white/90">
                       <div className="flex flex-col items-center">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-purple-200/90">EXP</span>
-                        <span className="text-xs font-black text-white mt-0.5">{rel.experienceYears || '7+ YRS'}</span>
+                        <span className="text-[9px] sm:text-[9.5px] font-black uppercase tracking-widest text-purple-200">EXP</span>
+                        <span className="text-[11px] sm:text-xs font-black text-white mt-0.5">{rel.experienceYears || '7+ YRS'}</span>
                       </div>
                       <div className="flex flex-col items-center border-x border-white/15 px-1">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-purple-200/90">RATING</span>
-                        <span className="text-xs font-black text-amber-300 flex items-center gap-0.5 mt-0.5">
-                          <Star className="w-3 h-3 fill-amber-300 text-amber-300" />
+                        <span className="text-[9px] sm:text-[9.5px] font-black uppercase tracking-widest text-purple-200">RATING</span>
+                        <span className="text-[11px] sm:text-xs font-black text-amber-300 flex items-center justify-center gap-1 mt-0.5">
+                          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-300 text-amber-300 shrink-0" />
                           <span>{rel.rating ? (rel.rating.toFixed ? rel.rating.toFixed(1) : rel.rating) : '4.9'}</span>
                         </span>
                       </div>
                       <div className="flex flex-col items-center">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-purple-200/90">CITY</span>
-                        <span className="text-xs font-black text-white truncate max-w-[70px] mt-0.5">{rel.city || 'Remote'}</span>
+                        <span className="text-[9px] sm:text-[9.5px] font-black uppercase tracking-widest text-purple-200">CITY</span>
+                        <span className="text-[11px] sm:text-xs font-black text-white truncate max-w-[65px] sm:max-w-[70px] mt-0.5">{rel.city || 'Remote'}</span>
                       </div>
                     </div>
 

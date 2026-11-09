@@ -1125,91 +1125,144 @@ export function JobsPortal() {
                   <div
                     key={job.id}
                     onClick={() => { setActiveJob(job); window.scrollTo(0, 0); }}
-                    className={`group bg-white border border-slate-200/90 rounded-[24px] overflow-hidden shadow-sm hover:shadow-xl hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer ${job.featured ? "ring-1 ring-emerald-500/20" : ""}`}
+                    className={`group bg-white border-[1.5px] border-[rgba(67,15,122,0.12)] rounded-[26px] overflow-hidden shadow-[0_10px_30px_-15px_rgba(67,15,122,0.08)] hover:shadow-[0_22px_45px_-12px_rgba(27,18,51,0.18)] hover:border-[#1b1233] hover:-translate-y-1.5 transition-all duration-300 cursor-pointer bg-white flex flex-col justify-between`}
                   >
-                    <div className="relative h-44 overflow-hidden">
-                      <img src={job.heroImg} alt={job.location} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a2e]/60 via-[#0c1a2e]/10 to-transparent"></div>
+                    {/* Top Cinematic Header Image */}
+                    <div className="relative h-44 sm:h-48 overflow-hidden bg-slate-900">
+                      <img 
+                        src={job.heroImg || '/images/job_tech_engineer.png'} 
+                        alt={job.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-106" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/40 to-transparent pointer-events-none"></div>
 
-                      <div className="absolute top-2.5 right-2.5 flex gap-1.5">
+                      {/* Top Badges */}
+                      <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
                         {job.isVerified !== false ? (
-                          <span className="bg-emerald-600 text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow flex items-center gap-1">
-                            ✓ Verified Pilot
+                          <span className="bg-black/80 backdrop-blur-md text-white border border-white/20 text-[9.5px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow flex items-center gap-1">
+                            <Shield className="w-3 h-3 text-white" /> Verified
                           </span>
                         ) : (
-                          <span className="bg-amber-100 text-amber-700 border border-amber-200 text-[9px] font-extrabold px-2.5 py-1 rounded-md">
-                            ⏳ Under Review
+                          <span className="bg-white/90 backdrop-blur-md text-[#1b1233] text-[9.5px] font-black uppercase px-2.5 py-1 rounded-full shadow">
+                            Reviewing
                           </span>
                         )}
-                        {job.isProviderOffer && <span className="bg-blue-600 text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow">⚡ Work Permit Offer</span>}
-                        {job.featured && <span className="bg-[#0c1a2e] text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md shadow">⭐ Featured</span>}
-                        {job.urgent && <span className="bg-red-50 text-red-700 border border-red-200 text-[9px] font-extrabold px-2.5 py-1 rounded-md">🔴 Urgent</span>}
+                        {job.featured && <span className="bg-[#430f7a]/90 text-white border border-white/25 text-[9.5px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow">Featured</span>}
+                        {job.urgent && <span className="bg-rose-600/90 text-white text-[9.5px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow">Urgent</span>}
                       </div>
 
+                      {/* Bookmark button */}
                       <button
                         onClick={e => toggleSave(job.id, e)}
-                        className="absolute top-2.5 left-2.5 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/50 hover:bg-white shadow-sm transition-all outline-none"
+                        className="absolute top-3 left-3 z-10 w-8 h-8 bg-black/60 hover:bg-black/80 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-white shadow-sm transition-all outline-none"
                       >
                         {saved.includes(job.id)
-                          ? <Bookmark className="w-4 h-4 text-[#00b070] fill-[#00b070]" />
-                          : <BookmarkPlus className="w-4 h-4 text-gray-400" />}
+                          ? <Bookmark className="w-4 h-4 text-amber-300 fill-amber-300" />
+                          : <BookmarkPlus className="w-4 h-4 text-white/80" />}
                       </button>
 
-                      <div className="absolute bottom-2.5 left-4 flex items-center gap-2">
-                        <img src={`https://flagcdn.com/w40/${job.countryCode}.png`} alt="flag" className="h-4 rounded shadow" />
+                      {/* Country Flag & Location Pill */}
+                      <div className="absolute bottom-3 left-3.5 z-10 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-sm">
+                        <img 
+                          src={`https://flagcdn.com/w40/${job.countryCode || 'ca'}.png`} 
+                          alt="flag" 
+                          className="w-4 h-3 object-cover rounded-xs shrink-0" 
+                        />
                         <span className="text-white text-xs font-bold flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-red-200" />{job.location}
+                          <MapPin className="w-3 h-3 text-purple-200" />{job.location}
                         </span>
                       </div>
                     </div>
 
-                    <div className="p-5">
-                      <div className="flex gap-4 items-start mb-3 pr-4">
-                        <JobCompanyLogo
-                          src={job.logo}
-                          alt={job.company}
-                          companyName={job.company}
-                          className="w-12 h-12 rounded-xl object-contain p-1 border border-slate-100 shrink-0 shadow-sm bg-white"
-                          fallbackSize="w-12 h-12"
-                          icon={job.icon}
-                          iconColor={job.iconColor}
-                        />
+                    {/* Card Body */}
+                    <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+                      <div>
+                        {/* Company Logo + Title + Salary */}
+                        <div className="flex gap-3.5 items-start">
+                          <JobCompanyLogo
+                            src={job.logo}
+                            alt={job.company}
+                            companyName={job.company}
+                            className="w-12 h-12 rounded-xl object-contain p-1 border border-slate-200/80 shrink-0 shadow-2xs bg-[#faf8fd]"
+                            fallbackSize="w-12 h-12"
+                            icon={job.icon}
+                            iconColor={job.iconColor}
+                          />
 
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-sans font-semibold text-base text-[#0c1a2e] leading-snug group-hover:text-[#00b070] transition-colors mb-1">
-                            {job.title}
-                          </h3>
-                          <div className="flex items-center gap-1.5 text-xs text-[#475569] font-semibold">
-                            <Building2 className="w-3 h-3 text-gray-300" />
-                            {job.company}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-sans font-black text-[17px] text-[#1b1233] leading-snug group-hover:text-[#430f7a] transition-colors line-clamp-1">
+                              {job.title}
+                            </h3>
+                            <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold mt-0.5">
+                              <Building2 className="w-3.5 h-3.5 text-slate-400" />
+                              <span className="truncate">{job.company}</span>
+                            </div>
+                          </div>
+
+                          <div className="text-right shrink-0">
+                            <div className="font-sans font-black text-base text-[#1b1233]">{job.salary}</div>
+                            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{job.salaryNote || 'monthly'}</div>
                           </div>
                         </div>
 
-                        <div className="text-right shrink-0">
-                          <div className="font-sans font-semibold text-sm text-[#0c1a2e]">{job.salary}</div>
-                          <div className="text-[10px] text-[#94b0c4] font-semibold">{job.salaryNote}</div>
+                        {/* Description Preview */}
+                        {job.desc && (
+                          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mt-3">
+                            {job.desc}
+                          </p>
+                        )}
+
+                        {/* Tags & Sponsorship Pills (Brand violet/slate, no neon green) */}
+                        <div className="flex gap-1.5 flex-wrap items-center mt-3.5">
+                          {job.sponsorship && (
+                            <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.14)] px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide flex items-center gap-1 shadow-2xs">
+                              <CheckCircle className="w-3 h-3 text-[#1b1233]" /> Visa Sponsored
+                            </span>
+                          )}
+                          {job.relocation && (
+                            <span className="bg-slate-50 text-slate-700 border border-slate-200/80 px-2.5 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                              <Plane className="w-3 h-3 text-slate-500" /> Relocation
+                            </span>
+                          )}
+                          {job.tags && job.tags.slice(0, 2).map(t => (
+                            <span key={t} className="bg-slate-50 text-slate-600 border border-slate-200/60 px-2.5 py-1 rounded-lg text-[10px] font-medium">{t}</span>
+                          ))}
                         </div>
                       </div>
 
-                      <div className="flex gap-1.5 flex-wrap mb-3.5">
-                        {job.tags.slice(0, 2).map(t => (
-                          <span key={t} className="bg-slate-50 text-slate-600 border border-slate-100 px-2.5 py-1 rounded-lg text-[9.5px] font-bold tracking-wider">{t}</span>
-                        ))}
-                        {job.sponsorship && <span className="bg-emerald-50/60 text-emerald-700 border border-emerald-100/60 px-2.5 py-1 rounded-lg text-[9.5px] font-bold flex items-center gap-1"><CheckCircle className="w-3 h-3 text-emerald-500" />Visa Sponsored</span>}
-                        {job.relocation  && <span className="bg-indigo-50/60 text-indigo-700 border border-indigo-100/60 px-2.5 py-1 rounded-lg text-[9.5px] font-bold flex items-center gap-1"><Plane className="w-3 h-3 text-indigo-500" />Relocation</span>}
-                      </div>
-
-
-                      <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                        <div className="flex items-center gap-4 text-[11px] text-[#94b0c4] font-bold">
-                          <span className="flex items-center gap-1"><Briefcase className="w-3.5 h-3.5" />{job.type}</span>
-                          <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{job.posted}</span>
+                      {/* Card Footer */}
+                      <div className="flex items-center justify-between pt-3.5 border-t border-[rgba(67,15,122,0.08)]">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {/* Clean separated slot badge */}
+                          {(() => {
+                            const match = job.type ? job.type.match(/\((\d+\s*slots?)\)/i) : null;
+                            const cleanType = job.type ? job.type.replace(/\s*\(\d+\s*slots?\)/i, '').trim() : 'Full-Time';
+                            const slotText = match ? match[1] : null;
+                            return (
+                              <>
+                                <span className="bg-slate-100 text-slate-700 font-bold text-[10.5px] px-2.5 py-0.5 rounded-md flex items-center gap-1">
+                                  <Briefcase className="w-3 h-3 text-slate-500" />
+                                  <span>{cleanType}</span>
+                                </span>
+                                {slotText && (
+                                  <span className="bg-[#f4eff9] text-[#430f7a] border border-[#e9ddf6] font-extrabold text-[10px] px-2 py-0.5 rounded-md uppercase tracking-wider">
+                                    {slotText}
+                                  </span>
+                                )}
+                                <span className="text-[11px] text-slate-400 font-medium ml-1">
+                                  {job.posted}
+                                </span>
+                              </>
+                            );
+                          })()}
                         </div>
+
                         <button
                           onClick={e => { e.stopPropagation(); setActiveJob(job); window.scrollTo(0, 0); }}
-                          className="bg-gradient-to-r from-[#430f7a] via-[#581db5] to-[#6c22c3] hover:from-[#4f118c] hover:via-[#6c22c3] hover:to-[#892dd8] text-white text-xs font-extrabold px-5 py-2.5 rounded-xl shadow-md shadow-purple-950/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.97] transition-all flex items-center gap-1.5 group/btn outline-none"
+                          className="bg-black hover:bg-[#1b1233] text-white text-xs font-black uppercase tracking-wider px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 group/btn outline-none shrink-0"
                         >
-                          Apply Now <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                          <span>Apply</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                         </button>
                       </div>
                     </div>

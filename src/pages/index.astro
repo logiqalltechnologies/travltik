@@ -830,13 +830,13 @@ section{padding:96px 0;position:relative}
 
 .atlys-card{
   position: relative;
-  height: 460px;
+  height: 440px;
   border-radius: 28px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 22px 18px 20px;
+  padding: 24px 18px 20px;
   cursor: pointer;
   text-decoration: none;
   color: #ffffff;
@@ -849,15 +849,15 @@ section{padding:96px 0;position:relative}
 }
 @media(max-width: 768px){
   .atlys-card{
-    width: 260px;
-    height: 450px;
+    width: 255px;
+    height: 430px;
     scroll-snap-align: start;
   }
 }
 .atlys-card:hover{
   transform: translateY(-8px);
   box-shadow: 0 24px 50px -12px rgba(67, 15, 122, 0.38);
-  border-color: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .atlys-card-bg{
@@ -966,12 +966,8 @@ section{padding:96px 0;position:relative}
   display: grid;
   grid-template-columns: 1.35fr 0.8fr 0.95fr;
   width: 100%;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 16px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(255,255,255,0.22);
   box-sizing: border-box;
   gap: 6px;
 }
@@ -993,7 +989,7 @@ section{padding:96px 0;position:relative}
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.06em;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.68);
   text-transform: uppercase;
   margin-bottom: 2px;
   white-space: nowrap;
@@ -1014,41 +1010,6 @@ section{padding:96px 0;position:relative}
   text-overflow: ellipsis;
   width: 100%;
   text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-}
-
-.atlys-card-action{
-  width: 100%;
-  margin-top: 10px;
-  padding: 9px 14px;
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 12px;
-  color: #ffffff;
-  font-size: 11.5px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-  transition: all 0.25s ease;
-  box-sizing: border-box;
-}
-.atlys-card:hover .atlys-card-action{
-  background: #000000;
-  border-color: #000000;
-  color: #ffffff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-}
-.atlys-card:hover .atlys-action-arrow{
-  transform: translateX(3px);
-}
-.atlys-action-arrow{
-  transition: transform 0.25s ease;
 }
 
 /* Floating List/Map Pill (Atlys Style) */
@@ -1403,9 +1364,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="stays" aria-label="Stays">
-              <img src="/icons/categories/stays.svg" class="cat-nav-icon" alt="Stays" />
-              <span class="cat-nav-label">Stays</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="universities" aria-label="Universities">
+              <img src="/icons/categories/universities.svg" class="cat-nav-icon" alt="Universities" />
+              <span class="cat-nav-label">Universities</span>
             </button>
           </li>
           <li>
@@ -1591,9 +1552,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="stays" aria-label="Stays">
-            <img src="/icons/categories/stays.svg" class="cat-nav-icon" alt="Stays" />
-            <span class="cat-nav-label">Stays</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="universities" aria-label="Universities">
+            <img src="/icons/categories/universities.svg" class="cat-nav-icon" alt="Universities" />
+            <span class="cat-nav-label">Universities</span>
           </button>
         </li>
         <li>
@@ -2062,9 +2023,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         <img src="/icons/categories/jobs.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Jobs" />
         <span class="mob-tab-label">Jobs</span>
       </button>
-      <button type="button" class="mob-sheet-tab" data-tab="stays" role="tab">
-        <img src="/icons/categories/stays.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Stays" />
-        <span class="mob-tab-label">Stays</span>
+      <button type="button" class="mob-sheet-tab" data-tab="universities" role="tab">
+        <img src="/icons/categories/universities.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Universities" />
+        <span class="mob-tab-label">Universities</span>
       </button>
       <button type="button" class="mob-sheet-tab" data-tab="tours" role="tab">
         <img src="/icons/categories/tours.svg" class="cat-nav-icon" style="height:20px;width:auto;max-width:24px;object-fit:contain" alt="Tours" />
@@ -2762,7 +2723,7 @@ const SHOWCASE_DATA = {
         col2Val: '987 SEATS',
         col3Label: 'SALARY',
         col3Val: '$3.2K-$5.4K/M',
-        href: '/jobs#international-job-drives-2026',
+        href: '/job-drives',
         img: 'https://images.unsplash.com/photo-1517935703635-271907604a25?w=800&h=1200&fit=crop&q=90'
       },
       {
@@ -2776,7 +2737,7 @@ const SHOWCASE_DATA = {
         col2Val: '538 SEATS',
         col3Label: 'SALARY',
         col3Val: '€3.2K-€5.2K/M',
-        href: '/jobs#international-job-drives-2026',
+        href: '/job-drives',
         img: 'https://images.unsplash.com/photo-1513622470522-26c3c8a854bc?w=800&h=1200&fit=crop&q=90'
       },
       {
@@ -3405,10 +3366,6 @@ function renderShowcase(tab, filterQuery = '') {
               <span class="atlys-meta-val">${it.col3Val}</span>
             </div>
           </div>
-          <div class="atlys-card-action">
-            <span>${lookupTab === 'experts' || lookupTab === 'services' ? 'View Profile &amp; Consult' : 'Explore Route &amp; Apply'}</span>
-            <svg class="atlys-action-arrow" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          </div>
         </div>
       </a>
     `).join('');
@@ -3903,8 +3860,8 @@ const drawEasyTabs = () => {
       } else if (curEasy === 'Jobs') {
         const jTab = document.querySelector('.airbnb-cat-tab[data-tab="jobs"]');
         if (jTab) jTab.click();
-      } else if (curEasy === 'Stays') {
-        const sTab = document.querySelector('.airbnb-cat-tab[data-tab="stays"]');
+      } else if (curEasy === 'Universities' || curEasy === 'Stays') {
+        const sTab = document.querySelector('.airbnb-cat-tab[data-tab="universities"]');
         if (sTab) sTab.click();
       } else if (curEasy === 'Tours') {
         const tTab = document.querySelector('.airbnb-cat-tab[data-tab="tours"]');
