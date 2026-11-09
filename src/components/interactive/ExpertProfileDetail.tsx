@@ -194,7 +194,7 @@ export function ExpertProfileDetail({
         title: 'Canada 2026 Official Job & PR Drive',
         sub: '19 In-Demand Job Roles across Healthcare, Tech & Skilled Trades with direct LMIA work permits.',
         badge: '🍁 OFFICIAL DRIVE 2026',
-        badgeColor: 'bg-[#00b070] text-white',
+        badgeColor: 'bg-black text-white',
         price: 'CAD $3,200/mo',
         priceSub: 'Direct Employer Hiring · 100% Escrow Hold',
         tag1: 'LMIA Verified',
@@ -224,7 +224,7 @@ export function ExpertProfileDetail({
         title: 'Dubai 5D/4N Luxury Tour & Visa Combo',
         sub: 'Desert Safari, Marina Dhow Cruise, 4-Star Hotel Stay & Guaranteed 60-day Express E-Visa.',
         badge: 'FLAT ₹34,500 DEAL',
-        badgeColor: 'bg-[#00b070] text-white',
+        badgeColor: 'bg-black text-white',
         price: '₹34,500',
         priceSub: 'Complete Family Combo · 100% Escrow',
         tag1: 'Holiday Combo',
@@ -263,7 +263,7 @@ export function ExpertProfileDetail({
         title: 'Canada 2026 Official Job & PR Drive',
         sub: '19 In-Demand Job Roles across Healthcare, Tech & Skilled Trades with direct LMIA work permits.',
         badge: '🍁 OFFICIAL DRIVE 2026',
-        badgeColor: 'bg-[#00b070] text-white',
+        badgeColor: 'bg-black text-white',
         price: 'CAD $3,200/mo',
         priceSub: 'Direct Employer Hiring · 100% Escrow Hold',
         tag1: 'LMIA Verified',
@@ -293,7 +293,7 @@ export function ExpertProfileDetail({
         title: 'Dubai 5D/4N Luxury Tour & Visa Combo',
         sub: 'Desert Safari, Marina Dhow Cruise, 4-Star Hotel Stay & Guaranteed 60-day Express E-Visa.',
         badge: 'FLAT ₹34,500 DEAL',
-        badgeColor: 'bg-[#00b070] text-white',
+        badgeColor: 'bg-black text-white',
         price: '₹34,500',
         priceSub: 'Complete Family Combo · 100% Escrow',
         tag1: 'Holiday Combo',
@@ -329,7 +329,7 @@ export function ExpertProfileDetail({
               title: ad.title,
               sub: ad.description || `Special verified ad listing published directly by ${displayName}.`,
               badge: ad.type === 'premium' ? '⚡ PREMIUM VERIFIED' : `✓ POSTED BY ${displayName.toUpperCase()}`,
-              badgeColor: ad.type === 'premium' ? 'bg-[#581db5] text-white' : 'bg-[#00b070] text-white',
+              badgeColor: ad.type === 'premium' ? 'bg-[#581db5] text-white' : 'bg-black text-white',
               price: ad.price || 'Free Consultation',
               priceSub: ad.validTo ? `Valid until ${ad.validTo}` : 'Direct Verification',
               tag1: ad.category || 'Classified Ad',
@@ -561,19 +561,19 @@ export function ExpertProfileDetail({
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
                     ) : null}
-                    <div className={`w-full h-full rounded-xl bg-gradient-to-br from-[#370c63] via-[#430f7a] to-[#00b070] text-white flex flex-col items-center justify-center font-bold font-sans ${expert.image && !expert.image.includes('unsplash') ? 'hidden' : ''}`}>
+                    <div className={`w-full h-full rounded-xl bg-gradient-to-br from-[#1b1233] via-[#370c63] to-[#430f7a] text-white flex flex-col items-center justify-center font-bold font-sans ${expert.image && !expert.image.includes('unsplash') ? 'hidden' : ''}`}>
                       <span className="text-xl tracking-tight leading-none">
                         {displayName.split(' ').slice(0, 2).map((w: string) => w.charAt(0).toUpperCase()).join('')}
                       </span>
-                      <span className="text-[8px] uppercase tracking-wider text-emerald-200 mt-1 font-extrabold">VERIFIED</span>
+                      <span className="text-[8px] uppercase tracking-wider text-purple-200 mt-1 font-extrabold">VERIFIED</span>
                     </div>
                   </div>
 
                   {/* Title & Badges */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                      <span className="bg-[#ecfdf5] text-[#065f46] border border-[#a7f3d0] text-[11px] font-extrabold px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-2xs">
-                        <CheckCircle className="w-3.5 h-3.5 text-[#00b070]" /> TravlTik Verified
+                      <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.14)] text-[11px] font-extrabold px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-2xs">
+                        <CheckCircle className="w-3.5 h-3.5 text-[#1b1233]" /> TravlTik Verified
                       </span>
                       {expert.govReg && (
                         <span className="bg-[#f4eff9] text-[#430f7a] border border-[#e9dcf7] text-[10px] font-bold px-2.5 py-0.5 rounded-md">
@@ -590,7 +590,7 @@ export function ExpertProfileDetail({
                       <span>{displayRole}</span>
                       <span className="text-slate-300">•</span>
                       <span className="text-[#675f80] flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-[#00b070]" /> {displayLocation}
+                        <MapPin className="w-3.5 h-3.5 text-[#1b1233]" /> {displayLocation}
                       </span>
                     </p>
 
@@ -607,8 +607,8 @@ export function ExpertProfileDetail({
                         <span>{experienceText}</span>
                       </div>
 
-                      <div className="bg-[#ecfdf5] border border-[#a7f3d0] text-[#065f46] font-bold px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-2xs">
-                        <Clock className="w-3.5 h-3.5 text-[#00b070]" />
+                      <div className="bg-[#f4eff9] border border-[rgba(55,12,99,0.14)] text-[#1b1233] font-bold px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-2xs">
+                        <Clock className="w-3.5 h-3.5 text-[#1b1233]" />
                         <span>Response within 2 hours</span>
                       </div>
                     </div>
@@ -639,25 +639,25 @@ export function ExpertProfileDetail({
             {/* Right Column: Signature TravlTik Luxury Violet & Emerald Banner */}
             <div className="lg:col-span-5 relative min-h-[250px] lg:min-h-full overflow-hidden bg-gradient-to-br from-[#2a084e] via-[#430f7a] to-[#581db5] flex items-center justify-center p-8">
               {/* Aerodynamic flight trail & emerald glow */}
-              <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#00b070]/25 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#7525ca]/25 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-[#7525ca]/45 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#6c22c3]/25 rounded-full blur-3xl pointer-events-none" />
               
               {/* Subtle supersonic trail SVG motif */}
               <svg className="absolute inset-0 w-full h-full opacity-15 pointer-events-none" viewBox="0 0 400 300" fill="none">
-                <path d="M-50,280 Q150,150 420,40" stroke="#00b070" strokeWidth="2.5" strokeDasharray="6 6" />
+                <path d="M-50,280 Q150,150 420,40" stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" strokeDasharray="6 6" />
                 <path d="M-20,290 Q170,170 450,60" stroke="#ffffff" strokeWidth="1.5" strokeDasharray="4 8" />
               </svg>
 
               <div className="relative z-10 text-center text-white px-4 space-y-3.5">
-                <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#00e599] bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-sm">
-                  <span className="w-2 h-2 rounded-full bg-[#00e599] animate-pulse"></span>
+                <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                   <span>TRAVLTIK VERIFIED · ESCROW BACKED</span>
                 </div>
 
                 <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-snug drop-shadow-sm font-sans">
                   “Your Global Journey, <br />
-                  <span className="bg-gradient-to-r from-[#00e599] via-[#46e8b2] to-white bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent">
                     Supercharged by Real Experts
                   </span>”
                 </h3>
@@ -667,7 +667,7 @@ export function ExpertProfileDetail({
                 </p>
 
                 <div className="pt-2 flex items-center justify-center gap-3 text-[11px] text-purple-200/90 font-bold">
-                  <span className="flex items-center gap-1 text-[#00e599]">
+                  <span className="flex items-center gap-1 text-white">
                     <ShieldCheck className="w-3.5 h-3.5" /> 100% Escrow Protection
                   </span>
                   <span>•</span>
@@ -707,7 +707,7 @@ export function ExpertProfileDetail({
               <span>{tab.label}</span>
               {tab.badge && (
                 <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded-full font-black ${
-                  activeTab === tab.id ? 'bg-[#00b070] text-white' : 'bg-[#ecfdf5] text-[#00b070] border border-[#a7f3d0]'
+                  activeTab === tab.id ? 'bg-black text-white' : 'bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.14)]'
                 }`}>
                   {tab.badge}
                 </span>
@@ -729,7 +729,7 @@ export function ExpertProfileDetail({
             </div>
 
             <div className="pt-2 sm:pt-0 sm:pl-4">
-              <div className="flex items-center justify-center gap-1.5 text-[#00b070] font-black text-xl">
+              <div className="flex items-center justify-center gap-1.5 text-[#1b1233] font-black text-xl">
                 <Users className="w-4 h-4" />
                 <span className="text-[#1b1233]">{reviewCount > 0 ? `${reviewCount}+` : 'Active'}</span>
               </div>
@@ -745,7 +745,7 @@ export function ExpertProfileDetail({
             </div>
 
             <div className="pt-2 sm:pt-0 sm:pl-4">
-              <div className="flex items-center justify-center gap-1.5 text-[#00b070] font-black text-xl">
+              <div className="flex items-center justify-center gap-1.5 text-[#1b1233] font-black text-xl">
                 <Clock className="w-4 h-4" />
                 <span className="text-[#1b1233]">Direct</span>
               </div>
@@ -754,7 +754,7 @@ export function ExpertProfileDetail({
 
             <div className="pt-2 sm:pt-0 sm:pl-4 col-span-2 sm:col-span-1">
               <div className="flex items-center justify-center gap-1.5 text-[#370c63] font-black text-xl">
-                <Globe className="w-4 h-4 text-[#00b070]" />
+                <Globe className="w-4 h-4 text-[#1b1233]" />
                 <span className="text-[#1b1233]">{expertCountries.length}+</span>
               </div>
               <p className="text-[11px] font-bold text-[#675f80] uppercase tracking-wider mt-1">Countries Served</p>
@@ -763,7 +763,7 @@ export function ExpertProfileDetail({
           </div>
 
           <div className="mt-4 pt-3.5 border-t border-[rgba(67,15,122,0.08)] flex items-center justify-center gap-2 text-[11px] text-[#675f80] text-center">
-            <AlertCircle className="w-3.5 h-3.5 text-[#00b070] shrink-0" />
+            <AlertCircle className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
             <span>Provider-reported metrics are verified via platform reviews &amp; audited documents. Official visa approval decisions rest solely with government embassies.</span>
           </div>
         </div>
@@ -833,25 +833,25 @@ export function ExpertProfileDetail({
               {/* Professional Credentials Checklist */}
               <div className="pt-4 border-t border-[rgba(67,15,122,0.08)] bg-[#faf8fd] -mx-6 -mb-6 sm:-mx-8 sm:-mb-8 lg:-mx-9 lg:-mb-9 p-6 sm:p-8 lg:p-9 rounded-b-[26px]">
                 <h3 className="text-sm font-extrabold text-[#1b1233] mb-3.5 flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#00b070]" />
+                  <ShieldCheck className="w-4 h-4 text-[#1b1233]" />
                   <span>Professional Credentials &amp; Verification</span>
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="flex items-center gap-2 text-xs font-medium text-[#1b1233]">
-                    <CheckCircle className="w-4 h-4 text-[#00b070] shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-[#1b1233] shrink-0" />
                     <span>Identity verified by government ID</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-medium text-[#1b1233]">
-                    <CheckCircle className="w-4 h-4 text-[#00b070] shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-[#1b1233] shrink-0" />
                     <span>Registered business documentation verified</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-medium text-[#1b1233]">
-                    <CheckCircle className="w-4 h-4 text-[#00b070] shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-[#1b1233] shrink-0" />
                     <span>Immigration credentials &amp; track record reviewed</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-medium text-[#1b1233]">
-                    <CheckCircle className="w-4 h-4 text-[#00b070] shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-[#1b1233] shrink-0" />
                     <span>Office address &amp; operational status verified</span>
                   </div>
                 </div>
@@ -882,11 +882,11 @@ export function ExpertProfileDetail({
                 {servicesOffered.map((srv, idx) => (
                   <div 
                     key={idx}
-                    className="border-[1.5px] border-[rgba(67,15,122,0.10)] rounded-[22px] p-5 hover:border-[#00b070] hover:shadow-[0_12px_32px_-12px_rgba(67,15,122,0.14)] transition-all flex flex-col justify-between group bg-[#faf8fd]"
+                    className="border-[1.5px] border-[rgba(67,15,122,0.10)] rounded-[22px] p-5 hover:border-[#1b1233] hover:shadow-[0_12px_32px_-12px_rgba(67,15,122,0.14)] transition-all flex flex-col justify-between group bg-[#faf8fd]"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[10px] font-extrabold text-[#065f46] bg-[#ecfdf5] border border-[#a7f3d0] px-2.5 py-0.5 rounded-md">
+                        <span className="text-[10px] font-extrabold text-[#1b1233] bg-[#f4eff9] border border-[rgba(55,12,99,0.12)] px-2.5 py-0.5 rounded-md">
                           {srv.tag}
                         </span>
                         <span className="text-xs font-black text-[#1b1233]">
@@ -918,13 +918,13 @@ export function ExpertProfileDetail({
             {/* SECTION: CLASSIFIEDS & SPECIAL DEALS (PERMANENTLY RENDERED IN DOM) */}
             <div id="section-classifieds" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(55,12,99,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(55,12,99,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6 relative overflow-hidden">
               {/* Subtle brand glow accent */}
-              <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-[#00b070]/10 via-[#370c63]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-black/10 via-[#370c63]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
                 <div>
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-0.5 rounded-full shadow-2xs">
-                      <Zap className="w-3 h-3 text-[#00b070]" /> Verified Classified Deals
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#1b1233] bg-[#f4eff9] border border-[rgba(55,12,99,0.14)] px-3 py-0.5 rounded-full shadow-2xs">
+                      <Zap className="w-3 h-3 text-[#1b1233]" /> Verified Classified Deals
                     </span>
                     <span className="text-[10px] font-bold text-slate-400">• Direct Partner Batches</span>
                   </div>
@@ -938,7 +938,7 @@ export function ExpertProfileDetail({
                 
                 <a 
                   href="/tours" 
-                  className="text-xs font-bold text-[#370c63] hover:text-[#00b070] flex items-center gap-1 transition-colors self-start sm:self-auto shrink-0 bg-[#f4eff9] hover:bg-[#ece2f7] px-3.5 py-1.5 rounded-xl border border-[rgba(55,12,99,0.12)]"
+                  className="text-xs font-bold text-[#370c63] hover:text-[#1b1233] flex items-center gap-1 transition-colors self-start sm:self-auto shrink-0 bg-[#f4eff9] hover:bg-[#ece2f7] px-3.5 py-1.5 rounded-xl border border-[rgba(55,12,99,0.12)]"
                 >
                   <span>Explore all classifieds</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -950,7 +950,7 @@ export function ExpertProfileDetail({
                 {displayedClassifieds.map((item) => (
                   <div 
                     key={item.id}
-                    className="group border-[1.5px] border-[rgba(55,12,99,0.10)] rounded-[24px] overflow-hidden bg-[#ffffff] hover:border-[#00b070] hover:shadow-[0_16px_36px_-12px_rgba(55,12,99,0.16)] transition-all duration-300 flex flex-col justify-between"
+                    className="group border-[1.5px] border-[rgba(55,12,99,0.10)] rounded-[24px] overflow-hidden bg-[#ffffff] hover:border-[#1b1233] hover:shadow-[0_16px_36px_-12px_rgba(55,12,99,0.16)] transition-all duration-300 flex flex-col justify-between"
                   >
                     {/* Media Header */}
                     <div className="relative h-44 w-full overflow-hidden bg-slate-900">
@@ -967,7 +967,7 @@ export function ExpertProfileDetail({
                       
                       {/* Top Badges */}
                       <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                        <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm ${item.badgeColor || 'bg-[#00b070] text-white'}`}>
+                        <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm ${item.badgeColor || 'bg-black text-white'}`}>
                           {item.badge}
                         </span>
                         {item.popular && (
@@ -994,7 +994,7 @@ export function ExpertProfileDetail({
                       <div>
                         {item.isDirectByExpert && (
                           <div className="mb-2">
-                            <span className="inline-flex items-center gap-1 text-[10px] font-black text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-black text-[#1b1233] bg-[#f4eff9] border border-[rgba(55,12,99,0.14)] px-2 py-0.5 rounded-full">
                               ✓ Posted by {displayName}
                             </span>
                           </div>
@@ -1011,7 +1011,7 @@ export function ExpertProfileDetail({
                           <span className="text-[10px] font-bold text-[#370c63] bg-[#f4eff9] border border-[rgba(55,12,99,0.12)] px-2.5 py-0.5 rounded-md">
                             {item.tag1}
                           </span>
-                          <span className="text-[10px] font-bold text-[#065f46] bg-[#ecfdf5] border border-[#a7f3d0] px-2.5 py-0.5 rounded-md">
+                          <span className="text-[10px] font-bold text-[#1b1233] bg-[#f4eff9] border border-[rgba(55,12,99,0.12)] px-2.5 py-0.5 rounded-md">
                             {item.tag2}
                           </span>
                           <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">
@@ -1129,8 +1129,8 @@ export function ExpertProfileDetail({
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-xs text-[#1b1233]">{rev.author}</span>
                             {rev.verified && (
-                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-[#ecfdf5] px-2 py-0.5 rounded-full border border-emerald-200/60">
-                                <CheckCircle className="w-2.5 h-2.5 text-[#00b070]" /> Verified interaction
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#1b1233] bg-[#f4eff9] px-2 py-0.5 rounded-full border border-[rgba(55,12,99,0.14)]">
+                                <CheckCircle className="w-2.5 h-2.5 text-[#1b1233]" /> Verified interaction
                               </span>
                             )}
                           </div>
@@ -1179,15 +1179,15 @@ export function ExpertProfileDetail({
             <div id="section-gallery" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[rgba(67,15,122,0.08)] pb-4">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-0.5 rounded-full mb-1 shadow-2xs">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#00b070]" /> VERIFIED PRACTICE &amp; ACCREDITATION
+                  <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#1b1233] bg-[#f4eff9] border border-[rgba(55,12,99,0.14)] px-3 py-0.5 rounded-full mb-1 shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> VERIFIED PRACTICE &amp; ACCREDITATION
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Gallery &amp; Official Credentials</h2>
                   <p className="text-xs text-[#675f80] mt-0.5">Government-registered legal standing, TravlTik escrow protection seal, and verified chambers.</p>
                 </div>
                 <button
                   onClick={() => setQuoteModalOpen(true)}
-                  className="text-xs font-bold text-[#430f7a] hover:text-[#00b070] border border-[rgba(67,15,122,0.14)] bg-white hover:bg-[#faf8fd] px-4 py-2 rounded-xl transition-all shrink-0 cursor-pointer shadow-2xs self-start sm:self-auto"
+                  className="text-xs font-bold text-[#430f7a] hover:text-black border border-[rgba(67,15,122,0.14)] bg-white hover:bg-[#faf8fd] px-4 py-2 rounded-xl transition-all shrink-0 cursor-pointer shadow-2xs self-start sm:self-auto"
                 >
                   Request Full Portfolio
                 </button>
@@ -1211,12 +1211,12 @@ export function ExpertProfileDetail({
               ) : (
                 /* Authentic 3-Card Verified Credential Showcase */
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#00b070] transition-colors flex flex-col justify-between space-y-3">
+                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex flex-col justify-between space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-[#ecfdf5] text-[#00b070] flex items-center justify-center border border-emerald-200/60 shadow-2xs">
-                        <ShieldCheck className="w-5 h-5 text-[#00b070]" />
+                      <div className="w-10 h-10 rounded-xl bg-[#f4eff9] text-[#1b1233] flex items-center justify-center border border-purple-200/60 shadow-2xs">
+                        <ShieldCheck className="w-5 h-5 text-[#1b1233]" />
                       </div>
-                      <span className="text-[10px] font-black uppercase text-[#065f46] bg-[#ecfdf5] border border-[#a7f3d0] px-2 py-0.5 rounded-full">
+                      <span className="text-[10px] font-black uppercase text-[#1b1233] bg-white border border-[rgba(55,12,99,0.14)] px-2 py-0.5 rounded-full">
                         ACTIVE ID
                       </span>
                     </div>
@@ -1231,7 +1231,7 @@ export function ExpertProfileDetail({
                     </div>
                   </div>
 
-                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#00b070] transition-colors flex flex-col justify-between space-y-3">
+                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex flex-col justify-between space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="w-10 h-10 rounded-xl bg-[#f4eff9] text-[#430f7a] flex items-center justify-center border border-purple-200/60 shadow-2xs">
                         <Award className="w-5 h-5 text-[#430f7a]" />
@@ -1242,7 +1242,7 @@ export function ExpertProfileDetail({
                     </div>
                     <div>
                       <h4 className="text-xs font-black text-[#1b1233] uppercase tracking-wide">100% Milestone Escrow Guarantee</h4>
-                      <p className="text-[11px] font-bold text-[#008f5a] mt-1">
+                      <p className="text-[11px] font-bold text-[#1b1233] mt-1">
                         Zero Upfront Disbursement
                       </p>
                       <p className="text-[11px] text-[#675f80] mt-1 leading-relaxed">
@@ -1251,7 +1251,7 @@ export function ExpertProfileDetail({
                     </div>
                   </div>
 
-                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#00b070] transition-colors flex flex-col justify-between space-y-3">
+                  <div className="rounded-[22px] border-[1.5px] border-[rgba(67,15,122,0.10)] p-5 bg-[#faf8fd] hover:border-[#1b1233] transition-colors flex flex-col justify-between space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="w-10 h-10 rounded-xl bg-[#f0f9ff] text-[#0284c7] flex items-center justify-center border border-sky-200/60 shadow-2xs">
                         <Building2 className="w-5 h-5 text-[#0284c7]" />
@@ -1279,8 +1279,8 @@ export function ExpertProfileDetail({
               
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[rgba(67,15,122,0.08)] pb-5">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#008f5a] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-0.5 rounded-full mb-1.5 shadow-2xs">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#00b070]" /> VERIFIED CONSULTATION STANDARDS
+                  <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#1b1233] bg-[#f4eff9] border border-[rgba(55,12,99,0.12)] px-3 py-0.5 rounded-full mb-1.5 shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> VERIFIED CONSULTATION STANDARDS
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Frequently Asked Questions</h2>
                   <p className="text-xs text-[#675f80] mt-0.5">Everything you need to know about working with {displayName} and TravlTik Escrow.</p>
@@ -1288,7 +1288,7 @@ export function ExpertProfileDetail({
 
                 <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
                   <span className="text-[11px] font-bold text-[#430f7a] bg-[#f4eff9] border border-[rgba(67,15,122,0.12)] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
-                    <Clock className="w-3.5 h-3.5 text-[#00b070]" /> 2-Hour Response SLA
+                    <Clock className="w-3.5 h-3.5 text-[#1b1233]" /> 2-Hour Response SLA
                   </span>
                 </div>
               </div>
@@ -1302,7 +1302,7 @@ export function ExpertProfileDetail({
                       key={idx}
                       className={`border-[1.5px] rounded-[22px] transition-all duration-300 overflow-hidden ${
                         isOpen 
-                          ? 'border-[#00b070] bg-gradient-to-r from-white via-[#fafefe] to-[#f4fcf9] shadow-[0_8px_24px_-8px_rgba(0,176,112,0.18)]' 
+                          ? 'border-[#1b1233] bg-gradient-to-r from-white via-[#faf9fc] to-[#f5f2fb] shadow-[0_8px_24px_-8px_rgba(27,18,51,0.15)]' 
                           : 'border-[rgba(67,15,122,0.10)] bg-[#ffffff] hover:border-[rgba(67,15,122,0.25)] hover:bg-[#faf8fd]'
                       }`}
                     >
@@ -1314,7 +1314,7 @@ export function ExpertProfileDetail({
                           <div className="flex items-center gap-2 mb-1.5">
                             <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md ${
                               isOpen 
-                                ? 'bg-[#00b070] text-white shadow-xs' 
+                                ? 'bg-[#1b1233] text-white shadow-xs' 
                                 : 'bg-[#f4eff9] text-[#430f7a] border border-[rgba(67,15,122,0.10)] group-hover:bg-[#ebe0f8]'
                             }`}>
                               {faq.category}
@@ -1332,7 +1332,7 @@ export function ExpertProfileDetail({
 
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 mt-1 ${
                           isOpen 
-                            ? 'bg-[#00b070] text-white rotate-180 shadow-[0_4px_12px_rgba(0,176,112,0.35)]' 
+                            ? 'bg-[#1b1233] text-white rotate-180 shadow-[0_4px_12px_rgba(27,18,51,0.35)]' 
                             : 'bg-[#f4eff9] text-[#430f7a] group-hover:bg-[#ebe0f8]'
                         }`}>
                           <ChevronDown className="w-4 h-4" />
@@ -1340,7 +1340,7 @@ export function ExpertProfileDetail({
                       </button>
 
                       {isOpen && (
-                        <div className="px-5 pb-5 pt-1 text-xs text-[#524b6e] leading-relaxed font-medium border-t border-[rgba(0,176,112,0.15)] bg-white/70">
+                        <div className="px-5 pb-5 pt-1 text-xs text-[#524b6e] leading-relaxed font-medium border-t border-[rgba(27,18,51,0.10)] bg-white/70">
                           <p className="whitespace-pre-line mt-2 leading-relaxed">
                             {faq.a}
                           </p>
@@ -1351,18 +1351,18 @@ export function ExpertProfileDetail({
                 })}
               </div>
 
-              {/* Direct Help / Consultation Callout Card */}
-              <div className="rounded-[24px] bg-gradient-to-br from-[#2a084e] via-[#430f7a] to-[#581db5] p-6 text-white relative overflow-hidden mt-6 shadow-[0_12px_32px_-10px_rgba(67,15,122,0.4)]">
-                <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#00b070]/20 rounded-full blur-2xl pointer-events-none" />
+              {/* Direct Help / Consultation Callout Card (Black Accent Like Logo) */}
+              <div className="rounded-[24px] bg-gradient-to-br from-[#0c0517] via-[#1a0831] to-[#2b0c50] p-6 text-white relative overflow-hidden mt-6 shadow-[0_16px_40px_-10px_rgba(12,5,23,0.6)] border border-white/10">
+                <div className="absolute -top-12 -right-12 w-56 h-56 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
                 <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="space-y-1">
-                    <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#00e599] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15">
-                      <Sparkles className="w-3 h-3 text-[#00e599]" /> 1-ON-1 CONFIDENTIAL ASSESSMENT
+                    <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-white bg-white/15 px-3 py-1 rounded-full border border-white/20 shadow-xs">
+                      <Sparkles className="w-3 h-3 text-white" /> 1-ON-1 CONFIDENTIAL ASSESSMENT
                     </div>
                     <h4 className="text-base sm:text-lg font-black tracking-tight text-white">
                       Still have questions about your specific profile?
                     </h4>
-                    <p className="text-xs text-purple-100/85 max-w-md leading-relaxed">
+                    <p className="text-xs text-purple-100/90 max-w-md leading-relaxed">
                       Consult directly with {displayName}. Review eligible pathways, discuss consular requirements, and get an escrow-protected roadmap.
                     </p>
                   </div>
@@ -1370,9 +1370,9 @@ export function ExpertProfileDetail({
                   <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto">
                     <button
                       onClick={() => setQuoteModalOpen(true)}
-                      className="w-full sm:w-auto bg-[#00b070] hover:bg-[#00c57d] active:scale-95 text-white font-extrabold text-xs px-5 py-3 rounded-xl shadow-[0_4px_16px_rgba(0,176,112,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full sm:w-auto bg-black hover:bg-[#1b1233] active:scale-95 text-white font-extrabold text-xs px-6 py-3.5 rounded-xl border border-white/25 shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <MessageSquare className="w-3.5 h-3.5" />
+                      <MessageSquare className="w-3.5 h-3.5 text-white" />
                       <span>Contact {displayName.split(' ')[0]}</span>
                     </button>
                   </div>
@@ -1438,7 +1438,7 @@ export function ExpertProfileDetail({
                 </div>
 
                 <div className="flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 text-[#00b070] shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-[#1b1233] shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold text-[#1b1233] block">Service location</span>
                     <span className="text-[#675f80]">{displayLocation}</span>
@@ -1459,23 +1459,23 @@ export function ExpertProfileDetail({
                 <h4 className="text-xs font-extrabold text-[#1b1233]">Why choose this provider?</h4>
                 <ul className="space-y-2 text-[11px] text-[#675f80]">
                   <li className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#00b070] shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
                     <span>Government registry &amp; council verified</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#00b070] shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
                     <span>Dedicated documentation audit team</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#00b070] shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
                     <span>Secure client file management</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#00b070] shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
                     <span>Transparent fee structure with escrow</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#00b070] shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
                     <span>Proven 98% positive client feedback</span>
                   </li>
                 </ul>
@@ -1500,14 +1500,14 @@ export function ExpertProfileDetail({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
               <div>
                 <div className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#430f7a] bg-[#f4eff9] border border-[#e9ddf6] px-3 py-1 rounded-full mb-1.5 shadow-2xs">
-                  <Award className="w-3.5 h-3.5 text-[#00b070]" /> VERIFIED IMMIGRATION COUNCIL
+                  <Award className="w-3.5 h-3.5 text-[#1b1233]" /> VERIFIED IMMIGRATION COUNCIL
                 </div>
                 <h3 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Top-Rated Related Consultants</h3>
                 <p className="text-xs text-[#675f80] mt-0.5">Explore licensed advisors in the same corridors with 100% milestone escrow hold.</p>
               </div>
               <a 
                 href="/find-experts" 
-                className="text-xs font-bold text-[#430f7a] hover:text-[#00b070] flex items-center gap-1.5 transition-colors self-start sm:self-auto bg-white hover:bg-[#faf8fd] border border-[rgba(67,15,122,0.14)] px-4 py-2 rounded-xl shadow-2xs"
+                className="text-xs font-bold text-[#430f7a] hover:text-black flex items-center gap-1.5 transition-colors self-start sm:self-auto bg-white hover:bg-[#faf8fd] border border-[rgba(67,15,122,0.14)] px-4 py-2 rounded-xl shadow-2xs"
               >
                 <span>Explore all verified experts (500+)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1519,7 +1519,7 @@ export function ExpertProfileDetail({
                 <a
                   key={rel.id}
                   href={`/expert/${rel.id}`}
-                  className="group relative rounded-[28px] overflow-hidden flex flex-col justify-end min-h-[420px] p-5.5 text-white shadow-[0_16px_40px_-15px_rgba(67,15,122,0.22)] border-[1.5px] border-[rgba(67,15,122,0.15)] hover:border-[#00b070] hover:shadow-[0_24px_50px_-12px_rgba(67,15,122,0.38)] hover:-translate-y-2 transition-all duration-300 bg-[#0b0c16] text-left no-underline cursor-pointer"
+                  className="group relative rounded-[28px] overflow-hidden flex flex-col justify-end min-h-[440px] h-[440px] p-6 pb-6 text-white shadow-[0_16px_40px_-15px_rgba(67,15,122,0.25)] border-[1.5px] border-[rgba(255,255,255,0.22)] hover:border-white/50 hover:shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-all duration-300 bg-[#090d16] text-left no-underline cursor-pointer box-border"
                 >
                   {/* Photo with zoom on hover */}
                   <img
@@ -1533,29 +1533,29 @@ export function ExpertProfileDetail({
                   />
 
                   {/* Multi-stage luxury gradient matching landing page atlys-card */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0518] via-[#0a0518]/65 to-transparent pointer-events-none group-hover:via-[#0a0518]/75 transition-colors" />
-                  <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#070312] via-[#070312]/80 via-48% to-transparent pointer-events-none group-hover:via-[#070312]/88 transition-colors" />
+                  <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-black/55 to-transparent pointer-events-none" />
 
                   {/* Top Pill: Registration or Verified status */}
-                  <div className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#430f7a]/92 to-[#581db5]/96 backdrop-blur-md px-3 py-1 rounded-full border border-white/25 shadow-md">
-                    <ShieldCheck className="w-3 h-3 text-[#00e599]" />
+                  <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 text-[10.5px] font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#430f7a]/95 to-[#581db5]/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/25 shadow-md">
+                    <ShieldCheck className="w-3 h-3 text-white" />
                     <span>{rel.govReg || 'VERIFIED ADVISOR'}</span>
                   </div>
 
                   {/* Top Right Flag */}
-                  <div className="absolute top-3.5 right-3.5 z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-sm shadow-md">
+                  <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-sm shadow-md">
                     {getCountryFlag(rel.countries?.[0] || 'Canada')}
                   </div>
 
                   {/* Content Container */}
-                  <div className="relative z-10 w-full flex flex-col">
+                  <div className="relative z-10 w-full flex flex-col pointer-events-none">
                     {/* Name */}
-                    <h4 className="text-lg font-black text-white uppercase tracking-wide group-hover:text-[#00e599] transition-colors leading-tight drop-shadow-sm font-sans line-clamp-1">
+                    <h4 className="text-[19px] font-black text-white uppercase tracking-wide group-hover:text-purple-200 transition-colors leading-snug drop-shadow-md font-sans line-clamp-1">
                       {rel.name}
                     </h4>
 
                     {/* Role */}
-                    <p className="text-xs text-white/85 font-medium truncate mt-1 drop-shadow-sm">
+                    <p className="text-xs text-purple-100/90 font-medium truncate mt-0.5 drop-shadow-sm">
                       {rel.role}
                     </p>
 
@@ -1579,10 +1579,10 @@ export function ExpertProfileDetail({
                     </div>
 
                     {/* Bottom Action Pill */}
-                    <div className="mt-3.5 pt-2.5 flex items-center justify-center">
-                      <span className="w-full text-center text-[11px] font-extrabold uppercase tracking-wider text-white bg-white/15 group-hover:bg-[#00b070] group-hover:text-white backdrop-blur-md py-2 px-3 rounded-xl border border-white/20 group-hover:border-[#00b070] transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                    <div className="mt-3 w-full">
+                      <span className="w-full text-center text-xs font-extrabold uppercase tracking-wider text-white bg-white/20 group-hover:bg-black group-hover:border-black group-hover:text-white backdrop-blur-md py-2.5 px-4 rounded-xl border border-white/30 transition-all flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,0,0,0.3)]">
                         <span>View Profile &amp; Consult</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
                   </div>
