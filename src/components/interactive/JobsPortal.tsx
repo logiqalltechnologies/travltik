@@ -5,6 +5,7 @@ import {
   Building2, Users, Zap, Code2, Stethoscope, HardHat,
   ChefHat, GraduationCap, Bookmark, BookmarkPlus,
   AlertCircle, AlertTriangle, CheckCircle2, Lock, X, Mail, Phone, User, Loader2,
+  Sparkles,
 } from "lucide-react";
 import { JobSchema } from "../seo/JobSchema";
 import { InternationalJobDriveShowcase } from "./InternationalJobDriveShowcase";
