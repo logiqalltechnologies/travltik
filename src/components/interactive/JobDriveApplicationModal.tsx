@@ -75,6 +75,7 @@ export function JobDriveApplicationModal({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
+  const [showRoleSelector, setShowRoleSelector] = useState(false);
 
   useEffect(() => {
     if (initialJob) {
@@ -200,33 +201,40 @@ export function JobDriveApplicationModal({
         className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-auto transform transition-all font-sans text-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Header Banner with Deep Obsidian Black & Royal Purple */}
-        <div className={`relative text-white p-5 sm:p-6 overflow-hidden ${
+        {/* Top Header Banner with Deep Obsidian Black & Royal Purple - Sleek & Compact */}
+        <div className={`relative text-white px-5 py-4 sm:px-6 sm:py-5 overflow-hidden ${
           isCanada 
             ? "bg-gradient-to-br from-[#060205] via-[#14050e] via-35% to-[#2c0919]" 
             : "bg-gradient-to-br from-[#05020c] via-[#0f061c] via-35% to-[#20083a]"
         }`}>
           {/* Subtle ambient lighting */}
-          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-[#370c63]/40 blur-3xl pointer-events-none" />
+          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-[#370c63]/30 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-16 -left-16 w-52 h-52 rounded-full bg-black/60 blur-2xl pointer-events-none" />
 
-          {/* Subtle watermark */}
-          <div className="absolute top-2 right-4 text-6xl opacity-10 select-none pointer-events-none">
-            {isCanada ? "🍁" : "🇱🇺"}
-          </div>
-
-          <div className="relative z-10 flex items-start justify-between gap-4">
-            <div>
-              <div className="inline-flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-[11px] font-black uppercase px-3 py-1 rounded-full mb-2 tracking-wider border border-white/15 shadow-inner">
-                <span>{flagEmoji} {selectedCountry.toUpperCase()} JOB VACANCY 2026</span>
-                <span className="text-amber-300">• {isCanada ? "980+ SEATS" : "530+ SEATS"}</span>
+          <div className="relative z-10 flex items-start justify-between gap-3">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider border border-white/15 shadow-inner">
+                <span>{flagEmoji} {selectedCountry.toUpperCase()} INTAKE 2026</span>
+                <span className="text-amber-300">• DIRECT EMPLOYER</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight font-sora text-white drop-shadow-md">
+              <h2 className="text-lg sm:text-xl font-black tracking-tight font-sora text-white drop-shadow-md">
                 Application for {activeJob.title}
               </h2>
-              <p className="text-xs text-slate-300 mt-1 max-w-lg leading-relaxed">
-                Direct employer work permit vacancy in {selectedCountry}. Fill in your applicant credentials below to register in the embassy filing queue.
-              </p>
+              {/* Sleek inline metrics row */}
+              <div className="flex items-center gap-2 flex-wrap pt-0.5 text-xs">
+                <span className="inline-flex items-center gap-1.5 bg-black/45 px-2.5 py-0.5 rounded-lg border border-white/10 font-bold">
+                  <span className="text-[9.5px] text-slate-400 uppercase font-extrabold">Comp:</span>
+                  <span className="text-amber-300 font-black">{activeJob.salaryMonthly}</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-black/45 px-2.5 py-0.5 rounded-lg border border-white/10 font-bold">
+                  <span className="text-[9.5px] text-slate-400 uppercase font-extrabold">Openings:</span>
+                  <span className="text-white font-black">{activeJob.vacancies} Seats</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-black/45 px-2.5 py-0.5 rounded-lg border border-white/10 font-bold">
+                  <span className="text-[9.5px] text-slate-400 uppercase font-extrabold">Visa:</span>
+                  <span className="text-emerald-300 font-black">{permitLabel}</span>
+                </span>
+              </div>
             </div>
 
             <button
@@ -235,135 +243,143 @@ export function JobDriveApplicationModal({
               className="text-white/80 hover:text-white bg-black/40 hover:bg-black/70 border border-white/15 p-2 rounded-full transition-all cursor-pointer shrink-0 shadow-md"
               aria-label="Close modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
-          </div>
-
-          {/* Quick Metrics Strip with Obsidian Black Depth */}
-          <div className="relative z-10 grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-white/15 text-center">
-            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
-              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Monthly Salary</div>
-              <div className="text-sm sm:text-base font-black text-amber-300 mt-0.5">{activeJob.salaryMonthly}</div>
-            </div>
-            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
-              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Available Openings</div>
-              <div className="text-sm sm:text-base font-black text-white mt-0.5">{activeJob.vacancies} Positions</div>
-            </div>
-            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
-              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Permit Type</div>
-              <div className="text-xs sm:text-sm font-black text-white mt-0.5">{permitLabel}</div>
-            </div>
           </div>
         </div>
 
         {/* Content Body */}
-        <div className="p-5 sm:p-7 max-h-[75vh] overflow-y-auto custom-scrollbar">
+        <div className="p-4 sm:p-6 max-h-[75vh] overflow-y-auto custom-scrollbar">
           {!submittedRef ? (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               
-              {/* Country & Role Switcher */}
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pb-3 border-b border-slate-100">
-                <div className="sm:col-span-5">
-                  <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1">
-                    Destination Country
-                  </label>
-                  <div className="flex rounded-xl p-1 bg-slate-100 border border-slate-200">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedCountry("Canada");
-                        const firstCan = CANADA_VACANCIES_2026[0];
-                        setActiveJob({
-                          sNo: firstCan.sNo,
-                          id: firstCan.id,
-                          title: firstCan.title,
-                          vacancies: firstCan.vacancies,
-                          salaryMonthly: firstCan.salaryMonthly,
-                          location: firstCan.location,
-                          country: "Canada"
-                        });
-                      }}
-                      className={`flex-1 py-1.5 text-xs font-black rounded-lg transition-all ${
-                        isCanada ? "bg-white text-[#8b0000] shadow-xs" : "text-slate-600 hover:text-slate-900"
-                      }`}
-                    >
-                      🍁 Canada (19)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedCountry("Luxembourg");
-                        const firstLux = LUXEMBOURG_VACANCIES_2026[0];
-                        setActiveJob({
-                          sNo: firstLux.sNo,
-                          id: firstLux.id,
-                          title: firstLux.category,
-                          vacancies: firstLux.vacancies,
-                          salaryMonthly: firstLux.salaryMonthly,
-                          location: firstLux.location,
-                          country: "Luxembourg"
-                        });
-                      }}
-                      className={`flex-1 py-1.5 text-xs font-black rounded-lg transition-all ${
-                        !isCanada ? "bg-white text-[#003399] shadow-xs" : "text-slate-600 hover:text-slate-900"
-                      }`}
-                    >
-                      🇱🇺 Luxembourg (22)
-                    </button>
+              {/* Sleek Position Summary with Quick Switcher */}
+              <div className="rounded-xl border border-slate-200/90 bg-[#faf8fd] p-2.5 transition-all">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider shrink-0">Applying for:</span>
+                    <span className="text-xs font-black text-[#1b1233] truncate">
+                      {flagEmoji} {selectedCountry} · {activeJob.title}
+                    </span>
+                    <span className="hidden sm:inline text-[11px] text-slate-400 font-semibold shrink-0">
+                      ({activeJob.vacancies} open)
+                    </span>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowRoleSelector(!showRoleSelector)}
+                    className="text-[11px] font-black text-[#430f7a] hover:underline cursor-pointer shrink-0"
+                  >
+                    {showRoleSelector ? "Done" : "Change Role"}
+                  </button>
                 </div>
 
-                <div className="sm:col-span-7">
-                  <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1">
-                    Select Position
-                  </label>
-                  <select
-                    value={activeJob.id}
-                    onChange={(e) => {
-                      if (isCanada) {
-                        const found = CANADA_VACANCIES_2026.find(j => j.id === e.target.value);
-                        if (found) {
-                          setActiveJob({
-                            sNo: found.sNo,
-                            id: found.id,
-                            title: found.title,
-                            vacancies: found.vacancies,
-                            salaryMonthly: found.salaryMonthly,
-                            location: found.location,
-                            country: "Canada"
-                          });
+                {showRoleSelector && (
+                  <div className="mt-3 pt-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-12 gap-2.5 animate-fadeIn">
+                    <div className="sm:col-span-5">
+                      <label className="block text-[10px] font-black uppercase tracking-wider text-slate-600 mb-1">
+                        Country
+                      </label>
+                      <div className="flex rounded-lg p-0.5 bg-slate-200/70 border border-slate-300">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedCountry("Canada");
+                            const firstCan = CANADA_VACANCIES_2026[0];
+                            setActiveJob({
+                              sNo: firstCan.sNo,
+                              id: firstCan.id,
+                              title: firstCan.title,
+                              vacancies: firstCan.vacancies,
+                              salaryMonthly: firstCan.salaryMonthly,
+                              location: firstCan.location,
+                              country: "Canada"
+                            });
+                          }}
+                          className={`flex-1 py-1 text-xs font-black rounded-md transition-all ${
+                            isCanada ? "bg-white text-black shadow-xs" : "text-slate-600 hover:text-black"
+                          }`}
+                        >
+                          🍁 Canada
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedCountry("Luxembourg");
+                            const firstLux = LUXEMBOURG_VACANCIES_2026[0];
+                            setActiveJob({
+                              sNo: firstLux.sNo,
+                              id: firstLux.id,
+                              title: firstLux.category,
+                              vacancies: firstLux.vacancies,
+                              salaryMonthly: firstLux.salaryMonthly,
+                              location: firstLux.location,
+                              country: "Luxembourg"
+                            });
+                          }}
+                          className={`flex-1 py-1 text-xs font-black rounded-md transition-all ${
+                            !isCanada ? "bg-white text-black shadow-xs" : "text-slate-600 hover:text-black"
+                          }`}
+                        >
+                          🇱🇺 Luxembourg
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-7">
+                      <label className="block text-[10px] font-black uppercase tracking-wider text-slate-600 mb-1">
+                        Position
+                      </label>
+                      <select
+                        value={activeJob.id}
+                        onChange={(e) => {
+                          if (isCanada) {
+                            const found = CANADA_VACANCIES_2026.find(j => j.id === e.target.value);
+                            if (found) {
+                              setActiveJob({
+                                sNo: found.sNo,
+                                id: found.id,
+                                title: found.title,
+                                vacancies: found.vacancies,
+                                salaryMonthly: found.salaryMonthly,
+                                location: found.location,
+                                country: "Canada"
+                              });
+                            }
+                          } else {
+                            const found = LUXEMBOURG_VACANCIES_2026.find(j => j.id === e.target.value);
+                            if (found) {
+                              setActiveJob({
+                                sNo: found.sNo,
+                                id: found.id,
+                                title: found.category,
+                                vacancies: found.vacancies,
+                                salaryMonthly: found.salaryMonthly,
+                                location: found.location,
+                                country: "Luxembourg"
+                              });
+                            }
+                          }
+                        }}
+                        className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-900 focus:outline-none focus:border-black"
+                      >
+                        {isCanada
+                          ? CANADA_VACANCIES_2026.map(j => (
+                              <option key={j.id} value={j.id}>
+                                #{j.sNo}. {j.title} ({j.salaryMonthly})
+                              </option>
+                            ))
+                          : LUXEMBOURG_VACANCIES_2026.map(j => (
+                              <option key={j.id} value={j.id}>
+                                #{j.sNo}. {j.category} ({j.salaryMonthly})
+                              </option>
+                            ))
                         }
-                      } else {
-                        const found = LUXEMBOURG_VACANCIES_2026.find(j => j.id === e.target.value);
-                        if (found) {
-                          setActiveJob({
-                            sNo: found.sNo,
-                            id: found.id,
-                            title: found.category,
-                            vacancies: found.vacancies,
-                            salaryMonthly: found.salaryMonthly,
-                            location: found.location,
-                            country: "Luxembourg"
-                          });
-                        }
-                      }
-                    }}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#370c63]"
-                  >
-                    {isCanada
-                      ? CANADA_VACANCIES_2026.map(j => (
-                          <option key={j.id} value={j.id}>
-                            #{j.sNo}. {j.title} — {j.vacancies} Open ({j.salaryMonthly})
-                          </option>
-                        ))
-                      : LUXEMBOURG_VACANCIES_2026.map(j => (
-                          <option key={j.id} value={j.id}>
-                            #{j.sNo}. {j.category} — {j.vacancies} Open ({j.salaryMonthly})
-                          </option>
-                        ))
-                    }
-                  </select>
-                </div>
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Form Input 1: Full Name & Age (USER EXPLICIT REQUIREMENT) */}
@@ -445,7 +461,7 @@ export function JobDriveApplicationModal({
                       placeholder="e.g. Hyderabad, India"
                       value={currentCity}
                       onChange={(e) => setCurrentCity(e.target.value)}
-                      className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-[#370c63] focus:bg-white bg-slate-50/50 text-xs sm:text-sm font-semibold transition-all"
+                      className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-black focus:bg-white bg-slate-50/50 text-xs sm:text-sm font-semibold transition-all"
                     />
                   </div>
                   <p className="text-[10px] text-slate-500 mt-0.5">Your home city or current country</p>
@@ -488,12 +504,12 @@ export function JobDriveApplicationModal({
                 </label>
                 <div className="relative">
                   <textarea
-                    rows={3}
+                    rows={2}
                     required
                     placeholder={`Tell us why you are interested in this position in ${selectedCountry}, your background, or personal motivation...`}
                     value={whyWantJob}
                     onChange={(e) => setWhyWantJob(e.target.value)}
-                    className={`w-full p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                    className={`w-full p-2.5 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
                       errors.whyWantJob ? "border-red-400 bg-red-50/50" : "border-slate-300 focus:border-black focus:bg-white bg-slate-50/50"
                     }`}
                   />
@@ -508,12 +524,12 @@ export function JobDriveApplicationModal({
               </div>
 
               {/* Escrow Trust Box with Black & Obsidian accent */}
-              <div className="p-3.5 rounded-2xl bg-[#faf8fd] border border-slate-200/90 flex items-start gap-3 text-[11px] text-slate-700 leading-relaxed shadow-2xs">
-                <div className="w-6 h-6 rounded-lg bg-[#1b1233] flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
-                  <Shield className="w-3.5 h-3.5 text-amber-300" />
+              <div className="p-3 rounded-xl bg-[#faf8fd] border border-slate-200/90 flex items-center gap-2.5 text-[11px] text-slate-700 leading-snug shadow-2xs">
+                <div className="w-5 h-5 rounded-md bg-[#1b1233] flex items-center justify-center shrink-0 shadow-xs">
+                  <Shield className="w-3 h-3 text-amber-300" />
                 </div>
                 <div>
-                  <strong className="text-[#1b1233]">TravlTik Escrow Protected:</strong> All documentation and visa filing assistance is covered under platform escrow hold. Zero fees are taken without verified milestones.
+                  <strong className="text-[#1b1233]">TravlTik Escrow Protected:</strong> Direct employer filing with zero upfront deductions & milestone escrow release.
                 </div>
               </div>
 

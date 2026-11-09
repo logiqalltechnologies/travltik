@@ -151,28 +151,39 @@ export function CanadaJobVacancyModal({
         className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-auto transform transition-all font-sans text-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Header Banner with Deep Obsidian Black & Royal Purple */}
-        <div className="relative bg-gradient-to-br from-[#060205] via-[#14050e] via-35% to-[#2c0919] text-white p-5 sm:p-6 overflow-hidden">
+        {/* Top Header Banner with Deep Obsidian Black & Royal Purple - Sleek & Compact */}
+        <div className="relative bg-gradient-to-br from-[#060205] via-[#14050e] via-35% to-[#2c0919] text-white px-5 py-4 sm:px-6 sm:py-5 overflow-hidden">
           {/* Subtle ambient lighting */}
-          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-[#370c63]/40 blur-3xl pointer-events-none" />
+          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-[#370c63]/30 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-16 -left-16 w-52 h-52 rounded-full bg-black/60 blur-2xl pointer-events-none" />
 
           {/* Subtle watermark silhouettes */}
           <div className="absolute top-2 right-4 text-6xl opacity-10 select-none pointer-events-none">🍁</div>
-          <div className="absolute -bottom-6 -left-6 text-7xl opacity-5 select-none pointer-events-none">🍁</div>
 
-          <div className="relative z-10 flex items-start justify-between gap-4">
-            <div>
-              <div className="inline-flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-[11px] font-black uppercase px-3 py-1 rounded-full mb-2 tracking-wider border border-white/15 shadow-inner">
-                <span>🍁 CANADA JOB VACANCY 2026</span>
-                <span className="text-amber-300">• 980+ OPENINGS</span>
+          <div className="relative z-10 flex items-start justify-between gap-3">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 bg-black/55 backdrop-blur-md text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider border border-white/15 shadow-inner">
+                <span>🍁 CANADA INTAKE 2026</span>
+                <span className="text-amber-300">• LMIA VERIFIED</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight font-sora text-white drop-shadow-md">
+              <h2 className="text-lg sm:text-xl font-black tracking-tight font-sora text-white drop-shadow-md">
                 Application for {activeJob.title}
               </h2>
-              <p className="text-xs text-slate-300 mt-1 max-w-lg leading-relaxed">
-                Direct employer sponsorship under Canadian LMIA regulations. Complete your applicant profile below to secure verification priority.
-              </p>
+              {/* Sleek inline metrics row */}
+              <div className="flex items-center gap-2 flex-wrap pt-0.5 text-xs">
+                <span className="inline-flex items-center gap-1.5 bg-black/45 px-2.5 py-0.5 rounded-lg border border-white/10 font-bold">
+                  <span className="text-[9.5px] text-slate-400 uppercase font-extrabold">Comp:</span>
+                  <span className="text-amber-300 font-black">{activeJob.salaryMonthly}</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-black/45 px-2.5 py-0.5 rounded-lg border border-white/10 font-bold">
+                  <span className="text-[9.5px] text-slate-400 uppercase font-extrabold">Openings:</span>
+                  <span className="text-white font-black">{activeJob.vacancies} Seats</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-black/45 px-2.5 py-0.5 rounded-lg border border-white/10 font-bold">
+                  <span className="text-[9.5px] text-slate-400 uppercase font-extrabold">Status:</span>
+                  <span className="text-emerald-300 font-black">LMIA Approved</span>
+                </span>
+              </div>
             </div>
 
             <button
@@ -181,29 +192,13 @@ export function CanadaJobVacancyModal({
               className="text-white/80 hover:text-white bg-black/40 hover:bg-black/70 border border-white/15 p-2 rounded-full transition-all cursor-pointer shrink-0 shadow-md"
               aria-label="Close modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
-          </div>
-
-          {/* Quick Metrics Strip with Obsidian Black Depth */}
-          <div className="relative z-10 grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-white/15 text-center">
-            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
-              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Monthly Salary</div>
-              <div className="text-sm sm:text-base font-black text-amber-300 mt-0.5">{activeJob.salaryMonthly}</div>
-            </div>
-            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
-              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Available Openings</div>
-              <div className="text-sm sm:text-base font-black text-white mt-0.5">{activeJob.vacancies} Seats</div>
-            </div>
-            <div className="bg-black/45 rounded-xl p-2.5 backdrop-blur-md border border-white/10 shadow-sm">
-              <div className="text-[9.5px] text-slate-300 font-extrabold uppercase tracking-wider">Status</div>
-              <div className="text-xs sm:text-sm font-black text-white mt-0.5">LMIA Approved</div>
-            </div>
           </div>
         </div>
 
         {/* Content Body */}
-        <div className="p-5 sm:p-7 max-h-[75vh] overflow-y-auto custom-scrollbar">
+        <div className="p-4 sm:p-6 max-h-[75vh] overflow-y-auto custom-scrollbar">
           {!submittedRef ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               
