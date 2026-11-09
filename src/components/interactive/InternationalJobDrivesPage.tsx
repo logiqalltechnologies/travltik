@@ -3,7 +3,7 @@ import {
   Briefcase, MapPin, DollarSign, Users, Shield, ArrowRight,
   Sparkles, CheckCircle2, Search, Filter, AlertCircle, Building2,
   Calendar, Check, ExternalLink, Globe, Star, Award, ShieldCheck,
-  ChevronRight, Lock, Clock, FileCheck
+  ChevronRight, Lock, Clock, FileCheck, LayoutGrid, List
 } from "lucide-react";
 import { CANADA_VACANCIES_2026, TOTAL_CANADA_2026_VACANCIES, type CanadaJobVacancy } from "../../data/canadaJobs2026";
 import { LUXEMBOURG_VACANCIES_2026, TOTAL_LUXEMBOURG_2026_VACANCIES, type LuxembourgJobVacancy } from "../../data/luxembourgJobs2026";
@@ -61,6 +61,7 @@ export function InternationalJobDrivesPage() {
   const [selectedCountry, setSelectedCountry] = useState<"Canada" | "Luxembourg">("Canada");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedJobForModal, setSelectedJobForModal] = useState<DriveJobItem | null>(null);
@@ -351,212 +352,330 @@ export function InternationalJobDrivesPage() {
               ))}
             </div>
 
-            {/* Search Input */}
-            <div className="relative min-w-[260px] sm:min-w-[320px]">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={`Search ${selectedCountry} roles, s.no, category...`}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-[#faf8fd] text-xs font-semibold text-slate-800 focus:outline-none focus:border-black focus:bg-white transition-all shadow-2xs"
-              />
-              {searchQuery && (
-                <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-black text-xs font-bold">
-                  ✕
+            {/* Right Controls: Search + View Toggle */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* Search Input */}
+              <div className="relative min-w-[240px] sm:min-w-[280px]">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={`Search ${selectedCountry} roles, s.no, category...`}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-[#faf8fd] text-xs font-semibold text-slate-800 focus:outline-none focus:border-black focus:bg-white transition-all shadow-2xs"
+                />
+                {searchQuery && (
+                  <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-black text-xs font-bold">
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {/* View Toggle (Cards vs Table) */}
+              <div className="flex items-center gap-1 bg-[#f4eff9] p-1 rounded-xl border border-[rgba(55,12,99,0.12)] shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("cards")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${viewMode === "cards" ? "bg-black text-white shadow-xs" : "text-slate-600 hover:text-black"}`}
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span>Cards</span>
                 </button>
-              )}
+                <button
+                  type="button"
+                  onClick={() => setViewMode("table")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${viewMode === "table" ? "bg-black text-white shadow-xs" : "text-slate-600 hover:text-black"}`}
+                >
+                  <List className="w-3.5 h-3.5" />
+                  <span>Table</span>
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* GRID OF HIGH QUALITY JOB CARDS (WITH IMAGES) */}
+          {/* CONTENT: VIEW MODE SWITCH (CARDS VS TABLE) */}
           <div className="pt-2">
-            {selectedCountry === "Canada" ? (
-              filteredCanada.length === 0 ? (
-                <div className="text-center py-16 bg-[#faf8fd] rounded-2xl border border-dashed border-slate-300">
-                  <Briefcase className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                  <p className="text-sm font-bold text-slate-600">No Canada roles match your filter.</p>
-                  <button onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }} className="mt-3 text-xs font-bold text-[#430f7a] hover:underline">
-                    Clear all filters
-                  </button>
-                </div>
+            {viewMode === "cards" ? (
+              /* GRID OF HIGH QUALITY PHOTOGRAPHIC JOB CARDS */
+              selectedCountry === "Canada" ? (
+                filteredCanada.length === 0 ? (
+                  <div className="text-center py-16 bg-[#faf8fd] rounded-2xl border border-dashed border-slate-300">
+                    <Briefcase className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                    <p className="text-sm font-bold text-slate-600">No Canada roles match your filter.</p>
+                    <button onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }} className="mt-3 text-xs font-bold text-[#430f7a] hover:underline">
+                      Clear all filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredCanada.map((job) => (
+                      <div
+                        key={job.id}
+                        className="group bg-white rounded-[26px] border-[1.5px] border-[rgba(67,15,122,0.12)] hover:border-black shadow-[0_10px_30px_-15px_rgba(67,15,122,0.08)] hover:shadow-[0_20px_45px_-12px_rgba(0,0,0,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                      >
+                        {/* Photographic Card Header */}
+                        <div className="relative h-48 overflow-hidden bg-slate-900">
+                          <img 
+                            src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
+                            alt={job.title}
+                            className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/40 to-transparent pointer-events-none" />
+
+                          {/* Top Badges */}
+                          <div className="absolute top-3 inset-x-3 flex items-center justify-between z-10">
+                            <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20">
+                              #{String(job.sNo).padStart(2, '0')} · {job.category}
+                            </span>
+                            <div className="flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[11px] font-bold">
+                              <img src="https://flagcdn.com/w40/ca.png" alt="Canada" className="w-4 h-3 object-cover rounded-xs" />
+                              <span>Canada</span>
+                            </div>
+                          </div>
+
+                          {/* Job Title on bottom of image */}
+                          <div className="absolute bottom-3 inset-x-3.5 z-10">
+                            <h4 className="text-lg font-black text-white uppercase tracking-wide drop-shadow-md line-clamp-1">
+                              {job.title}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                          <div className="space-y-3">
+                            {/* Metrics Bar */}
+                            <div className="grid grid-cols-2 gap-2 bg-[#faf8fd] p-3 rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
+                              <div>
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">MONTHLY SALARY</span>
+                                <span className="text-sm font-black text-[#1b1233]">{job.salaryMonthly}</span>
+                              </div>
+                              <div className="border-l border-[rgba(67,15,122,0.1)]">
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">OPEN VACANCIES</span>
+                                <span className="text-sm font-black text-[#430f7a]">{job.vacancies} Seats</span>
+                              </div>
+                            </div>
+
+                            {/* Info Pills */}
+                            <div className="flex items-center gap-1.5 flex-wrap text-[10.5px] font-bold">
+                              <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.12)] px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> {job.lmiaStatus}
+                              </span>
+                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <MapPin className="w-3 h-3 text-slate-400" /> {job.location}
+                              </span>
+                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <Clock className="w-3 h-3 text-slate-400" /> {job.experienceRequired}
+                              </span>
+                            </div>
+
+                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                              {job.description}
+                            </p>
+                          </div>
+
+                          {/* Apply Button */}
+                          <div className="pt-3 border-t border-[rgba(67,15,122,0.08)]">
+                            <button
+                              onClick={() => handleApplyCanada(job)}
+                              className="w-full bg-black hover:bg-[#1b1233] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
+                            >
+                              <span>Apply for Canada Role</span>
+                              <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredCanada.map((job) => (
-                    <div
-                      key={job.id}
-                      className="group bg-white rounded-[26px] border-[1.5px] border-[rgba(67,15,122,0.12)] hover:border-black shadow-[0_10px_30px_-15px_rgba(67,15,122,0.08)] hover:shadow-[0_20px_45px_-12px_rgba(0,0,0,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
-                    >
-                      {/* Photographic Card Header */}
-                      <div className="relative h-48 overflow-hidden bg-slate-900">
-                        <img 
-                          src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
-                          alt={job.title}
-                          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/40 to-transparent pointer-events-none" />
+                filteredLuxembourg.length === 0 ? (
+                  <div className="text-center py-16 bg-[#faf8fd] rounded-2xl border border-dashed border-slate-300">
+                    <Briefcase className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                    <p className="text-sm font-bold text-slate-600">No Luxembourg roles match your filter.</p>
+                    <button onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }} className="mt-3 text-xs font-bold text-[#430f7a] hover:underline">
+                      Clear all filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredLuxembourg.map((job) => (
+                      <div
+                        key={job.id}
+                        className="group bg-white rounded-[26px] border-[1.5px] border-[rgba(67,15,122,0.12)] hover:border-black shadow-[0_10px_30px_-15px_rgba(67,15,122,0.08)] hover:shadow-[0_20px_45px_-12px_rgba(0,0,0,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                      >
+                        {/* Photographic Card Header */}
+                        <div className="relative h-48 overflow-hidden bg-slate-900">
+                          <img 
+                            src={luxembourgRoleImages[job.id] || "/images/construction_worker.png"} 
+                            alt={job.category}
+                            className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/40 to-transparent pointer-events-none" />
 
-                        {/* Top Badges */}
-                        <div className="absolute top-3 inset-x-3 flex items-center justify-between z-10">
-                          <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20">
-                            #{String(job.sNo).padStart(2, '0')} · {job.category}
-                          </span>
-                          <div className="flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[11px] font-bold">
-                            <img src="https://flagcdn.com/w40/ca.png" alt="Canada" className="w-4 h-3 object-cover rounded-xs" />
-                            <span>Canada</span>
-                          </div>
-                        </div>
-
-                        {/* Job Title on bottom of image */}
-                        <div className="absolute bottom-3 inset-x-3.5 z-10">
-                          <h4 className="text-lg font-black text-white uppercase tracking-wide drop-shadow-md line-clamp-1">
-                            {job.title}
-                          </h4>
-                        </div>
-                      </div>
-
-                      {/* Card Body */}
-                      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                        <div className="space-y-3">
-                          {/* Metrics Bar */}
-                          <div className="grid grid-cols-2 gap-2 bg-[#faf8fd] p-3 rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
-                            <div>
-                              <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">MONTHLY SALARY</span>
-                              <span className="text-sm font-black text-[#1b1233]">{job.salaryMonthly}</span>
-                            </div>
-                            <div className="border-l border-[rgba(67,15,122,0.1)]">
-                              <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">OPEN VACANCIES</span>
-                              <span className="text-sm font-black text-[#430f7a]">{job.vacancies} Seats</span>
+                          {/* Top Badges */}
+                          <div className="absolute top-3 inset-x-3 flex items-center justify-between z-10">
+                            <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20">
+                              #{String(job.sNo).padStart(2, '0')} · {job.sector}
+                            </span>
+                            <div className="flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[11px] font-bold">
+                              <img src="https://flagcdn.com/w40/lu.png" alt="Luxembourg" className="w-4 h-3 object-cover rounded-xs" />
+                              <span>Luxembourg</span>
                             </div>
                           </div>
 
-                          {/* Info Pills */}
-                          <div className="flex items-center gap-1.5 flex-wrap text-[10.5px] font-bold">
-                            <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.12)] px-2.5 py-1 rounded-lg flex items-center gap-1">
-                              <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> {job.lmiaStatus}
-                            </span>
-                            <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
-                              <MapPin className="w-3 h-3 text-slate-400" /> {job.location}
-                            </span>
-                            <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-slate-400" /> {job.experienceRequired}
-                            </span>
+                          {/* Job Title on bottom of image */}
+                          <div className="absolute bottom-3 inset-x-3.5 z-10">
+                            <h4 className="text-lg font-black text-white uppercase tracking-wide drop-shadow-md line-clamp-1">
+                              {job.category}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                          <div className="space-y-3">
+                            {/* Metrics Bar */}
+                            <div className="grid grid-cols-2 gap-2 bg-[#faf8fd] p-3 rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
+                              <div>
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">MONTHLY SALARY</span>
+                                <span className="text-sm font-black text-[#1b1233]">{job.salaryMonthly}</span>
+                              </div>
+                              <div className="border-l border-[rgba(67,15,122,0.1)]">
+                                <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">OPEN VACANCIES</span>
+                                <span className="text-sm font-black text-[#430f7a]">{job.vacancies} Seats</span>
+                              </div>
+                            </div>
+
+                            {/* Info Pills */}
+                            <div className="flex items-center gap-1.5 flex-wrap text-[10.5px] font-bold">
+                              <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.12)] px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> {job.permitType}
+                              </span>
+                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <MapPin className="w-3 h-3 text-slate-400" /> {job.location}
+                              </span>
+                              <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <Clock className="w-3 h-3 text-slate-400" /> {job.experienceRequired}
+                              </span>
+                            </div>
+
+                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                              {job.description}
+                            </p>
                           </div>
 
-                          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                            {job.description}
-                          </p>
-                        </div>
-
-                        {/* Apply Button */}
-                        <div className="pt-3 border-t border-[rgba(67,15,122,0.08)]">
-                          <button
-                            onClick={() => handleApplyCanada(job)}
-                            className="w-full bg-black hover:bg-[#1b1233] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
-                          >
-                            <span>Apply for Canada Role</span>
-                            <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
-                          </button>
+                          {/* Apply Button */}
+                          <div className="pt-3 border-t border-[rgba(67,15,122,0.08)]">
+                            <button
+                              onClick={() => handleApplyLuxembourg(job)}
+                              className="w-full bg-black hover:bg-[#1b1233] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
+                            >
+                              <span>Apply for Luxembourg Role</span>
+                              <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )
               )
             ) : (
-              filteredLuxembourg.length === 0 ? (
-                <div className="text-center py-16 bg-[#faf8fd] rounded-2xl border border-dashed border-slate-300">
-                  <Briefcase className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                  <p className="text-sm font-bold text-slate-600">No Luxembourg roles match your filter.</p>
-                  <button onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }} className="mt-3 text-xs font-bold text-[#430f7a] hover:underline">
-                    Clear all filters
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredLuxembourg.map((job) => (
-                    <div
-                      key={job.id}
-                      className="group bg-white rounded-[26px] border-[1.5px] border-[rgba(67,15,122,0.12)] hover:border-black shadow-[0_10px_30px_-15px_rgba(67,15,122,0.08)] hover:shadow-[0_20px_45px_-12px_rgba(0,0,0,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
-                    >
-                      {/* Photographic Card Header */}
-                      <div className="relative h-48 overflow-hidden bg-slate-900">
-                        <img 
-                          src={luxembourgRoleImages[job.id] || "/images/construction_worker.png"} 
-                          alt={job.category}
-                          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/40 to-transparent pointer-events-none" />
-
-                        {/* Top Badges */}
-                        <div className="absolute top-3 inset-x-3 flex items-center justify-between z-10">
-                          <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20">
-                            #{String(job.sNo).padStart(2, '0')} · {job.sector}
-                          </span>
-                          <div className="flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[11px] font-bold">
-                            <img src="https://flagcdn.com/w40/lu.png" alt="Luxembourg" className="w-4 h-3 object-cover rounded-xs" />
-                            <span>Luxembourg</span>
-                          </div>
-                        </div>
-
-                        {/* Job Title on bottom of image */}
-                        <div className="absolute bottom-3 inset-x-3.5 z-10">
-                          <h4 className="text-lg font-black text-white uppercase tracking-wide drop-shadow-md line-clamp-1">
-                            {job.category}
-                          </h4>
-                        </div>
-                      </div>
-
-                      {/* Card Body */}
-                      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                        <div className="space-y-3">
-                          {/* Metrics Bar */}
-                          <div className="grid grid-cols-2 gap-2 bg-[#faf8fd] p-3 rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
-                            <div>
-                              <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">MONTHLY SALARY</span>
-                              <span className="text-sm font-black text-[#1b1233]">{job.salaryMonthly}</span>
-                            </div>
-                            <div className="border-l border-[rgba(67,15,122,0.1)]">
-                              <span className="text-[9.5px] uppercase tracking-wider text-slate-400 font-bold block">OPEN VACANCIES</span>
-                              <span className="text-sm font-black text-[#430f7a]">{job.vacancies} Seats</span>
-                            </div>
-                          </div>
-
-                          {/* Info Pills */}
-                          <div className="flex items-center gap-1.5 flex-wrap text-[10.5px] font-bold">
-                            <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.12)] px-2.5 py-1 rounded-lg flex items-center gap-1">
-                              <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> {job.permitType}
+              /* RESPONSIVE STRUCTURED TABLE VIEW */
+              <div className="overflow-x-auto rounded-2xl border border-[rgba(67,15,122,0.12)] bg-white shadow-xs">
+                <table className="w-full text-left text-xs font-sans">
+                  <thead className="bg-[#faf8fd] text-[10.5px] font-black uppercase tracking-wider text-slate-500 border-b border-[rgba(67,15,122,0.08)]">
+                    <tr>
+                      <th className="py-3.5 px-4">S.No</th>
+                      <th className="py-3.5 px-4">Job Title / Position</th>
+                      <th className="py-3.5 px-4">Vacancies</th>
+                      <th className="py-3.5 px-4">Monthly Salary</th>
+                      <th className="py-3.5 px-4">Location</th>
+                      <th className="py-3.5 px-4">Work Permit Status</th>
+                      <th className="py-3.5 px-4 text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[rgba(67,15,122,0.06)] font-semibold text-slate-700">
+                    {selectedCountry === "Canada" ? (
+                      filteredCanada.map((job) => (
+                        <tr key={job.id} className="hover:bg-[#fbf9fe] transition-colors">
+                          <td className="py-3.5 px-4 font-black text-slate-400">#{job.sNo}</td>
+                          <td className="py-3.5 px-4">
+                            <div className="font-black text-[#1b1233] text-[13px]">{job.title}</div>
+                            <div className="text-[10px] text-slate-400 font-medium">{job.category} · {job.experienceRequired}</div>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className="bg-[#f4eff9] text-[#1b1233] px-2 py-0.5 rounded-md font-black text-[11px]">
+                              {job.vacancies} Seats
                             </span>
-                            <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
-                              <MapPin className="w-3 h-3 text-slate-400" /> {job.location}
+                          </td>
+                          <td className="py-3.5 px-4 font-black text-[#1b1233] text-[13px]">{job.salaryMonthly}</td>
+                          <td className="py-3.5 px-4 text-slate-500">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span>{job.location}</span>
                             </span>
-                            <span className="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-slate-400" /> {job.experienceRequired}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1b1233] bg-[#f4eff9] px-2 py-0.5 rounded-md border border-[rgba(55,12,99,0.12)]">
+                              <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
+                              <span>{job.lmiaStatus}</span>
                             </span>
-                          </div>
-
-                          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                            {job.description}
-                          </p>
-                        </div>
-
-                        {/* Apply Button */}
-                        <div className="pt-3 border-t border-[rgba(67,15,122,0.08)]">
-                          <button
-                            onClick={() => handleApplyLuxembourg(job)}
-                            className="w-full bg-black hover:bg-[#1b1233] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn cursor-pointer"
-                          >
-                            <span>Apply for Luxembourg Role</span>
-                            <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )
+                          </td>
+                          <td className="py-3.5 px-4 text-right">
+                            <button
+                              onClick={() => handleApplyCanada(job)}
+                              className="bg-black hover:bg-[#1b1233] text-white text-[11px] font-black uppercase tracking-wider py-1.5 px-3.5 rounded-lg transition-all shadow-xs cursor-pointer"
+                            >
+                              Apply Now
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      filteredLuxembourg.map((job) => (
+                        <tr key={job.id} className="hover:bg-[#fbf9fe] transition-colors">
+                          <td className="py-3.5 px-4 font-black text-slate-400">#{job.sNo}</td>
+                          <td className="py-3.5 px-4">
+                            <div className="font-black text-[#1b1233] text-[13px]">{job.category}</div>
+                            <div className="text-[10px] text-slate-400 font-medium">{job.sector} · {job.experienceRequired}</div>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className="bg-[#f4eff9] text-[#1b1233] px-2 py-0.5 rounded-md font-black text-[11px]">
+                              {job.vacancies} Seats
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 font-black text-[#1b1233] text-[13px]">{job.salaryMonthly}</td>
+                          <td className="py-3.5 px-4 text-slate-500">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span>{job.location}</span>
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1b1233] bg-[#f4eff9] px-2 py-0.5 rounded-md border border-[rgba(55,12,99,0.12)]">
+                              <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233] shrink-0" />
+                              <span>{job.permitType}</span>
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 text-right">
+                            <button
+                              onClick={() => handleApplyLuxembourg(job)}
+                              className="bg-black hover:bg-[#1b1233] text-white text-[11px] font-black uppercase tracking-wider py-1.5 px-3.5 rounded-lg transition-all shadow-xs cursor-pointer"
+                            >
+                              Apply Now
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
 

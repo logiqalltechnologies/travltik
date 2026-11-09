@@ -1002,9 +1002,31 @@ export function JobsPortal() {
             </div>
           </div>
 
-          {/* INTERNATIONAL JOB DRIVES (CANADA & LUXEMBOURG 2026) */}
-          <div className="max-w-6xl mx-auto px-6">
-            <InternationalJobDriveShowcase />
+          {/* 2026 INTERNATIONAL RECRUITMENT DRIVES BANNER (Directs to dedicated /job-drives page) */}
+          <div className="max-w-6xl mx-auto px-6 pt-4 pb-2">
+            <div className="relative rounded-[28px] overflow-hidden bg-gradient-to-r from-[#1b1233] via-[#370c63] to-[#430f7a] text-white p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-[0_16px_40px_-15px_rgba(55,12,99,0.35)] border border-white/20">
+              <div className="space-y-2 max-w-xl">
+                <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/20 text-white text-[10.5px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>OFFICIAL 2026 OVERSEAS DRIVES</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white font-sans">
+                  Direct Overseas Job Drives: Canada &amp; Luxembourg
+                </h3>
+                <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed font-normal">
+                  Over 1,500 verified employer vacancies with direct LMIA work permits and EU Blue Card quotas. Apply directly on the official drives portal.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 shrink-0">
+                <a
+                  href="/job-drives"
+                  className="bg-white hover:bg-[#faf6fe] text-[#1b1233] font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center gap-2 group cursor-pointer no-underline"
+                >
+                  <span>Explore 2026 Drives</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* MAIN LISTINGS GRID */}
