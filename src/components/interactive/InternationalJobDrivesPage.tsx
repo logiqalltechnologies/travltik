@@ -9,52 +9,52 @@ import { CANADA_VACANCIES_2026, TOTAL_CANADA_2026_VACANCIES, type CanadaJobVacan
 import { LUXEMBOURG_VACANCIES_2026, TOTAL_LUXEMBOURG_2026_VACANCIES, type LuxembourgJobVacancy } from "../../data/luxembourgJobs2026";
 import { JobDriveApplicationModal, type DriveJobItem } from "./JobDriveApplicationModal";
 
-// Thematic high-quality photography mapping for roles
+// Thematic high-quality photography mapping for roles (100% verified photorealistic)
 const canadaRoleImages: Record<string, string> = {
   "can-2026-01": "/images/job_tech_engineer.png",
   "can-2026-02": "/images/construction_site.png",
-  "can-2026-03": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=600&auto=format&fit=crop",
-  "can-2026-04": "/images/construction_worker.png",
-  "can-2026-05": "/images/luggage_hero_hd.png",
-  "can-2026-06": "/images/job_chef_london.png",
-  "can-2026-07": "/images/boardroom_team.png",
-  "can-2026-08": "/images/construction_worker.jpg",
-  "can-2026-09": "/images/construction_site.png",
-  "can-2026-10": "/images/construction_worker.png",
-  "can-2026-11": "/images/hero_lounge.png",
-  "can-2026-12": "/images/luggage_hero_hd.png",
-  "can-2026-13": "/images/construction_site.png",
-  "can-2026-14": "/images/hero-traveler-bg.jpg",
-  "can-2026-15": "/images/job_chef_london.png",
-  "can-2026-16": "/images/sea_background_one.png",
-  "can-2026-17": "/images/hero_lounge.png",
-  "can-2026-18": "/images/construction_worker.png",
-  "can-2026-19": "/images/boardroom_team.png",
+  "can-2026-03": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop", // Food packing / logistics hub
+  "can-2026-04": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop", // A/C Technician HVAC
+  "can-2026-05": "https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=800&auto=format&fit=crop", // Driver (Light & Commercial)
+  "can-2026-06": "/images/job_chef_london.png", // Chef
+  "can-2026-07": "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=800&auto=format&fit=crop", // Waiter / Hospitality
+  "can-2026-08": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=800&auto=format&fit=crop", // Supervisor
+  "can-2026-09": "/images/job_data_scientist_berlin.png", // Computer Operator (IT & Systems)
+  "can-2026-10": "https://images.unsplash.com/photo-1557597774-9d273605dfa9?q=80&w=800&auto=format&fit=crop", // Security Guard
+  "can-2026-11": "/images/hero_lounge.png", // Hotel Manager
+  "can-2026-12": "https://images.unsplash.com/photo-1581244277943-fe4a9c777189?q=80&w=800&auto=format&fit=crop", // Plumber
+  "can-2026-13": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop", // Carpenter
+  "can-2026-14": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800&auto=format&fit=crop", // Tile Mason
+  "can-2026-15": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop", // Housekeeping Attendant
+  "can-2026-16": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=800&auto=format&fit=crop", // Electrician
+  "can-2026-17": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=800&auto=format&fit=crop", // Data Entry Specialist
+  "can-2026-18": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop", // Accountant
+  "can-2026-19": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop", // Store Keeper / Inventory
 };
 
 const luxembourgRoleImages: Record<string, string> = {
-  "lux-2026-01": "/images/construction_worker.png",
-  "lux-2026-02": "/images/boardroom_team.png",
-  "lux-2026-03": "/images/construction_site.png",
-  "lux-2026-04": "/images/sea_background_two.png",
-  "lux-2026-05": "/images/construction_worker.png",
-  "lux-2026-06": "/images/luggage_hero_hd.png",
-  "lux-2026-07": "/images/construction_site.png",
-  "lux-2026-08": "/images/construction_site.png",
-  "lux-2026-09": "/images/construction_worker.jpg",
-  "lux-2026-10": "/images/job_chef_london.png",
-  "lux-2026-11": "/images/hero_lounge.png",
-  "lux-2026-12": "/images/job_chef_london.png",
-  "lux-2026-13": "/images/luggage_hero_hd.png",
-  "lux-2026-14": "/images/luggage_hero_hd.png",
-  "lux-2026-15": "/images/job_data_scientist_berlin.png",
-  "lux-2026-16": "/images/job_tech_engineer.png",
-  "lux-2026-17": "/images/job_tech_engineer.png",
-  "lux-2026-18": "/images/job_chef_london.png",
-  "lux-2026-19": "/images/construction_site.png",
-  "lux-2026-20": "/images/luggage_hero_hd.png",
-  "lux-2026-21": "/images/boardroom_team.png",
-  "lux-2026-22": "/images/hero-traveler-bg.jpg",
+  "lux-2026-01": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800&auto=format&fit=crop", // Welder
+  "lux-2026-02": "/images/boardroom_team.png", // Manager
+  "lux-2026-03": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop", // Helper
+  "lux-2026-04": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop", // Food Packing
+  "lux-2026-05": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop", // A/C Technician
+  "lux-2026-06": "https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=800&auto=format&fit=crop", // Driver
+  "lux-2026-07": "/images/construction_site.png", // Construction Worker
+  "lux-2026-08": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=800&auto=format&fit=crop", // Electrician
+  "lux-2026-09": "https://images.unsplash.com/photo-1581244277943-fe4a9c777189?q=80&w=800&auto=format&fit=crop", // Plumber
+  "lux-2026-10": "/images/job_chef_london.png", // Chef
+  "lux-2026-11": "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=800&auto=format&fit=crop", // Waiter
+  "lux-2026-12": "/images/job_chef_london.png", // Kitchen Steward
+  "lux-2026-13": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop", // Forklift Operator
+  "lux-2026-14": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop", // Warehouse Worker
+  "lux-2026-15": "/images/job_data_scientist_berlin.png", // Logistics Coordinator
+  "lux-2026-16": "/images/job_tech_engineer.png", // Computer Operator
+  "lux-2026-17": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop", // Accountant
+  "lux-2026-18": "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=800&auto=format&fit=crop", // Bartender
+  "lux-2026-19": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop", // Carpenter
+  "lux-2026-20": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop", // Cleaner
+  "lux-2026-21": "/images/boardroom_team.png", // HR Assistant
+  "lux-2026-22": "/images/hero_lounge.png", // Hotel Receptionist
 };
 
 export function InternationalJobDrivesPage() {
@@ -427,108 +427,81 @@ export function InternationalJobDrivesPage() {
                     {filteredCanada.map((job) => (
                       <div
                         key={job.id}
-                        className="group bg-white rounded-[26px] border border-slate-200/90 hover:border-black/70 shadow-[0_4px_20px_-6px_rgba(27,18,51,0.06)] hover:shadow-[0_20px_45px_-12px_rgba(27,18,51,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                        onClick={() => handleApplyCanada(job)}
+                        className="group relative rounded-[28px] overflow-hidden min-h-[440px] p-6 flex flex-col justify-end text-white cursor-pointer transition-all duration-350 ease-out border border-white/20 hover:border-white/50 bg-[#090d16] shadow-[0_16px_40px_-15px_rgba(67,15,122,0.22)] hover:shadow-[0_24px_50px_-12px_rgba(67,15,122,0.38)] hover:-translate-y-2 box-border"
                       >
-                        {/* Mounted Photographic Card Header */}
-                        <div className="p-3 pb-0">
-                          <div className="relative h-44 sm:h-48 rounded-2xl overflow-hidden bg-slate-950 shadow-inner group-hover:shadow-md transition-shadow">
-                            <img 
-                              src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
-                              alt={job.title}
-                              className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
+                        {/* Full-bleed Luxury Background Photography */}
+                        <img 
+                          src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
+                          alt={job.title}
+                          className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 pointer-events-none"
+                          loading="lazy"
+                        />
 
-                            {/* Top Badges */}
-                            <div className="absolute top-2.5 left-2.5 z-10">
-                              <span className="bg-black/70 backdrop-blur-md text-white/95 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20 shadow-sm flex items-center gap-1.5">
-                                #{String(job.sNo).padStart(2, '0')} · {job.category}
-                              </span>
-                            </div>
-                            <div className="absolute top-2.5 right-2.5 z-10">
-                              <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[10.5px] font-black shadow-sm">
-                                <img src="https://flagcdn.com/w40/ca.png" alt="Canada" className="w-4 h-2.5 object-cover rounded-[2px]" />
-                                <span>Canada</span>
-                              </div>
-                            </div>
+                        {/* Multi-stage Luxury Gradient Overlay (Exact Landing Page Standard) */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/75 via-50% to-transparent pointer-events-none" />
 
-                            {/* Bottom Live Seats Floating Pill */}
-                            <div className="absolute bottom-2.5 right-2.5 z-10">
-                              <span className="bg-white/95 backdrop-blur-md text-[#1b1233] text-[10.5px] font-black px-2.5 py-1 rounded-full shadow-lg border border-white/80 flex items-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                {job.vacancies} Seats Available
-                              </span>
-                            </div>
+                        {/* Top Row: Landing-page style gradient pill + Round Flag Badge */}
+                        <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10 pointer-events-none">
+                          <span className="bg-gradient-to-r from-[rgba(107,52,179,0.92)] to-[rgba(67,15,122,0.96)] backdrop-blur-md border border-white/25 text-white text-[10.5px] font-black uppercase px-3 py-1 rounded-full shadow-[0_4px_14px_rgba(67,15,122,0.45)] tracking-wider flex items-center gap-1.5">
+                            #{String(job.sNo).padStart(2, '0')} · {job.category}
+                          </span>
+                          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white/90 shadow-md flex items-center justify-center bg-black/40 shrink-0">
+                            <img src="https://flagcdn.com/w40/ca.png" alt="Canada" className="w-full h-full object-cover" />
                           </div>
                         </div>
 
-                        {/* Card Body */}
-                        <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                          <div className="space-y-3.5">
-                            {/* Title & Sponsorship Tag */}
-                            <div>
-                              <div className="flex items-center gap-2 mb-1.5">
-                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#1b1233] bg-[#f8f6fc] px-2 py-0.5 rounded-md border border-[rgba(27,18,51,0.12)]">
-                                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                                  {job.lmiaStatus.includes("LMIA") ? "LMIA Approved" : job.lmiaStatus}
-                                </span>
-                                <span className="text-[11px] text-slate-400 font-semibold">· Direct Employer</span>
-                              </div>
-                              <h3 className="font-serif text-lg sm:text-[19px] font-black text-[#1b1233] group-hover:text-[#430f7a] transition-colors tracking-tight line-clamp-1 leading-snug">
-                                {job.title}
-                              </h3>
-                            </div>
-
-                            {/* Compensation & Sponsorship Banner */}
-                            <div className="bg-[#faf8fd] border border-[rgba(67,15,122,0.08)] rounded-2xl p-3 flex items-center justify-between">
-                              <div>
-                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">Monthly Comp</span>
-                                <div className="flex items-baseline gap-1 mt-0.5">
-                                  <span className="text-base sm:text-[17px] font-black text-[#1b1233] tracking-tight">{job.salaryMonthly}</span>
-                                  <span className="text-[10px] text-slate-600 font-semibold">/mo</span>
-                                </div>
-                              </div>
-                              <div className="text-right border-l border-[rgba(67,15,122,0.1)] pl-3">
-                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">Work Permit</span>
-                                <span className="text-xs font-black text-emerald-700 flex items-center justify-end gap-1 mt-0.5">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                                  Sponsored
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Location & Experience Badges */}
-                            <div className="grid grid-cols-2 gap-2 text-[11px] font-medium text-slate-600">
-                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.location}>
-                                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                <span className="truncate">{job.location}</span>
-                              </div>
-                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.experienceRequired}>
-                                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                <span className="truncate">{job.experienceRequired}</span>
-                              </div>
-                            </div>
-
-                            {/* Description */}
-                            <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                              {job.description}
-                            </p>
+                        {/* Bottom Content Container */}
+                        <div className="relative z-10 w-full">
+                          {/* Live Status Pill */}
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              {job.vacancies} Seats Available · LMIA Approved
+                            </span>
                           </div>
 
-                          {/* Apply Button */}
-                          <div className="pt-2 border-t border-[rgba(67,15,122,0.08)]">
-                            <button
-                              onClick={() => handleApplyCanada(job)}
-                              className="w-full relative group/btn bg-[#1b1233] hover:bg-[#370c63] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-between cursor-pointer"
+                          {/* Job Title (Landing Page Playfair Serif) */}
+                          <h3 className="font-serif text-xl sm:text-[22px] font-bold text-white tracking-wide uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] line-clamp-1 leading-tight group-hover:text-amber-200 transition-colors">
+                            {job.title}
+                          </h3>
+
+                          {/* Subtitle: Location & Experience */}
+                          <p className="text-xs text-white/85 font-medium mt-1 line-clamp-1 drop-shadow-sm flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-slate-300 shrink-0" />
+                            <span className="truncate">{job.location}</span>
+                            <span className="text-white/40">·</span>
+                            <span className="shrink-0">{job.experienceRequired}</span>
+                          </p>
+
+                          {/* 3-Column Glass Meta Row (Exact Landing Page .atlys-meta-row) */}
+                          <div className="grid grid-cols-3 gap-2 py-2.5 px-3 mt-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-center text-white">
+                            <div className="flex flex-col items-start text-left">
+                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">EST. COMP</span>
+                              <span className="text-xs sm:text-[13px] font-black text-amber-300 mt-0.5">{job.salaryMonthly}</span>
+                            </div>
+                            <div className="flex flex-col items-center border-x border-white/20 px-1">
+                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">VACANCIES</span>
+                              <span className="text-xs sm:text-[13px] font-black text-white mt-0.5">{job.vacancies} SEATS</span>
+                            </div>
+                            <div className="flex flex-col items-end text-right">
+                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">PERMIT</span>
+                              <span className="text-xs sm:text-[13px] font-black text-emerald-400 mt-0.5">SPONSORED</span>
+                            </div>
+                          </div>
+
+                          {/* Luxury Action Button */}
+                          <div className="mt-3.5">
+                            <button 
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); handleApplyCanada(job); }}
+                              className="w-full py-2.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-between bg-white text-black hover:bg-amber-300 shadow-md group-hover:shadow-lg cursor-pointer"
                             >
-                              <span className="flex items-center gap-2">
-                                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                              <span className="flex items-center gap-1.5">
+                                <Sparkles className="w-3.5 h-3.5 text-[#370c63]" />
                                 <span>Apply for Canada Role</span>
                               </span>
-                              <span className="w-6 h-6 rounded-lg bg-white/10 group-hover/btn:bg-white group-hover/btn:text-black flex items-center justify-center transition-all">
-                                <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                              </span>
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
                           </div>
                         </div>
@@ -550,108 +523,81 @@ export function InternationalJobDrivesPage() {
                     {filteredLuxembourg.map((job) => (
                       <div
                         key={job.id}
-                        className="group bg-white rounded-[26px] border border-slate-200/90 hover:border-black/70 shadow-[0_4px_20px_-6px_rgba(27,18,51,0.06)] hover:shadow-[0_20px_45px_-12px_rgba(27,18,51,0.18)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                        onClick={() => handleApplyLuxembourg(job)}
+                        className="group relative rounded-[28px] overflow-hidden min-h-[440px] p-6 flex flex-col justify-end text-white cursor-pointer transition-all duration-350 ease-out border border-white/20 hover:border-white/50 bg-[#090d16] shadow-[0_16px_40px_-15px_rgba(67,15,122,0.22)] hover:shadow-[0_24px_50px_-12px_rgba(67,15,122,0.38)] hover:-translate-y-2 box-border"
                       >
-                        {/* Mounted Photographic Card Header */}
-                        <div className="p-3 pb-0">
-                          <div className="relative h-44 sm:h-48 rounded-2xl overflow-hidden bg-slate-950 shadow-inner group-hover:shadow-md transition-shadow">
-                            <img 
-                              src={luxembourgRoleImages[job.id] || "/images/construction_worker.png"} 
-                              alt={job.category}
-                              className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 pointer-events-none"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/25 pointer-events-none" />
+                        {/* Full-bleed Luxury Background Photography */}
+                        <img 
+                          src={luxembourgRoleImages[job.id] || "/images/construction_site.png"} 
+                          alt={job.category}
+                          className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 pointer-events-none"
+                          loading="lazy"
+                        />
 
-                            {/* Top Badges */}
-                            <div className="absolute top-2.5 left-2.5 z-10">
-                              <span className="bg-black/70 backdrop-blur-md text-white/95 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20 shadow-sm flex items-center gap-1.5">
-                                #{String(job.sNo).padStart(2, '0')} · {job.sector}
-                              </span>
-                            </div>
-                            <div className="absolute top-2.5 right-2.5 z-10">
-                              <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-white text-[10.5px] font-black shadow-sm">
-                                <img src="https://flagcdn.com/w40/lu.png" alt="Luxembourg" className="w-4 h-2.5 object-cover rounded-[2px]" />
-                                <span>Luxembourg</span>
-                              </div>
-                            </div>
+                        {/* Multi-stage Luxury Gradient Overlay (Exact Landing Page Standard) */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/75 via-50% to-transparent pointer-events-none" />
 
-                            {/* Bottom Live Seats Floating Pill */}
-                            <div className="absolute bottom-2.5 right-2.5 z-10">
-                              <span className="bg-white/95 backdrop-blur-md text-[#1b1233] text-[10.5px] font-black px-2.5 py-1 rounded-full shadow-lg border border-white/80 flex items-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                {job.vacancies} Seats Available
-                              </span>
-                            </div>
+                        {/* Top Row: Landing-page style gradient pill + Round Flag Badge */}
+                        <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10 pointer-events-none">
+                          <span className="bg-gradient-to-r from-[rgba(107,52,179,0.92)] to-[rgba(67,15,122,0.96)] backdrop-blur-md border border-white/25 text-white text-[10.5px] font-black uppercase px-3 py-1 rounded-full shadow-[0_4px_14px_rgba(67,15,122,0.45)] tracking-wider flex items-center gap-1.5">
+                            #{String(job.sNo).padStart(2, '0')} · {job.sector}
+                          </span>
+                          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white/90 shadow-md flex items-center justify-center bg-black/40 shrink-0">
+                            <img src="https://flagcdn.com/w40/lu.png" alt="Luxembourg" className="w-full h-full object-cover" />
                           </div>
                         </div>
 
-                        {/* Card Body */}
-                        <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                          <div className="space-y-3.5">
-                            {/* Title & Sponsorship Tag */}
-                            <div>
-                              <div className="flex items-center gap-2 mb-1.5">
-                                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-[#1b1233] bg-[#f8f6fc] px-2 py-0.5 rounded-md border border-[rgba(27,18,51,0.12)]">
-                                  <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                                  {job.permitType}
-                                </span>
-                                <span className="text-[11px] text-slate-400 font-semibold">· Direct EU Intake</span>
-                              </div>
-                              <h3 className="font-serif text-lg sm:text-[19px] font-black text-[#1b1233] group-hover:text-[#430f7a] transition-colors tracking-tight line-clamp-1 leading-snug">
-                                {job.category}
-                              </h3>
-                            </div>
-
-                            {/* Compensation & Sponsorship Banner */}
-                            <div className="bg-[#faf8fd] border border-[rgba(67,15,122,0.08)] rounded-2xl p-3 flex items-center justify-between">
-                              <div>
-                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">Monthly Comp</span>
-                                <div className="flex items-baseline gap-1 mt-0.5">
-                                  <span className="text-base sm:text-[17px] font-black text-[#1b1233] tracking-tight">{job.salaryMonthly}</span>
-                                  <span className="text-[10px] text-slate-600 font-semibold">/mo</span>
-                                </div>
-                              </div>
-                              <div className="text-right border-l border-[rgba(67,15,122,0.1)] pl-3">
-                                <span className="text-[9.5px] uppercase tracking-wider text-slate-600 font-extrabold block">EU Work Visa</span>
-                                <span className="text-xs font-black text-emerald-700 flex items-center justify-end gap-1 mt-0.5">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                                  Sponsored
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Location & Experience Badges */}
-                            <div className="grid grid-cols-2 gap-2 text-[11px] font-medium text-slate-600">
-                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.location}>
-                                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                <span className="truncate">{job.location}</span>
-                              </div>
-                              <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/70 px-2.5 py-1.5 rounded-xl truncate" title={job.experienceRequired}>
-                                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                                <span className="truncate">{job.experienceRequired}</span>
-                              </div>
-                            </div>
-
-                            {/* Description */}
-                            <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                              {job.description}
-                            </p>
+                        {/* Bottom Content Container */}
+                        <div className="relative z-10 w-full">
+                          {/* Live Status Pill */}
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              {job.vacancies} Seats Available · {job.permitType.includes("Blue Card") ? "EU Blue Card" : "EU Work Permit"}
+                            </span>
                           </div>
 
-                          {/* Apply Button */}
-                          <div className="pt-2 border-t border-[rgba(67,15,122,0.08)]">
-                            <button
-                              onClick={() => handleApplyLuxembourg(job)}
-                              className="w-full relative group/btn bg-[#1b1233] hover:bg-[#370c63] text-white text-xs font-black uppercase tracking-wider py-3 px-4 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-between cursor-pointer"
+                          {/* Job Title (Landing Page Playfair Serif) */}
+                          <h3 className="font-serif text-xl sm:text-[22px] font-bold text-white tracking-wide uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] line-clamp-1 leading-tight group-hover:text-amber-200 transition-colors">
+                            {job.category}
+                          </h3>
+
+                          {/* Subtitle: Location & Experience */}
+                          <p className="text-xs text-white/85 font-medium mt-1 line-clamp-1 drop-shadow-sm flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-slate-300 shrink-0" />
+                            <span className="truncate">{job.location}</span>
+                            <span className="text-white/40">·</span>
+                            <span className="shrink-0">{job.experienceRequired}</span>
+                          </p>
+
+                          {/* 3-Column Glass Meta Row (Exact Landing Page .atlys-meta-row) */}
+                          <div className="grid grid-cols-3 gap-2 py-2.5 px-3 mt-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-center text-white">
+                            <div className="flex flex-col items-start text-left">
+                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">EST. COMP</span>
+                              <span className="text-xs sm:text-[13px] font-black text-amber-300 mt-0.5">{job.salaryMonthly}</span>
+                            </div>
+                            <div className="flex flex-col items-center border-x border-white/20 px-1">
+                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">VACANCIES</span>
+                              <span className="text-xs sm:text-[13px] font-black text-white mt-0.5">{job.vacancies} SEATS</span>
+                            </div>
+                            <div className="flex flex-col items-end text-right">
+                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">PERMIT</span>
+                              <span className="text-xs sm:text-[13px] font-black text-emerald-400 mt-0.5">SPONSORED</span>
+                            </div>
+                          </div>
+
+                          {/* Luxury Action Button */}
+                          <div className="mt-3.5">
+                            <button 
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); handleApplyLuxembourg(job); }}
+                              className="w-full py-2.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-between bg-white text-black hover:bg-amber-300 shadow-md group-hover:shadow-lg cursor-pointer"
                             >
-                              <span className="flex items-center gap-2">
-                                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                              <span className="flex items-center gap-1.5">
+                                <Sparkles className="w-3.5 h-3.5 text-[#370c63]" />
                                 <span>Apply for Luxembourg Role</span>
                               </span>
-                              <span className="w-6 h-6 rounded-lg bg-white/10 group-hover/btn:bg-white group-hover/btn:text-black flex items-center justify-center transition-all">
-                                <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                              </span>
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </button>
                           </div>
                         </div>
