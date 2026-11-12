@@ -1,107 +1,142 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" shape-rendering="geometricPrecision">
   <defs>
-    <!-- Plane Fuselage Pearl 3D Gradient -->
-    <linearGradient id="tourBody" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="35%" stop-color="#f8fafc"/>
-      <stop offset="75%" stop-color="#e2e8f0"/>
-      <stop offset="100%" stop-color="#94a3b8"/>
+    <!-- Trolley Case Body 3D Gradient (Royal Indigo to Brand Purple) -->
+    <linearGradient id="trolleyBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="35%" stop-color="#5b21b6"/>
+      <stop offset="75%" stop-color="#431407" stop-color-alternate="#3b0764" stop-color="#3b0764"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
     </linearGradient>
-    <!-- Brand Royal Purple/Violet Wing Gradient -->
-    <linearGradient id="tourPurple" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8b5cf6"/>
-      <stop offset="45%" stop-color="#6d28d9"/>
-      <stop offset="100%" stop-color="#370c63"/>
+
+    <!-- Front Glossy Highlight Shield -->
+    <linearGradient id="trolleyGloss" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd" stop-opacity="0.6"/>
+      <stop offset="40%" stop-color="#a78bfa" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#4c1d95" stop-opacity="0.8"/>
     </linearGradient>
-    <!-- Turquoise / Emerald Jet Engine Glow -->
-    <linearGradient id="tourJet" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#38bdf8"/>
-      <stop offset="50%" stop-color="#00b070"/>
-      <stop offset="100%" stop-color="#047857"/>
+
+    <!-- Chrome Telescopic Handle Metal Gradient -->
+    <linearGradient id="trolleyChrome" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="25%" stop-color="#f8fafc"/>
+      <stop offset="55%" stop-color="#cbd5e1"/>
+      <stop offset="85%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#475569"/>
     </linearGradient>
-    <!-- Thick High-Visibility Contrail Vapor Arc -->
-    <linearGradient id="tourContrail" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#00b070" stop-opacity="0"/>
-      <stop offset="35%" stop-color="#06b6d4" stop-opacity="0.5"/>
-      <stop offset="75%" stop-color="#8b5cf6" stop-opacity="0.65"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
+
+    <!-- Ergonomic Handle Grip Gradient -->
+    <linearGradient id="trolleyGrip" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="40%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
-    <!-- Soft Contact Shadow -->
-    <radialGradient id="tourShadow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.25"/>
+
+    <!-- Polished Gold / Brass Hardware & Luggage Tag -->
+    <linearGradient id="trolleyGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="30%" stop-color="#f59e0b"/>
+      <stop offset="70%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#92400e"/>
+    </linearGradient>
+
+    <!-- Wheels Rubber & Hubcap -->
+    <linearGradient id="wheelTire" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Ambient Contact Ground Shadow -->
+    <radialGradient id="trolleyShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.32"/>
       <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <!-- Ambient Ground/Cloud Shadow -->
-  <ellipse cx="28" cy="56" rx="20" ry="4" fill="url(#tourShadow)"/>
+  <!-- Ambient Contact Shadow on Ground -->
+  <ellipse cx="32" cy="58" rx="21" ry="4" fill="url(#trolleyShadow)"/>
 
-  <!-- Thick High-Contrast Flight Vapor Trails (Two parallel contrails) -->
-  <path d="M5 54 C13 52 23 44 32 32 C38 24 43 18 47 14" 
-        stroke="url(#tourContrail)" stroke-width="5" stroke-linecap="round" fill="none"/>
-  <path d="M9 56 C16 53 25 45 33 34" 
-        stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.8" fill="none"/>
+  <!-- TELESCOPIC EXTENDED HANDLE -->
+  <!-- Left & Right Chrome Tubes -->
+  <rect x="25" y="8" width="3" height="12" rx="1.5" fill="url(#trolleyChrome)"/>
+  <rect x="36" y="8" width="3" height="12" rx="1.5" fill="url(#trolleyChrome)"/>
+  <!-- Top Handle Curved Crossbar (Grip) -->
+  <path d="M23 7 C23 4.5 25 3 28 3 L36 3 C39 3 41 4.5 41 7 L41 9 C41 9.5 40.5 10 40 10 L38 10 C37.5 10 37 9.5 37 9 L37 7 C37 6 36.5 5.5 35.5 5.5 L28.5 5.5 C27.5 5.5 27 6 27 7 L27 9 C27 9.5 26.5 10 26 10 L24 10 C23.5 10 23 9.5 23 9 Z" 
+        fill="url(#trolleyGrip)"/>
+  <!-- Grip Center Release Button (Teal Accent) -->
+  <rect x="30.5" y="4" width="3" height="1.8" rx="0.9" fill="#00b070"/>
 
-  <!-- The Soaring Jetliner (Rotated -32deg for high-energy climb) -->
-  <g transform="translate(34, 30) rotate(-32) translate(-34, -30)">
-    
-    <!-- LEFT (FAR) WING - Large & Sharp -->
-    <polygon points="28,24 8,24 14,20 31,18" fill="url(#tourPurple)"/>
-    <polygon points="8,24 6,22 10,21 14,20" fill="#00b070"/>
-    <!-- Left Engine Nacelle -->
-    <ellipse cx="19" cy="22" rx="3.5" ry="1.8" fill="url(#tourJet)"/>
+  <!-- SPINNER WHEELS (At Base of Trolley) -->
+  <!-- Left Wheel Mount & Tire -->
+  <rect x="19" y="52" width="5.5" height="3" rx="1" fill="#334155"/>
+  <rect x="18.5" y="53.5" width="6.5" height="4" rx="2" fill="url(#wheelTire)"/>
+  <circle cx="21.75" cy="55.5" r="1.3" fill="url(#trolleyChrome)"/>
 
-    <!-- VERTICAL TAIL FIN (Royal Purple with Emerald Tip) -->
-    <polygon points="46,31 56,31 59,20 52,20" fill="url(#tourPurple)"/>
-    <polygon points="59,20 60,17 56,17 52,20" fill="#00b070"/>
-    <!-- Tail Fin Edge Highlight -->
-    <line x1="52" y1="20" x2="46" y2="31" stroke="#c4b5fd" stroke-width="0.8"/>
+  <!-- Right Wheel Mount & Tire -->
+  <rect x="39.5" y="52" width="5.5" height="3" rx="1" fill="#334155"/>
+  <rect x="39" y="53.5" width="6.5" height="4" rx="2" fill="url(#wheelTire)"/>
+  <circle cx="42.25" cy="55.5" r="1.3" fill="url(#trolleyChrome)"/>
 
-    <!-- Horizontal Stabilizers (Tail Wings) -->
-    <polygon points="47,33 58,37 59,35 49,31" fill="#64748b"/>
-    <polygon points="47,27 58,23 59,25 49,29" fill="#94a3b8"/>
+  <!-- TROLLEY SUITCASE MAIN BODY -->
+  <!-- Main Rounded Hard-shell Case -->
+  <rect x="15" y="16" width="34" height="38" rx="6" fill="url(#trolleyBody)"/>
 
-    <!-- MAIN FUSELAGE (Cylindrical Aircraft Body with 3D Shading) -->
-    <!-- Nosecone to tail cone -->
-    <path d="M10 30 C12 26 25 25 48 26 C54 26 58 29 57 30 C58 31 54 34 48 34 C25 35 12 34 10 30 Z" 
-          fill="url(#tourBody)"/>
+  <!-- Outer Bevel Rim for 3D Depth -->
+  <rect x="15.5" y="16.5" width="33" height="37" rx="5.5" stroke="#a78bfa" stroke-width="0.8" fill="none" opacity="0.6"/>
 
-    <!-- Aerodynamic Royal Purple Fuselage Cheatline (Speed Stripe) -->
-    <path d="M13 30 C18 29.5 35 29.5 56 29.5 L56 31 C35 31 18 31 13 30 Z" fill="url(#tourPurple)"/>
+  <!-- Front Molded Shell Panel with Inset -->
+  <rect x="17.5" y="18.5" width="29" height="33" rx="4.5" fill="url(#trolleyGloss)"/>
 
-    <!-- Cockpit Windshield (Aviator Dark Glass) -->
-    <path d="M12 29 C14 27 18 27.5 19 29 C18 30 14 30.5 12 29 Z" fill="#0f172a"/>
-    <path d="M13 28.8 C14.5 27.8 17 28.2 17.5 29 C16.5 29.6 14 29.6 13 28.8 Z" fill="#38bdf8"/>
-
-    <!-- Cabin Passenger Windows (Clear Row of Circles) -->
-    <g fill="#1e293b" opacity="0.85">
-      <circle cx="23" cy="30" r="1"/>
-      <circle cx="26" cy="30" r="1"/>
-      <circle cx="29" cy="30" r="1"/>
-      <circle cx="32" cy="30" r="1"/>
-      <circle cx="35" cy="30" r="1"/>
-      <circle cx="38" cy="30" r="1"/>
-      <circle cx="41" cy="30" r="1"/>
-      <circle cx="44" cy="30" r="1"/>
-    </g>
-
-    <!-- RIGHT (NEAR / FOREGROUND) WING (Swept Back Modern Wing) -->
-    <polygon points="30,34 14,46 19,48 37,36" fill="url(#tourPurple)"/>
-    <!-- Winglet on wingtip (Emerald Green Accent) -->
-    <polygon points="14,46 12,47 15,50 19,48" fill="#00b070"/>
-    <!-- Wing Top Highlight Edge -->
-    <line x1="30" y1="34" x2="14" y2="46" stroke="#c4b5fd" stroke-width="1.2"/>
-
-    <!-- Right Engine Nacelle (High-Bypass Turbofan) -->
-    <!-- Engine pylon -->
-    <rect x="23" y="36" width="3" height="3" fill="#64748b"/>
-    <!-- Engine cowl -->
-    <ellipse cx="24" cy="39" rx="4.5" ry="2.4" fill="url(#tourJet)"/>
-    <!-- Turbine intake rim -->
-    <ellipse cx="21" cy="39" rx="1.5" ry="2.2" fill="#0f172a"/>
-    <ellipse cx="21" cy="39" rx="1" ry="1.6" fill="#38bdf8"/>
-
-    <!-- Specular Highlight Arc Across Top of Fuselage -->
-    <path d="M15 28 C25 26.5 40 26.5 50 27" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+  <!-- 3D Horizontal Ribbed Grooves (Modern Travel Luggage Texture) -->
+  <g stroke="#ffffff" stroke-linecap="round" opacity="0.4" stroke-width="1.2">
+    <line x1="20" y1="24" x2="44" y2="24"/>
+    <line x1="20" y1="29" x2="44" y2="29"/>
+    <line x1="20" y1="34" x2="44" y2="34"/>
+    <line x1="20" y1="39" x2="44" y2="39"/>
+    <line x1="20" y1="44" x2="44" y2="44"/>
   </g>
+  <g stroke="#1e1b4b" stroke-linecap="round" opacity="0.5" stroke-width="0.8">
+    <line x1="20" y1="24.8" x2="44" y2="24.8"/>
+    <line x1="20" y1="29.8" x2="44" y2="29.8"/>
+    <line x1="20" y1="34.8" x2="44" y2="34.8"/>
+    <line x1="20" y1="39.8" x2="44" y2="39.8"/>
+    <line x1="20" y1="44.8" x2="44" y2="44.8"/>
+  </g>
+
+  <!-- Central Heavy-Duty Zipper Track -->
+  <line x1="32" y1="16" x2="32" y2="54" stroke="#0f172a" stroke-width="1.6" opacity="0.4"/>
+  <line x1="32" y1="16" x2="32" y2="54" stroke="#c4b5fd" stroke-width="0.6" stroke-dasharray="1.2 1" opacity="0.85"/>
+
+  <!-- TSA Combination Lock & Zipper Pulls -->
+  <rect x="47" y="28" width="3" height="6.5" rx="1" fill="#1e293b"/>
+  <rect x="47.5" y="29.5" width="2" height="3.5" rx="0.5" fill="url(#trolleyGold)"/>
+
+  <!-- Side Carry Handle -->
+  <rect x="13.5" y="28.5" width="2" height="7" rx="1" fill="url(#trolleyGrip)"/>
+
+  <!-- 4 Reinforced Corner Protectors (Metallic Brass) -->
+  <!-- Top Left -->
+  <path d="M15 22 C15 18 18 16 22 16 L22 18 C19.5 18 17.5 19.5 17.5 22 Z" fill="url(#trolleyGold)"/>
+  <circle cx="18.5" cy="19.5" r="0.6" fill="#78350f"/>
+  <!-- Top Right -->
+  <path d="M49 22 C49 18 46 16 42 16 L42 18 C44.5 18 46.5 19.5 46.5 22 Z" fill="url(#trolleyGold)"/>
+  <circle cx="45.5" cy="19.5" r="0.6" fill="#78350f"/>
+  <!-- Bottom Left -->
+  <path d="M15 48 C15 52 18 54 22 54 L22 52 C19.5 52 17.5 50.5 17.5 48 Z" fill="url(#trolleyGold)"/>
+  <!-- Bottom Right -->
+  <path d="M49 48 C49 52 46 54 42 54 L42 52 C44.5 52 46.5 50.5 46.5 48 Z" fill="url(#trolleyGold)"/>
+
+  <!-- Center Travel Flight Emblem (Golden Jet Badge) -->
+  <circle cx="32" cy="34" r="5" fill="#1e1b4b" stroke="url(#trolleyGold)" stroke-width="1"/>
+  <!-- Golden Airplane Silhouette inside Badge -->
+  <path d="M32 30.5 L33.2 32.5 L35.8 33.2 L33.2 34.2 L33.5 36.2 L32 35.5 L30.5 36.2 L30.8 34.2 L28.2 33.2 L30.8 32.5 Z" 
+        fill="url(#trolleyGold)"/>
+
+  <!-- Dangle Luggage Tag (Yellow/Gold Flight Tag) -->
+  <!-- Tag Strap from handle base -->
+  <path d="M26 18 C24 20 22 21 21 23" stroke="#f59e0b" stroke-width="1" fill="none"/>
+  <!-- Angled Tag Card -->
+  <polygon points="21,22 17,26 21,30 25,26" fill="url(#trolleyGold)" stroke="#b45309" stroke-width="0.5"/>
+  <circle cx="21" cy="24" r="0.75" fill="#ffffff"/>
+  <line x1="19.5" y1="26.5" x2="22.5" y2="26.5" stroke="#78350f" stroke-width="0.6"/>
 </svg>

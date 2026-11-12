@@ -3395,51 +3395,25 @@ const SHOWCASE_DATA = {
     viewAllText: 'Show all universities (200+)',
     items: [
       {
-        title: 'CYPRUS',
-        flag: 'cy',
-        sub: 'October Intake · Multi-Discipline',
-        badge: '100% VISA SUPPORT',
-        col1Label: 'DEGREE',
-        col1Val: 'BS / MS',
-        col2Label: 'APOSTILLE',
-        col2Val: 'ZERO FEE',
-        col3Label: 'TUITION',
-        col3Val: '€3,300/YR',
-        href: '/universities',
-        img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=1200&fit=crop&q=90'
-      },
-      {
-        title: 'CANADA',
-        flag: 'ca',
-        sub: 'Univ of Toronto · QS #21',
-        badge: 'PGWP ELIGIBLE',
-        col1Label: 'DEGREE',
-        col1Val: 'B.TECH / CS',
-        col2Label: 'WORK PERMIT',
-        col2Val: '3 YEARS',
-        col3Label: 'TUITION',
-        col3Val: 'CAD $38K',
-        href: '/universities',
-        img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=1200&fit=crop&q=90'
-      },
-      {
-        title: 'AUSTRALIA',
-        flag: 'au',
-        sub: 'Univ. of Melbourne · QS #14',
-        badge: 'POST-STUDY PR',
-        col1Label: 'DEGREE',
-        col1Val: 'BUSINESS / IT',
-        col2Label: 'STAY BACK',
-        col2Val: '4 YEARS',
-        col3Label: 'TUITION',
-        col3Val: 'AUD $36K',
-        href: '/universities',
-        img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=800&h=1200&fit=crop&q=90'
-      },
-      {
-        title: 'GERMANY',
+        title: 'GATEBRIDGE GERMANY',
         flag: 'de',
-        sub: 'TU Munich · Top Tech in Europe',
+        country: 'Germany',
+        sub: 'EU Business School Munich · Direct Pathway Degree',
+        badge: '🇩🇪 MUNICH CAMPUS',
+        col1Label: 'DEGREE',
+        col1Val: 'PREP & DEGREE',
+        col2Label: 'PATHWAY',
+        col2Val: 'EU DEGREE',
+        col3Label: 'LOCATION',
+        col3Val: 'MUNICH',
+        href: '/universities/gatebridge-germany',
+        img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'TU MUNICH',
+        flag: 'de',
+        country: 'Germany',
+        sub: 'Technical University of Munich · Top Tech in Europe',
         badge: 'ZERO TUITION',
         col1Label: 'DEGREE',
         col1Val: 'M.SC AI / TECH',
@@ -3451,9 +3425,115 @@ const SHOWCASE_DATA = {
         img: 'https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'UNITED KINGDOM',
+        title: 'HEIDELBERG UNIVERSITY',
+        flag: 'de',
+        country: 'Germany',
+        sub: 'Historic Excellence · Medicine & Research Global #1',
+        badge: 'TOP STEM & MED',
+        col1Label: 'DEGREE',
+        col1Val: 'STEM / MED',
+        col2Label: 'VISA',
+        col2Val: 'STUDY PERMIT',
+        col3Label: 'TUITION',
+        col3Val: '€0-€1.5K',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'BPG COLLEGE',
+        flag: 'mu',
+        country: 'Mauritius',
+        sub: 'Business & Professional Growth · Port Louis',
+        badge: 'PAY AFTER VISA',
+        col1Label: 'DIPLOMA',
+        col1Val: 'BUSINESS MGMT',
+        col2Label: 'IELTS',
+        col2Val: 'NOT REQUIRED',
+        col3Label: 'TUITION',
+        col3Val: '$4,200/YR',
+        href: '/universities/bpg-mauritius',
+        img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'A.S. GRIBOYEDOV MOSCOW',
+        flag: 'ru',
+        country: 'Russia',
+        sub: 'IMPE Moscow · Economics, Law, Journalism & IT',
+        badge: 'STATE ACCREDITED',
+        col1Label: 'DEGREE',
+        col1Val: 'BACHELOR/MA',
+        col2Label: 'EXPERIENCE',
+        col2Val: '32 YEARS',
+        col3Label: 'TUITION',
+        col3Val: '56K RUB/YR',
+        href: '/universities/griboyedov-moscow',
+        img: 'https://images.unsplash.com/photo-1513326738677-b964603b136d?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'CDA COLLEGE CYPRUS',
+        flag: 'cy',
+        country: 'Cyprus',
+        sub: 'Campuses in Nicosia, Limassol, Larnaca & Paphos',
+        badge: 'SPECIAL OFFER',
+        col1Label: 'DEGREE',
+        col1Val: 'BA / MBA',
+        col2Label: 'GRANT',
+        col2Val: 'STATE GRANT',
+        col3Label: 'TUITION',
+        col3Val: '€3,500/YR',
+        href: '/universities/cda-college-cyprus',
+        img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'UCLAN CYPRUS',
+        flag: 'cy',
+        country: 'Cyprus',
+        sub: 'Univ of Central Lancashire UK Branch Campus',
+        badge: 'UK DEGREE AWARDED',
+        col1Label: 'DEGREE',
+        col1Val: 'UK BSC / MSC',
+        col2Label: 'BURSARY',
+        col2Val: 'UP TO €1,000',
+        col3Label: 'TUITION',
+        col3Val: '€6,000/YR',
+        href: '/universities/uclan-cyprus',
+        img: 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'CYPRUS WEST UNIVERSITY',
+        flag: 'cy',
+        country: 'Cyprus',
+        sub: 'CWU Famagusta · English-Taught Programmes',
+        badge: 'UP TO 75% SCHOLARSHIP',
+        col1Label: 'DEGREE',
+        col1Val: 'BSC / MBA',
+        col2Label: 'SCHOLARSHIP',
+        col2Val: '75% OFF',
+        col3Label: 'TUITION',
+        col3Val: '$1,375/YR',
+        href: '/universities/cyprus-west-university',
+        img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'UNIVERSITY OF TORONTO',
+        flag: 'ca',
+        country: 'Canada',
+        sub: 'Univ of Toronto · QS #21 Global Ranking',
+        badge: 'PGWP ELIGIBLE',
+        col1Label: 'DEGREE',
+        col1Val: 'B.TECH / CS',
+        col2Label: 'WORK PERMIT',
+        col2Val: '3 YEARS',
+        col3Label: 'TUITION',
+        col3Val: 'CAD $38K',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'UNIVERSITY OF OXFORD',
         flag: 'gb',
-        sub: 'University of Oxford · World #1',
+        country: 'United Kingdom',
+        sub: 'University of Oxford · World #1 Collegiate',
         badge: 'PRESTIGE ADMISSION',
         col1Label: 'DEGREE',
         col1Val: 'ALL MAJORS',
@@ -3465,9 +3545,25 @@ const SHOWCASE_DATA = {
         img: 'https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=800&h=1200&fit=crop&q=90'
       },
       {
-        title: 'SINGAPORE',
+        title: 'UNIVERSITY OF MELBOURNE',
+        flag: 'au',
+        country: 'Australia',
+        sub: 'Univ. of Melbourne · QS #14 Australia #1',
+        badge: 'POST-STUDY PR',
+        col1Label: 'DEGREE',
+        col1Val: 'BUSINESS / IT',
+        col2Label: 'STAY BACK',
+        col2Val: '4 YEARS',
+        col3Label: 'TUITION',
+        col3Val: 'AUD $36K',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'NUS SINGAPORE',
         flag: 'sg',
-        sub: 'National Univ of Singapore · QS #8',
+        country: 'Singapore',
+        sub: 'National Univ of Singapore · QS #8 Global',
         badge: 'TOP ASIA TECH',
         col1Label: 'DEGREE',
         col1Val: 'CS / MBA',
@@ -3477,6 +3573,21 @@ const SHOWCASE_DATA = {
         col3Val: 'SGD $32K',
         href: '/universities',
         img: 'https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800&h=1200&fit=crop&q=90'
+      },
+      {
+        title: 'HARVARD & MIT',
+        flag: 'us',
+        country: 'United States',
+        sub: 'Cambridge, MA · Ivy League & World #1 STEM',
+        badge: 'STEM OPT 3 YRS',
+        col1Label: 'DEGREE',
+        col1Val: 'BS / MS / PHD',
+        col2Label: 'OPT STEM',
+        col2Val: '36 MONTHS',
+        col3Label: 'TUITION',
+        col3Val: '$52K/YR',
+        href: '/universities',
+        img: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&h=1200&fit=crop&q=90'
       }
     ]
   },
@@ -3888,10 +3999,11 @@ function renderShowcase(tab, filterQuery = '') {
 
   let items = data.items;
   if (filterQuery) {
-    const q = filterQuery.toLowerCase();
+    const q = filterQuery.toLowerCase().trim();
     items = items.filter(it => 
-      it.title.toLowerCase().includes(q) || 
-      it.sub.toLowerCase().includes(q) || 
+      (it.title && it.title.toLowerCase().includes(q)) || 
+      (it.sub && it.sub.toLowerCase().includes(q)) || 
+      (it.country && it.country.toLowerCase().includes(q)) ||
       (it.badge && it.badge.toLowerCase().includes(q)) ||
       (it.col1Val && it.col1Val.toLowerCase().includes(q)) ||
       (it.col2Val && it.col2Val.toLowerCase().includes(q)) ||
@@ -3973,7 +4085,10 @@ $$('.airbnb-cat-tab').forEach(btn => {
       mobInp.placeholder = airbnbPlaceholders[activeAirbnbTab];
     }
     // Showcase all cards for this category right there!
-    renderShowcase(activeAirbnbTab, qInp ? qInp.value.trim() : '');
+    const destVal = ($('#dest-val') && $('#dest-val').value.trim()) || '';
+    const qVal = qInp ? qInp.value.trim() : '';
+    const activeFilter = (destVal && destVal !== 'Select Country' && destVal !== 'All Countries') ? destVal : qVal;
+    renderShowcase(activeAirbnbTab, activeFilter);
     const scEl = $('#airbnb-showcase');
     if (scEl) {
       scEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -4433,8 +4548,14 @@ const pillDestDrop = $('#pill-dest-drop');
 if (pillDestDrop) {
   pillDestDrop.querySelectorAll('.c-drop-opt').forEach(opt => {
     opt.addEventListener('click', () => {
-      const v = opt.dataset.v;
+      const v = opt.dataset.v || '';
       renderShowcase(activeAirbnbTab, v);
+      const scEl = $('#airbnb-showcase');
+      if (scEl) {
+        setTimeout(() => {
+          scEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
     });
   });
 }

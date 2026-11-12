@@ -3,6 +3,10 @@
 import Layout from '../layouts/Layout.astro';
 import { UNIVERSITIES_DATA } from '../data/universities';
 import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal';
+
+const searchParam = (Astro.url.searchParams.get('search') || Astro.url.searchParams.get('q') || '').trim();
+const countryParam = (Astro.url.searchParams.get('country') || Astro.url.searchParams.get('destination') || '').trim();
+const activeFilter = countryParam || searchParam;
 ---
 
 <Layout 
@@ -14,7 +18,7 @@ import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
-      <div class="max-w-3xl mb-8">
+      <div class="max-w-3xl mb-6">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 uppercase tracking-wider mb-3">
           🎓 Direct Admission &amp; Pathway Institutions
         </span>
@@ -26,13 +30,98 @@ import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal
         </p>
       </div>
 
-      <!-- 6 Universities Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Live Search & Country Filter Bar -->
+      <div class="mb-8 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <!-- Search Input -->
+        <div class="relative flex-1">
+          <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input 
+            type="text" 
+            id="uni-live-filter" 
+            value={activeFilter}
+            placeholder="Search by university name, country (e.g. Germany, Cyprus), city, degree..." 
+            class="w-full pl-11 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-600/30 focus:border-purple-600 transition-all"
+          />
+          <button 
+            type="button" 
+            id="uni-clear-btn" 
+            class={`absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm font-bold ${activeFilter ? '' : 'hidden'}`}
+            title="Clear filter"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Quick Country Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none" id="uni-country-pills">
+          <button 
+            type="button" 
+            data-country="" 
+            class={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+              !activeFilter ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            All Institutions
+          </button>
+          <button 
+            type="button" 
+            data-country="Germany" 
+            class={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+              activeFilter.toLowerCase() === 'germany' ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            🇩🇪 Germany
+          </button>
+          <button 
+            type="button" 
+            data-country="Cyprus" 
+            class={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+              activeFilter.toLowerCase() === 'cyprus' ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            🇨🇾 Cyprus
+          </button>
+          <button 
+            type="button" 
+            data-country="Mauritius" 
+            class={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+              activeFilter.toLowerCase() === 'mauritius' ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            🇲🇺 Mauritius
+          </button>
+          <button 
+            type="button" 
+            data-country="Russia" 
+            class={`px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+              activeFilter.toLowerCase() === 'russia' ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            🇷🇺 Russia
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Filter Pill Indicator (if active) -->
+      <div id="uni-filter-status" class="mb-4 text-xs font-semibold text-slate-500 flex items-center justify-between">
+        <span id="uni-results-count">Showing partner institutions</span>
+      </div>
+
+      <!-- Universities Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="uni-cards-grid">
         {UNIVERSITIES_DATA.map((uni) => (
           <a 
             href={`/universities/${uni.id}`} 
             key={uni.id} 
-            class="bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all overflow-hidden flex flex-col group"
+            data-name={uni.name.toLowerCase()}
+            data-country={uni.country.toLowerCase()}
+            data-city={uni.city.toLowerCase()}
+            data-region={uni.region.toLowerCase()}
+            data-highlights={uni.highlights.join(' ').toLowerCase()}
+            data-programs={uni.programs.map(p => `${p.name} ${p.level}`).join(' ').toLowerCase()}
+            class="uni-card bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all overflow-hidden flex flex-col group"
           >
             {/* Card Header (Photo placeholder + Region Badge) */}
             <div class="h-40 bg-gradient-to-br from-slate-100 to-indigo-50/50 relative p-4 flex items-start justify-between border-b border-slate-100">
@@ -52,7 +141,7 @@ import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal
 
             {/* Card Body */}
             <div class="p-5 flex-1 flex flex-col">
-              <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand transition-colors leading-snug">
+              <h3 class="text-lg font-bold text-slate-900 group-hover:text-purple-600 transition-colors leading-snug">
                 {uni.name}
               </h3>
               <p class="text-sm text-slate-500 mt-1 mb-3">{uni.city}, {uni.country}</p>
@@ -68,14 +157,27 @@ import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal
 
               {/* Action */}
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-brand transition-colors">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-purple-600 transition-colors">
                   View Details &amp; Fees
                 </span>
-                <span class="text-brand font-bold group-hover:translate-x-1 transition-transform">→</span>
+                <span class="text-purple-600 font-bold group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </div>
           </a>
         ))}
+      </div>
+
+      <!-- No match fallback message -->
+      <div id="uni-no-results" class="hidden text-center py-12 px-4 bg-white rounded-3xl border border-dashed border-slate-300 mt-4">
+        <p class="text-slate-700 font-bold text-base mb-1">No direct partner university matches your search.</p>
+        <p class="text-slate-500 text-sm mb-4">You can browse other global universities or check our interactive admissions portal below.</p>
+        <button 
+          type="button" 
+          id="uni-reset-btn" 
+          class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-all"
+        >
+          View All Partner Institutions
+        </button>
       </div>
 
     </div>
@@ -83,4 +185,108 @@ import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal
 
   <!-- Interactive Search & Consultant Booking Portal -->
   <UniversitiesPortal client:only="react" />
+
+  <!-- Client-side Interactive Search Logic -->
+  <script is:inline>
+    (function() {
+      const filterInput = document.getElementById('uni-live-filter');
+      const clearBtn = document.getElementById('uni-clear-btn');
+      const pillButtons = document.querySelectorAll('#uni-country-pills button');
+      const cards = document.querySelectorAll('.uni-card');
+      const noResults = document.getElementById('uni-no-results');
+      const resetBtn = document.getElementById('uni-reset-btn');
+      const statusCount = document.getElementById('uni-results-count');
+
+      function applyFilter(query) {
+        const q = (query || '').toLowerCase().trim();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          if (!q) {
+            card.style.display = 'flex';
+            visibleCount++;
+            return;
+          }
+          const name = card.dataset.name || '';
+          const country = card.dataset.country || '';
+          const city = card.dataset.city || '';
+          const region = card.dataset.region || '';
+          const highlights = card.dataset.highlights || '';
+          const programs = card.dataset.programs || '';
+
+          const match = name.includes(q) || 
+                        country.includes(q) || 
+                        city.includes(q) || 
+                        region.includes(q) || 
+                        highlights.includes(q) || 
+                        programs.includes(q);
+
+          if (match) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (noResults) {
+          noResults.classList.toggle('hidden', visibleCount > 0);
+        }
+
+        if (clearBtn) {
+          clearBtn.classList.toggle('hidden', !q);
+        }
+
+        if (statusCount) {
+          if (!q) {
+            statusCount.textContent = `Showing all ${visibleCount} featured partner institutions`;
+          } else {
+            statusCount.textContent = `Showing ${visibleCount} matching institutions for "${q}"`;
+          }
+        }
+
+        // Highlight matching country pill if exact match
+        pillButtons.forEach(btn => {
+          const btnCountry = (btn.dataset.country || '').toLowerCase();
+          const isActive = (!q && !btnCountry) || (btnCountry && q === btnCountry);
+          btn.className = `px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+            isActive ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+          }`;
+        });
+      }
+
+      if (filterInput) {
+        filterInput.addEventListener('input', (e) => {
+          applyFilter(e.target.value);
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (filterInput) filterInput.value = '';
+          applyFilter('');
+        });
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (filterInput) filterInput.value = '';
+          applyFilter('');
+        });
+      }
+
+      pillButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const country = btn.dataset.country || '';
+          if (filterInput) filterInput.value = country;
+          applyFilter(country);
+        });
+      });
+
+      // Apply initial filter if present
+      if (filterInput && filterInput.value) {
+        applyFilter(filterInput.value);
+      }
+    })();
+  </script>
 </Layout>
