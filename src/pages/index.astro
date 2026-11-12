@@ -159,10 +159,10 @@ section{padding:96px 0;position:relative}
   position:relative;
 }
 
-/* Container turns authentic Airbnb light gray #ebebeb when any dropdown is open */
+/* Container turns soft bluish when any dropdown is open */
 .airbnb-pill-search:has(.c-drop.open),
 .airbnb-pill-search.has-open{
-  background:#ebebeb !important;
+  background:#edf4fc !important;
   border-color:transparent !important;
 }
 
@@ -183,22 +183,22 @@ section{padding:96px 0;position:relative}
   padding-left:32px;
 }
 
-/* Hover State - Exact Authentic Airbnb Color #ebebeb */
+/* Hover State - Soft Bluish Luxury Pill Color */
 .airbnb-pill-segment:hover{
-  background-color:#ebebeb;
+  background-color:#edf4fc;
 }
 
 /* Active State - Pure White elevated pill with drop shadow when open */
 .airbnb-pill-segment.c-drop.open{
   background-color:#ffffff !important;
-  box-shadow:0 4px 20px rgba(0,0,0,0.14),0 0 0 1px rgba(0,0,0,0.04) !important;
+  box-shadow:0 4px 20px rgba(15,23,42,0.12),0 0 0 1px rgba(0,0,0,0.04) !important;
   z-index:10;
 }
 
 /* Hovering other segment when one is open */
 .airbnb-pill-search:has(.c-drop.open) .airbnb-pill-segment:not(.open):hover,
 .airbnb-pill-search.has-open .airbnb-pill-segment:not(.open):hover{
-  background-color:rgba(0,0,0,0.05);
+  background-color:rgba(14, 165, 233, 0.08);
 }
 
 .pill-label-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
@@ -365,11 +365,39 @@ section{padding:96px 0;position:relative}
   align-self:center;
   padding-right:9px;
   margin-left:4px;
+  display:flex;
+  align-items:center;
 }
-.airbnb-round-search-btn{height:48px;border-radius:9999px;padding:0 24px;background:linear-gradient(135deg,#430f7a,#581db5,#6c22c3) !important;color:#ffffff !important;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:-0.01em;transition:all .2s ease;box-shadow:0 4px 16px rgba(88,29,181,0.45) !important;flex-shrink:0}
-.airbnb-round-search-btn:hover{background:linear-gradient(135deg,#4f118c,#6c22c3,#892dd8) !important;transform:translateY(-1px) scale(1.02);box-shadow:0 6px 20px rgba(88,29,181,0.6) !important}
-.airbnb-round-search-btn:active{transform:scale(0.97)}
-.airbnb-round-search-btn svg{width:16px;height:16px;stroke:#ffffff !important;stroke-width:2.6}
+.airbnb-round-search-btn{
+  width:48px;
+  height:48px;
+  border-radius:50% !important;
+  padding:0 !important;
+  background:linear-gradient(135deg,#430f7a,#581db5,#6c22c3) !important;
+  color:#ffffff !important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:none;
+  cursor:pointer;
+  transition:all .2s ease;
+  box-shadow:0 4px 16px rgba(88,29,181,0.45) !important;
+  flex-shrink:0;
+}
+.airbnb-round-search-btn:hover{
+  background:linear-gradient(135deg,#4f118c,#6c22c3,#892dd8) !important;
+  transform:translateY(-1px) scale(1.05);
+  box-shadow:0 6px 20px rgba(88,29,181,0.6) !important;
+}
+.airbnb-round-search-btn:active{
+  transform:scale(0.95);
+}
+.airbnb-round-search-btn svg{
+  width:18px;
+  height:18px;
+  stroke:#ffffff !important;
+  stroke-width:2.8;
+}
 
 /* Luxury Dropdown Popup inside Pill */
 .airbnb-pill-popup{position:absolute;top:calc(100% + 14px);left:0;min-width:280px;background:#ffffff;border-radius:24px;border:1px solid #ebebeb;box-shadow:0 14px 40px rgba(0,0,0,0.14);padding:14px;z-index:250;display:none;flex-direction:column;gap:4px}
@@ -1839,11 +1867,10 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           </div>
         </div>
 
-        <!-- Search Button (Matching Logo Brand Color) -->
+        <!-- Search Button (Airbnb-Style Circular Icon Button) -->
         <div class="airbnb-pill-btn-box">
-          <button type="button" id="go" class="airbnb-round-search-btn" style="background: linear-gradient(135deg, #430f7a, #581db5, #6c22c3) !important; box-shadow: 0 4px 16px rgba(88, 29, 181, 0.45) !important; color: #ffffff !important;" aria-label="Search">
-            <svg class="i" style="width:16px;height:16px;stroke:#fff;stroke-width:2.8"><use href="#search"/></svg>
-            <span>Search</span>
+          <button type="button" id="go" class="airbnb-round-search-btn" aria-label="Search" title="Search">
+            <svg class="i"><use href="#search"/></svg>
           </button>
         </div>
       </div>
