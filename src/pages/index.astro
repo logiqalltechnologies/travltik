@@ -1443,12 +1443,29 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <div class="airbnb-search-bar-row">
       <div class="airbnb-pill-search">
         <!-- Field 1: Service -->
-        <div class="airbnb-pill-segment">
+        <div class="airbnb-pill-segment c-drop" id="pill-service-drop">
           <div class="pill-label-row">
             <svg class="i pill-segment-icon"><use href="#search"/></svg>
-            <label for="q">Service</label>
+            <label>Service</label>
           </div>
-          <input type="text" id="q" placeholder="e.g. Canada Student Visa" autocomplete="off" />
+          <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-service-btn">
+            <span class="pill-drop-val" id="pill-service-val-text"><span class="pill-placeholder">Select Service</span></span>
+            <svg class="i pill-drop-chv"><use href="#chevron-down"/></svg>
+          </button>
+          <input type="hidden" id="q" value="" />
+          <div class="pill-drop-menu" id="pill-service-menu">
+            <div class="c-drop-search-wrap">
+              <input type="text" class="c-drop-search" placeholder="Type or filter service..." onclick="event.stopPropagation()" />
+            </div>
+            <div class="c-drop-opt on" data-v="" data-tab="all"><span class="flag-icon" style="font-size:16px">🌐</span> <span>All Services</span> <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Visa & PR Applications" data-tab="visas" data-icon="📑"><span class="flag-icon" style="font-size:16px">📑</span> <span>Visa &amp; PR Applications</span> <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Direct Job Drives 2026" data-tab="jobs" data-icon="💼"><span class="flag-icon" style="font-size:16px">💼</span> <span>Direct Job Drives 2026</span> <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Global Universities" data-tab="universities" data-icon="🎓"><span class="flag-icon" style="font-size:16px">🎓</span> <span>Global Universities</span> <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Holiday Tours & Travel" data-tab="tours" data-icon="✈️"><span class="flag-icon" style="font-size:16px">✈️</span> <span>Holiday Tours &amp; Cricket Series</span> <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Licensed Immigration Experts" data-tab="experts" data-icon="👨‍⚖️"><span class="flag-icon" style="font-size:16px">👨‍⚖️</span> <span>Licensed Immigration Experts</span> <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="AI Immigration Tools" data-tab="experts" data-icon="⚡"><span class="flag-icon" style="font-size:16px">⚡</span> <span>AI Immigration Tools</span> <svg class="i chk"><use href="#check"/></svg></div>
+            <div class="c-drop-opt" data-v="Escrow Protection" data-tab="offers" data-icon="🔒"><span class="flag-icon" style="font-size:16px">🔒</span> <span>Escrow Milestone Protection</span> <svg class="i chk"><use href="#check"/></svg></div>
+          </div>
         </div>
 
         <div class="airbnb-pill-divider"></div>
@@ -1604,13 +1621,13 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   </div>
 </section>
 
-<!-- GET YOUR VISA DONE SECTION (Below Cards) -->
+<!-- CHECK YOUR VISA READINESS SECTION (Below Cards) -->
 <section class="visa-done-section" id="visa-done" style="padding:48px 0 20px;background:#ffffff;">
   <div class="wrap">
     <div class="sh c rv" style="margin-bottom:28px;">
       <span class="eyebrow" style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--p2);display:inline-block;margin-bottom:8px;">Quick Directory</span>
       <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(30px,5vw,46px);font-weight:800;letter-spacing:-0.03em;color:#1b1233;margin:0 0 12px;line-height:1.15;">
-        Get Your <span class="grad">Visa Done</span>
+        Check Your <span class="grad">Visa Readiness</span>
       </h2>
       <p style="font-size:16px;color:#675f80;max-width:620px;margin:0 auto;line-height:1.5;">
         Search verified visa routes, licensed experts, study programs and stays across 193+ countries.
@@ -2481,6 +2498,14 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
           textSpan.innerHTML = `<svg class="i qs-fld-icon"><use href="#globe"/></svg> <span>All Countries</span>`;
         } else if (val === 'All Categories') {
           textSpan.innerHTML = `<svg class="i qs-fld-icon"><use href="#file"/></svg> <span>All Categories</span>`;
+        } else if (!val) {
+          if (dropId === '#pill-service-drop') {
+            textSpan.innerHTML = `<span class="flag-icon" style="font-size:16px">🌐</span> <span>All Services</span>`;
+          } else if (dropId === '#pill-dest-drop') {
+            textSpan.innerHTML = `<span class="pill-placeholder">Select Country</span>`;
+          } else {
+            textSpan.innerHTML = `<span class="pill-placeholder">All</span>`;
+          }
         } else {
           textSpan.innerHTML = `<span>${val}</span>`;
         }
@@ -3826,8 +3851,47 @@ if (mainQ) {
 }
 
 // Header pill custom dropdowns
+initCustomDropdown('#pill-service-drop', '#q', '#pill-service-val-text');
 initCustomDropdown('#pill-dest-drop', '#dest-val', '#pill-dest-val-text');
 initCustomDropdown('#pill-from-drop', '#from-val', '#pill-from-val-text');
+
+const pillServiceDrop = $('#pill-service-drop');
+if (pillServiceDrop) {
+  pillServiceDrop.querySelectorAll('.c-drop-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const v = opt.dataset.v || '';
+      const tab = opt.dataset.tab;
+      if (tab && tab !== activeAirbnbTab) {
+        const catBtn = document.querySelector(`.airbnb-cat-tab[data-tab="${tab}"]`);
+        if (catBtn) {
+          catBtn.click();
+          if (v) renderShowcase(tab, v);
+          return;
+        }
+      }
+      renderShowcase(activeAirbnbTab, v);
+    });
+  });
+
+  const servSearchInp = pillServiceDrop.querySelector('.c-drop-search');
+  if (servSearchInp) {
+    servSearchInp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const customVal = servSearchInp.value.trim();
+        const qEl = $('#q');
+        if (qEl) qEl.value = customVal;
+        const textSpan = $('#pill-service-val-text');
+        if (textSpan) {
+          textSpan.innerHTML = customVal ? `<span>${customVal}</span>` : `<span class="pill-placeholder">Select Service</span>`;
+        }
+        pillServiceDrop.classList.remove('open');
+        renderShowcase(activeAirbnbTab, customVal);
+      }
+    });
+  }
+}
+
 const pillDestDrop = $('#pill-dest-drop');
 if (pillDestDrop) {
   pillDestDrop.querySelectorAll('.c-drop-opt').forEach(opt => {
