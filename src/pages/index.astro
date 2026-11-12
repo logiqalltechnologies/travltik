@@ -201,9 +201,9 @@ section{padding:96px 0;position:relative}
   background-color:rgba(14, 165, 233, 0.08);
 }
 
-.pill-label-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
-.pill-segment-icon{width:13px;height:13px;color:#00b070;flex-shrink:0}
-.airbnb-pill-segment label{display:block;font-size:11.5px;font-weight:800;color:#1e293b;letter-spacing:.04em;margin:0;text-transform:uppercase;line-height:1;cursor:pointer}
+.pill-label-row{display:flex;align-items:center;margin-bottom:2px}
+.pill-segment-icon{display:none !important}
+.airbnb-pill-segment label{display:block;font-size:12px;font-weight:700;color:#222222;letter-spacing:.02em;margin:0;line-height:1.2;cursor:pointer}
 .airbnb-pill-segment input{width:100%;border:none;outline:none;background:transparent;font-size:14px;color:#0f172a;font-weight:500;padding:0;line-height:1.3;cursor:pointer}
 .airbnb-pill-segment input::placeholder{color:#717171;font-weight:400}
 
@@ -371,32 +371,225 @@ section{padding:96px 0;position:relative}
 .airbnb-round-search-btn{
   width:48px;
   height:48px;
-  border-radius:50% !important;
-  padding:0 !important;
+  border-radius:9999px !important;
+  padding:0 14px !important;
   background:linear-gradient(135deg,#430f7a,#581db5,#6c22c3) !important;
   color:#ffffff !important;
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap:8px;
   border:none;
   cursor:pointer;
-  transition:all .2s ease;
+  transition:all .25s cubic-bezier(0.2,0,0,1);
   box-shadow:0 4px 16px rgba(88,29,181,0.45) !important;
   flex-shrink:0;
 }
+.airbnb-round-search-btn .btn-text{
+  display:none;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:-0.01em;
+  white-space:nowrap;
+}
+/* When any dropdown is open, button expands with "Search" text just like in user photo! */
+.airbnb-pill-search.has-open .airbnb-round-search-btn,
+.airbnb-pill-search:has(.c-drop.open) .airbnb-round-search-btn{
+  width:auto;
+  padding:0 22px !important;
+}
+.airbnb-pill-search.has-open .airbnb-round-search-btn .btn-text,
+.airbnb-pill-search:has(.c-drop.open) .airbnb-round-search-btn .btn-text{
+  display:inline-block;
+}
 .airbnb-round-search-btn:hover{
   background:linear-gradient(135deg,#4f118c,#6c22c3,#892dd8) !important;
-  transform:translateY(-1px) scale(1.05);
+  transform:translateY(-1px) scale(1.03);
   box-shadow:0 6px 20px rgba(88,29,181,0.6) !important;
 }
 .airbnb-round-search-btn:active{
-  transform:scale(0.95);
+  transform:scale(0.96);
 }
 .airbnb-round-search-btn svg{
-  width:18px;
-  height:18px;
+  width:16px;
+  height:16px;
   stroke:#ffffff !important;
   stroke-width:2.8;
+  flex-shrink:0;
+}
+
+/* Authentic Airbnb Dual-Month Calendar Popup Menu */
+.pill-calendar-menu{
+  width: 780px !important;
+  max-width: 92vw !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  padding: 24px 28px 20px !important;
+  border-radius: 32px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+}
+@media(max-width: 860px){
+  .pill-calendar-menu{
+    width: 340px !important;
+    padding: 16px 12px !important;
+  }
+  .cal-dual-months{
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+}
+
+.cal-top-switcher{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ebebeb;
+  border-radius: 9999px;
+  padding: 4px;
+  width: fit-content;
+  margin: 0 auto 20px;
+}
+.cal-mode-btn{
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 8px 22px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #222222;
+  cursor: pointer;
+  transition: all .15s ease;
+  font-family: inherit;
+}
+.cal-mode-btn.active{
+  background: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cal-dual-months{
+  display: flex;
+  gap: 36px;
+  justify-content: center;
+}
+.cal-month-col{
+  flex: 1;
+  min-width: 0;
+}
+.cal-month-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.cal-month-title{
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #222222;
+  text-align: center;
+  flex: 1;
+}
+.cal-nav-btn{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #222222;
+  transition: background-color .15s;
+}
+.cal-nav-btn:hover{
+  background: #f2f2f2;
+}
+
+.cal-weekdays{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #717171;
+  margin-bottom: 8px;
+}
+.cal-weekdays span{
+  padding: 4px 0;
+}
+
+.cal-days-grid{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.cal-day-cell{
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #222222;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all .15s ease;
+  user-select: none;
+  position: relative;
+}
+.cal-day-cell:hover:not(.empty):not(.selected){
+  border: 1.5px solid #222222;
+}
+.cal-day-cell.empty{
+  cursor: default;
+  pointer-events: none;
+}
+.cal-day-cell.selected{
+  background: #222222 !important;
+  color: #ffffff !important;
+}
+.cal-day-cell.in-range{
+  background: #f2f4f8;
+  border-radius: 0;
+}
+.cal-day-cell.in-range.range-start{
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+.cal-day-cell.in-range.range-end{
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+
+.cal-bottom-chips{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+}
+.cal-chip{
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #222222;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+}
+.cal-chip:hover{
+  border-color: #222222;
+}
+.cal-chip.active{
+  border: 2px solid #222222;
+  font-weight: 700;
 }
 
 /* Luxury Dropdown Popup inside Pill */
@@ -472,10 +665,18 @@ section{padding:96px 0;position:relative}
 /* Desktop Only: Push category tabs and search pill slightly lower while keeping logo and profile buttons anchored at the top */
 @media(min-width: 961px) {
   .airbnb-top-row {
+    position: relative;
     align-items: flex-start;
   }
   .airbnb-desktop-cat-nav {
-    margin-top: 16px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 14px;
+    z-index: 10;
+  }
+  .airbnb-cat-tabs {
+    gap: 40px;
   }
   .airbnb-search-bar-row {
     padding: 22px 0 34px;
@@ -1189,15 +1390,15 @@ section{padding:96px 0;position:relative}
 }
 
 .atlys-card-title{
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 16px;
-  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15.5px;
+  font-weight: 800;
   color: #ffffff;
-  letter-spacing: 0.03em;
+  letter-spacing: -0.015em;
   text-transform: uppercase;
   margin: 0 0 3px;
-  line-height: 1.18;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.85);
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.9);
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 98%;
@@ -1550,6 +1751,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/></symbol>
 <symbol id="map" viewBox="0 0 24 24"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></symbol>
 <symbol id="home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+<symbol id="calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
 <symbol id="brief" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
 <symbol id="chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.7 7L4 20l1.2-4.6A8 8 0 1 1 21 12z"/></symbol>
 <symbol id="send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/></symbol>
@@ -1604,13 +1806,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <nav class="airbnb-desktop-cat-nav" aria-label="Categories">
         <ul class="airbnb-cat-tabs">
           <li>
-            <button type="button" class="airbnb-cat-tab active" data-tab="all" aria-label="All categories">
-              <img src="/icons/categories/all.svg" class="cat-nav-icon" alt="All" />
-              <span class="cat-nav-label">All</span>
-            </button>
-          </li>
-          <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="visas" aria-label="Visas">
+            <button type="button" class="airbnb-cat-tab active" data-tab="visas" aria-label="Visas">
               <img src="/icons/categories/visas.svg" class="cat-nav-icon" alt="Visas" />
               <span class="cat-nav-label">Visas</span>
             </button>
@@ -1703,7 +1899,6 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         <!-- Field 1: Service -->
         <div class="airbnb-pill-segment c-drop" id="pill-service-drop">
           <div class="pill-label-row">
-            <svg class="i pill-segment-icon"><use href="#search"/></svg>
             <label>Service</label>
           </div>
           <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-service-btn">
@@ -1796,7 +1991,6 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         <!-- Field 2: Destination -->
         <div class="airbnb-pill-segment c-drop" id="pill-dest-drop">
           <div class="pill-label-row">
-            <svg class="i pill-segment-icon"><use href="#map"/></svg>
             <label>Destination</label>
           </div>
           <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-dest-btn">
@@ -1839,7 +2033,6 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         <!-- Field 3: Location -->
         <div class="airbnb-pill-segment c-drop" id="pill-from-drop">
           <div class="pill-label-row">
-            <svg class="i pill-segment-icon"><use href="#flag"/></svg>
             <label>Location</label>
           </div>
           <button type="button" class="pill-drop-btn c-drop-trigger" id="pill-from-btn">
@@ -1894,13 +2087,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <nav class="airbnb-mobile-cat-row" aria-label="Categories Mobile">
       <ul class="airbnb-cat-tabs">
         <li>
-          <button type="button" class="airbnb-cat-tab active" data-tab="all" aria-label="All categories">
-            <img src="/icons/categories/all.svg" class="cat-nav-icon" alt="All" />
-            <span class="cat-nav-label">All</span>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="visas" aria-label="Visas">
+          <button type="button" class="airbnb-cat-tab active" data-tab="visas" aria-label="Visas">
             <img src="/icons/categories/visas.svg" class="cat-nav-icon" alt="Visas" />
             <span class="cat-nav-label">Visas</span>
           </button>
@@ -3748,10 +3935,10 @@ function renderShowcase(tab, filterQuery = '') {
 }
 
 // Initial showcase render
-renderShowcase('all');
+renderShowcase('visas');
 
 // Airbnb Category Tabs & Search Handler
-let activeAirbnbTab = 'all';
+let activeAirbnbTab = 'visas';
 const airbnbPlaceholders = {
   all: 'Start your search',
   visas: 'e.g. Canada Express Entry PR, Germany Chancenkarte...',
@@ -3838,7 +4025,7 @@ function openMobileSearchSheet() {
   document.body.classList.add('mob-search-open');
   
   // Sync category tab with active page category
-  mobSelectedCategory = activeAirbnbTab || 'all';
+  mobSelectedCategory = activeAirbnbTab || 'visas';
   mobSheetTabs.forEach(t => {
     t.classList.toggle('active', t.dataset.tab === mobSelectedCategory);
   });
@@ -4030,7 +4217,7 @@ if (mobSheetClearAll) {
 
 function executeMobileSearchAction() {
   const query = mobSheetDestInput ? mobSheetDestInput.value.trim() : (mobSelectedDest || '');
-  const cat = mobSelectedCategory || 'all';
+  const cat = mobSelectedCategory || 'visas';
 
   // 1. Jobs Category
   if (cat === 'jobs') {
@@ -4099,9 +4286,9 @@ function executeMobileSearchAction() {
   }
 
   // Sync category tab with main page
-  activeAirbnbTab = 'all';
+  activeAirbnbTab = 'visas';
   $$('.airbnb-cat-tab').forEach(b => {
-    b.classList.toggle('active', b.dataset.tab === 'all');
+    b.classList.toggle('active', b.dataset.tab === 'visas');
   });
 
   // Sync input values on page
@@ -4109,7 +4296,7 @@ function executeMobileSearchAction() {
   if (liveQ) liveQ.value = query;
 
   // Render showcase with query
-  renderShowcase('all', query);
+  renderShowcase('visas', query);
 
   // Close sheet
   closeMobileSearchSheet();
