@@ -1,12 +1,86 @@
 ---
 // src/pages/universities.astro
 import Layout from '../layouts/Layout.astro';
+import { UNIVERSITIES_DATA } from '../data/universities';
 import { UniversitiesPortal } from '../components/interactive/UniversitiesPortal';
 ---
 
 <Layout 
-  title="Global Universities & Student Visas" 
-  description="Search top universities in Canada, Australia, UK, Germany, and Singapore. View tuition fees and PGWP visa pathways."
+  title="Global Universities & Direct Admissions — TravlTik" 
+  description="Search top universities in Germany, Cyprus, Mauritius, Russia, Canada, and UK. View tuition fees, eligibility, and visa pathways."
 >
+  <!-- Direct Admission & Partner Universities Section -->
+  <div class="bg-gradient-to-b from-[#F8FAFC] to-white pt-8 pb-12 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="max-w-3xl mb-8">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 uppercase tracking-wider mb-3">
+          🎓 Direct Admission &amp; Pathway Institutions
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Featured Partner Universities &amp; Colleges
+        </h1>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Verified international higher education institutions with direct application pathways, affordable tuition, and dedicated visa documentation support.
+        </p>
+      </div>
+
+      <!-- 6 Universities Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {UNIVERSITIES_DATA.map((uni) => (
+          <a 
+            href={`/universities/${uni.id}`} 
+            key={uni.id} 
+            class="bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all overflow-hidden flex flex-col group"
+          >
+            {/* Card Header (Photo placeholder + Region Badge) */}
+            <div class="h-40 bg-gradient-to-br from-slate-100 to-indigo-50/50 relative p-4 flex items-start justify-between border-b border-slate-100">
+              <span class={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                uni.region.includes('EU') 
+                  ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                  : uni.region.includes('TRNC')
+                  ? 'bg-amber-100 text-amber-700 border border-amber-200'
+                  : 'bg-orange-100 text-orange-700 border border-orange-200'
+              }`}>
+                {uni.region}
+              </span>
+              <span class="text-2xl filter drop-shadow-sm">
+                {uni.country === 'Cyprus' ? '🇨🇾' : uni.country === 'Mauritius' ? '🇲🇺' : uni.country === 'Germany' ? '🇩🇪' : '🇷🇺'}
+              </span>
+            </div>
+
+            {/* Card Body */}
+            <div class="p-5 flex-1 flex flex-col">
+              <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand transition-colors leading-snug">
+                {uni.name}
+              </h3>
+              <p class="text-sm text-slate-500 mt-1 mb-3">{uni.city}, {uni.country}</p>
+              
+              {/* Highlights */}
+              <div class="flex flex-wrap gap-1.5 mb-4 mt-auto">
+                {uni.highlights.slice(0, 2).map((h, i) => (
+                  <span key={i} class="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-semibold text-slate-600">
+                    {h}
+                  </span>
+                ))}
+              </div>
+
+              {/* Action */}
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider group-hover:text-brand transition-colors">
+                  View Details &amp; Fees
+                </span>
+                <span class="text-brand font-bold group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Interactive Search & Consultant Booking Portal -->
   <UniversitiesPortal client:only="react" />
 </Layout>

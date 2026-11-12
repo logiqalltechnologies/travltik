@@ -1,0 +1,321 @@
+---
+// src/pages/universities/[id].astro
+import Layout from '../../layouts/Layout.astro';
+import { UNIVERSITIES_DATA } from '../../data/universities';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+const uni = UNIVERSITIES_DATA.find((u) => u.id === id);
+
+if (!uni) {
+  return Astro.redirect('/universities');
+}
+
+// Flag mapping helper
+const getCountryFlag = (c: string) => {
+  if (c === 'Cyprus') return '🇨🇾';
+  if (c === 'Mauritius') return '🇲🇺';
+  if (c === 'Germany') return '🇩🇪';
+  if (c === 'Russia') return '🇷🇺';
+  return '🏛️';
+};
+
+const formatDuration = (d: string) => {
+  if (!d || d === 'N/A' || d.toLowerCase() === 'n/a') {
+    return 'Check Official Site';
+  }
+  return d;
+};
+---
+
+<Layout 
+  title={`${uni.name} — Admission & Visa Guide | TravlTik`}
+  description={`Explore ${uni.name} in ${uni.city}, ${uni.country}. Check programs, tuition fees, eligibility, visa documents, and escrow-protected application on TravlTik.`}
+>
+  <div class="min-h-screen bg-[#F8FAFC] pb-20">
+    
+    <!-- Top Breadcrumb Bar -->
+    <div class="bg-white border-b border-slate-200">
+      <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-2 text-xs font-semibold text-slate-500">
+        <a href="/" class="hover:text-slate-900 transition-colors">Home</a>
+        <span>/</span>
+        <a href="/universities" class="hover:text-slate-900 transition-colors">Universities</a>
+        <span>/</span>
+        <span class="text-slate-900 font-bold truncate">{uni.name}</span>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white py-16 px-4 relative overflow-hidden">
+      <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="max-w-4xl mx-auto text-center relative z-10">
+        
+        <div class="inline-flex items-center gap-2 mb-4">
+          <span class={`px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider ${
+            uni.region.includes('EU') 
+              ? 'bg-blue-500/20 text-blue-300 border border-blue-400/30' 
+              : uni.region.includes('TRNC')
+              ? 'bg-amber-500/20 text-amber-300 border border-amber-400/30'
+              : 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30'
+          }`}>
+            {uni.region}
+          </span>
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-white/90 border border-white/15">
+            {uni.accreditation}
+          </span>
+        </div>
+
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 text-white leading-tight">
+          <span class="mr-2">{getCountryFlag(uni.country)}</span>{uni.name}
+        </h1>
+
+        <p class="text-lg text-slate-300 font-medium flex items-center justify-center gap-2">
+          <span>📍 {uni.city}, {uni.country}</span>
+        </p>
+
+        <!-- Key Highlights Chips -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
+          {uni.highlights.map((h) => (
+            <span class="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full text-xs font-bold text-white/90">
+              ⚡ {h}
+            </span>
+          ))}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-4xl mx-auto px-4 py-12 space-y-8">
+      
+      <!-- Back button -->
+      <div class="flex items-center justify-between">
+        <a href="/universities" class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand transition-colors">
+          <span>←</span> Back to all universities
+        </a>
+        {uni.website && uni.website !== 'Contact for Details' ? (
+          <a 
+            href={uni.website.startsWith('http') ? uni.website : `https://${uni.website}`} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="text-xs font-bold text-indigo-600 hover:underline inline-flex items-center gap-1"
+          >
+            Visit Official Website ↗
+          </a>
+        ) : (
+          <span class="text-xs font-semibold text-slate-400">Official Site: Contact University</span>
+        )}
+      </div>
+
+      <!-- About University -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
+            🏛️
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">About University</h2>
+            <p class="text-xs text-slate-500 font-medium">Institution background &amp; accreditation</p>
+          </div>
+        </div>
+        <p class="text-slate-600 leading-relaxed text-base font-normal">{uni.about}</p>
+        
+        {uni.address && (
+          <div class="mt-4 pt-4 border-t border-slate-100 flex items-start gap-2 text-xs text-slate-500 font-medium">
+            <span class="font-bold text-slate-700">Campus Address:</span>
+            <span>{uni.address}</span>
+          </div>
+        )}
+      </div>
+
+      <!-- Programs & Fees -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+              🎓
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Programs &amp; Fees</h2>
+              <p class="text-xs text-slate-500 font-medium">Available degrees, diplomas, and tuition structures</p>
+            </div>
+          </div>
+          <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
+            {uni.programs.length} {uni.programs.length === 1 ? 'Program' : 'Programs'}
+          </span>
+        </div>
+
+        <div class="space-y-4">
+          {uni.programs.map((p, i) => (
+            <div key={i} class="p-5 border border-slate-200 rounded-2xl flex flex-col md:flex-row justify-between gap-4 bg-slate-50 hover:border-slate-300 transition-colors">
+              <div class="space-y-1.5 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] font-extrabold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded uppercase tracking-wider">
+                    {p.level}
+                  </span>
+                  {p.duration && (
+                    <span class="text-xs font-semibold text-slate-500">
+                      ⏱️ {formatDuration(p.duration)}
+                    </span>
+                  )}
+                </div>
+
+                <h3 class="font-bold text-lg text-slate-900">{p.name}</h3>
+
+                {p.eligibility && (
+                  <p class="text-xs text-slate-600">
+                    <span class="font-bold text-slate-700">Eligibility:</span> {p.eligibility}
+                  </p>
+                )}
+
+                {p.payment_terms && (
+                  <p class="text-xs text-emerald-700 font-semibold flex items-center gap-1">
+                    <span>💳 Payment Terms:</span> {p.payment_terms}
+                  </p>
+                )}
+              </div>
+
+              <div class="text-left md:text-right md:min-w-[190px] flex flex-col justify-center border-t md:border-t-0 pt-3 md:pt-0 border-slate-200">
+                <div class="font-black text-xl text-slate-900">
+                  {p.scholarship_fee_usd ? (
+                    <div>
+                      <span class="text-emerald-600">${p.scholarship_fee_usd.toLocaleString()}</span>
+                      <span class="text-xs text-slate-400 line-through ml-1.5">${p.fee_usd?.toLocaleString()}</span>
+                    </div>
+                  ) : p.scholarship_fee_eur ? (
+                    <div>
+                      <span class="text-emerald-600">€{p.scholarship_fee_eur.toLocaleString()}</span>
+                      <span class="text-xs text-slate-400 line-through ml-1.5">€{p.fee_eur?.toLocaleString()}</span>
+                    </div>
+                  ) : p.fee_usd ? (
+                    `$${p.fee_usd.toLocaleString()}`
+                  ) : p.fee_eur ? (
+                    <div>
+                      <span>€{p.fee_eur.toLocaleString()}</span>
+                      {p.original_fee_eur && (
+                        <span class="text-xs text-slate-400 line-through ml-1.5">€{p.original_fee_eur.toLocaleString()}</span>
+                      )}
+                    </div>
+                  ) : p.fee_rub ? (
+                    p.fee_rub
+                  ) : (
+                    <span class="text-slate-500 text-sm font-bold">Contact University</span>
+                  )}
+                </div>
+
+                {p.note ? (
+                  <div class="text-xs text-emerald-600 font-bold mt-0.5">{p.note}</div>
+                ) : (
+                  <div class="text-[11px] text-slate-400 font-medium">Standard Tuition</div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Visa Documents Required -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg">
+            📋
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">Visa Documents Required</h2>
+            <p class="text-xs text-slate-500 font-medium">Required documentation for student visa filing &amp; compliance</p>
+          </div>
+        </div>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-sm text-slate-700">
+          {uni.documents_visa.map((doc, i) => (
+            <li key={i} class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="text-emerald-600 font-black flex-shrink-0 mt-0.5">✓</span> 
+              <span class="leading-snug font-medium text-slate-800">{doc}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- University Contact Information -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold text-lg">
+            📞
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">Direct Contact Details</h2>
+            <p class="text-xs text-slate-500 font-medium">Admissions department and official representation</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          {uni.contact.name && (
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Representative</div>
+              <div class="text-sm font-bold text-slate-900 mt-0.5">{uni.contact.name}</div>
+            </div>
+          )}
+
+          {uni.contact.phone ? (
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Phone / WhatsApp</div>
+              <div class="text-sm font-bold text-slate-900 mt-0.5">
+                <a href={`tel:${uni.contact.phone.replace(/[^0-9+]/g, '')}`} class="hover:text-brand transition-colors">
+                  {uni.contact.phone}
+                </a>
+              </div>
+            </div>
+          ) : null}
+
+          {uni.contact.email ? (
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Official Email</div>
+              <div class="text-sm font-bold text-slate-900 mt-0.5 break-all">
+                <a href={`mailto:${uni.contact.email}`} class="hover:text-brand transition-colors">
+                  {uni.contact.email}
+                </a>
+              </div>
+            </div>
+          ) : null}
+
+          {uni.contact.note && (
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 col-span-full">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Contact Note</div>
+              <div class="text-sm font-semibold text-slate-700 mt-0.5">{uni.contact.note}</div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Contact / Apply with TravlTik Escrow Protection -->
+      <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-700 text-white p-8 md:p-10 rounded-3xl text-center shadow-xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent)] pointer-events-none"></div>
+        <div class="relative z-10 max-w-xl mx-auto">
+          <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-extrabold uppercase tracking-wider mb-3">
+            🔒 100% Milestone Escrow Protected
+          </span>
+          <h2 class="text-2xl md:text-3xl font-extrabold mb-3">Ready to Apply to {uni.name}?</h2>
+          <p class="mb-6 text-white/90 text-sm md:text-base leading-relaxed">
+            Get verified admission guidance, document verification, and visa filing support through licensed international education experts.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a 
+              href={`/contact?intent=study&university=${encodeURIComponent(uni.name)}`} 
+              class="w-full sm:w-auto px-8 py-3.5 bg-white text-emerald-700 rounded-full font-extrabold hover:bg-slate-100 transition-all shadow-md hover:scale-105"
+            >
+              Apply via TravlTik →
+            </a>
+            <a 
+              href="/find-experts?filter=study" 
+              class="w-full sm:w-auto px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/25 rounded-full font-bold transition-all text-sm"
+            >
+              Consult Study Permit Lawyers
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</Layout>
