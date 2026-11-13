@@ -170,139 +170,139 @@ const studyConsultantsList: UniversityConsultant[] = [
 const initialUniversities: University[] = [
   {
     id: "gatebridge-germany",
-    name: "Gatebridge Germany (EU Business School Partnership)",
+    name: "Gatebridge Germany",
     location: "Munich, Germany",
     country: "Germany",
     countryCode: "de",
     category: "Business",
-    tuition: "Contact University",
-    tuitionNote: "Pathway Available",
+    tuition: "Pathway Program",
+    tuitionNote: "EU Degree",
     posted: "Direct Admission",
     degreeType: "Preparation & EU Degree",
     pgwp: true,
     scholarships: true,
-    featured: true,
-    urgent: true,
+    featured: false,
+    urgent: false,
     logo: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=200&h=200&fit=crop&q=90",
     heroImg: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&h=400&fit=crop&q=90",
-    tags: ["Pathway to EU Degree", "Munich Campus", "EU Business School", "APS Mandatory"],
+    tags: ["EU Degree Pathway", "Munich Campus"],
     desc: "Gatebridge Germany offers preparation programmes and pathways to degree courses in partnership with EU Business School, Munich.",
-    rank: "🇩🇪 Partner Campus",
+    rank: "Partner Campus",
     ieltsMin: "Contact for Details",
     detailUrl: "/universities/gatebridge-germany"
   },
   {
     id: "bpg-mauritius",
-    name: "BPG College (Business & Professional Growth Ltd)",
+    name: "BPG College",
     location: "Port Louis, Mauritius",
     country: "Mauritius",
     countryCode: "mu",
     category: "Business",
-    tuition: "$4,200",
-    tuitionNote: "per year · Pay After Visa Approval",
+    tuition: "$4,200 / yr",
+    tuitionNote: "Pay After Visa Approval",
     posted: "Direct Admission",
     degreeType: "Business Management Diploma",
     pgwp: true,
     scholarships: true,
-    featured: true,
-    urgent: true,
+    featured: false,
+    urgent: false,
     logo: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=200&h=200&fit=crop&q=90",
     heroImg: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=400&fit=crop&q=90",
-    tags: ["No IELTS", "Pay Tuition Fee After Visa", "No Visa Interviews", "UK/EU Pathways"],
+    tags: ["Pay After Visa", "No IELTS Required"],
     desc: "BPG is a forward-thinking education provider delivering practical, industry-aligned training with global pathways to UK and Europe.",
-    rank: "🇲🇺 MQA Approved",
+    rank: "MQA Approved",
     ieltsMin: "IELTS Not Required",
     detailUrl: "/universities/bpg-mauritius"
   },
   {
     id: "griboyedov-moscow",
-    name: "A.S. Griboyedov Moscow University (IMPE)",
+    name: "A.S. Griboyedov Moscow University",
     location: "Moscow, Russia",
     country: "Russia",
     countryCode: "ru",
     category: "Higher Education",
-    tuition: "56,000 RUB",
-    tuitionNote: "per year",
+    tuition: "56,000 RUB / yr",
+    tuitionNote: "State Accredited",
     posted: "Direct Admission",
     degreeType: "Bachelor's / Master's",
     pgwp: true,
     scholarships: true,
-    featured: true,
+    featured: false,
     urgent: false,
     logo: "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=200&h=200&fit=crop&q=90",
     heroImg: "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=800&h=400&fit=crop&q=90",
-    tags: ["State Accredited", "32 Years Experience", "Gazprom & Rosseti Partner", "Flexible Study"],
+    tags: ["State Accredited", "32 Yrs Experience"],
     desc: "Founded in 1993, A.S. Griboyedov Moscow University offers programs in Economics, Law, Journalism, Psychology, and Linguistics.",
-    rank: "🇷🇺 State Accredited",
+    rank: "State Accredited",
     ieltsMin: "Direct Entrance",
     detailUrl: "/universities/griboyedov-moscow"
   },
   {
     id: "cda-college-cyprus",
     name: "CDA College",
-    location: "Nicosia, Limassol & Larnaca, Cyprus",
+    location: "Nicosia & Larnaca, Cyprus",
     country: "Cyprus",
     countryCode: "cy",
     category: "Higher Education",
-    tuition: "€3,500–€4,500",
-    tuitionNote: "per year · Special Offer",
+    tuition: "€3,500 – €4,500 / yr",
+    tuitionNote: "Special Offer",
     posted: "Direct Admission",
     degreeType: "BA / MBA",
     pgwp: true,
     scholarships: true,
-    featured: true,
-    urgent: true,
+    featured: false,
+    urgent: false,
     logo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=200&h=200&fit=crop&q=90",
     heroImg: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=400&fit=crop&q=90",
-    tags: ["Largest College in Cyprus", "State Student Grant", "Erasmus+ Member", "50 Yrs Exp"],
+    tags: ["Special Offer", "Erasmus+ Member"],
     desc: "One of the largest colleges in Cyprus with 50 years of experience and campuses in 4 cities offering special discounted tuition.",
-    rank: "🇨🇾 Ministry of Ed Registered",
+    rank: "Ministry of Ed Registered",
     ieltsMin: "Internal Test Available",
     detailUrl: "/universities/cda-college-cyprus"
   },
   {
     id: "uclan-cyprus",
-    name: "UCLan Cyprus (University of Central Lancashire)",
-    location: "Pyla, Larnaca, Cyprus",
+    name: "UCLan Cyprus",
+    location: "Larnaca, Cyprus",
     country: "Cyprus",
     countryCode: "cy",
     category: "Higher Education",
-    tuition: "€6,000–€6,500",
-    tuitionNote: "per year · After Bursary",
+    tuition: "€6,000 – €6,500 / yr",
+    tuitionNote: "After €1,000 Bursary",
     posted: "Direct Admission",
     degreeType: "UK Accredited Bachelor's & Master's",
     pgwp: true,
     scholarships: true,
-    featured: true,
+    featured: false,
     urgent: false,
     logo: "https://images.unsplash.com/photo-1562774053-701939374585?w=200&h=200&fit=crop&q=90",
     heroImg: "https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=400&fit=crop&q=90",
-    tags: ["UK Degree Awarded", "€1,000 Bursary", "English-Taught", "Branch Campus"],
+    tags: ["UK Degree Awarded", "English Taught"],
     desc: "UCLan Cyprus is a branch campus of the UK's University of Central Lancashire, offering UK-accredited degrees in a Mediterranean setting.",
-    rank: "🇬🇧 UK Branch Campus",
+    rank: "UK Branch Campus",
     ieltsMin: "Waiver Available",
     detailUrl: "/universities/uclan-cyprus"
   },
   {
     id: "cyprus-west-university",
-    name: "Cyprus West University (CWU)",
+    name: "Cyprus West University",
     location: "Famagusta, Cyprus",
     country: "Cyprus",
     countryCode: "cy",
     category: "Higher Education",
-    tuition: "$1,375–$2,500",
-    tuitionNote: "per year · Up to 75% Scholarship",
+    tuition: "$1,375 – $2,500 / yr",
+    tuitionNote: "75% Scholarship",
     posted: "Direct Admission",
     degreeType: "BSc Psychology / MBA",
     pgwp: true,
     scholarships: true,
-    featured: true,
-    urgent: true,
+    featured: false,
+    urgent: false,
     logo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=200&fit=crop&q=90",
     heroImg: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop&q=90",
-    tags: ["Up to 75% Scholarship", "English-Taught", "TRNC Recognised", "Diverse Community"],
+    tags: ["75% Scholarship", "English Taught"],
     desc: "Cyprus West University is located in Famagusta, North Cyprus, offering affordable English-taught programmes with generous scholarships.",
-    rank: "🇨🇾 TRNC Recognised",
+    rank: "TRNC Recognised",
     ieltsMin: "Placement Test",
     detailUrl: "/universities/cyprus-west-university"
   },
@@ -1019,35 +1019,39 @@ export function UniversitiesPortal() {
                         setActiveUniv(univ);
                       }
                     }}
-                    className="bg-white border border-slate-200/90 rounded-[24px] p-5 hover:shadow-xl hover:border-purple-600/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col sm:flex-row gap-5 items-start justify-between relative group shadow-xs"
+                    className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 hover:shadow-md hover:border-slate-300 transition-all duration-200 cursor-pointer flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between group"
                   >
-                    <div className="flex gap-4 items-center w-full">
-                      <div className="relative shrink-0">
-                        <img src={univ.logo} alt={univ.name} className="w-16 h-16 rounded-[18px] object-cover border border-slate-100 shadow-sm" />
-                        <img src={`https://flagcdn.com/w40/${univ.countryCode}.png`} alt={univ.country} className="absolute -bottom-1 -right-1 w-5 h-3.5 rounded shadow border border-white" />
-                      </div>
-                      <div className="flex-grow min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 border border-purple-100">{univ.rank}</span>
-                          {univ.featured && <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Featured</span>}
+                    <div className="flex gap-4 items-center min-w-0 flex-1">
+                      <img src={univ.logo} alt={univ.name} className="w-14 h-14 rounded-2xl object-cover border border-slate-100 shrink-0 shadow-xs" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h3 className="font-sans font-bold text-base text-slate-900 leading-snug group-hover:text-purple-700 transition-colors">
+                            {univ.name}
+                          </h3>
+                          {univ.tags && univ.tags[0] && (
+                            <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-100">
+                              {univ.tags[0]}
+                            </span>
+                          )}
                         </div>
-                        <h3 className="font-sans font-bold text-lg text-slate-900 mb-1 leading-snug group-hover:text-purple-700 transition-colors">{univ.name}</h3>
-                        <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-600 font-semibold">
-                          <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-purple-600" />{univ.location}</span>
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 font-medium">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                            {univ.location}
+                          </span>
                           <span className="text-slate-300">•</span>
-                          <span className="flex items-center gap-1"><DollarSign className="w-3.5 h-3.5 text-emerald-600" />{univ.tuition} <span className="text-slate-400 font-normal">{univ.tuitionNote}</span></span>
+                          <span className="text-emerald-700 font-semibold">
+                            {univ.tuition}
+                          </span>
+                          {univ.tuitionNote && (
+                            <span className="text-slate-400 font-normal">
+                              ({univ.tuitionNote})
+                            </span>
+                          )}
                         </div>
-                        {univ.tags && univ.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mt-2">
-                            {univ.tags.slice(0, 3).map((t, idx) => (
-                              <span key={idx} className="text-[10px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md">{t}</span>
-                            ))}
-                          </div>
-                        )}
                       </div>
                     </div>
-                    <div className="flex sm:flex-col items-end justify-between sm:justify-center gap-3 w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
-                      <div className="text-[11px] text-slate-400 font-medium tracking-wide">{univ.posted}</div>
+                    <div className="shrink-0 flex items-center justify-end w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                       <a
                         href={univ.detailUrl || '#'}
                         onClick={(e) => {
@@ -1055,7 +1059,7 @@ export function UniversitiesPortal() {
                             e.stopPropagation();
                           }
                         }}
-                        className="bg-[#430f7a] hover:bg-[#340b61] text-white font-extrabold text-xs tracking-wide px-5 py-2.5 rounded-xl flex items-center gap-1.5 transition-all outline-none shrink-0 shadow-sm shadow-purple-500/20 active:scale-95 cursor-pointer no-underline"
+                        className="bg-purple-900 hover:bg-purple-800 text-white font-bold text-xs tracking-wide px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition-all shadow-xs active:scale-95 no-underline cursor-pointer"
                       >
                         <span>View Details</span>
                         <ArrowRight className="w-3.5 h-3.5" />
