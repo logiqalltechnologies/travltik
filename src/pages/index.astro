@@ -1506,6 +1506,254 @@ section{padding:96px 0;position:relative}
   box-shadow: 0 2px 8px rgba(15,23,42,0.25);
 }
 
+/* Airbnb Category Rows & Home Cards (Direct Match to Airbnb Reference) */
+.airbnb-cat-sections-wrap{
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  width: 100%;
+}
+.airbnb-cat-row-block{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: all 0.3s ease;
+  border-radius: 20px;
+  padding: 6px 0;
+}
+.airbnb-cat-row-block.highlight-pulse{
+  background: rgba(108, 34, 195, 0.04);
+  box-shadow: 0 0 0 2px rgba(108, 34, 195, 0.2);
+  padding: 10px 12px;
+}
+.airbnb-cat-row-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 0 4px;
+}
+.airbnb-cat-row-title{
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(19px, 2.3vw, 22px);
+  font-weight: 800;
+  color: #1b1233;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.02em;
+  transition: color 0.15s ease;
+}
+.airbnb-cat-row-title:hover{
+  color: #430f7a;
+}
+.airbnb-cat-row-title .cat-row-arrow{
+  font-size: 19px;
+  font-weight: 800;
+  color: #1b1233;
+  transition: transform 0.2s ease, color 0.15s ease;
+}
+.airbnb-cat-row-title:hover .cat-row-arrow{
+  transform: translateX(4px);
+  color: #430f7a;
+}
+.airbnb-cat-nav-btns{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.airbnb-cat-nav-btn{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #1b1233;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: all 0.18s ease;
+  padding: 0;
+  user-select: none;
+}
+.airbnb-cat-nav-btn:hover{
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: scale(1.06);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+.airbnb-cat-nav-btn:active{
+  transform: scale(0.96);
+}
+.airbnb-cat-cards-track{
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  padding: 4px 4px 12px;
+  -webkit-overflow-scrolling: touch;
+}
+.airbnb-cat-cards-track::-webkit-scrollbar{
+  display: none;
+}
+.airbnb-home-card{
+  flex: 0 0 clamp(240px, 22vw, 290px);
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: transform 0.22s ease;
+}
+.airbnb-home-card:hover{
+  transform: translateY(-4px);
+}
+.airbnb-home-card-img-wrap{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 20 / 18;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+.airbnb-home-card-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+  display: block;
+}
+.airbnb-home-card:hover .airbnb-home-card-img{
+  transform: scale(1.04);
+}
+.airbnb-home-badge{
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  padding: 5px 11px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #1b1233;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  letter-spacing: -0.01em;
+  z-index: 2;
+  white-space: nowrap;
+}
+.airbnb-home-heart{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  padding: 0;
+}
+.airbnb-home-heart svg{
+  width: 24px;
+  height: 24px;
+  fill: rgba(0, 0, 0, 0.38);
+  stroke: #ffffff;
+  stroke-width: 2px;
+  overflow: visible;
+  transition: all 0.15s ease;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+}
+.airbnb-home-heart:hover svg{
+  transform: scale(1.15);
+}
+.airbnb-home-heart.saved svg{
+  fill: #ff385c;
+  stroke: #ff385c;
+}
+.airbnb-home-card-info{
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.airbnb-home-card-title-row{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.airbnb-home-card-flag{
+  width: 17px;
+  height: 12px;
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+}
+.airbnb-home-card-title{
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1b1233;
+  margin: 0;
+  line-height: 1.28;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.airbnb-home-card-sub{
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.airbnb-home-card-meta{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1b1233;
+  margin-top: 2px;
+}
+.airbnb-home-rating{
+  font-weight: 700;
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.airbnb-home-rating-star{
+  color: #f59e0b;
+  font-size: 13px;
+}
+@media (max-width: 768px){
+  .airbnb-home-card{
+    flex: 0 0 220px;
+  }
+  .airbnb-cat-nav-btns{
+    display: none;
+  }
+  .airbnb-cat-sections-wrap{
+    gap: 26px;
+  }
+}
+
 /* Quick Search (Bottom) */
 .qs-card{background:#fff;border-radius:28px;padding:32px 34px 28px;border:1.5px solid rgba(67,15,122,.12);box-shadow:0 20px 48px -18px rgba(67,15,122,.14),0 2px 6px rgba(0,0,0,.02);font-family:'Plus Jakarta Sans',sans-serif;margin-top:6px}
 .qs-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:22px}
@@ -1806,21 +2054,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <nav class="airbnb-desktop-cat-nav" aria-label="Categories">
         <ul class="airbnb-cat-tabs">
           <li>
-            <button type="button" class="airbnb-cat-tab active" data-tab="tours" aria-label="Tours">
-              <img src="/icons/categories/tours.svg" class="cat-nav-icon" alt="Tours" />
-              <span class="cat-nav-label">Tours</span>
-            </button>
-          </li>
-          <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="jobs" aria-label="Jobs">
-              <img src="/icons/categories/jobs.svg" class="cat-nav-icon" alt="Jobs" />
-              <span class="cat-nav-label">Jobs</span>
-            </button>
-          </li>
-          <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="universities" aria-label="Universities">
-              <img src="/icons/categories/universities.svg" class="cat-nav-icon" alt="Universities" />
-              <span class="cat-nav-label">Universities</span>
+            <button type="button" class="airbnb-cat-tab active" data-tab="experts" aria-label="Experts">
+              <img src="/icons/categories/experts.svg" class="cat-nav-icon" alt="Experts" />
+              <span class="cat-nav-label">Experts</span>
             </button>
           </li>
           <li>
@@ -1830,9 +2066,21 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
             </button>
           </li>
           <li>
-            <button type="button" class="airbnb-cat-tab" data-tab="experts" aria-label="Experts">
-              <img src="/icons/categories/experts.svg" class="cat-nav-icon" alt="Experts" />
-              <span class="cat-nav-label">Experts</span>
+            <button type="button" class="airbnb-cat-tab" data-tab="universities" aria-label="Universities">
+              <img src="/icons/categories/universities.svg" class="cat-nav-icon" alt="Universities" />
+              <span class="cat-nav-label">Universities</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="airbnb-cat-tab" data-tab="jobs" aria-label="Jobs">
+              <img src="/icons/categories/jobs.svg" class="cat-nav-icon" alt="Jobs" />
+              <span class="cat-nav-label">Jobs</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="airbnb-cat-tab" data-tab="tours" aria-label="Tours">
+              <img src="/icons/categories/tours.svg" class="cat-nav-icon" alt="Tours" />
+              <span class="cat-nav-label">Tours</span>
             </button>
           </li>
         </ul>
@@ -2087,21 +2335,9 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <nav class="airbnb-mobile-cat-row" aria-label="Categories Mobile">
       <ul class="airbnb-cat-tabs">
         <li>
-          <button type="button" class="airbnb-cat-tab active" data-tab="tours" aria-label="Tours">
-            <img src="/icons/categories/tours.svg" class="cat-nav-icon" alt="Tours" />
-            <span class="cat-nav-label">Tours</span>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="jobs" aria-label="Jobs">
-            <img src="/icons/categories/jobs.svg" class="cat-nav-icon" alt="Jobs" />
-            <span class="cat-nav-label">Jobs</span>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="universities" aria-label="Universities">
-            <img src="/icons/categories/universities.svg" class="cat-nav-icon" alt="Universities" />
-            <span class="cat-nav-label">Universities</span>
+          <button type="button" class="airbnb-cat-tab active" data-tab="experts" aria-label="Experts">
+            <img src="/icons/categories/experts.svg" class="cat-nav-icon" alt="Experts" />
+            <span class="cat-nav-label">Experts</span>
           </button>
         </li>
         <li>
@@ -2111,9 +2347,21 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
           </button>
         </li>
         <li>
-          <button type="button" class="airbnb-cat-tab" data-tab="experts" aria-label="Experts">
-            <img src="/icons/categories/experts.svg" class="cat-nav-icon" alt="Experts" />
-            <span class="cat-nav-label">Experts</span>
+          <button type="button" class="airbnb-cat-tab" data-tab="universities" aria-label="Universities">
+            <img src="/icons/categories/universities.svg" class="cat-nav-icon" alt="Universities" />
+            <span class="cat-nav-label">Universities</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="jobs" aria-label="Jobs">
+            <img src="/icons/categories/jobs.svg" class="cat-nav-icon" alt="Jobs" />
+            <span class="cat-nav-label">Jobs</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="airbnb-cat-tab" data-tab="tours" aria-label="Tours">
+            <img src="/icons/categories/tours.svg" class="cat-nav-icon" alt="Tours" />
+            <span class="cat-nav-label">Tours</span>
           </button>
         </li>
       </ul>
@@ -2130,8 +2378,8 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <p id="showcase-subtitle" class="showcase-subtitle-p" style="font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:clamp(14px,2.2vw,16px);color:#675f80;margin:10px auto 0;max-width:640px;font-weight:500;line-height:1.55;">Search verified visa routes, licensed experts, study programs and universities across 193+ countries.</p>
     </div>
 
-    <!-- The Dynamic Showcase Grid (Pure Airbnb / Atlys Luxury Style) -->
-    <div id="showcase-grid" class="atlys-grid"></div>
+    <!-- The Dynamic Showcase Grid (Pure Airbnb Category Rows Style) -->
+    <div id="showcase-grid" style="width:100%;"></div>
 
     <!-- Airbnb-Style Floating Feature Pill ("Prices include all fees" style) -->
     <div class="airbnb-floating-badge-pill" style="display:flex;justify-content:center;margin-top:20px;">
@@ -2144,7 +2392,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <!-- Clean Bottom View-All CTA (Dynamic per category) -->
     <div style="display:flex;justify-content:center;margin-top:16px;">
       <a id="showcase-view-all" href="/find-experts" style="font-size:13.5px;font-weight:700;color:#370c63;text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:9999px;background:#f7f2fe;border:1.5px solid #dccaf7;box-shadow:0 4px 16px rgba(67,15,122,0.06);transition:all .2s ease;">
-        <span id="showcase-view-all-text">Show all experts (150+)</span>
+        <span id="showcase-view-all-text">Explore all categories (500+)</span>
         <span style="font-size:16px;line-height:1;">→</span>
       </a>
     </div>
@@ -3980,77 +4228,127 @@ SHOWCASE_DATA.stays = SHOWCASE_DATA.homes;
 SHOWCASE_DATA.services = SHOWCASE_DATA.experts;
 SHOWCASE_DATA.experiences = SHOWCASE_DATA.tours;
 
-function renderShowcase(tab, filterQuery = '') {
-  let lookupTab = tab;
-  if (lookupTab === 'services') lookupTab = 'experts';
-  if (lookupTab === 'experiences') lookupTab = 'tours';
-  if (lookupTab === 'homes') lookupTab = 'stays';
-  const data = SHOWCASE_DATA[lookupTab] || SHOWCASE_DATA.all || SHOWCASE_DATA.experts;
-  const titleEl = $('#showcase-title');
-  const subEl = $('#showcase-subtitle');
-  const viewAllEl = $('#showcase-view-all');
-  const viewAllText = $('#showcase-view-all-text');
+// Airbnb Horizontal Category Sections Configuration
+window.scrollCatTrack = function(trackId, dir) {
+  const el = document.getElementById(trackId);
+  if (el) {
+    const w = el.clientWidth * 0.75;
+    el.scrollBy({ left: dir * w, behavior: 'smooth' });
+  }
+};
+
+const AIRBNB_CATEGORIES = [
+  { id: 'experts', title: 'Top Licensed Immigration Experts & Lawyers', href: '/find-experts', key: 'experts' },
+  { id: 'visas', title: 'Popular Visas & PR Pathways', href: '/find-experts', key: 'visas' },
+  { id: 'universities', title: 'Top Global Universities & Admissions', href: '/universities', key: 'universities' },
+  { id: 'jobs', title: 'Verified Jobs Abroad with Visa Sponsorship', href: '/jobs', key: 'jobs' },
+  { id: 'tours', title: 'Check out Tours & Travel Packages', href: '/tours', key: 'tours' }
+];
+
+function renderAirbnbCard(it) {
+  const cleanTitle = (it.title || '').replace(/<[^>]+>/g, ' ');
+  return `
+    <a href="${it.href}" class="airbnb-home-card" onclick="if(event.target.closest('.airbnb-home-heart')){event.preventDefault();return false;}">
+      <div class="airbnb-home-card-img-wrap">
+        <img src="${it.img}" alt="${cleanTitle}" class="airbnb-home-card-img" loading="lazy" onerror="this.src='/experts/expert1.png'"/>
+        ${it.badge ? `<div class="airbnb-home-badge">${it.badge}</div>` : ''}
+        <button type="button" class="airbnb-home-heart" aria-label="Save to wishlist" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('saved');">
+          <svg viewBox="0 0 32 32"><path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05A6.98 6.98 0 0 0 9 4a6.98 6.98 0 0 0-7 7c0 7 7 12.27 14 17z"/></svg>
+        </button>
+      </div>
+      <div class="airbnb-home-card-info">
+        <div class="airbnb-home-card-title-row">
+          ${it.flag ? `<img src="https://flagcdn.com/w40/${it.flag}.png" class="airbnb-home-card-flag" alt="" loading="lazy"/>` : ''}
+          <h3 class="airbnb-home-card-title">${it.title}</h3>
+        </div>
+        <p class="airbnb-home-card-sub">${it.sub}</p>
+        <div class="airbnb-home-card-meta">
+          <span>${it.col1Val || it.col3Val || 'Verified'}</span>
+          <span style="color:#94a3b8">·</span>
+          <span class="airbnb-home-rating"><span class="airbnb-home-rating-star">★</span> 4.95</span>
+        </div>
+      </div>
+    </a>
+  `;
+}
+
+function renderShowcase(tab = 'experts', filterQuery = '') {
   const gridEl = $('#showcase-grid');
+  if (!gridEl) return;
 
-  if (titleEl) titleEl.innerHTML = data.title;
-  if (subEl) subEl.textContent = data.subtitle;
-  if (viewAllEl) viewAllEl.href = data.viewAllHref;
-  if (viewAllText) viewAllText.textContent = data.viewAllText;
+  const q = (filterQuery || '').toLowerCase().trim();
 
-  let items = data.items;
-  if (filterQuery) {
-    const q = filterQuery.toLowerCase().trim();
-    items = items.filter(it => 
-      (it.title && it.title.toLowerCase().includes(q)) || 
-      (it.sub && it.sub.toLowerCase().includes(q)) || 
-      (it.country && it.country.toLowerCase().includes(q)) ||
-      (it.badge && it.badge.toLowerCase().includes(q)) ||
-      (it.col1Val && it.col1Val.toLowerCase().includes(q)) ||
-      (it.col2Val && it.col2Val.toLowerCase().includes(q)) ||
-      (it.col3Val && it.col3Val.toLowerCase().includes(q))
-    );
+  // Order categories: put current tab at top if specified
+  let catsToRender = AIRBNB_CATEGORIES;
+  if (tab && tab !== 'all' && tab !== 'explore') {
+    const found = AIRBNB_CATEGORIES.find(c => c.id === tab || c.key === tab);
+    if (found) {
+      catsToRender = [found, ...AIRBNB_CATEGORIES.filter(c => c.id !== found.id)];
+    }
   }
 
-  if (gridEl) {
-    if (items.length === 0) {
-      gridEl.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px 20px;color:#64748b;font-weight:600;font-size:15px;">No listings found matching "${filterQuery}". <button type="button" style="color:var(--p2);font-weight:700;background:none;border:none;cursor:pointer;text-decoration:underline;" onclick="if($('#q')){$('#q').value='';renderShowcase('${tab}');}">Clear search</button></div>`;
-      return;
+  let totalVisible = 0;
+  let html = '<div class="airbnb-cat-sections-wrap">';
+
+  catsToRender.forEach(cat => {
+    const data = SHOWCASE_DATA[cat.key];
+    if (!data || !data.items || data.items.length === 0) return;
+
+    let items = data.items;
+    if (q) {
+      items = items.filter(it => 
+        (it.title && it.title.toLowerCase().includes(q)) || 
+        (it.sub && it.sub.toLowerCase().includes(q)) || 
+        (it.country && it.country.toLowerCase().includes(q)) ||
+        (it.badge && it.badge.toLowerCase().includes(q)) ||
+        (it.col1Val && it.col1Val.toLowerCase().includes(q)) ||
+        (it.col2Val && it.col2Val.toLowerCase().includes(q)) ||
+        (it.col3Val && it.col3Val.toLowerCase().includes(q))
+      );
     }
 
-    gridEl.innerHTML = items.map(it => `
-      <a href="${it.href}" class="atlys-card" onclick="if(event.target.tagName !== 'BUTTON'){window.location.href='${it.href}';}">
-        <img src="${it.img}" alt="${it.title.replace(/<[^>]+>/g, ' ')}" class="atlys-card-bg" loading="lazy" onerror="this.src='/experts/expert1.png'"/>
-        <div class="atlys-card-gradient"></div>
-        ${it.badge ? `<div class="atlys-card-top-pill">${it.badge}</div>` : ''}
-        <div class="atlys-card-content">
-          ${it.flag ? `<img src="https://flagcdn.com/w40/${it.flag}.png" class="atlys-flag-icon" alt="${it.title.replace(/<[^>]+>/g, ' ')}"/>` : ''}
-          <h3 class="atlys-card-title">${it.title}</h3>
-          <p class="atlys-card-subtitle">${it.sub}</p>
-          <div class="atlys-meta-row">
-            <div class="atlys-meta-col">
-              <span class="atlys-meta-label">${it.col1Label}</span>
-              <span class="atlys-meta-val">${it.col1Val}</span>
-            </div>
-            <div class="atlys-meta-col">
-              <span class="atlys-meta-label">${it.col2Label}</span>
-              <span class="atlys-meta-val">${it.col2Val}</span>
-            </div>
-            <div class="atlys-meta-col">
-              <span class="atlys-meta-label">${it.col3Label}</span>
-              <span class="atlys-meta-val">${it.col3Val}</span>
+    if (items.length > 0) {
+      totalVisible += items.length;
+      html += `
+        <div class="airbnb-cat-row-block" id="cat-row-${cat.id}">
+          <div class="airbnb-cat-row-header">
+            <a href="${cat.href}" class="airbnb-cat-row-title">
+              <span>${cat.title}</span>
+              <span class="cat-row-arrow">→</span>
+            </a>
+            <div class="airbnb-cat-nav-btns">
+              <button type="button" class="airbnb-cat-nav-btn" onclick="window.scrollCatTrack('track-${cat.id}', -1)" aria-label="Previous">‹</button>
+              <button type="button" class="airbnb-cat-nav-btn" onclick="window.scrollCatTrack('track-${cat.id}', 1)" aria-label="Next">›</button>
             </div>
           </div>
+          <div class="airbnb-cat-cards-track" id="track-${cat.id}">
+            ${items.map(renderAirbnbCard).join('')}
+          </div>
         </div>
-      </a>
-    `).join('');
+      `;
+    }
+  });
+
+  html += '</div>';
+
+  if (totalVisible === 0) {
+    gridEl.innerHTML = `
+      <div style="text-align:center;padding:48px 20px;color:#64748b;font-weight:600;font-size:15px;">
+        No listings found matching "${filterQuery}". 
+        <button type="button" style="color:var(--p2);font-weight:700;background:none;border:none;cursor:pointer;text-decoration:underline;" onclick="if($('#q')){$('#q').value='';renderShowcase('${tab}');}">Clear search</button>
+      </div>
+    `;
+    return;
   }
+
+  gridEl.innerHTML = html;
 }
 
 // Initial showcase render
-renderShowcase('tours');
+renderShowcase('experts');
 
 // Airbnb Category Tabs & Search Handler
-let activeAirbnbTab = 'tours';
+let activeAirbnbTab = 'experts';
 const airbnbPlaceholders = {
   all: 'Start your search',
   visas: 'e.g. Canada Express Entry PR, Germany Chancenkarte...',
@@ -4088,10 +4386,18 @@ $$('.airbnb-cat-tab').forEach(btn => {
     const destVal = ($('#dest-val') && $('#dest-val').value.trim()) || '';
     const qVal = qInp ? qInp.value.trim() : '';
     const activeFilter = (destVal && destVal !== 'Select Country' && destVal !== 'All Countries') ? destVal : qVal;
-    renderShowcase(activeAirbnbTab, activeFilter);
-    const scEl = $('#airbnb-showcase');
-    if (scEl) {
-      scEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    const targetRow = document.getElementById('cat-row-' + tabKey);
+    if (targetRow && !activeFilter) {
+      targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetRow.classList.add('highlight-pulse');
+      setTimeout(() => targetRow.classList.remove('highlight-pulse'), 1400);
+    } else {
+      renderShowcase(activeAirbnbTab, activeFilter);
+      const scEl = $('#airbnb-showcase');
+      if (scEl) {
+        scEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
 });
