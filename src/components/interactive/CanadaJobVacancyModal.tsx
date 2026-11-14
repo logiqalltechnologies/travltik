@@ -4,6 +4,7 @@ import {
   MapPin, DollarSign, FileText, ArrowRight, Sparkles, Building2,
   Clock, AlertCircle, Phone
 } from "lucide-react";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
 import { CANADA_VACANCIES_2026, type CanadaJobVacancy } from "../../data/canadaJobs2026";
 
 interface CanadaJobVacancyModalProps {
@@ -28,6 +29,7 @@ export function CanadaJobVacancyModal({
   const [fullName, setFullName] = useState("");
   const [age, setAge] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [whatsappCode, setWhatsappCode] = useState("+91");
   const [whyWantJob, setWhyWantJob] = useState("");
   const [currentCity, setCurrentCity] = useState("");
   const [passportStatus, setPassportStatus] = useState("Yes, Valid Passport");
@@ -97,7 +99,7 @@ export function CanadaJobVacancyModal({
       applicant: {
         fullName: fullName.trim(),
         age: parseInt(age, 10),
-        whatsapp: whatsapp.trim(),
+        whatsapp: whatsapp.startsWith("+") ? whatsapp.trim() : `${whatsappCode} ${whatsapp}`.trim(),
         whyWantJob: whyWantJob.trim(),
         currentCity: currentCity.trim() || "India / Global",
         passportStatus
@@ -277,15 +279,20 @@ export function CanadaJobVacancyModal({
                   <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1">
                     WhatsApp Number <span className="text-red-500">*</span>
                   </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <div className="flex gap-2">
+                    <div className="w-32 shrink-0">
+                      <CountryCodeSelect
+                        value={whatsappCode}
+                        onChange={(code) => setWhatsappCode(code)}
+                      />
+                    </div>
                     <input
                       type="tel"
                       required
-                      placeholder="e.g. +91 9876543210"
+                      placeholder="9876543210"
                       value={whatsapp}
                       onChange={(e) => setWhatsapp(e.target.value)}
-                      className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all ${
+                      className={`flex-1 px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all ${
                         errors.whatsapp ? "border-red-400 bg-red-50/50" : "border-slate-300 focus:border-[#370c63] focus:bg-white bg-slate-50/50"
                       }`}
                     />

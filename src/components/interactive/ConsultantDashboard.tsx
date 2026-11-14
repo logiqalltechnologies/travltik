@@ -8,6 +8,7 @@ import {
 import { ProviderVerificationModal } from "./ProviderVerificationModal";
 import { WorkPermitOrderForm } from "../dashboard/WorkPermitOrderForm";
 import { PostClassifiedAdForm } from "../dashboard/PostClassifiedAdForm";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
 
 export function ConsultantDashboard() {
     const [consultantSearch, setConsultantSearch] = useState("");
@@ -2206,15 +2207,30 @@ export function ConsultantDashboard() {
                             {/* Contact / WhatsApp Number */}
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Contact / WhatsApp Number *</label>
-                                <input 
-                                    type="tel" 
-                                    required
-                                    value={formPhone} 
-                                    onChange={(e) => setFormPhone(e.target.value)} 
-                                    placeholder="e.g. +91 98765 43210"
-                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
-                                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                                />
+                                <div className="flex gap-2">
+                                    <div className="w-32 shrink-0">
+                                        <CountryCodeSelect
+                                            value={formPhone.startsWith('+') ? (formPhone.split(' ')[0] || '+91') : '+91'}
+                                            onChange={(code) => {
+                                                const raw = formPhone.startsWith('+') ? formPhone.replace(/^\+\d+\s*/, '') : formPhone;
+                                                setFormPhone(`${code} ${raw}`.trim());
+                                            }}
+                                            size="sm"
+                                        />
+                                    </div>
+                                    <input 
+                                        type="tel" 
+                                        required
+                                        value={formPhone.startsWith('+') ? formPhone.replace(/^\+\d+\s*/, '') : formPhone} 
+                                        onChange={(e) => {
+                                            const code = formPhone.startsWith('+') ? (formPhone.split(' ')[0] || '+91') : '+91';
+                                            setFormPhone(`${code} ${e.target.value}`.trim());
+                                        }} 
+                                        placeholder="98765 43210"
+                                        className="flex-1 px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black"
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                    />
+                                </div>
                             </div>
 
                             {/* Office / Practice Location Address (Granular 5 Fields) */}
@@ -2526,7 +2542,29 @@ export function ConsultantDashboard() {
                             </div>
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Contact Phone Number</label>
-                                <input type="text" value={leadPhone} onChange={(e) => setLeadPhone(e.target.value)} placeholder="e.g. +91 98765 43210" className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} />
+                                <div className="flex gap-2">
+                                    <div className="w-28 shrink-0">
+                                        <CountryCodeSelect
+                                            value={leadPhone.startsWith('+') ? (leadPhone.split(' ')[0] || '+91') : '+91'}
+                                            onChange={(code) => {
+                                                const raw = leadPhone.startsWith('+') ? leadPhone.replace(/^\+\d+\s*/, '') : leadPhone;
+                                                setLeadPhone(`${code} ${raw}`.trim());
+                                            }}
+                                            size="sm"
+                                        />
+                                    </div>
+                                    <input 
+                                        type="tel" 
+                                        value={leadPhone.startsWith('+') ? leadPhone.replace(/^\+\d+\s*/, '') : leadPhone} 
+                                        onChange={(e) => {
+                                            const code = leadPhone.startsWith('+') ? (leadPhone.split(' ')[0] || '+91') : '+91';
+                                            setLeadPhone(`${code} ${e.target.value}`.trim());
+                                        }} 
+                                        placeholder="98765 43210" 
+                                        className="flex-1 px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} 
+                                    />
+                                </div>
                             </div>
                             <div>
                                 <label className="text-xs font-bold text-slate-700 mb-1 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Initial Status</label>

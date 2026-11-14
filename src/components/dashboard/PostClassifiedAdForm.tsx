@@ -7,6 +7,7 @@ import {
     AlertCircle, FileText, CheckCircle, CreditCard, Lock, RefreshCw, 
     Smartphone, QrCode, ChevronDown, Search
 } from "lucide-react";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
 
 interface PostClassifiedAdFormProps {
     onBack?: () => void;
@@ -104,6 +105,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
     const [validFrom, setValidFrom] = useState(initialData?.validFrom || "");
     const [validTo, setValidTo] = useState(initialData?.validTo || "");
     const [contactPhone, setContactPhone] = useState(initialData?.contactPhone || "");
+    const [contactPhoneCode, setContactPhoneCode] = useState("+91");
 
     // UI & Publishing States
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -194,7 +196,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
             images,
             validFrom,
             validTo,
-            contactPhone,
+            contactPhone: contactPhone ? (contactPhone.startsWith('+') ? contactPhone : `${contactPhoneCode} ${contactPhone}`.trim()) : "",
             savedAt: new Date().toISOString(),
         };
         try {
@@ -274,7 +276,7 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
             images: images,
             validFrom,
             validTo,
-            contactPhone,
+            contactPhone: contactPhone ? (contactPhone.startsWith('+') ? contactPhone : `${contactPhoneCode} ${contactPhone}`.trim()) : "",
             expert_email: expertEmail,
             views: 0,
             status: "active",
@@ -856,14 +858,20 @@ export function PostClassifiedAdForm({ onBack, onAdCreated, initialData }: PostC
                                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
                                     Contact Details
                                 </label>
-                                <div className="relative">
-                                    <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                <div className="flex gap-2">
+                                    <div className="w-32 shrink-0">
+                                        <CountryCodeSelect
+                                            value={contactPhoneCode}
+                                            onChange={(code) => setContactPhoneCode(code)}
+                                            size="sm"
+                                        />
+                                    </div>
                                     <input
                                         type="tel"
                                         value={contactPhone}
                                         onChange={(e) => setContactPhone(e.target.value)}
-                                        placeholder="e.g. +91 98765 43210"
-                                        className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-slate-900 shadow-2xs placeholder:text-slate-400"
+                                        placeholder="98765 43210"
+                                        className="flex-1 px-3 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-slate-900 shadow-2xs placeholder:text-slate-400"
                                     />
                                 </div>
                             </div>

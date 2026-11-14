@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
 
 const goals = [
     { id: "study", icon: GraduationCap, label: "Study Abroad", desc: "Find universities & student visas" },
@@ -764,12 +765,12 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                             Phone / WhatsApp *
                                         </label>
                                         <div className="flex gap-1.5">
-                                            <input
-                                                type="text"
-                                                value={countryCode}
-                                                onChange={(e) => setCountryCode(e.target.value)}
-                                                className="w-16 h-11 sm:h-10 px-2 rounded-xl border border-slate-300 text-sm sm:text-xs font-bold text-center bg-slate-100 text-slate-900"
-                                            />
+                                            <div className="w-28 sm:w-32 shrink-0">
+                                                <CountryCodeSelect
+                                                    value={countryCode}
+                                                    onChange={(code) => setCountryCode(code)}
+                                                />
+                                            </div>
                                             <input
                                                 type="tel"
                                                 required

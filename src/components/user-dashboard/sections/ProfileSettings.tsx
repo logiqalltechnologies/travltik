@@ -1,5 +1,6 @@
 import React from "react";
 import { Settings, Save, Upload, KeyRound, X } from "lucide-react";
+import { CountryCodeSelect } from "../../common/CountryCodeSelect";
 
 interface ProfileSettingsProps {
     modalFirstName: string;
@@ -146,13 +147,28 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                         </div>
                         <div>
                             <label className="text-xs font-bold text-slate-700 mb-1.5 block">Phone Number</label>
-                            <input 
-                                type="text" 
-                                value={modalPhone} 
-                                onChange={(e) => setModalPhone(e.target.value)} 
-                                placeholder="e.g. +91 98765 43210"
-                                className="w-full px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#00a896] transition-all" 
-                            />
+                            <div className="flex gap-2">
+                                <div className="w-32 shrink-0">
+                                    <CountryCodeSelect
+                                        value={modalPhone.startsWith('+') ? (modalPhone.split(' ')[0] || '+91') : '+91'}
+                                        onChange={(code) => {
+                                            const raw = modalPhone.startsWith('+') ? modalPhone.replace(/^\+\d+\s*/, '') : modalPhone;
+                                            setModalPhone(`${code} ${raw}`.trim());
+                                        }}
+                                        size="sm"
+                                    />
+                                </div>
+                                <input 
+                                    type="tel" 
+                                    value={modalPhone.startsWith('+') ? modalPhone.replace(/^\+\d+\s*/, '') : modalPhone} 
+                                    onChange={(e) => {
+                                        const code = modalPhone.startsWith('+') ? (modalPhone.split(' ')[0] || '+91') : '+91';
+                                        setModalPhone(`${code} ${e.target.value}`.trim());
+                                    }} 
+                                    placeholder="98765 43210"
+                                    className="flex-1 px-3.5 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 outline-none focus:bg-white focus:border-[#00a896] transition-all" 
+                                />
+                            </div>
                         </div>
                         <div>
                             <label className="text-xs font-bold text-slate-700 mb-1.5 block">Account Email</label>
@@ -302,13 +318,29 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
                                     <label className="text-xs font-bold text-slate-700 mb-1 block">Phone Number</label>
-                                    <input 
-                                        type="text" 
-                                        value={modalPhone} 
-                                        onChange={(e) => setModalPhone(e.target.value)} 
-                                        className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
-                                        required
-                                    />
+                                    <div className="flex gap-2">
+                                        <div className="w-28 shrink-0">
+                                            <CountryCodeSelect
+                                                value={modalPhone.startsWith('+') ? (modalPhone.split(' ')[0] || '+91') : '+91'}
+                                                onChange={(code) => {
+                                                    const raw = modalPhone.startsWith('+') ? modalPhone.replace(/^\+\d+\s*/, '') : modalPhone;
+                                                    setModalPhone(`${code} ${raw}`.trim());
+                                                }}
+                                                size="sm"
+                                            />
+                                        </div>
+                                        <input 
+                                            type="tel" 
+                                            value={modalPhone.startsWith('+') ? modalPhone.replace(/^\+\d+\s*/, '') : modalPhone} 
+                                            onChange={(e) => {
+                                                const code = modalPhone.startsWith('+') ? (modalPhone.split(' ')[0] || '+91') : '+91';
+                                                setModalPhone(`${code} ${e.target.value}`.trim());
+                                            }} 
+                                            placeholder="98765 43210"
+                                            className="flex-1 px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none focus:border-black" 
+                                            required
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold text-slate-700 mb-1 block">Current Residence</label>

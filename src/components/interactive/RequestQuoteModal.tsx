@@ -14,6 +14,7 @@ import {
   Sparkles,
   RefreshCw
 } from "lucide-react";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
 
 export interface RequestQuoteModalProps {
   isOpen: boolean;
@@ -47,6 +48,7 @@ export function RequestQuoteModal({
   const [seekerName, setSeekerName] = useState("");
   const [seekerEmail, setSeekerEmail] = useState("");
   const [seekerPhone, setSeekerPhone] = useState("");
+  const [phoneCode, setPhoneCode] = useState("+91");
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -93,7 +95,7 @@ export function RequestQuoteModal({
         body: JSON.stringify({
           seekerName,
           seekerEmail,
-          seekerPhone,
+          seekerPhone: seekerPhone.startsWith("+") ? seekerPhone : `${phoneCode} ${seekerPhone}`.trim(),
           expertId: targetExpertId,
           expertName: targetExpertName,
           expertEmail: targetExpertEmail,
@@ -343,15 +345,22 @@ export function RequestQuoteModal({
 
               <div>
                 <label className="text-[10px] font-bold text-slate-700 block mb-1">Phone / WhatsApp</label>
-                <input
-                  type="tel"
-                  pattern="\+[0-9]{1,4}\s?[0-9]{4,12}"
-                  title="International format: +[country code] [number], e.g. +91 9876543210"
-                  placeholder="+91 9876543210"
-                  value={seekerPhone}
-                  onChange={(e) => setSeekerPhone(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00a896]"
-                />
+                <div className="flex gap-2">
+                  <div className="w-28 shrink-0">
+                    <CountryCodeSelect
+                      value={phoneCode}
+                      onChange={(code) => setPhoneCode(code)}
+                      size="sm"
+                    />
+                  </div>
+                  <input
+                    type="tel"
+                    placeholder="9876543210"
+                    value={seekerPhone}
+                    onChange={(e) => setSeekerPhone(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#00a896]"
+                  />
+                </div>
               </div>
             </div>
           </div>

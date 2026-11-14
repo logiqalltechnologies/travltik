@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Briefcase, MapPin, Globe, Calendar, Users, Minus, Plus, Sparkles, X, Phone, User, ArrowRight, RotateCw, CheckCircle2 } from 'lucide-react';
+import { CountryCodeSelect } from '../common/CountryCodeSelect';
 
 export function TripPlannerModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,7 @@ export function TripPlannerModal() {
   
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneCode, setPhoneCode] = useState('+91');
   const [email, setEmail] = useState('');
   const [contactPref, setContactPref] = useState<'whatsapp' | 'call'>('whatsapp');
   
@@ -61,7 +63,7 @@ export function TripPlannerModal() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fullName,
-          phone,
+          phone: phone.startsWith('+') ? phone : `${phoneCode} ${phone}`.trim(),
           email,
           contactPref,
           leadType: 'Trip Planning & Holiday Booking',
@@ -291,15 +293,20 @@ export function TripPlannerModal() {
                 {/* Phone / WhatsApp */}
                 <div>
                   <label className="block text-xs font-bold text-slate-800 mb-1">Mobile / WhatsApp Number</label>
-                  <div className="relative">
-                    <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <div className="flex gap-2">
+                    <div className="w-32 shrink-0">
+                      <CountryCodeSelect
+                        value={phoneCode}
+                        onChange={(code) => setPhoneCode(code)}
+                      />
+                    </div>
                     <input
                       type="tel"
                       required
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      placeholder="e.g. +91 98765 43210"
-                      className="w-full h-12 pl-9 pr-3 rounded-2xl bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 focus:border-[#00A86B] text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]/20 transition-all"
+                      placeholder="98765 43210"
+                      className="flex-1 h-11 px-3.5 rounded-xl bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 focus:border-[#00A86B] text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A86B]/20 transition-all"
                     />
                   </div>
                 </div>

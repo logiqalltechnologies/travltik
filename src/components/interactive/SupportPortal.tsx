@@ -5,6 +5,7 @@ import {
     Users, ArrowRight, CheckCircle, Headphones, Sparkles, MapPin, Building, Globe,
     ShieldCheck, MessageSquare, CheckCircle2, Lock, ArrowUpRight
 } from "lucide-react";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
 
 // Toast Helper
 function Toast({ message, visible, onClose }: { message: string, visible: boolean, onClose: () => void }) {
@@ -62,6 +63,7 @@ export function SupportPortal() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [phoneCode, setPhoneCode] = useState("+91");
     const [visaType, setVisaType] = useState("Work Permit");
     const [message, setMessage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,7 +88,7 @@ export function SupportPortal() {
                 body: JSON.stringify({
                     name,
                     email,
-                    phone,
+                    phone: phone.startsWith("+") ? phone : `${phoneCode} ${phone}`.trim(),
                     visa_type: visaType,
                     message: message || "Support request submitted from Contact Us page."
                 })
@@ -298,14 +300,22 @@ export function SupportPortal() {
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-700 font-plus-jakarta">Phone Number *</label>
-                                <input 
-                                    type="tel" 
-                                    required
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    placeholder="+91 98765 43210" 
-                                    className="w-full px-4 h-12 text-xs sm:text-sm font-medium rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white focus:outline-none focus:border-[#430f7a] focus:ring-2 focus:ring-purple-500/10 placeholder-slate-400 transition-all"
-                                />
+                                <div className="flex gap-2">
+                                    <div className="w-32 shrink-0">
+                                        <CountryCodeSelect
+                                            value={phoneCode}
+                                            onChange={(code) => setPhoneCode(code)}
+                                        />
+                                    </div>
+                                    <input 
+                                        type="tel" 
+                                        required
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        placeholder="98765 43210" 
+                                        className="flex-1 px-4 h-12 text-xs sm:text-sm font-medium rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white focus:outline-none focus:border-[#430f7a] focus:ring-2 focus:ring-purple-500/10 placeholder-slate-400 transition-all"
+                                    />
+                                </div>
                             </div>
                         </div>
 

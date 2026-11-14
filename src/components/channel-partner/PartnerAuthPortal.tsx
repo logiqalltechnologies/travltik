@@ -7,6 +7,7 @@ import {
   KeyRound, RefreshCw, ArrowLeft, Layers, Network, Award,
   ChevronRight, Sparkles, HelpCircle
 } from 'lucide-react';
+import { CountryCodeSelect } from '../common/CountryCodeSelect';
 
 interface Props {
   initialMode?: 'login' | 'register';
@@ -318,6 +319,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
   const [regContactName, setRegContactName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPhone, setRegPhone] = useState('');
+  const [regPhoneCode, setRegPhoneCode] = useState('+91');
   const [regCountry, setRegCountry] = useState('India');
   const [regState, setRegState] = useState('Telangana (Hyderabad)');
   const [regTaxId, setRegTaxId] = useState('');
@@ -546,7 +548,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
         role,
         email: activeEmail || regEmail.trim().toLowerCase(),
         password: regPassword,
-        phone: regPhone,
+        phone: regPhone.startsWith('+') ? regPhone : `${regPhoneCode} ${regPhone}`.trim(),
         country: regCountry,
         otp: code,
         invite_code: inviteCode
@@ -1121,16 +1123,24 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                        WhatsApp / Phone (+Code) *
+                        WhatsApp / Phone *
                       </label>
-                      <input
-                        type="tel"
-                        required
-                        value={regPhone}
-                        onChange={(e) => setRegPhone(e.target.value)}
-                        placeholder="+91 98765 43210"
-                        className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
-                      />
+                      <div className="flex gap-2">
+                        <div className="w-32 shrink-0">
+                          <CountryCodeSelect
+                            value={regPhoneCode}
+                            onChange={(code) => setRegPhoneCode(code)}
+                          />
+                        </div>
+                        <input
+                          type="tel"
+                          required
+                          value={regPhone}
+                          onChange={(e) => setRegPhone(e.target.value)}
+                          placeholder="98765 43210"
+                          className="flex-1 h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1237,16 +1247,24 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      WhatsApp / Phone (+Code) *
+                      WhatsApp / Phone *
                     </label>
-                    <input
-                      type="tel"
-                      required
-                      value={regPhone}
-                      onChange={(e) => setRegPhone(e.target.value)}
-                      placeholder="+91 98765 43210"
-                      className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
-                    />
+                    <div className="flex gap-2">
+                      <div className="w-32 shrink-0">
+                        <CountryCodeSelect
+                          value={regPhoneCode}
+                          onChange={(code) => setRegPhoneCode(code)}
+                        />
+                      </div>
+                      <input
+                        type="tel"
+                        required
+                        value={regPhone}
+                        onChange={(e) => setRegPhone(e.target.value)}
+                        placeholder="98765 43210"
+                        className="flex-1 h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -1347,16 +1365,24 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      WhatsApp / Phone (+Code) *
+                      WhatsApp / Phone *
                     </label>
-                    <input
-                      type="tel"
-                      required
-                      value={regPhone}
-                      onChange={(e) => setRegPhone(e.target.value)}
-                      placeholder="+91 98765 43210"
-                      className="w-full h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
-                    />
+                    <div className="flex gap-2">
+                      <div className="w-32 shrink-0">
+                        <CountryCodeSelect
+                          value={regPhoneCode}
+                          onChange={(code) => setRegPhoneCode(code)}
+                        />
+                      </div>
+                      <input
+                        type="tel"
+                        required
+                        value={regPhone}
+                        onChange={(e) => setRegPhone(e.target.value)}
+                        placeholder="98765 43210"
+                        className="flex-1 h-11 px-3.5 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 text-slate-900 text-xs sm:text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00A878]/20 focus:border-[#00A878]"
+                      />
+                    </div>
                   </div>
                 </div>
               )}

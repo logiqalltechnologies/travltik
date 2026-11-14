@@ -4,6 +4,7 @@ import {
   Shield, Clock, Star, Zap, ArrowRight, ArrowLeft, 
   Camera, FileText, Check, Plus, Users, FileCheck, ShoppingCart 
 } from "lucide-react";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
 
 const countries = [
   { name: "Thailand", code: "th", flag: "🇹🇭", type: "E-Visa", days: "90 Days", fee: "₹400", express: true, popular: true, image: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=600&auto=format&fit=crop&q=80" },
@@ -29,6 +30,7 @@ export function ApplyVisaPortal() {
     { id: 1, firstName: "Prashant", lastName: "Sharma", passport: "", dob: "", expiry: "", email: "", phone: "", photoUploaded: false, passportUploaded: false }
   ]);
   const [activeTravelerIdx, setActiveTravelerIdx] = useState(0);
+  const [travelerPhoneCode, setTravelerPhoneCode] = useState("+91");
   
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
@@ -446,13 +448,21 @@ export function ApplyVisaPortal() {
 
                 <div>
                   <label className="text-[10px] font-bold text-gray-500 tracking-widest mb-1.5 block">Mobile Number *</label>
-                  <input 
-                    type="tel"
-                    value={travelers[activeTravelerIdx].phone} 
-                    onChange={e => updateTravelerField(activeTravelerIdx, "phone", e.target.value)} 
-                    placeholder="e.g. +91 98765 43210" 
-                    className="w-full p-3.5 bg-slate-50/60 border border-slate-250 rounded-xl text-xs outline-none focus:border-black" 
-                  />
+                  <div className="flex gap-2">
+                    <div className="w-32 shrink-0">
+                      <CountryCodeSelect
+                        value={travelerPhoneCode}
+                        onChange={(code) => setTravelerPhoneCode(code)}
+                      />
+                    </div>
+                    <input 
+                      type="tel"
+                      value={travelers[activeTravelerIdx].phone} 
+                      onChange={e => updateTravelerField(activeTravelerIdx, "phone", e.target.value)} 
+                      placeholder="98765 43210" 
+                      className="flex-1 p-3.5 bg-slate-50/60 border border-slate-250 rounded-xl text-xs outline-none focus:border-black" 
+                    />
+                  </div>
                 </div>
               </div>
 

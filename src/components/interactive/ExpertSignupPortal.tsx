@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
+import { ALL_COUNTRY_DIAL_CODES } from "../../data/countryDialCodes";
 
 // ─── Available Services for Grid (Step 3) ─────────────────────────────────
 const AVAILABLE_SERVICES = [
@@ -63,15 +65,10 @@ const BUSINESS_COUNTRIES = [
 ];
 
 // ─── Country Dial Codes ───────────────────────────────────────────────────────
-const COUNTRY_DIAL_CODES = [
-  { value: "+91", label: "+91 (IN)" },
-  { value: "+1", label: "+1 (US/CA)" },
-  { value: "+44", label: "+44 (UK)" },
-  { value: "+971", label: "+971 (UAE)" },
-  { value: "+61", label: "+61 (AU)" },
-  { value: "+49", label: "+49 (DE)" },
-  { value: "+65", label: "+65 (SG)" }
-];
+const COUNTRY_DIAL_CODES = ALL_COUNTRY_DIAL_CODES.map((c) => ({
+  value: c.code,
+  label: `${c.flag} ${c.code} (${c.iso})`
+}));
 
 // ─── Years of Experience Options ──────────────────────────────────────────────
 const EXPERIENCE_OPTIONS = [
@@ -213,6 +210,7 @@ function ExpertSignupPortalContent() {
   const [yearEstablished, setYearEstablished] = useState("");
   const [businessEmail, setBusinessEmail] = useState("");
   const [businessPhone, setBusinessPhone] = useState("");
+  const [businessPhoneCode, setBusinessPhoneCode] = useState("+91");
   const [website, setWebsite] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
@@ -270,8 +268,11 @@ function ExpertSignupPortalContent() {
   // Auto-sync email & phone into business fields when Step 1 changes (do NOT auto-fill business name)
   useEffect(() => {
     if (!businessEmail && email) setBusinessEmail(email);
-    if (!businessPhone && mobileNumber) setBusinessPhone(mobileNumber);
-  }, [email, mobileNumber]);
+    if (!businessPhone && mobileNumber) {
+      setBusinessPhone(mobileNumber);
+      setBusinessPhoneCode(mobileCode);
+    }
+  }, [email, mobileNumber, mobileCode]);
 
   // Password validation checklist checks
   const isMinLength = password.length >= 8;
@@ -603,6 +604,9 @@ function ExpertSignupPortalContent() {
 
       // 2. Submit expert application
       const fullContact = `${mobileCode} ${mobileNumber || businessPhone}`.trim();
+      const fullBusinessPhone = businessPhone 
+        ? (businessPhone.startsWith("+") ? businessPhone : `${businessPhoneCode} ${businessPhone}`.trim())
+        : fullContact;
       const payload = {
         business_name: businessName || fullName || "Service Provider",
         full_name: fullName,
@@ -613,7 +617,7 @@ function ExpertSignupPortalContent() {
         business_type: businessType,
         year_established: yearEstablished,
         business_email: businessEmail || email,
-        business_phone: businessPhone || mobileNumber,
+        business_phone: fullBusinessPhone,
         website,
         country,
         state,
@@ -680,7 +684,7 @@ function ExpertSignupPortalContent() {
         const fullAddr = [businessAddress, city, state, country, pinCode].filter(Boolean).join(", ");
         if (fullAddr) localStorage.setItem("expert_officeAddress", fullAddr);
 
-        const contactPhone = businessPhone || (mobileNumber ? `${mobileCode} ${mobileNumber}` : "");
+        const contactPhone = fullBusinessPhone || fullContact;
         if (contactPhone) {
           localStorage.setItem("expert_phone", contactPhone);
           localStorage.setItem("expert_contactNumber", contactPhone);
@@ -987,12 +991,10 @@ function ExpertSignupPortalContent() {
                   Mobile Number *
                 </label>
                 <div className="flex gap-2">
-                  <div className="w-28 shrink-0">
-                    <CustomDropdown
+                  <div className="w-32 shrink-0">
+                    <CountryCodeSelect
                       value={mobileCode}
                       onChange={setMobileCode}
-                      options={COUNTRY_DIAL_CODES}
-                      placeholder="+91"
                     />
                   </div>
                   <input
@@ -1313,9 +1315,12 @@ function ExpertSignupPortalContent() {
                 Business Phone
               </label>
               <div className="flex gap-2">
-                <span className="px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-100 text-xs font-bold text-slate-600 flex items-center">
-                  +91
-                </span>
+                <div className="w-32 shrink-0">
+                  <CountryCodeSelect
+                    value={businessPhoneCode}
+                    onChange={setBusinessPhoneCode}
+                  />
+                </div>
                 <input
                   type="tel"
                   value={businessPhone}

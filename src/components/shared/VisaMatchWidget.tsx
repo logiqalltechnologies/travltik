@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FileCheck2, Sparkles, X, ChevronRight, ChevronDown, Check } from "lucide-react";
+import { CountryCodeSelect } from "../common/CountryCodeSelect";
+import { ALL_COUNTRY_DIAL_CODES } from "../../data/countryDialCodes";
 
 const AGE_OPTIONS = [
   { value: "18-22", label: "18–22 years", icon: "🌱" },
@@ -39,19 +41,7 @@ const BUDGET_OPTIONS = [
   { value: "Need Educational Loan", label: "Need Educational Loan", icon: "🏦" }
 ];
 
-const COUNTRY_CODES = [
-  { code: "+91", flag: "🇮🇳", country: "India", iso: "IN" },
-  { code: "+1", flag: "🇺🇸", country: "USA / Canada", iso: "US" },
-  { code: "+44", flag: "🇬🇧", country: "UK", iso: "GB" },
-  { code: "+61", flag: "🇦🇺", country: "Australia", iso: "AU" },
-  { code: "+971", flag: "🇦🇪", country: "UAE", iso: "AE" },
-  { code: "+49", flag: "🇩🇪", country: "Germany", iso: "DE" },
-  { code: "+65", flag: "🇸🇬", country: "Singapore", iso: "SG" },
-  { code: "+64", flag: "🇳🇿", country: "New Zealand", iso: "NZ" },
-  { code: "+880", flag: "🇧🇩", country: "Bangladesh", iso: "BD" },
-  { code: "+977", flag: "🇳🇵", country: "Nepal", iso: "NP" },
-  { code: "+94", flag: "🇱🇰", country: "Sri Lanka", iso: "LK" },
-];
+const COUNTRY_CODES = ALL_COUNTRY_DIAL_CODES;
 
 export function VisaMatchWidget() {
   const [mounted, setMounted] = useState(false);
@@ -928,53 +918,24 @@ export function VisaMatchWidget() {
                       {(isSeekerLoggedIn || seekerAuthMode === "register") && (
                         <div>
                           <label className="text-[10px] font-bold text-slate-700 block mb-1">Mobile / WhatsApp Number *</label>
-                          <div className="relative">
-                            <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl overflow-hidden focus-within:border-[#00a896] focus-within:bg-white transition-all">
-                              <button
-                                type="button"
-                                onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                                className="flex items-center gap-1.5 px-3 py-2.5 bg-slate-100/90 hover:bg-slate-200/80 text-slate-800 font-extrabold text-xs border-r border-slate-200 transition-colors cursor-pointer shrink-0"
-                              >
-                                <span className="text-base">{selectedCountry.flag}</span>
-                                <span>{selectedCountry.code}</span>
-                                <span className="text-[9px] text-slate-500 font-extrabold">▼</span>
-                              </button>
-                              <input
-                                type="tel"
-                                required
-                                placeholder="98765 43210"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                className="w-full px-3 py-2.5 bg-transparent text-xs text-slate-900 font-bold focus:outline-none placeholder:text-slate-400"
+                          <div className="flex gap-2">
+                            <div className="w-32 shrink-0">
+                              <CountryCodeSelect
+                                value={countryDialCode}
+                                onChange={(code, c) => {
+                                  setCountryDialCode(code);
+                                  if (c) setSelectedCountry(c);
+                                }}
                               />
                             </div>
-
-                            {showCountryDropdown && (
-                              <div className="absolute left-0 bottom-full mb-1.5 z-50 w-60 max-h-52 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-2xl p-1.5 space-y-0.5 animate-fadeIn text-left">
-                                {COUNTRY_CODES.map((c, idx) => (
-                                  <button
-                                    key={`${c.iso}-${idx}`}
-                                    type="button"
-                                    onClick={() => {
-                                      setSelectedCountry(c);
-                                      setCountryDialCode(c.code);
-                                      setShowCountryDropdown(false);
-                                    }}
-                                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                      selectedCountry.iso === c.iso && selectedCountry.code === c.code
-                                        ? "bg-teal-50 text-[#00a896] font-extrabold"
-                                        : "hover:bg-slate-50 text-slate-700"
-                                    }`}
-                                  >
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-base">{c.flag}</span>
-                                      <span className="text-xs">{c.country}</span>
-                                    </div>
-                                    <span className="text-slate-400 text-[10px] font-mono">{c.code}</span>
-                                  </button>
-                                ))}
-                              </div>
-                            )}
+                            <input
+                              type="tel"
+                              required
+                              placeholder="98765 43210"
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
+                              className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:bg-white focus:border-[#00a896] placeholder:text-slate-400"
+                            />
                           </div>
                         </div>
                       )}
