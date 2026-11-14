@@ -361,7 +361,7 @@ export function InternationalJobDrivesPage() {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`text-xs font-bold px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer ${selectedCategory === cat ? "bg-black text-white shadow-xs" : "bg-slate-100 hover:bg-slate-200 text-slate-700"}`}
+                  className={`text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer ${selectedCategory === cat ? "bg-gradient-to-r from-[#00b070] via-[#0284c7] to-[#581db5] text-white shadow-sm font-extrabold" : "bg-slate-100 hover:bg-slate-200 text-slate-700"}`}
                 >
                   {cat}
                 </button>
@@ -428,80 +428,79 @@ export function InternationalJobDrivesPage() {
                       <div
                         key={job.id}
                         onClick={() => handleApplyCanada(job)}
-                        className="group relative rounded-[28px] overflow-hidden min-h-[440px] p-6 flex flex-col justify-end text-white cursor-pointer transition-all duration-350 ease-out border border-white/20 hover:border-white/50 bg-[#090d16] shadow-[0_16px_40px_-15px_rgba(67,15,122,0.22)] hover:shadow-[0_24px_50px_-12px_rgba(67,15,122,0.38)] hover:-translate-y-2 box-border"
+                        className="group relative rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 p-3.5 flex flex-col justify-between cursor-pointer"
                       >
-                        {/* Full-bleed Luxury Background Photography */}
-                        <img 
-                          src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
-                          alt={job.title}
-                          className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 pointer-events-none"
-                          loading="lazy"
-                        />
+                        {/* Top Image Wrap (Airbnb Homepage Aspect) */}
+                        <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-100">
+                          <img 
+                            src={canadaRoleImages[job.id] || "/images/job_tech_engineer.png"} 
+                            alt={job.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
 
-                        {/* Multi-stage Luxury Gradient Overlay (Exact Landing Page Standard) */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/75 via-50% to-transparent pointer-events-none" />
+                          {/* Top-Left Category Badge with TravlTik Logo Gradient */}
+                          <div className="absolute top-2.5 left-2.5 z-10">
+                            <span className="bg-gradient-to-r from-[#00b070] via-[#0284c7] to-[#581db5] text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1">
+                              #{String(job.sNo).padStart(2, '0')} · {job.category}
+                            </span>
+                          </div>
 
-                        {/* Top Row: Landing-page style gradient pill + Round Flag Badge */}
-                        <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10 pointer-events-none">
-                          <span className="bg-gradient-to-r from-[rgba(107,52,179,0.92)] to-[rgba(67,15,122,0.96)] backdrop-blur-md border border-white/25 text-white text-[10.5px] font-black uppercase px-3 py-1 rounded-full shadow-[0_4px_14px_rgba(67,15,122,0.45)] tracking-wider flex items-center gap-1.5">
-                            #{String(job.sNo).padStart(2, '0')} · {job.category}
-                          </span>
-                          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white/90 shadow-md flex items-center justify-center bg-black/40 shrink-0">
+                          {/* Top-Right Flag */}
+                          <div className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full overflow-hidden border-2 border-white shadow-md bg-white">
                             <img src="https://flagcdn.com/w40/ca.png" alt="Canada" className="w-full h-full object-cover" />
                           </div>
                         </div>
 
-                        {/* Bottom Content Container */}
-                        <div className="relative z-10 w-full">
+                        {/* Card Content Container */}
+                        <div className="pt-3 flex flex-col flex-1">
                           {/* Live Status Pill */}
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full backdrop-blur-md flex items-center gap-1.5 shadow-sm">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <div className="flex items-center gap-1.5 mb-1.5">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                               {job.vacancies} Seats Available · LMIA Approved
                             </span>
                           </div>
 
-                          {/* Job Title (Landing Page Playfair Serif) */}
-                          <h3 className="font-serif text-xl sm:text-[22px] font-bold text-white tracking-wide uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] line-clamp-1 leading-tight group-hover:text-amber-200 transition-colors">
+                          {/* Job Title */}
+                          <h3 className="font-bold text-[17px] text-slate-900 line-clamp-1 group-hover:text-[#581db5] transition-colors">
                             {job.title}
                           </h3>
 
                           {/* Subtitle: Location & Experience */}
-                          <p className="text-xs text-white/85 font-medium mt-1 line-clamp-1 drop-shadow-sm flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-slate-300 shrink-0" />
+                          <p className="text-[12.5px] text-slate-500 mt-1 line-clamp-1 flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             <span className="truncate">{job.location}</span>
-                            <span className="text-white/40">·</span>
+                            <span className="text-slate-300">·</span>
                             <span className="shrink-0">{job.experienceRequired}</span>
                           </p>
 
-                          {/* 3-Column Glass Meta Row (Exact Landing Page .atlys-meta-row) */}
-                          <div className="grid grid-cols-3 gap-2 py-2.5 px-3 mt-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-center text-white">
+                          {/* 3-Column Clean Meta Box */}
+                          <div className="grid grid-cols-3 gap-1 py-2 px-2.5 mt-3 bg-[#faf8fd] rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
                             <div className="flex flex-col items-start text-left">
-                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">EST. COMP</span>
-                              <span className="text-xs sm:text-[13px] font-black text-amber-300 mt-0.5">{job.salaryMonthly}</span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">EST. COMP</span>
+                              <span className="text-[13px] font-black text-slate-900 mt-0.5">{job.salaryMonthly}</span>
                             </div>
-                            <div className="flex flex-col items-center border-x border-white/20 px-1">
-                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">VACANCIES</span>
-                              <span className="text-xs sm:text-[13px] font-black text-white mt-0.5">{job.vacancies} SEATS</span>
+                            <div className="flex flex-col items-center border-x border-slate-200/80 px-1">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">VACANCIES</span>
+                              <span className="text-[13px] font-black text-[#00b070] mt-0.5">{job.vacancies} SEATS</span>
                             </div>
                             <div className="flex flex-col items-end text-right">
-                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">PERMIT</span>
-                              <span className="text-xs sm:text-[13px] font-black text-emerald-400 mt-0.5">SPONSORED</span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PERMIT</span>
+                              <span className="text-[11.5px] font-black text-[#581db5] mt-0.5">SPONSORED</span>
                             </div>
                           </div>
 
-                          {/* Luxury Action Button */}
-                          <div className="mt-3.5">
+                          {/* Action Button styled with TravlTik Gradient */}
+                          <div className="mt-3 pt-1">
                             <button 
                               type="button"
                               onClick={(e) => { e.stopPropagation(); handleApplyCanada(job); }}
-                              className="w-full py-2.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-between bg-white text-black hover:bg-amber-300 shadow-md group-hover:shadow-lg cursor-pointer"
+                              className="w-full py-2.5 px-4 rounded-xl font-bold text-[13px] text-white transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#00b070] via-[#0284c7] to-[#581db5] hover:opacity-95 shadow-sm group-hover:shadow-md cursor-pointer"
                             >
-                              <span className="flex items-center gap-1.5">
-                                <Sparkles className="w-3.5 h-3.5 text-[#370c63]" />
-                                <span>Apply for Canada Role</span>
-                              </span>
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              <Sparkles className="w-3.5 h-3.5 text-white/90" />
+                              <span>Apply for Canada Role</span>
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform ml-auto" />
                             </button>
                           </div>
                         </div>
@@ -524,80 +523,79 @@ export function InternationalJobDrivesPage() {
                       <div
                         key={job.id}
                         onClick={() => handleApplyLuxembourg(job)}
-                        className="group relative rounded-[28px] overflow-hidden min-h-[440px] p-6 flex flex-col justify-end text-white cursor-pointer transition-all duration-350 ease-out border border-white/20 hover:border-white/50 bg-[#090d16] shadow-[0_16px_40px_-15px_rgba(67,15,122,0.22)] hover:shadow-[0_24px_50px_-12px_rgba(67,15,122,0.38)] hover:-translate-y-2 box-border"
+                        className="group relative rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 p-3.5 flex flex-col justify-between cursor-pointer"
                       >
-                        {/* Full-bleed Luxury Background Photography */}
-                        <img 
-                          src={luxembourgRoleImages[job.id] || "/images/construction_site.png"} 
-                          alt={job.category}
-                          className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 pointer-events-none"
-                          loading="lazy"
-                        />
+                        {/* Top Image Wrap (Airbnb Homepage Aspect) */}
+                        <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-slate-100">
+                          <img 
+                            src={luxembourgRoleImages[job.id] || "/images/construction_site.png"} 
+                            alt={job.category}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
 
-                        {/* Multi-stage Luxury Gradient Overlay (Exact Landing Page Standard) */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#090d16] via-[#090d16]/75 via-50% to-transparent pointer-events-none" />
+                          {/* Top-Left Category Badge with TravlTik Logo Gradient */}
+                          <div className="absolute top-2.5 left-2.5 z-10">
+                            <span className="bg-gradient-to-r from-[#00b070] via-[#0284c7] to-[#581db5] text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1">
+                              #{String(job.sNo).padStart(2, '0')} · {job.sector}
+                            </span>
+                          </div>
 
-                        {/* Top Row: Landing-page style gradient pill + Round Flag Badge */}
-                        <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10 pointer-events-none">
-                          <span className="bg-gradient-to-r from-[rgba(107,52,179,0.92)] to-[rgba(67,15,122,0.96)] backdrop-blur-md border border-white/25 text-white text-[10.5px] font-black uppercase px-3 py-1 rounded-full shadow-[0_4px_14px_rgba(67,15,122,0.45)] tracking-wider flex items-center gap-1.5">
-                            #{String(job.sNo).padStart(2, '0')} · {job.sector}
-                          </span>
-                          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white/90 shadow-md flex items-center justify-center bg-black/40 shrink-0">
+                          {/* Top-Right Flag */}
+                          <div className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full overflow-hidden border-2 border-white shadow-md bg-white">
                             <img src="https://flagcdn.com/w40/lu.png" alt="Luxembourg" className="w-full h-full object-cover" />
                           </div>
                         </div>
 
-                        {/* Bottom Content Container */}
-                        <div className="relative z-10 w-full">
+                        {/* Card Content Container */}
+                        <div className="pt-3 flex flex-col flex-1">
                           {/* Live Status Pill */}
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full backdrop-blur-md flex items-center gap-1.5 shadow-sm">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <div className="flex items-center gap-1.5 mb-1.5">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                               {job.vacancies} Seats Available · {job.permitType.includes("Blue Card") ? "EU Blue Card" : "EU Work Permit"}
                             </span>
                           </div>
 
-                          {/* Job Title (Landing Page Playfair Serif) */}
-                          <h3 className="font-serif text-xl sm:text-[22px] font-bold text-white tracking-wide uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] line-clamp-1 leading-tight group-hover:text-amber-200 transition-colors">
+                          {/* Job Title */}
+                          <h3 className="font-bold text-[17px] text-slate-900 line-clamp-1 group-hover:text-[#581db5] transition-colors">
                             {job.category}
                           </h3>
 
                           {/* Subtitle: Location & Experience */}
-                          <p className="text-xs text-white/85 font-medium mt-1 line-clamp-1 drop-shadow-sm flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-slate-300 shrink-0" />
+                          <p className="text-[12.5px] text-slate-500 mt-1 line-clamp-1 flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             <span className="truncate">{job.location}</span>
-                            <span className="text-white/40">·</span>
+                            <span className="text-slate-300">·</span>
                             <span className="shrink-0">{job.experienceRequired}</span>
                           </p>
 
-                          {/* 3-Column Glass Meta Row (Exact Landing Page .atlys-meta-row) */}
-                          <div className="grid grid-cols-3 gap-2 py-2.5 px-3 mt-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-center text-white">
+                          {/* 3-Column Clean Meta Box */}
+                          <div className="grid grid-cols-3 gap-1 py-2 px-2.5 mt-3 bg-[#faf8fd] rounded-xl border border-[rgba(67,15,122,0.08)] text-center">
                             <div className="flex flex-col items-start text-left">
-                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">EST. COMP</span>
-                              <span className="text-xs sm:text-[13px] font-black text-amber-300 mt-0.5">{job.salaryMonthly}</span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">EST. COMP</span>
+                              <span className="text-[13px] font-black text-slate-900 mt-0.5">{job.salaryMonthly}</span>
                             </div>
-                            <div className="flex flex-col items-center border-x border-white/20 px-1">
-                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">VACANCIES</span>
-                              <span className="text-xs sm:text-[13px] font-black text-white mt-0.5">{job.vacancies} SEATS</span>
+                            <div className="flex flex-col items-center border-x border-slate-200/80 px-1">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">VACANCIES</span>
+                              <span className="text-[13px] font-black text-[#00b070] mt-0.5">{job.vacancies} SEATS</span>
                             </div>
                             <div className="flex flex-col items-end text-right">
-                              <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">PERMIT</span>
-                              <span className="text-xs sm:text-[13px] font-black text-emerald-400 mt-0.5">SPONSORED</span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">PERMIT</span>
+                              <span className="text-[11.5px] font-black text-[#581db5] mt-0.5">SPONSORED</span>
                             </div>
                           </div>
 
-                          {/* Luxury Action Button */}
-                          <div className="mt-3.5">
+                          {/* Action Button styled with TravlTik Gradient */}
+                          <div className="mt-3 pt-1">
                             <button 
                               type="button"
                               onClick={(e) => { e.stopPropagation(); handleApplyLuxembourg(job); }}
-                              className="w-full py-2.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-between bg-white text-black hover:bg-amber-300 shadow-md group-hover:shadow-lg cursor-pointer"
+                              className="w-full py-2.5 px-4 rounded-xl font-bold text-[13px] text-white transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#00b070] via-[#0284c7] to-[#581db5] hover:opacity-95 shadow-sm group-hover:shadow-md cursor-pointer"
                             >
-                              <span className="flex items-center gap-1.5">
-                                <Sparkles className="w-3.5 h-3.5 text-[#370c63]" />
-                                <span>Apply for Luxembourg Role</span>
-                              </span>
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              <Sparkles className="w-3.5 h-3.5 text-white/90" />
+                              <span>Apply for Luxembourg Role</span>
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform ml-auto" />
                             </button>
                           </div>
                         </div>
