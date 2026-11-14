@@ -695,8 +695,9 @@ section{padding:96px 0;position:relative}
   }
 }
 
-/* Airbnb Mobile Bottom Navigation Bar */
-.airbnb-mobile-bottom-bar{display:none}
+/* Airbnb Mobile Bottom Navigation Bar & Mobile Search Overlay (Desktop: hidden) */
+.airbnb-mobile-bottom-bar{display:none !important}
+.mob-airbnb-search-overlay{display:none !important}
 
 @media(max-width:768px){
   body{padding-bottom:70px !important}
@@ -874,7 +875,7 @@ section{padding:96px 0;position:relative}
 
   /* Airbnb Mobile Full-Screen Search Sheet (Only on Mobile - Exact Reference Match) */
   .mob-airbnb-search-overlay{
-    display:flex;
+    display:flex !important;
     flex-direction:column;
     position:fixed;
     inset:0;
@@ -890,9 +891,9 @@ section{padding:96px 0;position:relative}
     box-sizing:border-box;
   }
   .mob-airbnb-search-overlay.open{
-    opacity:1;
-    pointer-events:auto;
-    transform:translateY(0);
+    opacity:1 !important;
+    pointer-events:auto !important;
+    transform:translateY(0) !important;
   }
   .mob-sheet-scroll-body{
     flex:1 1 auto;
