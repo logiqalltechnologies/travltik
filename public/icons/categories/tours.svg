@@ -4,7 +4,7 @@
     <linearGradient id="trolleyBody" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#7c3aed"/>
       <stop offset="35%" stop-color="#5b21b6"/>
-      <stop offset="75%" stop-color="#431407" stop-color-alternate="#3b0764" stop-color="#3b0764"/>
+      <stop offset="75%" stop-color="#3b0764"/>
       <stop offset="100%" stop-color="#1e1b4b"/>
     </linearGradient>
 
