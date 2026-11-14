@@ -2127,7 +2127,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <!-- Showcase Section Header (Exact Match to Reference Image 2) -->
     <div class="showcase-header-wrap" style="text-align:center;max-width:820px;margin:4px auto 26px;padding:0 12px;">
       <h2 id="showcase-title" class="showcase-title-h2" style="font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:clamp(24px,4.5vw,34px);font-weight:800;color:#1b1233;margin:0;letter-spacing:-0.025em;line-height:1.22;">Explore Everything <span class="sh-grad">on TravlTik</span></h2>
-      <p id="showcase-subtitle" class="showcase-subtitle-p" style="font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:clamp(14px,2.2vw,16px);color:#675f80;margin:10px auto 0;max-width:640px;font-weight:500;line-height:1.55;">Search verified visa routes, licensed experts, study programs and stays across 193+ countries.</p>
+      <p id="showcase-subtitle" class="showcase-subtitle-p" style="font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:clamp(14px,2.2vw,16px);color:#675f80;margin:10px auto 0;max-width:640px;font-weight:500;line-height:1.55;">Search verified visa routes, licensed experts, study programs and global opportunities across 193+ countries.</p>
     </div>
 
     <!-- The Dynamic Showcase Grid (Pure Airbnb / Atlys Luxury Style) -->
@@ -2160,7 +2160,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
         Check Your <span class="grad">Visa Readiness</span>
       </h2>
       <p style="font-size:16px;color:#675f80;max-width:620px;margin:0 auto;line-height:1.5;">
-        Search verified visa routes, licensed experts, study programs and stays across 193+ countries.
+        Search verified visa routes, licensed experts, study programs and global opportunities across 193+ countries.
       </p>
     </div>
   </div>
@@ -2472,7 +2472,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
     <div class="sh c rv" style="margin-bottom:44px">
       <span class="eyebrow">The TravlTik Ecosystem</span>
       <h2 style="font-size:36px;font-weight:800;color:#1b1233">Beyond Visas: The TravlTik Marketplace</h2>
-      <p>From university admissions and job sponsorships to verified stays and local classifieds, our marketplace connects global movers with vetted opportunities.</p>
+      <p>From university admissions and job sponsorships to curated tours and local classifieds, our marketplace connects global movers with vetted opportunities.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:24px">
       
@@ -2495,7 +2495,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <!-- Tours -->
       <a href="/tours" class="gc lift" style="padding:28px 24px;border-radius:24px;background:#fff;display:block;text-decoration:none;color:inherit;transition:all .3s">
         <div style="font-size:34px;margin-bottom:12px">✈️</div>
-        <h3 style="font-size:18px;font-weight:800;color:#1b1233;margin-bottom:6px">Tours &amp; Stays</h3>
+        <h3 style="font-size:18px;font-weight:800;color:#1b1233;margin-bottom:6px">Tours &amp; Packages</h3>
         <p style="font-size:13px;color:var(--mut);line-height:1.5">Book accommodation, travel packages, and curated itineraries with visa included.</p>
         <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--g2);margin-top:16px">View Travel Packages &rarr;</span>
       </a>
@@ -3058,7 +3058,7 @@ function initCustomDropdown(dropId, valInputId, textSpanId) {
 const SHOWCASE_DATA = {
   all: {
     title: 'Explore Everything <span class="sh-grad">on TravlTik</span>',
-    subtitle: 'Search verified visa routes, licensed experts, study programs and stays across 193+ countries.',
+    subtitle: 'Search verified visa routes, licensed experts, study programs and global opportunities across 193+ countries.',
     viewAllHref: '/find-experts',
     viewAllText: 'Explore all services (500+)',
     items: [
@@ -4564,7 +4564,7 @@ if (pillDestDrop) {
 const EASY_T = {
   Visas: { ic: 'file' },
   Jobs: { ic: 'brief' },
-  Stays: { ic: 'home' },
+  Universities: { ic: 'cap' },
   Tours: { ic: 'plane' },
   Experts: { ic: 'users' }
 };
@@ -4582,7 +4582,7 @@ const drawEasyTabs = () => {
       } else if (curEasy === 'Jobs') {
         const jTab = document.querySelector('.airbnb-cat-tab[data-tab="jobs"]');
         if (jTab) jTab.click();
-      } else if (curEasy === 'Universities' || curEasy === 'Stays') {
+      } else if (curEasy === 'Universities') {
         const sTab = document.querySelector('.airbnb-cat-tab[data-tab="universities"]');
         if (sTab) sTab.click();
       } else if (curEasy === 'Tours') {
@@ -4660,12 +4660,12 @@ if (easyGoBtn) {
       window.location.href = '/jobs' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
       return;
     }
-    if (curEasy === 'Tours') {
-      window.location.href = '/tours' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
+    if (curEasy === 'Universities') {
+      window.location.href = '/universities' + (destVal ? '?country=' + encodeURIComponent(destVal) : '') + (qVal ? (destVal ? '&' : '?') + 'q=' + encodeURIComponent(qVal) : '');
       return;
     }
-    if (curEasy === 'Stays') {
-      window.location.href = '/find-experts?category=Housing' + (destVal ? '&destination=' + encodeURIComponent(destVal) : '');
+    if (curEasy === 'Tours') {
+      window.location.href = '/tours' + (qVal ? '?search=' + encodeURIComponent(qVal) : '');
       return;
     }
     // Experts
@@ -4694,7 +4694,7 @@ const qsPlaceholders = {
   jobs: 'e.g., Software engineer, Registered nurse sponsorship',
   insurance: 'e.g., Schengen travel medical insurance',
   lawyers: 'e.g., Immigration appeals, judicial review counsel',
-  more: 'Search visa services, stays, flights or forex...'
+  more: 'Search visa services, universities, flights or forex...'
 };
 
 $$('.qs-tab').forEach(btn => {
