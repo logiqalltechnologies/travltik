@@ -19,7 +19,7 @@ svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke
 svg.i.f{fill:currentColor;stroke:none}
 .wrap{max-width:1280px;width:100%;margin:0 auto;padding:0 40px;box-sizing:border-box}
 h1,h2,h3,h4,.sora{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;letter-spacing:-.03em}
-.grad{background:linear-gradient(135deg,#00b070 0%,#430f7a 45%,#6811cc 100%);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.grad{color:#0052cc !important;background:none !important;-webkit-background-clip:unset !important;background-clip:unset !important;-webkit-text-fill-color:#0052cc !important;display:inline !important;font-weight:inherit}
 .ser{font-family:'Fraunces',serif;font-style:italic;font-weight:600;letter-spacing:-.01em}
 section{padding:96px 0;position:relative}
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--p);background:var(--l2);padding:8px 16px;border-radius:99px;margin-bottom:20px}
@@ -649,24 +649,23 @@ section{padding:96px 0;position:relative}
   .airbnb-globe-pill{display:none}
 }
 
-/* Showcase Header Branding (Matches Official TravlTik Logo) */
+/* Showcase Header Branding (Clean Two-Tone Style matching Hero) */
 .sh-brand-on{
-  color: #00b070 !important;
-  font-weight: 800 !important;
+  color: inherit !important;
+  font-weight: inherit !important;
 }
-.sh-brand-travl{
-  color: #1b1233 !important;
-  font-weight: 800 !important;
-}
+.sh-brand-travl,
 .sh-brand-tik{
-  color: #6811cc !important;
+  color: #0052cc !important;
   font-weight: 800 !important;
 }
 .sh-grad{
-  background: linear-gradient(135deg, #00b070 0%, #430f7a 50%, #6811cc 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  display: inline-block !important;
+  color: #0052cc !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: #0052cc !important;
+  display: inline !important;
 }
 
 /* Category Navigation: Desktop vs Mobile */
@@ -1214,19 +1213,19 @@ section{padding:96px 0;position:relative}
    TRAVLTIK MILESTONE HERO & 5-PILLAR TRUST BAR
    ========================================================================== */
 .travltik-hero-section {
-  padding: 48px 0 36px;
+  padding: 44px 0 32px;
   background: #ffffff;
   overflow: hidden;
   position: relative;
 }
 .travltik-hero-grid {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
+  grid-template-columns: 1fr 1.15fr;
   align-items: center;
-  gap: 44px;
+  gap: 48px;
 }
 .travltik-hero-left {
-  max-width: 600px;
+  max-width: 560px;
 }
 .travltik-hero-h1 {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -1246,14 +1245,14 @@ section{padding:96px 0;position:relative}
   font-size: clamp(15px, 1.35vw, 17px);
   line-height: 1.62;
   color: #475569;
-  max-width: 520px;
+  max-width: 500px;
   margin: 0 0 28px;
   font-weight: 500;
 }
 .travltik-hero-cta-group {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 .travltik-hero-btn-primary {
@@ -1299,26 +1298,29 @@ section{padding:96px 0;position:relative}
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  width: 100%;
 }
 .travltik-hero-img-box {
   width: 100%;
-  max-width: 580px;
-  border-radius: 20px;
+  max-width: 680px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 48px -18px rgba(11, 21, 40, 0.14);
+  box-shadow: 0 24px 60px -16px rgba(11, 21, 40, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.04);
   display: flex;
   background: #f8fafc;
+  aspect-ratio: 16 / 9.8;
 }
 .travltik-hero-img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center 25%;
 }
 
 /* 5-Pillar Trust Bar Under Hero */
 .travltik-trust-bar-section {
-  padding: 30px 0;
+  padding: 28px 0;
   background: #ffffff;
   border-top: 1px solid #eef2f6;
   border-bottom: 1px solid #eef2f6;
@@ -1371,6 +1373,10 @@ section{padding:96px 0;position:relative}
 }
 
 @media (max-width: 1100px) {
+  .travltik-hero-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
   .travltik-trust-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -1382,34 +1388,95 @@ section{padding:96px 0;position:relative}
 }
 @media (max-width: 768px) {
   .travltik-hero-section {
-    padding: 24px 0 20px;
+    padding: 20px 0 16px;
   }
   .travltik-hero-grid {
     grid-template-columns: 1fr;
-    gap: 26px;
+    gap: 20px;
+    text-align: left;
+  }
+  .travltik-hero-h1 {
+    font-size: clamp(26px, 7vw, 32px) !important;
+    line-height: 1.16 !important;
+    margin: 0 0 10px !important;
+    letter-spacing: -0.03em !important;
+  }
+  .travltik-hero-desc {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+    margin: 0 0 18px !important;
+    max-width: 100% !important;
+  }
+  .travltik-hero-cta-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+  .travltik-hero-btn-primary {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 13px 20px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+  }
+  .travltik-hero-btn-secondary {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
   }
   .travltik-hero-right {
-    justify-content: center;
+    justify-content: center !important;
+    width: 100% !important;
   }
   .travltik-hero-img-box {
-    max-width: 100%;
-    border-radius: 16px;
+    max-width: 100% !important;
+    border-radius: 18px !important;
+    aspect-ratio: 16 / 10.5 !important;
+    margin-top: 14px !important;
+    box-shadow: 0 12px 28px -10px rgba(11, 21, 40, 0.14) !important;
   }
   .travltik-trust-bar-section {
-    padding: 24px 0;
+    padding: 20px 0;
   }
   .travltik-trust-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
   .travltik-trust-item {
-    padding: 4px;
+    background: #f8fafc !important;
+    border: 1px solid #eef2f6 !important;
+    border-radius: 12px !important;
+    padding: 12px 10px !important;
+    border-right: 1px solid #eef2f6 !important;
+  }
+  .travltik-trust-icon-box {
+    width: 36px !important;
+    height: 36px !important;
+    margin-bottom: 10px !important;
+  }
+  .travltik-trust-icon-box svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+  .travltik-trust-title {
+    font-size: 13px !important;
+  }
+  .travltik-trust-sub {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
   }
 }
 @media (max-width: 480px) {
   .travltik-trust-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
 }
 /* hero - Airbnb clean pure white */
@@ -2623,7 +2690,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
       <div class="travltik-hero-right">
         <div class="travltik-hero-img-box">
           <img 
-            src="/images/hero_travelers_exact.png" 
+            src="/images/hero_travelers_4k_ultra.jpg" 
             alt="Happy global travelers holding passports and visa tickets" 
             class="travltik-hero-img"
             loading="eager"
