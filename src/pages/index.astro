@@ -1210,6 +1210,208 @@ section{padding:96px 0;position:relative}
     transform:scale(0.97);
   }
 }
+/* ==========================================================================
+   TRAVLTIK MILESTONE HERO & 5-PILLAR TRUST BAR
+   ========================================================================== */
+.travltik-hero-section {
+  padding: 48px 0 36px;
+  background: #ffffff;
+  overflow: hidden;
+  position: relative;
+}
+.travltik-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  gap: 44px;
+}
+.travltik-hero-left {
+  max-width: 600px;
+}
+.travltik-hero-h1 {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(34px, 4.4vw, 54px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  color: #0b1528;
+  margin: 0 0 18px;
+}
+.travltik-hero-accent {
+  color: #0052cc;
+  display: inline;
+}
+.travltik-hero-desc {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(15px, 1.35vw, 17px);
+  line-height: 1.62;
+  color: #475569;
+  max-width: 520px;
+  margin: 0 0 28px;
+  font-weight: 500;
+}
+.travltik-hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.travltik-hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #0052cc;
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 13px 26px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 82, 204, 0.28);
+}
+.travltik-hero-btn-primary:hover {
+  background: #0043a8;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0, 82, 204, 0.35);
+  color: #ffffff !important;
+}
+.travltik-hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: #0052cc !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 10px 4px;
+  transition: all 0.2s ease;
+}
+.travltik-hero-btn-secondary:hover {
+  color: #003a94 !important;
+  gap: 9px;
+}
+.travltik-hero-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.travltik-hero-img-box {
+  width: 100%;
+  max-width: 580px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px -18px rgba(11, 21, 40, 0.14);
+  display: flex;
+  background: #f8fafc;
+}
+.travltik-hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* 5-Pillar Trust Bar Under Hero */
+.travltik-trust-bar-section {
+  padding: 30px 0;
+  background: #ffffff;
+  border-top: 1px solid #eef2f6;
+  border-bottom: 1px solid #eef2f6;
+}
+.travltik-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+}
+.travltik-trust-item {
+  padding: 6px 20px;
+  border-right: 1px solid #eef2f6;
+  box-sizing: border-box;
+}
+.travltik-trust-item:last-child {
+  border-right: none;
+}
+.travltik-trust-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d4ed8;
+  margin-bottom: 14px;
+}
+.travltik-trust-icon-box svg {
+  width: 20px;
+  height: 20px;
+}
+.travltik-trust-title {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0b1528;
+  margin: 0 0 6px;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.travltik-trust-sub {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+@media (max-width: 1100px) {
+  .travltik-trust-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .travltik-trust-item {
+    border-right: none;
+    padding: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .travltik-hero-section {
+    padding: 24px 0 20px;
+  }
+  .travltik-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .travltik-hero-right {
+    justify-content: center;
+  }
+  .travltik-hero-img-box {
+    max-width: 100%;
+    border-radius: 16px;
+  }
+  .travltik-trust-bar-section {
+    padding: 24px 0;
+  }
+  .travltik-trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .travltik-trust-item {
+    padding: 4px;
+  }
+}
+@media (max-width: 480px) {
+  .travltik-trust-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
 /* hero - Airbnb clean pure white */
 .hero{padding:40px 0 80px;background:#ffffff;overflow:hidden}
 .hg{display:grid;grid-template-columns:1fr 1.04fr;gap:20px;align-items:center;position:relative;z-index:2}
@@ -2393,6 +2595,114 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
   </div>
 </header>
 <main>
+<!-- HERO BANNER SECTION (Move abroad. Pay only when milestones are done.) -->
+<section class="travltik-hero-section" id="hero-milestones">
+  <div class="wrap">
+    <div class="travltik-hero-grid">
+      <!-- Left Column: Copy & Actions -->
+      <div class="travltik-hero-left">
+        <h1 class="travltik-hero-h1">
+          Move abroad.<br />
+          Pay only when<br />
+          <span class="travltik-hero-accent">milestones are done.</span>
+        </h1>
+        <p class="travltik-hero-desc">
+          TravlTik makes moving abroad simple, transparent, and risk-free. You only pay when each milestone is successfully completed.
+        </p>
+        <div class="travltik-hero-cta-group">
+          <a href="#airbnb-showcase" class="travltik-hero-btn-primary">
+            Start Your Journey <span class="travltik-arr">→</span>
+          </a>
+          <a href="/escrow" class="travltik-hero-btn-secondary">
+            Learn How It Works <span class="travltik-arr">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Travelers with Passports Photo -->
+      <div class="travltik-hero-right">
+        <div class="travltik-hero-img-box">
+          <img 
+            src="/images/hero_travelers_exact.png" 
+            alt="Happy global travelers holding passports and visa tickets" 
+            class="travltik-hero-img"
+            loading="eager"
+            onerror="this.src='/images/hero_milestone_travelers.jpg'"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5-PILLAR TRUST BAR (Under Hero) -->
+<section class="travltik-trust-bar-section">
+  <div class="wrap">
+    <div class="travltik-trust-grid">
+      <!-- 1. Pay Only on Milestones -->
+      <div class="travltik-trust-item">
+        <div class="travltik-trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="travltik-trust-title">Pay Only on Milestones</h3>
+        <p class="travltik-trust-sub">No upfront fees. Pay as you progress.</p>
+      </div>
+
+      <!-- 2. Expert-Guided Process -->
+      <div class="travltik-trust-item">
+        <div class="travltik-trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <h3 class="travltik-trust-title">Expert-Guided Process</h3>
+        <p class="travltik-trust-sub">End-to-end support from visa to relocation.</p>
+      </div>
+
+      <!-- 3. Transparent & Fixed Pricing -->
+      <div class="travltik-trust-item">
+        <div class="travltik-trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <path d="m9 15 2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="travltik-trust-title">Transparent &amp; Fixed Pricing</h3>
+        <p class="travltik-trust-sub">Clear costs. No hidden fees or surprises.</p>
+      </div>
+
+      <!-- 4. Faster, Smarter Relocation -->
+      <div class="travltik-trust-item">
+        <div class="travltik-trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3 class="travltik-trust-title">Faster, Smarter Relocation</h3>
+        <p class="travltik-trust-sub">Streamlined process to get you there sooner.</p>
+      </div>
+
+      <!-- 5. Dedicated Support -->
+      <div class="travltik-trust-item">
+        <div class="travltik-trust-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+          </svg>
+        </div>
+        <h3 class="travltik-trust-title">Dedicated Support</h3>
+        <p class="travltik-trust-sub">Real people, here when you need us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- AIRBNB IMMEDIATE CONTENT SHOWCASE (Switches instantly when category tabs: Experts, Jobs, Universities, Tours, Offers are clicked) -->
 <section id="airbnb-showcase" style="padding:16px 0 32px;background:#ffffff;border-bottom:1px solid #f1f5f9;">
   <div class="wrap">
