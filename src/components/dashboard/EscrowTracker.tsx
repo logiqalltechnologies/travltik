@@ -14,6 +14,7 @@ export function EscrowTracker({ bookingId }: { bookingId: string }) {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [animatedProgress, setAnimatedProgress] = useState<Record<string, number>>({});
 
   useEffect(() => {
     async function fetchMilestones() {
@@ -22,6 +23,15 @@ export function EscrowTracker({ bookingId }: { bookingId: string }) {
         if (!res.ok) throw new Error('Failed to fetch milestones');
         const data = await res.json();
         setMilestones(data.milestones || []);
+
+        // Trigger smooth progress bar fill animation
+        setTimeout(() => {
+          const progressMap: Record<string, number> = {};
+          (data.milestones || []).forEach((m: Milestone) => {
+            progressMap[m.id] = m.percentage;
+          });
+          setAnimatedProgress(progressMap);
+        }, 100);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -77,7 +87,7 @@ export function EscrowTracker({ bookingId }: { bookingId: string }) {
         {milestones.map((m) => (
           <div
             key={m.id}
-            className={`p-4 rounded-xl border-2 transition-all ${
+            className={`milestone-card p-4 rounded-xl border-2 transition-colors duration-300 ${
               m.status === 'completed'
                 ? 'bg-emerald-50/70 border-emerald-300'
                 : m.status === 'in_progress'
@@ -94,14 +104,29 @@ export function EscrowTracker({ bookingId }: { bookingId: string }) {
               </span>
             </div>
             <div className="text-sm font-bold mt-2 text-slate-900">{m.title}</div>
+            
+            {/* Progress bar fill animation */}
+            <div className="mt-3 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-700 ease-out ${
+                  m.status === 'completed' ? 'bg-emerald-500' :
+                  m.status === 'in_progress' ? 'bg-blue-500' : 'bg-slate-300'
+                }`}
+                style={{ width: `${animatedProgress[m.id] || 0}%` }}
+              />
+            </div>
+
             <div className="text-xs text-slate-500 mt-2 flex items-center justify-between">
               <span>${m.amount}</span>
-              <span className={`capitalize px-2 py-0.5 rounded text-[10px] font-bold ${
+              <span className={`capitalize px-2 py-0.5 rounded text-[10px] font-bold inline-flex items-center gap-1 ${
                 m.status === 'completed' ? 'bg-emerald-100 text-emerald-800' :
                 m.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
                 'bg-slate-200 text-slate-700'
               }`}>
                 {m.status.replace('_', ' ')}
+                {m.status === 'completed' && (
+                  <span className="text-emerald-600 animate-check-bounce font-bold">✓</span>
+                )}
               </span>
             </div>
           </div>

@@ -38,6 +38,7 @@ export function DecisionMatrix() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ score: number; recommendedPathways: Pathway[] } | null>(null);
   const [error, setError] = useState('');
+  const [transitionKey, setTransitionKey] = useState(0);
 
   async function handleSubmit() {
     setLoading(true);
@@ -70,7 +71,7 @@ export function DecisionMatrix() {
   if (result) {
     return (
       <div className="max-w-3xl mx-auto p-6">
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 shadow-sm">
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 shadow-sm animate-result-reveal">
           <div className="text-center">
             <div className="text-xs font-bold uppercase tracking-wider text-emerald-700">
               Your Eligibility Score
@@ -103,6 +104,7 @@ export function DecisionMatrix() {
 
           <button
             onClick={() => {
+              setTransitionKey(prev => prev + 1);
               setResult(null);
             }}
             className="w-full mt-6 py-3 border border-slate-300 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-colors"
@@ -121,7 +123,7 @@ export function DecisionMatrix() {
         Answer 5 quick questions to see your best visa pathways backed by official consular benchmarks.
       </p>
 
-      <div className="space-y-4">
+      <div key={transitionKey} className="space-y-4 animate-question-slide">
         <div>
           <label className="block text-sm font-semibold mb-2 text-slate-700">Target Country</label>
           <CustomSelect

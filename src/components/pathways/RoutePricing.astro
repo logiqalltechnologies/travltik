@@ -124,7 +124,7 @@ const { country, purpose } = Astro.props;
     </div>
 
     <!-- Tier 2: Professional Pack ($10 - Most Popular Centerpiece) -->
-    <div class="bg-gradient-to-b from-white via-white to-emerald-50/20 rounded-3xl border-2 border-emerald-500 shadow-xl shadow-emerald-950/10 ring-4 ring-emerald-500/15 flex flex-col justify-between p-6 sm:p-7 relative group md:-translate-y-2 hover:-translate-y-3 transition-all duration-300">
+    <div class="pricing-popular bg-gradient-to-b from-white via-white to-emerald-50/20 rounded-3xl border-2 border-emerald-500 shadow-xl shadow-emerald-950/10 ring-4 ring-emerald-500/15 flex flex-col justify-between p-6 sm:p-7 relative group md:-translate-y-2 hover:-translate-y-3 transition-all duration-300">
       <!-- Most Popular Ribbon Badge -->
       <div class="absolute -top-3.5 left-1/2 -translate-x-1/2">
         <span class="inline-flex items-center gap-1.5 px-4 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-[11px] font-extrabold rounded-full uppercase tracking-wider shadow-md">
@@ -366,3 +366,25 @@ const { country, purpose } = Astro.props;
     </div>
   </div>
 </div>
+
+
+<style>
+  @keyframes subtlePulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.25);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+  }
+  
+  .pricing-popular {
+    animation: subtlePulse 3s ease-in-out infinite;
+  }
+  
+  /* Hover pe pulse band ho — user focus kar sake */
+  .pricing-popular:hover {
+    animation: none;
+    box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.3);
+  }
+</style>
