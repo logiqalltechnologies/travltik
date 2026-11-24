@@ -32,7 +32,7 @@ const successStories: SuccessStory[] = [
     visaType: 'Express Entry PR (Federal Skilled Worker)',
     consultant: 'Arjun Mehta (ICCRC-R123456)',
     duration: '4.5 Months',
-    review: 'Our consultant identified our CRS point gaps and guided our PNP nomination seamlessly. TravlTik made our dream move to Toronto effortless.',
+    review: 'Our consultant identified our CRS point gaps and guided our PNP nomination seamlessly. Abroad Zen made our dream move to Toronto effortless.',
     rating: 5,
     verifiedDate: 'Approved August 2026'
   },

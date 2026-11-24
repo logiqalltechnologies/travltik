@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// TravlTik · Database Layer (Node.js)
+// Abroad Zen · Database Layer (Node.js)
 //
 // ARCHITECTURE NOTE:
 // Node.js handles all I/O-bound operations: DB queries, Razorpay payment
@@ -1065,7 +1065,7 @@ export async function runMigrations() {
       whatsapp_session_id VARCHAR(100) UNIQUE,
       status VARCHAR(50) DEFAULT 'pending',
       plan_tier VARCHAR(50) DEFAULT 'pro',
-      bot_name VARCHAR(100) DEFAULT 'TravlTik AI Concierge',
+      bot_name VARCHAR(100) DEFAULT 'Abroad Zen AI Concierge',
       bot_greeting TEXT,
       bot_instructions TEXT,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

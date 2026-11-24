@@ -11,7 +11,7 @@ const ads = [
       id: 'ielts-made-easy',
       title: 'IELTS Made Easy — Achieve Your Target Band Score (7.5+ Proven Strategy)',
       category: 'Sponsored Offer',
-      sponsorName: 'TravlTik Learning Hub',
+      sponsorName: 'Abroad Zen Learning Hub',
       badge: 'SPONSORED PROMO',
       tagline: 'Achieve your dream score with expert British Council & IDP certified trainers!',
       price: 'Special Offer: ₹3,999',
@@ -29,7 +29,7 @@ const ads = [
         { label: 'Avg Band Score', val: '7.5' },
         { label: 'Certified Tutors', val: '50+' }
       ],
-      contactEmail: 'ielts@travltik.com',
+      contactEmail: 'ielts@abroadzen.com',
       contactPhone: '+91 98765 11223',
       whatsapp: '+919876511223'
     },
@@ -91,7 +91,7 @@ const { id } = Astro.params;
 const ad = Astro.props?.ad || ads.find(a => a.id === id) || ads[0];
 ---
 
-<Layout title={`${ad.title} | TravlTik Sponsored Ads`}>
+<Layout title={`${ad.title} | Abroad Zen Sponsored Ads`}>
   <main class="bg-[#f8fafc] min-h-screen py-8 sm:py-12 font-plus-jakarta">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       

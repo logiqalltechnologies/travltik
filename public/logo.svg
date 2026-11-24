@@ -1,114 +1,144 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" width="100%" height="100%" fill="none">
   <defs>
-    <!-- Brand Gradients matching Landing Page Theme -->
-    <linearGradient id="travlPurple" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#430f7a" />
-      <stop offset="100%" stop-color="#2d0852" />
+    <!-- Brand Gradients for Abroad Zen -->
+    <linearGradient id="zenBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0066ff" />
+      <stop offset="100%" stop-color="#0047ba" />
     </linearGradient>
 
-    <linearGradient id="travlGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00d284" />
-      <stop offset="100%" stop-color="#00b070" />
+    <linearGradient id="zenEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
     </linearGradient>
 
-    <linearGradient id="trailGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#00d284" stop-opacity="0.2" />
-      <stop offset="50%" stop-color="#00d284" stop-opacity="0.75" />
-      <stop offset="100%" stop-color="#00b070" stop-opacity="1" />
+    <linearGradient id="zenDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
     </linearGradient>
 
-    <filter id="subtleGlow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#430f7a" flood-opacity="0.12" />
+    <linearGradient id="zenRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0052cc" />
+      <stop offset="60%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <filter id="subtleShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#003580" flood-opacity="0.14" />
     </filter>
   </defs>
 
-  <!-- ==================== 1. EMBLEM: 'T' + CHECKMARK + AIRPLANE ==================== -->
-  <g id="brand-mark" transform="translate(14, 12)">
+  <!-- ==================== 1. EMBLEM: ZEN ENSO CIRCLE + ASCENDING FLIGHT WING ==================== -->
+  <g id="brand-mark" transform="translate(16, 15)">
+    <!-- Harmonious Zen Arc (Enso of peace of mind) -->
+    <circle 
+      cx="48" 
+      cy="50" 
+      r="40" 
+      stroke="url(#zenRing)" 
+      stroke-width="5" 
+      stroke-linecap="round"
+      stroke-dasharray="210 38"
+      transform="rotate(-30 48 50)"
+      filter="url(#subtleShadow)"
+    />
+
+    <!-- Inner serene globe longitude line -->
+    <ellipse 
+      cx="48" 
+      cy="50" 
+      rx="18" 
+      ry="38" 
+      stroke="#0052cc" 
+      stroke-width="1.8" 
+      stroke-dasharray="4 4"
+      opacity="0.32" 
+    />
     
-    <!-- Stylized Modern 'T' in Imperial Deep Purple -->
-    <!-- Crossbar -->
-    <path 
-      d="M 12 18 L 84 18 C 88 18 90 20 88 24 L 84 32 C 82 35 79 36 75 36 L 56 36 L 56 74 C 56 78 53 81 49 81 L 39 81 C 35 81 32 78 32 74 L 32 36 L 19 36 C 15 36 12 34 11 30 L 8 23 C 7 19 9 18 12 18 Z" 
-      fill="url(#travlPurple)"
-      filter="url(#subtleGlow)"
+    <!-- Central latitude equator line -->
+    <line 
+      x1="12" 
+      y1="50" 
+      x2="84" 
+      y2="50" 
+      stroke="#0052cc" 
+      stroke-width="1.8" 
+      stroke-dasharray="3 3"
+      opacity="0.28" 
     />
 
-    <!-- Dynamic Emerald Checkmark '✓' wrapping through 'T' -->
-    <!-- Left check tick -->
-    <path 
-      d="M 6 56 C 4 53 6 49 10 48 L 17 46 C 20 45 23 47 25 50 L 37 68 C 39 71 43 71 45 68 L 74 33 C 76 30 80 30 83 33 L 88 38 C 91 41 90 45 87 48 L 47 92 C 43 96 37 96 33 92 L 6 56 Z" 
-      fill="url(#travlGreen)"
-    />
-
-    <!-- Speed Contrail dashes pointing to plane -->
-    <line x1="86" y1="36" x2="94" y2="26" stroke="#00d284" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 4" />
-    <line x1="81" y1="42" x2="87" y2="34" stroke="#00d284" stroke-width="2" stroke-linecap="round" opacity="0.6" />
-
-    <!-- Sleek Supersonic Jet Taking Off (Top-Right Angle: 42 deg) -->
-    <g transform="translate(98, 20) rotate(-42) scale(0.95)">
-      <!-- Fuselage -->
+    <!-- Dynamic Ascending Flight Wing / Jet in Royal Blue & Zen Green -->
+    <!-- Jet Fuselage & Swept Delta Wing pointing top-right 42 deg -->
+    <g transform="translate(48, 50) rotate(-42)">
+      <!-- Jet Body -->
       <path 
-        d="M 0 -16 C 1.5 -12 2 -4 2 8 L 1 12 L -1 12 L -2 8 C -2 -4 -1.5 -12 0 -16 Z" 
-        fill="#430f7a" 
+        d="M 0 -26 C 2 -18 3.5 -4 3 16 L 1.5 22 L -1.5 22 L -3 16 C -3.5 -4 -2 -18 0 -26 Z" 
+        fill="#0052cc"
       />
-      <!-- Delta Wings -->
+      <!-- Swept Wings -->
       <path 
-        d="M 0 -2 L 15 8 L 13 11 L 2 7 L -2 7 L -13 11 L -15 8 L 0 -2 Z" 
-        fill="#430f7a" 
+        d="M 0 -6 L 24 10 L 21 14 L 3 9 L -3 9 L -21 14 L -24 10 L 0 -6 Z" 
+        fill="url(#zenBlue)"
       />
-      <!-- Tail fin -->
+      <!-- Wingtip accents -->
+      <polygon points="21,10 24,10 22,7" fill="#10b981" />
+      <polygon points="-21,10 -24,10 -22,7" fill="#10b981" />
+      <!-- Tail Fin -->
       <path 
-        d="M 0 5 L 6 12 L -6 12 Z" 
-        fill="#00b070" 
+        d="M 0 10 L 9 20 L -9 20 Z" 
+        fill="#10b981"
       />
-      <!-- Nose tip highlight -->
-      <circle cx="0" cy="-14" r="1.2" fill="#00e08f" />
+      <!-- Nose tip glow dot -->
+      <circle cx="0" cy="-24" r="1.8" fill="#ffffff" />
     </g>
+
+    <!-- Zen Calm Verification Dot (Top Right Milestone Verified) -->
+    <circle cx="86" cy="22" r="5" fill="#10b981" />
+    <circle cx="86" cy="22" r="8" stroke="#10b981" stroke-width="1.5" opacity="0.4" />
   </g>
 
-  <!-- ==================== 2. WORDMARK: TravlTik ==================== -->
-  <g id="brand-text" transform="translate(138, 20)">
+  <!-- ==================== 2. WORDMARK: Abroad Zen ==================== -->
+  <g id="brand-text" transform="translate(136, 18)">
     
-    <!-- 'Travl' in Vibrant Atlys Emerald Green -->
+    <!-- 'Abroad' in Premium Dark Ink -->
     <text 
       x="0" 
       y="62" 
       font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
       font-weight="800" 
-      font-size="62" 
+      font-size="58" 
       letter-spacing="-0.035em" 
-      fill="url(#travlGreen)"
-    >Travl</text>
+      fill="#0f172a"
+    >Abroad</text>
 
-    <!-- 'Tik' in Rich Imperial Purple -->
+    <!-- 'Zen' in Solid Royal Blue -->
     <text 
-      x="166" 
+      x="218" 
       y="62" 
       font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
       font-weight="800" 
-      font-size="62" 
+      font-size="58" 
       letter-spacing="-0.035em" 
-      fill="url(#travlPurple)"
-    >Tik</text>
+      fill="#0052cc"
+    >Zen</text>
 
-    <!-- ==================== 3. SLEEK SUBTITLE LOCKUP ==================== -->
+    <!-- ==================== 3. SUBTITLE LOCKUP ==================== -->
     <g transform="translate(2, 82)">
       <!-- Left Accent Line -->
-      <line x1="0" y1="2" x2="32" y2="2" stroke="url(#travlPurple)" stroke-width="1.8" stroke-linecap="round" opacity="0.6" />
+      <line x1="0" y1="2" x2="28" y2="2" stroke="#0052cc" stroke-width="1.8" stroke-linecap="round" opacity="0.6" />
       
       <!-- Subtitle Text -->
       <text 
-        x="42" 
+        x="36" 
         y="6" 
         font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
         font-weight="700" 
-        font-size="11.5" 
+        font-size="11" 
         letter-spacing="0.22em" 
-        fill="#554477"
-      >TRAVEL <tspan fill="#00b070" font-weight="900">|</tspan> VISA <tspan fill="#00b070" font-weight="900">|</tspan> SERVICES</text>
+        fill="#64748b"
+      >RELOCATION <tspan fill="#0052cc" font-weight="900">·</tspan> VISAS <tspan fill="#10b981" font-weight="900">·</tspan> ESCROW</text>
       
       <!-- Right Accent Line -->
-      <line x1="228" y1="2" x2="260" y2="2" stroke="url(#travlGreen)" stroke-width="1.8" stroke-linecap="round" opacity="0.8" />
+      <line x1="288" y1="2" x2="316" y2="2" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" opacity="0.8" />
     </g>
   </g>
 </svg>

@@ -100,7 +100,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (apiKey) {
       try {
         const ai = new GoogleGenAI({ apiKey });
-        const prompt = `You are the Chief Immigration Officer & Parental Overseas Security Architect for TravlTik.
+        const prompt = `You are the Chief Immigration Officer & Parental Overseas Security Architect for Abroad Zen.
 Generate a strictly professional, practical 5-stage pre-departure & settlement pathway for a traveler heading to ${destination} for ${vibe}.
 
 CRITICAL ISOLATION RULE:

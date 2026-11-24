@@ -354,7 +354,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     });
                 } catch(e) {}
             }
-            localStorage.setItem('travltik_user', JSON.stringify(realUser));
+            localStorage.setItem('abroadzen_user', JSON.stringify(realUser));
             if (realUser.type === 'expert') {
                 localStorage.setItem('expert_isLoggedIn', 'true');
                 localStorage.setItem('expert_email', realUser.email);

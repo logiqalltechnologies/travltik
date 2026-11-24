@@ -15,7 +15,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
   <script is:inline>
     (function() {
       try {
-        var user = localStorage.getItem('travltik_user');
+        var user = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
         var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
         var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
         if (!user && !seeker && !expert) {
@@ -435,7 +435,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
 
             <div class="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2 mt-4">
               <span class="text-base">🔒</span>
-              <span><strong>TravlTik Escrow Protected:</strong> Your payment remains safeguarded in vault until all chosen deliverables are verified.</span>
+              <span><strong>Abroad Zen Escrow Protected:</strong> Your payment remains safeguarded in vault until all chosen deliverables are verified.</span>
             </div>
           </div>
 
@@ -443,7 +443,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
           <div class="mb-6 p-4 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 flex items-start gap-3">
             <input type="checkbox" id="termsCheckbox" checked class="mt-0.5 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer" />
             <label for="termsCheckbox" class="cursor-pointer leading-relaxed">
-              I agree to the <a href="/terms" target="_blank" class="text-purple-700 font-bold underline hover:text-emerald-600">Terms of Service</a> and <a href="/privacy" target="_blank" class="text-purple-700 font-bold underline hover:text-emerald-600">Privacy Policy</a>. I understand that government visa fees are separate from TravlTik facilitation fees.
+              I agree to the <a href="/terms" target="_blank" class="text-purple-700 font-bold underline hover:text-emerald-600">Terms of Service</a> and <a href="/privacy" target="_blank" class="text-purple-700 font-bold underline hover:text-emerald-600">Privacy Policy</a>. I understand that government visa fees are separate from Abroad Zen facilitation fees.
             </label>
           </div>
 
@@ -653,7 +653,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       setTimeout(() => {
         const loggedFirst = localStorage.getItem("seeker_firstName") || "Rahul";
         const loggedLast = localStorage.getItem("seeker_lastName") || "Sharma";
-        const loggedEmail = localStorage.getItem("seeker_email") || "seeker@travltik.com";
+        const loggedEmail = localStorage.getItem("seeker_email") || "seeker@abroadzen.com";
         const loggedPhone = localStorage.getItem("seeker_phone") || "+91 98765 43210";
 
         if (document.getElementById('firstName')) document.getElementById('firstName').value = loggedFirst;
@@ -820,7 +820,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
       const { total } = calculateTotal();
       const razorpayKey = document.getElementById('razorpay-config')?.getAttribute('data-key') || 'dummy_razorpay_key';
       const amount = total * 100; // in paisa
-      const email = document.getElementById('emailAddress')?.value || "seeker@travltik.com";
+      const email = document.getElementById('emailAddress')?.value || "seeker@abroadzen.com";
       const phone = document.getElementById('mobileNumber')?.value || "9999999999";
       const name = `${document.getElementById('firstName')?.value || 'Seeker'} ${document.getElementById('lastName')?.value || ''}`.trim();
 
@@ -830,7 +830,7 @@ const razorpayKeyId = process.env.RAZORPAY_KEY_ID || import.meta.env.NEXT_PUBLIC
         key: razorpayKey,
         amount: amount,
         currency: "INR",
-        name: "TravlTik",
+        name: "Abroad Zen",
         description: "Visa Direct Application Escrow",
         image: "/logo.png?v=3",
         handler: function(response) {

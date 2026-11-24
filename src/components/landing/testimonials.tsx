@@ -15,35 +15,35 @@ const testimonials: Testimonial[] = [
   {
     name: 'Kanan Nanavati',
     date: 'June, 2025',
-    quote: 'We completed our Chardham Yatra by helicopter on 6th June 2025 as a group of six. Despite initial hiccups and weather challenges, the TravlTik team ensured smooth darshan and timely return to Dehradun. A special thanks to Mr. Mandar for ensuring that my husband and I could continue the journey together after completing the first two dhams.',
+    quote: 'We completed our Chardham Yatra by helicopter on 6th June 2025 as a group of six. Despite initial hiccups and weather challenges, the Abroad Zen team ensured smooth darshan and timely return to Dehradun. A special thanks to Mr. Mandar for ensuring that my husband and I could continue the journey together after completing the first two dhams.',
     avatar: '/testimonials/kanan.jpg',
     role: 'Pilgrimage & VIP Mobility',
   },
   {
     name: 'Geetha Guruswamy',
     date: 'January, 2026',
-    quote: 'It was a pleasure traveling with TravlTik again—first Europe, now Vietnam—both trips were fantastic! We loved the hotels, itinerary, food, and especially Tour Manager Dr. Mehak’s engaging guidance. Looking forward to more memorable trips with TravlTik.',
+    quote: 'It was a pleasure traveling with Abroad Zen again—first Europe, now Vietnam—both trips were fantastic! We loved the hotels, itinerary, food, and especially Tour Manager Dr. Mehak’s engaging guidance. Looking forward to more memorable trips with Abroad Zen.',
     avatar: '/testimonials/geetha.jpg',
     role: 'Global Holiday Package',
   },
   {
     name: 'Lawrence Yesudass',
     date: 'December, 2025',
-    quote: 'My family and I enjoyed a wonderful Europe holiday with TravlTik last Christmas. The entire trip was well planned, seamless, and truly memorable. We also appreciate the smooth handling of our Schengen visa process, which made our journey even easier. We plan to do more such holidays with you.',
+    quote: 'My family and I enjoyed a wonderful Europe holiday with Abroad Zen last Christmas. The entire trip was well planned, seamless, and truly memorable. We also appreciate the smooth handling of our Schengen visa process, which made our journey even easier. We plan to do more such holidays with you.',
     avatar: '/testimonials/lawrence.jpg',
     role: 'Family Tour & Schengen Visa',
   },
   {
     name: 'Sunil & Meera Kapoor',
     date: 'February, 2026',
-    quote: 'Our recent tour to Japan with TravlTik was executed to perfection. From our expedited visa documentation to luxury bullet train transfers and curated ryokan stays, their knowledgeable team delivered exceptional care at every touchpoint.',
+    quote: 'Our recent tour to Japan with Abroad Zen was executed to perfection. From our expedited visa documentation to luxury bullet train transfers and curated ryokan stays, their knowledgeable team delivered exceptional care at every touchpoint.',
     avatar: '/testimonials/sunil_meera.jpg',
     role: 'Japan Cherry Blossom Package',
   },
   {
     name: 'Priya Sharma',
     date: 'October, 2025',
-    quote: 'TravlTik escrow protection gave me complete peace of mind while filing my Canada Express Entry PR petition. The lawyer provided direct milestone sign-offs at every step and I received my CoPR without a hitch!',
+    quote: 'Abroad Zen escrow protection gave me complete peace of mind while filing my Canada Express Entry PR petition. The lawyer provided direct milestone sign-offs at every step and I received my CoPR without a hitch!',
     avatar: '/testimonials/priya.jpg',
     role: 'Canada Express Entry PR',
   },
@@ -71,7 +71,7 @@ export function Testimonials() {
         {/* Editorial Serif Header */}
         <div className="text-center mb-10 sm:mb-12">
           <h2 className="text-3xl sm:text-5xl font-serif text-[#78350F] tracking-tight font-normal">
-            Why Customers Love TravlTik
+            Why Customers Love Abroad Zen
           </h2>
         </div>
 

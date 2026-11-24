@@ -837,7 +837,7 @@ export function VisaApplicationDetailsView({
           { step: 3, title: 'Biometrics / Submission', desc: 'Schedule VAC biometric appointment or submit passport.' },
           { step: 4, title: 'Adjudication & Visa Grant', desc: 'Track application status until final visa sticker or e-Visa issuance.' }
         ],
-        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard?tab=cases&appId=${application?.id || ''}` : 'https://travltik.com/traveller/dashboard'
+        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard?tab=cases&appId=${application?.id || ''}` : 'https://abroadzen.com/traveller/dashboard'
       };
       downloadVisaChecklistPDF(pdfPayload, `${slugClean}-official-visa-checklist.pdf`);
     } catch (err) {

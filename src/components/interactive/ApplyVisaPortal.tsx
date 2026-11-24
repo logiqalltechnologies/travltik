@@ -166,7 +166,7 @@ export function ApplyVisaPortal() {
           </div>
           
           <a href="/" className="block w-full bg-black hover:bg-slate-900 text-white font-bold py-4 rounded-xl text-center hover:shadow-lg transition-all">
-            Back to TravlTik Home
+            Back to Abroad Zen Home
           </a>
         </div>
       </div>
@@ -680,7 +680,7 @@ export function ApplyVisaPortal() {
                   )}
 
                   <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl text-[11px] text-slate-500 font-medium leading-relaxed">
-                    <strong className="text-slate-700 font-semibold">Fee Transparency:</strong> Base fees include official consular/embassy e-Visa filing charges and TravlTik digital review. Government visa fees are subject to real-time consular foreign exchange (FX) conversion rates.
+                    <strong className="text-slate-700 font-semibold">Fee Transparency:</strong> Base fees include official consular/embassy e-Visa filing charges and Abroad Zen digital review. Government visa fees are subject to real-time consular foreign exchange (FX) conversion rates.
                   </div>
 
                   <div className="h-px bg-slate-100 my-3" />

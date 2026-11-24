@@ -617,7 +617,7 @@ export function useDocuments({
       a.click();
       document.body.removeChild(a);
     } else {
-      const summary = `TravlTik Secure Document Vault Record\n=======================================\nDocument: ${doc.title}\nDocument Number: ${doc.docNumber}\nHolder Name: ${doc.holderName}\nCountry / Issuer: ${doc.country || doc.issuer}\nExpiry / Validity: ${doc.expiryDate} (${doc.expirySubtext})\nStatus: Verified (${doc.scannedMethod})\nEncrypted At: ${doc.uploadedAt}\nChecksum: 256-bit AES Validated`;
+      const summary = `Abroad Zen Secure Document Vault Record\n=======================================\nDocument: ${doc.title}\nDocument Number: ${doc.docNumber}\nHolder Name: ${doc.holderName}\nCountry / Issuer: ${doc.country || doc.issuer}\nExpiry / Validity: ${doc.expiryDate} (${doc.expirySubtext})\nStatus: Verified (${doc.scannedMethod})\nEncrypted At: ${doc.uploadedAt}\nChecksum: 256-bit AES Validated`;
       const blob = new Blob([summary], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');

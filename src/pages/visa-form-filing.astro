@@ -11,7 +11,7 @@ import { VisaFormFilingPortal } from '../components/interactive/VisaFormFilingPo
   <script is:inline>
     (function() {
       try {
-        var user = localStorage.getItem('travltik_user');
+        var user = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
         var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
         var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
         if (!user && !seeker && !expert) {

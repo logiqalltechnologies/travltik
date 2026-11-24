@@ -76,7 +76,7 @@ export function EscrowPortal() {
             {/* 4-Step Visual Flow */}
             <section className="max-w-4xl mx-auto px-4 -mt-10 relative z-10 mb-14">
                 <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/60 p-8 transition-all duration-300">
-                    <h2 className="font-sans text-xl font-extrabold text-slate-900 tracking-tight mb-8 text-center">How TravlTik Escrow Works</h2>
+                    <h2 className="font-sans text-xl font-extrabold text-slate-900 tracking-tight mb-8 text-center">How Abroad Zen Escrow Works</h2>
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-2">
                         {steps.map((step, i) => (
                             <div key={step.num} className="flex-1 flex flex-col items-center text-center relative">

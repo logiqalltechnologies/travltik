@@ -23,7 +23,7 @@ const platformFee = selected.price;
 const total = embassyFee + platformFee;
 ---
 
-<Layout title={`Checkout — ${selected.name} ($${selected.price}) | TravlTik`}>
+<Layout title={`Checkout — ${selected.name} ($${selected.price}) | Abroad Zen`}>
   <div class="max-w-2xl mx-auto px-4 py-12">
     <div class="mb-8">
       <a href={`/visa/${encodeURIComponent(countryParam.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''))}?passport=${encodeURIComponent(passportParam)}&purpose=${encodeURIComponent(purposeParam)}`} class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-colors">
@@ -116,7 +116,7 @@ const total = embassyFee + platformFee;
           key: orderData.keyId,
           amount: orderData.amount,
           currency: orderData.currency || 'USD',
-          name: 'TravlTik',
+          name: 'Abroad Zen',
           description: `${selected.name} ($${platformFee}) - ${countryParam}`,
           image: '/logo.png?v=8',
           order_id: orderData.orderId,
@@ -148,7 +148,7 @@ const total = embassyFee + platformFee;
             window.location.href = `/visa/${destSlug}?passport=${encodeURIComponent(passportParam)}&purpose=${encodeURIComponent(purposeParam)}&plan=visa-done&paid=true&payment_id=${response.razorpay_payment_id}&has_visa=no`;
           },
           prefill: {
-            name: 'TravlTik Seeker',
+            name: 'Abroad Zen Seeker',
             email: '',
             contact: ''
           },

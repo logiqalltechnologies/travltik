@@ -1,6 +1,6 @@
 // ============================================================
 // src/emails/VerificationEmail.ts
-// Premium light-themed OTP verification email matching TravlTik branding
+// Premium light-themed OTP verification email matching Abroad Zen branding
 // ============================================================
 
 export function generateVerificationEmailHtml(data: {
@@ -15,7 +15,7 @@ export function generateVerificationEmailHtml(data: {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify your TravlTik account</title>
+  <title>Verify your Abroad Zen account</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; width: 100% !important;">
   <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 40px 10px;">
@@ -46,7 +46,7 @@ export function generateVerificationEmailHtml(data: {
                 Verify your email address
               </h1>
               <p style="color: #64748b; font-size: 15px; margin: 0 0 28px 0; line-height: 24px; text-align: center;">
-                Welcome! Please use the verification code below to confirm your email and complete your TravlTik account setup.
+                Welcome! Please use the verification code below to confirm your email and complete your Abroad Zen account setup.
               </p>
 
               <!-- OTP Box (High Contrast) -->
@@ -61,7 +61,7 @@ export function generateVerificationEmailHtml(data: {
               <!-- Security Notice -->
               <div style="background-color: #fef2f2; border-left: 3px solid #ef4444; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px;">
                 <p style="margin: 0; font-size: 13px; color: #991b1b; line-height: 1.5; font-weight: 500;">
-                  🔒 <strong>Security Notice:</strong> Never share this OTP with anyone. TravlTik will never ask for your verification code.
+                  🔒 <strong>Security Notice:</strong> Never share this OTP with anyone. Abroad Zen will never ask for your verification code.
                 </p>
               </div>
 
@@ -75,10 +75,10 @@ export function generateVerificationEmailHtml(data: {
           <tr>
             <td style="background-color: #f8fafc; border-top: 1px solid #f1f5f9; padding: 20px 40px; text-align: center;">
               <p style="margin: 0 0 6px 0; font-size: 13px; color: #64748b;">
-                Need help? Contact <a href="mailto:support@travltik.com" style="color: #00a896; text-decoration: none; font-weight: 600;">support@travltik.com</a>
+                Need help? Contact <a href="mailto:support@abroadzen.com" style="color: #00a896; text-decoration: none; font-weight: 600;">support@abroadzen.com</a>
               </p>
               <p style="margin: 0; font-size: 12px; color: #94a3b8;">
-                © ${new Date().getFullYear()} TravlTik. All rights reserved.
+                © ${new Date().getFullYear()} Abroad Zen. All rights reserved.
               </p>
             </td>
           </tr>

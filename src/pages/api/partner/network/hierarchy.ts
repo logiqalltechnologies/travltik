@@ -25,12 +25,12 @@ export const GET: APIRoute = async () => {
     `).catch(() => ({ rows: [] as any[] }));
 
     const countryPartners = countryPartnersRes.rows.length > 0 ? countryPartnersRes.rows : [
-      { id: 1, company_name: 'TravlTik India Master Partner', contact_person: 'Director India', country: 'India', invite_code: 'CP-IND-001' },
-      { id: 2, company_name: 'TravlTik USA Master Partner', contact_person: 'Director USA', country: 'United States', invite_code: 'CP-USA-001' },
-      { id: 3, company_name: 'TravlTik Canada Master Partner', contact_person: 'Director Canada', country: 'Canada', invite_code: 'CP-CAN-001' },
-      { id: 4, company_name: 'TravlTik UK Master Partner', contact_person: 'Director UK', country: 'United Kingdom', invite_code: 'CP-GBR-001' },
-      { id: 5, company_name: 'TravlTik Australia Master Partner', contact_person: 'Director Australia', country: 'Australia', invite_code: 'CP-AUS-001' },
-      { id: 6, company_name: 'TravlTik UAE Master Partner', contact_person: 'Director UAE', country: 'United Arab Emirates', invite_code: 'CP-UAE-001' }
+      { id: 1, company_name: 'Abroad Zen India Master Partner', contact_person: 'Director India', country: 'India', invite_code: 'CP-IND-001' },
+      { id: 2, company_name: 'Abroad Zen USA Master Partner', contact_person: 'Director USA', country: 'United States', invite_code: 'CP-USA-001' },
+      { id: 3, company_name: 'Abroad Zen Canada Master Partner', contact_person: 'Director Canada', country: 'Canada', invite_code: 'CP-CAN-001' },
+      { id: 4, company_name: 'Abroad Zen UK Master Partner', contact_person: 'Director UK', country: 'United Kingdom', invite_code: 'CP-GBR-001' },
+      { id: 5, company_name: 'Abroad Zen Australia Master Partner', contact_person: 'Director Australia', country: 'Australia', invite_code: 'CP-AUS-001' },
+      { id: 6, company_name: 'Abroad Zen UAE Master Partner', contact_person: 'Director UAE', country: 'United Arab Emirates', invite_code: 'CP-UAE-001' }
     ];
 
     const statePartners = statePartnersRes.rows.length > 0 ? statePartnersRes.rows : [

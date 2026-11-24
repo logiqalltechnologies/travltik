@@ -83,7 +83,7 @@ export const POST: APIRoute = async ({ request }) => {
       try {
         await sendEmail({
           to: booking.seeker_email,
-          subject: `✅ Booking Confirmed: Consultation with ${booking.expert_name || 'Advisor'} - TravlTik`,
+          subject: `✅ Booking Confirmed: Consultation with ${booking.expert_name || 'Advisor'} - Abroad Zen`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff;">
               <div style="background: linear-gradient(135deg, #481268 0%, #00a896 100%); color: white; padding: 20px; border-radius: 12px 12px 0 0; text-align: center;">
@@ -91,7 +91,7 @@ export const POST: APIRoute = async ({ request }) => {
               </div>
               <div style="padding: 24px; color: #1e293b;">
                 <p>Hello <strong>${booking.seeker_name || 'Client'}</strong>,</p>
-                <p>Your immigration consultation session has been successfully booked and paid for on TravlTik.</p>
+                <p>Your immigration consultation session has been successfully booked and paid for on Abroad Zen.</p>
                 
                 <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 18px; margin: 16px 0;">
                   <p style="margin: 6px 0;"><strong>👤 Verified Advisor:</strong> ${booking.expert_name || 'Advisor'}</p>

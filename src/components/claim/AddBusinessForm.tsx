@@ -45,7 +45,7 @@ export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
             setCurrentUser(data.user);
           } else {
             setCurrentUser(null);
-            try { localStorage.removeItem('travltik_user'); } catch (e) {}
+            try { localStorage.removeItem('abroadzen_user'); localStorage.removeItem('travltik_user'); } catch (e) {}
             window.location.href = '/login?redirect=/add-business';
           }
         })
@@ -106,7 +106,7 @@ export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
         </div>
         <h2 className="text-xl font-bold text-slate-900 mb-2">Sign In Required</h2>
         <p className="text-sm text-slate-500 mb-6">
-          You must be logged in to add your business on TravlTik. Please sign in or create an account to proceed.
+          You must be logged in to add your business on Abroad Zen. Please sign in or create an account to proceed.
         </p>
         <a
           href="/login?redirect=/add-business"
@@ -126,7 +126,7 @@ export function AddBusinessForm({ initialUser }: AddBusinessFormProps = {}) {
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Business Added!</h2>
         <p className="text-sm text-slate-500 mb-6">
-          <strong>{success.name}</strong> is now live on TravlTik.
+          <strong>{success.name}</strong> is now live on Abroad Zen.
         </p>
         <div className="space-y-3">
           <a href={`/claim/${success.id}`} 

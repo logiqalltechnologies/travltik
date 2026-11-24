@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 
-// Official TravlTik Cloudflare Turnstile Secret Key (matches sitekey 0x4AAAAAAEkYe7hsfnXhxfvB)
+// Official Abroad Zen Cloudflare Turnstile Secret Key (matches sitekey 0x4AAAAAAEkYe7hsfnXhxfvB)
 const DEFAULT_TURNSTILE_SECRET = '0x4AAAAAAEkYeysXXBoc3wM-Y1jNdGEDhck';
 
 const getSecretKey = (): string => {

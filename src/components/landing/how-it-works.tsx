@@ -84,7 +84,7 @@ export function HowItWorks() {
         {/* Heading */}
         <div className="text-center mb-8 sm:mb-10">
           <h2 className="text-2xl md:text-[26px] font-bold text-gray-900">
-            How <span className="text-blue-600">TravlTik</span> Works
+            How <span className="text-blue-600">Abroad Zen</span> Works
           </h2>
         </div>
 

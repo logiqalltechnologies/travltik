@@ -66,7 +66,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
 
     // Verification URL
-    const verifyUrl = `${process.env.SITE_URL || 'https://travltik.com'}/verify-claim?token=${token}`;
+    const verifyUrl = `${process.env.SITE_URL || 'https://abroadzen.com'}/verify-claim?token=${token}`;
     console.log(`[CLAIM EMAIL] To: ${email}, Verify URL: ${verifyUrl}`);
 
     return new Response(JSON.stringify({ success: true, verifyUrl }), {

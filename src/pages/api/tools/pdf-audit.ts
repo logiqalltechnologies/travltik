@@ -66,7 +66,7 @@ export const POST: APIRoute = async ({ request }) => {
       try {
         const ai = new GoogleGenAI({ apiKey });
 
-        const prompt = `You are TravlTik's official AI Immigration Feasibility & Regulatory Audit Engine.
+        const prompt = `You are Abroad Zen's official AI Immigration Feasibility & Regulatory Audit Engine.
 Audit the following immigration profile with strict consular accuracy.
 
 USER PROFILE:

@@ -5,13 +5,13 @@ import VisaReadinessEngine from '../components/readiness/VisaReadinessEngine';
 ---
 
 <Layout 
-  title="AI Travel Readiness Score Calculator | TravlTik" 
+  title="AI Travel Readiness Score Calculator | Abroad Zen" 
   description="Check your travel readiness score (0-100%) and embassy refusal risk gaps using AI evaluation before submitting official applications for Canada, USA, UK, Germany, and Australia."
 >
   <script is:inline>
     (function() {
       try {
-        var user = localStorage.getItem('travltik_user');
+        var user = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
         var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
         var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
         if (!user && !seeker && !expert) {

@@ -49,7 +49,7 @@ export function DashboardHeader({
           <Menu className="w-6 h-6 stroke-[2]" />
         </button>
         <a href="/" className="flex items-center gap-2">
-          <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-9 sm:h-11 max-h-[46px] w-auto object-contain" />
+          <img src="/logo.png?v=17" alt="Abroad Zen Logo" className="h-9 sm:h-11 max-h-[46px] w-auto object-contain" />
         </a>
       </div>
 
@@ -118,7 +118,7 @@ export function DashboardHeader({
                 )}
                 <div className="min-w-0 flex-1">
                   <h4 className="text-xs font-black text-slate-900 truncate">{fullName}</h4>
-                  <p className="text-[11px] text-slate-400 truncate">{email || 'traveller@travltik.com'}</p>
+                  <p className="text-[11px] text-slate-400 truncate">{email || 'traveller@abroadzen.com'}</p>
                   <span className="inline-block bg-teal-50 text-[#00a896] text-[9px] font-bold px-1.5 py-0.2 rounded border border-teal-200 mt-1">Active Traveller</span>
                 </div>
               </div>

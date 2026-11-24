@@ -88,7 +88,7 @@ export function ResetPasswordPortal() {
                         {/* Centered Logo */}
                         <div className="text-center mb-4">
                             <a href="/" className="inline-flex items-center justify-center gap-2 group mb-0">
-                                <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-12 sm:h-14 w-auto object-contain mx-auto" />
+                                <img src="/logo.png?v=17" alt="Abroad Zen Logo" className="h-12 sm:h-14 w-auto object-contain mx-auto" />
                             </a>
                         </div>
 
@@ -204,7 +204,7 @@ export function ResetPasswordPortal() {
 
             {/* Footer */}
             <footer className="py-6 text-center text-xs text-slate-400 font-semibold border-t border-slate-100">
-                © 2026 TravlTik. All rights reserved.
+                © 2026 Abroad Zen. All rights reserved.
             </footer>
         </div>
     );

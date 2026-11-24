@@ -501,7 +501,7 @@ export function InternationalJobDriveShowcase() {
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>
-              <strong>Zero Advance Fee Policy:</strong> Employer quotas backed by TravlTik Escrow. Direct embassy submission support.
+              <strong>Zero Advance Fee Policy:</strong> Employer quotas backed by Abroad Zen Escrow. Direct embassy submission support.
             </span>
           </div>
           <div className="text-[11px] font-bold text-slate-500">

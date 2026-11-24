@@ -54,7 +54,7 @@ export const POST: APIRoute = async ({ request }) => {
         const ai = new GoogleGenAI({ apiKey });
         const cleanBase64 = base64Image.replace(/^data:[^;]+;base64,/, '').trim();
 
-        const prompt = `You are the Lead Consular Document Verification & Audit Officer for TravlTik (travltik.com).
+        const prompt = `You are the Lead Consular Document Verification & Audit Officer for Abroad Zen (abroadzen.com).
 The user is traveling/applying for travel clearance to ${countryName} with a ${passportCountry} passport.
 The uploaded document is intended as: "${documentTitle}" (Requirement Key: ${documentKey}).
 

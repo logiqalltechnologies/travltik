@@ -114,7 +114,7 @@ export function VFSAppointmentPortal() {
                   Verified Concierge Assistance
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-medium">
-                  TravlTik coordinates with verified mobility agents to review your documents and ensure your biometric slot is booked accurately in compliance with official consular directives.
+                  Abroad Zen coordinates with verified mobility agents to review your documents and ensure your biometric slot is booked accurately in compliance with official consular directives.
                 </p>
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-700">
                   <span className="flex items-center gap-2 text-emerald-700">

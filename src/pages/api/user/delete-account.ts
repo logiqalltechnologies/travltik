@@ -34,7 +34,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     if (targetEmail) {
       // Anonymize seeker data and remove documents
-      const anonymizedEmail = `deleted_${Date.now()}_${Math.floor(Math.random() * 1000)}@deleted.travltik.com`;
+      const anonymizedEmail = `deleted_${Date.now()}_${Math.floor(Math.random() * 1000)}@deleted.abroadzen.com`;
       await pool.query(
         `UPDATE seekers 
          SET email = $1, first_name = 'Deleted', last_name = 'User', phone = NULL, address = NULL

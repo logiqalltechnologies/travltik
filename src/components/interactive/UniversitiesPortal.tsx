@@ -1082,7 +1082,7 @@ export function UniversitiesPortal() {
                 <p className="text-xs text-slate-500 mt-0.5">Connect directly with licensed education counsellors for college shortlisting, SOPs, scholarships &amp; student visas.</p>
               </div>
               <a
-                href="https://wa.me/917661989366?text=Hi%20TravlTik,%20I%20need%20help%20finding%20the%20best%20study%20abroad%20consultant"
+                href="https://wa.me/917661989366?text=Hi%20Abroad Zen,%20I%20need%20help%20finding%20the%20best%20study%20abroad%20consultant"
                 target="_blank"
                 rel="noreferrer"
                 className="bg-[#00b070] hover:bg-[#009282] text-white font-extrabold text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-md shadow-emerald-500/25 transition-all self-start sm:self-auto cursor-pointer"
@@ -1180,7 +1180,7 @@ export function UniversitiesPortal() {
                     {/* Action Buttons */}
                     <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
                       <a
-                        href={`https://wa.me/${consultant.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${consultant.name}, I found your profile on TravlTik for university admission and student visa guidance.`)}`}
+                        href={`https://wa.me/${consultant.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hi ${consultant.name}, I found your profile on Abroad Zen for university admission and student visa guidance.`)}`}
                         target="_blank"
                         rel="noreferrer"
                         className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs"

@@ -16,14 +16,14 @@ import type {
   LoginAlertEmailData,
 } from '../types/email';
 
-const rawName = process.env.EMAIL_FROM_NAME || 'TravlTik';
-const FROM_NAME = rawName.toLowerCase().includes('visa') ? 'TravlTik' : rawName;
-const rawEmail = process.env.EMAIL_FROM || 'noreply@travltik.com';
-const FROM_EMAIL = (!rawEmail || rawEmail.includes('travltik.com') || !rawEmail.includes('@travltik.com'))
-  ? 'noreply@travltik.com'
+const rawName = process.env.EMAIL_FROM_NAME || 'Abroad Zen';
+const FROM_NAME = rawName.toLowerCase().includes('visa') ? 'Abroad Zen' : rawName;
+const rawEmail = process.env.EMAIL_FROM || 'noreply@abroadzen.com';
+const FROM_EMAIL = (!rawEmail || rawEmail.includes('abroadzen.com') || !rawEmail.includes('@abroadzen.com'))
+  ? 'noreply@abroadzen.com'
   : rawEmail;
 const FROM_FORMATTED = `${FROM_NAME} <${FROM_EMAIL}>`;
-const APP_URL = (typeof import.meta !== 'undefined' && import.meta.env?.APP_URL) || process.env.APP_URL || 'https://travltik.com';
+const APP_URL = (typeof import.meta !== 'undefined' && import.meta.env?.APP_URL) || process.env.APP_URL || 'https://abroadzen.com';
 
 // ─── Core Send Function ────────────────────────────────────
 
@@ -92,7 +92,7 @@ export async function sendVerificationOTP(data: VerificationEmailData): Promise<
   return sendEmail(
     {
       to: data.email,
-      subject: 'Your TravlTik Verification Code',
+      subject: 'Your Abroad Zen Verification Code',
       html: generateVerificationEmailHtml(data),
     },
     'otp_verification'
@@ -110,8 +110,8 @@ export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<EmailRes
     ? generateExpertWelcomeHtml({ firstName: data.firstName, displayName: data.displayName })
     : generateWelcomeHtml({ firstName: data.firstName, displayName: data.displayName });
   const subject = isExpert
-    ? 'Welcome to the TravlTik Partner Network 🚀'
-    : 'Welcome to TravlTik 🎉';
+    ? 'Welcome to the Abroad Zen Partner Network 🚀'
+    : 'Welcome to Abroad Zen 🎉';
 
   return sendEmail(
     {
@@ -131,7 +131,7 @@ export async function sendPasswordReset(data: PasswordResetEmailData): Promise<E
   return sendEmail(
     {
       to: data.email,
-      subject: 'Reset your TravlTik password',
+      subject: 'Reset your Abroad Zen password',
       html: generatePasswordResetEmailHtml(data),
     },
     'password_reset'
@@ -148,12 +148,12 @@ export async function sendLoginAlert(data: LoginAlertEmailData): Promise<EmailRe
     <body style="background:#f8fafc;font-family:'Segoe UI',sans-serif;padding:40px 20px;">
       <div style="max-width:500px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
         <div style="background:linear-gradient(135deg,#00a896,#0284c7);padding:24px 32px;text-align:center;">
-          <img src="https://travltik.com/logo.png" alt="TravlTik" style="height:48px;width:auto;display:inline-block;" />
+          <img src="https://abroadzen.com/logo.png" alt="Abroad Zen" style="height:48px;width:auto;display:inline-block;" />
         </div>
         <div style="padding:32px;">
           <h2 style="color:#0f172a;margin:0 0 12px;font-size:20px;">New login detected</h2>
           <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 20px;">
-            Hi ${data.firstName || 'there'}, we noticed a new login to your TravlTik account.
+            Hi ${data.firstName || 'there'}, we noticed a new login to your Abroad Zen account.
           </p>
           <div style="background:#f1f5f9;border-radius:8px;padding:16px;margin-bottom:20px;">
             <p style="color:#334155;font-size:13px;margin:0 0 6px;">🕐 Time: <strong style="color:#0f172a;">${data.loginTime}</strong></p>
@@ -165,13 +165,13 @@ export async function sendLoginAlert(data: LoginAlertEmailData): Promise<EmailRe
           </div>
         </div>
         <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:20px 32px;text-align:center;">
-          <p style="margin:0;font-size:12px;color:#64748b;">© ${new Date().getFullYear()} TravlTik. All rights reserved.</p>
+          <p style="margin:0;font-size:12px;color:#64748b;">© ${new Date().getFullYear()} Abroad Zen. All rights reserved.</p>
         </div>
       </div>
     </body>
     </html>
   `;
-  return sendEmail({ to: data.email, subject: 'New login to your TravlTik account', html }, 'login_alert');
+  return sendEmail({ to: data.email, subject: 'New login to your Abroad Zen account', html }, 'login_alert');
 }
 
 /**
@@ -190,7 +190,7 @@ export async function sendVisaNotification(data: {
     <body style="background:#f8fafc;font-family:'Segoe UI',sans-serif;padding:40px 20px;">
       <div style="max-width:500px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;">
         <div style="background:linear-gradient(135deg,#00a896,#0284c7);padding:24px 32px;text-align:center;">
-          <img src="https://travltik.com/logo.png" alt="TravlTik" style="height:48px;width:auto;display:inline-block;" />
+          <img src="https://abroadzen.com/logo.png" alt="Abroad Zen" style="height:48px;width:auto;display:inline-block;" />
         </div>
         <div style="padding:32px;">
           <h2 style="color:#0f172a;margin:0 0 8px;">Visa Status Update</h2>
@@ -205,7 +205,7 @@ export async function sendVisaNotification(data: {
           </div>
         </div>
         <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:20px 32px;text-align:center;">
-          <p style="margin:0;font-size:12px;color:#64748b;">© ${new Date().getFullYear()} TravlTik. All rights reserved.</p>
+          <p style="margin:0;font-size:12px;color:#64748b;">© ${new Date().getFullYear()} Abroad Zen. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -230,7 +230,7 @@ export async function sendAppointmentReminder(data: {
     <body style="background:#f8fafc;font-family:'Segoe UI',sans-serif;padding:40px 20px;">
       <div style="max-width:500px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;">
         <div style="background:linear-gradient(135deg,#00a896,#0284c7);padding:24px 32px;text-align:center;">
-          <img src="https://travltik.com/logo.png" alt="TravlTik" style="height:48px;width:auto;display:inline-block;" />
+          <img src="https://abroadzen.com/logo.png" alt="Abroad Zen" style="height:48px;width:auto;display:inline-block;" />
         </div>
         <div style="padding:32px;">
           <h2 style="color:#0f172a;margin:0 0 8px;">Appointment Reminder</h2>
@@ -245,7 +245,7 @@ export async function sendAppointmentReminder(data: {
           </div>
         </div>
         <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:20px 32px;text-align:center;">
-          <p style="margin:0;font-size:12px;color:#64748b;">© ${new Date().getFullYear()} TravlTik. All rights reserved.</p>
+          <p style="margin:0;font-size:12px;color:#64748b;">© ${new Date().getFullYear()} Abroad Zen. All rights reserved.</p>
         </div>
       </div>
     </body>

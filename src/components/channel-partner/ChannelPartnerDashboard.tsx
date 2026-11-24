@@ -283,7 +283,7 @@ function StatusBadge({ status }: { status: string }) {
 function HierarchyBadge() {
   return (
     <div className="inline-flex items-center gap-2 text-xs sm:text-[13px] font-semibold text-slate-700 bg-slate-50 border border-slate-200/90 px-3.5 py-1 rounded-full shadow-2xs">
-      <span className="text-slate-400">TravlTik HQ</span>
+      <span className="text-slate-400">Abroad Zen HQ</span>
       <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
       <span className="text-[#00A878] font-bold">Country Partner</span>
       <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
@@ -645,7 +645,7 @@ export default function ChannelPartnerDashboard() {
             {/* Mobile Header Logo */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex flex-col items-start gap-1">
-                <img src="/logo.png" alt="TravlTik Official Logo" className="h-8 w-auto object-contain" />
+                <img src="/logo.png" alt="Abroad Zen Official Logo" className="h-8 w-auto object-contain" />
                 <div className="text-[10px] font-semibold text-slate-400 tracking-[0.16em] uppercase">
                   CHANNEL PARTNER
                 </div>
@@ -732,7 +732,7 @@ export default function ChannelPartnerDashboard() {
               <div className="flex flex-col items-start gap-1 mb-1.5">
                 <img
                   src="/logo.png"
-                  alt="TravlTik Official Logo"
+                  alt="Abroad Zen Official Logo"
                   className="h-8 w-auto object-contain"
                 />
                 <div className="text-[10px] font-semibold text-slate-400 tracking-[0.16em] uppercase leading-none mt-1">
@@ -842,7 +842,7 @@ export default function ChannelPartnerDashboard() {
               <Menu className="w-6 h-6 stroke-[2]" />
             </button>
             <div className="lg:hidden flex items-center gap-2">
-              <img src="/logo.png?v=16" alt="TravlTik" className="h-8 sm:h-9 w-auto object-contain" />
+              <img src="/logo.png?v=17" alt="Abroad Zen" className="h-8 sm:h-9 w-auto object-contain" />
             </div>
           </div>
 
@@ -1321,7 +1321,7 @@ export default function ChannelPartnerDashboard() {
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
                   <div>
                     <h3 className="text-xs sm:text-[13px] font-bold text-slate-900">Social Media Campaign Pack</h3>
-                    <p className="text-[11px] text-slate-500 mt-1">Instagram, LinkedIn, and Facebook banner templates with TravlTik branding.</p>
+                    <p className="text-[11px] text-slate-500 mt-1">Instagram, LinkedIn, and Facebook banner templates with Abroad Zen branding.</p>
                   </div>
                   <button onClick={() => window.open('/logo.png', '_blank')} className="mt-4 w-full h-9 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 cursor-pointer">
                     Download Pack
@@ -1337,7 +1337,7 @@ export default function ChannelPartnerDashboard() {
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div>
                   <h2 className="text-base font-bold text-slate-900">Territory Disputes & Lead Attribution</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Submit conflict resolution tickets directly to TravlTik HQ Legal & Compliance.</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Submit conflict resolution tickets directly to Abroad Zen HQ Legal & Compliance.</p>
                 </div>
                 <button onClick={() => alert('Support ticket raised. HQ Compliance will respond within 24 business hours.')} className="px-4 h-9 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 cursor-pointer">
                   + Raise Conflict Ticket

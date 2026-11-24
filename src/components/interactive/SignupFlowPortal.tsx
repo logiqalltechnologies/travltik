@@ -52,7 +52,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                             <span className="w-2 h-2 rounded-full bg-[#00b070]"></span> Escrow Secured
                         </span>
                         <a href="/" className="shrink-0 flex items-center">
-                            <img src="/logo.png?v=16" alt="TravlTik" className="h-7 sm:h-8 w-auto object-contain" />
+                            <img src="/logo.png?v=17" alt="Abroad Zen" className="h-7 sm:h-8 w-auto object-contain" />
                         </a>
                     </div>
                 </div>
@@ -79,8 +79,8 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                         {/* Site Logo */}
                         <div className="flex items-center justify-center pt-2 pb-1">
                             <img 
-                                src="/logo.png?v=16" 
-                                alt="TravlTik Logo" 
+                                src="/logo.png?v=17" 
+                                alt="Abroad Zen Logo" 
                                 className="h-12 sm:h-14 md:h-16 max-h-[64px] w-auto object-contain transition-all duration-200" 
                             />
                         </div>
@@ -91,7 +91,7 @@ function SignupFlowPortalInner({ initialMode = "seeker" }: SignupFlowPortalProps
                                 I want to join as
                             </h1>
                             <p className="text-xs sm:text-sm font-medium text-slate-500">
-                                Select your role to get started with TravlTik
+                                Select your role to get started with Abroad Zen
                             </p>
                         </div>
 

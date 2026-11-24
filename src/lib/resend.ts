@@ -58,9 +58,9 @@ export const sendEmail = async ({
 }: SendEmailOptions) => {
   const apiKey = getApiKey();
   const apiKeyAvailable = Boolean(apiKey) ? 'YES' : 'NO';
-  let sender = from || process.env.EMAIL_FROM || 'TravlTik <noreply@travltik.com>';
-  if (!sender || sender.includes('travltik.com') || sender.includes('onboarding@resend.dev') || !sender.includes('@travltik.com')) {
-    sender = 'TravlTik <noreply@travltik.com>';
+  let sender = from || process.env.EMAIL_FROM || 'Abroad Zen <noreply@abroadzen.com>';
+  if (!sender || sender.includes('abroadzen.com') || sender.includes('onboarding@resend.dev') || !sender.includes('@abroadzen.com')) {
+    sender = 'Abroad Zen <noreply@abroadzen.com>';
   }
   const toArray = Array.isArray(to) ? to : [to];
   const maskedTo = toArray.map(addr => addr.replace(/^(.{2}).*(@.*)$/, "$1***$2")).join(', ');

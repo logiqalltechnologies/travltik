@@ -425,7 +425,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
                 </a>
                 <a href="/" className="shrink-0">
-                    <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-6 sm:h-7 w-auto object-contain" />
+                    <img src="/logo.png?v=17" alt="Abroad Zen Logo" className="h-6 sm:h-7 w-auto object-contain" />
                 </a>
             </div>
 
@@ -591,7 +591,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                     )}
 
                     {/* ========================================================================= */}
-                    {/* CREATE ACCOUNT FORM VIEW (VisaHQ Match + Exact TravlTik Collected Details) */}
+                    {/* CREATE ACCOUNT FORM VIEW (VisaHQ Match + Exact Abroad Zen Collected Details) */}
                     {/* ========================================================================= */}
                     {activeTab === "signup" && (
                         <form onSubmit={handleSignupSubmit} className="space-y-4">
@@ -1043,7 +1043,7 @@ export function AuthModalPortalContent({ defaultTab = "signup", onClose }: AuthM
                                     </span>
                                     <h3 className="text-2xl font-black text-slate-900 mt-2">SUCCESS!! 🎉</h3>
                                     <p className="text-xs text-slate-500 mt-1 font-semibold">
-                                        Welcome to TravlTik! Your account is active.
+                                        Welcome to Abroad Zen! Your account is active.
                                     </p>
                                 </div>
                                 <a

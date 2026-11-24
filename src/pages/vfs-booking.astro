@@ -6,12 +6,12 @@ import { VFSBookingPortal } from '../components/interactive/VFSBookingPortal';
 
 <Layout 
   title="VFS Global Booking Services" 
-  description="Book biometrics, visa appointments, passport submission and collection slots for UK, Canada, Schengen, Australia and more — directly via TravlTik Agent Portal."
+  description="Book biometrics, visa appointments, passport submission and collection slots for UK, Canada, Schengen, Australia and more — directly via Abroad Zen Agent Portal."
 >
   <script is:inline>
     (function() {
       try {
-        var user = localStorage.getItem('travltik_user');
+        var user = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
         var seeker = localStorage.getItem('seeker_email') || localStorage.getItem('seeker_firstName');
         var expert = localStorage.getItem('expert_isLoggedIn') === 'true';
         if (!user && !seeker && !expert) {

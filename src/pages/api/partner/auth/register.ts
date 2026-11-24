@@ -117,7 +117,7 @@ export const POST: APIRoute = async ({ request }) => {
               `INSERT INTO channel_partners (company_name, email, password_hash, contact_person, country, tier, role, status)
                VALUES ($1, $2, $3, $4, $5, 'platinum', 'country_partner', 'active')
                RETURNING id`,
-              ['TravlTik ' + country + ' Master Network', 'director.' + country.toLowerCase().replace(/[^a-z]/g, '') + '@travltik.com', hashedPassword, 'Director - ' + country, country]
+              ['Abroad Zen ' + country + ' Master Network', 'director.' + country.toLowerCase().replace(/[^a-z]/g, '') + '@abroadzen.com', hashedPassword, 'Director - ' + country, country]
             );
             cpId = masterCP.rows[0].id;
           }

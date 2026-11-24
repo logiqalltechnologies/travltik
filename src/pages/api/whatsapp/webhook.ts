@@ -266,8 +266,8 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const companyId = company ? company.id : 'default_pro';
-    const companyName = company ? company.name : 'TravlTik Verified Immigration Hub';
-    const botName = company ? (company.bot_name || 'TravlTik AI Concierge') : 'TravlTik AI Concierge';
+    const companyName = company ? company.name : 'Abroad Zen Verified Immigration Hub';
+    const botName = company ? (company.bot_name || 'Abroad Zen AI Concierge') : 'Abroad Zen AI Concierge';
     const botInstructions = company ? company.bot_instructions : '';
 
     // 4. Update or create conversation record

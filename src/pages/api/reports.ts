@@ -85,7 +85,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: 'Your report has been submitted to the TravlTik Trust & Safety compliance team.',
+        message: 'Your report has been submitted to the Abroad Zen Trust & Safety compliance team.',
         reportId,
         status: 'Open'
       }),

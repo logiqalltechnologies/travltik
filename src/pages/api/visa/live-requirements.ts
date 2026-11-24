@@ -251,7 +251,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const travelDateResolved = input.travelDate || today.split('T')[0];
     const visaTypeResolved = input.visaType || (input.purpose === 'tourism' ? 'tourist' : input.purpose);
 
-    const prompt = `You are TravlTik's live visa-requirements verification engine.
+    const prompt = `You are Abroad Zen's live visa-requirements verification engine.
 
 CURRENT DATE: ${today}
 INTENDED TRAVEL DATE: ${travelDateResolved}

@@ -249,7 +249,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 
-// Custom sleek datepicker component matching Atlys / TravlTik aesthetics
+// Custom sleek datepicker component matching Atlys / Abroad Zen aesthetics
 function PortalCustomDatePicker({
   value,
   onChange,
@@ -1152,7 +1152,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         feesAndProcessing: {
           costItems: [
             { label: "UKVI Government Visa Fee (6 Months)", amount: "£115 (approx. ₹12,500)", note: "Official UK government visa fee" },
-            { label: "TravlTik VFS Concierge & Review", amount: "₹4,800", note: "Application vetting, document formatting & biometric assistance" }
+            { label: "Abroad Zen VFS Concierge & Review", amount: "₹4,800", note: "Application vetting, document formatting & biometric assistance" }
           ],
           totalEstimatedINR: "₹17,300 Total Package",
           processingTime: "3 Weeks Standard (~15 Working Days)",
@@ -1622,7 +1622,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
       feesAndProcessing: {
         costItems: [
           { label: "Government Consular Fee", amount: "AED 290 (₹6,500)", note: "Official visa issuance fee" },
-          { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200", note: "Document verification, photo formatting & assurance" }
+          { label: "Abroad Zen Service & Fast-Track Concierge", amount: "₹2,200", note: "Document verification, photo formatting & assurance" }
         ],
         totalEstimatedINR: "₹8,700 Total Package",
         processingTime: "24 to 72 Hours (Express 12h Available)",
@@ -1631,7 +1631,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
         earlyEntryBuffer: "Entry permit valid for 60 days from issue date"
       },
       applicationProcess: {
-        submission: "1. Smartphone Upload: Submit passport scan and photo directly on TravlTik.",
+        submission: "1. Smartphone Upload: Submit passport scan and photo directly on Abroad Zen.",
         onlineForm: "2. AI Automated Audit: System verifies passport validity & photo millimeter rules.",
         appointments: "3. Direct Submission: Application submitted directly to official ICP/GDRFA channels.",
         documentsAndBiometrics: [
@@ -2410,7 +2410,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
     feesAndProcessing: {
       costItems: [
         { label: "Government Consular Fee", amount: "₹3,500 – ₹7,800", note: "Official visa issuance fee" },
-        { label: "TravlTik Service & Fast-Track Concierge", amount: "₹2,200 – ₹2,900", note: "Document verification, photo formatting & assurance" }
+        { label: "Abroad Zen Service & Fast-Track Concierge", amount: "₹2,200 – ₹2,900", note: "Document verification, photo formatting & assurance" }
       ],
       totalEstimatedINR: "₹5,700 – ₹10,400 Total",
       processingTime: "3 to 5 Business Days (Express 24-48h Available)",
@@ -2419,7 +2419,7 @@ function getAIVisaIntelligence(passport: string, country: string, purpose: strin
       earlyEntryBuffer: "Valid for single or multiple entry per consular grant"
     },
     applicationProcess: {
-      submission: "1. Smartphone Upload: Submit passport scan and photo directly on TravlTik.",
+      submission: "1. Smartphone Upload: Submit passport scan and photo directly on Abroad Zen.",
       onlineForm: "2. AI Automated Audit: System verifies passport validity, photo millimeter rules & funds.",
       appointments: "3. Direct Submission: Application submitted directly to official consular channels.",
       documentsAndBiometrics: [
@@ -3363,7 +3363,7 @@ export function VisaCountryResultPortal({
       const expertLoggedIn = localStorage.getItem('expert_isLoggedIn') === 'true';
       const expertEmail = localStorage.getItem('expert_email');
       const userRole = localStorage.getItem('user_role') || sessionStorage.getItem('user_role');
-      const travltikUser = localStorage.getItem('travltik_user');
+      const travltikUser = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
       let isExpertType = false;
       if (travltikUser) {
         const u = JSON.parse(travltikUser);
@@ -3380,7 +3380,7 @@ export function VisaCountryResultPortal({
     try {
       if (checkIsServiceProvider()) return false;
       const seekerEmail = localStorage.getItem('seeker_email');
-      const travltikUser = localStorage.getItem('travltik_user');
+      const travltikUser = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
       const authUser = localStorage.getItem('auth_user') || localStorage.getItem('user');
       if (seekerEmail) return true;
       if (travltikUser) {
@@ -4463,9 +4463,9 @@ export function VisaCountryResultPortal({
 
     const fetchLiveAiRequirements = async () => {
       try {
-        let userEmail = 'seeker@travltik.com';
+        let userEmail = 'seeker@abroadzen.com';
         try {
-          const parsed = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+          const parsed = JSON.parse((localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user')) || '{}');
           if (parsed.email) userEmail = parsed.email;
           else if (localStorage.getItem('seeker_email')) userEmail = localStorage.getItem('seeker_email')!;
         } catch (_) {}
@@ -4821,7 +4821,7 @@ export function VisaCountryResultPortal({
     if (localStorage.getItem('expert_businessName')) return true;
     if (localStorage.getItem('expert_email')) return true;
     try {
-      const userStr = localStorage.getItem('travltik_user');
+      const userStr = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
       if (userStr && userStr !== 'null' && userStr !== 'undefined') {
         const u = JSON.parse(userStr);
         if (u && (u.type === 'expert' || u.role === 'expert' || u.type === 'service_provider' || u.role === 'service_provider' || u.role === 'consultant' || u.role === 'partner')) {
@@ -4844,7 +4844,7 @@ export function VisaCountryResultPortal({
     // Service providers are NOT logged in with a traveller account
     if (isServiceProviderLoggedIn()) return false;
 
-    const userStr = localStorage.getItem('travltik_user');
+    const userStr = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
     const seekerEmail = localStorage.getItem('seeker_email');
 
     if (userStr && userStr !== 'null' && userStr !== 'undefined') {
@@ -4856,7 +4856,7 @@ export function VisaCountryResultPortal({
       } catch (_) {}
     }
 
-    if (seekerEmail && seekerEmail !== 'seeker@travltik.com' && seekerEmail !== 'guest@travltik.com' && seekerEmail.includes('@')) {
+    if (seekerEmail && seekerEmail !== 'seeker@abroadzen.com' && seekerEmail !== 'guest@abroadzen.com' && seekerEmail.includes('@')) {
       return true;
     }
 
@@ -5198,7 +5198,7 @@ export function VisaCountryResultPortal({
           { title: 'Permitted Activities & Compliance', desc: getBusinessRequirements(countryName).map(o => `${o.category}: ${o.details}`).join('; ') || 'No local employment; commercial visits only.' }
         ] : getTourismRequirements(countryName).map(r => ({ title: r.category, desc: r.details })),
         faqs: resolvedFaqs.slice(0, 5),
-        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard` : 'https://travltik.com/traveller/dashboard',
+        trackingUrl: typeof window !== 'undefined' ? `${window.location.origin}/traveller/dashboard` : 'https://abroadzen.com/traveller/dashboard',
         timestamp: submissionDate
       };
       downloadVisaChecklistPDF(pdfPayload, `${slugClean}-official-visa-checklist.pdf`);
@@ -5254,7 +5254,7 @@ export function VisaCountryResultPortal({
         localStorage.setItem(`portal_conds_${slugClean}`, JSON.stringify(portalCheckedConditions));
 
         // Also sync user-scoped cases if email is present
-        const userEmail = localStorage.getItem('seeker_email') || (JSON.parse(localStorage.getItem('travltik_user') || '{}'))?.email;
+        const userEmail = localStorage.getItem('seeker_email') || (JSON.parse((localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user')) || '{}'))?.email;
         if (userEmail) {
           localStorage.setItem(`active_visa_cases_${userEmail}`, JSON.stringify(updatedCases));
         }
@@ -5410,8 +5410,8 @@ export function VisaCountryResultPortal({
         
         // Ensure user can immediately view their dashboard without redirect roadblock
         if (!localStorage.getItem('seeker_email') && !(localStorage.getItem("travltik_user"))) {
-          localStorage.setItem('seeker_email', 'seeker@travltik.com');
-          localStorage.setItem('seeker_firstName', 'TravlTik');
+          localStorage.setItem('seeker_email', 'seeker@abroadzen.com');
+          localStorage.setItem('seeker_firstName', 'Abroad Zen');
           localStorage.setItem('seeker_lastName', 'Seeker');
         }
 
@@ -5558,8 +5558,8 @@ export function VisaCountryResultPortal({
       const email = localStorage.getItem('seeker_email') || (() => {
         try {
           const u = JSON.parse((localStorage.getItem("travltik_user")) || '{}');
-          return u.email || 'guest@travltik.com';
-        } catch(e) { return 'guest@travltik.com'; }
+          return u.email || 'guest@abroadzen.com';
+        } catch(e) { return 'guest@abroadzen.com'; }
       })();
 
       const allUnis = getDestinationUniversities(countryName);
@@ -5591,7 +5591,7 @@ export function VisaCountryResultPortal({
       localStorage.setItem('travltik_last_searched_country', countryName);
 
       // 2. Synchronize to backend journey endpoint if email exists
-      if (email && email !== 'guest@travltik.com') {
+      if (email && email !== 'guest@abroadzen.com') {
         fetch('/api/journey/update-step', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -6591,7 +6591,7 @@ export function VisaCountryResultPortal({
     {
       num: 2,
       badge: 'Direct Line',
-      title: 'TravlTik files directly with the embassy',
+      title: 'Abroad Zen files directly with the embassy',
       desc: 'Our in-house visa concierge pre-screens documents, pays government embassy fees, and tracks your application daily through official consulate portals.'
     },
     {
@@ -6777,7 +6777,7 @@ export function VisaCountryResultPortal({
   };
 
   const handleShareWhatsApp = () => {
-    const text = encodeURIComponent(`Hi! Here is my verified Pre-Departure & Safe Arrival Roadmap for ${countryName} with TravlTik Escrow & Transit Protection:\n\n• Visa: ${approvedVisaType}\n• Expiry: ${validityDate} (${daysLeft} days valid)\n• Airport Pickup & Housing: Verified ✓\n\nTrack progress live on TravlTik.`);
+    const text = encodeURIComponent(`Hi! Here is my verified Pre-Departure & Safe Arrival Roadmap for ${countryName} with Abroad Zen Escrow & Transit Protection:\n\n• Visa: ${approvedVisaType}\n• Expiry: ${validityDate} (${daysLeft} days valid)\n• Airport Pickup & Housing: Verified ✓\n\nTrack progress live on Abroad Zen.`);
     window.open(`https://wa.me/?text=${text}`, '_blank');
     setCopiedShare(true);
     setTimeout(() => setCopiedShare(false), 2500);
@@ -6888,14 +6888,14 @@ export function VisaCountryResultPortal({
   const faqs = [
     {
       question: `Do ${passportCountry} citizens need a visa for ${countryName}?`,
-      answer: `Yes, passport holders of ${passportCountry} require an official visa or approved electronic authorization before traveling to ${countryName}. TravlTik handles end-to-end online processing with instant verification and a 99.4% approval rate.`
+      answer: `Yes, passport holders of ${passportCountry} require an official visa or approved electronic authorization before traveling to ${countryName}. Abroad Zen handles end-to-end online processing with instant verification and a 99.4% approval rate.`
     },
     {
       question: `What is the estimated delivery date?`,
       answer: `Your verified ${countryName} e-Visa is scheduled for delivery to your WhatsApp and Email by ${guaranteedDate}. In the rare event of an embassy system delay, you receive real-time SMS/WhatsApp updates and 100% service fee protection.`
     },
     {
-      question: `How does online visa filing with TravlTik work?`,
+      question: `How does online visa filing with Abroad Zen work?`,
       answer: `Simply upload your documents and passport photo directly from your smartphone. Our automated AI millimeter validator pre-screens everything for 100% compliance before official submission to the consulate.`
     },
     {
@@ -6904,7 +6904,7 @@ export function VisaCountryResultPortal({
     },
     {
       question: `What happens if my visa gets delayed?`,
-      answer: `All TravlTik applications are insured up to ₹5,00,000. If our express timeline is missed due to any internal processing delay, you receive an instant 100% refund of your service concierge fee.`
+      answer: `All Abroad Zen applications are insured up to ₹5,00,000. If our express timeline is missed due to any internal processing delay, you receive an instant 100% refund of your service concierge fee.`
     }
   ];
 
@@ -9131,7 +9131,7 @@ export function VisaCountryResultPortal({
               <div className="bg-transparent sm:bg-white rounded-none sm:rounded-3xl border-0 sm:border border-slate-200/90 p-0 sm:p-8 shadow-none sm:shadow-2xs space-y-4 sm:space-y-5 text-left animate-fade-up">
                 <h2 className="text-[17px] sm:text-[18px] lg:text-[20px] font-semibold text-slate-900 tracking-tight">Track Your Application</h2>
                 <p className="text-[13px] sm:text-[14px] text-slate-600 font-normal">
-                  Enter your TravlTik tracking reference or consular passport number to view live status.
+                  Enter your Abroad Zen tracking reference or consular passport number to view live status.
                 </p>
                 <div className="flex gap-2 max-w-md">
                   <input
@@ -11411,10 +11411,10 @@ export function VisaCountryResultPortal({
             {/* ================================================== */}
             <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 lg:p-10 space-y-10 shadow-xs text-left overflow-x-auto">
               
-              {/* SECTION A: DOING IT WITH TRAVLTIK */}
+              {/* SECTION A: DOING IT WITH ABROAD ZEN */}
               <div className="space-y-4 min-w-[760px]">
                 <h3 className="text-[15px] sm:text-[16px] font-semibold uppercase tracking-wider text-[#4F46E5] font-heading">
-                  DOING IT WITH TRAVLTIK
+                  DOING IT WITH ABROAD ZEN
                 </h3>
 
                 <div className="relative pt-6 pb-8">
@@ -11428,7 +11428,7 @@ export function VisaCountryResultPortal({
                     <div className="flex flex-col items-center text-center px-2">
                       <div className="h-[110px] flex flex-col items-center justify-end pb-2">
                         <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[160px]">
-                          Submit your documents online on TravlTik
+                          Submit your documents online on Abroad Zen
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
@@ -11459,7 +11459,7 @@ export function VisaCountryResultPortal({
                     <div className="flex flex-col items-center text-center px-2">
                       <div className="h-[110px] flex flex-col items-center justify-end pb-2">
                         <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 leading-tight max-w-[175px]">
-                          Find the best service providers and resources on TravlTik to complete missing documents
+                          Find the best service providers and resources on Abroad Zen to complete missing documents
                         </span>
                         <span className="text-slate-400 text-xs mt-1">|</span>
                       </div>
@@ -11996,7 +11996,7 @@ export function VisaCountryResultPortal({
                 Application Dossier Submitted!
               </h3>
               <p className="text-xs text-slate-600 font-medium">
-                Your {Object.keys(uploadedDocuments).length} verified documents and {countryName} {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa'} application have been safely ingested into TravlTik Concierge Vault.
+                Your {Object.keys(uploadedDocuments).length} verified documents and {countryName} {activePurposeTab === 'study' ? 'Student Visa' : activePurposeTab === 'work' ? 'Work Visa' : 'Tourist Visa'} application have been safely ingested into Abroad Zen Concierge Vault.
               </p>
             </div>
 
@@ -12102,7 +12102,7 @@ export function VisaCountryResultPortal({
                 Login Required to Download &amp; Sync
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Please sign in to your TravlTik account to download your official {countryName} Visa Checklist PDF and securely sync your dossier to your dashboard.
+                Please sign in to your Abroad Zen account to download your official {countryName} Visa Checklist PDF and securely sync your dossier to your dashboard.
               </p>
             </div>
 

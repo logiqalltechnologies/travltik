@@ -18,7 +18,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const evolutionUrl = process.env.EVOLUTION_API_URL;
     const evolutionKey = process.env.EVOLUTION_API_KEY;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.PUBLIC_APP_URL || "https://www.travltik.com";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.PUBLIC_APP_URL || "https://www.abroadzen.com";
     const webhookHost = process.env.WEBHOOK_APP_URL || appUrl;
 
     if (!evolutionUrl || !evolutionKey) {

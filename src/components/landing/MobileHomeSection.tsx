@@ -46,7 +46,7 @@ const classifieds = [
     title: 'Instant Unlimited 5G eSIM for Canada & USA',
     country: 'Canada',
     category: 'SIM',
-    postedBy: 'TravlTik Telecomm',
+    postedBy: 'Abroad Zen Telecomm',
     location: 'Online Delivery',
     time: 'Just now',
     price: '$29 USD', priceColor: '#00a896',

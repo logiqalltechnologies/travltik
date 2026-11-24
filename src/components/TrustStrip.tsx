@@ -76,7 +76,7 @@ export default function TrustStrip() {
           </div>
           <div className="leading-tight text-left">
             <div className="flex items-center gap-1">
-              <span className="text-xs sm:text-sm font-black text-[#9E1B32] tracking-tight">TravlTik</span>
+              <span className="text-xs sm:text-sm font-black text-[#9E1B32] tracking-tight">Abroad Zen</span>
               <span className="text-[8px] font-bold text-slate-400">®</span>
             </div>
             <span className="block text-[9.5px] font-bold text-slate-700 uppercase tracking-wider">

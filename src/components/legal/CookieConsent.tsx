@@ -97,7 +97,7 @@ export function CookieConsent() {
             </span>
           </div>
           <p className="text-[12px] text-slate-600 mt-1.5 leading-relaxed">
-            TravlTik uses essential technical cookies for authenticated logins, bank-grade escrow milestone verification, and fraud prevention under India&apos;s DPDP Act &amp; EU GDPR.
+            Abroad Zen uses essential technical cookies for authenticated logins, bank-grade escrow milestone verification, and fraud prevention under India&apos;s DPDP Act &amp; EU GDPR.
           </p>
         </div>
 

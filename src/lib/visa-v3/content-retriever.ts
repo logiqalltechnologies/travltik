@@ -33,7 +33,7 @@ export async function fetchSourceContent(
   try {
     response = await fetch(targetUrl, {
       headers: {
-        'User-Agent': 'TravlTik-Bot/1.0',
+        'User-Agent': 'Abroad Zen-Bot/1.0',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9'
       },
@@ -44,7 +44,7 @@ export async function fetchSourceContent(
       try {
         response = await fetch(url, {
           headers: {
-            'User-Agent': 'TravlTik-Bot/1.0',
+            'User-Agent': 'Abroad Zen-Bot/1.0',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9'
           },
@@ -65,7 +65,7 @@ export async function fetchSourceContent(
       try {
         const baseResponse = await fetch(url, {
           headers: {
-            'User-Agent': 'TravlTik-Bot/1.0',
+            'User-Agent': 'Abroad Zen-Bot/1.0',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9'
           },

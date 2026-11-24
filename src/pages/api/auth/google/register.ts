@@ -76,9 +76,9 @@ export const POST: APIRoute = async ({ request }) => {
       const html = generateWelcomeHtml({ firstName: role === 'expert' ? user.business_name : user.first_name, displayName: emailDisplayName });
       
       await sendEmailWithRetry({
-        from: `"TravlTik" <noreply@travltik.com>`,
+        from: `"Abroad Zen" <noreply@abroadzen.com>`,
         to: email,
-        subject: `Welcome to TravlTik 👋`,
+        subject: `Welcome to Abroad Zen 👋`,
         html: html
       });
     } catch (emailErr) {

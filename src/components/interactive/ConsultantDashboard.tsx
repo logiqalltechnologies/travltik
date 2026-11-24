@@ -740,7 +740,7 @@ export function ConsultantDashboard() {
                         <Menu className="w-6 h-6 stroke-[2]" />
                     </button>
                     <a href="/" className="flex items-center">
-                        <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[44px] w-auto object-contain transition-all hover:scale-105" />
+                        <img src="/logo.png?v=17" alt="Abroad Zen Logo" className="h-9 sm:h-10 max-h-[44px] w-auto object-contain transition-all hover:scale-105" />
                     </a>
                 </div>
 
@@ -835,7 +835,7 @@ export function ConsultantDashboard() {
                                     )}
                                     <div className="min-w-0 flex-1">
                                         <h4 className="text-xs font-black text-slate-900 truncate">{profile.name}</h4>
-                                        <p className="text-[11px] text-slate-400 truncate">{providerEmail || "provider@travltik.com"}</p>
+                                        <p className="text-[11px] text-slate-400 truncate">{providerEmail || "provider@abroadzen.com"}</p>
                                         <span className="inline-block bg-teal-50 text-[#00a896] text-[9px] font-bold px-1.5 py-0.2 rounded border border-teal-200 mt-1">Active Service Provider</span>
                                     </div>
                                 </div>
@@ -1009,7 +1009,7 @@ export function ConsultantDashboard() {
                     <aside className={`absolute top-0 left-0 w-72 h-full bg-white shadow-2xl flex flex-col justify-between p-4 transform transition-transform duration-300 overflow-y-auto ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                                <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
+                                <img src="/logo.png?v=17" alt="Abroad Zen Logo" className="h-9 sm:h-10 max-h-[42px] w-auto object-contain" />
                                 <button onClick={() => setIsMobileSidebarOpen(false)} className="p-1 rounded-lg hover:bg-slate-100 text-slate-500">
                                     <X className="w-5 h-5" />
                                 </button>
@@ -1619,7 +1619,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Client Enquiries ({enquiriesList.length})</h2>
-                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your TravlTik listing</p>
+                                    <p className="text-xs font-medium text-slate-500">Incoming inquiries submitted from your Abroad Zen listing</p>
                                 </div>
                             </div>
 
@@ -1639,7 +1639,7 @@ export function ConsultantDashboard() {
                                 <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                     <MessageSquare className="w-10 h-10 text-slate-300 mx-auto" />
                                     <h3 className="text-base font-extrabold text-slate-800">No Client Enquiries Yet</h3>
-                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your TravlTik listing, they will appear here in real-time.</p>
+                                    <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">When prospective clients send inquiries from your Abroad Zen listing, they will appear here in real-time.</p>
                                 </div>
                             )}
                         </div>
@@ -1691,7 +1691,7 @@ export function ConsultantDashboard() {
                                 <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                     <div>
                                         <h2 className="text-xl font-extrabold text-slate-900">My Active Classifieds & Offers ({classifiedsList.length})</h2>
-                                        <p className="text-xs font-medium text-slate-500">Manage public listings shown on TravlTik homepage</p>
+                                        <p className="text-xs font-medium text-slate-500">Manage public listings shown on Abroad Zen homepage</p>
                                     </div>
                                     <button 
                                         onClick={() => setClassifiedsViewMode("form")} 
@@ -1726,7 +1726,7 @@ export function ConsultantDashboard() {
                                     <div className="p-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 space-y-3">
                                         <LayoutGrid className="w-10 h-10 text-slate-300 mx-auto" />
                                         <h3 className="text-base font-extrabold text-slate-800">No Active Classified Ads</h3>
-                                        <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on TravlTik.</p>
+                                        <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">Create and publish study visa, job permit, or consultancy sale listings to attract clients on Abroad Zen.</p>
                                         <button 
                                             onClick={() => setClassifiedsViewMode("form")} 
                                             className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md transition-all cursor-pointer"
@@ -1780,7 +1780,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Promotions & Home Page Boost</h2>
-                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on TravlTik homepage</p>
+                                    <p className="text-xs font-medium text-slate-500">Boost your agency listing to the top position on Abroad Zen homepage</p>
                                 </div>
                             </div>
 
@@ -2014,7 +2014,7 @@ export function ConsultantDashboard() {
                             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                                 <div>
                                     <h2 className="text-xl font-extrabold text-slate-900">Help & Support Desk</h2>
-                                    <p className="text-xs font-medium text-slate-500">Get assistance from TravlTik support team & track your queries</p>
+                                    <p className="text-xs font-medium text-slate-500">Get assistance from Abroad Zen support team & track your queries</p>
                                 </div>
                             </div>
 

@@ -50,7 +50,7 @@ export const ConsularMockPrepCard: React.FC<Props> = ({
 
   const handleOpenCheckout = (amount: number, title: string) => {
     if (typeof window !== 'undefined') {
-      const userStr = localStorage.getItem('travltik_user');
+      const userStr = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
       const seekerEmail = localStorage.getItem('seeker_email');
       const isLoggedIn = (userStr && userStr !== 'null') || Boolean(seekerEmail);
       if (!isLoggedIn) {

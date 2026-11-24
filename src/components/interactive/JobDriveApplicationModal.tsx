@@ -188,7 +188,7 @@ export function JobDriveApplicationModal({
   const permitLabel = isCanada ? "LMIA Approved" : "EU Blue Card / Work Permit";
 
   const whatsappMessage = encodeURIComponent(
-    `Hello TravlTik Team! I have submitted my official application for *${activeJob.title}* under *${selectedCountry} Job Vacancy 2026*.\n\n` +
+    `Hello Abroad Zen Team! I have submitted my official application for *${activeJob.title}* under *${selectedCountry} Job Vacancy 2026*.\n\n` +
     `• Reference No: ${submittedRef}\n` +
     `• Applicant Name: ${fullName}\n` +
     `• Age: ${age}\n` +
@@ -536,7 +536,7 @@ export function JobDriveApplicationModal({
                   <Shield className="w-3 h-3 text-amber-300" />
                 </div>
                 <div>
-                  <strong className="text-[#1b1233]">TravlTik Escrow Protected:</strong> Direct employer filing with zero upfront deductions & milestone escrow release.
+                  <strong className="text-[#1b1233]">Abroad Zen Escrow Protected:</strong> Direct employer filing with zero upfront deductions & milestone escrow release.
                 </div>
               </div>
 

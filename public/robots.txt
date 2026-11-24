@@ -28,4 +28,4 @@ Allow: /
 User-agent: CCBot
 Disallow: /
 
-Sitemap: https://travltik.com/sitemap.xml
+Sitemap: https://abroadzen.com/sitemap.xml

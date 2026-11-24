@@ -992,7 +992,7 @@ export function VisaReadinessScore({
                                                 <option value="regional">Regional Travel History (UAE, GCC, Singapore, Thailand, Malaysia)</option>
                                                 <option value="first_time">First-Time International Traveler (Fresh Passport)</option>
                                             </select>
-                                            <span className="text-[10px] text-slate-400 block">Migrated from your TravlTik profile travel history</span>
+                                            <span className="text-[10px] text-slate-400 block">Migrated from your Abroad Zen profile travel history</span>
                                         </div>
 
 

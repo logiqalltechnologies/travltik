@@ -463,7 +463,7 @@ export function VisaFormFilingPortal() {
                   </div>
                   <div className="flex gap-3 items-start">
                     <span className="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs shrink-0">✓</span>
-                    <span>Protected by TravlTik Milestone Escrow Vault</span>
+                    <span>Protected by Abroad Zen Milestone Escrow Vault</span>
                   </div>
                 </div>
               </div>

@@ -99,7 +99,7 @@ if (!expert && expertIdStr) {
         state: dbRow.state || '',
         country: dbRow.country || 'India',
         address: dbRow.office_address || '',
-        bio: dbRow.about_me || 'Verified TravlTik Immigration and Visa Consultant.',
+        bio: dbRow.about_me || 'Verified Abroad Zen Immigration and Visa Consultant.',
         email: dbRow.email || '',
         phone: dbRow.contact_number || '',
         govReg: dbRow.gov_registration_number || '',
@@ -147,7 +147,7 @@ const related = dummyExperts.filter(e => e.id !== expert.id).slice(0, 4);
 ---
 
 <Layout 
-  title={`${expert.name} - Verified Visa & Immigration Consultant | TravlTik`}
+  title={`${expert.name} - Verified Visa & Immigration Consultant | Abroad Zen`}
   description={expert.bio || `Consult with ${expert.name}, top-rated visa and immigration specialist in ${expert.city}.`}
 >
   <main class="min-h-screen" style="background: radial-gradient(circle at 18% 12%, rgba(88, 29, 181, 0.045) 0%, transparent 45%), radial-gradient(circle at 82% 85%, rgba(0, 184, 147, 0.035) 0%, transparent 45%), #fbf9fe;">

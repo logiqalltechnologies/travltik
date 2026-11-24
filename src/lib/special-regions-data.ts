@@ -1,6 +1,6 @@
 // src/lib/special-regions-data.ts
 /**
- * TravlTik — Microstates, Pacific Islands, Disputed Territories, Special Regions,
+ * Abroad Zen — Microstates, Pacific Islands, Disputed Territories, Special Regions,
  * Dynamic Fees & Regional Freedom of Movement Rules (Schengen, GCC, ASEAN, CARICOM).
  */
 

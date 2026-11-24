@@ -67,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
       try {
         const ai = new GoogleGenAI({ apiKey });
 
-        const prompt = `You are TravlTik's official AI Statement of Purpose (SOP) & Consular Cover Letter Generator.
+        const prompt = `You are Abroad Zen's official AI Statement of Purpose (SOP) & Consular Cover Letter Generator.
 
 USER DETAILS:
 - Applicant Name: ${applicantName}

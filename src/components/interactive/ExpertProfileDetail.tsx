@@ -140,7 +140,7 @@ export function ExpertProfileDetail({
     : ['English'];
 
   const bioText = expert.bio || expert.aboutMe || 
-    `${displayName} is a verified immigration and visa consultant on TravlTik. Connect directly to evaluate your eligibility, get personalized document checklists, and receive guidance through your visa process.`;
+    `${displayName} is a verified immigration and visa consultant on Abroad Zen. Connect directly to evaluate your eligibility, get personalized document checklists, and receive guidance through your visa process.`;
 
   // Dynamic services based on real expert attributes
   const hourlyRateNum = typeof expert.hourlyRate === 'number' ? expert.hourlyRate : parseInt(String(expert.hourlyRate || '49'), 10) || 49;
@@ -413,8 +413,8 @@ export function ExpertProfileDetail({
     {
       category: 'ESCROW & MILESTONE HOLD',
       badge: '100% Protected',
-      q: 'How does TravlTik Milestone Escrow protect my consultation & filing fees?',
-      a: 'Your payments are deposited securely into TravlTik Milestone Escrow and never released upfront. Funds remain safeguarded in the platform escrow vault and are disbursed to the consultant only after you verify and approve each completed milestone deliverable (such as document audit sign-off, application draft review, or final embassy portal submission proof).'
+      q: 'How does Abroad Zen Milestone Escrow protect my consultation & filing fees?',
+      a: 'Your payments are deposited securely into Abroad Zen Milestone Escrow and never released upfront. Funds remain safeguarded in the platform escrow vault and are disbursed to the consultant only after you verify and approve each completed milestone deliverable (such as document audit sign-off, application draft review, or final embassy portal submission proof).'
     },
     {
       category: 'PROCESSING TIMELINES',
@@ -586,7 +586,7 @@ export function ExpertProfileDetail({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1.5">
                       <span className="bg-[#f4eff9] text-[#1b1233] border border-[rgba(55,12,99,0.14)] text-[11px] font-extrabold px-3 py-0.5 rounded-full flex items-center gap-1.5 shadow-2xs">
-                        <CheckCircle className="w-3.5 h-3.5 text-[#1b1233]" /> TravlTik Verified
+                        <CheckCircle className="w-3.5 h-3.5 text-[#1b1233]" /> Abroad Zen Verified
                       </span>
                       {expert.govReg && (
                         <span className="bg-[#f4eff9] text-[#430f7a] border border-[#e9dcf7] text-[10px] font-bold px-2.5 py-0.5 rounded-md">
@@ -649,7 +649,7 @@ export function ExpertProfileDetail({
               </div>
             </div>
 
-            {/* Right Column: Signature TravlTik Luxury Violet & Emerald Banner */}
+            {/* Right Column: Signature Abroad Zen Luxury Violet & Emerald Banner */}
             <div className="lg:col-span-5 relative min-h-[250px] lg:min-h-full overflow-hidden bg-gradient-to-br from-[#2a084e] via-[#430f7a] to-[#581db5] flex items-center justify-center p-8">
               {/* Aerodynamic flight trail & emerald glow */}
               <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#7525ca]/25 rounded-full blur-3xl pointer-events-none" />
@@ -665,7 +665,7 @@ export function ExpertProfileDetail({
               <div className="relative z-10 text-center text-white px-4 space-y-3.5">
                 <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-sm">
                   <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                  <span>TRAVLTIK VERIFIED · ESCROW BACKED</span>
+                  <span>ABROAD ZEN VERIFIED · ESCROW BACKED</span>
                 </div>
 
                 <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-snug drop-shadow-sm font-sans">
@@ -875,7 +875,7 @@ export function ExpertProfileDetail({
                 </div>
 
                 <p className="text-[11px] text-[#675f80] mt-3.5 italic">
-                  Verification indicates that TravlTik has verified the provider's submitted credentials. It is not an endorsement or legal guarantee of any specific visa outcome.
+                  Verification indicates that Abroad Zen has verified the provider's submitted credentials. It is not an endorsement or legal guarantee of any specific visa outcome.
                 </p>
               </div>
 
@@ -1079,7 +1079,7 @@ export function ExpertProfileDetail({
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-extrabold text-[#1b1233] tracking-tight">Reviews &amp; Ratings</h2>
-                  <p className="text-xs text-[#675f80] mt-0.5">Authentic feedback from verified TravlTik clients.</p>
+                  <p className="text-xs text-[#675f80] mt-0.5">Authentic feedback from verified Abroad Zen clients.</p>
                 </div>
                 <button
                   onClick={() => setReviewModalOpen(true)}
@@ -1201,7 +1201,7 @@ export function ExpertProfileDetail({
                     <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> VERIFIED PRACTICE &amp; ACCREDITATION
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Gallery &amp; Official Credentials</h2>
-                  <p className="text-xs text-[#675f80] mt-0.5">Government-licensed standing and TravlTik Escrow verified.</p>
+                  <p className="text-xs text-[#675f80] mt-0.5">Government-licensed standing and Abroad Zen Escrow verified.</p>
                 </div>
                 <button
                   onClick={() => setQuoteModalOpen(true)}
@@ -1286,7 +1286,7 @@ export function ExpertProfileDetail({
                     <ShieldCheck className="w-3.5 h-3.5 text-[#1b1233]" /> VERIFIED CONSULTATION STANDARDS
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black text-[#1b1233] tracking-tight">Frequently Asked Questions</h2>
-                  <p className="text-xs text-[#675f80] mt-0.5">Everything you need to know about working with {displayName} and TravlTik Escrow.</p>
+                  <p className="text-xs text-[#675f80] mt-0.5">Everything you need to know about working with {displayName} and Abroad Zen Escrow.</p>
                 </div>
 
                 <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
@@ -1487,7 +1487,7 @@ export function ExpertProfileDetail({
               {/* Trust disclaimer */}
               <div className="border border-[rgba(67,15,122,0.10)] rounded-2xl p-3.5 text-[11px] text-[#675f80] leading-relaxed bg-[#faf8fd]">
                 <p>
-                  🛡️ <strong className="text-[#1b1233]">TravlTik Protection:</strong> Direct bookings via TravlTik are safeguarded with verified escrow processing. Funds are disbursed only upon satisfactory milestone completion.
+                  🛡️ <strong className="text-[#1b1233]">Abroad Zen Protection:</strong> Direct bookings via Abroad Zen are safeguarded with verified escrow processing. Funds are disbursed only upon satisfactory milestone completion.
                 </p>
               </div>
 

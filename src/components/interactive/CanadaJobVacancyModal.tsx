@@ -138,7 +138,7 @@ export function CanadaJobVacancyModal({
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hello TravlTik Team! I have submitted my official application for *${activeJob.title}* under *Canada Job Vacancy 2026*.\n\n` +
+    `Hello Abroad Zen Team! I have submitted my official application for *${activeJob.title}* under *Canada Job Vacancy 2026*.\n\n` +
     `• Reference No: ${submittedRef}\n` +
     `• Applicant Name: ${fullName}\n` +
     `• Age: ${age}\n` +
@@ -380,7 +380,7 @@ export function CanadaJobVacancyModal({
                   <Shield className="w-3.5 h-3.5 text-amber-300" />
                 </div>
                 <div>
-                  <strong className="text-[#1b1233]">TravlTik Milestone Protection:</strong> All Canada Job Vacancy positions are mapped to registered Canadian employers. Zero recruitment fees deducted from salary; documentation processed under Canadian IRCC compliance.
+                  <strong className="text-[#1b1233]">Abroad Zen Milestone Protection:</strong> All Canada Job Vacancy positions are mapped to registered Canadian employers. Zero recruitment fees deducted from salary; documentation processed under Canadian IRCC compliance.
                 </div>
               </div>
 

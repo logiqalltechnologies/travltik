@@ -249,7 +249,7 @@ export function DisputeReportModal({
           {/* Trust and Safety Notice */}
           <div className="flex items-center gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-500 font-medium">
             <Lock className="w-4 h-4 text-slate-400 shrink-0" />
-            <span>Reports are investigated confidentially by TravlTik Trust & Safety compliance officers.</span>
+            <span>Reports are investigated confidentially by Abroad Zen Trust & Safety compliance officers.</span>
           </div>
 
           {/* Actions */}

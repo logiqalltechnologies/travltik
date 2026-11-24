@@ -49,7 +49,7 @@ export const DashboardClient: React.FC = () => {
         localStorage.getItem('user_name') ||
         (() => {
           try {
-            const u = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+            const u = JSON.parse((localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user')) || '{}');
             return u.name || u.full_name || '';
           } catch (e) {
             return '';
@@ -64,7 +64,7 @@ export const DashboardClient: React.FC = () => {
         localStorage.getItem('seeker_email') ||
         (() => {
           try {
-            return JSON.parse(localStorage.getItem('travltik_user') || '{}').email || '';
+            return JSON.parse((localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user')) || '{}').email || '';
           } catch (e) {
             return '';
           }

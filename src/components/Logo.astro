@@ -11,38 +11,38 @@ const { variant = 'navbar-light', className = '' } = Astro.props;
 
 {variant === 'icon' && (
   <img
-    src="/logo.png?v=16"
-    alt="TravlTik Logo"
+    src="/logo-mark.png"
+    alt="AbroadZen Logo"
     class={`h-10 w-auto ${className}`}
   />
 )}
 
 {variant === 'navbar-light' && (
   <img
-    src="/logo.png?v=16"
-    alt="TravlTik - Global Visa Marketplace"
+    src="/logo.png?v=17"
+    alt="AbroadZen - Peaceful Visa Services & Expat Community Marketplace"
     class={`h-12 sm:h-13 lg:h-[44px] max-h-[46px] w-auto object-contain navbar-logo ${className}`}
   />
 )}
 
 {variant === 'navbar-dark' && (
   <img
-    src="/logo.png?v=16"
-    alt="TravlTik - Global Visa Marketplace"
+    src="/logo-white.png?v=17"
+    alt="AbroadZen - Peaceful Visa Services & Expat Community Marketplace"
     class={`h-12 sm:h-13 lg:h-[44px] max-h-[46px] w-auto object-contain navbar-logo navbar-logo-dark ${className}`}
   />
 )}
 
 {variant === 'footer' && (
   <img
-    src="/logo.png?v=16"
-    alt="TravlTik - Global Visa Marketplace"
+    src="/logo.png?v=17"
+    alt="AbroadZen - Peaceful Visa Services & Expat Community Marketplace"
     class={`h-16 md:h-20 w-auto object-contain footer-logo ${className}`}
   />
 )}
 
 <style is:global>
-  /* Invert logo to white for dark backgrounds */
+  /* Invert logo to white for dark backgrounds if using dark variant */
   .navbar-logo-dark,
   .footer-logo,
   #main-header.header-transparent .navbar-logo {

@@ -24,7 +24,7 @@ export function UserDashboard() {
                 const expertLoggedIn = localStorage.getItem('expert_isLoggedIn') === 'true';
                 const expertEmail = localStorage.getItem('expert_email');
                 const userRole = localStorage.getItem('user_role') || sessionStorage.getItem('user_role');
-                const travltikUser = localStorage.getItem('travltik_user');
+                const travltikUser = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
                 let isExpertType = false;
                 if (travltikUser) {
                     const u = JSON.parse(travltikUser);

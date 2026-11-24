@@ -164,7 +164,7 @@ export function VisaDocumentationPortal() {
                   🛡️
                 </div>
                 <h3 className="font-sora font-extrabold text-slate-900 text-lg mb-2">
-                  TravlTik Free Redo Guarantee
+                  Abroad Zen Free Redo Guarantee
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-medium">
                   If your visa receives a documentation query or refusal due to any oversight by our filing team, we redo the entire dossier completely free of charge.
@@ -432,7 +432,7 @@ export function VisaDocumentationPortal() {
                       <ArrowRight className="w-4 h-4" />
                     </button>
                     <div className="text-center text-xs text-slate-500 font-medium mt-2">
-                      🔒 Protected by TravlTik Milestone Escrow Vault
+                      🔒 Protected by Abroad Zen Milestone Escrow Vault
                     </div>
                   </form>
                 )}

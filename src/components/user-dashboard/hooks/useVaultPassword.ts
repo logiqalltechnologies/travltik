@@ -72,7 +72,7 @@ export function useVaultPassword(email?: string) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'verify',
-          email: targetEmail || 'guest@travltik.com',
+          email: targetEmail || 'guest@abroadzen.com',
           password: vaultPasswordInput.trim()
         })
       });
@@ -115,7 +115,7 @@ export function useVaultPassword(email?: string) {
     }
 
     setIsVaultSubmitting(true);
-    const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '') || 'seeker@travltik.com';
+    const targetEmail = email || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || '' : '') || 'seeker@abroadzen.com';
 
     try {
       await fetch('/api/user/vault-password', {

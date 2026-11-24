@@ -287,7 +287,7 @@ export function JobsPortal() {
     const seekerEmail = localStorage.getItem('seeker_email') || localStorage.getItem('user_email');
     let travltikUser: any = null;
     try {
-      const raw = localStorage.getItem('travltik_user') || localStorage.getItem('auth_user');
+      const raw = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user')) || localStorage.getItem('auth_user');
       if (raw) travltikUser = JSON.parse(raw);
     } catch (e) {}
 
@@ -658,7 +658,7 @@ export function JobsPortal() {
             description={activeJob.desc || `${activeJob.title} in ${activeJob.location}`}
             datePosted="2026-01-01"
             validThrough="2026-12-31"
-            hiringOrganization={activeJob.company || "TravlTik Global Career Network"}
+            hiringOrganization={activeJob.company || "Abroad Zen Global Career Network"}
             country={activeJob.country || "Global"}
             currency={activeJob.salary?.includes("EUR") ? "EUR" : activeJob.salary?.includes("CAD") ? "CAD" : activeJob.salary?.includes("GBP") ? "GBP" : "USD"}
             minSalary={45000}

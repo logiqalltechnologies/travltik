@@ -11,13 +11,13 @@ const isHome = pathname === '/' || pathname === '';
 <header id="main-header" class="sticky top-0 left-0 w-full z-40 bg-white backdrop-blur-md border-b border-[rgba(67,15,122,0.08)] shadow-[0_4px_20px_-8px_rgba(67,15,122,0.08)] transition-all duration-200">
   <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-[68px] flex items-center justify-between gap-4">
     
-    <!-- 1. LEFT: TravlTik Brand Logo -->
+    <!-- 1. LEFT: Abroad Zen Brand Logo -->
     <div class="flex items-center shrink-0">
-      <a href="/" class="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1b1233] rounded-lg" aria-label="TravlTik Home">
+      <a href="/" class="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1b1233] rounded-lg" aria-label="Abroad Zen Home">
         <img 
           id="header-logo-img" 
-          src="/logo.png?v=16" 
-          alt="TravlTik Logo" 
+          src="/logo.png?v=17" 
+          alt="AbroadZen Logo" 
           class="h-9 sm:h-10 lg:h-11 max-h-[46px] w-auto object-contain transition-transform group-hover:scale-[1.02] duration-150" 
         />
       </a>
@@ -519,7 +519,7 @@ const isHome = pathname === '/' || pathname === '';
       type: 'service',
       category: 'Trust & Protection',
       badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-      title: 'TravlTik Milestone Escrow Protection',
+      title: 'Abroad Zen Milestone Escrow Protection',
       description: '100% money-back safe payments held securely until your agreed immigration milestone is verified.',
       href: '/escrow',
       keywords: ['escrow', 'payment protection', 'refund guarantee', 'safe payment', 'security', 'trust']
@@ -528,7 +528,7 @@ const isHome = pathname === '/' || pathname === '';
       type: 'service',
       category: 'Help & Support',
       badgeClass: 'bg-slate-50 text-slate-700 border-slate-200',
-      title: 'TravlTik 24/7 Customer Support & Help Desk',
+      title: 'Abroad Zen 24/7 Customer Support & Help Desk',
       description: 'Get in touch with customer care for application inquiries, refunds, and technical assistance.',
       href: '/support',
       keywords: ['support', 'contact', 'help', 'customer care', 'phone', 'email', 'live chat']
@@ -773,7 +773,7 @@ const isHome = pathname === '/' || pathname === '';
   function syncAtlysAuth() {
     const seekerFirst = localStorage.getItem('seeker_firstName');
     const expertBusiness = localStorage.getItem('expert_businessName');
-    const userStr = localStorage.getItem('travltik_user');
+    const userStr = localStorage.getItem('abroadzen_user') || (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
 
     const isLoggedIn = Boolean(seekerFirst || expertBusiness || (userStr && userStr !== 'null' && userStr !== 'undefined'));
 
@@ -866,7 +866,8 @@ const isHome = pathname === '/' || pathname === '';
   // Logout handler
   if (dropdownLogoutBtn) {
     dropdownLogoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('travltik_user');
+      localStorage.removeItem('abroadzen_user');
+      localStorage.removeItem('abroadzen_user'); localStorage.removeItem('travltik_user');
       localStorage.removeItem('seeker_firstName');
       localStorage.removeItem('seeker_lastName');
       localStorage.removeItem('seeker_profilePhoto');

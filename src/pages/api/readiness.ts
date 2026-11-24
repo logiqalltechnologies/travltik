@@ -134,7 +134,7 @@ function evaluateReadinessAlgorithmic(data: {
       id: 'clean-sop',
       severity: 'moderate',
       text: `Ensure your Statement of Purpose (SOP) clearly articulates academic/professional goals and return ties.`,
-      solution: `Have a certified TravlTik consultant audit your complete document checklist prior to embassy submission.`
+      solution: `Have a certified Abroad Zen consultant audit your complete document checklist prior to embassy submission.`
     });
   }
 
@@ -217,7 +217,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         // ── ZERO-HALLUCINATION SYSTEM INSTRUCTIONS ──
         // Strict rule isolation: Never mix regulations from other jurisdictions.
-        const systemInstruction = `You are an Uncompromising Official Visa & Immigration Accuracy Engine for TravlTik.
+        const systemInstruction = `You are an Uncompromising Official Visa & Immigration Accuracy Engine for Abroad Zen.
 Your PRIMARY directive is to provide 100% accurate, country-specific entry rules WITHOUT hallucinating or cross-contaminating regulations from other jurisdictions.
 
 CRITICAL ISOLATION RULE:

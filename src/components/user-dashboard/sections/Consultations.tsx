@@ -29,7 +29,7 @@ export const Consultations: React.FC<ConsultationsProps> = ({ activeTab }) => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                     <div>
                         <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                            <Lock className="w-5 h-5 text-[#00a896]" /> TravlTik 100% Escrow Protection
+                            <Lock className="w-5 h-5 text-[#00a896]" /> Abroad Zen 100% Escrow Protection
                         </h3>
                         <p className="text-xs text-slate-500 font-medium mt-0.5">Your funds remain safely locked in escrow and are only released upon milestone completion.</p>
                     </div>
@@ -85,7 +85,7 @@ export const Consultations: React.FC<ConsultationsProps> = ({ activeTab }) => {
             <Briefcase className="w-12 h-12 text-[#00a896] mx-auto" />
             <h3 className="text-lg font-black text-slate-900 capitalize">{activeTab.replace('-', ' ')} Portal</h3>
             <p className="text-xs font-medium text-slate-500 max-w-md mx-auto">
-                All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your TravlTik profile.
+                All your active {activeTab.replace('-', ' ')} records are synchronized in real-time with your Abroad Zen profile.
             </p>
             <a href="/find-experts" className="inline-block bg-[#00a896] hover:bg-[#009282] active:bg-[#007f71] text-white px-5 py-2.5 rounded-xl text-xs font-extrabold shadow-md transition-all">
                 Connect with Service Provider →

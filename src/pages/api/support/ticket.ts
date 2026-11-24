@@ -17,7 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
       id: ticketId,
       subject: subject.trim(),
       query: query.trim(),
-      email: email || "consultant@travltik.com",
+      email: email || "consultant@abroadzen.com",
       name: name || "Registered Expert",
       status: "Open",
       createdAt: new Date().toISOString(),

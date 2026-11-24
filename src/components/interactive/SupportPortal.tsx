@@ -28,8 +28,8 @@ function Toast({ message, visible, onClose }: { message: string, visible: boolea
 
 const faqs = [
     {
-        question: "How does TravlTik Milestone Escrow protect my payments?",
-        answer: "With TravlTik Milestone Escrow, your funds are never paid upfront to the consultant. Funds are locked securely in an escrow vault and released only in verified phases: 1st installment of payment on agreement signing and document verification, 02nd installment of payment upon visa filing with official government receipt, and Final payment only when your final visa milestone or decision outcome is reached. (All milestone and payment percentages shall be decided and mutually agreed upon between the consultant and applicant before starting the process).",
+        question: "How does Abroad Zen Milestone Escrow protect my payments?",
+        answer: "With Abroad Zen Milestone Escrow, your funds are never paid upfront to the consultant. Funds are locked securely in an escrow vault and released only in verified phases: 1st installment of payment on agreement signing and document verification, 02nd installment of payment upon visa filing with official government receipt, and Final payment only when your final visa milestone or decision outcome is reached. (All milestone and payment percentages shall be decided and mutually agreed upon between the consultant and applicant before starting the process).",
     },
     {
         question: "How do I book a consultation with a verified immigration lawyer?",
@@ -37,11 +37,11 @@ const faqs = [
     },
     {
         question: "Is my personal identification and document data secure?",
-        answer: "Yes. TravlTik operates under sovereign ISO/IEC 27001 security standards with column-level AES-256-GCM encryption. Your sensitive passports, bank statements, and biometric PDFs are stored in encrypted vaults and shared strictly with your designated legal representative.",
+        answer: "Yes. Abroad Zen operates under sovereign ISO/IEC 27001 security standards with column-level AES-256-GCM encryption. Your sensitive passports, bank statements, and biometric PDFs are stored in encrypted vaults and shared strictly with your designated legal representative.",
     },
     {
         question: "How are immigration consultants and attorneys verified?",
-        answer: "Every consultant on TravlTik undergoes a 4-tier verification protocol: regulatory council license verification (CICC for Canada, MARA for Australia, OISC for UK, Bar Council for legal attorneys), identity KYC, professional liability insurance, and historic case audit.",
+        answer: "Every consultant on Abroad Zen undergoes a 4-tier verification protocol: regulatory council license verification (CICC for Canada, MARA for Australia, OISC for UK, Bar Council for legal attorneys), identity KYC, professional liability insurance, and historic case audit.",
     },
     {
         question: "What is your satisfaction and refund policy?",
@@ -179,8 +179,8 @@ export function SupportPortal() {
                             <Mail className="w-5 h-5" />
                         </div>
                         <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 block mb-1 font-plus-jakarta">Support Desk</span>
-                        <a href="mailto:hello@travltik.com" className="text-lg font-extrabold text-slate-900 group-hover:text-[#430f7a] transition-colors block mb-1 font-plus-jakarta truncate">
-                            hello@travltik.com
+                        <a href="mailto:hello@abroadzen.com" className="text-lg font-extrabold text-slate-900 group-hover:text-[#430f7a] transition-colors block mb-1 font-plus-jakarta truncate">
+                            hello@abroadzen.com
                         </a>
                         <p className="text-xs text-slate-500 font-medium">Fast email replies in under 2 hours</p>
                     </div>
@@ -213,7 +213,7 @@ export function SupportPortal() {
                                 Corporate Headquarters
                             </span>
                             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-plus-jakarta">
-                                TravlTik Global Offices
+                                Abroad Zen Global Offices
                             </h2>
                             <p className="text-xs text-purple-200/80 mt-1 font-medium">Licensed Global Mobility &amp; Legal Escrow Entity</p>
                         </div>

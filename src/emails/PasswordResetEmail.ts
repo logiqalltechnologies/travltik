@@ -1,6 +1,6 @@
 // ============================================================
 // src/emails/PasswordResetEmail.ts
-// Premium light-themed password reset email matching TravlTik branding
+// Premium light-themed password reset email matching Abroad Zen branding
 // ============================================================
 
 export function generatePasswordResetEmailHtml(data: {
@@ -10,7 +10,7 @@ export function generatePasswordResetEmailHtml(data: {
   expiresInMinutes?: number;
 }): string {
   const { resetToken, firstName = 'there', expiresInMinutes = 30 } = data;
-  const appUrl = import.meta.env.APP_URL || process.env.APP_URL || 'https://travltik.com';
+  const appUrl = import.meta.env.APP_URL || process.env.APP_URL || 'https://abroadzen.com';
   const resetLink = `${appUrl}/reset-password?token=${resetToken}`;
 
   return `<!DOCTYPE html>
@@ -18,7 +18,7 @@ export function generatePasswordResetEmailHtml(data: {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset your TravlTik password</title>
+  <title>Reset your Abroad Zen password</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; width: 100% !important;">
   <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f3f4f6; padding: 40px 10px;">
@@ -36,7 +36,7 @@ export function generatePasswordResetEmailHtml(data: {
           <!-- Logo Header -->
           <tr>
             <td align="center" style="padding: 40px 40px 24px 40px;">
-              <img src="https://travltik.com/logo.png" alt="TravlTik Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
+              <img src="https://abroadzen.com/logo.png" alt="Abroad Zen Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
             </td>
           </tr>
 
@@ -71,10 +71,10 @@ export function generatePasswordResetEmailHtml(data: {
           <tr>
             <td style="background-color: #f9fafb; border-top: 1px solid #e5e7eb; padding: 24px 40px; text-align: center;">
               <p style="margin: 0 0 8px 0; font-size: 13px; color: #4b5563;">
-                Need help? Contact <a href="mailto:support@travltik.com" style="color: #00a896; text-decoration: none; font-weight: 600;">support@travltik.com</a>
+                Need help? Contact <a href="mailto:support@abroadzen.com" style="color: #00a896; text-decoration: none; font-weight: 600;">support@abroadzen.com</a>
               </p>
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                © ${new Date().getFullYear()} TravlTik. All rights reserved.
+                © ${new Date().getFullYear()} Abroad Zen. All rights reserved.
               </p>
             </td>
           </tr>

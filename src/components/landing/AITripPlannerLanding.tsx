@@ -1594,7 +1594,7 @@ export function AITripPlannerLanding() {
         key: orderData.keyId,
         amount: orderData.amount,
         currency: orderData.currency || 'USD',
-        name: 'TravlTik',
+        name: 'Abroad Zen',
         description: `${planName} - ${pendingSearchData.targetCountry}`,
         image: '/logo.png?v=8',
         order_id: orderData.orderId,
@@ -1620,7 +1620,7 @@ export function AITripPlannerLanding() {
           finishPaymentSuccess(response.razorpay_payment_id, payAmount);
         },
         prefill: {
-          name: 'TravlTik Seeker',
+          name: 'Abroad Zen Seeker',
           email: '',
           contact: ''
         },
@@ -1655,7 +1655,7 @@ export function AITripPlannerLanding() {
       try {
         localStorage.setItem(paidKey, 'true');
         localStorage.setItem('last_payment_tx', txId);
-        localStorage.setItem('last_payment_plan', `TravlTik AI Visa ($${paidAmount})`);
+        localStorage.setItem('last_payment_plan', `Abroad Zen AI Visa ($${paidAmount})`);
         localStorage.setItem('travltik_paid_visa_unlocked', 'true');
         // Grant queries based on tier (3 for $5, 10 for $10, 25 for $15) minus 1 for current destination
         const totalQueries = paidAmount === 10 ? 10 : paidAmount === 15 ? 25 : 3;
@@ -2278,7 +2278,7 @@ export function AITripPlannerLanding() {
 
   const autoSaveJourney = async (overrides: Record<string, any> = {}) => {
     setIsAutoSaving(true);
-    const email = currentUserEmail || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || 'guest@travltik.com' : 'guest@travltik.com');
+    const email = currentUserEmail || (typeof window !== 'undefined' ? localStorage.getItem('seeker_email') || 'guest@abroadzen.com' : 'guest@abroadzen.com');
 
     const payload = {
       user_email: email,
@@ -2522,7 +2522,7 @@ export function AITripPlannerLanding() {
 
   const isUserLoggedIn = (): boolean => {
     if (typeof window === 'undefined') return false;
-    const travltikUser = localStorage.getItem('travltik_user');
+    const travltikUser = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
     return Boolean(
       (travltikUser && travltikUser !== 'null') ||
       localStorage.getItem('seeker_email') ||
@@ -4200,7 +4200,7 @@ return (
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-black tracking-wider uppercase text-[#00A86B] bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
-                        TravlTik AI Resolution Engine
+                        Abroad Zen AI Resolution Engine
                       </span>
                       <span className="text-xs font-semibold text-slate-400">Researching Global Regulations...</span>
                     </div>
@@ -4266,7 +4266,7 @@ return (
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
                 <div>
                   <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
-                    How TravlTik Works?
+                    How Abroad Zen Works?
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
                     100% Escrow protected visa &amp; immigration pathways in 3 milestone stages.
@@ -4405,7 +4405,7 @@ return (
               </a>
             </div>
 
-            {/* Dynamic Luxury Promotional Banner Cards Grid (TravlTik Authentic Offerings) */}
+            {/* Dynamic Luxury Promotional Banner Cards Grid (Abroad Zen Authentic Offerings) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
               
               {/* Card 1: Study in Canada — Top Universities 2026 */}

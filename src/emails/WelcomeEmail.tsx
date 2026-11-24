@@ -16,7 +16,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to TravlTik</title>
+    <title>Welcome to Abroad Zen</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; width: 100% !important;">
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f3f4f6; padding: 40px 10px;">
@@ -34,7 +34,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                     <!-- Logo Header -->
                     <tr>
                         <td align="center" style="padding: 40px 40px 24px 40px;">
-                            <img src="https://travltik.com/logo.png" alt="TravlTik Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
+                            <img src="https://abroadzen.com/logo.png" alt="Abroad Zen Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
                         </td>
                     </tr>
                     
@@ -42,7 +42,7 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                     <tr>
                         <td style="padding: 0 40px 40px 40px; text-align: left;">
                             <h1 style="color: #111827; font-size: 26px; font-weight: 800; margin: 0 0 12px 0; line-height: 36px; text-align: center; letter-spacing: -0.5px;">
-                                Welcome to TravlTik 👋
+                                Welcome to Abroad Zen 👋
                             </h1>
                             <p style="color: #4b5563; font-size: 16px; font-weight: 500; margin: 0 0 36px 0; line-height: 24px; text-align: center;">
                                 Your visa & travel portal is ready. Let's make your global journey seamless.
@@ -93,14 +93,14 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin: 0 0 36px 0;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://travltik.com/traveller/dashboard" style="background-color: #00a896; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(0, 168, 150, 0.3); border: 1px solid #008f80; text-align: center; width: 80%; max-width: 320px;">
+                                        <a href="https://abroadzen.com/traveller/dashboard" style="background-color: #00a896; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(0, 168, 150, 0.3); border: 1px solid #008f80; text-align: center; width: 80%; max-width: 320px;">
                                             Complete Your Profile
                                         </a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="center" style="padding-top: 20px;">
-                                        <a href="https://travltik.com/find-experts" style="color: #00a896; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #ccfbf1; padding-bottom: 2px;">
+                                        <a href="https://abroadzen.com/find-experts" style="color: #00a896; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #ccfbf1; padding-bottom: 2px;">
                                             Find Verified Visa Experts &rarr;
                                         </a>
                                     </td>
@@ -111,12 +111,12 @@ export function generateWelcomeHtml({ firstName, displayName }: WelcomeEmailProp
                             
                             <!-- Support Section -->
                             <p style="color: #6b7280; font-size: 13px; line-height: 20px; margin: 0; text-align: center; font-weight: 500;">
-                                Have questions? We're here to help. Reach out to <a href="mailto:support@travltik.com" style="color: #00a896; text-decoration: none; font-weight: 700;">support@travltik.com</a>
+                                Have questions? We're here to help. Reach out to <a href="mailto:support@abroadzen.com" style="color: #00a896; text-decoration: none; font-weight: 700;">support@abroadzen.com</a>
                             </p>
                             
                             <!-- Footer Details -->
                             <p style="color: #9ca3af; font-size: 12px; line-height: 18px; margin: 16px 0 0 0; text-align: center;">
-                                &copy; ${new Date().getFullYear()} TravlTik. The Global Visa & Travel Platform.<br/>
+                                &copy; ${new Date().getFullYear()} Abroad Zen. The Global Visa & Travel Platform.<br/>
                                 All rights reserved.
                             </p>
                         </td>
@@ -140,7 +140,7 @@ export function generateExpertWelcomeHtml({ firstName, displayName }: WelcomeEma
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to the TravlTik Partner Network</title>
+    <title>Welcome to the Abroad Zen Partner Network</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; width: 100% !important;">
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f3f4f6; padding: 40px 10px;">
@@ -158,7 +158,7 @@ export function generateExpertWelcomeHtml({ firstName, displayName }: WelcomeEma
                     <!-- Logo Header -->
                     <tr>
                         <td align="center" style="padding: 40px 40px 24px 40px;">
-                            <img src="https://travltik.com/logo.png" alt="TravlTik Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
+                            <img src="https://abroadzen.com/logo.png" alt="Abroad Zen Logo" style="height: 64px; width: auto; max-width: 100%; display: block;" />
                         </td>
                     </tr>
                     
@@ -172,10 +172,10 @@ export function generateExpertWelcomeHtml({ firstName, displayName }: WelcomeEma
                             </div>
 
                             <h1 style="color: #0c1a2e; font-size: 26px; font-weight: 800; margin: 0 0 12px 0; line-height: 36px; text-align: center; letter-spacing: -0.5px;">
-                                Welcome to TravlTik Partner Network 🚀
+                                Welcome to Abroad Zen Partner Network 🚀
                             </h1>
                             <p style="color: #4b5563; font-size: 15px; font-weight: 500; margin: 0 0 32px 0; line-height: 24px; text-align: center;">
-                                Your immigration consulting & visa advisory practice is now registered on TravlTik.
+                                Your immigration consulting & visa advisory practice is now registered on Abroad Zen.
                             </p>
                             
                             <p style="color: #1f2937; font-size: 15px; margin: 0 0 20px 0; line-height: 24px; font-weight: 600;">
@@ -183,7 +183,7 @@ export function generateExpertWelcomeHtml({ firstName, displayName }: WelcomeEma
                             </p>
                             
                             <p style="color: #4b5563; font-size: 15px; margin: 0 0 24px 0; line-height: 24px;">
-                                Welcome to the TravlTik Partner Ecosystem. We connect verified immigration lawyers, registered visa consultants, and study abroad advisors with thousands of motivated global applicants.
+                                Welcome to the Abroad Zen Partner Ecosystem. We connect verified immigration lawyers, registered visa consultants, and study abroad advisors with thousands of motivated global applicants.
                             </p>
                             
                             <!-- Features checklist for Experts -->
@@ -223,14 +223,14 @@ export function generateExpertWelcomeHtml({ firstName, displayName }: WelcomeEma
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin: 0 0 32px 0;">
                                 <tr>
                                     <td align="center">
-                                        <a href="https://travltik.com/service-provider/dashboard" style="background-color: #0c1a2e; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(12, 26, 46, 0.3); border: 1px solid #0c1a2e; text-align: center; width: 80%; max-width: 320px;">
+                                        <a href="https://abroadzen.com/service-provider/dashboard" style="background-color: #0c1a2e; color: #ffffff; padding: 16px 36px; font-size: 15px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px 0 rgba(12, 26, 46, 0.3); border: 1px solid #0c1a2e; text-align: center; width: 80%; max-width: 320px;">
                                             Go to Partner Dashboard
                                         </a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="center" style="padding-top: 18px;">
-                                        <a href="https://travltik.com/service-provider/dashboard" style="color: #00a896; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #ccfbf1; padding-bottom: 2px;">
+                                        <a href="https://abroadzen.com/service-provider/dashboard" style="color: #00a896; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 2px solid #ccfbf1; padding-bottom: 2px;">
                                             Complete Your Business Profile & KYC &rarr;
                                         </a>
                                     </td>
@@ -241,12 +241,12 @@ export function generateExpertWelcomeHtml({ firstName, displayName }: WelcomeEma
                             
                             <!-- Support Section -->
                             <p style="color: #6b7280; font-size: 13px; line-height: 20px; margin: 0; text-align: center; font-weight: 500;">
-                                Need assistance setting up your profile or managing clients? Reach out to partner support at <a href="mailto:partners@travltik.com" style="color: #00a896; text-decoration: none; font-weight: 700;">partners@travltik.com</a>
+                                Need assistance setting up your profile or managing clients? Reach out to partner support at <a href="mailto:partners@abroadzen.com" style="color: #00a896; text-decoration: none; font-weight: 700;">partners@abroadzen.com</a>
                             </p>
                             
                             <!-- Footer Details -->
                             <p style="color: #9ca3af; font-size: 12px; line-height: 18px; margin: 16px 0 0 0; text-align: center;">
-                                &copy; ${new Date().getFullYear()} TravlTik Technologies. Global Immigration & Partner Network.<br/>
+                                &copy; ${new Date().getFullYear()} Abroad Zen Technologies. Global Immigration & Partner Network.<br/>
                                 All rights reserved.
                             </p>
                         </td>

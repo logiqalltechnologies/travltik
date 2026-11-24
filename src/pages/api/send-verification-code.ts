@@ -82,9 +82,9 @@ export const POST: APIRoute = async ({ request }) => {
     if (resendApiKey) {
       const resend = new Resend(resendApiKey);
       const { error } = await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL || 'TravlTik <no-reply@travltik.com>',
+        from: process.env.RESEND_FROM_EMAIL || 'Abroad Zen <no-reply@abroadzen.com>',
         to: normalizedEmail,
-        subject: 'Your Verification Code - TravlTik',
+        subject: 'Your Verification Code - Abroad Zen',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
             <h2 style="color: #333;">Email Verification</h2>

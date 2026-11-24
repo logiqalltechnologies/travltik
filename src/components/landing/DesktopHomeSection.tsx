@@ -197,7 +197,7 @@ export function DesktopHomeSection() {
       title: 'Instant Unlimited 5G eSIM for Canada & USA',
       country: 'Canada',
       category: 'SIM & eSIM',
-      postedBy: 'TravlTik Telecomm',
+      postedBy: 'Abroad Zen Telecomm',
       location: 'Online Delivery',
       time: 'Just Now',
       price: '$29 USD',

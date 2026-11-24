@@ -195,7 +195,7 @@ export function ResetVaultPasswordModal({
 
         <form onSubmit={onSubmit} className="space-y-4 pt-4">
           <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
-            Enter your TravlTik login account password to securely verify your identity and reset your secret Document Vault password.
+            Enter your Abroad Zen login account password to securely verify your identity and reset your secret Document Vault password.
           </p>
 
           {vaultError && (

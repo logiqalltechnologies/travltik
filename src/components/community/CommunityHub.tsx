@@ -378,7 +378,7 @@ export default function CommunityHub() {
       // Check client-side valid travltik_user in localStorage
       if (!loggedUser) {
         try {
-          const stored = localStorage.getItem('travltik_user');
+          const stored = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
           if (stored && stored !== 'null' && stored !== 'undefined') {
             const parsed = JSON.parse(stored);
             if (parsed && parsed.email && !parsed.email.toLowerCase().includes('dummy')) {
@@ -429,7 +429,7 @@ export default function CommunityHub() {
       await fetch('/api/logout', { method: 'POST' });
     } catch (e) {}
     try {
-      localStorage.removeItem('travltik_user');
+      localStorage.removeItem('abroadzen_user'); localStorage.removeItem('travltik_user');
       localStorage.removeItem('expert_businessName');
       localStorage.removeItem('expert_email');
       localStorage.removeItem('expert_fullName');
@@ -682,11 +682,11 @@ export default function CommunityHub() {
             <Users className="w-5 h-5" />
           </button>
 
-          {/* Travltik Official Brand Logo */}
-          <a href="/" className="flex items-center gap-2.5 mr-2 sm:mr-4 shrink-0 group" title="Return to Travltik Home">
+          {/* Abroad Zen Official Brand Logo */}
+          <a href="/" className="flex items-center gap-2.5 mr-2 sm:mr-4 shrink-0 group" title="Return to Abroad Zen Home">
             <img
-              src="/logo.png?v=16"
-              alt="TravlTik"
+              src="/logo.png?v=17"
+              alt="Abroad Zen"
               className="h-8 sm:h-9 w-auto max-h-[38px] object-contain transition-transform duration-200 group-hover:scale-105"
             />
             <div className="hidden sm:flex items-center pl-2.5 border-l border-slate-200/90">

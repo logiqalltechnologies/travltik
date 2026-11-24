@@ -100,7 +100,7 @@ export function ExpertComparison({ experts, onRemove, onAdd }: Props) {
   const handleShare = (platform: string) => {
     if (typeof window === "undefined") return;
     const url = window.location.href;
-    const text = "Compare Verified Immigration Consultants on TravlTik";
+    const text = "Compare Verified Immigration Consultants on Abroad Zen";
     if (platform === "facebook") {
       window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
     } else if (platform === "twitter") {

@@ -146,7 +146,7 @@ export function ProviderVerificationModal({
       title: "Government Identity",
       desc: "Passport copy or Government-issued National ID Card of Principal Advisor",
       icon: ShieldCheck,
-      tierBadge: "Tier 4: TravlTik Trusted"
+      tierBadge: "Tier 4: Abroad Zen Trusted"
     }
   ];
 
@@ -385,7 +385,7 @@ export function ProviderVerificationModal({
               📜 3. Professional
             </div>
             <div className={`p-1.5 rounded-xl border ${currentTier === 'travltik_trusted' ? 'bg-white/20 border-teal-300 text-white' : 'bg-black/10 border-white/10 text-white/70'}`}>
-              🌟 4. TravlTik Trusted
+              🌟 4. Abroad Zen Trusted
             </div>
           </div>
         </div>
@@ -553,7 +553,7 @@ export function ProviderVerificationModal({
           {/* Privacy Note */}
           <div className="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
             <Lock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span>Documents are stored in encrypted private storage and reviewed solely by TravlTik compliance team.</span>
+            <span>Documents are stored in encrypted private storage and reviewed solely by Abroad Zen compliance team.</span>
           </div>
 
         </div>

@@ -731,7 +731,7 @@ function ExpertSignupPortalContent() {
           <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Back to </span>Home
         </a>
         <a href="/" className="shrink-0">
-          <img src="/logo.png?v=16" alt="TravlTik Logo" className="h-6 sm:h-7 w-auto object-contain" />
+          <img src="/logo.png?v=17" alt="Abroad Zen Logo" className="h-6 sm:h-7 w-auto object-contain" />
         </a>
       </div>
 
@@ -819,7 +819,7 @@ function ExpertSignupPortalContent() {
                 Create Your Account
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                Join TravlTik and grow your business.
+                Join Abroad Zen and grow your business.
               </p>
             </div>
 
@@ -1159,7 +1159,7 @@ function ExpertSignupPortalContent() {
                     className="mt-0.5 w-4 h-4 rounded text-[#481268] focus:ring-[#481268] accent-[#481268] cursor-pointer"
                   />
                   <span>
-                    I agree to TravlTik's{" "}
+                    I agree to Abroad Zen's{" "}
                     <a href="/terms" target="_blank" className="font-bold text-[#481268] hover:underline">
                       Terms & Conditions
                     </a>{" "}
@@ -1994,14 +1994,14 @@ function ExpertSignupPortalContent() {
             </h2>
 
             <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-              Thank you for applying to become a verified TravlTik Service Provider. We have sent a confirmation email to <span className="font-bold text-slate-900">{businessEmail || email}</span>.
+              Thank you for applying to become a verified Abroad Zen Service Provider. We have sent a confirmation email to <span className="font-bold text-slate-900">{businessEmail || email}</span>.
             </p>
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl max-w-md mx-auto text-left text-xs space-y-2">
               <div className="font-bold text-slate-800">What happens next?</div>
               <ul className="list-disc pl-4 space-y-1 text-slate-600">
                 <li>Our verification team will review your business credentials.</li>
-                <li>Your listing on the TravlTik marketplace will be activated upon review.</li>
+                <li>Your listing on the Abroad Zen marketplace will be activated upon review.</li>
                 <li>You can now access your Service Provider Dashboard to customize your profile and consultation fees.</li>
               </ul>
             </div>
@@ -2049,7 +2049,7 @@ function ExpertSignupPortalContent() {
             </h3>
 
             <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
-              The email <strong className="text-slate-900 font-bold break-all">{existingRegisteredEmail || email}</strong> is already registered on TravlTik.
+              The email <strong className="text-slate-900 font-bold break-all">{existingRegisteredEmail || email}</strong> is already registered on Abroad Zen.
             </p>
 
             <div className="mt-4 p-3.5 bg-purple-50/60 border border-purple-100 rounded-2xl text-xs text-purple-900 font-medium text-left flex items-start gap-2.5">

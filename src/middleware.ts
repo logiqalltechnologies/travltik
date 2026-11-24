@@ -5,11 +5,11 @@ export const onRequest = async (context: any, next: any): Promise<Response> => {
 
   // Enforce HTTPS & apex-to-www canonical domain in production
   if (proto === 'http' && !host.includes('localhost') && !host.includes('127.0.0.1')) {
-    const targetHost = host === 'travltik.com' ? 'www.travltik.com' : host;
+    const targetHost = host === 'abroadzen.com' ? 'www.abroadzen.com' : host;
     return context.redirect(`https://${targetHost}${url.pathname}${url.search}`, 301);
   }
-  if (host === 'travltik.com') {
-    return context.redirect(`https://www.travltik.com${url.pathname}${url.search}`, 301);
+  if (host === 'abroadzen.com') {
+    return context.redirect(`https://www.abroadzen.com${url.pathname}${url.search}`, 301);
   }
 
   const response = await next();

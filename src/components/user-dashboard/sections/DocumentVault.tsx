@@ -2489,7 +2489,7 @@ export const DocumentVault: React.FC<DocumentVaultProps> = ({
                             <div className="p-3 rounded-xl bg-blue-50/60 border border-blue-100/80 flex items-start gap-2.5 text-xs text-blue-900">
                                 <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                                 <span>
-                                    TravlTik Safe-Vault strictly prevents incorrect or unreadable documents from entering your visa application dossier.
+                                    Abroad Zen Safe-Vault strictly prevents incorrect or unreadable documents from entering your visa application dossier.
                                 </span>
                             </div>
                         </div>

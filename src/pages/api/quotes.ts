@@ -96,8 +96,8 @@ export const POST: APIRoute = async ({ request }) => {
         seekerEmail.trim().toLowerCase(),
         seekerPhone,
         targetExpertId || 0,
-        targetExpertName || 'TravlTik Verified Partner',
-        targetExpertEmail || 'support@travltik.com',
+        targetExpertName || 'Abroad Zen Verified Partner',
+        targetExpertEmail || 'support@abroadzen.com',
         destinationCountry,
         visaCategory,
         specificPathway,
@@ -111,7 +111,7 @@ export const POST: APIRoute = async ({ request }) => {
     const quoteId = insertRes.rows[0].id;
 
     // Trigger notification email via Resend to the matched expert or admin
-    const notifyEmail = targetExpertEmail || 'support@travltik.com';
+    const notifyEmail = targetExpertEmail || 'support@abroadzen.com';
     try {
       await sendEmail({
         to: notifyEmail,
@@ -119,11 +119,11 @@ export const POST: APIRoute = async ({ request }) => {
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff;">
             <div style="background: linear-gradient(135deg, #481268 0%, #00a896 100%); color: white; padding: 18px 24px; border-radius: 12px 12px 0 0; text-align: center;">
-              <h2 style="margin: 0; font-size: 20px;">TravlTik — New Quote Request Lead</h2>
+              <h2 style="margin: 0; font-size: 20px;">Abroad Zen — New Quote Request Lead</h2>
             </div>
             <div style="padding: 24px; color: #1e293b;">
               <p style="font-size: 16px; font-weight: bold;">Hello ${targetExpertName || 'Advisor'},</p>
-              <p>A prospective client has submitted a customized quotation request on TravlTik.</p>
+              <p>A prospective client has submitted a customized quotation request on Abroad Zen.</p>
               
               <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 18px; margin: 16px 0;">
                 <p style="margin: 6px 0;"><strong>👤 Client Name:</strong> ${seekerName || 'Not specified'}</p>

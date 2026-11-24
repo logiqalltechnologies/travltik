@@ -168,7 +168,7 @@ export function InternationalJobDrivesPage() {
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
-            100% verified employer allocations with guaranteed visa sponsorship queues, LMIA approvals, and EU Blue Card work permits. Apply with TravlTik Escrow protection.
+            100% verified employer allocations with guaranteed visa sponsorship queues, LMIA approvals, and EU Blue Card work permits. Apply with Abroad Zen Escrow protection.
           </p>
         </div>
 
@@ -439,7 +439,7 @@ export function InternationalJobDrivesPage() {
                             loading="lazy"
                           />
 
-                          {/* Top-Left Category Badge with TravlTik Logo Gradient */}
+                          {/* Top-Left Category Badge with Abroad Zen Logo Gradient */}
                           <div className="absolute top-2.5 left-2.5 z-10">
                             <span className="bg-gradient-to-r from-[#00b070] via-[#0284c7] to-[#581db5] text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1">
                               #{String(job.sNo).padStart(2, '0')} · {job.category}
@@ -491,7 +491,7 @@ export function InternationalJobDrivesPage() {
                             </div>
                           </div>
 
-                          {/* Action Button styled with TravlTik Gradient */}
+                          {/* Action Button styled with Abroad Zen Gradient */}
                           <div className="mt-3 pt-1">
                             <button 
                               type="button"
@@ -534,7 +534,7 @@ export function InternationalJobDrivesPage() {
                             loading="lazy"
                           />
 
-                          {/* Top-Left Category Badge with TravlTik Logo Gradient */}
+                          {/* Top-Left Category Badge with Abroad Zen Logo Gradient */}
                           <div className="absolute top-2.5 left-2.5 z-10">
                             <span className="bg-gradient-to-r from-[#00b070] via-[#0284c7] to-[#581db5] text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md tracking-wider flex items-center gap-1">
                               #{String(job.sNo).padStart(2, '0')} · {job.sector}
@@ -586,7 +586,7 @@ export function InternationalJobDrivesPage() {
                             </div>
                           </div>
 
-                          {/* Action Button styled with TravlTik Gradient */}
+                          {/* Action Button styled with Abroad Zen Gradient */}
                           <div className="mt-3 pt-1">
                             <button 
                               type="button"
@@ -708,7 +708,7 @@ export function InternationalJobDrivesPage() {
               <Shield className="w-5 h-5 text-[#1b1233]" />
             </div>
             <div>
-              <h4 className="text-xs sm:text-sm font-black text-[#1b1233] uppercase tracking-wide">TravlTik Escrow &amp; Quota Compliance Guarantee</h4>
+              <h4 className="text-xs sm:text-sm font-black text-[#1b1233] uppercase tracking-wide">Abroad Zen Escrow &amp; Quota Compliance Guarantee</h4>
               <p className="text-xs text-slate-500 mt-0.5">
                 All candidates are protected by 100% milestone escrow. No advance placement fees are disbursed until your official work permit is verified and released.
               </p>

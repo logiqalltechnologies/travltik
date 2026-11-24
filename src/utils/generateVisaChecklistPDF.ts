@@ -90,7 +90,7 @@ export function buildVisaChecklistPDF(data: VisaChecklistPDFData): Blob {
   stream1Lines.push('0 752 595.28 3 re f');
   stream1Lines.push('Q');
 
-  stream1Lines.push('BT /F2 16 Tf 1 1 1 rg 40 802 Td (TRAVLTIK CONSULAR VERIFICATION REGISTRY) Tj ET');
+  stream1Lines.push('BT /F2 16 Tf 1 1 1 rg 40 802 Td (ABROAD ZEN CONSULAR VERIFICATION REGISTRY) Tj ET');
   stream1Lines.push('BT /F1 9 Tf 0.65 0.75 0.9 rg 40 788 Td (OFFICIAL IMMIGRATION DOSSIER & COMPREHENSIVE VISA SPECIFICATION) Tj ET');
   stream1Lines.push(`BT /F2 8 Tf 0.2 0.85 0.65 rg 40 768 Td (DOSSIER ID: ${escapePdfText(data.trackingId)}   |   DATE: ${escapePdfText(timestamp)}   |   VAULT SYNCED) Tj ET`);
 
@@ -171,7 +171,7 @@ export function buildVisaChecklistPDF(data: VisaChecklistPDFData): Blob {
 
   // Page 1 Footer
   stream1Lines.push('q 0.85 0.88 0.92 RG 0.5 w 40 42 m 555 42 l S Q');
-  stream1Lines.push(`BT /F1 7.5 Tf 0.45 0.5 0.58 rg 40 28 Td (TravlTik Consular AI Verification System  |  Page 1 of 3  |  Dossier ID: ${escapePdfText(data.trackingId)}) Tj ET`);
+  stream1Lines.push(`BT /F1 7.5 Tf 0.45 0.5 0.58 rg 40 28 Td (Abroad Zen Consular AI Verification System  |  Page 1 of 3  |  Dossier ID: ${escapePdfText(data.trackingId)}) Tj ET`);
   stream1Lines.push('BT /F2 7.5 Tf 0.1 0.55 0.4 rg 445 28 Td (SECTIONS: 1. OVERVIEW & 2. DOCUMENTS) Tj ET');
 
   // ==========================================
@@ -184,7 +184,7 @@ export function buildVisaChecklistPDF(data: VisaChecklistPDFData): Blob {
   stream2Lines.push('0.05 0.08 0.16 rg 0 805 595.28 36.89 re f');
   stream2Lines.push('0.0 0.65 0.58 rg 0 802 595.28 3 re f');
   stream2Lines.push('Q');
-  stream2Lines.push('BT /F2 10.5 Tf 1 1 1 rg 40 818 Td (TRAVLTIK CONSULAR REGISTRY  -  ROADMAP, FEES & PROCESSING DURATION) Tj ET');
+  stream2Lines.push('BT /F2 10.5 Tf 1 1 1 rg 40 818 Td (ABROAD ZEN CONSULAR REGISTRY  -  ROADMAP, FEES & PROCESSING DURATION) Tj ET');
   stream2Lines.push(`BT /F1 8 Tf 0.7 0.8 0.9 rg 430 818 Td (DOSSIER: ${escapePdfText(data.trackingId)}) Tj ET`);
 
   let p2Y = 770;
@@ -262,7 +262,7 @@ export function buildVisaChecklistPDF(data: VisaChecklistPDFData): Blob {
 
   // Page 2 Footer
   stream2Lines.push('q 0.85 0.88 0.92 RG 0.5 w 40 42 m 555 42 l S Q');
-  stream2Lines.push(`BT /F1 7.5 Tf 0.45 0.5 0.58 rg 40 28 Td (TravlTik Consular AI Verification System  |  Page 2 of 3  |  Dossier ID: ${escapePdfText(data.trackingId)}) Tj ET`);
+  stream2Lines.push(`BT /F1 7.5 Tf 0.45 0.5 0.58 rg 40 28 Td (Abroad Zen Consular AI Verification System  |  Page 2 of 3  |  Dossier ID: ${escapePdfText(data.trackingId)}) Tj ET`);
   stream2Lines.push('BT /F2 7.5 Tf 0.1 0.55 0.4 rg 445 28 Td (SECTIONS: 3. STEPS, 4. FEES, 5. PROCESSING) Tj ET');
 
   // ==========================================
@@ -275,7 +275,7 @@ export function buildVisaChecklistPDF(data: VisaChecklistPDFData): Blob {
   stream3Lines.push('0.05 0.08 0.16 rg 0 805 595.28 36.89 re f');
   stream3Lines.push('0.0 0.65 0.58 rg 0 802 595.28 3 re f');
   stream3Lines.push('Q');
-  stream3Lines.push('BT /F2 10.5 Tf 1 1 1 rg 40 818 Td (TRAVLTIK CONSULAR REGISTRY  -  REQUIREMENTS, FAQ & APPLICATION TRACKING) Tj ET');
+  stream3Lines.push('BT /F2 10.5 Tf 1 1 1 rg 40 818 Td (ABROAD ZEN CONSULAR REGISTRY  -  REQUIREMENTS, FAQ & APPLICATION TRACKING) Tj ET');
   stream3Lines.push(`BT /F1 8 Tf 0.7 0.8 0.9 rg 430 818 Td (DOSSIER: ${escapePdfText(data.trackingId)}) Tj ET`);
 
   let p3Y = 770;
@@ -335,17 +335,17 @@ export function buildVisaChecklistPDF(data: VisaChecklistPDFData): Blob {
   stream3Lines.push(`BT /F2 12 Tf 0.05 0.6 0.4 rg 330 ${p3Y - 14} Td (${escapePdfText(data.trackingId)}) Tj ET`);
 
   stream3Lines.push(`BT /F2 8 Tf 0.35 0.4 0.5 rg 52 ${p3Y - 30} Td (VAULT REGISTRY STATUS:) Tj ET`);
-  stream3Lines.push(`BT /F2 8.5 Tf 0.1 0.5 0.3 rg 180 ${p3Y - 30} Td (Active & Synced to TravlTik User Dashboard) Tj ET`);
+  stream3Lines.push(`BT /F2 8.5 Tf 0.1 0.5 0.3 rg 180 ${p3Y - 30} Td (Active & Synced to Abroad Zen User Dashboard) Tj ET`);
 
   stream3Lines.push(`BT /F2 8 Tf 0.35 0.4 0.5 rg 52 ${p3Y - 44} Td (TRACKING PORTAL URL:) Tj ET`);
-  stream3Lines.push(`BT /F1 8 Tf 0.1 0.3 0.7 rg 180 ${p3Y - 44} Td (${truncatePdfText(data.trackingUrl || 'https://travltik.com/dashboard', 55)}) Tj ET`);
+  stream3Lines.push(`BT /F1 8 Tf 0.1 0.3 0.7 rg 180 ${p3Y - 44} Td (${truncatePdfText(data.trackingUrl || 'https://abroadzen.com/dashboard', 55)}) Tj ET`);
 
-  stream3Lines.push(`BT /F1 7 Tf 0.4 0.45 0.5 rg 52 ${p3Y - 64} Td (AUTHENTICITY NOTICE: This verification brief is cryptographically linked to your registered TravlTik account.) Tj ET`);
+  stream3Lines.push(`BT /F1 7 Tf 0.4 0.45 0.5 rg 52 ${p3Y - 64} Td (AUTHENTICITY NOTICE: This verification brief is cryptographically linked to your registered Abroad Zen account.) Tj ET`);
   stream3Lines.push(`BT /F1 7 Tf 0.4 0.45 0.5 rg 52 ${p3Y - 74} Td (Keep this dossier accessible when lodging paperwork with the consulate, VAC, or port of entry immigration.) Tj ET`);
 
   // Page 3 Footer
   stream3Lines.push('q 0.85 0.88 0.92 RG 0.5 w 40 42 m 555 42 l S Q');
-  stream3Lines.push(`BT /F1 7.5 Tf 0.45 0.5 0.58 rg 40 28 Td (TravlTik Consular AI Verification System  |  Page 3 of 3  |  Official Certified Brief) Tj ET`);
+  stream3Lines.push(`BT /F1 7.5 Tf 0.45 0.5 0.58 rg 40 28 Td (Abroad Zen Consular AI Verification System  |  Page 3 of 3  |  Official Certified Brief) Tj ET`);
   stream3Lines.push('BT /F2 7.5 Tf 0.1 0.55 0.4 rg 445 28 Td (SECTIONS: 6. RULES, 7. FAQ, 8. TRACK) Tj ET');
 
   // ==========================================
@@ -388,7 +388,7 @@ export function buildVisaChecklistPDF(data: VisaChecklistPDFData): Blob {
   objects.push(`10 0 obj\n<< /Length ${stream3.length} >>\nstream\n${stream3}\nendstream\nendobj`);
 
   // Build binary body & xref
-  let pdf = '%PDF-1.4\n%TravlTik\n';
+  let pdf = '%PDF-1.4\n%Abroad Zen\n';
   const offsets: number[] = [];
 
   objects.forEach((obj) => {
@@ -452,7 +452,7 @@ export function openPrintableChecklist(data: VisaChecklistPDFData): void {
   const html = `<!DOCTYPE html>
 <html>
 <head>
-  <title>${data.countryName} Visa Dossier &amp; Checklist - TravlTik</title>
+  <title>${data.countryName} Visa Dossier &amp; Checklist - Abroad Zen</title>
   <meta charset="utf-8" />
   <style>
     @page { size: A4 portrait; margin: 12mm 15mm; }
@@ -498,7 +498,7 @@ export function openPrintableChecklist(data: VisaChecklistPDFData): void {
 <body>
   <!-- HEADER -->
   <div class="header">
-    <h1>TRAVLTIK CONSULAR VERIFICATION REGISTRY</h1>
+    <h1>ABROAD ZEN CONSULAR VERIFICATION REGISTRY</h1>
     <p>Official AI Verification Brief &amp; Document Ingestion Dossier</p>
     <span class="badge">DOSSIER ID: ${data.trackingId} &bull; SYNCED TO VAULT</span>
   </div>
@@ -651,11 +651,11 @@ export function openPrintableChecklist(data: VisaChecklistPDFData): void {
       <div>
         <span class="card-label" style="color:#166534;">Official Dossier Tracking ID</span>
         <span style="font-size:18px; font-weight:900; color:#14532d; letter-spacing:1px;">${data.trackingId}</span>
-        <div style="font-size:11px; color:#15803d; margin-top:4px;">Status: Ingested &amp; Synced to TravlTik User Dashboard</div>
+        <div style="font-size:11px; color:#15803d; margin-top:4px;">Status: Ingested &amp; Synced to Abroad Zen User Dashboard</div>
       </div>
       <div style="text-align:right;">
         <span class="card-label" style="color:#166534;">Direct Tracking Portal</span>
-        <a href="${data.trackingUrl || '/dashboard'}" style="font-size:11px; font-weight:800; color:#059669; text-decoration:none;">${data.trackingUrl || 'travltik.com/dashboard'} &rarr;</a>
+        <a href="${data.trackingUrl || '/dashboard'}" style="font-size:11px; font-weight:800; color:#059669; text-decoration:none;">${data.trackingUrl || 'abroadzen.com/dashboard'} &rarr;</a>
       </div>
     </div>
   </div>
@@ -663,7 +663,7 @@ export function openPrintableChecklist(data: VisaChecklistPDFData): void {
   <!-- FOOTER -->
   <div class="footer">
     Adjudication authority resides exclusively with destination government sovereign immigration ministries.<br/>
-    Document specifications verified by TravlTik AI Consular Registry. Generated on ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
+    Document specifications verified by Abroad Zen AI Consular Registry. Generated on ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
   </div>
 
   <script>

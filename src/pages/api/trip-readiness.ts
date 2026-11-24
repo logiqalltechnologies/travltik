@@ -212,7 +212,7 @@ export const POST: APIRoute = async ({ request }) => {
     // ── 3. GEMINI 3.7 FLASH CONFIGURATION & INVOCATION ──
     const ai = new GoogleGenAI({ apiKey });
 
-    const systemPrompt = `You are the Lead Immigration & Border Control Architect for TravlTik (travltik.com).
+    const systemPrompt = `You are the Lead Immigration & Border Control Architect for Abroad Zen (abroadzen.com).
 
 Given the traveler inputs:
 - Passport Country

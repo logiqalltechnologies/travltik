@@ -31,7 +31,7 @@ import {
 export const prerender = false;
 ---
 
-<Layout title="Turn your website into a WhatsApp bot — TravlTik Pro">
+<Layout title="Turn your website into a WhatsApp bot — Abroad Zen Pro">
   <!-- External Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -91,7 +91,7 @@ export const prerender = false;
       <!-- ================= HERO ================= -->
       <section class="relative overflow-hidden rounded-[32px] sm:rounded-[44px] bg-white border border-slate-200/90 shadow-[0_20px_50px_-25px_rgba(0,176,112,0.18)] min-h-[88vh] flex flex-col justify-between p-6 sm:p-12 lg:p-16">
         
-        <!-- Ambient Radial Gradient Blooms (TravlTik Green & Purple) -->
+        <!-- Ambient Radial Gradient Blooms (Abroad Zen Green & Purple) -->
         <div
           class="pointer-events-none absolute -right-32 -top-20 h-[680px] w-[680px] rounded-full opacity-60 blur-3xl"
           style="background: radial-gradient(circle at 55% 45%, rgba(0,176,112,0.35), rgba(0,143,90,0.15) 45%, rgba(255,255,255,0) 70%);"
@@ -101,7 +101,7 @@ export const prerender = false;
           style="background: radial-gradient(circle at 50% 50%, rgba(67,15,122,0.2), rgba(107,52,179,0.08) 45%, rgba(255,255,255,0) 72%);"
         ></div>
 
-        <!-- Geometric Angular Accent Facet (TravlTik Brand Green Facet) -->
+        <!-- Geometric Angular Accent Facet (Abroad Zen Brand Green Facet) -->
         <div class="pointer-events-none absolute right-4 lg:right-16 top-10 lg:top-16 w-72 sm:w-96 lg:w-[480px] h-72 sm:h-96 lg:h-[480px] opacity-90 z-0">
           <svg viewBox="0 0 400 400" class="w-full h-full drop-shadow-[0_25px_45px_rgba(0,176,112,0.18)]">
             <polygon points="120,20 360,60 390,260 280,380 90,320 20,160" fill="url(#greenGrad)" opacity="0.85" />
@@ -121,7 +121,7 @@ export const prerender = false;
         <div class="relative z-10 flex items-center justify-between mb-8 sm:mb-12">
           <div class="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/20 bg-emerald-50 px-4 py-1.5 text-xs sm:text-sm font-extrabold text-[#008f5a] shadow-xs">
             <span class="w-2 h-2 rounded-full bg-[#00b070] animate-pulse"></span>
-            <span>EXCLUSIVELY FOR TRAVLTIK SERVICE PROVIDERS &amp; CONSULTANTS</span>
+            <span>EXCLUSIVELY FOR ABROAD ZEN SERVICE PROVIDERS &amp; CONSULTANTS</span>
           </div>
 
           <div class="hidden sm:flex items-center gap-4 text-xs sm:text-sm font-bold text-slate-600">
@@ -205,7 +205,7 @@ export const prerender = false;
           <!-- Social Proof Badges -->
           <div class="mt-12 sm:mt-16">
             <p class="text-xs font-extrabold uppercase tracking-widest text-slate-400">
-              Designed for Verified TravlTik Service Providers across
+              Designed for Verified Abroad Zen Service Providers across
             </p>
             <div class="mt-4 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-2.5 text-slate-600 font-semibold text-sm sm:text-base">
               <span>Visa &amp; Immigration Firms</span>
@@ -484,7 +484,7 @@ export const prerender = false;
                   <CreditCard class="w-4 h-4 text-emerald-400" />
                   <span>Activate Pro Plan ($49) →</span>
                 </button>
-                <p class="text-center text-[11px] text-slate-400 mt-2 font-medium">Need enterprise SLA? <a href="mailto:hello@travltik.com" class="text-slate-600 underline">Contact Sales</a></p>
+                <p class="text-center text-[11px] text-slate-400 mt-2 font-medium">Need enterprise SLA? <a href="mailto:hello@abroadzen.com" class="text-slate-600 underline">Contact Sales</a></p>
               </div>
             </div>
 
@@ -751,7 +751,7 @@ export const prerender = false;
         </div>
 
         <div class="p-4 bg-white border-2 border-dashed border-emerald-500/50 rounded-3xl shadow-sm flex flex-col items-center">
-          <img id="active-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=TravlTikProWhatsAppBotSync" alt="WhatsApp QR Code" class="w-48 h-48 object-contain" />
+          <img id="active-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=AbroadZenProWhatsAppBotSync" alt="WhatsApp QR Code" class="w-48 h-48 object-contain" />
           <div id="post-pay-status-pill" class="mt-3 flex items-center gap-1.5 text-xs text-emerald-600 font-bold">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Awaiting device scan...</span>
@@ -842,13 +842,13 @@ export const prerender = false;
         key: rzpKey,
         amount: orderData.amount || amountInDollars * 100,
         currency: orderData.currency || 'USD',
-        name: 'TravlTik Pro',
+        name: 'Abroad Zen Pro',
         description: `${planName} - WhatsApp AI Concierge ($${amountInDollars})`,
         image: '/logo.png?v=8',
         order_id: orderData.orderId,
         prefill: {
           name: 'Consultant',
-          email: 'consultant@travltik.com',
+          email: 'consultant@abroadzen.com',
           contact: '9876543210'
         },
         theme: {

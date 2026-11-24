@@ -21,7 +21,7 @@ export function BizLogin() {
         // Save to localStorage for client-side persistence
         if (data.user) {
           try {
-            localStorage.setItem('travltik_user', JSON.stringify(data.user));
+            localStorage.setItem('abroadzen_user', JSON.stringify(data.user));
           } catch (e) {}
         }
         window.location.href = '/biz/dashboard';

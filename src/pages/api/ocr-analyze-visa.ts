@@ -82,7 +82,7 @@ export const POST: APIRoute = async ({ request }) => {
         // Strip data URL header if present (handles images, PDFs, etc.)
         const cleanBase64 = base64Image.replace(/^data:[^;]+;base64,/, '').trim();
 
-        const prompt = `You are the Lead Consular Visa Verification & Optical Character Recognition (OCR) Engine for TravlTik.
+        const prompt = `You are the Lead Consular Visa Verification & Optical Character Recognition (OCR) Engine for Abroad Zen.
 Analyze this uploaded document image with 100% precision.
 
 CRITICAL SECURITY INSPECTION - MANDATORY 3-STEP AUDIT:

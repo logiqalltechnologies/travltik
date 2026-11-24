@@ -341,7 +341,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
 
   const isUserLoggedIn = (): boolean => {
     if (typeof window === 'undefined') return false;
-    const travltikUser = localStorage.getItem('travltik_user');
+    const travltikUser = (localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user'));
     return Boolean(
       (travltikUser && travltikUser !== 'null') ||
       localStorage.getItem('seeker_email') ||
@@ -478,7 +478,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               let userEmail = localStorage.getItem('seeker_email') || '';
               if (!userEmail) {
                 try {
-                  const u = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+                  const u = JSON.parse((localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user')) || '{}');
                   userEmail = u.email || '';
                 } catch (_) {}
               }
@@ -594,7 +594,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
         userEmail = localStorage.getItem('seeker_email') || '';
         if (!userEmail) {
           try {
-            const parsed = JSON.parse(localStorage.getItem('travltik_user') || '{}');
+            const parsed = JSON.parse((localStorage.getItem('abroadzen_user') || localStorage.getItem('travltik_user')) || '{}');
             userEmail = parsed.email || '';
           } catch (_) {}
         }
@@ -892,7 +892,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
               Login Required to View Visa Requirements
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Sign in or create a free TravlTik account to unlock verified consular checklists, processing timelines, statutory fees, and immigration filing tools.
+              Sign in or create a free Abroad Zen account to unlock verified consular checklists, processing timelines, statutory fees, and immigration filing tools.
             </p>
           </div>
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -1291,7 +1291,7 @@ export const OfficialRequirementsCard: React.FC<Props> = ({
                                   </span>
                                 </div>
                                 <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                                  You can purchase insurance coverage from any insurer of your selection. However, in order to expedite and facilitate your application, TravlTik provides direct consular-approved insurance policy issuance.
+                                  You can purchase insurance coverage from any insurer of your selection. However, in order to expedite and facilitate your application, Abroad Zen provides direct consular-approved insurance policy issuance.
                                 </p>
                                 <div className="pt-1">
                                   <a

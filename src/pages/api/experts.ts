@@ -171,7 +171,7 @@ export const GET: APIRoute = async ({ url }) => {
 
       return {
         id: `db_${row.id}`,
-        name: row.business_name || row.full_name || (row.email ? row.email.split('@')[0] : 'TravlTik Consultant'),
+        name: row.business_name || row.full_name || (row.email ? row.email.split('@')[0] : 'Abroad Zen Consultant'),
         businessName: row.business_name || '',
         fullName: row.full_name || '',
         role: row.advisor_type || 'Immigration Consultant',
@@ -179,7 +179,7 @@ export const GET: APIRoute = async ({ url }) => {
         state: row.state || '',
         country: row.country || 'India',
         address: row.office_address || '',
-        bio: row.about_me || 'Verified TravlTik Immigration Consultant.',
+        bio: row.about_me || 'Verified Abroad Zen Immigration Consultant.',
         email: row.email || '',
         phone: row.contact_number || '',
         govReg: row.gov_registration_number || '',

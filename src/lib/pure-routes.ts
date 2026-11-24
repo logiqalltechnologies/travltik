@@ -1,6 +1,6 @@
 // src/lib/pure-routes.ts
 /**
- * TravlTik — Pure Route Implementation (Non-India Origins & Bilateral Corridors)
+ * Abroad Zen — Pure Route Implementation (Non-India Origins & Bilateral Corridors)
  * Supports high-traffic corridors (USA->UK, UK->USA, Canada->Australia, etc.),
  * regional freedom of movement (EU/EEA, GCC, ASEAN), and global origin passports.
  */

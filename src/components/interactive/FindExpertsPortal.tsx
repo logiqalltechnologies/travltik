@@ -371,7 +371,7 @@ export function FindExpertsPortal() {
                     businessName: displayName,
                     role: role,
                     city: e.city || 'Hyderabad',
-                    bio: e.bio || e.about_me || `Verified TravlTik Licensed Consultant specializing in ${parsedTags.slice(0, 2).join(' and ')}.`,
+                    bio: e.bio || e.about_me || `Verified Abroad Zen Licensed Consultant specializing in ${parsedTags.slice(0, 2).join(' and ')}.`,
                     tags: parsedTags,
                     countries: parsedCountries,
                     rating: calcRating,

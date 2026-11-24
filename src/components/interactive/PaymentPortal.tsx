@@ -103,7 +103,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                         href="/" 
                         className="block w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-4 rounded-2xl text-center text-sm shadow-xl transition-all active:scale-[0.98]"
                     >
-                        Back to TravlTik Home
+                        Back to Abroad Zen Home
                     </a>
                 </div>
             </div>
@@ -190,7 +190,7 @@ export function PaymentPortal({ bookingId }: { bookingId: string }) {
                                         <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/90 text-center space-y-2">
                                             <div className="w-24 h-24 mx-auto bg-white border border-slate-200 rounded-xl flex items-center justify-center shadow-2xs p-2">
                                                 <img 
-                                                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=razorpay@icici&pn=TravlTik&am=4700" 
+                                                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=razorpay@icici&pn=Abroad Zen&am=4700" 
                                                     alt="Scan to Pay QR"
                                                     className="w-full h-full object-contain"
                                                 />

@@ -656,7 +656,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <a href="/" className="hover:opacity-90 transition-opacity">
                 <img
                   src="/logo.png"
-                  alt="TravlTik"
+                  alt="Abroad Zen"
                   className="h-10 sm:h-11 w-auto object-contain mx-auto"
                 />
               </a>
@@ -883,7 +883,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
               <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-xl p-3 flex items-center gap-2.5">
                 <Shield className="w-4 h-4 text-[#00A878] shrink-0" />
                 <p className="text-xs text-emerald-900 font-medium leading-normal">
-                  3-Tier Hierarchy Security Protected by TravlTik Network Engine.
+                  3-Tier Hierarchy Security Protected by Abroad Zen Network Engine.
                 </p>
               </div>
 
@@ -912,7 +912,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
                   type="button"
                   onClick={() => {
                     setLoginEmail('partner@globalhorizons.com');
-                    setLoginPassword('TravlTik2026!');
+                    setLoginPassword('Abroad Zen2026!');
                     setRole('country_partner');
                   }}
                   className="text-xs font-semibold text-emerald-800 hover:text-emerald-900 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-xl cursor-pointer transition-colors"
@@ -1463,7 +1463,7 @@ export default function PartnerAuthPortal({ initialMode = 'login' }: Props) {
         {/* Footer info */}
         <div className="text-center mt-3">
           <p className="text-xs text-slate-400 font-normal">
-            TravlTik Global Immigration & Mobility Platform &copy; {new Date().getFullYear()}
+            Abroad Zen Global Immigration & Mobility Platform &copy; {new Date().getFullYear()}
           </p>
         </div>
       </div>

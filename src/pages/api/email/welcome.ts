@@ -62,9 +62,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const html = generateWelcomeHtml({ firstName: safeFirstName, displayName: safeDisplayName });
 
         const info = await sendEmailWithRetry({
-            from: `"TravlTik" <noreply@travltik.com>`,
+            from: `"Abroad Zen" <noreply@abroadzen.com>`,
             to: email,
-            subject: `Welcome to TravlTik 👋`,
+            subject: `Welcome to Abroad Zen 👋`,
             html: html
         });
 
