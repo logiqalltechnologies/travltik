@@ -58,24 +58,13 @@ export const sendEmail = async ({
 }: SendEmailOptions) => {
   const apiKey = getApiKey();
   const apiKeyAvailable = Boolean(apiKey) ? 'YES' : 'NO';
-  let sender = from || process.env.EMAIL_FROM || 'Abroad Zen <noreply@abroadzen.com>';
-  if (!sender || sender.includes('abroadzen.com') || sender.includes('onboarding@resend.dev') || !sender.includes('@abroadzen.com')) {
-    sender = 'Abroad Zen <noreply@abroadzen.com>';
-  }
+  
+  const fromName = (process.env.EMAIL_FROM_NAME || 'Abroad Zen').trim();
+  const fromEmail = (process.env.EMAIL_FROM || 'noreply@abroadzen.com').trim();
+  let sender = from || `${fromName} <${fromEmail}>`;
+
   const toArray = Array.isArray(to) ? to : [to];
   const maskedTo = toArray.map(addr => addr.replace(/^(.{2}).*(@.*)$/, "$1***$2")).join(', ');
-
-  const cwd = process.cwd();
-  const envPath = path.resolve(cwd, '.env');
-  const envExists = fs.existsSync(envPath) ? 'YES' : 'NO';
-  const hasImportMeta = Boolean((import.meta?.env?.RESEND_API_KEY as string | undefined)?.trim()) ? 'YES' : 'NO';
-  const hasProcessEnv = Boolean(process.env.RESEND_API_KEY?.trim()) ? 'YES' : 'NO';
-
-  console.log(`[ENV DEBUG] process.cwd(): ${cwd}`);
-  console.log(`[ENV DEBUG] .env exists: ${envExists}`);
-  console.log(`[ENV DEBUG] import.meta.env.RESEND_API_KEY: ${hasImportMeta}`);
-  console.log(`[ENV DEBUG] process.env.RESEND_API_KEY: ${hasProcessEnv}`);
-  console.log(`[ENV DEBUG] key length: ${apiKey.length}`);
 
   console.log(`[OTP TRACE] Step 8: sendEmail() executed = YES`);
   console.log(`[OTP TRACE] Step 9: exact to value passed = ${maskedTo}`);
@@ -91,13 +80,26 @@ export const sendEmail = async ({
 
   try {
     const resend = getResendClient();
-    const result = await resend.emails.send({
+    let result = await resend.emails.send({
       from: sender,
       to,
       subject,
       html,
       text,
     });
+
+    // If sender domain is not verified yet in Resend, automatically fallback to verified backup domain
+    if (result.error && (result.error.message?.toLowerCase().includes('not verified') || (result.error as any).statusCode === 403)) {
+      console.warn(`[Resend Fallback] Sender domain in "${sender}" is not verified yet. Retrying with verified fallback domain...`);
+      const fallbackSender = 'Abroad Zen <noreply@travltik.com>';
+      result = await resend.emails.send({
+        from: fallbackSender,
+        to,
+        subject,
+        html,
+        text,
+      });
+    }
 
     if (result.data?.id) {
       console.log(`[OTP DEBUG] resend response ID: ${result.data.id}`);
@@ -112,6 +114,26 @@ export const sendEmail = async ({
 
     return { success: true, data: result.data };
   } catch (error: any) {
+    // If exception indicates unverified domain, attempt fallback as well
+    const errMsg = error?.message || String(error);
+    if (errMsg.toLowerCase().includes('not verified') || error?.statusCode === 403) {
+      try {
+        console.warn(`[Resend Fallback on Exception] Retrying with verified fallback domain...`);
+        const resend = getResendClient();
+        const fallbackResult = await resend.emails.send({
+          from: 'Abroad Zen <noreply@travltik.com>',
+          to,
+          subject,
+          html,
+          text,
+        });
+        if (fallbackResult.data?.id) {
+          return { success: true, data: fallbackResult.data };
+        }
+      } catch (fallbackErr: any) {
+        console.error(`[Resend Fallback Error]:`, fallbackErr);
+      }
+    }
     const errDetail = error?.message || String(error);
     console.log(`[OTP DEBUG] resend error: ${errDetail}`);
     return { success: false, error: errDetail };
