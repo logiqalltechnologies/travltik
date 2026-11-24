@@ -2042,6 +2042,111 @@ section{padding:96px 0;position:relative}
   fill: #ff385c;
   stroke: #ff385c;
 }
+.airbnb-home-share{
+  position: absolute;
+  top: 10px;
+  right: 48px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  color: #1b1233;
+  transition: all 0.18s ease;
+}
+.airbnb-home-share:hover{
+  transform: scale(1.12);
+  background: #ffffff;
+  color: #0052cc;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+.airbnb-home-share svg{
+  width: 15px;
+  height: 15px;
+}
+.cl-share-btn{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  color: #1b1233;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+  transition: all 0.2s ease;
+}
+.cl-share-btn:hover{
+  transform: scale(1.1);
+  background: #ffffff;
+  color: #0052cc;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+}
+.cn-share-btn{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(67, 15, 122, 0.12);
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  color: #675f80;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.2s ease;
+}
+.cn-share-btn:hover{
+  transform: scale(1.1);
+  color: #0052cc;
+  border-color: #0052cc;
+  box-shadow: 0 4px 14px rgba(0,82,204,0.18);
+}
+.share-toast{
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #1b1233;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 12px 32px -4px rgba(27, 18, 51, 0.35);
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.share-toast.show{
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
 .airbnb-home-card-info{
   padding-top: 10px;
   display: flex;
@@ -2206,7 +2311,8 @@ section{padding:96px 0;position:relative}
 .bi h3{font-size:21px;font-weight:700;margin-bottom:8px;line-height:1.2}.bi p{font-size:14.5px;color:var(--mut)}.bi .lk{display:inline-flex;gap:8px;align-items:center;font-weight:800;font-size:14px;color:var(--p);margin-top:16px}
 .b1{display:flex;flex-direction:column;grid-column:span 2;grid-row:span 2;background:linear-gradient(150deg,var(--l2),#fff 70%)}.b1 h3{font-size:30px}.b1 p{font-size:16px;max-width:380px}
 .b2{grid-column:span 2;background:linear-gradient(140deg,#090d16 0%,#130e26 55%,#1c113b 100%);color:#fff;border:1.5px solid rgba(139,92,246,0.32);box-shadow:0 24px 50px -15px rgba(0,0,0,0.5),0 0 35px -10px rgba(104,17,204,0.3);position:relative;overflow:hidden}.b2:before{content:"";position:absolute;top:-50px;right:-50px;width:170px;height:170px;background:radial-gradient(circle,rgba(104,17,204,0.35) 0%,transparent 70%);border-radius:50%;pointer-events:none}.b2 .ic{background:linear-gradient(135deg,#430f7a 0%,#6811cc 100%);color:#fff;box-shadow:0 4px 14px rgba(104,17,204,0.45);border:1px solid rgba(255,255,255,0.18)}.b2 h3{color:#ffffff;font-weight:800;letter-spacing:-0.015em}.b2 p{color:rgba(255,255,255,.84)}.b2 .lk{color:#c4b5fd;font-weight:800}
-.b6{grid-column:span 2;background:linear-gradient(120deg,var(--gl2),var(--l1))}
+.b6,.b7{grid-column:span 2}
+.b6{background:linear-gradient(120deg,var(--gl2),var(--l1))}
 .bi.gi .ic{background:var(--gl);color:var(--g2)}
 .vz{margin-top:auto;padding-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end}
 .doc{background:#fff;border-radius:18px;padding:18px;border:1px solid var(--l2);box-shadow:0 20px 40px -26px rgba(67,15,122,.5);font-size:13px;font-weight:700}
@@ -2345,7 +2451,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 }
 /* responsive */
 @media(max-width:1180px){.wrap{padding:0 28px}.hero h1{font-size:56px}.cg,.clg{grid-template-columns:repeat(2,1fr)}.stp{grid-template-columns:repeat(3,1fr)}.stp:before{display:none}.app{grid-template-columns:200px 1fr}.rt2{display:none}.rvg{grid-template-columns:1fr 1fr}.ag{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:1020px){section{padding:84px 0}.links,.nr .lg,.nr .btn{display:none}.burger{display:flex}.hg,.cmg,.fq,.esc,.ctb{grid-template-columns:1fr}.hv{height:auto;max-width:640px;margin:20px auto 0;width:100%;overflow:hidden}.hv .map{position:relative;left:0;top:0;width:100%;max-width:100%}.sg{grid-template-columns:repeat(3,1fr);gap:18px 0}.sg div:nth-child(3){border:0}.dg{grid-template-columns:repeat(2,1fr)}.bn{grid-template-columns:repeat(2,1fr)}.b1,.b2,.b6{grid-column:span 2}.b1{grid-row:auto}.sfm{grid-template-columns:1fr 1fr}.sfm .btn{grid-column:span 2;padding:16px}.res{grid-template-columns:1fr}.fg{grid-template-columns:1fr 1fr}.sh h2,.cmg h2,.fq h2,.ctb h2{font-size:38px}.ctc{transform:none}.clh{flex-direction:column;align-items:flex-start}}
+@media(max-width:1020px){section{padding:84px 0}.links,.nr .lg,.nr .btn{display:none}.burger{display:flex}.hg,.cmg,.fq,.esc,.ctb{grid-template-columns:1fr}.hv{height:auto;max-width:640px;margin:20px auto 0;width:100%;overflow:hidden}.hv .map{position:relative;left:0;top:0;width:100%;max-width:100%}.sg{grid-template-columns:repeat(3,1fr);gap:18px 0}.sg div:nth-child(3){border:0}.dg{grid-template-columns:repeat(2,1fr)}.bn{grid-template-columns:repeat(2,1fr)}.b1,.b2,.b6,.b7{grid-column:span 2}.b1{grid-row:auto}.sfm{grid-template-columns:1fr 1fr}.sfm .btn{grid-column:span 2;padding:16px}.res{grid-template-columns:1fr}.fg{grid-template-columns:1fr 1fr}.sh h2,.cmg h2,.fq h2,.ctb h2{font-size:38px}.ctc{transform:none}.clh{flex-direction:column;align-items:flex-start}}
 @media(max-width:768px){.wrap{padding:0 16px !important;max-width:100% !important;width:100% !important;box-sizing:border-box !important}section{padding:54px 0 !important;overflow-x:clip !important;width:100% !important;max-width:100vw !important}.tb .hide,.tb .mid{display:none !important}.tb .wrap{justify-content:center}.tb .r{gap:16px}.nav{height:68px}.nav img{height:36px}.hero{padding:24px 0 90px;overflow-x:clip}.hero h1{font-size:clamp(30px,8vw,38px);line-height:1.12}.hero .lead{font-size:15px;line-height:1.5;margin-bottom:24px}.hb{flex-direction:column;width:100%;gap:12px;margin-bottom:24px}.hb .btn{width:100%;justify-content:center}.chips{grid-template-columns:1fr;gap:10px}.live{font-size:12px;padding:6px 12px;max-width:100%}.hv{height:auto;display:flex;flex-direction:column;gap:16px;margin-top:10px;overflow:hidden;width:100%}.hv .map{position:relative;left:0;top:0;width:100%}.hv .glass{position:relative;inset:auto;width:100%!important;animation:none}.stamp{display:none}.sh h2,.cmg h2,.fq h2,.ctb h2,.esc h3{font-size:clamp(24px,7vw,30px) !important;line-height:1.15;word-break:break-word}.sh p{font-size:15px;line-height:1.5;word-break:break-word}.sg{grid-template-columns:1fr 1fr;padding:22px 8px}.sg div{border:0!important}.sg b{font-size:30px}.dg,.bn,.stp,.cg,.clg,.rvg,.ag,.fg,.cms{grid-template-columns:1fr}.b1,.b2,.b6{grid-column:auto}.vz{grid-template-columns:1fr}.tabs{gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{white-space:nowrap;flex-shrink:0;padding:8px 16px;font-size:13px}.sfm{grid-template-columns:1fr !important;gap:10px;padding:10px;border-radius:18px;width:100% !important;max-width:100% !important;box-sizing:border-box !important}.sfm .fld{width:100% !important;max-width:100% !important;box-sizing:border-box !important;min-width:0 !important}.sfm .btn{grid-column:auto;width:100%;padding:14px;border-radius:14px}.sbox{padding:16px 12px !important;border-radius:20px;width:100% !important;max-width:100% !important;box-sizing:border-box !important}.qs-card{padding:20px 14px !important;border-radius:22px;width:100% !important;max-width:100% !important;box-sizing:border-box !important;overflow:hidden !important}.qs-title-wrap{min-width:0 !important;flex:1 1 100% !important}.qs-sub{word-break:break-word !important;font-size:12.5px !important;line-height:1.45 !important}.qs-tabs{gap:6px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}.qs-tabs::-webkit-scrollbar{display:none}.qs-tab{white-space:nowrap;flex-shrink:0;padding:8px 14px;font-size:12.5px}.qs-grid{grid-template-columns:1fr !important;gap:12px !important;width:100% !important;max-width:100% !important}.qs-col{width:100% !important;max-width:100% !important;min-width:0 !important}.qs-input-box,.qs-drop-box{height:48px;border-radius:14px;width:100% !important;max-width:100% !important;box-sizing:border-box !important}.qs-btn-search{width:100%;min-width:unset;height:48px;border-radius:99px}.qs-action-row{flex-direction:column;gap:12px}.qs-adv-link{position:static}.esc{padding:24px 16px !important;border-radius:24px !important;margin-top:36px !important;gap:28px !important;width:100% !important;max-width:100% !important;box-sizing:border-box !important;overflow:hidden !important}.esc:before{display:none !important}.esc h3{font-size:clamp(22px,6vw,28px) !important;line-height:1.2 !important;word-break:break-word !important}.esc p{font-size:14px !important;line-height:1.5 !important;word-break:break-word !important}.eck div{font-size:13.5px !important;word-break:break-word !important}.ev{max-width:100% !important;width:100% !important;min-width:0 !important}.ev .top{flex-wrap:wrap !important;gap:8px !important}.ev .tot{font-size:24px !important}.ecalc{padding:14px 16px !important}.ecalc label{flex-wrap:wrap !important;gap:6px !important}.ebar{flex-direction:column;gap:6px;min-height:unset}.ebar div{width:100%;flex:unset;padding:10px;font-size:12px;border-radius:12px}.emil{grid-template-columns:1fr;gap:8px}.app{grid-template-columns:1fr;height:auto;max-width:100% !important;overflow:hidden !important}.sd{flex-direction:row;overflow:auto;border:0;padding:12px;align-items:center}.sd h6,.sd>.ch{display:none}#chs{flex-direction:row!important}.ch{white-space:nowrap}.ms{min-height:340px;max-width:100% !important}.cin{padding:10px 12px !important}#cin-input{min-width:0 !important}.cpt-scroll-box{width:100% !important;max-width:100% !important;overflow-x:auto !important;-webkit-overflow-scrolling:touch !important;padding-bottom:10px !important}.cpt{font-size:13px;min-width:500px !important}.cpt>div{padding:14px 10px;font-size:12.5px}.cpt .hd{font-size:13px}.cpt .ok,.cpt .no{width:22px;height:22px;font-size:12px}.cpt .tv{gap:6px}.cpt .tx small{display:none}.cpt-swipe-hint{display:block !important}.ctb{padding:32px 18px;border-radius:24px;overflow:hidden !important}.ctb .btn{width:100%;justify-content:center}.clb{flex-direction:column;align-items:flex-start}.clh .btn{width:100%;max-width:none;justify-content:center;margin-top:10px}.stp .sc2 p{min-height:0}.sc2.on{transform:none}.qa button{font-size:15px;padding:18px}.fg{grid-template-columns:1fr;gap:28px}.fb{flex-direction:column;align-items:flex-start;gap:16px}.fb .tr{flex-direction:column;align-items:flex-start;gap:8px}.pin{display:none}#ecosystem{padding:44px 0!important;margin-top:16px!important}#ecosystem h2{font-size:clamp(22px,6.5vw,28px)!important;line-height:1.2!important}#ecosystem p{font-size:14px!important}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
@@ -3157,8 +3263,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <div class="bi gi rv"><div class="ic"><svg class="i"><use href="#cap"/></svg></div><h3>Study abroad</h3><p>Admissions, funds proof and student visas in one flow.</p><a class="lk" href="/find-experts?category=student">Explore <svg class="i"><use href="#arrow"/></svg></a></div>
 <div class="bi rv"><div class="ic"><svg class="i"><use href="#brief"/></svg></div><h3>Jobs &amp; sponsorship</h3><p>Roles that offer visa sponsorship and relocation support.</p><a class="lk" href="/jobs">Explore <svg class="i"><use href="#arrow"/></svg></a></div>
 <div class="bi b6 rv"><div class="ic" style="background:#fff"><svg class="i"><use href="#plane"/></svg></div><h3>Tours &amp; travel packages</h3><p>Curated trips with the visa handled for you: flights, stays and guides in a single price.</p><div class="tour"><span><svg class="i"><use href="#check"/></svg>Visa included</span><span><svg class="i"><use href="#check"/></svg>Flexible dates</span><span><svg class="i"><use href="#check"/></svg>24/7 support</span></div></div>
-<div class="bi gi rv"><div class="ic"><svg class="i"><use href="#home"/></svg></div><h3>Housing &amp; relocation</h3><p>Verified stays, SIMs, banking and settling-in help.</p><a class="lk" href="/find-experts">Explore <svg class="i"><use href="#arrow"/></svg></a></div>
-<div class="bi rv"><div class="ic"><svg class="i"><use href="#chat"/></svg></div><h3>Expat community</h3><p>Live chat rooms by country with experts and peers.</p><a class="lk" href="#community">Join free <svg class="i"><use href="#arrow"/></svg></a></div>
+<div class="bi b7 rv"><div class="ic"><svg class="i"><use href="#chat"/></svg></div><h3>Expat community</h3><p>Live chat rooms by country with experts and peers.</p><a class="lk" href="#community">Join free <svg class="i"><use href="#arrow"/></svg></a></div>
 </div></div></section>
 
 <!-- EXPERTS -->
@@ -3244,7 +3349,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 <footer><div class="wrap"><div class="fg"><div><img src="/logo.png?v=20" alt="AbroadZen"><p class="ab">The global marketplace for visas, jobs, study and relocation, with licensed experts and escrow-protected payments.</p>
 <form id="nl-form" class="nl" onsubmit="return false;"><input id="nl-email" type="email" required placeholder="Your email for visa news"><button type="submit" id="nl-btn" class="btn g s">Subscribe</button></form>
 <div class="so"><a href="https://facebook.com/abroadzen" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="i"><use href="#fb"/></svg></a><a href="https://twitter.com/abroadzen" target="_blank" rel="noopener noreferrer" aria-label="X"><svg class="i"><use href="#tw"/></svg></a><a href="https://instagram.com/abroadzen" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg class="i"><use href="#ig"/></svg></a><a href="https://linkedin.com/company/abroadzen" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg class="i"><use href="#li"/></svg></a><a href="https://youtube.com/@abroadzen" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg class="i"><use href="#yt"/></svg></a></div></div>
-<div><h5>Services</h5><ul><li><a href="/find-experts">Visas &amp; PR</a></li><li><a href="/find-experts?category=student">Study abroad</a></li><li><a href="/jobs">Jobs abroad</a></li><li><a href="/tours">Tours &amp; packages</a></li><li><a href="/find-experts">Housing</a></li></ul></div>
+<div><h5>Services</h5><ul><li><a href="/find-experts">Visas &amp; PR</a></li><li><a href="/find-experts?category=student">Study abroad</a></li><li><a href="/jobs">Jobs abroad</a></li><li><a href="/tours">Tours &amp; packages</a></li><li><a href="/community">Community chat</a></li></ul></div>
 <div><h5>Explore</h5><ul><li><a href="/find-experts">Find consultants</a></li><li><a href="/planner">AI Trip Planner</a></li><li><a href="/community">Community chat</a></li><li><a href="#destinations">Destinations</a></li><li><a href="/visa-guide">Blog &amp; guides</a></li></ul></div>
 <div><h5>Company</h5><ul><li><a href="/channel-partner">Become a consultant</a></li><li><a href="/add-business">Add Your Business</a></li><li><a href="/biz/claim">Claim Your Business</a></li><li><a href="/escrow">Escrow Protection</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/support">Contact &amp; Support</a></li></ul></div>
 <div><h5>Get the app</h5><div class="apps" style="flex-direction:column"><a href="javascript:void(0)" aria-label="Download on App Store - Coming Soon"><div class="app-inner"><svg class="i f"><use href="#apple"/></svg><span><small>Download on the</small><b>App Store</b></span></div><div class="app-hover-label"><span style="width:7px;height:7px;border-radius:50%;background:#00b070;display:inline-block"></span><span>Coming Soon</span></div></a><a href="javascript:void(0)" aria-label="Get it on Google Play - Coming Soon"><div class="app-inner"><svg class="i f"><use href="#play"/></svg><span><small>Get it on</small><b>Google Play</b></span></div><div class="app-hover-label"><span style="width:7px;height:7px;border-radius:50%;background:#00b070;display:inline-block"></span><span>Coming Soon</span></div></a></div></div></div>
@@ -3623,7 +3728,14 @@ const CN=[
   }
 ];
 const rAv=(c)=>c.image&&c.image.startsWith('http')?`<img src="${c.image}" alt="${c.name}" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6)">`:`<div style="width:92px;height:92px;border-radius:50%;background:${c.gradient};color:#fff;display:grid;place-items:center;font-size:30px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6);letter-spacing:-0.03em">${c.initials}</div>`;
-$('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c.name)}'"><div style="position:relative;width:92px;height:92px;margin-bottom:14px">${rAv(c)}<span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c.name}</h4><div class="rl">${c.role}</div><span class="bdg lic">${ic('shield')}${c.badge}</span><div class="rt" style="margin-top:14px">${stars(5)}${c.rating} <small>(${c.reviews} reviews)</small></div><div class="lg">${c.languages.map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c.cases}</b><small>Cases done</small></div><div><b style="color:var(--g2)">${c.success}</b><small>Success rate</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c.name)}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
+$('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer;position:relative" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c.name)}'">
+  <button type="button" class="cn-share-btn" aria-label="Share consultant" title="Share consultant" onclick="event.preventDefault();event.stopPropagation();window.shareItem('${c.name.replace(/'/g, "\\'")}', '/find-experts?search=${encodeURIComponent(c.name)}');">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+    </svg>
+  </button>
+  <div style="position:relative;width:92px;height:92px;margin-bottom:14px">${rAv(c)}<span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c.name}</h4><div class="rl">${c.role}</div><span class="bdg lic">${ic('shield')}${c.badge}</span><div class="rt" style="margin-top:14px">${stars(5)}${c.rating} <small>(${c.reviews} reviews)</small></div><div class="lg">${c.languages.map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c.cases}</b><small>Cases done</small></div><div><b style="color:var(--g2)">${c.success}</b><small>Success rate</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c.name)}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
 /* classifieds & offers */
 const CL=[
   {title:'Escorted Tour By Partners',sub:'Europamundo | Cosmos | Globus | Trafalgar & More..',extra:'',btnText:'View More',btnType:'pill',theme:'light',bgImg:'/images/offers/escorted_tour.jpg',overlay:'linear-gradient(180deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Tours',href:'/tours'},
@@ -3638,7 +3750,13 @@ const cats=['All','Tours','Jobs','Flights','Forex'];
 const drawC=()=>{
   $('#cf').innerHTML=cats.map(c=>`<button class="chip ${c==cat?'on':''}" data-c="${c}">${c}<small>${c=='All'?CL.length:CL.filter(x=>x.cat==c).length}</small></button>`).join('');
   $('#clg').innerHTML=CL.filter(x=>cat=='All'||x.cat==cat).map((x,i)=>`
-    <article class="cl-card" style="animation-delay:${i*.06}s;" onclick="window.location.href='${x.href}'">
+    <article class="cl-card" style="animation-delay:${i*.06}s;" onclick="if(event.target.closest('.cl-share-btn')){event.preventDefault();return false;}window.location.href='${x.href}'">
+      <button type="button" class="cl-share-btn" aria-label="Share offer" title="Share offer" onclick="event.preventDefault();event.stopPropagation();window.shareItem('${x.title.replace(/'/g, "\\'")}', '${x.href}');">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+      </button>
       <img class="bg-img" src="${x.bgImg}" alt="${x.title}" loading="lazy" />
       <div class="overlay" style="background:${x.overlay}"></div>
       ${x.btnType=='circle'?`
@@ -4718,12 +4836,21 @@ const AIRBNB_CATEGORIES = [
 ];
 
 function renderAirbnbCard(it) {
-  const cleanTitle = (it.title || '').replace(/<[^>]+>/g, ' ');
+  const cleanTitle = (it.title || '').replace(/<[^>]+>/g, ' ').replace(/'/g, "\\'");
   return `
-    <a href="${it.href}" class="airbnb-home-card" onclick="if(event.target.closest('.airbnb-home-heart')){event.preventDefault();return false;}">
+    <a href="${it.href}" class="airbnb-home-card" onclick="if(event.target.closest('.airbnb-home-heart')||event.target.closest('.airbnb-home-share')){event.preventDefault();return false;}">
       <div class="airbnb-home-card-img-wrap">
         <img src="${it.img}" alt="${cleanTitle}" class="airbnb-home-card-img" loading="lazy" onerror="this.src='/experts/expert1.png'"/>
         ${it.badge ? `<div class="airbnb-home-badge">${it.badge}</div>` : ''}
+        <button type="button" class="airbnb-home-share" aria-label="Share" title="Share" onclick="event.preventDefault();event.stopPropagation();window.shareItem('${cleanTitle}', '${it.href}');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
         <button type="button" class="airbnb-home-heart" aria-label="Save to wishlist" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('saved');">
           <svg viewBox="0 0 32 32"><path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05A6.98 6.98 0 0 0 9 4a6.98 6.98 0 0 0-7 7c0 7 7 12.27 14 17z"/></svg>
         </button>
@@ -5837,6 +5964,54 @@ const ym=location.hash.match(/y=(\d+)/);if(ym&&+ym[1]>0){document.body.style.tra
     observer.observe(el);
   });
 })();
+
+// ── 🔗 Universal Card Share Functionality ──
+window.showShareToast = function(msg) {
+  let toast = document.getElementById('share-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'share-toast';
+    toast.className = 'share-toast';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00b070" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>${msg}</span>`;
+  toast.classList.add('show');
+  clearTimeout(window.__shareToastTimer);
+  window.__shareToastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
+};
+
+window.shareItem = async function(title, path) {
+  const url = path.startsWith('http') ? path : (window.location.origin + path);
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: title + ' | Abroad Zen',
+        text: 'Check this out on Abroad Zen: ' + title,
+        url: url
+      });
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return;
+    }
+  }
+  // Fallback: Copy to clipboard
+  try {
+    await navigator.clipboard.writeText(url);
+    window.showShareToast('Link copied to clipboard!');
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    window.showShareToast('Link copied to clipboard!');
+  }
+};
 </script></body></html>
 
 
