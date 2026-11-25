@@ -96,7 +96,7 @@ export const MyApplications: React.FC<MyApplicationsProps> = ({
 
       {!hasApps || !activeApp ? (
         // Empty State
-        <div className="bg-white rounded-3xl border border-dashed border-slate-200 p-8 text-center space-y-3 shadow-2xs">
+        <div className="empty-state-fade bg-white rounded-3xl border border-dashed border-slate-200 p-8 text-center space-y-3 shadow-2xs">
           <div className="w-12 h-12 rounded-2xl bg-teal-50 text-[#00a896] flex items-center justify-center mx-auto">
             <AlertCircle className="w-6 h-6" />
           </div>
@@ -158,7 +158,7 @@ export const MyApplications: React.FC<MyApplicationsProps> = ({
               {/* Steps Progress Line */}
               <div className="hidden sm:block absolute top-4 left-[10%] right-[10%] h-0.5 bg-slate-200 -z-0">
                 <div
-                  className="h-full bg-[#00a896] transition-all duration-700"
+                  className="progress-animate h-full bg-[#00a896] transition-all duration-700"
                   style={{ width: `${((currentStep - 1) / (STAGES.length - 1)) * 100}%` }}
                 />
               </div>
@@ -183,7 +183,7 @@ export const MyApplications: React.FC<MyApplicationsProps> = ({
                         }`}
                       >
                         {isCompleted ? (
-                          <Check className="w-4 h-4 stroke-[3]" />
+                          <Check className="w-4 h-4 stroke-[3] success-check !text-white" />
                         ) : stepNum === 3 ? (
                           <CreditCard className="w-3.5 h-3.5" />
                         ) : stepNum === 4 ? (

@@ -1424,10 +1424,18 @@ h3, h4 {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .skeleton {
+    animation: none !important;
+    opacity: 0.6 !important;
+  }
   [data-animate-on-scroll] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+  .animate-fade-in-up {
+    opacity: 1 !important;
+    animation: none !important;
   }
 }
 
@@ -1452,6 +1460,7 @@ h3, h4 {
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 
 /* Scroll-triggered reveal utility */
@@ -1520,4 +1529,120 @@ h3, h4 {
 .feature-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.18);
+}
+
+/* Skeleton loader */
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.85; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+/* AI typing dots */
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+.typing-dot:nth-child(1) { animation: typingDot 1.2s infinite 0s; }
+.typing-dot:nth-child(2) { animation: typingDot 1.2s infinite 0.2s; }
+.typing-dot:nth-child(3) { animation: typingDot 1.2s infinite 0.4s; }
+
+/* Form shake & success */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.input-error {
+  animation: shake 0.4s ease;
+  border-color: #ef4444 !important;
+  transition: border-color 0.2s ease;
+}
+
+.input-success {
+  border-color: #10b981 !important;
+  transition: border-color 0.2s ease;
+}
+
+@keyframes checkFadeIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.success-check {
+  animation: checkFadeIn 0.3s ease-out;
+  color: #10b981;
+}
+
+/* Notification pulse */
+@keyframes notifPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+.notif-pulse {
+  animation: notifPulse 2s ease-in-out infinite;
+}
+
+/* Toast slide-in & slide-out */
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast-slide-in {
+  animation: toastSlideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes toastSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.toast-slide-out {
+  animation: toastSlideOut 0.3s ease forwards;
+}
+
+/* Progress bar fill */
+@keyframes progressFill {
+  from { width: 0%; }
+}
+
+.progress-animate {
+  animation: progressFill 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Number count-up */
+.count-up-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Empty state fade */
+@keyframes emptyFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.empty-state-fade {
+  animation: emptyFadeIn 0.5s ease-out;
 }

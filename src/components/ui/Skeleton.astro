@@ -1,0 +1,19 @@
+---
+interface Props {
+  variant?: 'text' | 'card' | 'avatar' | 'list';
+  count?: number;
+}
+const { variant = 'text', count = 1 } = Astro.props;
+---
+
+{Array.from({ length: count }).map(() => (
+  variant === 'text' ? (
+    <div class="skeleton h-4 w-full rounded mb-2"></div>
+  ) : variant === 'avatar' ? (
+    <div class="skeleton h-12 w-12 rounded-full"></div>
+  ) : variant === 'card' ? (
+    <div class="skeleton h-32 w-full rounded-xl mb-3"></div>
+  ) : (
+    <div class="skeleton h-16 w-full rounded-lg mb-2"></div>
+  )
+))}

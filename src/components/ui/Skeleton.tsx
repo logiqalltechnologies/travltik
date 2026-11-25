@@ -1,10 +1,31 @@
 import React from 'react';
 
-export function Skeleton({ className = '' }: { className?: string }) {
+interface SkeletonProps {
+  className?: string;
+  variant?: 'text' | 'card' | 'avatar' | 'list';
+  count?: number;
+}
+
+export function Skeleton({ className = '', variant = 'text', count = 1 }: SkeletonProps) {
+  if (className) {
+    return (
+      <>
+        {Array.from({ length: count }).map((_, idx) => (
+          <div key={idx} className={`skeleton rounded-lg ${className}`} />
+        ))}
+      </>
+    );
+  }
+
   return (
-    <div 
-      className={`animate-pulse bg-slate-200 rounded-lg ${className}`}
-    />
+    <>
+      {Array.from({ length: count }).map((_, idx) => {
+        if (variant === 'avatar') return <div key={idx} className="skeleton h-12 w-12 rounded-full" />;
+        if (variant === 'card') return <div key={idx} className="skeleton h-32 w-full rounded-xl mb-3" />;
+        if (variant === 'list') return <div key={idx} className="skeleton h-16 w-full rounded-lg mb-2" />;
+        return <div key={idx} className="skeleton h-4 w-full rounded mb-2" />;
+      })}
+    </>
   );
 }
 

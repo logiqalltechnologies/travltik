@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CustomSelect } from '../ui/CustomSelect';
+import { AIThinkingIndicator } from '../ai/AIThinkingIndicator';
 
 interface Pathway {
   name: string;
@@ -180,6 +181,10 @@ export function DecisionMatrix() {
           <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
             {error}
           </div>
+        )}
+
+        {loading && (
+          <AIThinkingIndicator label="AI is analyzing your visa eligibility..." />
         )}
 
         <button

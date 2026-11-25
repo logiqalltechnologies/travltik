@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Loader2, X, Tag } from "lucide-react";
 import { useAuth, AuthProvider } from "../providers/auth-provider";
 import { TurnstileWidget } from "../common/TurnstileWidget";
 
 function LoginPortalContent() {
     const { signIn, signInWithGoogle } = useAuth();
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
+
+    const triggerInputShake = (ref: React.RefObject<HTMLInputElement | null>) => {
+        if (!ref.current) return;
+        ref.current.classList.remove("input-success");
+        ref.current.classList.add("input-error");
+        setTimeout(() => ref.current?.classList.remove("input-error"), 400);
+    };
     const [loginStep, setLoginStep] = useState<0 | 1>(0); // 0 = Email, 1 = Password
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -166,8 +175,10 @@ function LoginPortalContent() {
         e.preventDefault();
         if (!email || !/\S+@\S+\.\S+/.test(email)) {
             setError("Please enter a valid email address.");
+            triggerInputShake(emailInputRef);
             return;
         }
+        emailInputRef.current?.classList.add("input-success");
         setError("");
         setLoginStep(1);
     };
@@ -176,6 +187,7 @@ function LoginPortalContent() {
         e.preventDefault();
         if (!password) {
             setError("Please enter your password.");
+            triggerInputShake(passwordInputRef);
             return;
         }
         setError("");
@@ -194,6 +206,7 @@ function LoginPortalContent() {
         } catch (err: any) {
             const cleanErr = formatAuthError(err?.message || err?.code);
             setError(cleanErr || err?.message || "Invalid email or password.");
+            triggerInputShake(passwordInputRef);
         } finally {
             setLoading(false);
         }
@@ -300,12 +313,21 @@ function LoginPortalContent() {
                                         <Mail className="w-4 h-4" />
                                     </div>
                                     <input
+                                        ref={emailInputRef}
                                         type="email"
                                         required
                                         value={email}
                                         onChange={(e) => {
                                             setEmail(e.target.value);
                                             if (error) setError("");
+                                            emailInputRef.current?.classList.remove("input-error");
+                                        }}
+                                        onBlur={() => {
+                                            if (email && /\S+@\S+\.\S+/.test(email)) {
+                                                emailInputRef.current?.classList.add("input-success");
+                                            } else if (email) {
+                                                triggerInputShake(emailInputRef);
+                                            }
                                         }}
                                         placeholder="john@example.com"
                                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
@@ -351,12 +373,14 @@ function LoginPortalContent() {
                                         <Lock className="w-4 h-4" />
                                     </div>
                                     <input
+                                        ref={passwordInputRef}
                                         type={showPwd ? "text" : "password"}
                                         required
                                         value={password}
                                         onChange={(e) => {
                                             setPassword(e.target.value);
                                             if (error) setError("");
+                                            passwordInputRef.current?.classList.remove("input-error");
                                         }}
                                         placeholder="Enter your password"
                                         className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"

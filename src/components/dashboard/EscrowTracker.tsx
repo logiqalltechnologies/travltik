@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Skeleton } from '../ui/Skeleton';
 
 interface Milestone {
   id: string;
@@ -43,14 +44,10 @@ export function EscrowTracker({ bookingId }: { bookingId: string }) {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-        <div className="animate-pulse space-y-3">
-          <div className="h-4 bg-slate-200 rounded w-1/3"></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-24 bg-slate-100 rounded-xl"></div>
-            ))}
-          </div>
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-3">
+        <Skeleton className="h-4 w-1/3" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <Skeleton className="h-24 rounded-xl" count={3} />
         </div>
       </div>
     );

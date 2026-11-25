@@ -4,6 +4,7 @@ import {
   CheckCircle2, Compass, ShieldAlert, BookOpen, Layers, Award
 } from 'lucide-react';
 import { CustomSelect, type SelectOption } from '../ui/CustomSelect';
+import { AIThinkingIndicator } from '../ai/AIThinkingIndicator';
 
 const COUNTRY_OPTIONS: SelectOption[] = [
   { value: "Canada", label: "Canada", subtitle: "Express Entry / Provincial Nominee (PNP)", badge: "EE / PNP" },
@@ -236,6 +237,12 @@ export function PDFAudit() {
               )}
             </button>
           </div>
+
+          {loading && (
+            <div className="mt-4">
+              <AIThinkingIndicator label="AI is auditing your regulatory profile..." />
+            </div>
+          )}
         </form>
 
         {errorMsg && (

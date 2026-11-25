@@ -4,6 +4,7 @@ import {
   BookOpen, ShieldCheck, RefreshCw, Send, CheckCircle2
 } from 'lucide-react';
 import { CustomSelect, type SelectOption } from '../ui/CustomSelect';
+import { AIThinkingIndicator } from '../ai/AIThinkingIndicator';
 
 const SOP_COUNTRY_OPTIONS: SelectOption[] = [
   { value: "Canada", label: "Canada", subtitle: "IRCC / Section 216 IRPR Intent Standard", badge: "IRCC" },
@@ -257,6 +258,11 @@ export function SOPGenerator() {
                 </>
               )}
             </button>
+            {loading && (
+              <div className="mt-3">
+                <AIThinkingIndicator label="AI is drafting your embassy-ready SOP..." />
+              </div>
+            )}
           </form>
         </div>
 

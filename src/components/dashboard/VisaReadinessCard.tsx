@@ -95,7 +95,7 @@ export const VisaReadinessCard: React.FC<VisaReadinessCardProps> = ({
           {/* Horizontal Progress Bar */}
           <div className="w-full bg-slate-100 rounded-full h-2 sm:h-2.5 overflow-hidden">
             <div
-              className="bg-[#00a896] h-full rounded-full transition-all duration-700 ease-out"
+              className="progress-animate bg-[#00a896] h-full rounded-full transition-all duration-700 ease-out"
               style={{ width: score > 0 ? `${Math.min(Math.max(score, 5), 100)}%` : '0%' }}
             />
           </div>

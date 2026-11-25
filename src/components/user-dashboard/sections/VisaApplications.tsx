@@ -96,7 +96,7 @@ export const VisaApplications: React.FC<VisaApplicationsProps> = ({
             </div>
 
             {visasProcessingState.length === 0 ? (
-                <div className="bg-white rounded-3xl border border-slate-200/80 p-10 text-center space-y-4 shadow-sm">
+                <div className="empty-state-fade bg-white rounded-3xl border border-slate-200/80 p-10 text-center space-y-4 shadow-sm">
                     <Briefcase className="w-12 h-12 text-slate-300 mx-auto" />
                     <h3 className="text-base font-black text-slate-900">No Active Visa Applications Found</h3>
                     <p className="text-xs text-slate-500 max-w-sm mx-auto">
