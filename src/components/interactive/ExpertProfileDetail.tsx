@@ -237,10 +237,17 @@ export function ExpertProfileDetail({
     ];
   }, []);
 
-  // Dynamic Classified Ads: expert-specific ads if present, or verified corridor deals
+  // Identify real registered DB experts vs UI mock/demo experts
+  const isRealDbExpert = String(expert?.id || '').startsWith('db_');
+  const isMockExpert = !isRealDbExpert;
+
+  // Dynamic Classified Ads: real experts show ONLY their own ads (no fake corridor offers); mock experts keep demo offers
   const [displayedClassifieds, setDisplayedClassifieds] = useState<any[]>(() => {
     if (expert.classifieds && Array.isArray(expert.classifieds) && expert.classifieds.length > 0) {
       return expert.classifieds;
+    }
+    if (isRealDbExpert) {
+      return [];
     }
     return [
       {
@@ -341,7 +348,9 @@ export function ExpertProfileDetail({
               isDirectByExpert: true,
               popular: true
             }));
-            const baseClassifieds = (expert.classifieds && Array.isArray(expert.classifieds) && expert.classifieds.length > 0) ? expert.classifieds : platformCorridorOffers;
+            const baseClassifieds = (expert.classifieds && Array.isArray(expert.classifieds) && expert.classifieds.length > 0)
+              ? expert.classifieds
+              : (isMockExpert ? platformCorridorOffers : []);
             setDisplayedClassifieds([...mapped, ...baseClassifieds.filter((c: any) => !mapped.some(m => m.title === c.title))]);
             return;
           }
@@ -350,9 +359,11 @@ export function ExpertProfileDetail({
     } catch(err) {
       console.error(err);
     }
-    const fallback = (expert.classifieds && Array.isArray(expert.classifieds) && expert.classifieds.length > 0) ? expert.classifieds : platformCorridorOffers;
+    const fallback = (expert.classifieds && Array.isArray(expert.classifieds) && expert.classifieds.length > 0)
+      ? expert.classifieds
+      : (isMockExpert ? platformCorridorOffers : []);
     setDisplayedClassifieds(fallback);
-  }, [displayName, expert.email, expert.id, expert.classifieds, platformCorridorOffers]);
+  }, [displayName, expert.email, expert.id, expert.classifieds, platformCorridorOffers, isMockExpert]);
 
   // Gallery: only real images if uploaded by expert
   const galleryImages = expert.galleryImages || [];
@@ -933,7 +944,8 @@ export function ExpertProfileDetail({
               </div>
             </div>
 
-            {/* SECTION: CLASSIFIEDS & SPECIAL DEALS (PERMANENTLY RENDERED IN DOM) */}
+            {/* SECTION: CLASSIFIEDS & SPECIAL DEALS (Only shown if expert has real ads or is a UI mock expert) */}
+            {displayedClassifieds.length > 0 && (
             <div id="section-classifieds" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(55,12,99,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(55,12,99,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6 relative overflow-hidden">
               {/* Subtle brand glow accent */}
               <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-black/10 via-[#370c63]/5 to-transparent rounded-full blur-3xl pointer-events-none" />
@@ -1073,6 +1085,7 @@ export function ExpertProfileDetail({
                 ))}
               </div>
             </div>
+            )}
 
             {/* SECTION 3: REVIEWS & RATINGS SCORECARD */}
             <div id="section-reviews" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
@@ -1171,7 +1184,7 @@ export function ExpertProfileDetail({
                 </div>
               ) : (
                 /* Authentic Clean Empty State */
-                <div className="border border-dashed border-[rgba(67,15,122,0.16)] rounded-[22px] p-8 sm:p-10 text-center space-y-3 bg-[#faf8fd]">
+                <div className="empty-state-fade border border-dashed border-[rgba(67,15,122,0.16)] rounded-[22px] p-8 sm:p-10 text-center space-y-3 bg-[#faf8fd]">
                   <div className="w-12 h-12 bg-[#fffbeb] text-amber-500 rounded-2xl flex items-center justify-center mx-auto border border-amber-200/60">
                     <MessageCircle className="w-6 h-6" />
                   </div>
