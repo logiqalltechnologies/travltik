@@ -33,7 +33,7 @@ try {
   const { rows } = await pool.query(
     `SELECT id, business_name, full_name, advisor_type, city, country, countries_expertise, expertise_tags, languages_spoken, experience_years, year_established, profile_photo, is_verified, escrow_protected, rating, review_count
      FROM experts
-     WHERE id IN (28, 29, 30, 31)
+     WHERE id IN (29, 30, 31, 33)
      ORDER BY id ASC`
   );
   realExperts = rows.map((row: any, idx: number) => {
@@ -3776,20 +3776,20 @@ try {
 if (!CN || CN.length === 0) {
   CN = [
     {
-      id: 28,
-      name: 'Evergreen Visa Consultancy',
-      role: 'Immigration & Visa Consultancy · Panipat, India',
-      badge: 'Worldwide, UAE / Dubai +7 more',
-      languages: ['English', 'Hindi', 'Punjabi'],
+      id: 33,
+      name: 'Matrix Venture Studio Inc.',
+      role: 'Private Limited Company · Toronto, Canada',
+      badge: 'Canada',
+      languages: ['English', 'Hindi', 'Punjabi', 'Bengali'],
       experience: '5 - 10 Years',
-      countriesCount: 9,
-      est: '2022',
+      countriesCount: 1,
+      est: '2021',
       escrowProtected: true,
-      isVerified: true,
+      isVerified: false,
       rating: '4.8',
       reviews: '12',
       image: '',
-      initials: 'EV',
+      initials: 'MV',
       gradient: 'linear-gradient(135deg, #064e3b, #00b070)'
     },
     {
