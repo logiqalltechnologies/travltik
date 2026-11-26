@@ -1,6 +1,74 @@
 ---
 // src/pages/index.astro
 import { ALL_COUNTRIES } from '../data/countries';
+import { getPool } from '../backend/db';
+
+const GRADIENTS = [
+  'linear-gradient(135deg, #064e3b, #00b070)',
+  'linear-gradient(135deg, #1e1b4b, #430f7a)',
+  'linear-gradient(135deg, #0f172a, #008f5a)',
+  'linear-gradient(135deg, #430f7a, #6b34b3)'
+];
+
+function safeJsonArray(val: any): string[] {
+  if (Array.isArray(val)) return val.map(String).filter(Boolean);
+  if (typeof val === 'string' && val.trim().startsWith('[')) {
+    try {
+      const parsed = JSON.parse(val);
+      return Array.isArray(parsed) ? parsed.map(String).filter(Boolean) : [];
+    } catch { return []; }
+  }
+  return [];
+}
+
+function getInitials(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+}
+
+let realExperts: any[] = [];
+try {
+  const pool = getPool();
+  const { rows } = await pool.query(
+    `SELECT id, business_name, full_name, advisor_type, city, country, countries_expertise, expertise_tags, languages_spoken, experience_years, year_established, profile_photo, is_verified, escrow_protected, rating, review_count
+     FROM experts
+     WHERE id IN (28, 29, 30, 31)
+     ORDER BY id ASC`
+  );
+  realExperts = rows.map((row: any, idx: number) => {
+    const name = (row.business_name || row.full_name || 'Verified Expert').trim();
+    const locParts = [row.city, row.country].filter((v: any) => v && String(v).trim());
+    const locationStr = locParts.join(', ');
+    const roleStr = [row.advisor_type || 'Immigration Consultant', locationStr].filter(Boolean).join(' · ');
+    const countries = safeJsonArray(row.countries_expertise);
+    const langs = safeJsonArray(row.languages_spoken);
+    const tags = safeJsonArray(row.expertise_tags);
+    const badgeStr = countries.length > 0
+      ? countries.slice(0, 3).join(', ') + (countries.length > 3 ? ` +${countries.length - 3} more` : '')
+      : (tags.length > 0 ? tags.slice(0, 2).join(' · ') : (row.is_verified ? 'Verified Expert' : 'Registered Consultant'));
+
+    return {
+      id: row.id,
+      name,
+      role: roleStr,
+      badge: badgeStr,
+      languages: langs,
+      experience: row.experience_years && String(row.experience_years).trim() ? String(row.experience_years).trim() : null,
+      countriesCount: countries.length > 0 ? countries.length : null,
+      est: row.year_established && String(row.year_established).trim() ? String(row.year_established).trim() : null,
+      escrowProtected: Boolean(row.escrow_protected),
+      isVerified: Boolean(row.is_verified),
+      rating: row.rating ? String(row.rating) : null,
+      reviews: row.review_count != null ? String(row.review_count) : null,
+      image: row.profile_photo && String(row.profile_photo).startsWith('http') ? String(row.profile_photo) : '',
+      initials: getInitials(name),
+      gradient: GRADIENTS[idx % GRADIENTS.length],
+    };
+  });
+} catch (err) {
+  console.warn('[index.astro] DB experts fetch fallback:', err);
+}
 ---
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
@@ -3269,7 +3337,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 
 <!-- EXPERTS -->
 <section id="experts" data-animate-on-scroll><div class="wrap"><div class="sh rv exp-head"><div><span class="eyebrow">Verified consultants</span><h2>Licensed experts you can <span class="grad">actually trust</span></h2><p>Every consultant is checked against official registers (MARA, RCIC and bar associations) before they can take a case.</p></div><a class="btn o" href="/find-experts">Browse verified experts <svg class="i ar"><use href="#arrow"/></svg></a></div>
-<div class="cg" id="cg"></div></div></section>
+<div class="cg" id="cg"></div><script id="real-experts-data" type="application/json" set:html={JSON.stringify(realExperts)}></script></div></section>
 <!-- DESTINATIONS -->
 <section id="destinations" data-animate-on-scroll><div class="wrap"><div class="sh rv"><span class="eyebrow">Popular destinations</span><h2>Where will your <span class="ser" style="color:var(--p2);font-weight:600">next chapter</span> begin?</h2><p>Compare visa routes, typical processing times and starting prices before you talk to anyone.</p></div><div class="dg" id="dg"></div></div></section>
 
@@ -3697,70 +3765,102 @@ const S=[['Search & compare','Tell us your goal and destination. See verified ex
 let si=0;const drawS=()=>{$('#stp').innerHTML=S.map((s,i)=>`<div class="sc2 gc ${i==si?'on':''}" data-i="${i}"><div class="il"><span class="nb">${i+1}</span>${IL[i]}</div><h3>${s[0]}</h3><p>${s[1]}</p><span class="tg">${s[2]}</span></div>`).join('');$$('.sc2').forEach(b=>b.onclick=()=>{si=+b.dataset.i;drawS()})};drawS();if(!ST)setInterval(()=>{si=(si+1)%5;drawS()},3200);
 const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
 $('#ef').oninput=e=>{const v=e.target.value*1000;$('#ev2').textContent=$('#et').textContent=fmt(v);$('#a1').textContent=fmt(v*.2);$('#a2').textContent=fmt(v*.3);$('#a3').textContent=fmt(v*.4);if($('#a4'))$('#a4').textContent=fmt(v*.1);};
-/* consultants - real registered experts */
-const CN=[
-  {
-    name: 'Evergreen Visa Consultancy',
-    role: 'Visa & Immigration Consultancy · Panipat, India',
-    badge: 'Verified · Canada, UK & Europe Specialist',
-    languages: ['English','Hindi','Punjabi'],
-    rating: '4.9',
-    reviews: '142',
-    cases: '640',
-    success: '98%',
-    image: '',
-    initials: 'EV',
-    gradient: 'linear-gradient(135deg, #064e3b, #00b070)'
-  },
-  {
-    name: 'American Immigration Group',
-    role: 'US Immigration & Work Visas · New York, USA',
-    badge: 'H-1B, L-1 & EB-5 Specialist',
-    languages: ['English','Spanish'],
-    rating: '4.9',
-    reviews: '218',
-    cases: '920',
-    success: '99%',
-    image: '',
-    initials: 'AI',
-    gradient: 'linear-gradient(135deg, #1e1b4b, #430f7a)'
-  },
-  {
-    name: 'Apex Visa Solutions',
-    role: 'Canada PR & Express Entry · Toronto, Canada',
-    badge: 'RCIC · Express Entry & PNP',
-    languages: ['English','French','Hindi'],
-    rating: '4.8',
-    reviews: '184',
-    cases: '780',
-    success: '98%',
-    image: '',
-    initials: 'AV',
-    gradient: 'linear-gradient(135deg, #0f172a, #008f5a)'
-  },
-  {
-    name: 'One point advisory group Ltd',
-    role: 'UK Skilled Worker & Global Talent · London, UK',
-    badge: 'OISC · UK Work & Study Visas',
-    languages: ['English','Hindi','Punjabi'],
-    rating: '4.9',
-    reviews: '165',
-    cases: '710',
-    success: '98%',
-    image: '',
-    initials: 'OP',
-    gradient: 'linear-gradient(135deg, #430f7a, #6b34b3)'
-  }
-];
+/* consultants - 100% real registered experts from database (zero fake stats) */
+let CN = [];
+try {
+  const rawEl = document.getElementById('real-experts-data');
+  if (rawEl && rawEl.textContent) CN = JSON.parse(rawEl.textContent);
+} catch (e) {}
+
+if (!CN || CN.length === 0) {
+  CN = [
+    {
+      id: 28,
+      name: 'Evergreen Visa Consultancy',
+      role: 'Immigration & Visa Consultancy · Panipat, India',
+      badge: 'Worldwide, UAE / Dubai, Schengen Countries +6 more',
+      languages: ['English', 'Hindi', 'Punjabi'],
+      experience: '5 - 10 Years',
+      countriesCount: 9,
+      est: '2022',
+      escrowProtected: true,
+      isVerified: true,
+      rating: '4.8',
+      reviews: '12',
+      image: '',
+      initials: 'EV',
+      gradient: 'linear-gradient(135deg, #064e3b, #00b070)'
+    },
+    {
+      id: 29,
+      name: 'American Immigration Group',
+      role: 'Immigration Consultant · New York, United States',
+      badge: 'United States',
+      languages: [],
+      experience: null,
+      countriesCount: 1,
+      est: null,
+      escrowProtected: true,
+      isVerified: false,
+      rating: '4.8',
+      reviews: '12',
+      image: '',
+      initials: 'AI',
+      gradient: 'linear-gradient(135deg, #1e1b4b, #430f7a)'
+    },
+    {
+      id: 30,
+      name: 'Apex Visa Solutions',
+      role: 'Immigration Consultant · Toronto, Canada',
+      badge: 'Canada',
+      languages: [],
+      experience: null,
+      countriesCount: 1,
+      est: null,
+      escrowProtected: true,
+      isVerified: false,
+      rating: '4.8',
+      reviews: '12',
+      image: '',
+      initials: 'AV',
+      gradient: 'linear-gradient(135deg, #0f172a, #008f5a)'
+    },
+    {
+      id: 31,
+      name: 'One point advisory group Ltd',
+      role: 'Private Limited Company · London, United Kingdom',
+      badge: 'United Kingdom, UAE, Australia +3 more',
+      languages: ['English', 'Hindi', 'Punjabi'],
+      experience: '5 - 10 Years',
+      countriesCount: 6,
+      est: '2026',
+      escrowProtected: true,
+      isVerified: false,
+      rating: '4.8',
+      reviews: '12',
+      image: '',
+      initials: 'OP',
+      gradient: 'linear-gradient(135deg, #430f7a, #6b34b3)'
+    }
+  ];
+}
+
 const rAv=(c)=>c.image&&c.image.startsWith('http')?`<img src="${c.image}" alt="${c.name}" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6)">`:`<div style="width:92px;height:92px;border-radius:50%;background:${c.gradient};color:#fff;display:grid;place-items:center;font-size:30px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;border:4px solid #fff;box-shadow:0 10px 22px -10px rgba(67,15,122,.6);letter-spacing:-0.03em">${c.initials}</div>`;
-$('#cg').innerHTML=CN.map(c=>`<article class="cn gc lift rv" style="cursor:pointer;position:relative" onclick="window.location.href='/find-experts?search=${encodeURIComponent(c.name)}'">
-  <button type="button" class="cn-share-btn" aria-label="Share consultant" title="Share consultant" onclick="event.preventDefault();event.stopPropagation();window.shareItem('${c.name.replace(/'/g, "\\'")}', '/find-experts?search=${encodeURIComponent(c.name)}');">
+$('#cg').innerHTML=CN.map(c=>{
+  const leftVal = c.experience ? c.experience : (c.countriesCount ? `${c.countriesCount} ${c.countriesCount === 1 ? 'Country' : 'Countries'}` : 'Global');
+  const leftLabel = c.experience ? 'Experience' : 'Coverage';
+  const rightVal = c.escrowProtected ? 'Protected' : (c.isVerified ? 'Verified' : 'Active');
+  const rightLabel = c.escrowProtected ? 'Escrow' : 'Status';
+  const profileUrl = `/find-experts?search=${encodeURIComponent(c.name)}`;
+  return `<article class="cn gc lift rv" style="cursor:pointer;position:relative" onclick="window.location.href='${profileUrl}'">
+  <button type="button" class="cn-share-btn" aria-label="Share consultant" title="Share consultant" onclick="event.preventDefault();event.stopPropagation();window.shareItem('${c.name.replace(/'/g, "\\'")}', '${profileUrl}');">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
       <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
     </svg>
   </button>
-  <div style="position:relative;width:92px;height:92px;margin-bottom:14px">${rAv(c)}<span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c.name}</h4><div class="rl">${c.role}</div><span class="bdg lic">${ic('shield')}${c.badge}</span><div class="rt" style="margin-top:14px">${stars(5)}${c.rating} <small>(${c.reviews} reviews)</small></div><div class="lg">${c.languages.map(l=>`<span>${l}</span>`).join('')}</div><div class="st"><div><b>${c.cases}</b><small>Cases done</small></div><div><b style="color:var(--g2)">${c.success}</b><small>Success rate</small></div></div><a class="btn g s" href="/find-experts?search=${encodeURIComponent(c.name)}" onclick="event.stopPropagation()">Book consultation</a></article>`).join('');
+  <div style="position:relative;width:92px;height:92px;margin-bottom:14px">${rAv(c)}<span class="on" style="position:absolute;right:2px;bottom:4px;width:16px;height:16px;border-radius:50%;background:var(--g);border:3px solid #fff"></span></div><h4>${c.name}</h4><div class="rl">${c.role}</div><span class="bdg lic">${ic('shield')}${c.badge}</span>${c.rating?`<div class="rt" style="margin-top:14px">${stars(5)}${c.rating}${c.reviews?` <small>(${c.reviews} reviews)</small>`:''}</div>`:''}${c.languages&&c.languages.length>0?`<div class="lg">${c.languages.map(l=>`<span>${l}</span>`).join('')}</div>`:'<div class="lg" style="min-height:26px"></div>'}<div class="st"><div><b>${leftVal}</b><small>${leftLabel}</small></div><div><b style="color:var(--g2)">${rightVal}</b><small>${rightLabel}</small></div></div><a class="btn g s" href="${profileUrl}" onclick="event.stopPropagation()">Book consultation</a></article>`;
+}).join('');
 /* classifieds & offers */
 const CL=[
   {title:'Escorted Tour By Partners',sub:'Europamundo | Cosmos | Globus | Trafalgar & More..',extra:'',btnText:'View More',btnType:'pill',theme:'light',bgImg:'/images/offers/escorted_tour.jpg',overlay:'linear-gradient(180deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.5) 45%,rgba(255,255,255,0) 75%)',cat:'Tours',href:'/tours'},
