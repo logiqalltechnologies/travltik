@@ -35,7 +35,7 @@ try {
     `SELECT id, business_name, full_name, advisor_type, city, country, countries_expertise, expertise_tags, languages_spoken, experience_years, year_established, profile_photo, is_verified, escrow_protected, rating, review_count
      FROM experts
      WHERE id IN (23, 27, 28, 29, 30, 31, 33)
-     ORDER BY id ASC`
+     ORDER BY array_position(ARRAY[29, 30, 31, 33, 23, 27, 28], id) ASC`
   );
   showcaseRealExperts = rows.map((row: any, idx: number) => {
     const name = (row.business_name || row.full_name || 'Verified Expert').trim();
