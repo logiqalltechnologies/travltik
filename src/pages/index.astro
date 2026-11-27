@@ -28,15 +28,16 @@ function getInitials(name: string): string {
 }
 
 let realExperts: any[] = [];
+let showcaseRealExperts: any[] = [];
 try {
   const pool = getPool();
   const { rows } = await pool.query(
     `SELECT id, business_name, full_name, advisor_type, city, country, countries_expertise, expertise_tags, languages_spoken, experience_years, year_established, profile_photo, is_verified, escrow_protected, rating, review_count
      FROM experts
-     WHERE id IN (29, 30, 31, 33)
+     WHERE id IN (23, 27, 28, 29, 30, 31, 33)
      ORDER BY id ASC`
   );
-  realExperts = rows.map((row: any, idx: number) => {
+  showcaseRealExperts = rows.map((row: any, idx: number) => {
     const name = (row.business_name || row.full_name || 'Verified Expert').trim();
     const locParts = [row.city, row.country].filter((v: any) => v && String(v).trim());
     const locationStr = locParts.join(', ');
@@ -66,6 +67,7 @@ try {
       gradient: GRADIENTS[idx % GRADIENTS.length],
     };
   });
+  realExperts = showcaseRealExperts.filter((e: any) => [29, 30, 31, 33].includes(e.id));
 } catch (err) {
   console.warn('[index.astro] DB experts fetch fallback:', err);
 }
@@ -3370,7 +3372,7 @@ footer h5{font-family:Sora;color:var(--p);margin-bottom:18px;font-size:14px;font
 
 <!-- EXPERTS -->
 <section id="experts" data-animate-on-scroll><div class="wrap"><div class="sh rv exp-head"><div><span class="eyebrow">Verified consultants</span><h2>Licensed experts you can <span class="grad">actually trust</span></h2><p>Every consultant is checked against official registers (MARA, RCIC and bar associations) before they can take a case.</p></div><a class="btn o" href="/find-experts">Browse verified experts <svg class="i ar"><use href="#arrow"/></svg></a></div>
-<div class="cg" id="cg"></div><script id="real-experts-data" type="application/json" set:html={JSON.stringify(realExperts)}></script></div></section>
+<div class="cg" id="cg"></div><script id="real-experts-data" type="application/json" set:html={JSON.stringify(realExperts)}></script><script id="showcase-real-experts-data" type="application/json" set:html={JSON.stringify(showcaseRealExperts)}></script></div></section>
 <!-- DESTINATIONS -->
 <section id="destinations" data-animate-on-scroll><div class="wrap"><div class="sh rv"><span class="eyebrow">Popular destinations</span><h2>Where will your <span class="ser" style="color:var(--p2);font-weight:600">next chapter</span> begin?</h2><p>Compare visa routes, typical processing times and starting prices before you talk to anyone.</p></div><div class="dg" id="dg"></div></div></section>
 
@@ -4972,8 +4974,16 @@ const SHOWCASE_DATA = {
 };
 
 // Prepend real registered DB experts before mock experts in Showcase
-if (typeof CN !== 'undefined' && Array.isArray(CN) && CN.length > 0 && SHOWCASE_DATA.experts) {
-  const realShowcaseExperts = CN.map(c => {
+let showcaseDbExperts = [];
+try {
+  const sEl = document.getElementById('showcase-real-experts-data');
+  if (sEl && sEl.textContent) showcaseDbExperts = JSON.parse(sEl.textContent);
+} catch (e) {}
+if (!Array.isArray(showcaseDbExperts) || showcaseDbExperts.length === 0) {
+  showcaseDbExperts = (typeof CN !== 'undefined' && Array.isArray(CN)) ? CN : [];
+}
+if (showcaseDbExperts.length > 0 && SHOWCASE_DATA.experts) {
+  const realShowcaseExperts = showcaseDbExperts.map(c => {
     const roleLower = ((c.role || '') + ' ' + (c.badge || '')).toLowerCase();
     let flag = '';
     if (roleLower.includes('usa') || roleLower.includes('united states') || roleLower.includes('new york')) flag = 'us';
