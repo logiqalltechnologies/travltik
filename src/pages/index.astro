@@ -61,7 +61,7 @@ try {
       isVerified: Boolean(row.is_verified),
       rating: row.rating ? String(row.rating) : null,
       reviews: row.review_count != null ? String(row.review_count) : null,
-      image: row.profile_photo && String(row.profile_photo).startsWith('http') ? String(row.profile_photo) : '',
+      image: row.profile_photo && String(row.profile_photo).trim() ? String(row.profile_photo).trim() : '',
       initials: getInitials(name),
       gradient: GRADIENTS[idx % GRADIENTS.length],
     };
@@ -4978,9 +4978,9 @@ if (typeof CN !== 'undefined' && Array.isArray(CN) && CN.length > 0 && SHOWCASE_
       title: (c.name || '').toUpperCase(),
       flag,
       sub: c.role || 'Immigration Consultant',
-      badge: c.isVerified ? '✓ VERIFIED' : '✓ REGISTERED',
-      col1Val: c.experience || (c.countriesCount ? `${c.countriesCount} COUNTRIES` : 'VERIFIED'),
-      rating: c.rating || '4.8',
+      badge: c.isVerified ? 'VERIFIED' : '',
+      col1Val: c.experience || (c.countriesCount ? `${c.countriesCount} ${c.countriesCount === 1 ? 'COUNTRY' : 'COUNTRIES'}` : ''),
+      rating: c.rating ? String(c.rating) : null,
       href: `/expert/${c.id}`,
       img: c.image || '',
       initials: c.initials || (c.name || 'EX').slice(0, 2).toUpperCase(),
@@ -5014,9 +5014,15 @@ const AIRBNB_CATEGORIES = [
 
 function renderAirbnbCard(it) {
   const cleanTitle = (it.title || '').replace(/<[^>]+>/g, ' ').replace(/'/g, "\\'");
+  const fallbackMonogram = `<div class="airbnb-home-card-img" style="display:flex;align-items:center;justify-content:center;background:${it.gradient || 'linear-gradient(135deg,#1e1b4b,#312e81)'};"><div style="width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,0.16);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:800;letter-spacing:-0.02em;box-shadow:0 8px 24px rgba(0,0,0,0.18);">${it.initials || 'EX'}</div></div>`;
+  const onErrAttr = it.initials
+    ? `onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='flex';"`
+    : `onerror="this.src='/experts/expert1.png'"`;
   const mediaHtml = it.img
-    ? `<img src="${it.img}" alt="${cleanTitle}" class="airbnb-home-card-img" loading="lazy" onerror="this.src='/experts/expert1.png'"/>`
-    : `<div class="airbnb-home-card-img" style="display:flex;align-items:center;justify-content:center;background:${it.gradient || 'linear-gradient(135deg,#1e1b4b,#312e81)'};"><div style="width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,0.16);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:800;letter-spacing:-0.02em;box-shadow:0 8px 24px rgba(0,0,0,0.18);">${it.initials || 'EX'}</div></div>`;
+    ? `<img src="${it.img}" alt="${cleanTitle}" class="airbnb-home-card-img" loading="lazy" ${onErrAttr}/>${it.initials ? fallbackMonogram.replace('display:flex;', 'display:none;') : ''}`
+    : fallbackMonogram;
+  const metaLeft = it.col1Val || it.col3Val || (it.rating === null ? '' : 'Verified');
+  const ratingVal = it.rating === null ? null : (it.rating || '4.95');
   return `
     <a href="${it.href}" class="airbnb-home-card" onclick="if(event.target.closest('.airbnb-home-heart')||event.target.closest('.airbnb-home-share')){event.preventDefault();return false;}">
       <div class="airbnb-home-card-img-wrap">
@@ -5042,9 +5048,9 @@ function renderAirbnbCard(it) {
         </div>
         <p class="airbnb-home-card-sub">${it.sub}</p>
         <div class="airbnb-home-card-meta">
-          <span>${it.col1Val || it.col3Val || 'Verified'}</span>
-          <span style="color:#94a3b8">·</span>
-          <span class="airbnb-home-rating"><span class="airbnb-home-rating-star">★</span> ${it.rating || '4.95'}</span>
+          ${metaLeft ? `<span>${metaLeft}</span>` : ''}
+          ${metaLeft && ratingVal ? `<span style="color:#94a3b8">·</span>` : ''}
+          ${ratingVal ? `<span class="airbnb-home-rating"><span class="airbnb-home-rating-star">★</span> ${ratingVal}</span>` : ''}
         </div>
       </div>
     </a>
