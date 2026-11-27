@@ -2033,6 +2033,9 @@ section{padding:96px 0;position:relative}
 }
 .airbnb-home-card{
   flex: 0 0 clamp(250px, 22vw, 300px);
+  width: clamp(250px, 22vw, 300px);
+  max-width: clamp(250px, 22vw, 300px);
+  min-width: 0;
   scroll-snap-align: start;
   text-decoration: none;
   color: inherit;
@@ -2235,11 +2238,15 @@ section{padding:96px 0;position:relative}
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
+  width: 100%;
 }
 .airbnb-home-card-title-row{
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
+  width: 100%;
 }
 .airbnb-home-card-flag{
   width: 17px;
@@ -2292,6 +2299,8 @@ section{padding:96px 0;position:relative}
 @media (max-width: 768px){
   .airbnb-home-card{
     flex: 0 0 220px;
+    width: 220px;
+    max-width: 220px;
   }
   .airbnb-cat-nav-btns{
     display: none;
