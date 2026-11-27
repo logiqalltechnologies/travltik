@@ -4962,6 +4962,34 @@ const SHOWCASE_DATA = {
   }
 };
 
+// Prepend real registered DB experts before mock experts in Showcase
+if (typeof CN !== 'undefined' && Array.isArray(CN) && CN.length > 0 && SHOWCASE_DATA.experts) {
+  const realShowcaseExperts = CN.map(c => {
+    const roleLower = ((c.role || '') + ' ' + (c.badge || '')).toLowerCase();
+    let flag = '';
+    if (roleLower.includes('usa') || roleLower.includes('united states') || roleLower.includes('new york')) flag = 'us';
+    else if (roleLower.includes('canada') || roleLower.includes('toronto')) flag = 'ca';
+    else if (roleLower.includes('uk') || roleLower.includes('united kingdom') || roleLower.includes('london')) flag = 'gb';
+    else if (roleLower.includes('india')) flag = 'in';
+    else if (roleLower.includes('uae') || roleLower.includes('dubai')) flag = 'ae';
+    else if (roleLower.includes('australia')) flag = 'au';
+    else if (roleLower.includes('germany')) flag = 'de';
+    return {
+      title: (c.name || '').toUpperCase(),
+      flag,
+      sub: c.role || 'Immigration Consultant',
+      badge: c.isVerified ? '✓ VERIFIED' : '✓ REGISTERED',
+      col1Val: c.experience || (c.countriesCount ? `${c.countriesCount} COUNTRIES` : 'VERIFIED'),
+      rating: c.rating || '4.8',
+      href: `/expert/${c.id}`,
+      img: c.image || '',
+      initials: c.initials || (c.name || 'EX').slice(0, 2).toUpperCase(),
+      gradient: c.gradient || 'linear-gradient(135deg, #1e1b4b, #312e81)'
+    };
+  });
+  SHOWCASE_DATA.experts.items = [...realShowcaseExperts, ...SHOWCASE_DATA.experts.items];
+}
+
 // Aliases for 3D Category Tabs
 SHOWCASE_DATA.stays = SHOWCASE_DATA.homes;
 SHOWCASE_DATA.services = SHOWCASE_DATA.experts;
@@ -4986,10 +5014,13 @@ const AIRBNB_CATEGORIES = [
 
 function renderAirbnbCard(it) {
   const cleanTitle = (it.title || '').replace(/<[^>]+>/g, ' ').replace(/'/g, "\\'");
+  const mediaHtml = it.img
+    ? `<img src="${it.img}" alt="${cleanTitle}" class="airbnb-home-card-img" loading="lazy" onerror="this.src='/experts/expert1.png'"/>`
+    : `<div class="airbnb-home-card-img" style="display:flex;align-items:center;justify-content:center;background:${it.gradient || 'linear-gradient(135deg,#1e1b4b,#312e81)'};"><div style="width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,0.16);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:800;letter-spacing:-0.02em;box-shadow:0 8px 24px rgba(0,0,0,0.18);">${it.initials || 'EX'}</div></div>`;
   return `
     <a href="${it.href}" class="airbnb-home-card" onclick="if(event.target.closest('.airbnb-home-heart')||event.target.closest('.airbnb-home-share')){event.preventDefault();return false;}">
       <div class="airbnb-home-card-img-wrap">
-        <img src="${it.img}" alt="${cleanTitle}" class="airbnb-home-card-img" loading="lazy" onerror="this.src='/experts/expert1.png'"/>
+        ${mediaHtml}
         ${it.badge ? `<div class="airbnb-home-badge">${it.badge}</div>` : ''}
         <button type="button" class="airbnb-home-share" aria-label="Share" title="Share" onclick="event.preventDefault();event.stopPropagation();window.shareItem('${cleanTitle}', '${it.href}');">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -5013,7 +5044,7 @@ function renderAirbnbCard(it) {
         <div class="airbnb-home-card-meta">
           <span>${it.col1Val || it.col3Val || 'Verified'}</span>
           <span style="color:#94a3b8">·</span>
-          <span class="airbnb-home-rating"><span class="airbnb-home-rating-star">★</span> 4.95</span>
+          <span class="airbnb-home-rating"><span class="airbnb-home-rating-star">★</span> ${it.rating || '4.95'}</span>
         </div>
       </div>
     </a>
