@@ -142,13 +142,22 @@ export function ExpertProfileDetail({
   const bioText = expert.bio || expert.aboutMe || 
     `${displayName} is a verified immigration and visa consultant on Abroad Zen. Connect directly to evaluate your eligibility, get personalized document checklists, and receive guidance through your visa process.`;
 
-  // Dynamic services based on real expert attributes
+  // Identify real registered DB experts vs UI mock/demo experts
+  const isRealDbExpert = String(expert?.id || '').startsWith('db_');
+  const isMockExpert = !isRealDbExpert;
+
+  // Dynamic services: real DB experts only show real registered services (no dummy packages)
   const hourlyRateNum = typeof expert.hourlyRate === 'number' ? expert.hourlyRate : parseInt(String(expert.hourlyRate || '49'), 10) || 49;
   const currencySymbol = expert.country === 'India' ? '₹' : '$';
   const multiplier = expert.country === 'India' ? 80 : 1;
   const baseRate = hourlyRateNum * multiplier;
 
   const servicesOffered = useMemo(() => {
+    if (isRealDbExpert) {
+      return Array.isArray((expert as any).services) && (expert as any).services.length > 0
+        ? (expert as any).services
+        : [];
+    }
     return [
       {
         title: 'Initial Case Evaluation & Eligibility',
@@ -169,7 +178,7 @@ export function ExpertProfileDetail({
         tag: 'Full Advisory'
       }
     ];
-  }, [baseRate, currencySymbol]);
+  }, [baseRate, currencySymbol, isRealDbExpert, expert]);
 
   // Verified Corridor Classified Deals & Special Offers
   const platformCorridorOffers = useMemo(() => {
@@ -236,10 +245,6 @@ export function ExpertProfileDetail({
       }
     ];
   }, []);
-
-  // Identify real registered DB experts vs UI mock/demo experts
-  const isRealDbExpert = String(expert?.id || '').startsWith('db_');
-  const isMockExpert = !isRealDbExpert;
 
   // Dynamic Classified Ads: real experts show ONLY their own ads (no fake corridor offers); mock experts keep demo offers
   const [displayedClassifieds, setDisplayedClassifieds] = useState<any[]>(() => {
@@ -707,8 +712,8 @@ export function ExpertProfileDetail({
         <div className="sticky top-2 sm:top-4 z-30 mb-8 bg-white/95 backdrop-blur-xl rounded-full border-[1.5px] border-[rgba(55,12,99,0.12)] p-1.5 shadow-[0_12px_36px_-10px_rgba(55,12,99,0.14),0_2px_6px_rgba(0,0,0,0.02)] overflow-x-auto custom-scrollbar flex items-center justify-start sm:justify-center gap-1.5 transition-all">
           {[
             { id: 'overview', label: 'Overview' },
-            { id: 'services', label: 'Services' },
-            { id: 'classifieds', label: 'Classifieds', badge: 'NEW' },
+            ...(servicesOffered.length > 0 ? [{ id: 'services', label: 'Services' }] : []),
+            ...(displayedClassifieds.length > 0 ? [{ id: 'classifieds', label: 'Classifieds', badge: 'NEW' }] : []),
             { id: 'expertise', label: 'Areas of Expertise' },
             { id: 'reviews', label: `Reviews (${reviewCount})` },
             { id: 'gallery', label: 'Gallery' },
@@ -892,7 +897,8 @@ export function ExpertProfileDetail({
 
             </div>
 
-            {/* SECTION 2: SERVICES OFFERED GRID */}
+            {/* SECTION 2: SERVICES OFFERED GRID (Only shown if expert has real services or is a UI mock expert) */}
+            {servicesOffered.length > 0 && (
             <div id="section-services" className="scroll-mt-24 sm:scroll-mt-28 bg-white rounded-[28px] border-[1.5px] border-[rgba(67,15,122,0.12)] p-6 sm:p-8 lg:p-9 shadow-[0_16px_40px_-18px_rgba(67,15,122,0.12),0_2px_6px_rgba(0,0,0,0.02)] space-y-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -943,6 +949,7 @@ export function ExpertProfileDetail({
                 ))}
               </div>
             </div>
+            )}
 
             {/* SECTION: CLASSIFIEDS & SPECIAL DEALS (Only shown if expert has real ads or is a UI mock expert) */}
             {displayedClassifieds.length > 0 && (
