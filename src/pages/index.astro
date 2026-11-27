@@ -160,12 +160,12 @@ section{padding:96px 0;position:relative}
   transform: translateY(0);
 }
 
-.feature-card, .airbnb-home-card {
+.feature-card {
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease !important;
   will-change: transform;
 }
 
-.feature-card:hover, .airbnb-home-card:hover {
+.feature-card:hover {
   transform: translateY(-8px) scale(1.02) !important;
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.18) !important;
 }
@@ -2020,19 +2020,19 @@ section{padding:96px 0;position:relative}
 }
 .airbnb-cat-cards-track{
   display: flex;
-  gap: 16px;
+  gap: 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   scroll-behavior: smooth;
-  padding: 4px 4px 12px;
+  padding: 14px 8px 26px;
   -webkit-overflow-scrolling: touch;
 }
 .airbnb-cat-cards-track::-webkit-scrollbar{
   display: none;
 }
 .airbnb-home-card{
-  flex: 0 0 clamp(240px, 22vw, 290px);
+  flex: 0 0 clamp(250px, 22vw, 300px);
   scroll-snap-align: start;
   text-decoration: none;
   color: inherit;
@@ -2040,10 +2040,21 @@ section{padding:96px 0;position:relative}
   flex-direction: column;
   cursor: pointer;
   box-sizing: border-box;
-  transition: transform 0.22s ease;
+  border-radius: 22px;
+  padding: 10px;
+  background: #ffffff;
+  border: 1.5px solid transparent;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.25s ease,
+              background-color 0.25s ease;
+  will-change: transform;
 }
 .airbnb-home-card:hover{
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  background: #ffffff;
+  border-color: rgba(67, 15, 122, 0.16);
+  box-shadow: 0 22px 44px -14px rgba(67, 15, 122, 0.22), 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 .airbnb-home-card-img-wrap{
   position: relative;
@@ -2057,11 +2068,14 @@ section{padding:96px 0;position:relative}
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   display: block;
 }
 .airbnb-home-card:hover .airbnb-home-card-img{
-  transform: scale(1.04);
+  transform: scale(1.06);
+}
+.airbnb-home-card:hover .airbnb-home-card-title{
+  color: #430f7a;
 }
 .airbnb-home-badge{
   position: absolute;
@@ -2217,7 +2231,7 @@ section{padding:96px 0;position:relative}
   pointer-events: auto;
 }
 .airbnb-home-card-info{
-  padding-top: 10px;
+  padding: 10px 4px 4px;
   display: flex;
   flex-direction: column;
   gap: 2px;
